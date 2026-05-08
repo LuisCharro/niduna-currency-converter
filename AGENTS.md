@@ -42,6 +42,7 @@ Primary app shell order:
 Before substantial work, read:
 
 - `DEFINITIONS.md`
+- `ROADMAP.md`
 - `PLAN.md`
 - `agent/README.md`
 

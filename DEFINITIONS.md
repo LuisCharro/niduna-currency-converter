@@ -26,9 +26,50 @@
 - Phase 1 = MVP (free, ads, no backend); Phase 2 = Backend + Subscriptions; Phase 3 = Crypto + Metals + Extensions
 - CoinGecko API key required — free sign-up at coingecko.com; Demo plan: ~30 calls/min, ~10,000 calls/month
 - i18n: Phase 1 ships with **English only** — add DE, FR, IT, ES, PT in Phase 1.x updates
-- In-app rate alerts: free in Phase 1 (checked only while app is open, no backend) — push alerts require Phase 2 backend
+- Rate alerts are deferred out of Phase 1. Phase 2 owns push alerts; optional in-app-only alerts can be reconsidered after the MVP ships.
 
 ---
+
+## Phase 1 Implementation Contract
+
+This section is the product contract for implementation. If a generated UI,
+agent proposal, or future idea conflicts with this contract, update this file
+first or defer the idea.
+
+### Product rules
+
+- Phase 1 has no backend.
+- Phase 1 has no accounts, login, cloud sync, or user profile.
+- Phase 1 has zero tracking, zero analytics, and zero data collection.
+- Phase 1 monetization is banner ads plus one-time Remove Ads.
+- Phase 1 has four tabs only: `Convert`, `Favorites`, `Charts`, `Settings`.
+- Phase 1 is English only.
+- RUB is not supported.
+
+### Screen ownership
+
+| Screen | Owns | Does not own |
+|--------|------|--------------|
+| `Convert` | amount input, base currency, multi-currency results, favorite toggles, freshness/offline status, banner ad area | charts, settings, accounts, transfers |
+| `Favorites` | local favorite pairs, max-3 rule, edit/delete, jump back to Convert context | unlimited favorites, cloud sync |
+| `Charts` | fiat historical charts up to 2 years, range selector, high/low/change | crypto charts, metals, export, multi-pair compare |
+| `Settings` | local preferences, cache controls, Remove Ads entry, privacy/about/version | account settings, backend sync, subscriptions before Phase 2 |
+
+### Data and cache rules
+
+| Data | Phase 1 source | Cache rule | Failure behavior |
+|------|----------------|------------|------------------|
+| Fiat latest rates | Frankfurter v2 | Keep last successful payload locally | Show cached stale/offline state if refresh fails |
+| Fiat historical rates | Frankfurter historical endpoints | Cache by pair and range | Show cached chart data if available |
+| BTC/ETH prices | CoinGecko Demo API | 24h local cache | Keep fiat screen usable if crypto fails |
+| Favorites | Local storage | Persistent until user deletes | Never requires network |
+| Settings | Local storage | Persistent until user changes | Never requires network |
+
+### Implementation guardrail
+
+Build by vertical slices: one user-visible behavior at a time, including its
+minimal data, state, UI, and tests. Do not build one large data layer and one
+large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 
 ## What's In / What's Out — Phase 1 (MVP)
 
@@ -305,7 +346,7 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 | **Backend** | None | ASP.NET Core + PostgreSQL on Hostinger | Same |
 | **Currencies** | 16 + BTC + ETH prices | All 200 from Frankfurter | + Crypto charts + Metals (XAU/XAG) |
 | **Charts** | 2-year daily, unlimited free | + Multi-pair comparison | + Metals overlays |
-| **Rate alerts** | In-app only (free, app open) | Push via backend (subscription) | + Crypto price alerts |
+| **Rate alerts** | No | Push via backend (subscription) | + Crypto price alerts |
 | **Monetization** | Ads + Remove Ads one-time | + Subscriptions (Basic: 12 CHF/año) | + Crypto/Metals add-on |
 | **Ads** | Banner only | Banner for free tier | Banner for free tier |
 | **Metals** | No | No | Gold/Silver (XAU/XAG) |
@@ -318,7 +359,7 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 3 phases: MVP (free + ads + BTC/ETH prices), Phase 2 (backend + subscriptions), Phase 3 (crypto charts + metals + extensions).
 
 **Q: What's in MVP?**
-16 fiat currencies + BTC/ETH prices (no charts) + 2-year charts + offline cache + banner ads + Remove Ads (one-time 1.99 CHF). No metals, no push alerts, no backend.
+16 fiat currencies + BTC/ETH prices (no charts) + 2-year charts + offline cache + banner ads + Remove Ads (one-time 1.99 CHF). No metals, no alerts, no backend.
 
 **Q: How to monetize not just cover costs?**
 Phase 1: ads + one-time Remove Ads accumulates cash reserve. Phase 2: subscriptions for alerts/hourly create recurring revenue. Don't use one-time purchases to fund ongoing backend — that's the fundamental mistake.

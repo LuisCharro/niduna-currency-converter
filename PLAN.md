@@ -16,6 +16,38 @@ Currency converter app for Android (iOS later) under Niduna brand. Privacy-first
 - Phase 2: Backend + Subscriptions (~2,000 DAU trigger)
 - Phase 3: Crypto charts + Metals + Extensions
 
+## Planning Sources
+
+Use the docs in this order:
+
+1. `DEFINITIONS.md` — product contract and phase boundaries
+2. `ROADMAP.md` — delivery order, screen contracts, API/cache contracts, and gates
+3. `PLAN.md` — current implementation plan and task tracking
+4. `AGENTS.md` — agent workflow, skills, and verification rules
+
+Rule: if a feature appears in this plan but conflicts with `DEFINITIONS.md`,
+`DEFINITIONS.md` wins.
+
+## Delivery Strategy
+
+Implement Phase 1 through vertical slices.
+
+Do not build all data clients first and all screens later. Each slice should
+ship one user-visible behavior with its minimal model/data/state/UI/tests.
+
+Slice order:
+
+1. Product and architecture baseline
+2. Convert with demo data
+3. Fiat latest rates
+4. BTC/ETH price rows
+5. Favorites
+6. Fiat charts
+7. Settings
+8. Ads and Remove Ads
+
+See `ROADMAP.md` for acceptance criteria and guardrails.
+
 ---
 
 ## Ad Types & Placement
@@ -220,7 +252,7 @@ Currency converter app for Android (iOS later) under Niduna brand. Privacy-first
 - [ ] Pull-to-refresh on currency list (Convert tab)
 - [ ] Context menu (long press) for quick actions (add to favorites, view chart)
 - [ ] Swipe on Favorites to delete
-- [ ] In-app rate alerts: user sets a target rate → app shows notification badge when rate is reached (free, no backend — only checked while app is open)
+- [ ] Rate alerts: deferred to Phase 2 unless `DEFINITIONS.md` is updated after MVP validation
 
 ---
 
@@ -305,27 +337,21 @@ lib/
 | Local storage | SharedPreferences | Simple key-value for favorites + cache |
 | HTTP client | dio | Better caching than http package |
 | Charts | fl_chart | Free, well-maintained |
-| Ads | firebase_admob | TBD based on Flutter 3.x compatibility |
+| Ads | Google Mobile Ads Flutter plugin | Verify current official package before Slice 7 integration |
 
-### TODO List (Phase 1)
+### TODO List (Phase 1, Vertical Slices)
 
-- [ ] Set up project structure (lib/src/...)
-- [ ] Add dependencies (dio, fl_chart, shared_preferences, etc.)
-- [ ] Implement Frankfurter API client
-- [ ] Implement CoinGecko API client (with 24h cache)
-- [ ] Build Tab 1: Convert (Home) screen
-- [ ] Build Tab 2: Favorites screen
-- [ ] Build Tab 3: Charts screen
-- [ ] Build Tab 4: Settings screen
-- [ ] Implement conversion logic with 1-API-call optimization
-- [ ] Implement favorites (local storage)
-- [ ] Add offline mode with cache
-- [ ] Dark mode support
-- [ ] AdMob banner integration (bottom, safe distance from input)
-- [ ] Remove Ads In-App Purchase
-- [ ] i18n: English only at launch; add DE, FR, IT, ES, PT in Phase 1.x updates
-- [ ] Write smoke tests
-- [ ] Build and test APK
+- [ ] Slice 0: align `DEFINITIONS.md`, `ROADMAP.md`, and `PLAN.md`
+- [ ] Slice 1: finalize Convert UI with demo data and small-screen verification
+- [ ] Slice 2: add Frankfurter latest-rates client/repository/cache for Convert
+- [ ] Slice 3: add BTC/ETH CoinGecko rows with 24h cache and isolated failure states
+- [ ] Slice 4: implement local favorites and max-3 rule across Convert/Favorites
+- [ ] Slice 5: implement fiat historical charts with pair/range cache
+- [ ] Slice 6: implement Settings preferences and cache controls
+- [ ] Slice 7: integrate banner ads and one-time Remove Ads IAP
+- [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates
+- [ ] Write/update smoke tests as each slice becomes user-visible
+- [ ] Build and test APK before release candidate
 
 ---
 

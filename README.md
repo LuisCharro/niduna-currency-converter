@@ -23,6 +23,7 @@ Privacy-first Flutter currency converter for the Niduna portfolio.
 | Doc | Purpose |
 |-----|---------|
 | `DEFINITIONS.md` | Product definition, competitive study, API strategy, pricing decisions, phase roadmap |
+| `ROADMAP.md` | Delivery order, screen contracts, API/cache contracts, vertical slices |
 | `PLAN.md` | Development plan, navigation structure, file layout, Phase 1 TODO |
 | `AGENTS.md` | Agent instructions, skills, verification rules, modularity rules |
 | `agent/README.md` | Repo-specific guidance, commands, iOS simulator notes |
