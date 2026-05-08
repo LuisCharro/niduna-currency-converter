@@ -7,7 +7,6 @@ Privacy-first Flutter currency converter for the Niduna portfolio.
 ## What's in Phase 1
 
 - 16 fiat currencies (USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF)
-- BTC + ETH live prices via CoinGecko Demo API
 - Multi-currency conversion view (type one amount, see all conversions)
 - Historical charts (up to 2 years, unlimited free)
 - Favorites (save up to 3 currency pairs locally)
@@ -16,7 +15,7 @@ Privacy-first Flutter currency converter for the Niduna portfolio.
 - Banner ads (bottom, safe distance from input)
 - Remove Ads IAP (1.99 CHF one-time)
 
-**Not in Phase 1:** crypto charts, metals (XAU/XAG), push notifications, backend, accounts.
+**Not in Phase 1:** crypto prices/charts, metals (XAU/XAG), push notifications, backend, accounts.
 
 ## Core app docs
 
@@ -33,7 +32,7 @@ Privacy-first Flutter currency converter for the Niduna portfolio.
 | Phase | Goal | Trigger |
 |-------|------|---------|
 | **Phase 1 (MVP)** | Free + ads + one-time Remove Ads | Now |
-| **Phase 2** | Backend + subscriptions (rate alerts, hourly refresh) | ~2,000 DAU |
+| **Phase 2** | Backend + subscriptions (rate alerts, hourly refresh, optional crypto API strategy) | ~2,000 DAU |
 | **Phase 3** | Crypto charts + metals (XAU/XAG) + extensions | After Phase 2 |
 
 See `DEFINITIONS.md` → Phase Roadmap for full details.
@@ -43,8 +42,7 @@ See `DEFINITIONS.md` → Phase Roadmap for full details.
 | Source | Use | Auth |
 |--------|-----|------|
 | Frankfurter v2 (`api.frankfurter.dev`) | Fiat rates | No API key |
-| CoinGecko Demo API | BTC + ETH prices | Free API key required |
-| Local cache | Fiat + crypto | SharedPreferences, 24h crypto TTL |
+| Local cache | Fiat rates, chart data, favorites, settings | SharedPreferences |
 
 ## Quick start
 
@@ -139,6 +137,6 @@ flutter pub get
 
 - Screen-by-screen implementation
 - Stub screens exist (Convert, Favorites, Charts, Settings)
-- API client integration pending (Frankfurter + CoinGecko)
+- API client integration pending (Frankfurter)
 - AdMob integration pending
 - IAP integration pending

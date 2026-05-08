@@ -32,7 +32,7 @@ Before implementation expands, keep `DEFINITIONS.md` as the source of truth for:
 - Phase 1 data sources
 - Phase 1 monetization
 - privacy promises
-- phase triggers for backend, subscriptions, crypto charts, metals, and exports
+- phase triggers for backend, subscriptions, crypto/metals, and exports
 - open questions that block implementation
 
 Do not implement a feature just because it appears in a UI idea or generated
@@ -55,7 +55,6 @@ Must include:
 - base currency selector
 - multi-currency results list
 - fiat currencies from the Phase 1 list
-- BTC and ETH price rows
 - favorite toggle per row
 - last updated status
 - offline or stale-data indication when relevant
@@ -160,19 +159,21 @@ App behavior:
 - reuse cached chart data when offline
 - clearly distinguish stale chart data from fresh data
 
-### Crypto Prices
+### Crypto Data
 
-Source:
+Phase 1 does not include crypto data.
 
-- CoinGecko Demo API
+Reason:
 
-App behavior:
+- CoinGecko Demo API requires a key.
+- A mobile app cannot keep that key secret.
+- The MVP should avoid backend/API-key complexity.
 
-- BTC and ETH prices only in Phase 1
-- require a free API key for production use
-- cache prices for 24 hours
-- keep fiat conversion useful even if crypto fetch fails
-- do not block the whole Convert screen on crypto errors
+Revisit BTC/ETH prices only when there is:
+
+- a backend/proxy
+- a paid API plan with acceptable key controls
+- an explicit decision that a public mobile key is acceptable
 
 ### Local User Data
 
@@ -186,7 +187,6 @@ Stores:
 - settings
 - latest fiat cache
 - historical chart cache
-- crypto price cache
 - IAP/ad-removal state when implemented
 
 Phase 1 has no account, no backend, no cloud sync, and no tracking.
@@ -261,20 +261,7 @@ Done when:
 - refresh failure leaves usable cached values when available
 - tests cover conversion math and repository fallback behavior
 
-### Slice 3: Crypto Price Rows
-
-Goal:
-
-- add BTC/ETH price rows with CoinGecko and 24h cache
-- keep crypto failures isolated from fiat conversion
-
-Done when:
-
-- BTC/ETH appear when data is available
-- stale/missing crypto status does not break fiat rows
-- tests cover cache reuse and failure fallback
-
-### Slice 4: Favorites
+### Slice 3: Favorites
 
 Goal:
 
@@ -288,7 +275,7 @@ Done when:
 - max-3 rule is enforced
 - navigation back to Convert with selected pair/context works
 
-### Slice 5: Charts
+### Slice 4: Charts
 
 Goal:
 
@@ -301,7 +288,7 @@ Done when:
 - cached chart data is reused offline
 - crypto charts remain unavailable in Phase 1
 
-### Slice 6: Settings
+### Slice 5: Settings
 
 Goal:
 
@@ -314,7 +301,7 @@ Done when:
 - clearing cache has visible effect
 - settings do not introduce account/backend concepts
 
-### Slice 7: Ads And Remove Ads
+### Slice 6: Ads And Remove Ads
 
 Goal:
 
@@ -325,6 +312,18 @@ Done when:
 - banner placement respects the Convert screen safe-distance rule
 - removed-ads state hides ad surfaces
 - store/release privacy implications are documented
+
+### Slice 7: Optional Crypto/Backend Planning
+
+Goal:
+
+- decide whether BTC/ETH prices belong in Phase 2 or Phase 3
+- choose backend/proxy/API-key strategy before implementation
+
+Done when:
+
+- no API key is embedded in the mobile app without an explicit documented decision
+- crypto scope, monetization, and cache rules are recorded in `DEFINITIONS.md`
 
 ## Architecture Guardrails
 

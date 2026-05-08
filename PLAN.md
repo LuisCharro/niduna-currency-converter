@@ -40,11 +40,11 @@ Slice order:
 1. Product and architecture baseline
 2. Convert with demo data
 3. Fiat latest rates
-4. BTC/ETH price rows
-5. Favorites
-6. Fiat charts
-7. Settings
-8. Ads and Remove Ads
+4. Favorites
+5. Fiat charts
+6. Settings
+7. Ads and Remove Ads
+8. Optional crypto/backend planning after MVP
 
 See `ROADMAP.md` for acceptance criteria and guardrails.
 
@@ -96,11 +96,9 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 ├─────────────────────────────┤
 │  🇪🇺 EUR   0.9132      91.32│
 │  🇬🇧 GBP   0.7945      79.45│  ← Scrollable list
-│  🇯🇵 JPY   149.50   14950.00│     (16 fiat + BTC + ETH)
+│  🇯🇵 JPY   149.50   14950.00│     (16 fiat)
 │  🇨🇦 CAD   1.36      136.00 │
 │  ...                        │
-│  ₿  BTC   0.0000091   0.0009│  ← Crypto (CoinGecko)
-│  Ξ  ETH   0.00028    0.028  │  ← Crypto (CoinGecko)
 │                        ⭐   │  ← Tap star to favorite
 └─────────────────────────────┘
 [        BOTTOM BANNER        ]  ← Safe distance from input
@@ -109,7 +107,7 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 **Features:**
 - Amount input (numeric keypad)
 - Base currency selector (dropdown or tap base row)
-- Scrollable list: 16 fiat currencies + BTC + ETH = **18 rows**
+- Scrollable list: 16 fiat currencies
 - Each row shows: flag + currency code + converted amount
 - Star button on each row to add pair to favorites
 - Pull-to-refresh for rates
@@ -117,11 +115,10 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 
 **API Calls (optimized):**
 - 1 call to Frankfurter: `GET /v2/latest?from={base}` → all 16 fiat rates
-- 1 call to CoinGecko: BTC + ETH prices (24h cached)
-- Total: **2 API calls per refresh**
+- Total: **1 API call per refresh**
 - Cross-rate calculation done client-side: `amount × rate`
 
-**Clarification:** This IS the multi-currency view. User types 100 USD, sees all 18 conversions at once. No need to select "from/to" pairs separately. This matches the Currency app UX.
+**Clarification:** This IS the multi-currency view. User types 100 USD, sees the 16 fiat conversions at once. No need to select "from/to" pairs separately. This matches the Currency app UX.
 
 ---
 
@@ -235,13 +232,13 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 
 ### Multi-Currency View (Clarification)
 
-**Phase 1 already includes multi-currency view in Tab 1.** User types one amount, sees all 18 conversions (16 fiat + BTC + ETH) at once. This is the Currency app UX.
+**Phase 1 already includes multi-currency view in Tab 1.** User types one amount, sees all 16 fiat conversions at once. This is the Currency app UX.
 
-**API cost:** Only 2 calls per refresh (1 Frankfurter + 1 CoinGecko). Frankfurter returns all rates in one response, so adding more fiat currencies later costs nothing extra.
+**API cost:** Only 1 call per refresh. Frankfurter returns all rates in one response, so adding more fiat currencies later costs nothing extra.
 
 **Phase 2 enhancement:** More frequent refresh (hourly via backend), expand to all 200 Frankfurter currencies.
 
-**Phase 3 enhancement:** Crypto charts, metals overlay.
+**Future enhancement:** Crypto/metals require a backend or explicit API-key strategy before implementation.
 
 ---
 
@@ -274,16 +271,13 @@ lib/
 │   │   └── utils/               # Formatters, extensions
 │   ├── data/
 │   │   ├── sources/
-│   │   │   ├── frankfurter_api.dart      # Frankfurter v2 client
-│   │   │   └── coingecko_api.dart        # CoinGecko Demo API
+│   │   │   └── frankfurter_api.dart      # Frankfurter v2 client
 │   │   ├── models/
 │   │   │   ├── currency.dart
 │   │   │   ├── exchange_rate.dart
-│   │   │   ├── historical_data.dart
-│   │   │   └── crypto_price.dart
+│   │   │   └── historical_data.dart
 │   │   └── repositories/
-│   │       ├── rates_repository.dart
-│   │       └── crypto_repository.dart
+│   │       └── rates_repository.dart
 │   ├── domain/
 │   │   └── services/
 │   │       └── conversion_service.dart
@@ -312,7 +306,6 @@ lib/
 | Feature | Status | Notes |
 |---------|--------|-------|
 | 16 fiat currencies | TODO | USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF |
-| BTC/ETH prices | TODO | Via CoinGecko Demo API, 24h cache |
 | Conversion | TODO | Client-side `amount × rate` |
 | Historical charts | TODO | Daily rates, up to 2 years |
 | Favorite pairs | TODO | Save up to 3 locally (SharedPreferences) |
@@ -326,7 +319,6 @@ lib/
 | Source | Use | Key |
 |--------|-----|-----|
 | Frankfurter v2 | Fiat rates | No API key |
-| CoinGecko Demo | BTC/ETH prices | Requires free API key |
 
 ### Technical Decisions
 
@@ -344,11 +336,11 @@ lib/
 - [ ] Slice 0: align `DEFINITIONS.md`, `ROADMAP.md`, and `PLAN.md`
 - [ ] Slice 1: finalize Convert UI with demo data and small-screen verification
 - [ ] Slice 2: add Frankfurter latest-rates client/repository/cache for Convert
-- [ ] Slice 3: add BTC/ETH CoinGecko rows with 24h cache and isolated failure states
-- [ ] Slice 4: implement local favorites and max-3 rule across Convert/Favorites
-- [ ] Slice 5: implement fiat historical charts with pair/range cache
-- [ ] Slice 6: implement Settings preferences and cache controls
-- [ ] Slice 7: integrate banner ads and one-time Remove Ads IAP
+- [ ] Slice 3: implement local favorites and max-3 rule across Convert/Favorites
+- [ ] Slice 4: implement fiat historical charts with pair/range cache
+- [ ] Slice 5: implement Settings preferences and cache controls
+- [ ] Slice 6: integrate banner ads and one-time Remove Ads IAP
+- [ ] Slice 7: decide optional crypto/backend strategy after MVP
 - [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates
 - [ ] Write/update smoke tests as each slice becomes user-visible
 - [ ] Build and test APK before release candidate
@@ -379,6 +371,7 @@ lib/
 |---------|-------|
 | Rate alerts (push) | 12 CHF/año |
 | Hourly refresh | Included in Basic tier |
+| Optional BTC/ETH prices | Requires backend/proxy or documented API-key decision |
 | Multi-pair chart comparison | Phase 2 feature |
 | Chart export (PNG/JPG) | 0.99 CHF one-time |
 | Save > 3 favorite pairs | 0.50-0.99 CHF |
@@ -424,14 +417,14 @@ lib/
 - **No `/convert` endpoint** — use `/v2/latest?from={base}`
 - **No API key required**
 - **1-call trick:** `GET /v2/latest?from=USD` returns ALL rates against USD in one response
-- **Total Phase 1 calls per refresh:** 1 (Frankfurter) + 1 (CoinGecko) = **2 calls**
+- **Total Phase 1 calls per refresh:** 1 Frankfurter call
 - Self-host at 10,000+ DAU via Docker (`lineofflight/frankfurter`)
 
-### CoinGecko Demo API
+### Crypto API (Deferred)
 
-- **Requires free API key** (coingecko.com)
-- **Rate limits:** ~30 calls/min, ~10,000/month
-- Use 24h local cache to minimize calls
+- CoinGecko Demo API requires a key.
+- Do not embed that key in the Phase 1 mobile app.
+- Revisit BTC/ETH prices only with backend/proxy or an explicit API-key decision.
 
 ### Caching Strategy
 
@@ -441,7 +434,6 @@ lib/
 | Data | Cache TTL | Reason |
 |------|----------|--------|
 | Fiat rates | Until next app open | Offline mode: show last known rates when no network |
-| Crypto prices | 24 hours | CoinGecko rate limit (10,000 calls/month) |
 | Historical data | Persistent | Avoid re-fetching chart data already loaded |
 | User favorites | Persistent | SharedPreferences, never expires |
 
