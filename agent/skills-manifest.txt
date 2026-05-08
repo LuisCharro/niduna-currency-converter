@@ -1,0 +1,8 @@
+# Skills copied from the shared skills repo.
+# One relative path per line. Files and directories are both allowed.
+
+_shared/
+frontend/
+mobile/
+release/
+publish/google-stitch-workflow/

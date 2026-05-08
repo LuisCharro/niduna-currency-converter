@@ -1,0 +1,131 @@
+{
+  "@@locale": "en",
+  "appTitle": "Currency Converter",
+  "@appTitle": {
+    "description": "App title shown in app switcher"
+  },
+  "tabConvert": "Convert",
+  "@tabConvert": {
+    "description": "Bottom nav label for Convert tab"
+  },
+  "tabFavorites": "Favorites",
+  "@tabFavorites": {
+    "description": "Bottom nav label for Favorites tab"
+  },
+  "tabCharts": "Charts",
+  "@tabCharts": {
+    "description": "Bottom nav label for Charts tab"
+  },
+  "tabSettings": "Settings",
+  "@tabSettings": {
+    "description": "Bottom nav label for Settings tab"
+  },
+  "btnSwap": "Swap",
+  "@btnSwap": {
+    "description": "Swap currencies button"
+  },
+  "btnClear": "Clear",
+  "@btnClear": {
+    "description": "Clear input button"
+  },
+  "btnRemove": "Remove",
+  "@btnRemove": {
+    "description": "Remove button"
+  },
+  "btnAdd": "Add",
+  "@btnAdd": {
+    "description": "Add button"
+  },
+  "btnDone": "Done",
+  "@btnDone": {
+    "description": "Done button"
+  },
+  "labelFrom": "From",
+  "@labelFrom": {
+    "description": "From currency label"
+  },
+  "labelTo": "To",
+  "@labelTo": {
+    "description": "To currency label"
+  },
+  "labelAmount": "Amount",
+  "@labelAmount": {
+    "description": "Amount input label"
+  },
+  "labelResult": "Result",
+  "@labelResult": {
+    "description": "Conversion result label"
+  },
+  "labelRate": "Rate",
+  "@labelRate": {
+    "description": "Exchange rate label"
+  },
+  "labelLastUpdated": "Last updated",
+  "@labelLastUpdated": {
+    "description": "Last updated timestamp label"
+  },
+  "labelNoFavorites": "No favorites yet",
+  "@labelNoFavorites": {
+    "description": "Empty favorites message"
+  },
+  "labelAddFavorite": "Add favorite",
+  "@labelAddFavorite": {
+    "description": "Add favorite action label"
+  },
+  "labelRemoveAds": "Remove Ads",
+  "@labelRemoveAds": {
+    "description": "Remove ads in-app purchase label"
+  },
+  "labelDarkMode": "Dark mode",
+  "@labelDarkMode": {
+    "description": "Dark mode toggle label"
+  },
+  "labelAbout": "About",
+  "@labelAbout": {
+    "description": "About section label"
+  },
+  "labelVersion": "Version",
+  "@labelVersion": {
+    "description": "Version label"
+  },
+  "labelPrivacy": "Privacy",
+  "@labelPrivacy": {
+    "description": "Privacy section label"
+  },
+  "labelNoAccount": "No account",
+  "@labelNoAccount": {
+    "description": "No account label"
+  },
+  "labelNoCloudSync": "No cloud sync",
+  "@labelNoCloudSync": {
+    "description": "No cloud sync label"
+  },
+  "labelNoAnalytics": "No analytics",
+  "@labelNoAnalytics": {
+    "description": "No analytics label"
+  },
+  "labelOfflineMode": "Offline mode",
+  "@labelOfflineMode": {
+    "description": "Offline mode indicator"
+  },
+  "labelCachedRates": "Cached rates",
+  "@labelCachedRates": {
+    "description": "Cached rates indicator"
+  },
+  "errorNetworkFailed": "Network error. Using cached rates.",
+  "@errorNetworkFailed": {
+    "description": "Network error message"
+  },
+  "errorNoData": "No data available",
+  "@errorNoData": {
+    "description": "No data error message"
+  },
+  "msgFavoriteAdded": "Favorite added",
+  "@msgFavoriteAdded": {
+    "description": "Favorite added confirmation"
+  },
+  "msgFavoriteRemoved": "Favorite removed",
+  "@msgFavoriteRemoved": {
+    "description": "Favorite removed confirmation"
+  }
+}

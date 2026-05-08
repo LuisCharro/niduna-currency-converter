@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Niduna Convert - Canonical Pro v2</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#414755",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#005bc1",
+                        "background": "#f8f9fa",
+                        "on-background": "#191c1d",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-error-container": "#93000a",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-fixed-variant": "#7c2e00",
+                        "inverse-surface": "#2e3132",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-dim": "#d9dadb",
+                        "outline": "#717786",
+                        "secondary-container": "#e5e2e1",
+                        "surface-bright": "#f8f9fa",
+                        "primary-container": "#0070eb",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#fefcff",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary": "#5f5e5e",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-container-low": "#f3f4f5",
+                        "on-surface": "#191c1d",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-primary-fixed-variant": "#004493",
+                        "tertiary-fixed-dim": "#ffb595",
+                        "on-secondary-fixed-variant": "#474646",
+                        "tertiary-container": "#c64f00",
+                        "tertiary": "#9e3d00",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "outline-variant": "#c1c6d7",
+                        "inverse-primary": "#adc6ff",
+                        "surface-container": "#edeeef",
+                        "tertiary-fixed": "#ffdbcc",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-primary-fixed": "#001a41",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#656464",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-fixed": "#351000",
+                        "primary": "#0058bc",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "container-padding": "20px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "stack-gap": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "numeric-xl": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-currency": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "26px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "numeric-xl": ["32px", { "lineHeight": "40px", "fontWeight": "500" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-currency": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md antialiased pb-[80px]">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-surface dark:bg-surface-dim flex items-center justify-between px-container-padding h-14">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer active:scale-95">security</span>
+<div class="flex flex-col">
+<h1 class="font-headline-lg text-headline-lg font-semibold text-on-surface dark:text-on-surface-variant">Niduna Convert</h1>
+<span class="font-label-caps text-label-caps text-secondary uppercase">LOCAL-ONLY DATA</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer active:scale-95 hover:opacity-80 transition-opacity">sync</span>
+</header>
+<main class="px-container-padding py-md max-w-lg mx-auto">
+<!-- Primary Amount Card -->
+<section class="bg-surface-bright rounded-xl p-lg mb-xl shadow-[0px_10px_30px_rgba(18,18,18,0.06)] border border-on-surface/5 relative">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-label-caps text-label-caps text-secondary">YOU SEND</span>
+<span class="font-label-caps text-label-caps text-secondary flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Updated: Today, 09:00
+                </span>
+</div>
+<div class="flex items-center justify-between mt-sm">
+<input class="font-display-currency text-display-currency text-on-surface bg-transparent border-none p-0 focus:ring-0 w-full tabular-nums outline-none" readonly="" type="text" value="100.00"/>
+<button class="flex items-center gap-xs bg-surface-container-high rounded-full px-md py-sm hover:bg-surface-container-highest transition-colors flex-shrink-0">
+<span class="font-headline-md text-headline-md text-on-surface">USD</span>
+<span class="material-symbols-outlined text-on-surface">expand_more</span>
+</button>
+</div>
+<!-- Floating Swap FAB -->
+<button class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-surface-bright border border-outline-variant rounded-full flex items-center justify-center shadow-[0px_4px_12px_rgba(0,0,0,0.05)] z-10 hover:bg-surface-container-lowest transition-colors active:scale-95">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'wght' 600;">swap_vert</span>
+</button>
+</section>
+<!-- Conversion List -->
+<section class="flex flex-col gap-sm mt-lg">
+<!-- EUR -->
+<div class="flex items-center justify-between p-md bg-surface-bright rounded-lg border border-on-surface/5">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">€</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">EUR</span>
+<span class="font-label-caps text-label-caps text-secondary">Euro</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-sm">
+<span class="font-numeric-xl text-numeric-xl text-on-surface tabular-nums">92.45</span>
+<span class="material-symbols-outlined text-outline cursor-pointer active:scale-95 hover:text-primary transition-colors">star</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary tabular-nums">1 USD = 0.9245 EUR</span>
+</div>
+</div>
+<!-- CHF -->
+<div class="flex items-center justify-between p-md bg-surface-bright rounded-lg border border-on-surface/5">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">Fr</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">CHF</span>
+<span class="font-label-caps text-label-caps text-secondary">Swiss Franc</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-sm">
+<span class="font-numeric-xl text-numeric-xl text-on-surface tabular-nums">88.30</span>
+<span class="material-symbols-outlined text-outline cursor-pointer active:scale-95 hover:text-primary transition-colors">star</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary tabular-nums">1 USD = 0.8830 CHF</span>
+</div>
+</div>
+<!-- GBP -->
+<div class="flex items-center justify-between p-md bg-surface-bright rounded-lg border border-on-surface/5">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">£</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">GBP</span>
+<span class="font-label-caps text-label-caps text-secondary">British Pound</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-sm">
+<span class="font-numeric-xl text-numeric-xl text-on-surface tabular-nums">79.15</span>
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-colors" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary tabular-nums">1 USD = 0.7915 GBP</span>
+</div>
+</div>
+<!-- JPY -->
+<div class="flex items-center justify-between p-md bg-surface-bright rounded-lg border border-on-surface/5">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">¥</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">JPY</span>
+<span class="font-label-caps text-label-caps text-secondary">Japanese Yen</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-sm">
+<span class="font-numeric-xl text-numeric-xl text-on-surface tabular-nums">15,023.00</span>
+<span class="material-symbols-outlined text-outline cursor-pointer active:scale-95 hover:text-primary transition-colors">star</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary tabular-nums">1 USD = 150.23 JPY</span>
+</div>
+</div>
+<!-- CAD -->
+<div class="flex items-center justify-between p-md bg-surface-bright rounded-lg border border-on-surface/5">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">CA$</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">CAD</span>
+<span class="font-label-caps text-label-caps text-secondary">Canadian Dollar</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-sm">
+<span class="font-numeric-xl text-numeric-xl text-on-surface tabular-nums">135.40</span>
+<span class="material-symbols-outlined text-outline cursor-pointer active:scale-95 hover:text-primary transition-colors">star</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary tabular-nums">1 USD = 1.3540 CAD</span>
+</div>
+</div>
+<!-- AUD -->
+<div class="flex items-center justify-between p-md bg-surface-bright rounded-lg border border-on-surface/5">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">AU$</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">AUD</span>
+<span class="font-label-caps text-label-caps text-secondary">Australian Dollar</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-sm">
+<span class="font-numeric-xl text-numeric-xl text-on-surface tabular-nums">152.10</span>
+<span class="material-symbols-outlined text-outline cursor-pointer active:scale-95 hover:text-primary transition-colors">star</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary tabular-nums">1 USD = 1.5210 AUD</span>
+</div>
+</div>
+<!-- BTC -->
+<div class="flex items-center justify-between p-md bg-surface-bright rounded-lg border border-on-surface/5">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">₿</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">BTC</span>
+<span class="font-label-caps text-label-caps text-secondary">Bitcoin</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-sm">
+<span class="font-numeric-xl text-numeric-xl text-on-surface tabular-nums">0.0014</span>
+<span class="material-symbols-outlined text-outline cursor-pointer active:scale-95 hover:text-primary transition-colors">star</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary tabular-nums">1 USD = 0.000014 BTC</span>
+</div>
+</div>
+<!-- ETH -->
+<div class="flex items-center justify-between p-md bg-surface-bright rounded-lg border border-on-surface/5">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">Ξ</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">ETH</span>
+<span class="font-label-caps text-label-caps text-secondary">Ethereum</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-sm">
+<span class="font-numeric-xl text-numeric-xl text-on-surface tabular-nums">0.026</span>
+<span class="material-symbols-outlined text-outline cursor-pointer active:scale-95 hover:text-primary transition-colors">star</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary tabular-nums">1 USD = 0.00026 ETH</span>
+</div>
+</div>
+</section>
+<!-- Advertisement Placeholder -->
+<section class="mt-lg p-lg bg-surface-container-low rounded-xl border border-dashed border-outline-variant flex flex-col items-center justify-center text-center opacity-70">
+<span class="font-label-caps text-label-caps text-secondary mb-xs">ADVERTISEMENT PLACEMENT</span>
+<span class="font-body-md text-body-md text-outline">Premium Financial Services Ad Space</span>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-16 px-4 pb-safe bg-surface dark:bg-surface-dim shadow-[0px_-10px_30px_rgba(18,18,18,0.06)] z-50 rounded-t-xl md:hidden">
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors active:scale-90 transition-transform duration-200 cursor-pointer w-full h-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">currency_exchange</span>
+<span class="font-label-caps text-label-caps mt-1">Convert</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low transition-colors active:scale-90 transition-transform duration-200 cursor-pointer w-full h-full">
+<span class="material-symbols-outlined">star</span>
+<span class="font-label-caps text-label-caps mt-1">Favorites</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low transition-colors active:scale-90 transition-transform duration-200 cursor-pointer w-full h-full">
+<span class="material-symbols-outlined">show_chart</span>
+<span class="font-label-caps text-label-caps mt-1">Charts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low transition-colors active:scale-90 transition-transform duration-200 cursor-pointer w-full h-full">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps mt-1">Settings</span>
+</div>
+</nav>
+</body></html>
