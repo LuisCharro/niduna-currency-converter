@@ -274,6 +274,138 @@ Done when:
 - refresh failure leaves usable cached values when available
 - tests cover conversion math and repository fallback behavior
 
+## Next Slice Plan: Convert Real Rates
+
+This is the next logical implementation step.
+
+Scope:
+
+- Replace Convert demo values with real Frankfurter latest-rate data.
+- Keep the existing four-tab shell and Stitch-derived visual direction.
+- Implement only the minimum data/state/cache needed by Convert.
+- Do not implement Favorites, Charts, Settings behavior, ads, IAP, backend, or
+  crypto in this slice.
+
+### User-Visible Behavior
+
+Convert should:
+
+- show cached values immediately on open when cache exists
+- fetch latest fiat rates for the selected base currency
+- calculate `amount × rate` client-side
+- show 16 Phase 1 fiat currencies, excluding the active base from result rows
+- expose a manual refresh action
+- show `fresh`, `loading refresh`, `cached`, `stale/offline`, and `no cache`
+  states clearly
+- keep the banner ad area as a placeholder only
+
+### API Contract
+
+Use Frankfurter v2 directly from the app:
+
+```text
+GET https://api.frankfurter.dev/v2/latest?from={BASE}
+```
+
+Expected handling:
+
+- `{BASE}` must be one of the Phase 1 fiat codes.
+- Response rates are stored as decimal numbers.
+- If a requested Phase 1 currency is missing from the response, skip that row
+  and surface a recoverable data warning in state, not a crash.
+- Frankfurter has no `/convert` endpoint; conversion is always local math.
+
+### Cache Contract
+
+Persist only the last successful latest-rates payload per base currency.
+
+Minimum cached fields:
+
+- base currency
+- fetched timestamp from the API response when available
+- local saved timestamp
+- rates map for supported Phase 1 fiat currencies
+
+Failure behavior:
+
+- Network success: update cache and show fresh data.
+- Network failure with cache: show cached values and stale/offline status.
+- Network failure without cache: show a no-data state with a retry action.
+- Invalid/partial payload: do not overwrite the last good cache.
+
+### Suggested File Shape
+
+Keep files small and split early.
+
+Expected additions:
+
+- `lib/src/core/currency/supported_currencies.dart`
+- `lib/src/features/convert/data/frankfurter_latest_rates_client.dart`
+- `lib/src/features/convert/data/latest_rates_cache.dart`
+- `lib/src/features/convert/data/latest_rates_repository.dart`
+- `lib/src/features/convert/domain/currency_rate.dart`
+- `lib/src/features/convert/domain/convert_quote.dart`
+- `lib/src/features/convert/domain/convert_state.dart`
+- `lib/src/features/convert/presentation/convert_controller.dart`
+
+Expected UI extraction if needed:
+
+- `lib/src/features/convert/presentation/amount_card.dart`
+- `lib/src/features/convert/presentation/rate_row.dart`
+- `lib/src/features/convert/presentation/rates_status_bar.dart`
+
+The exact names can change, but avoid one large data class or one large screen
+file. `ConvertScreen` should orchestrate widgets, not own networking or cache
+logic.
+
+### Dependency Bias
+
+Prefer minimal dependencies for this slice.
+
+Acceptable:
+
+- `http` for network calls
+- `shared_preferences` for simple JSON cache
+
+Defer unless clearly needed:
+
+- database packages
+- broad state-management frameworks
+- dependency-injection frameworks
+- chart libraries
+- ad/IAP packages
+
+### Test Plan
+
+Add tests before calling this slice done:
+
+- conversion math for amount and rates
+- supported currency list contains the 16 Phase 1 fiat codes
+- no RUB, BTC, ETH, XAU, or XAG in supported currencies
+- repository returns fresh data on successful fetch
+- repository falls back to cache on network failure
+- repository does not overwrite good cache with invalid data
+- Convert widget shows the key states: fresh, cached/offline, no-data retry
+
+Verification:
+
+```bash
+./scripts/check.sh
+```
+
+For UI review, rebuild or hot restart the iOS simulator after checks pass.
+
+### Done Criteria
+
+This slice is done when:
+
+- Convert no longer depends on hard-coded demo rates for normal operation.
+- The app still works offline after one successful fetch.
+- The user can distinguish fresh data from cached/offline data.
+- The implementation follows `AGENTS.md` file-size and modularity rules.
+- `./scripts/check.sh` passes.
+- No Phase 2/3 concepts enter the code or UI.
+
 ### Slice 3: Favorites
 
 Goal:
