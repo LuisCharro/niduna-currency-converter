@@ -43,6 +43,19 @@ defer the feature.
 
 Phase 1 has four primary tabs.
 
+## Phase 1 Screen Matrix
+
+| Tab | Primary job | Required content | Required states | Explicitly excluded |
+|-----|-------------|------------------|-----------------|---------------------|
+| `Convert` | Convert one amount into the Phase 1 fiat set | amount input, base selector, 16 fiat result rows, favorite star per row, last updated, local-only/privacy signal, refresh action, banner reserve | fresh, loading refresh, cached, stale/offline, fetch error with cached fallback, empty/no-cache error | crypto, transfers, accounts, subscriptions, RUB |
+| `Favorites` | Manage up to 3 local pairs | saved pair rows, last known value, delete/edit action, empty state, add/select pair flow | empty, 1-3 saved pairs, max reached, stale value, local storage error | cloud sync, login, unlimited favorites |
+| `Charts` | Review fiat history | fiat pair selector, 1W/1M/3M/6M/1Y/2Y ranges, chart, high/low/change, last updated | loading, fresh, cached, stale/offline, no historical data, fetch error with cached fallback | crypto charts, metals, export, multi-pair comparison |
+| `Settings` | Configure local behavior and trust surface | default base, decimal precision, theme, refresh-on-open, clear cache, cache status, Remove Ads, privacy/about/version | normal, cache cleared, restore purchase/loading, IAP unavailable, no network for purchase | accounts, cloud backup, subscriptions before Phase 2 |
+
+Use this matrix as the first checklist before generating or editing Stitch
+screens. If a screen concept introduces excluded content, reject that part of
+the design instead of carrying it into Flutter.
+
 ### Convert
 
 Purpose: the main daily-use conversion surface.

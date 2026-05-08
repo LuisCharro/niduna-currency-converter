@@ -31,7 +31,9 @@ void main() {
     await tester.drag(find.byType(CustomScrollView), const Offset(0, -900));
     await tester.pumpAndSettle();
 
-    expect(find.text('ETH'), findsOneWidget);
+    expect(find.text('NZD'), findsOneWidget);
+    expect(find.text('BTC'), findsNothing);
+    expect(find.text('ETH'), findsNothing);
     expect(find.text('ADVERTISEMENT PLACEMENT'), findsOneWidget);
   });
 
