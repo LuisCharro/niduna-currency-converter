@@ -15,7 +15,7 @@ If auto-detect fails on this machine, pass the shared skills repo path once:
 ./agent/sync-shared-skills.sh /path/to/skills
 ```
 
-This repo syncs whole shared skill bundles. When `/Users/luis/Repos/skills`
+This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
@@ -48,45 +48,70 @@ Before substantial work, read:
 
 Then read only the relevant shared skill and repo-local guide for the task.
 
-## Shared skills to use when relevant
+## Available skills
 
-Start with:
+### Repo-specific (`.agent/skills/`)
+- `small-screen-ui-review/SKILL.md` — small phone layout review
+- `flutter-verification/SKILL.md` — Flutter code verification
+- `emulator-runbook/SKILL.md` — emulator launch and testing
+- `product-scope-check/SKILL.md` — scope creep prevention
+- `store-release-check/SKILL.md` — store compliance and release
 
+### Shared (`.agent-local/skills/`)
+
+**_shared:**
+- `repo-bootstrap-check.SKILL.md` — first-time repo assessment
+- `app-architecture-bootstrap.SKILL.md` — architecture framing
+- `repo-rules-layering.SKILL.md` — instruction layering guidance
+- `repo-devtools-layout.SKILL.md` — script/tooling placement
+- `changed-code-review.SKILL.md` — code review from diff/PR
+- `commit-message-quality.SKILL.md` — commit message conventions
+- `ai-code-review.SKILL.md` — AI-generated code review
+- `problem-shaping.SKILL.md` — problem framing before implementation
+
+**Mobile/Flutter:**
+- `flutter-verification.SKILL.md` — Flutter verification workflow
+- `flutter-feature-architecture-bootstrap.SKILL.md` — feature structure
+- `flutter-architecture-boundaries.SKILL.md` — architecture boundaries
+- `flutter-small-screen-ui.SKILL.md` — small screen layout
+- `flutter-android-emulator-startup-playbook.SKILL.md` — Android emulator setup
+- `flutter-integration-test-ui-automation.SKILL.md` — integration test automation
+
+**Mobile (general):**
+- `mobile-ui-review.SKILL.md` — mobile UI layout review
+- `mobile-qa-handoff.SKILL.md` — QA handoff
+- `mobile-architecture-boundaries.SKILL.md` — mobile architecture
+- `chart-ux-review.SKILL.md` — chart UX review
+
+**Frontend:**
+- `frontend-design-layer.SKILL.md` — entry point for visual/UI work
+- `frontend-design-direction.SKILL.md` — design direction
+- `design-system-consistency.SKILL.md` — design token consistency
+- `frontend-implementation-baseline.SKILL.md` — frontend standards
+
+**Publish:**
+- `publish/google-stitch-workflow/SKILL.md` — Stitch-assisted UI design
+
+**Release:**
+- `store-release-check.SKILL.md` — store release checklist
+- `store-metadata-review.SKILL.md` — store metadata review
+- `privacy-surface-check.SKILL.md` — privacy surface review
+- `mobile-release-qa.SKILL.md` — mobile release QA
+
+### Starter
 - `./.agent-local/skills/_shared/repo-bootstrap-check.SKILL.md`
-
-Use these bundle folders when the task matches:
-
-- `./.agent-local/skills/_shared/`
-  Use for scope-shaping, research, planning, architecture framing, debugging, and review.
-- `./.agent-local/skills/frontend/`
-  Use for broad visual direction and design-system work that affects the app shell or shared UI language.
-- `./.agent-local/skills/mobile/`
-  Use for Flutter/mobile layout, architecture, emulator, verification, and QA workflows.
-- `./.agent-local/skills/release/`
-  Use for store, privacy, and release-readiness checks.
-- `./.agent-local/skills/publish/google-stitch-workflow/`
-  Use when generating or iterating UI concepts through Stitch-backed flows.
-
-New or improved skills added inside those bundles become available in this repo
-after rerunning `./agent/sync-shared-skills.sh`.
 
 If repo-local rules conflict with a shared skill, prefer the repo-local rules.
 
-## Repo-local skills and guides
+## Repo-local guides
 
 Use these when the task is specifically about this repo:
 
-- [`small-screen-ui-review`](/.agent/skills/small-screen-ui-review/SKILL.md)
-- Flutter code changes, model changes, persistence changes, refactors:
-  [`flutter-verification`](/.agent/skills/flutter-verification/SKILL.md)
-- Emulator launch, rebuild, relaunch, demo/testing setup:
-  [`emulator-runbook`](/.agent/skills/emulator-runbook/SKILL.md)
-- Broad feature requests, new tabs, anything that may expand scope:
-  [`product-scope-check`](/.agent/skills/product-scope-check/SKILL.md)
-- Store compliance, privacy, ads, IAP, release preparation:
-  [`store-release-check`](/.agent/skills/store-release-check/SKILL.md)
-
-Use the smallest useful set.
+- `DEFINITIONS.md`
+- `ROADMAP.md`
+- `PLAN.md`
+- `ARCHITECTURE.md`
+- `agent/README.md`
 
 Preferred order for broad interface work in this repo:
 
