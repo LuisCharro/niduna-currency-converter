@@ -10,9 +10,14 @@ final NumberFormat _rateFormat = NumberFormat('0.0000', 'en');
 List<CurrencyQuote> buildQuotes({
   required LatestRatesSnapshot snapshot,
   required double amount,
+  Iterable<String>? quoteCodes,
 }) {
-  return supportedCurrencies
-      .where((currency) => currency.code != snapshot.base)
+  final selectedCodes =
+      quoteCodes?.where((code) => code != snapshot.base).toList() ??
+      supportedCurrencies.map((currency) => currency.code).toList();
+
+  return selectedCodes
+      .map(currencyByCode)
       .where((currency) => snapshot.rates.containsKey(currency.code))
       .map((currency) {
         final rate = snapshot.rates[currency.code]!;

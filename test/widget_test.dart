@@ -11,7 +11,13 @@ import 'package:currency_converter/src/features/settings/settings_screen.dart';
 
 void main() {
   final repository = _FakeRatesRepository(
-    fresh: _snapshot(<String, double>{'EUR': .92, 'NZD': 1.64}),
+    fresh: _snapshot(<String, double>{
+      'CHF': .88,
+      'EUR': .92,
+      'GBP': .79,
+      'JPY': 150.23,
+      'NZD': 1.64,
+    }),
   );
 
   testWidgets('app launches with 4 tabs', (WidgetTester tester) async {
@@ -40,11 +46,8 @@ void main() {
     expect(find.text('USD'), findsOneWidget);
     expect(find.text('EUR'), findsOneWidget);
     expect(find.text('Fresh rates'), findsOneWidget);
-
-    await tester.drag(find.byType(CustomScrollView), const Offset(0, -900));
-    await tester.pumpAndSettle();
-
-    expect(find.text('NZD'), findsOneWidget);
+    expect(find.text('4 currencies shown'), findsOneWidget);
+    expect(find.text('NZD'), findsNothing);
     expect(find.text('BTC'), findsNothing);
     expect(find.text('ETH'), findsNothing);
     expect(find.text('ADVERTISEMENT PLACEMENT'), findsOneWidget);

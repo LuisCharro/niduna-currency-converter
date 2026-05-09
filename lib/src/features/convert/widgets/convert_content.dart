@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 
 import '../domain/convert_state.dart';
-import 'ad_banner_placeholder.dart';
 import 'amount_card.dart';
 import 'convert_header.dart';
-import 'currency_rate_row.dart';
-import 'no_rates_card.dart';
+import 'currency_picker_sheet.dart';
 import 'rates_status_card.dart';
+import 'visible_rates_sliver.dart';
+import 'visible_rates_toolbar.dart';
 
 class ConvertContent extends StatelessWidget {
   const ConvertContent({
     required this.state,
     required this.onRefresh,
+    required this.onAmountChanged,
+    required this.onSelectBase,
+    required this.onSwap,
+    required this.onToggleCode,
     super.key,
   });
 
   final ConvertState state;
   final Future<void> Function() onRefresh;
+  final ValueChanged<String> onAmountChanged;
+  final ValueChanged<String> onSelectBase;
+  final VoidCallback onSwap;
+  final ValueChanged<String> onToggleCode;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +37,14 @@ class ConvertContent extends StatelessWidget {
           ),
         ),
         SliverToBoxAdapter(
-          child: AmountCard(lastUpdatedLabel: state.lastUpdatedLabel),
+          child: AmountCard(
+            lastUpdatedLabel: state.lastUpdatedLabel,
+            amountText: state.amountText,
+            base: state.base,
+            onAmountChanged: onAmountChanged,
+            onBaseTap: () => _openPicker(context, selectBaseMode: true),
+            onSwap: onSwap,
+          ),
         ),
         SliverToBoxAdapter(
           child: RatesStatusCard(
@@ -39,21 +54,33 @@ class ConvertContent extends StatelessWidget {
             onRetry: () => onRefresh(),
           ),
         ),
-        if (state.hasQuotes)
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            sliver: SliverList.separated(
-              itemBuilder: (context, index) =>
-                  CurrencyRateRow(quote: state.quotes[index]),
-              separatorBuilder: (context, index) => const SizedBox(height: 8),
-              itemCount: state.quotes.length,
-            ),
-          )
-        else
-          const SliverToBoxAdapter(child: NoRatesCard()),
-        const SliverToBoxAdapter(child: AdBannerPlaceholder()),
-        const SliverToBoxAdapter(child: SizedBox(height: 16)),
+        SliverToBoxAdapter(
+          child: VisibleRatesToolbar(
+            count: state.selectedCodes.length,
+            onEdit: () => _openPicker(context, selectBaseMode: false),
+          ),
+        ),
+        VisibleRatesSliver(quotes: state.quotes, onRemove: onToggleCode),
+        const SliverToBoxAdapter(child: SizedBox(height: 96)),
       ],
+    );
+  }
+
+  void _openPicker(BuildContext context, {required bool selectBaseMode}) {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => CurrencyPickerSheet(
+        title: selectBaseMode ? 'Base currency' : 'Visible currencies',
+        base: state.base,
+        selectedCodes: state.selectedCodes,
+        selectBaseMode: selectBaseMode,
+        onSelectBase: (code) {
+          Navigator.pop(context);
+          onSelectBase(code);
+        },
+        onToggleCode: onToggleCode,
+      ),
     );
   }
 }

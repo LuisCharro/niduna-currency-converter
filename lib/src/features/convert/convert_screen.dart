@@ -6,6 +6,7 @@ import 'data/frankfurter_latest_rates_client.dart';
 import 'data/latest_rates_cache.dart';
 import 'data/latest_rates_repository.dart';
 import 'presentation/convert_controller.dart';
+import 'widgets/ad_banner_placeholder.dart';
 import 'widgets/convert_content.dart';
 
 class ConvertScreen extends StatefulWidget {
@@ -41,15 +42,26 @@ class _ConvertScreenState extends State<ConvertScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
+    return Material(
       color: AppTheme.bg,
       child: SafeArea(
-        child: ListenableBuilder(
-          listenable: _controller,
-          builder: (context, _) => ConvertContent(
-            state: _controller.state,
-            onRefresh: _controller.refresh,
-          ),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListenableBuilder(
+                listenable: _controller,
+                builder: (context, _) => ConvertContent(
+                  state: _controller.state,
+                  onRefresh: _controller.refresh,
+                  onAmountChanged: _controller.setAmountText,
+                  onSelectBase: _controller.setBase,
+                  onSwap: _controller.swapWithFirstVisible,
+                  onToggleCode: _controller.toggleCode,
+                ),
+              ),
+            ),
+            const AdBannerPlaceholder(),
+          ],
         ),
       ),
     );

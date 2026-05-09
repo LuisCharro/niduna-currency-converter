@@ -13,27 +13,14 @@ class QuoteValue extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Flexible(
-              child: Text(
-                quote.amount,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w600,
-                  fontFeatures: <FontFeature>[FontFeature.tabularFigures()],
-                ),
-              ),
-            ),
-            const SizedBox(width: 4),
-            Icon(
-              quote.favorite ? Icons.star : Icons.star_border,
-              color: quote.favorite ? AppTheme.primary : AppTheme.subtle,
-              size: 20,
-            ),
-          ],
+        Text(
+          quote.amount,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.w600,
+            fontFeatures: <FontFeature>[FontFeature.tabularFigures()],
+          ),
         ),
         Text(
           quote.rateLine,

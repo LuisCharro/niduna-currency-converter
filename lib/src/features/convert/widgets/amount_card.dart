@@ -4,9 +4,22 @@ import '../../../core/theme/app_theme.dart';
 import 'amount_panel.dart';
 
 class AmountCard extends StatelessWidget {
-  const AmountCard({required this.lastUpdatedLabel, super.key});
+  const AmountCard({
+    required this.lastUpdatedLabel,
+    required this.amountText,
+    required this.base,
+    required this.onAmountChanged,
+    required this.onBaseTap,
+    required this.onSwap,
+    super.key,
+  });
 
   final String lastUpdatedLabel;
+  final String amountText;
+  final String base;
+  final ValueChanged<String> onAmountChanged;
+  final VoidCallback onBaseTap;
+  final VoidCallback onSwap;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +27,13 @@ class AmountCard extends StatelessWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.bottomCenter,
       children: <Widget>[
-        AmountPanel(lastUpdatedLabel: lastUpdatedLabel),
+        AmountPanel(
+          lastUpdatedLabel: lastUpdatedLabel,
+          amountText: amountText,
+          base: base,
+          onAmountChanged: onAmountChanged,
+          onBaseTap: onBaseTap,
+        ),
         Positioned(
           bottom: 0,
           child: FloatingActionButton.small(
@@ -22,7 +41,7 @@ class AmountCard extends StatelessWidget {
             elevation: 2,
             backgroundColor: AppTheme.card,
             foregroundColor: AppTheme.primary,
-            onPressed: () {},
+            onPressed: onSwap,
             child: const Icon(Icons.swap_vert),
           ),
         ),

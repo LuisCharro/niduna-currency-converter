@@ -62,6 +62,40 @@ void main() {
     expect(controller.state.quotes.single.code, 'EUR');
   });
 
+  test('controller recalculates visible quotes when amount changes', () async {
+    final controller = ConvertController(
+      repository: _FakeRatesRepository(
+        fresh: _snapshot(<String, double>{'EUR': .92}),
+      ),
+      selectedCodes: <String>['EUR'],
+    );
+
+    await controller.load();
+    controller.setAmountText('200');
+
+    expect(controller.state.amountText, '200');
+    expect(controller.state.quotes.single.amount, '184.00');
+  });
+
+  test('controller can add and remove visible currencies', () async {
+    final controller = ConvertController(
+      repository: _FakeRatesRepository(
+        fresh: _snapshot(<String, double>{'EUR': .92, 'NZD': 1.64}),
+      ),
+      selectedCodes: <String>['EUR'],
+    );
+
+    await controller.load();
+    controller.toggleCode('NZD');
+    expect(controller.state.quotes.map((quote) => quote.code), <String>[
+      'EUR',
+      'NZD',
+    ]);
+
+    controller.toggleCode('EUR');
+    expect(controller.state.quotes.single.code, 'NZD');
+  });
+
   test('controller falls back to cached data on network failure', () async {
     final controller = ConvertController(
       repository: _FakeRatesRepository(

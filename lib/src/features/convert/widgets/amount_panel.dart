@@ -5,9 +5,20 @@ import 'amount_value_row.dart';
 import 'convert_label.dart';
 
 class AmountPanel extends StatelessWidget {
-  const AmountPanel({required this.lastUpdatedLabel, super.key});
+  const AmountPanel({
+    required this.lastUpdatedLabel,
+    required this.amountText,
+    required this.base,
+    required this.onAmountChanged,
+    required this.onBaseTap,
+    super.key,
+  });
 
   final String lastUpdatedLabel;
+  final String amountText;
+  final String base;
+  final ValueChanged<String> onAmountChanged;
+  final VoidCallback onBaseTap;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +47,12 @@ class AmountPanel extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          const AmountValueRow(),
+          AmountValueRow(
+            amountText: amountText,
+            base: base,
+            onAmountChanged: onAmountChanged,
+            onBaseTap: onBaseTap,
+          ),
         ],
       ),
     );

@@ -7,19 +7,46 @@ import '../domain/convert_state.dart';
 import '../domain/latest_rates_snapshot.dart';
 import '../models/currency_quote.dart';
 
+part 'convert_controller_editing.dart';
+part 'convert_controller_loading.dart';
+
 class ConvertController extends ChangeNotifier {
   ConvertController({
     required ConvertRatesRepository repository,
-    this.base = 'USD',
-    this.amount = 100,
-  }) : _repository = repository;
+    String base = 'USD',
+    double amount = 100,
+    List<String>? selectedCodes,
+  }) : _repository = repository {
+    configure(base: base, amount: amount, selectedCodes: selectedCodes);
+  }
 
   final ConvertRatesRepository _repository;
-  final String base;
-  final double amount;
+  String _base = 'USD';
+  double _amount = 100;
+  String _amountText = '100.00';
+  List<String> _selectedCodes = <String>['CHF', 'EUR', 'GBP', 'JPY'];
+  LatestRatesSnapshot? _snapshot;
 
   ConvertState state = ConvertState.loading();
   bool _disposed = false;
+
+  void configure({
+    required String base,
+    required double amount,
+    List<String>? selectedCodes,
+  }) {
+    _base = base;
+    _amount = amount;
+    _amountText = amount.toStringAsFixed(2);
+    _selectedCodes = List<String>.from(
+      selectedCodes ?? <String>['CHF', 'EUR', 'GBP', 'JPY'],
+    )..remove(base);
+    state = ConvertState.loading().copyWith(
+      base: _base,
+      amountText: _amountText,
+      selectedCodes: _selectedCodes,
+    );
+  }
 
   @override
   void dispose() {
@@ -27,56 +54,22 @@ class ConvertController extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> load() async {
-    final cached = await _repository.readCached(base);
-    if (cached != null) {
-      state = _stateFromSnapshot(cached, ConvertStatus.cached);
-      _safeNotify();
-    }
-    await refresh(hasCached: cached != null);
-  }
-
-  Future<void> refresh({bool hasCached = false}) async {
-    if (state.hasQuotes) {
-      state = ConvertState(
-        status: ConvertStatus.refreshing,
-        quotes: state.quotes,
-        lastUpdatedLabel: state.lastUpdatedLabel,
-      );
-      _safeNotify();
-    }
-
-    try {
-      final fresh = await _repository.fetchLatest(base);
-      state = _stateFromSnapshot(fresh, ConvertStatus.fresh);
-    } catch (_) {
-      if (state.hasQuotes || hasCached) {
-        state = ConvertState(
-          status: ConvertStatus.stale,
-          quotes: state.quotes,
-          lastUpdatedLabel: state.lastUpdatedLabel,
-          message: 'Network unavailable. Showing cached rates.',
-        );
-      } else {
-        state = const ConvertState(
-          status: ConvertStatus.noCache,
-          quotes: <CurrencyQuote>[],
-          lastUpdatedLabel: 'No cached rates',
-          message: 'Connect to the internet to load rates.',
-        );
-      }
-    }
-    _safeNotify();
-  }
-
   ConvertState _stateFromSnapshot(
     LatestRatesSnapshot snapshot,
     ConvertStatus status,
   ) {
+    _snapshot = snapshot;
     return ConvertState(
       status: status,
-      quotes: buildQuotes(snapshot: snapshot, amount: amount),
+      quotes: buildQuotes(
+        snapshot: snapshot,
+        amount: _amount,
+        quoteCodes: _selectedCodes,
+      ),
       lastUpdatedLabel: _formatUpdated(snapshot),
+      base: _base,
+      amountText: _amountText,
+      selectedCodes: List<String>.unmodifiable(_selectedCodes),
     );
   }
 
