@@ -11,6 +11,8 @@ class VisibleRatesList extends StatelessWidget {
     required this.onSelectCode,
     required this.onSetBase,
     required this.onRemove,
+    required this.onToggleFavorite,
+    this.maxFavoritesReached = false,
     super.key,
   });
 
@@ -19,6 +21,8 @@ class VisibleRatesList extends StatelessWidget {
   final ValueChanged<String> onSelectCode;
   final ValueChanged<String> onSetBase;
   final ValueChanged<String> onRemove;
+  final ValueChanged<String> onToggleFavorite;
+  final bool maxFavoritesReached;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +40,8 @@ class VisibleRatesList extends StatelessWidget {
         onTap: () => onSelectCode(quotes[index].code),
         onSetBase: () => onSetBase(quotes[index].code),
         onRemove: () => onRemove(quotes[index].code),
+        onToggleFavorite: () => onToggleFavorite(quotes[index].code),
+        maxFavoritesReached: maxFavoritesReached,
       ),
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemCount: quotes.length,

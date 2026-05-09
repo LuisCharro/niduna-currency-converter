@@ -14,6 +14,8 @@ class ConvertContent extends StatefulWidget {
     required this.onAmountChanged,
     required this.onSelectBase,
     required this.onToggleCode,
+    required this.onToggleFavorite,
+    this.maxFavoritesReached = false,
     super.key,
   });
 
@@ -22,6 +24,8 @@ class ConvertContent extends StatefulWidget {
   final ValueChanged<String> onAmountChanged;
   final ValueChanged<String> onSelectBase;
   final ValueChanged<String> onToggleCode;
+  final ValueChanged<String> onToggleFavorite;
+  final bool maxFavoritesReached;
 
   @override
   State<ConvertContent> createState() => _ConvertContentState();
@@ -68,6 +72,8 @@ class _ConvertContentState extends State<ConvertContent> {
               setState(() => _activeCode = null);
               widget.onToggleCode(code);
             },
+            onToggleFavorite: widget.onToggleFavorite,
+            maxFavoritesReached: widget.maxFavoritesReached,
           ),
         ),
       ],

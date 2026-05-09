@@ -12,6 +12,8 @@ class CurrencyRateRow extends StatelessWidget {
     required this.onTap,
     required this.onSetBase,
     required this.onRemove,
+    required this.onToggleFavorite,
+    this.maxFavoritesReached = false,
     super.key,
   });
 
@@ -20,6 +22,8 @@ class CurrencyRateRow extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onSetBase;
   final VoidCallback onRemove;
+  final VoidCallback onToggleFavorite;
+  final bool maxFavoritesReached;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +64,33 @@ class CurrencyRateRow extends StatelessWidget {
                     size: 20,
                   ),
                 ),
+              IconButton(
+                tooltip: quote.favorite
+                    ? 'Remove ${quote.code} from favorites'
+                    : 'Add ${quote.code} to favorites',
+                constraints: const BoxConstraints.tightFor(
+                  width: 48,
+                  height: 48,
+                ),
+                onPressed: () {
+                  if (!quote.favorite && maxFavoritesReached) {
+                    final messenger = ScaffoldMessenger.maybeOf(context);
+                    messenger?.showSnackBar(
+                      SnackBar(
+                        content: const Text('Maximum 3 favorites reached'),
+                        duration: const Duration(seconds: 1),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  }
+                  onToggleFavorite();
+                },
+                icon: Icon(
+                  quote.favorite ? Icons.star : Icons.star_outline,
+                  color: quote.favorite ? AppTheme.primary : AppTheme.subtle,
+                  size: 18,
+                ),
+              ),
               IconButton(
                 tooltip: 'Remove ${quote.code}',
                 constraints: const BoxConstraints.tightFor(

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:currency_converter/src/app.dart';
 import 'package:currency_converter/src/features/convert/data/latest_rates_repository.dart';
 import 'package:currency_converter/src/features/convert/convert_screen.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
+import 'package:currency_converter/src/features/convert/presentation/convert_controller.dart';
+import 'package:currency_converter/src/features/favorites/data/favorites_store.dart';
 import 'package:currency_converter/src/features/favorites/favorites_screen.dart';
 import 'package:currency_converter/src/features/charts/charts_screen.dart';
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
@@ -20,9 +23,32 @@ void main() {
     }),
   );
 
+  late SharedPreferences prefs;
+  late FavoritesStore favoritesStore;
+  late ConvertController controller;
+
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    prefs = await SharedPreferences.getInstance();
+    favoritesStore = FavoritesStore(prefs);
+    controller = ConvertController(
+      repository: repository,
+      favoritesStore: favoritesStore,
+    );
+    await controller.load();
+  });
+
+  tearDown(() {
+    favoritesStore.dispose();
+    controller.dispose();
+  });
+
   testWidgets('app launches with 4 tabs', (WidgetTester tester) async {
     await tester.pumpWidget(
-      CurrencyConverterApp(convertRepository: repository),
+      CurrencyConverterApp(
+        convertRepository: repository,
+        favoritesStore: favoritesStore,
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -38,7 +64,7 @@ void main() {
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(home: ConvertScreen(repository: repository)),
+      MaterialApp(home: ConvertScreen(controller: controller)),
     );
     await tester.pumpAndSettle();
 
@@ -57,7 +83,7 @@ void main() {
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(home: ConvertScreen(repository: repository)),
+      MaterialApp(home: ConvertScreen(controller: controller)),
     );
     await tester.pumpAndSettle();
 
@@ -74,8 +100,30 @@ void main() {
   testWidgets('Favorites screen shows placeholder', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const MaterialApp(home: FavoritesScreen()));
-    expect(find.text('Saved currency pairs'), findsOneWidget);
+    await tester.pumpWidget(MaterialApp(
+      home: FavoritesScreen(
+        favoritesStore: favoritesStore,
+        controller: controller,
+        onNavigateToConvert: (a, b) {},
+      ),
+    ));
+    expect(find.text('No favorite pairs yet'), findsOneWidget);
+  });
+
+  testWidgets('Favorites screen shows pair with rate', (
+    WidgetTester tester,
+  ) async {
+    await favoritesStore.add('USD', 'EUR');
+    await tester.pumpWidget(MaterialApp(
+      home: FavoritesScreen(
+        favoritesStore: favoritesStore,
+        controller: controller,
+        onNavigateToConvert: (a, b) {},
+      ),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('USD → EUR'), findsOneWidget);
+    expect(find.text('0.9200'), findsOneWidget);
   });
 
   testWidgets('Charts screen shows placeholder', (WidgetTester tester) async {

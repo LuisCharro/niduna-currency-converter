@@ -7,10 +7,10 @@ import '../domain/latest_rates_snapshot.dart';
 class LatestRatesCache {
   LatestRatesCache(this._preferences);
 
-  final SharedPreferencesAsync _preferences;
+  final SharedPreferences _preferences;
 
   Future<LatestRatesSnapshot?> read(String base) async {
-    final raw = await _preferences.getString(_key(base));
+    final raw = _preferences.getString(_key(base));
     if (raw == null) {
       return null;
     }
@@ -47,7 +47,7 @@ class LatestRatesCache {
   }
 
   Future<void> write(LatestRatesSnapshot snapshot) async {
-    await _preferences.setString(
+    _preferences.setString(
       _key(snapshot.base),
       jsonEncode(<String, Object?>{
         'base': snapshot.base,
