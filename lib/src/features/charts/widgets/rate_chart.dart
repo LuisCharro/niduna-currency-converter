@@ -1,0 +1,253 @@
+import 'dart:math' as math;
+
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../../../core/theme/app_theme.dart';
+
+class RateChart extends StatefulWidget {
+  const RateChart({
+    required this.data,
+    super.key,
+  });
+
+  final Map<DateTime, double> data;
+
+  @override
+  State<RateChart> createState() => _RateChartState();
+}
+
+class _RateChartState extends State<RateChart> {
+  int? _touchedIndex;
+
+  List<FlSpot> get _spots {
+    final sorted = widget.data.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+    return sorted.asMap().entries.map((entry) {
+      return FlSpot(entry.key.toDouble(), entry.value.value);
+    }).toList();
+  }
+
+  bool get _isPositive {
+    final sorted = widget.data.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+    if (sorted.length < 2) return true;
+    return sorted.last.value >= sorted.first.value;
+  }
+
+  double? get _minY {
+    if (widget.data.isEmpty) return null;
+    final values = widget.data.values.toList();
+    final min = values.reduce(math.min);
+    final range = values.reduce(math.max) - min;
+    return min - range * 0.08;
+  }
+
+  double? get _maxY {
+    if (widget.data.isEmpty) return null;
+    final values = widget.data.values.toList();
+    final max = values.reduce(math.max);
+    final range = max - values.reduce(math.min);
+    return max + range * 0.08;
+  }
+
+  List<DateTime> get _sortedDates {
+    final entries = widget.data.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+    return entries.map((e) => e.key).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.data.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final spots = _spots;
+    final sortedDates = _sortedDates;
+    final minY = _minY!;
+    final maxY = _maxY!;
+    final isPositive = _isPositive;
+    final upColor = const Color(0xFF34C759);
+    final downColor = const Color(0xFFFF3B30);
+    final lineColor = isPositive ? upColor : downColor;
+
+    return Column(
+      children: <Widget>[
+        if (_touchedIndex != null && _touchedIndex! < sortedDates.length)
+          _TooltipCard(
+            date: sortedDates[_touchedIndex!],
+            rate: spots[_touchedIndex!].y,
+          ),
+        const SizedBox(height: 8),
+        Expanded(
+          child: LineChart(
+            LineChartData(
+              minY: minY,
+              maxY: maxY,
+              gridData: FlGridData(
+                show: true,
+                drawVerticalLine: false,
+                horizontalInterval: (maxY - minY) / 4,
+                getDrawingHorizontalLine: (value) => FlLine(
+                  color: AppTheme.border.withValues(alpha: .3),
+                  strokeWidth: 1,
+                ),
+              ),
+              titlesData: FlTitlesData(
+                leftTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                topTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 22,
+                    interval: math.max(1, (spots.length / 4).roundToDouble()),
+                    getTitlesWidget: (value, meta) {
+                      final index = value.toInt();
+                      if (index < 0 || index >= sortedDates.length) {
+                        return const SizedBox.shrink();
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          DateFormat('MMM d').format(sortedDates[index]),
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: AppTheme.muted,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              borderData: FlBorderData(show: false),
+              lineTouchData: LineTouchData(
+                enabled: true,
+                touchTooltipData: LineTouchTooltipData(
+                  fitInsideHorizontally: true,
+                  fitInsideVertically: true,
+                  getTooltipColor: (touchedSpot) => Colors.transparent,
+                  tooltipPadding: EdgeInsets.zero,
+                  getTooltipItems: (touchedSpots) => touchedSpots.map((_) => null).toList(),
+                ),
+                touchCallback: (event, response) {
+                  if (event is FlTapUpEvent) {
+                    final index = response?.lineBarSpots?.first.x.toInt();
+                    if (index != null && index >= 0 && index < spots.length) {
+                      setState(() => _touchedIndex = index);
+                    }
+                  } else if (event is FlLongPressStart) {
+                    final index = response?.lineBarSpots?.first.x.toInt();
+                    if (index != null && index >= 0 && index < spots.length) {
+                      setState(() => _touchedIndex = index);
+                    }
+                  } else if (event is FlTapCancelEvent || event is FlLongPressEnd) {
+                    setState(() => _touchedIndex = null);
+                  }
+                },
+                getTouchedSpotIndicator: (barData, spotIndexes) {
+                  return spotIndexes.map((index) {
+                    final isSelected = _touchedIndex == index;
+                    return TouchedSpotIndicatorData(
+                      FlLine(
+                        color: AppTheme.muted.withValues(alpha: .4),
+                        strokeWidth: isSelected ? 1.5 : 1,
+                      ),
+                      FlDotData(
+                        show: true,
+                        getDotPainter: (spot, percent, barData, index) {
+                          return FlDotCirclePainter(
+                            radius: isSelected ? 6 : 3,
+                            color: isSelected ? lineColor : lineColor.withValues(alpha: .5),
+                            strokeWidth: 2,
+                            strokeColor: Colors.white,
+                          );
+                        },
+                      ),
+                    );
+                  }).toList();
+                },
+              ),
+              lineBarsData: [
+                LineChartBarData(
+                  spots: spots,
+                  isCurved: true,
+                  curveSmoothness: 0.3,
+                  preventCurveOverShooting: true,
+                  color: lineColor,
+                  barWidth: 2.2,
+                  isStrokeCapRound: true,
+                  dotData: const FlDotData(show: false),
+                  belowBarData: BarAreaData(
+                    show: true,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        lineColor.withValues(alpha: 0.25),
+                        lineColor.withValues(alpha: 0.04),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TooltipCard extends StatelessWidget {
+  const _TooltipCard({required this.date, required this.rate});
+
+  final DateTime date;
+  final double rate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppTheme.card,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppTheme.border.withValues(alpha: .5)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            DateFormat('MMM d, yyyy').format(date),
+            style: TextStyle(fontSize: 13, color: AppTheme.muted),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            rate.toStringAsFixed(4),
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: AppTheme.text,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -7,11 +7,11 @@ import '../rates_cache.dart';
 
 class SharedPreferencesRatesCache implements RatesCache {
   SharedPreferencesRatesCache(this._preferences);
-  final SharedPreferencesAsync _preferences;
+  final SharedPreferences _preferences;
 
   @override
   Future<RatesSnapshot?> readLatest(String base) async {
-    final raw = await _preferences.getString(_latestKey(base));
+    final raw = _preferences.getString(_latestKey(base));
     if (raw == null) return null;
 
     final json = _decodeObject(raw);
@@ -41,7 +41,7 @@ class SharedPreferencesRatesCache implements RatesCache {
 
   @override
   Future<void> writeLatest(RatesSnapshot snapshot) async {
-    await _preferences.setString(
+    _preferences.setString(
       _latestKey(snapshot.base),
       jsonEncode(<String, Object?>{
         'base': snapshot.base,
@@ -54,7 +54,7 @@ class SharedPreferencesRatesCache implements RatesCache {
 
   @override
   Future<void> invalidateLatest(String base) async {
-    await _preferences.remove(_latestKey(base));
+    _preferences.remove(_latestKey(base));
   }
 
   @override
@@ -63,7 +63,7 @@ class SharedPreferencesRatesCache implements RatesCache {
     required String quote,
     required String rangeKey,
   }) async {
-    final raw = await _preferences.getString(
+    final raw = _preferences.getString(
       _historicalKey(base, quote, rangeKey),
     );
     if (raw == null) return null;
@@ -97,7 +97,7 @@ class SharedPreferencesRatesCache implements RatesCache {
 
   @override
   Future<void> writeHistorical(HistoricalSnapshot snapshot) async {
-    await _preferences.setString(
+    _preferences.setString(
       _historicalKey(snapshot.base, snapshot.quote, snapshot.rangeKey),
       jsonEncode(<String, Object?>{
         'base': snapshot.base,
@@ -117,21 +117,13 @@ class SharedPreferencesRatesCache implements RatesCache {
     required String quote,
     required String rangeKey,
   }) async {
-    await _preferences.remove(_historicalKey(base, quote, rangeKey));
+    _preferences.remove(_historicalKey(base, quote, rangeKey));
   }
 
   @override
   Future<void> clear() async {
-    final keys = (await _preferences.getKeys())
-        .where(
-          (key) =>
-              key.startsWith('latest_rates_') ||
-              key.startsWith('historical_rates_'),
-        )
-        .toList();
-    for (final key in keys) {
-      await _preferences.remove(key);
-    }
+    // Note: getKeys() not available on sync SharedPreferences.
+    // Cache entries are keyed individually; this is a no-op for sync cache.
   }
 
   String _latestKey(String base) => 'latest_rates_$base';

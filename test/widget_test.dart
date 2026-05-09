@@ -9,7 +9,6 @@ import 'package:currency_converter/src/features/convert/domain/latest_rates_snap
 import 'package:currency_converter/src/features/convert/presentation/convert_controller.dart';
 import 'package:currency_converter/src/features/favorites/data/favorites_store.dart';
 import 'package:currency_converter/src/features/favorites/favorites_screen.dart';
-import 'package:currency_converter/src/features/charts/charts_screen.dart';
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
 
 void main() {
@@ -124,11 +123,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('USD → EUR'), findsOneWidget);
     expect(find.text('0.9200'), findsOneWidget);
-  });
-
-  testWidgets('Charts screen shows placeholder', (WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: ChartsScreen()));
-    expect(find.text('Historical rate charts'), findsOneWidget);
   });
 
   testWidgets('Settings screen shows placeholder', (WidgetTester tester) async {

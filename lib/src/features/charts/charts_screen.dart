@@ -1,28 +1,161 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/theme/app_theme.dart';
+import 'presentation/charts_controller.dart';
+import 'widgets/chart_summary.dart';
+import 'widgets/pair_selector.dart';
+import 'widgets/range_selector.dart';
+import 'widgets/rate_chart.dart';
 
-class ChartsScreen extends StatelessWidget {
-  const ChartsScreen({super.key});
+class ChartsScreen extends StatefulWidget {
+  const ChartsScreen({
+    required this.controller,
+    super.key,
+  });
+
+  final ChartsController controller;
+
+  @override
+  State<ChartsScreen> createState() => _ChartsScreenState();
+}
+
+class _ChartsScreenState extends State<ChartsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.load();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Charts')),
-      body: Center(
+      appBar: AppBar(title: const Text('Charts')),
+      body: ListenableBuilder(
+        listenable: widget.controller,
+        builder: (context, _) {
+          final state = widget.controller.state;
+          return Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        PairSelector(
+                          base: state.base,
+                          quote: state.quote,
+                          onPairChanged: widget.controller.setPair,
+                        ),
+                        const Spacer(),
+                        if (state.lastUpdated != null)
+                          Text(
+                            'Updated ${DateFormat('MMM d').format(state.lastUpdated!)}',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: AppTheme.muted,
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      height: 36,
+                      child: RangeSelector(
+                        selected: state.range,
+                        onChanged: widget.controller.setRange,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                child: ChartSummary(
+                  high: state.high,
+                  low: state.low,
+                  changePercent: state.changePercent,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: _buildChartArea(state),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildChartArea(ChartState state) {
+    if (state.status == ChartStatus.loading && state.data.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state.status == ChartStatus.error && state.data.isEmpty) {
+      return _ErrorState(
+        message: state.message,
+        onRetry: widget.controller.load,
+      );
+    }
+
+    if (state.data.isEmpty) {
+      return _EmptyChart();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+      child: RateChart(data: state.data),
+    );
+  }
+}
+
+class _EmptyChart extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(Icons.show_chart, size: 48, color: AppTheme.muted),
+          const SizedBox(height: 12),
+          Text(
+            'No chart data available',
+            style: TextStyle(fontSize: 15, color: AppTheme.muted),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ErrorState extends StatelessWidget {
+  const _ErrorState({required this.message, required this.onRetry});
+
+  final String? message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.show_chart, size: 64, color: AppTheme.muted),
-            SizedBox(height: 16),
+            Icon(Icons.wifi_off_outlined, size: 48, color: AppTheme.muted),
+            const SizedBox(height: 12),
             Text(
-              'Historical rate charts',
-              style: TextStyle(fontSize: 18, color: AppTheme.text),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Up to 2 years, daily data',
+              message ?? 'Failed to load chart data',
               style: TextStyle(fontSize: 14, color: AppTheme.muted),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton(
+              onPressed: onRetry,
+              child: const Text('Retry'),
             ),
           ],
         ),

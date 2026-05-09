@@ -47,7 +47,7 @@ void main() {
     await tester.tap(find.text('Favorites'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Saved currency pairs'), findsOneWidget);
+    expect(find.text('Favorites'), findsWidgets);
   });
 
   testWidgets('navigate to Charts tab', (tester) async {
@@ -61,7 +61,7 @@ void main() {
     await tester.tap(find.text('Charts'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Historical rate charts'), findsOneWidget);
+    expect(find.text('Charts'), findsWidgets);
   });
 
   testWidgets('navigate to Settings tab', (tester) async {

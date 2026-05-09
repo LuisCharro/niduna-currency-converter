@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/theme/app_theme.dart';
+import 'core/rates/rates_service.dart';
+import 'core/rates/clients/frankfurter_client.dart';
+import 'core/rates/cache/shared_preferences_rates_cache.dart';
 import 'features/convert/data/frankfurter_latest_rates_client.dart';
 import 'features/convert/data/latest_rates_cache.dart';
 import 'features/convert/data/latest_rates_repository.dart';
@@ -10,6 +13,7 @@ import 'features/convert/presentation/convert_controller.dart';
 import 'features/favorites/data/favorites_store.dart';
 import 'features/favorites/favorites_screen.dart';
 import 'features/charts/charts_screen.dart';
+import 'features/charts/presentation/charts_controller.dart';
 import 'features/settings/settings_screen.dart';
 
 class CurrencyConverterApp extends StatelessWidget {
@@ -54,6 +58,7 @@ class _AppState extends State<AppShell> {
   int _currentIndex = 0;
   FavoritesStore? _localStore;
   ConvertController? _controller;
+  ChartsController? _chartsController;
   bool _ready = false;
 
   FavoritesStore get _favoritesStore =>
@@ -84,6 +89,13 @@ class _AppState extends State<AppShell> {
     );
     _controller!.load();
 
+    final ratesCache = SharedPreferencesRatesCache(prefs);
+    final ratesService = RatesService(
+      client: FrankfurterClient(),
+      cache: ratesCache,
+    );
+    _chartsController = ChartsController(ratesService: ratesService);
+
     if (mounted) {
       setState(() => _ready = true);
     }
@@ -93,6 +105,7 @@ class _AppState extends State<AppShell> {
   void dispose() {
     _localStore?.dispose();
     _controller?.dispose();
+    _chartsController?.dispose();
     super.dispose();
   }
 
@@ -108,7 +121,7 @@ class _AppState extends State<AppShell> {
         controller: _controller!,
         onNavigateToConvert: _navigateToConvert,
       ),
-      const ChartsScreen(),
+      ChartsScreen(controller: _chartsController!),
       const SettingsScreen(),
     ];
 
