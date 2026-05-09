@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../domain/convert_state.dart';
 import 'amount_card.dart';
+import 'convert_info_bar.dart';
 import 'convert_header.dart';
 import 'currency_picker_sheet.dart';
-import 'rates_status_card.dart';
-import 'visible_rates_sliver.dart';
-import 'visible_rates_toolbar.dart';
+import 'visible_rates_list.dart';
 
 class ConvertContent extends StatelessWidget {
   const ConvertContent({
@@ -28,40 +27,29 @@ class ConvertContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: ConvertHeader(
-            isRefreshing: state.isRefreshing,
-            onRefresh: () => onRefresh(),
-          ),
+    return Column(
+      children: <Widget>[
+        ConvertHeader(
+          isRefreshing: state.isRefreshing,
+          onRefresh: () => onRefresh(),
         ),
-        SliverToBoxAdapter(
-          child: AmountCard(
-            lastUpdatedLabel: state.lastUpdatedLabel,
-            amountText: state.amountText,
-            base: state.base,
-            onAmountChanged: onAmountChanged,
-            onBaseTap: () => _openPicker(context, selectBaseMode: true),
-            onSwap: onSwap,
-          ),
+        ConvertInfoBar(
+          statusLabel: state.statusLabel,
+          message: state.message,
+          count: state.selectedCodes.length,
+          onEdit: () => _openPicker(context, selectBaseMode: false),
         ),
-        SliverToBoxAdapter(
-          child: RatesStatusCard(
-            label: state.statusLabel,
-            message: state.message,
-            showRetry: state.status == ConvertStatus.noCache,
-            onRetry: () => onRefresh(),
-          ),
+        AmountCard(
+          lastUpdatedLabel: state.lastUpdatedLabel,
+          amountText: state.amountText,
+          base: state.base,
+          onAmountChanged: onAmountChanged,
+          onBaseTap: () => _openPicker(context, selectBaseMode: true),
+          onSwap: onSwap,
         ),
-        SliverToBoxAdapter(
-          child: VisibleRatesToolbar(
-            count: state.selectedCodes.length,
-            onEdit: () => _openPicker(context, selectBaseMode: false),
-          ),
+        Expanded(
+          child: VisibleRatesList(quotes: state.quotes, onRemove: onToggleCode),
         ),
-        VisibleRatesSliver(quotes: state.quotes, onRemove: onToggleCode),
-        const SliverToBoxAdapter(child: SizedBox(height: 96)),
       ],
     );
   }

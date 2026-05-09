@@ -45,8 +45,8 @@ void main() {
     expect(find.text('LOCAL-ONLY DATA'), findsOneWidget);
     expect(find.text('USD'), findsOneWidget);
     expect(find.text('EUR'), findsOneWidget);
-    expect(find.text('Fresh rates'), findsOneWidget);
-    expect(find.text('4 currencies shown'), findsOneWidget);
+    expect(find.text('Fresh rates · 4 shown'), findsOneWidget);
+    expect(find.text('Add'), findsOneWidget);
     expect(find.text('NZD'), findsNothing);
     expect(find.text('BTC'), findsNothing);
     expect(find.text('ETH'), findsNothing);
