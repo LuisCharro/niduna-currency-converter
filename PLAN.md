@@ -333,16 +333,16 @@ lib/
 
 ### TODO List (Phase 1, Vertical Slices)
 
-- [ ] Slice 0: align `DEFINITIONS.md`, `ROADMAP.md`, and `PLAN.md`
-- [ ] Slice 1: finalize Convert UI with demo data and small-screen verification
-- [ ] Slice 2: add Frankfurter latest-rates client/repository/cache for Convert
+- [x] Slice 0: align `DEFINITIONS.md`, `ROADMAP.md`, and `PLAN.md`
+- [x] Slice 1: finalize Convert UI with demo data and small-screen verification
+- [x] Slice 2: add Frankfurter latest-rates client/repository/cache for Convert
 - [ ] Slice 3: implement local favorites and max-3 rule across Convert/Favorites
 - [ ] Slice 4: implement fiat historical charts with pair/range cache
 - [ ] Slice 5: implement Settings preferences and cache controls
 - [ ] Slice 6: integrate banner ads and one-time Remove Ads IAP
 - [ ] Slice 7: decide optional crypto/backend strategy after MVP
 - [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates
-- [ ] Write/update smoke tests as each slice becomes user-visible
+- [x] Write/update smoke tests as each slice becomes user-visible
 - [ ] Build and test APK before release candidate
 
 ---

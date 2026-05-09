@@ -508,9 +508,10 @@ expanding code.
 
 ## Next Best Step
 
-Complete Slice 0:
+Complete Slice 3 (Favorites):
 
-- update docs so Phase 1 scope, screens, APIs, cache, and vertical delivery are
-  explicit
-- then continue with a single approved screen direction and a small Flutter
-  slice
+- implement local persistence for up to 3 favorite pairs
+- integrate star toggle in Convert with favorites storage
+- implement Favorites tab around the same local store
+- enforce max-3 rule when adding pairs
+- navigation back to Convert with selected pair context
