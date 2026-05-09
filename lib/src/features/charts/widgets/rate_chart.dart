@@ -58,6 +58,19 @@ class _RateChartState extends State<RateChart> {
     return entries.map((e) => e.key).toList();
   }
 
+  double? _firstRate() {
+    if (widget.data.isEmpty) return null;
+    final sorted = widget.data.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+    return sorted.first.value;
+  }
+
+  double? _changeFromFirst(double currentRate) {
+    final first = _firstRate();
+    if (first == null || first == 0) return null;
+    return ((currentRate - first) / first) * 100;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.data.isEmpty) {
@@ -79,6 +92,7 @@ class _RateChartState extends State<RateChart> {
           _TooltipCard(
             date: sortedDates[_touchedIndex!],
             rate: spots[_touchedIndex!].y,
+            changeFromFirst: _changeFromFirst(spots[_touchedIndex!].y),
           ),
         const SizedBox(height: 8),
         Expanded(
@@ -140,12 +154,12 @@ class _RateChartState extends State<RateChart> {
                   getTooltipItems: (touchedSpots) => touchedSpots.map((_) => null).toList(),
                 ),
                 touchCallback: (event, response) {
-                  if (event is FlTapUpEvent) {
+                  if (event is FlTapUpEvent || event is FlLongPressStart) {
                     final index = response?.lineBarSpots?.first.x.toInt();
                     if (index != null && index >= 0 && index < spots.length) {
                       setState(() => _touchedIndex = index);
                     }
-                  } else if (event is FlLongPressStart) {
+                  } else if (event is FlPanUpdateEvent || event is FlLongPressMoveUpdate) {
                     final index = response?.lineBarSpots?.first.x.toInt();
                     if (index != null && index >= 0 && index < spots.length) {
                       setState(() => _touchedIndex = index);
@@ -209,15 +223,30 @@ class _RateChartState extends State<RateChart> {
 }
 
 class _TooltipCard extends StatelessWidget {
-  const _TooltipCard({required this.date, required this.rate});
+  const _TooltipCard({
+    required this.date,
+    required this.rate,
+    required this.changeFromFirst,
+  });
 
   final DateTime date;
   final double rate;
+  final double? changeFromFirst;
 
   @override
   Widget build(BuildContext context) {
+    final isPositive = changeFromFirst != null && changeFromFirst! >= 0;
+    final changeColor = isPositive
+        ? const Color(0xFF34C759)
+        : const Color(0xFFFF3B30);
+    final arrow = changeFromFirst == null
+        ? ''
+        : isPositive
+            ? '▲'
+            : '▼';
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: AppTheme.card,
         borderRadius: BorderRadius.circular(8),
@@ -234,18 +263,29 @@ class _TooltipCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            DateFormat('MMM d, yyyy').format(date),
+            DateFormat('d MMM').format(date),
             style: TextStyle(fontSize: 13, color: AppTheme.muted),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 16),
           Text(
             rate.toStringAsFixed(4),
             style: TextStyle(
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: FontWeight.w700,
               color: AppTheme.text,
             ),
           ),
+          if (changeFromFirst != null) ...[
+            const SizedBox(width: 12),
+            Text(
+              '$arrow ${changeFromFirst!.abs().toStringAsFixed(2)}%',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: changeColor,
+              ),
+            ),
+          ],
         ],
       ),
     );

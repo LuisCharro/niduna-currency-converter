@@ -70,6 +70,9 @@ class _ChartsScreenState extends State<ChartsScreen> {
                   ],
                 ),
               ),
+              Expanded(
+                child: _buildChartArea(state),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 child: ChartSummary(
@@ -77,10 +80,6 @@ class _ChartsScreenState extends State<ChartsScreen> {
                   low: state.low,
                   changePercent: state.changePercent,
                 ),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: _buildChartArea(state),
               ),
             ],
           );
