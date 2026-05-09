@@ -1,7 +1,7 @@
 # AGENTS.md
 
 This repo uses repo-local copied shared skills under `./.agent-local/skills`,
-plus repo-specific skills under `./agent/skills`.
+plus repo-specific skills under `./.agent/skills`.
 
 If the copied shared skills are missing, restore them before substantial work:
 
@@ -76,15 +76,15 @@ If repo-local rules conflict with a shared skill, prefer the repo-local rules.
 
 Use these when the task is specifically about this repo:
 
-- [`small-screen-ui-review`](/agent/skills/small-screen-ui-review/SKILL.md)
+- [`small-screen-ui-review`](/.agent/skills/small-screen-ui-review/SKILL.md)
 - Flutter code changes, model changes, persistence changes, refactors:
-  [`flutter-verification`](/agent/skills/flutter-verification/SKILL.md)
+  [`flutter-verification`](/.agent/skills/flutter-verification/SKILL.md)
 - Emulator launch, rebuild, relaunch, demo/testing setup:
-  [`emulator-runbook`](/agent/skills/emulator-runbook/SKILL.md)
+  [`emulator-runbook`](/.agent/skills/emulator-runbook/SKILL.md)
 - Broad feature requests, new tabs, anything that may expand scope:
-  [`product-scope-check`](/agent/skills/product-scope-check/SKILL.md)
+  [`product-scope-check`](/.agent/skills/product-scope-check/SKILL.md)
 - Store compliance, privacy, ads, IAP, release preparation:
-  [`store-release-check`](/agent/skills/store-release-check/SKILL.md)
+  [`store-release-check`](/.agent/skills/store-release-check/SKILL.md)
 
 Use the smallest useful set.
 
@@ -92,7 +92,7 @@ Preferred order for broad interface work in this repo:
 
 ```text
 frontend-design-layer
-→ agent/DESIGN_GUIDELINES.md (when created)
+→ .agent/DESIGN_GUIDELINES.md (when created)
 → frontend-design-direction
 → small-screen-ui-review
 → flutter-verification
@@ -241,7 +241,7 @@ Screenshot locations:
 
 Stitch is available via `mcporter`. Use it for design exploration only — never copy generated code directly.
 
-For mcporter + Stitch setup and detailed workflow, see daily-calorie's `agent/STITCH.md`.
+For mcporter + Stitch setup and detailed workflow, see daily-calorie's `.agent/STITCH.md`.
 
 Shared Stitch skill: `./.agent-local/skills/publish/google-stitch-workflow/SKILL.md`
 
@@ -256,4 +256,4 @@ For major UI polish or redesign work, prefer this reference loop:
 ## Documentation rule
 
 If you add a recurring workflow, strong UI rule, or new agent-facing convention,
-update the relevant file under `agent/`.
+update the relevant file under `.agent/`.
