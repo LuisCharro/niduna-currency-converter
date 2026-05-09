@@ -88,13 +88,17 @@ class _RateChartState extends State<RateChart> {
 
     return Column(
       children: <Widget>[
-        if (_touchedIndex != null && _touchedIndex! < sortedDates.length)
-          _TooltipCard(
-            date: sortedDates[_touchedIndex!],
-            rate: spots[_touchedIndex!].y,
-            changeFromFirst: _changeFromFirst(spots[_touchedIndex!].y),
-          ),
-        const SizedBox(height: 8),
+        SizedBox(
+          height: 48,
+          child: _touchedIndex != null && _touchedIndex! < sortedDates.length
+              ? _TooltipCard(
+                  date: sortedDates[_touchedIndex!],
+                  rate: spots[_touchedIndex!].y,
+                  changeFromFirst: _changeFromFirst(spots[_touchedIndex!].y),
+                )
+              : const SizedBox.shrink(),
+        ),
+        const SizedBox(height: 4),
         Expanded(
           child: LineChart(
             LineChartData(
