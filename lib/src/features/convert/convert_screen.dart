@@ -55,7 +55,6 @@ class _ConvertScreenState extends State<ConvertScreen> {
                   onRefresh: _controller.refresh,
                   onAmountChanged: _controller.setAmountText,
                   onSelectBase: _controller.setBase,
-                  onSwap: _controller.swapWithFirstVisible,
                   onToggleCode: _controller.toggleCode,
                 ),
               ),

@@ -24,13 +24,6 @@ extension ConvertControllerEditing on ConvertController {
     await load();
   }
 
-  Future<void> swapWithFirstVisible() async {
-    if (_selectedCodes.isEmpty) {
-      return;
-    }
-    await setBase(_selectedCodes.first);
-  }
-
   void setAmountText(String text) {
     _amountText = text;
     final parsed = double.tryParse(text.replaceAll(',', '.'));

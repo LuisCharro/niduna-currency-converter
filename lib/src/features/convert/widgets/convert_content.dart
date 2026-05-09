@@ -7,13 +7,12 @@ import 'convert_header.dart';
 import 'currency_picker_sheet.dart';
 import 'visible_rates_list.dart';
 
-class ConvertContent extends StatelessWidget {
+class ConvertContent extends StatefulWidget {
   const ConvertContent({
     required this.state,
     required this.onRefresh,
     required this.onAmountChanged,
     required this.onSelectBase,
-    required this.onSwap,
     required this.onToggleCode,
     super.key,
   });
@@ -22,33 +21,54 @@ class ConvertContent extends StatelessWidget {
   final Future<void> Function() onRefresh;
   final ValueChanged<String> onAmountChanged;
   final ValueChanged<String> onSelectBase;
-  final VoidCallback onSwap;
   final ValueChanged<String> onToggleCode;
 
   @override
+  State<ConvertContent> createState() => _ConvertContentState();
+}
+
+class _ConvertContentState extends State<ConvertContent> {
+  String? _activeCode;
+
+  @override
   Widget build(BuildContext context) {
+    final selectedCodes = widget.state.selectedCodes.toSet();
+    if (_activeCode != null && !selectedCodes.contains(_activeCode)) {
+      _activeCode = null;
+    }
     return Column(
       children: <Widget>[
         ConvertHeader(
-          isRefreshing: state.isRefreshing,
-          onRefresh: () => onRefresh(),
+          isRefreshing: widget.state.isRefreshing,
+          onRefresh: () => widget.onRefresh(),
         ),
         ConvertInfoBar(
-          statusLabel: state.statusLabel,
-          message: state.message,
-          count: state.selectedCodes.length,
+          statusLabel: widget.state.statusLabel,
+          message: widget.state.message,
+          count: widget.state.selectedCodes.length,
           onEdit: () => _openPicker(context, selectBaseMode: false),
         ),
         AmountCard(
-          lastUpdatedLabel: state.lastUpdatedLabel,
-          amountText: state.amountText,
-          base: state.base,
-          onAmountChanged: onAmountChanged,
+          lastUpdatedLabel: widget.state.lastUpdatedLabel,
+          amountText: widget.state.amountText,
+          base: widget.state.base,
+          onAmountChanged: widget.onAmountChanged,
           onBaseTap: () => _openPicker(context, selectBaseMode: true),
-          onSwap: onSwap,
         ),
         Expanded(
-          child: VisibleRatesList(quotes: state.quotes, onRemove: onToggleCode),
+          child: VisibleRatesList(
+            quotes: widget.state.quotes,
+            activeCode: _activeCode,
+            onSelectCode: (code) => setState(() => _activeCode = code),
+            onSetBase: (code) {
+              setState(() => _activeCode = null);
+              widget.onSelectBase(code);
+            },
+            onRemove: (code) {
+              setState(() => _activeCode = null);
+              widget.onToggleCode(code);
+            },
+          ),
         ),
       ],
     );
@@ -60,14 +80,14 @@ class ConvertContent extends StatelessWidget {
       showDragHandle: true,
       builder: (context) => CurrencyPickerSheet(
         title: selectBaseMode ? 'Base currency' : 'Visible currencies',
-        base: state.base,
-        selectedCodes: state.selectedCodes,
+        base: widget.state.base,
+        selectedCodes: widget.state.selectedCodes,
         selectBaseMode: selectBaseMode,
         onSelectBase: (code) {
           Navigator.pop(context);
-          onSelectBase(code);
+          widget.onSelectBase(code);
         },
-        onToggleCode: onToggleCode,
+        onToggleCode: widget.onToggleCode,
       ),
     );
   }

@@ -27,6 +27,26 @@ Privacy-first Flutter currency converter for the Niduna portfolio.
 | `AGENTS.md` | Agent instructions, skills, verification rules, modularity rules |
 | `agent/README.md` | Repo-specific guidance, commands, iOS simulator notes |
 
+## UI Guidance Resources For Agents
+
+These resources are already present in the repo and should be consulted for
+mobile UI decisions before large layout changes:
+
+- `./.agent-local/skills/mobile/mobile-ui-review.SKILL.md`
+- `./.agent-local/skills/mobile/flutter/flutter-small-screen-ui.SKILL.md`
+- `./.agent-local/skills/mobile/references/native-platform-ui-notes.md`
+- `./.agent-local/skills/mobile/references/store-ui-readiness-checklist.md`
+
+Use them together with `ROADMAP.md` and `AGENTS.md` when deciding interaction
+patterns, top-of-screen density, and touch-target/accessibility constraints.
+
+When a future task involves Stitch:
+
+- use the mobile/UI skills first to refine interaction and constraints
+- then use `./.agent-local/skills/publish/google-stitch-workflow/SKILL.md`
+  to generate or iterate screens with better prompts and clearer acceptance
+  criteria
+
 ## Development phases
 
 | Phase | Goal | Trigger |

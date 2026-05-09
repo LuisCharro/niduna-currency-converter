@@ -53,6 +53,24 @@ void main() {
     expect(find.text('ADVERTISEMENT PLACEMENT'), findsOneWidget);
   });
 
+  testWidgets('Convert row tap reveals Set as base action', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(home: ConvertScreen(repository: repository)),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('CHF').first);
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('Set CHF as base'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Set CHF as base'));
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('Set CHF as base'), findsNothing);
+    expect(find.text('CHF'), findsWidgets);
+  });
+
   testWidgets('Favorites screen shows placeholder', (
     WidgetTester tester,
   ) async {
