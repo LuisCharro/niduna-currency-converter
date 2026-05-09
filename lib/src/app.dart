@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'core/theme/app_theme.dart';
+import 'features/convert/data/latest_rates_repository.dart';
 import 'features/convert/convert_screen.dart';
 import 'features/favorites/favorites_screen.dart';
 import 'features/charts/charts_screen.dart';
 import 'features/settings/settings_screen.dart';
 
 class CurrencyConverterApp extends StatelessWidget {
-  const CurrencyConverterApp({super.key});
+  const CurrencyConverterApp({this.convertRepository, super.key});
+
+  final ConvertRatesRepository? convertRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +18,15 @@ class CurrencyConverterApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Currency Converter',
       theme: AppTheme.light,
-      home: const AppShell(),
+      home: AppShell(convertRepository: convertRepository),
     );
   }
 }
 
 class AppShell extends StatefulWidget {
-  const AppShell({super.key});
+  const AppShell({this.convertRepository, super.key});
+
+  final ConvertRatesRepository? convertRepository;
 
   @override
   State<AppShell> createState() => _AppState();
@@ -30,17 +35,17 @@ class AppShell extends StatefulWidget {
 class _AppState extends State<AppShell> {
   int _currentIndex = 0;
 
-  static const List<Widget> _screens = <Widget>[
-    ConvertScreen(),
-    FavoritesScreen(),
-    ChartsScreen(),
-    SettingsScreen(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final screens = <Widget>[
+      ConvertScreen(repository: widget.convertRepository),
+      const FavoritesScreen(),
+      const ChartsScreen(),
+      const SettingsScreen(),
+    ];
+
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,

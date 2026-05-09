@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 
 class ConvertHeader extends StatelessWidget {
-  const ConvertHeader({super.key});
+  const ConvertHeader({
+    required this.onRefresh,
+    required this.isRefreshing,
+    super.key,
+  });
+
+  final VoidCallback onRefresh;
+  final bool isRefreshing;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +45,14 @@ class ConvertHeader extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: isRefreshing ? null : onRefresh,
             visualDensity: VisualDensity.compact,
-            icon: const Icon(Icons.sync, color: AppTheme.primary, size: 20),
+            icon: isRefreshing
+                ? const SizedBox.square(
+                    dimension: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.sync, color: AppTheme.primary, size: 20),
           ),
         ],
       ),

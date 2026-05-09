@@ -1,36 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/theme/app_theme.dart';
-import 'data/demo_quotes.dart';
-import 'widgets/ad_banner_placeholder.dart';
-import 'widgets/amount_card.dart';
-import 'widgets/convert_header.dart';
-import 'widgets/currency_rate_row.dart';
+import 'data/frankfurter_latest_rates_client.dart';
+import 'data/latest_rates_cache.dart';
+import 'data/latest_rates_repository.dart';
+import 'presentation/convert_controller.dart';
+import 'widgets/convert_content.dart';
 
-class ConvertScreen extends StatelessWidget {
-  const ConvertScreen({super.key});
+class ConvertScreen extends StatefulWidget {
+  const ConvertScreen({this.repository, super.key});
+
+  final ConvertRatesRepository? repository;
+
+  @override
+  State<ConvertScreen> createState() => _ConvertScreenState();
+}
+
+class _ConvertScreenState extends State<ConvertScreen> {
+  late final ConvertController _controller = ConvertController(
+    repository:
+        widget.repository ??
+        LatestRatesRepository(
+          client: FrankfurterLatestRatesClient(),
+          cache: LatestRatesCache(SharedPreferencesAsync()),
+        ),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.load();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
       color: AppTheme.bg,
       child: SafeArea(
-        child: CustomScrollView(
-          slivers: <Widget>[
-            const SliverToBoxAdapter(child: ConvertHeader()),
-            const SliverToBoxAdapter(child: AmountCard()),
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-              sliver: SliverList.separated(
-                itemBuilder: (context, index) =>
-                    CurrencyRateRow(quote: demoQuotes[index]),
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
-                itemCount: demoQuotes.length,
-              ),
-            ),
-            const SliverToBoxAdapter(child: AdBannerPlaceholder()),
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
-          ],
+        child: ListenableBuilder(
+          listenable: _controller,
+          builder: (context, _) => ConvertContent(
+            state: _controller.state,
+            onRefresh: _controller.refresh,
+          ),
         ),
       ),
     );

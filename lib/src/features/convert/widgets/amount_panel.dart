@@ -5,7 +5,9 @@ import 'amount_value_row.dart';
 import 'convert_label.dart';
 
 class AmountPanel extends StatelessWidget {
-  const AmountPanel({super.key});
+  const AmountPanel({required this.lastUpdatedLabel, super.key});
+
+  final String lastUpdatedLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -18,23 +20,23 @@ class AmountPanel extends StatelessWidget {
         border: Border.all(color: AppTheme.border.withValues(alpha: .65)),
         boxShadow: AppTheme.softShadow,
       ),
-      child: const Column(
+      child: Column(
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              ConvertLabel('YOU SEND'),
+              const ConvertLabel('YOU SEND'),
               Row(
                 children: <Widget>[
-                  Icon(Icons.schedule, size: 13, color: AppTheme.muted),
-                  SizedBox(width: 4),
-                  ConvertLabel('Updated: Today, 09:00'),
+                  const Icon(Icons.schedule, size: 13, color: AppTheme.muted),
+                  const SizedBox(width: 4),
+                  ConvertLabel(lastUpdatedLabel),
                 ],
               ),
             ],
           ),
-          SizedBox(height: 12),
-          AmountValueRow(),
+          const SizedBox(height: 12),
+          const AmountValueRow(),
         ],
       ),
     );

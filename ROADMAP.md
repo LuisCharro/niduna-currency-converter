@@ -304,13 +304,13 @@ Convert should:
 Use Frankfurter v2 directly from the app:
 
 ```text
-GET https://api.frankfurter.dev/v2/latest?from={BASE}
+GET https://api.frankfurter.dev/v2/rates?base={BASE}&quotes={QUOTE_CODES}
 ```
 
 Expected handling:
 
 - `{BASE}` must be one of the Phase 1 fiat codes.
-- Response rates are stored as decimal numbers.
+- Response rows are normalized into decimal rates by quote currency.
 - If a requested Phase 1 currency is missing from the response, skip that row
   and surface a recoverable data warning in state, not a crash.
 - Frankfurter has no `/convert` endpoint; conversion is always local math.
