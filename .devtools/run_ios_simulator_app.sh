@@ -47,7 +47,8 @@ main() {
 
   echo "Running app on ${resolved_simulator_id}..."
   run_flutter pub get
-  run_flutter run -d "${resolved_simulator_id}"
+  setsid run_flutter run -d "${resolved_simulator_id}" > /dev/null 2>&1 < /dev/null &
+  echo "App launched in background. Flutter DevTools available at http://127.0.0.1:51853/"
 }
 
 main "$@"

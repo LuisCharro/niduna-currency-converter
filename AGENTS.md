@@ -212,13 +212,20 @@ scripts/
 ### Running the app
 
 ```bash
-# iOS simulator (preferred for UI review)
-flutter devices                                    # find booted simulator ID
-flutter run -d <simulator_id>                      # build + run
+# Launch app in background (non-blocking) — preferred for agent workflows
+IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/run_ios_simulator_app.sh
+
+# The above does NOT block. App runs detached. To stop it:
+# xcrun simctl terminate <simulator_id> com.niduna.currencyConverter
+
+# Raw flutter run (BLOCKS terminal — avoid in agent workflows)
+flutter run -d <simulator_id>
 
 # Smoke test
 IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/run_ios_minimal_smoke.sh
 ```
+
+**Important:** Always use `run_ios_simulator_app.sh` in agent workflows. Raw `flutter run` blocks the terminal until the app terminates. The script uses `setsid` to launch the Flutter process in the background, allowing the agent to continue executing other commands.
 
 ### Screenshot capture
 
