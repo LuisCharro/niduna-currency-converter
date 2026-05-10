@@ -166,7 +166,9 @@ if (state.lastUpdated != null) ...[
         _swapVersion > 0;
 
     if (isSwap) {
-      setState(() => _lastPairKey = currentPairKey);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() => _lastPairKey = currentPairKey);
+      });
     }
 
     return AnimatedSwitcher(
