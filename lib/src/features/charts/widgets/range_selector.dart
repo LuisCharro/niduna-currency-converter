@@ -30,7 +30,9 @@ class RangeSelector extends StatelessWidget {
                 if (isLocked) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Intraday ranges require Subscription'),
+                      content: Text(
+                          'Intraday ranges coming soon — requires Premium Subscription'),
+                      duration: Duration(seconds: 3),
                     ),
                   );
                   return;

@@ -10,11 +10,13 @@ class AppPreferences extends ChangeNotifier {
   static const String _decimalPlacesKey = 'pref_decimal_places';
   static const String _refreshOnOpenKey = 'pref_refresh_on_open';
   static const String _devModeKey = 'pref_dev_mode';
+  static const String _darkModeKey = 'pref_dark_mode';
 
   String get defaultBaseCurrency => _prefs.getString(_defaultBaseKey) ?? 'USD';
   int get decimalPlaces => _prefs.getInt(_decimalPlacesKey) ?? 2;
   bool get refreshOnOpen => _prefs.getBool(_refreshOnOpenKey) ?? true;
   bool get devMode => _prefs.getBool(_devModeKey) ?? true;
+  bool get isDarkMode => _prefs.getBool(_darkModeKey) ?? false;
 
   bool get isDecimalPlacesSupported => decimalPlaces >= 2 && decimalPlaces <= 6;
 
@@ -36,6 +38,11 @@ class AppPreferences extends ChangeNotifier {
 
   Future<void> setDevMode(bool value) async {
     await _prefs.setBool(_devModeKey, value);
+    notifyListeners();
+  }
+
+  Future<void> setDarkMode(bool value) async {
+    await _prefs.setBool(_darkModeKey, value);
     notifyListeners();
   }
 

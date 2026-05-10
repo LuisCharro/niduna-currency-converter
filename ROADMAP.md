@@ -69,8 +69,10 @@ Must include:
 - multi-currency results list
 - fiat currencies from the Phase 1 list
 - favorite toggle per row
+- **data freshness indicator** (last-updated timestamp + `(i)` info icon with ECB once-daily tooltip)
 - last updated status
 - offline or stale-data indication when relevant
+- refresh action
 - bottom banner ad area with safe distance from the input
 
 Must not include:
@@ -129,14 +131,15 @@ Must include:
 
 - default base currency selector
 - decimal precision selector (2/3/4 decimals for fiat Phase 1)
+- **dark mode toggle** (follows system by default; free in 2026)
 - refresh-on-open preference (smart: only refetch if cache stale >24h)
 - clear cache action (clears rates + chart + temp unlocks)
-- last updated/cache status timestamp
+- **data freshness explanation** (ECB once-daily, last update timestamp, up to 24h old)
 - **Premium section** with IAP purchase cards:
   - Remove Ads one-time purchase entry
   - Charts Pro one-time purchase entry
-  - Subscription (informational "Coming Soon" with pricing hint + "Notify Me" CTA)
-  - Restore Purchases text button
+  - Subscription (informational "Coming Soon" / "Not available in v1" with pricing hint)
+  - Restore Purchases button
 - **"Remove ads" CTA row** below banner ad areas (Convert + Charts tabs): subtle text link below/beside the banner
 - Dev Sandbox section with entitlement toggles (visible during development)
 - privacy policy/about/version
@@ -551,16 +554,11 @@ expanding code.
 
 ## Next Best Step
 
-Complete Slice 8 (IAP Paywall):
+Complete Slice 9 (Polish + UX):
 
-- implement `PurchaseService` abstract interface (abstraction boundary for real Store Kit / Play Billing)
-- implement `PurchaseServiceStub` (~2s simulated purchase: loading → processing → success)
-- implement `IapPurchasePlayer` reusable fullscreen overlay widget
-- add `purchaseChartsPro()` + `purchaseRemoveAds()` to `MonetizationController`
-- add **Premium section** to Settings screen (3 cards: Remove Ads, Charts Pro, Subscription Coming Soon)
-- add "Remove ads →" CTA row below banner ads on Convert and Charts tabs
-- add intraday range lock toast ("Coming Soon with Premium Subscription")
-- wire `PurchaseServiceStub` into `MonetizationController` via `app.dart`
-- inject `IapPurchasePlayer` for the "buy_forever" path in chart currency picker
-- add "Restore Purchases" text button in Premium section
-- add IAP stub tests
+- **hide Favorites tab** from BottomNavigationBar (screen code kept, just hidden from nav; re-enable in Phase 2)
+- add **data freshness indicator** in Convert tab: `(i)` info icon next to "Updated: May 10, 16:21" with tooltip explaining ECB once-daily updates
+- add **data explanation text** in Settings > Data section: *"Rates fetched once daily from ECB. Last update: [date]. Data may be up to 24h old."*
+- fix **intraday range toast**: change from "Intraday ranges require Subscription" to "Intraday ranges coming soon — requires Premium Subscription"
+- implement **dark mode**: AppTheme.dark + isDarkMode in AppPreferences + toggle in Settings (default: follow system)
+- update **Subscription card copy** in Settings Premium: clarify "Not available in v1"

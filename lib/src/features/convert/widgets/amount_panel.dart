@@ -32,16 +32,23 @@ class AmountPanel extends StatelessWidget {
         boxShadow: AppTheme.softShadow,
       ),
       child: Column(
-        children: <Widget>[
+        children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
+            children: [
               const ConvertLabel('YOU SEND'),
               Row(
-                children: <Widget>[
-                  const Icon(Icons.schedule, size: 13, color: AppTheme.muted),
+                children: [
+                  Icon(Icons.schedule, size: 13, color: AppTheme.muted),
                   const SizedBox(width: 4),
                   ConvertLabel(lastUpdatedLabel),
+                  const SizedBox(width: 6),
+                  Tooltip(
+                    message:
+                        'Rates update once per day from the European Central Bank',
+                    child: Icon(Icons.info_outline,
+                        size: 14, color: AppTheme.subtle),
+                  ),
                 ],
               ),
             ],

@@ -65,33 +65,6 @@ class CurrencyRateRow extends StatelessWidget {
                   ),
                 ),
               IconButton(
-                tooltip: quote.favorite
-                    ? 'Remove ${quote.code} from favorites'
-                    : 'Add ${quote.code} to favorites',
-                constraints: const BoxConstraints.tightFor(
-                  width: 48,
-                  height: 48,
-                ),
-                onPressed: () {
-                  if (!quote.favorite && maxFavoritesReached) {
-                    final messenger = ScaffoldMessenger.maybeOf(context);
-                    messenger?.showSnackBar(
-                      SnackBar(
-                        content: const Text('Maximum 3 favorites reached'),
-                        duration: const Duration(seconds: 1),
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                  }
-                  onToggleFavorite();
-                },
-                icon: Icon(
-                  quote.favorite ? Icons.star : Icons.star_outline,
-                  color: quote.favorite ? AppTheme.primary : AppTheme.subtle,
-                  size: 18,
-                ),
-              ),
-              IconButton(
                 tooltip: 'Remove ${quote.code}',
                 constraints: const BoxConstraints.tightFor(
                   width: 48,

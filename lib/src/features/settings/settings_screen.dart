@@ -39,12 +39,22 @@ class SettingsScreen extends StatelessWidget {
         _DefaultBaseTile(preferences: preferences),
         const SizedBox(height: 10),
         _DecimalPlacesTile(preferences: preferences),
+        const SizedBox(height: 10),
+        _DarkModeTile(preferences: preferences),
         const SizedBox(height: 20),
         _SectionHeader(title: 'Data'),
         const SizedBox(height: 8),
         _RefreshOnOpenTile(preferences: preferences),
         const SizedBox(height: 10),
         _ClearCacheTile(onClearCache: onClearCache),
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+          child: Text(
+            'Rates are fetched once daily from the European Central Bank.\nData may be up to 24 hours old.',
+            style: TextStyle(fontSize: 11, color: AppTheme.subtle, height: 1.4),
+          ),
+        ),
         const SizedBox(height: 20),
         _SectionHeader(title: '💎 Premium'),
         const SizedBox(height: 8),
@@ -268,6 +278,24 @@ class _RefreshOnOpenTile extends StatelessWidget {
       trailing: Switch(
         value: preferences.refreshOnOpen,
         onChanged: preferences.setRefreshOnOpen,
+        activeTrackColor: AppTheme.primary,
+      ),
+    );
+  }
+}
+
+class _DarkModeTile extends StatelessWidget {
+  const _DarkModeTile({required this.preferences});
+  final AppPreferences preferences;
+
+  @override
+  Widget build(BuildContext context) {
+    return _SettingsTile(
+      title: 'Dark mode',
+      subtitle: 'Follow system default',
+      trailing: Switch(
+        value: preferences.isDarkMode,
+        onChanged: (v) => preferences.setDarkMode(v),
         activeTrackColor: AppTheme.primary,
       ),
     );
@@ -535,6 +563,23 @@ class _PremiumSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        _SubscriptionCard(),
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Row(
+            children: <Widget>[
+              Expanded(child: Divider(color: AppTheme.border)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text('or buy separately',
+                    style: TextStyle(fontSize: 11, color: AppTheme.subtle)),
+              ),
+              Expanded(child: Divider(color: AppTheme.border)),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
         _PremiumCard(
           icon: Icons.visibility_off,
           title: 'Remove Ads',
@@ -552,8 +597,6 @@ class _PremiumSection extends StatelessWidget {
           owned: monetization.hasChartsProLifetime,
           onBuy: () => _purchase(context, ProductType.chartsPro),
         ),
-        const SizedBox(height: 10),
-        _SubscriptionCard(),
         const SizedBox(height: 12),
         GestureDetector(
           onTap: () => _restorePurchases(context),
@@ -630,8 +673,26 @@ class _PremiumCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(title,
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+                Row(
+                  children: <Widget>[
+                    Text(title,
+                        style:
+                            const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+                    if (!owned) ...[
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primary.withValues(alpha: .08),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text('in Subscription',
+                            style:
+                                TextStyle(fontSize: 9, color: AppTheme.primary)),
+                      ),
+                    ],
+                  ],
+                ),
                 const SizedBox(height: 2),
                 Text(description, style: TextStyle(fontSize: 12, color: AppTheme.muted)),
               ],
@@ -669,22 +730,23 @@ class _SubscriptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
       decoration: BoxDecoration(
         color: AppTheme.card,
         borderRadius: BorderRadius.circular(AppTheme.radius),
-        border: Border.all(color: AppTheme.border),
+        border: Border.all(color: AppTheme.primary.withValues(alpha: .4)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
             children: <Widget>[
-              Icon(Icons.star_outline, size: 22, color: AppTheme.muted),
+              Icon(Icons.workspace_premium_outlined,
+                  size: 22, color: AppTheme.primary),
               const SizedBox(width: 10),
               Expanded(
                 child: Text('Premium Subscription',
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -694,24 +756,49 @@ class _SubscriptionCard extends StatelessWidget {
                   border: Border.all(color: AppTheme.border),
                 ),
                 child: Text('Coming Soon',
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.subtle)),
+                    style:
+                        TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.subtle)),
               ),
             ],
           ),
-          const SizedBox(height: 4),
-          Text('Everything included + intraday ranges (1H/6H/1D)',
-              style: TextStyle(fontSize: 12, color: AppTheme.muted)),
+          const SizedBox(height: 8),
+          Text('All features included',
+              style: TextStyle(fontSize: 13, color: AppTheme.text)),
+          const SizedBox(height: 6),
+          _SubFeatureRow(Icons.visibility_off, 'Remove ads'),
+          _SubFeatureRow(Icons.diamond_outlined, 'Unlock all chart pairs'),
+          _SubFeatureRow(Icons.show_chart, 'Intraday ranges (1H/6H/1D)'),
           const SizedBox(height: 6),
           Row(
             children: <Widget>[
-              Icon(Icons.construction, size: 12, color: AppTheme.subtle),
+              Icon(Icons.construction, size: 11, color: AppTheme.subtle),
               const SizedBox(width: 4),
               Flexible(
-                child: Text('Coming Soon · 1 week free, then X.XX CHF/year',
+                child: Text('1 week free trial, then X.XX CHF/year',
                     style: TextStyle(fontSize: 11, color: AppTheme.subtle)),
               ),
             ],
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SubFeatureRow extends StatelessWidget {
+  const _SubFeatureRow(this.icon, this.label);
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: <Widget>[
+          Icon(icon, size: 14, color: AppTheme.muted),
+          const SizedBox(width: 8),
+          Text(label, style: TextStyle(fontSize: 12, color: AppTheme.muted)),
         ],
       ),
     );

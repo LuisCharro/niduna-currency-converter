@@ -46,4 +46,33 @@ class AppTheme {
       type: BottomNavigationBarType.fixed,
     ),
   );
+
+  static final ThemeData dark = ThemeData(
+    useMaterial3: true,
+    scaffoldBackgroundColor: const Color(0xFF1A1C1E),
+    fontFamily: 'Inter',
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: primary,
+      brightness: Brightness.dark,
+    ),
+    appBarTheme: const AppBarTheme(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      foregroundColor: Color(0xFFE8E8E8),
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: const Color(0xFF1E2024),
+      selectedItemColor: const Color(0xFF4A9EFF),
+      unselectedItemColor: const Color(0xFF6B7080),
+      selectedLabelStyle: const TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
+      ),
+      unselectedLabelStyle: const TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
+      ),
+      type: BottomNavigationBarType.fixed,
+    ),
+  );
 }

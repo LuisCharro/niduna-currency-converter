@@ -130,11 +130,6 @@ class _AppState extends State<AppShell> {
     }
     final screens = <Widget>[
       ConvertScreen(controller: _controller!, monetization: _monetization!),
-      FavoritesScreen(
-        favoritesStore: _favoritesStore,
-        controller: _controller!,
-        onNavigateToConvert: _navigateToConvert,
-      ),
       ChartsScreen(
         controller: _chartsController!,
         monetization: _monetization!,
@@ -146,32 +141,31 @@ class _AppState extends State<AppShell> {
       ),
     ];
 
-    return Scaffold(
-      body: screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppTheme.primary,
-        unselectedItemColor: AppTheme.muted,
-        onTap: (index) => setState(() => _currentIndex = index),
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.swap_horiz),
-            label: 'Convert',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star_outline),
-            label: 'Favorites',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.show_chart),
-            label: 'Charts',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
+    return Theme(
+      data: _preferences?.isDarkMode == true ? AppTheme.dark : AppTheme.light,
+      child: Scaffold(
+        body: screens[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: AppTheme.primary,
+          unselectedItemColor: AppTheme.muted,
+          onTap: (index) => setState(() => _currentIndex = index),
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.swap_horiz),
+              label: 'Convert',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.show_chart),
+              label: 'Charts',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+        ),
       ),
     );
   }

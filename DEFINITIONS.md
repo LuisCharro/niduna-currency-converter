@@ -43,9 +43,11 @@ first or defer the idea.
 - Phase 1 has no accounts, login, cloud sync, or user profile.
 - Phase 1 has zero tracking, zero analytics, and zero data collection.
 - Phase 1 monetization is banner ads, one-time Remove Ads (1.99 CHF), one-time Charts Pro (2.99 CHF), and optional subscription (Coming Soon — pricing TBD).
-- Phase 1 has four tabs only: `Convert`, `Favorites`, `Charts`, `Settings`.
+- Phase 1 has four tabs only: `Convert`, `Favorites`, `Charts`, `Settings`. (Favorites tab hidden in v1 UI; code retained for Phase 2 re-enablement)
 - Phase 1 is English only.
 - RUB is not supported.
+- Dark mode is free and available in v1 (follows system default; toggle in Settings).
+- Data freshness: Frankfurter/ECB rates update once daily (~16:00 CET). App must communicate this clearly via freshness indicator + Settings explanation.
 
 ### Monetization access policy
 
