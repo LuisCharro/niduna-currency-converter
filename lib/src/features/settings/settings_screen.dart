@@ -555,11 +555,21 @@ class _PremiumSection extends StatelessWidget {
         const SizedBox(height: 10),
         _SubscriptionCard(),
         const SizedBox(height: 12),
-        TextButton(
-          onPressed: () => _restorePurchases(context),
-          child: Text(
-            'Restore Purchases',
-            style: TextStyle(fontSize: 13, color: AppTheme.muted),
+        GestureDetector(
+          onTap: () => _restorePurchases(context),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppTheme.radius),
+              border: Border.all(color: AppTheme.border),
+            ),
+            child: Center(
+              child: Text(
+                'Restore Purchases',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.primary),
+              ),
+            ),
           ),
         ),
       ],
@@ -659,64 +669,48 @@ class _SubscriptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       decoration: BoxDecoration(
         color: AppTheme.card,
         borderRadius: BorderRadius.circular(AppTheme.radius),
         border: Border.all(color: AppTheme.border),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Icon(Icons.star_outline, size: 22, color: AppTheme.muted),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('Premium Subscription',
+          Row(
+            children: <Widget>[
+              Icon(Icons.star_outline, size: 22, color: AppTheme.muted),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text('Premium Subscription',
                     style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-                const SizedBox(height: 2),
-                Text(
-                    'Everything included + intraday ranges (1H/6H/1D)',
-                    style: TextStyle(fontSize: 12, color: AppTheme.muted)),
-                const SizedBox(height: 4),
-                Row(
-                  children: <Widget>[
-                    Icon(Icons.construction, size: 12, color: AppTheme.subtle),
-                    const SizedBox(width: 4),
-                    Text('Coming Soon',
-                        style: TextStyle(fontSize: 11, color: AppTheme.subtle)),
-                    const SizedBox(width: 8),
-                    Text('• 1 week free, then X.XX CHF/year',
-                        style: TextStyle(fontSize: 11, color: AppTheme.muted)),
-                  ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppTheme.container.withValues(alpha: .6),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppTheme.border),
                 ),
-              ],
-            ),
+                child: Text('Coming Soon',
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.subtle)),
+              ),
+            ],
           ),
-          GestureDetector(
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                    content: Text('We\'ll notify you when Premium is ready!')),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppTheme.container,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppTheme.border),
+          const SizedBox(height: 4),
+          Text('Everything included + intraday ranges (1H/6H/1D)',
+              style: TextStyle(fontSize: 12, color: AppTheme.muted)),
+          const SizedBox(height: 6),
+          Row(
+            children: <Widget>[
+              Icon(Icons.construction, size: 12, color: AppTheme.subtle),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text('Coming Soon · 1 week free, then X.XX CHF/year',
+                    style: TextStyle(fontSize: 11, color: AppTheme.subtle)),
               ),
-              child: Text(
-                'Notify Me',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: AppTheme.muted,
-                ),
-              ),
-            ),
+            ],
           ),
         ],
       ),
