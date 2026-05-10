@@ -8,7 +8,6 @@ abstract class RatesCache {
   Future<HistoricalSnapshot?> readHistorical({
     required String base,
     required String quote,
-    required String rangeKey,
   });
 
   Future<void> writeHistorical(HistoricalSnapshot snapshot);
@@ -16,7 +15,6 @@ abstract class RatesCache {
   Future<void> invalidateHistorical({
     required String base,
     required String quote,
-    required String rangeKey,
   });
 
   Future<void> clear();

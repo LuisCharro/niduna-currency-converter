@@ -113,11 +113,13 @@ class FrankfurterClient implements RatesClient {
       throw const RatesClientException('No historical rates in payload');
     }
 
-    final rangeKey = '${fromStr}_$toStr';
+    final coveredFrom = data.keys.reduce((a, b) => a.isBefore(b) ? a : b);
+    final coveredTo = data.keys.reduce((a, b) => a.isAfter(b) ? a : b);
     return HistoricalSnapshot(
       base: base,
       quote: quote,
-      rangeKey: rangeKey,
+      coveredFrom: coveredFrom,
+      coveredTo: coveredTo,
       data: data,
       savedAt: DateTime.now(),
     );

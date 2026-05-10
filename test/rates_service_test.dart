@@ -68,7 +68,6 @@ void main() {
     final result = await service.getHistoricalRates(
       base: 'USD',
       quote: 'EUR',
-      rangeKey: snapshot.rangeKey,
       from: DateTime(2026, 5, 1),
       to: DateTime(2026, 5, 9),
     );
@@ -87,15 +86,53 @@ void main() {
     final result = await service.getHistoricalRates(
       base: 'USD',
       quote: 'EUR',
-      rangeKey: snapshot.rangeKey,
       from: DateTime(2026, 5, 1),
       to: DateTime(2026, 5, 9),
       forceRefresh: true,
     );
 
     expect(result.status, HistoricalStatus.cached);
-    expect(result.snapshot, snapshot);
+    expect(result.snapshot?.base, snapshot.base);
+    expect(result.snapshot?.quote, snapshot.quote);
+    expect(result.snapshot?.data, snapshot.data);
     expect(client.historicalCalls, 1);
+  });
+
+  test('historical 1Y to 2Y fetches only missing older segment', () async {
+    final recentYear = _historical(
+      coveredFrom: DateTime(2025, 5, 10),
+      coveredTo: DateTime(2026, 5, 10),
+      data: <DateTime, double>{
+        DateTime(2025, 5, 10): .91,
+        DateTime(2026, 5, 10): .95,
+      },
+      savedAt: DateTime.now(),
+    );
+    final olderYear = _historical(
+      coveredFrom: DateTime(2024, 5, 10),
+      coveredTo: DateTime(2025, 5, 9),
+      data: <DateTime, double>{
+        DateTime(2024, 5, 10): .88,
+        DateTime(2025, 5, 9): .90,
+      },
+      savedAt: DateTime.now(),
+    );
+
+    final cache = _MemoryRatesCache(historical: recentYear);
+    final client = _FakeRatesClient(historicalSequence: <HistoricalSnapshot>[olderYear]);
+    final service = RatesService(client: client, cache: cache);
+
+    final result = await service.getHistoricalRates(
+      base: 'USD',
+      quote: 'EUR',
+      from: DateTime(2024, 5, 10),
+      to: DateTime(2026, 5, 10),
+    );
+
+    expect(client.historicalCalls, 1);
+    expect(result.snapshot?.data.length, 4);
+    expect(result.snapshot?.coveredFrom, DateTime(2024, 5, 10));
+    expect(result.snapshot?.coveredTo, DateTime(2026, 5, 10));
   });
 }
 
@@ -108,16 +145,24 @@ RatesSnapshot _latest({double rate = .92, required DateTime savedAt}) {
   );
 }
 
-HistoricalSnapshot _historical() {
+HistoricalSnapshot _historical({
+  DateTime? coveredFrom,
+  DateTime? coveredTo,
+  Map<DateTime, double>? data,
+  DateTime? savedAt,
+}) {
   return HistoricalSnapshot(
     base: 'USD',
     quote: 'EUR',
-    rangeKey: '2026-05-01_2026-05-09',
-    data: <DateTime, double>{
-      DateTime(2026, 5, 1): .91,
-      DateTime(2026, 5, 2): .92,
-    },
-    savedAt: DateTime.now(),
+    coveredFrom: coveredFrom ?? DateTime(2026, 5, 1),
+    coveredTo: coveredTo ?? DateTime(2026, 5, 9),
+    data:
+        data ??
+        <DateTime, double>{
+          DateTime(2026, 5, 1): .91,
+          DateTime(2026, 5, 9): .92,
+        },
+    savedAt: savedAt ?? DateTime.now(),
   );
 }
 
@@ -125,13 +170,16 @@ class _FakeRatesClient implements RatesClient {
   _FakeRatesClient({
     RatesSnapshot? latest,
     HistoricalSnapshot? historical,
+    List<HistoricalSnapshot>? historicalSequence,
     this.delay = Duration.zero,
     this.shouldFailHistorical = false,
   }) : latest = latest ?? _latest(savedAt: DateTime.now()),
-       historical = historical ?? _historical();
+       historical = historical ?? _historical(),
+       historicalSequence = historicalSequence ?? <HistoricalSnapshot>[];
 
   final RatesSnapshot latest;
   final HistoricalSnapshot historical;
+  final List<HistoricalSnapshot> historicalSequence;
   final Duration delay;
   final bool shouldFailHistorical;
   int latestCalls = 0;
@@ -155,6 +203,9 @@ class _FakeRatesClient implements RatesClient {
     if (shouldFailHistorical) {
       throw const RatesClientException('offline');
     }
+    if (historicalSequence.isNotEmpty) {
+      return historicalSequence.removeAt(0);
+    }
     return historical;
   }
 }
@@ -165,11 +216,7 @@ class _MemoryRatesCache implements RatesCache {
       _latest[latest.base] = latest;
     }
     if (historical != null) {
-      _historical[_historicalKey(
-            historical.base,
-            historical.quote,
-            historical.rangeKey,
-          )] =
+      _historical[_historicalKey(historical.base, historical.quote)] =
           historical;
     }
   }
@@ -195,28 +242,23 @@ class _MemoryRatesCache implements RatesCache {
   Future<HistoricalSnapshot?> readHistorical({
     required String base,
     required String quote,
-    required String rangeKey,
   }) async {
-    return _historical[_historicalKey(base, quote, rangeKey)];
+    return _historical[_historicalKey(base, quote)];
   }
 
   @override
   Future<void> writeHistorical(HistoricalSnapshot snapshot) async {
-    _historical[_historicalKey(
-          snapshot.base,
-          snapshot.quote,
-          snapshot.rangeKey,
-        )] =
-        snapshot;
+    final key = _historicalKey(snapshot.base, snapshot.quote);
+    final existing = _historical[key];
+    _historical[key] = existing == null ? snapshot : existing.mergedWith(snapshot);
   }
 
   @override
   Future<void> invalidateHistorical({
     required String base,
     required String quote,
-    required String rangeKey,
   }) async {
-    _historical.remove(_historicalKey(base, quote, rangeKey));
+    _historical.remove(_historicalKey(base, quote));
   }
 
   @override
@@ -225,6 +267,5 @@ class _MemoryRatesCache implements RatesCache {
     _historical.clear();
   }
 
-  String _historicalKey(String base, String quote, String rangeKey) =>
-      '$base|$quote|$rangeKey';
+  String _historicalKey(String base, String quote) => '$base|$quote';
 }

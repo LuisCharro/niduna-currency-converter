@@ -72,6 +72,7 @@ class ChartsController extends ChangeNotifier {
   final RatesService _ratesService;
   ChartState _state;
   bool _disposed = false;
+  int _requestVersion = 0;
 
   ChartState get state => _state;
 
@@ -99,7 +100,7 @@ class ChartsController extends ChangeNotifier {
   }
 
   void setRange(ChartRange range) {
-    if (range == _state.range) return;
+    if (range == _state.range || range.locked) return;
     _setState(_state.copyWith(
       range: range,
       status: ChartStatus.loading,
@@ -115,16 +116,27 @@ class ChartsController extends ChangeNotifier {
   }
 
   Future<void> _load() async {
+    final requestVersion = ++_requestVersion;
     final from = _state.range.fromDate();
+    if (from == null) {
+      _setState(_state.copyWith(
+        status: ChartStatus.error,
+        message: 'Selected range is not available yet.',
+      ));
+      return;
+    }
     final to = DateTime.now();
 
     final result = await _ratesService.getHistoricalRates(
       base: _state.base,
       quote: _state.quote,
-      rangeKey: _state.range.cacheKey,
       from: from,
       to: to,
     );
+
+    if (_disposed || requestVersion != _requestVersion) {
+      return;
+    }
 
     final newData = result.snapshot?.data ?? <DateTime, double>{};
     final newStatus = result.status == HistoricalStatus.error

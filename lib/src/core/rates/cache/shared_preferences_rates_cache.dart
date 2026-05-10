@@ -8,6 +8,7 @@ import '../rates_cache.dart';
 class SharedPreferencesRatesCache implements RatesCache {
   SharedPreferencesRatesCache(this._preferences);
   final SharedPreferences _preferences;
+  static const String _trackedKeys = 'rates_cache_keys';
 
   @override
   Future<RatesSnapshot?> readLatest(String base) async {
@@ -41,8 +42,9 @@ class SharedPreferencesRatesCache implements RatesCache {
 
   @override
   Future<void> writeLatest(RatesSnapshot snapshot) async {
+    final key = _latestKey(snapshot.base);
     _preferences.setString(
-      _latestKey(snapshot.base),
+      key,
       jsonEncode(<String, Object?>{
         'base': snapshot.base,
         'date': snapshot.date?.toIso8601String(),
@@ -50,21 +52,23 @@ class SharedPreferencesRatesCache implements RatesCache {
         'rates': snapshot.rates,
       }),
     );
+    _trackKey(key);
   }
 
   @override
   Future<void> invalidateLatest(String base) async {
-    _preferences.remove(_latestKey(base));
+    final key = _latestKey(base);
+    _preferences.remove(key);
+    _untrackKey(key);
   }
 
   @override
   Future<HistoricalSnapshot?> readHistorical({
     required String base,
     required String quote,
-    required String rangeKey,
   }) async {
     final raw = _preferences.getString(
-      _historicalKey(base, quote, rangeKey),
+      _historicalKey(base, quote),
     );
     if (raw == null) return null;
 
@@ -89,7 +93,12 @@ class SharedPreferencesRatesCache implements RatesCache {
     return HistoricalSnapshot(
       base: (decoded['base'] as String?) ?? base,
       quote: (decoded['quote'] as String?) ?? quote,
-      rangeKey: (decoded['rangeKey'] as String?) ?? rangeKey,
+      coveredFrom: DateTime.tryParse(
+            (decoded['coveredFrom'] as String?) ?? '',
+          ) ??
+          data.keys.reduce((a, b) => a.isBefore(b) ? a : b),
+      coveredTo: DateTime.tryParse((decoded['coveredTo'] as String?) ?? '') ??
+          data.keys.reduce((a, b) => a.isAfter(b) ? a : b),
       data: data,
       savedAt: savedAt,
     );
@@ -97,39 +106,71 @@ class SharedPreferencesRatesCache implements RatesCache {
 
   @override
   Future<void> writeHistorical(HistoricalSnapshot snapshot) async {
+    final key = _historicalKey(snapshot.base, snapshot.quote);
+    final existing = await readHistorical(base: snapshot.base, quote: snapshot.quote);
+    final toSave = existing == null ? snapshot : existing.mergedWith(snapshot);
+
     _preferences.setString(
-      _historicalKey(snapshot.base, snapshot.quote, snapshot.rangeKey),
+      key,
       jsonEncode(<String, Object?>{
-        'base': snapshot.base,
-        'quote': snapshot.quote,
-        'rangeKey': snapshot.rangeKey,
-        'savedAt': snapshot.savedAt.toIso8601String(),
-        'data': snapshot.data.map(
+        'base': toSave.base,
+        'quote': toSave.quote,
+        'coveredFrom': toSave.coveredFrom.toIso8601String(),
+        'coveredTo': toSave.coveredTo.toIso8601String(),
+        'savedAt': toSave.savedAt.toIso8601String(),
+        'data': toSave.data.map(
           (date, rate) => MapEntry(date.toIso8601String(), rate),
         ),
       }),
     );
+    _trackKey(key);
   }
 
   @override
   Future<void> invalidateHistorical({
     required String base,
     required String quote,
-    required String rangeKey,
   }) async {
-    _preferences.remove(_historicalKey(base, quote, rangeKey));
+    final key = _historicalKey(base, quote);
+    _preferences.remove(key);
+    _untrackKey(key);
   }
 
   @override
   Future<void> clear() async {
-    // Note: getKeys() not available on sync SharedPreferences.
-    // Cache entries are keyed individually; this is a no-op for sync cache.
+    final keys = _trackedCacheKeys();
+    for (final key in keys) {
+      _preferences.remove(key);
+    }
+    _preferences.remove(_trackedKeys);
   }
 
   String _latestKey(String base) => 'latest_rates_$base';
 
-  String _historicalKey(String base, String quote, String rangeKey) =>
-      'historical_rates_${base}_${quote}_$rangeKey';
+  String _historicalKey(String base, String quote) =>
+      'historical_rates_${base}_$quote';
+
+  List<String> _trackedCacheKeys() {
+    final raw = _preferences.getString(_trackedKeys);
+    if (raw == null) return <String>[];
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is List) {
+        return decoded.whereType<String>().toList();
+      }
+    } catch (_) {}
+    return <String>[];
+  }
+
+  void _trackKey(String key) {
+    final keys = _trackedCacheKeys().toSet()..add(key);
+    _preferences.setString(_trackedKeys, jsonEncode(keys.toList()));
+  }
+
+  void _untrackKey(String key) {
+    final keys = _trackedCacheKeys().toSet()..remove(key);
+    _preferences.setString(_trackedKeys, jsonEncode(keys.toList()));
+  }
 
   Map<String, dynamic>? _decodeObject(String raw) {
     try {

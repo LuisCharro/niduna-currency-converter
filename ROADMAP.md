@@ -47,10 +47,10 @@ Phase 1 has four primary tabs.
 
 | Tab | Primary job | Required content | Required states | Explicitly excluded |
 |-----|-------------|------------------|-----------------|---------------------|
-| `Convert` | Convert one amount into the Phase 1 fiat set | amount input, base selector, 16 fiat result rows, favorite star per row, last updated, local-only/privacy signal, refresh action, banner reserve | fresh, loading refresh, cached, stale/offline, fetch error with cached fallback, empty/no-cache error | crypto, transfers, accounts, subscriptions, RUB |
+| `Convert` | Convert one amount into the Phase 1 fiat set | amount input, base selector, 16 fiat result rows, favorite star per row, last updated, local-only/privacy signal, refresh action, banner reserve | fresh, loading refresh, cached, stale/offline, fetch error with cached fallback, empty/no-cache error | crypto, transfers, accounts, RUB |
 | `Favorites` | Manage up to 3 local pairs | saved pair rows, last known value, delete/edit action, empty state, add/select pair flow | empty, 1-3 saved pairs, max reached, stale value, local storage error | cloud sync, login, unlimited favorites |
 | `Charts` | Review fiat history | fiat pair selector, 1W/1M/3M/6M/1Y/2Y ranges, chart, high/low/change, last updated | loading, fresh, cached, stale/offline, no historical data, fetch error with cached fallback | crypto charts, metals, export, multi-pair comparison |
-| `Settings` | Configure local behavior and trust surface | default base, decimal precision, theme, refresh-on-open, clear cache, cache status, Remove Ads, privacy/about/version | normal, cache cleared, restore purchase/loading, IAP unavailable, no network for purchase | accounts, cloud backup, subscriptions before Phase 2 |
+| `Settings` | Configure local behavior and trust surface | default base, decimal precision, theme, refresh-on-open, clear cache, cache status, Remove Ads, privacy/about/version, subscription restore/management entry | normal, cache cleared, restore purchase/loading, IAP unavailable, no network for purchase | accounts, cloud backup |
 
 Use this matrix as the first checklist before generating or editing Stitch
 screens. If a screen concept introduces excluded content, reject that part of
@@ -77,7 +77,7 @@ Must not include:
 
 - accounts
 - transfers
-- subscription upsells
+- aggressive paywall patterns
 - RUB
 - Phase 2 alert or backend features
 
@@ -137,7 +137,19 @@ Must not include:
 
 - account settings
 - backend account sync
-- subscription management before Phase 2 exists
+- backend-only subscription features
+
+### Monetization contract (Phase 1)
+
+- Active subscription unlocks all premium app features and hides ads.
+- Without subscription, users can still buy one-time unlocks.
+- If subscription expires, subscription-only access is removed.
+- If subscription expires, one-time unlocks remain active.
+- Charts defaults to `USD -> EUR` (with free swap to `EUR -> USD`).
+- Charts intraday ranges (`1H`, `6H`, `1D`) are subscription-only.
+- Charts "any pair" selection is unlocked by subscription or one-time Charts Pro.
+
+Implementation detail and edge cases live in `.agent/monetization-access-rules.md`.
 
 ## Data And Cache Contract
 

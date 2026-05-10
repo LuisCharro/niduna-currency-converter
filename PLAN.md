@@ -339,7 +339,7 @@ lib/
 - [ ] Slice 3: implement local favorites and max-3 rule across Convert/Favorites
 - [ ] Slice 4: implement fiat historical charts with pair/range cache
 - [ ] Slice 5: implement Settings preferences and cache controls
-- [ ] Slice 6: integrate banner ads and one-time Remove Ads IAP
+- [ ] Slice 6: integrate monetization entitlements (banner ads, Remove Ads, Charts Pro, Subscription)
 - [ ] Slice 7: decide optional crypto/backend strategy after MVP
 - [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates
 - [x] Write/update smoke tests as each slice becomes user-visible
@@ -348,6 +348,9 @@ lib/
 ---
 
 ## Phase 2 — Backend + Subscriptions
+
+Note: Phase 1 can include store subscription as a premium unlock bundle (no backend required).
+Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, server features).
 
 ### Trigger
 ~2,000 DAU or user demand for rate alerts.

@@ -27,6 +27,7 @@
 - CoinGecko API key required — do not embed it in the Phase 1 mobile app. Revisit only with backend/proxy or a deliberate public-key decision.
 - i18n: Phase 1 ships with **English only** — add DE, FR, IT, ES, PT in Phase 1.x updates
 - Rate alerts are deferred out of Phase 1. Phase 2 owns push alerts; optional in-app-only alerts can be reconsidered after the MVP ships.
+- Monetization access policy (approved): active subscription unlocks all premium features and hides ads; without subscription, users can still buy one-time unlocks.
 
 ---
 
@@ -45,6 +46,25 @@ first or defer the idea.
 - Phase 1 has four tabs only: `Convert`, `Favorites`, `Charts`, `Settings`.
 - Phase 1 is English only.
 - RUB is not supported.
+
+### Monetization access policy
+
+- Active subscription always removes ads and unlocks all premium app features.
+- Without an active subscription, one-time unlocks can still grant specific features.
+- If subscription is canceled or expires, subscription-only access is removed.
+- If subscription is canceled or expires, one-time unlocks remain owned and active.
+- Ads are shown only when both conditions are true:
+  - no active subscription
+  - no one-time Remove Ads ownership
+
+### Charts monetization policy
+
+- Free default chart pair is `USD -> EUR` (with free swap to `EUR -> USD`).
+- Free charts include ranges `1W`, `1M`, `3M`, `6M`, `1Y`, `2Y`.
+- Intraday ranges `1H`, `6H`, and `1D` are subscription-only.
+- "Choose any chart pair" is premium:
+  - unlocked by active subscription
+  - or unlocked by one-time Charts Pro ownership
 
 ### Screen ownership
 
