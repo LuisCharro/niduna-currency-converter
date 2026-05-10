@@ -42,7 +42,7 @@ first or defer the idea.
 - Phase 1 has no backend.
 - Phase 1 has no accounts, login, cloud sync, or user profile.
 - Phase 1 has zero tracking, zero analytics, and zero data collection.
-- Phase 1 monetization is banner ads, one-time Remove Ads (1.99 CHF), one-time Charts Pro, and optional subscription.
+- Phase 1 monetization is banner ads, one-time Remove Ads (1.99 CHF), one-time Charts Pro (2.99 CHF), and optional subscription (Coming Soon — pricing TBD).
 - Phase 1 has four tabs only: `Convert`, `Favorites`, `Charts`, `Settings`.
 - Phase 1 is English only.
 - RUB is not supported.
@@ -102,6 +102,16 @@ large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 - Keep purchase promises consistent:
   - Remove Ads must remove ad surfaces and ad prompts
   - subscription ad-removal behavior must remain consistent with one-time ownership fallback
+
+### IAP purchase products (Phase 1)
+
+| Product | Type | Price (CHF) | Note |
+|---------|------|-------------|------|
+| Remove Ads — forever | One-time | **1.99** | Core unlock; below My Currency Pro ($3.99) |
+| Charts Pro — all pairs forever | One-time | **2.99** | Unlocks any chart pair selection |
+| Subscription | Recurring | **Coming Soon** — "1 week free, then X.XX CHF/year" | Informational only in Phase 1; real pricing TBD |
+
+> Remove Ads purchase hides ALL ad surfaces AND removes rewarded-ad offer prompts (per monetization-access-rules.md).
 
 ## What's In / What's Out — Phase 1 (MVP)
 
@@ -226,9 +236,10 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 ### Recommended price points
 
 | Unlock | Type | Price (CHF) | Note |
-|--------|------|------------|------|
+|--------|------|-------------|------|
 | Remove Banner Ads — 30 days | Rental | 0.50 | Low friction; "try before you buy" |
 | Remove Banner Ads — forever | One-time | **1.99** | Core unlock; below My Currency Pro ($3.99) |
+| **Charts Pro — all pairs forever** | One-time | **2.99** | Unlocks any chart pair selection |
 | Save more than 3 favorite pairs | One-time | 0.50–0.99 | Power users |
 | Export chart as PNG/JPG | One-time | 0.99 | Clear use case |
 | Compare 2+ pairs on one chart | One-time | 0.99–1.50 | Power feature |

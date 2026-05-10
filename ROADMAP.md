@@ -132,7 +132,12 @@ Must include:
 - refresh-on-open preference (smart: only refetch if cache stale >24h)
 - clear cache action (clears rates + chart + temp unlocks)
 - last updated/cache status timestamp
-- Remove Ads one-time purchase entry (when IAP integrated)
+- **Premium section** with IAP purchase cards:
+  - Remove Ads one-time purchase entry
+  - Charts Pro one-time purchase entry
+  - Subscription (informational "Coming Soon" with pricing hint + "Notify Me" CTA)
+  - Restore Purchases text button
+- **"Remove ads" CTA row** below banner ad areas (Convert + Charts tabs): subtle text link below/beside the banner
 - Dev Sandbox section with entitlement toggles (visible during development)
 - privacy policy/about/version
 
@@ -156,8 +161,25 @@ Must not include:
 - Remove Ads purchase hides ALL ad surfaces AND removes rewarded-ad offer prompts.
 - Temporary unlocks persist in SharedPreferences and survive app restarts until expiry.
 
+#### IAP purchase products (Phase 1)
+
+| Product | Type | Price | Stub |
+|---------|------|-------|------|
+| Remove Ads | One-time | 1.99 CHF | ✅ (simulated 2s purchase) |
+| Charts Pro | One-time | 2.99 CHF | ✅ (simulated 2s purchase) |
+| Subscription | Recurring | Coming Soon — "1 week free, then X.XX CHF/year" | Informational only |
+
+#### Paywall entry points (Phase 1)
+
+| Entry point | Location | Product | UI type |
+|-------------|----------|---------|---------|
+| Settings Premium section | Settings tab | Remove Ads / Charts Pro / Subscription | Cards with Buy / Notify Me buttons |
+| Locked pair action sheet | Charts picker | Charts Pro | "Unlock all pairs forever" → IapPurchasePlayer |
+| Banner "Remove ads" CTA | Convert + Charts tabs | Remove Ads | Subtle text link below banner |
+
 Implementation detail and edge cases live in `.agent/monetization-access-rules.md`.
 Rewarded ad implementation plan lives in `.agent/rewarded-chart-unlock-plan.md`.
+IAP stub implementation plan lives in `.agent/iap-purchase-plan.md`.
 
 ## Data And Cache Contract
 
@@ -529,11 +551,16 @@ expanding code.
 
 ## Next Best Step
 
-Complete Slice 5 (Settings):
+Complete Slice 8 (IAP Paywall):
 
-- implement `AppPreferences` (ChangeNotifier backed by SharedPreferences)
-- add `defaultBaseCurrency`, `decimalPlaces` (2/3/4), `refreshOnOpen` preferences
-- rewrite Settings screen with real sections: Conversion, Data, Dev Sandbox, About
-- add banner ad under Charts screen (same pattern as Convert tab)
-- wire preferences into Convert controller (default base, decimal format) and Charts controller
-- keep Dev Sandbox toggles visible during development; add 3s long-press on Version for future hidden toggle
+- implement `PurchaseService` abstract interface (abstraction boundary for real Store Kit / Play Billing)
+- implement `PurchaseServiceStub` (~2s simulated purchase: loading → processing → success)
+- implement `IapPurchasePlayer` reusable fullscreen overlay widget
+- add `purchaseChartsPro()` + `purchaseRemoveAds()` to `MonetizationController`
+- add **Premium section** to Settings screen (3 cards: Remove Ads, Charts Pro, Subscription Coming Soon)
+- add "Remove ads →" CTA row below banner ads on Convert and Charts tabs
+- add intraday range lock toast ("Coming Soon with Premium Subscription")
+- wire `PurchaseServiceStub` into `MonetizationController` via `app.dart`
+- inject `IapPurchasePlayer` for the "buy_forever" path in chart currency picker
+- add "Restore Purchases" text button in Premium section
+- add IAP stub tests

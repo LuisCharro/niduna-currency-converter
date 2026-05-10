@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/monetization/models/temporary_unlock.dart';
 import '../../../core/monetization/monetization_controller.dart';
+import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../convert/widgets/ad_banner_placeholder.dart';
+import '../../settings/widgets/iap_purchase_player.dart';
 import 'locked_pair_action_sheet.dart';
 import 'rewarded_ad_player.dart';
 
@@ -88,9 +90,20 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
     if (!context.mounted || choice == null) return;
 
     if (choice == 'buy_forever') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Coming soon — Settings')),
+      final granted = await Navigator.of(context).push<bool>(
+        MaterialPageRoute<bool>(
+          fullscreenDialog: true,
+          builder: (_) => IapPurchasePlayer(
+            controller: widget.controller,
+            product: ProductType.chartsPro,
+            onResult: (success) => Navigator.of(context).pop(success),
+          ),
+        ),
       );
+
+      if (granted == true && context.mounted) {
+        Navigator.of(context).pop(code);
+      }
       return;
     }
 

@@ -2,18 +2,23 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/temporary_unlock.dart';
+import 'purchase_service.dart';
+import 'purchase_service_stub.dart';
 import 'rewarded_ad_service.dart';
 import 'rewarded_ad_service_stub.dart';
 import 'temporary_unlock_store.dart';
 
 class MonetizationController extends ChangeNotifier {
-  MonetizationController(this._preferences, {RewardedAdService? adService})
-      : _adService = adService ?? RewardedAdServiceStub() {
+  MonetizationController(this._preferences,
+      {RewardedAdService? adService, PurchaseService? purchaseService})
+      : _adService = adService ?? RewardedAdServiceStub(),
+        _purchaseService = purchaseService ?? PurchaseServiceStub() {
     _load();
   }
 
   final SharedPreferences _preferences;
   final RewardedAdService _adService;
+  final PurchaseService _purchaseService;
 
   static const String _subscriptionKey = 'entitlement_subscription_active';
   static const String _removeAdsKey = 'entitlement_remove_ads_lifetime';
@@ -174,5 +179,19 @@ class MonetizationController extends ChangeNotifier {
     _tempUnlocks.clear();
     _preferences.remove('temp_unlocks_registry');
     notifyListeners();
+  }
+
+  Future<bool> purchaseChartsPro() async {
+    final success = await _purchaseService.purchase(ProductType.chartsPro);
+    if (!success) return false;
+    await setChartsProLifetime(true);
+    return true;
+  }
+
+  Future<bool> purchaseRemoveAds() async {
+    final success = await _purchaseService.purchase(ProductType.removeAds);
+    if (!success) return false;
+    await setRemoveAdsLifetime(true);
+    return true;
   }
 }

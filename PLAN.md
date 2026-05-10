@@ -306,14 +306,17 @@ lib/
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| 16 fiat currencies | TODO | USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF |
-| Conversion | TODO | Client-side `amount × rate` |
-| Historical charts | TODO | Daily rates, up to 2 years |
-| Favorite pairs | TODO | Save up to 3 locally (SharedPreferences) |
-| Offline mode | TODO | Cache last known rates |
+| 16 fiat currencies | DONE | USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF |
+| Conversion | DONE | Client-side `amount × rate` |
+| Historical charts | DONE | Daily rates, up to 2 years |
+| Favorite pairs | DONE | Save up to 3 locally (SharedPreferences) |
+| Offline mode | DONE | Cache last known rates |
 | Dark mode | TODO | Free in 2026 |
-| Banner ads | TODO | Bottom banner, safe distance from input |
-| Remove Ads IAP | TODO | 1.99 CHF one-time |
+| Banner ads | DONE | Bottom banner, safe distance from input |
+| Remove Ads IAP | DONE | 1.99 CHF one-time (stub) |
+| Charts Pro IAP | DONE | Unlock all pairs forever (stub) |
+| Subscription UI | DONE | Coming Soon card (informational) |
+| Rewarded Ad (chart pair unlock) | DONE | 24h temporary unlock for pure-free users |
 
 ### Data Sources
 
@@ -339,9 +342,9 @@ lib/
 - [x] Slice 2: add Frankfurter latest-rates client/repository/cache for Convert
 - [x] Slice 3: implement local favorites and max-3 rule across Convert/Favorites
 - [x] Slice 4: implement fiat historical charts with pair/range cache
-- [ ] Slice 5: implement Settings preferences, cache controls, and chart banner ad
+- [x] Slice 5: implement Settings preferences, cache controls, and chart banner ad
 - [x] Slice 6: integrate monetization entitlements and ad runtime (banner ads, Remove Ads, Charts Pro, Subscription, optional rewarded unlock)
-- [ ] Slice 7: decide optional crypto/backend strategy after MVP
+- [ ] Slice 8: IAP paywall — PurchaseService stub, IapPurchasePlayer, Settings Premium section, Remove Ads + Charts Pro + Subscription (Coming Soon) buttons, banner CTA, intraday "coming soon" toast
 - [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates
 - [x] Write/update smoke tests as each slice becomes user-visible
 - [ ] Build and test APK before release candidate

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../core/currency/supported_currencies.dart';
 import '../../core/monetization/monetization_controller.dart';
+import '../../core/monetization/purchase_service.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../core/theme/app_theme.dart';
+import 'widgets/iap_purchase_player.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({
@@ -43,6 +45,10 @@ class SettingsScreen extends StatelessWidget {
         _RefreshOnOpenTile(preferences: preferences),
         const SizedBox(height: 10),
         _ClearCacheTile(onClearCache: onClearCache),
+        const SizedBox(height: 20),
+        _SectionHeader(title: '💎 Premium'),
+        const SizedBox(height: 8),
+        _PremiumSection(monetization: monetization),
         const SizedBox(height: 20),
         if (preferences.devMode) ...[
           _SectionHeader(title: 'Dev Sandbox'),
@@ -516,6 +522,203 @@ class _SettingsTile extends StatelessWidget {
             trailing,
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _PremiumSection extends StatelessWidget {
+  const _PremiumSection({required this.monetization});
+  final MonetizationController monetization;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        _PremiumCard(
+          icon: Icons.visibility_off,
+          title: 'Remove Ads',
+          description: 'Enjoy the app without any advertisements',
+          price: '1.99 CHF',
+          owned: monetization.hasRemoveAdsLifetime,
+          onBuy: () => _purchase(context, ProductType.removeAds),
+        ),
+        const SizedBox(height: 10),
+        _PremiumCard(
+          icon: Icons.diamond_outlined,
+          title: 'Unlock All Pairs',
+          description: 'Select any currency pair in Charts — forever',
+          price: '2.99 CHF',
+          owned: monetization.hasChartsProLifetime,
+          onBuy: () => _purchase(context, ProductType.chartsPro),
+        ),
+        const SizedBox(height: 10),
+        _SubscriptionCard(),
+        const SizedBox(height: 12),
+        TextButton(
+          onPressed: () => _restorePurchases(context),
+          child: Text(
+            'Restore Purchases',
+            style: TextStyle(fontSize: 13, color: AppTheme.muted),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _purchase(BuildContext context, ProductType product) {
+    Navigator.of(context).push(
+      MaterialPageRoute<bool>(
+        fullscreenDialog: true,
+        builder: (_) => IapPurchasePlayer(
+          controller: monetization,
+          product: product,
+          onResult: (success) => Navigator.of(context).pop(success),
+        ),
+      ),
+    );
+  }
+
+  void _restorePurchases(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Restore purchases coming soon!')),
+    );
+  }
+}
+
+class _PremiumCard extends StatelessWidget {
+  const _PremiumCard({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.price,
+    required this.owned,
+    required this.onBuy,
+  });
+
+  final IconData icon;
+  final String title;
+  final String description;
+  final String price;
+  final bool owned;
+  final VoidCallback onBuy;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
+      decoration: BoxDecoration(
+        color: AppTheme.card,
+        borderRadius: BorderRadius.circular(AppTheme.radius),
+        border: Border.all(color: AppTheme.border),
+      ),
+      child: Row(
+        children: <Widget>[
+          Icon(icon, size: 22, color: owned ? Colors.green.shade400 : AppTheme.primary),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(title,
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 2),
+                Text(description, style: TextStyle(fontSize: 12, color: AppTheme.muted)),
+              ],
+            ),
+          ),
+          if (owned)
+            Icon(Icons.check_circle, size: 20, color: Colors.green.shade400)
+          else ...[
+            GestureDetector(
+              onTap: onBuy,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppTheme.primary,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  price,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _SubscriptionCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
+      decoration: BoxDecoration(
+        color: AppTheme.card,
+        borderRadius: BorderRadius.circular(AppTheme.radius),
+        border: Border.all(color: AppTheme.border),
+      ),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.star_outline, size: 22, color: AppTheme.muted),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Premium Subscription',
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 2),
+                Text(
+                    'Everything included + intraday ranges (1H/6H/1D)',
+                    style: TextStyle(fontSize: 12, color: AppTheme.muted)),
+                const SizedBox(height: 4),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.construction, size: 12, color: AppTheme.subtle),
+                    const SizedBox(width: 4),
+                    Text('Coming Soon',
+                        style: TextStyle(fontSize: 11, color: AppTheme.subtle)),
+                    const SizedBox(width: 8),
+                    Text('• 1 week free, then X.XX CHF/year',
+                        style: TextStyle(fontSize: 11, color: AppTheme.muted)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Text('We\'ll notify you when Premium is ready!')),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppTheme.container,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppTheme.border),
+              ),
+              child: Text(
+                'Notify Me',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppTheme.muted,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

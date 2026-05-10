@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/monetization/monetization_controller.dart';
+import '../../core/monetization/purchase_service.dart';
 import '../../core/theme/app_theme.dart';
 import '../convert/widgets/ad_banner_placeholder.dart';
+import '../settings/widgets/iap_purchase_player.dart';
 import 'presentation/charts_controller.dart';
 import 'widgets/chart_summary.dart';
 import 'widgets/pair_selector.dart';
@@ -40,6 +42,19 @@ class _ChartsScreenState extends State<ChartsScreen> {
       _lastPairKey = '${widget.controller.state.quote}-${widget.controller.state.base}';
     });
     widget.controller.swapPair();
+  }
+
+  void _showRemoveAds(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<bool>(
+        fullscreenDialog: true,
+        builder: (_) => IapPurchasePlayer(
+          controller: widget.monetization,
+          product: ProductType.removeAds,
+          onResult: (success) => Navigator.of(context).pop(success),
+        ),
+      ),
+    );
   }
 
   @override
@@ -104,7 +119,21 @@ if (state.lastUpdated != null) ...[
               ),
               if (widget.monetization.adsEnabled) ...[
                 const Divider(height: 1),
-                const AdBannerPlaceholder(),
+                Column(
+                  children: [
+                    const AdBannerPlaceholder(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6, bottom: 2),
+                      child: GestureDetector(
+                        onTap: () => _showRemoveAds(context),
+                        child: Text(
+                          'Enjoy without ads · Remove ads →',
+                          style: TextStyle(fontSize: 12, color: AppTheme.muted),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ],
           );

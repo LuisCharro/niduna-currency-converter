@@ -155,18 +155,148 @@ Trigger upgrade UI when:
 
 - user taps locked chart pair selection (without Subscription or Charts Pro)
 - user taps intraday range (`1H`, `6H`, `1D`) without Subscription
-
-Trigger rewarded unlock UI when:
-
-- user is pure-free and taps a locked chart pair
-- user is shown opt-in CTA to watch ad and unlock selected pair for `24h`
+- user taps "Remove ads" CTA below banner
 
 Recommended copy themes:
 
 - Pair lock: "Unlock all chart pairs"
 - Intraday lock: "Unlock intraday ranges with Subscription"
+- Banner CTA: "Remove ads →" (subtle text link below banner)
 
 Keep CTA text short and specific.
+
+---
+
+## IAP Purchase Products (Phase 1)
+
+### Product catalog
+
+| Product | Type | Price | Stub | Entitlement on success |
+|--------|------|-------|------|------------------------|
+| `removeAds` | One-time | 1.99 CHF | ✅ | `setRemoveAdsLifetime(true)` |
+| `chartsPro` | One-time | 2.99 CHF | ✅ | `setChartsProLifetime(true)` |
+| `subscription` | Recurring | Coming Soon | N/A (informational) | Informational only |
+
+### Subscription "Coming Soon" treatment (Phase 1)
+
+- Subscription card is **informational only** — not clickable for purchase
+- Shows pricing hint: "1 week free, then X.XX CHF/year"
+- Button says `[Notify Me]` — tapping shows toast: "We'll notify you when Premium is ready!"
+- Does NOT call `PurchaseService` — no backend yet
+- When real subscriptions are built (Phase 2): swap card to active state, wire to service
+
+### IAP stub architecture
+
+Identical pattern to `RewardedAdService`:
+
+```
+lib/src/core/monetization/
+├── purchase_service.dart          ← abstract interface: Future<bool> purchase(ProductType)
+└── purchase_service_stub.dart    ← stub: ~2s simulated purchase → always returns true
+```
+
+`PurchaseServiceStub` phases:
+1. "Purchasing..." spinner (~800ms)
+2. "Processing payment..." spinner (~1200ms)
+3. "✓ Purchase complete!" green check (~1s)
+4. Auto-dismiss, `onResult(true)` called
+
+When real IAP is integrated (Phase 2): replace `PurchaseServiceStub` with real Store Kit / Play Billing implementation. Zero UI changes needed.
+
+### IAP purchase player (`IapPurchasePlayer`)
+
+Reusable fullscreen overlay (same pattern as `RewardedAdPlayer`):
+
+```dart
+class IapPurchasePlayer extends StatefulWidget {
+  final MonetizationController controller;
+  final ProductType product; // removeAds | chartsPro | subscription
+  final void Function(bool success) onResult;
+}
+```
+
+Phase machine: `loading` → `processing` → `completed` | `failed`
+
+Called from:
+- Settings Premium section Remove Ads card → `product: removeAds`
+- Settings Premium section Charts Pro card → `product: chartsPro`
+- Charts picker "Unlock all pairs forever" → `product: chartsPro`
+- Banner "Remove ads" CTA → `product: removeAds`
+
+---
+
+## Paywall Entry Points
+
+| Entry point | Screen | Product | Trigger UI |
+|-------------|---------|---------|------------|
+| Premium section | Settings | Remove Ads | Card with [Buy] button → `IapPurchasePlayer` |
+| Premium section | Settings | Charts Pro | Card with [Buy] button → `IapPurchasePlayer` |
+| Premium section | Settings | Subscription | Card with [Notify Me] button → toast |
+| Locked pair action sheet | Charts picker | Charts Pro | "Unlock all pairs forever" → `IapPurchasePlayer` |
+| Banner "Remove ads" CTA | Convert + Charts | Remove Ads | Text link below banner → `IapPurchasePlayer` |
+| Intraday range lock | Charts | Subscription | Tap 1H/6H/1D → SnackBar "Coming Soon with Premium" |
+| Max favorites card | Favorites | Favorites unlock | Future Phase 2 |
+
+---
+
+## Remove Ads Purchase Rules
+
+- Remove Ads purchase hides ALL ad surfaces (Convert tab, Charts tab, picker sheet banner)
+- Remove Ads purchase removes ALL rewarded-ad offer prompts (users should never be prompted to watch ads after purchasing Remove Ads)
+- Remove Ads is a **permanent** one-time unlock stored in SharedPreferences (`entitlement_remove_ads_lifetime`)
+- Remove Ads owners can still buy Charts Pro for pair selection + subscription for intraday ranges
+
+---
+
+## Subscription (Phase 1 — Informational Only)
+
+Phase 1 shows subscription as "Coming Soon" without purchase functionality.
+
+Rules:
+
+- Subscription card is **disabled** (informational) until real IAP is wired
+- Shows: "🚧 Coming Soon", "1 week free, then X.XX CHF/year", `[Notify Me]` button
+- Tapping `Notify Me` → toast confirmation (future: stored interest list)
+- When subscription is active (Phase 2+): `hasActiveSubscription = true` unlocks everything
+- Subscription expiry: falls back to owned one-time unlocks (Remove Ads, Charts Pro)
+
+---
+
+## Edge Cases
+
+### Subscription expires after prior use
+
+- Remove subscription-only access immediately after entitlement refresh.
+- Keep lifetime unlocks active.
+
+### User has both one-time unlocks and subscription
+
+- Subscription active state still governs access (superset).
+- On expiration, fallback to one-time unlock scope.
+
+### Offline launch
+
+- Use last known valid entitlement cache.
+- Revalidate with store when network returns.
+- Do not grant new premium access without prior entitlement proof.
+- Temporary rewarded unlocks can still work offline until expiration.
+
+### Restore purchases
+
+- Restored one-time purchases must reactivate immediately.
+- Restored subscription state follows store active/inactive status.
+- "Restore Purchases" button in Settings Premium section triggers store restore flow.
+
+### Remove Ads + Rewarded conflict
+
+- Users with Remove Ads ownership must not see rewarded-ad prompts.
+- If user buys Remove Ads after using rewarded unlocks, rewarded prompts stop immediately.
+
+### User buys Charts Pro after Remove Ads
+
+- Both entitlements are independent and stack correctly.
+- Charts Pro enables pair selection; Remove Ads hides ad surfaces.
+- No conflicts.
 
 ---
 
