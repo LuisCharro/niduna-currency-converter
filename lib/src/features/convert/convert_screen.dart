@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../../core/monetization/monetization_controller.dart';
 import '../../core/theme/app_theme.dart';
 import 'presentation/convert_controller.dart';
 import 'widgets/ad_banner_placeholder.dart';
 import 'widgets/convert_content.dart';
 
 class ConvertScreen extends StatelessWidget {
-  const ConvertScreen({required this.controller, super.key});
+  const ConvertScreen({
+    required this.controller,
+    required this.monetization,
+    super.key,
+  });
 
   final ConvertController controller;
+  final MonetizationController monetization;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +37,15 @@ class ConvertScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const AdBannerPlaceholder(),
+            ListenableBuilder(
+              listenable: monetization,
+              builder: (context, _) {
+                if (!monetization.adsEnabled) {
+                  return const SizedBox.shrink();
+                }
+                return const AdBannerPlaceholder();
+              },
+            ),
           ],
         ),
       ),

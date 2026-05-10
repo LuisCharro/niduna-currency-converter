@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../core/monetization/monetization_controller.dart';
 import '../../core/theme/app_theme.dart';
 import 'presentation/charts_controller.dart';
 import 'widgets/chart_summary.dart';
@@ -11,10 +12,12 @@ import 'widgets/rate_chart.dart';
 class ChartsScreen extends StatefulWidget {
   const ChartsScreen({
     required this.controller,
+    required this.monetization,
     super.key,
   });
 
   final ChartsController controller;
+  final MonetizationController monetization;
 
   @override
   State<ChartsScreen> createState() => _ChartsScreenState();
@@ -35,36 +38,43 @@ class _ChartsScreenState extends State<ChartsScreen> {
         listenable: widget.controller,
         builder: (context, _) {
           final state = widget.controller.state;
-          return Column(
-            children: <Widget>[
+          return ListenableBuilder(
+            listenable: widget.monetization,
+            builder: (context, _) {
+              return Column(
+                children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        PairSelector(
-                          base: state.base,
-                          quote: state.quote,
-                          onPairChanged: widget.controller.setPair,
-                        ),
-                        const Spacer(),
-                        if (state.lastUpdated != null)
-                          Text(
-                            'Updated ${DateFormat('MMM d').format(state.lastUpdated!)}',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: AppTheme.muted,
-                            ),
-                          ),
-                      ],
+                    PairSelector(
+                      base: state.base,
+                      quote: state.quote,
+                      onPairChanged: widget.controller.setPair,
+                      onSwap: widget.controller.swapPair,
+                      canSelectAnyPair: widget.monetization.canSelectAnyChartPair,
+                      adsEnabled: widget.monetization.adsEnabled,
                     ),
+                    if (state.lastUpdated != null) ...[
+                      const SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          'Updated ${DateFormat('MMM d').format(state.lastUpdated!)}',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: AppTheme.muted,
+                          ),
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 12),
                     SizedBox(
                       height: 36,
                       child: RangeSelector(
                         selected: state.range,
                         onChanged: widget.controller.setRange,
+                        canUseLockedRanges: widget.monetization.canUseIntradayRanges,
                       ),
                     ),
                   ],
@@ -81,7 +91,9 @@ class _ChartsScreenState extends State<ChartsScreen> {
                   changePercent: state.changePercent,
                 ),
               ),
-            ],
+                ],
+              );
+            },
           );
         },
       ),
@@ -104,9 +116,23 @@ class _ChartsScreenState extends State<ChartsScreen> {
       return _EmptyChart();
     }
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-      child: RateChart(data: state.data),
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 240),
+      switchInCurve: Curves.easeOut,
+      switchOutCurve: Curves.easeIn,
+      transitionBuilder: (child, animation) {
+        final slide = Tween<Offset>(begin: const Offset(.03, 0), end: Offset.zero)
+            .animate(animation);
+        return FadeTransition(
+          opacity: animation,
+          child: SlideTransition(position: slide, child: child),
+        );
+      },
+      child: Padding(
+        key: ValueKey<String>('${state.base}-${state.quote}-${state.range.label}'),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+        child: RateChart(data: state.data),
+      ),
     );
   }
 }

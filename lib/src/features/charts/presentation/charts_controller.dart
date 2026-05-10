@@ -109,6 +109,12 @@ class ChartsController extends ChangeNotifier {
     _load();
   }
 
+  void swapPair() {
+    final nextBase = _state.quote;
+    final nextQuote = _state.base;
+    setPair(nextBase, nextQuote);
+  }
+
   void load() {
     if (_state.status == ChartStatus.loading) return;
     _setState(_state.copyWith(status: ChartStatus.loading));

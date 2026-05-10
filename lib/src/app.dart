@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/monetization/monetization_controller.dart';
 import 'core/theme/app_theme.dart';
 import 'core/rates/rates_service.dart';
 import 'core/rates/clients/frankfurter_client.dart';
@@ -59,6 +60,7 @@ class _AppState extends State<AppShell> {
   FavoritesStore? _localStore;
   ConvertController? _controller;
   ChartsController? _chartsController;
+  MonetizationController? _monetization;
   bool _ready = false;
 
   FavoritesStore get _favoritesStore =>
@@ -90,6 +92,7 @@ class _AppState extends State<AppShell> {
     _controller!.load();
 
     final ratesCache = SharedPreferencesRatesCache(prefs);
+    _monetization = MonetizationController(prefs);
     final ratesService = RatesService(
       client: FrankfurterClient(),
       cache: ratesCache,
@@ -115,14 +118,17 @@ class _AppState extends State<AppShell> {
       return const Material(child: Center(child: CircularProgressIndicator()));
     }
     final screens = <Widget>[
-      ConvertScreen(controller: _controller!),
+      ConvertScreen(controller: _controller!, monetization: _monetization!),
       FavoritesScreen(
         favoritesStore: _favoritesStore,
         controller: _controller!,
         onNavigateToConvert: _navigateToConvert,
       ),
-      ChartsScreen(controller: _chartsController!),
-      const SettingsScreen(),
+      ChartsScreen(
+        controller: _chartsController!,
+        monetization: _monetization!,
+      ),
+      SettingsScreen(monetization: _monetization!),
     ];
 
     return Scaffold(

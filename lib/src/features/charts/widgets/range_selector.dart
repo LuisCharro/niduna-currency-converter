@@ -7,11 +7,13 @@ class RangeSelector extends StatelessWidget {
   const RangeSelector({
     required this.selected,
     required this.onChanged,
+    required this.canUseLockedRanges,
     super.key,
   });
 
   final ChartRange selected;
   final ValueChanged<ChartRange> onChanged;
+  final bool canUseLockedRanges;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class RangeSelector extends StatelessWidget {
       child: Row(
         children: ChartRange.values.map((range) {
           final isSelected = range == selected;
-          final isLocked = range.locked;
+          final isLocked = range.locked && !canUseLockedRanges;
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: GestureDetector(
@@ -28,7 +30,7 @@ class RangeSelector extends StatelessWidget {
                 if (isLocked) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Coming soon — requires real-time data source'),
+                      content: Text('Intraday ranges require Subscription'),
                     ),
                   );
                   return;
