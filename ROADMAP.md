@@ -105,11 +105,13 @@ Purpose: fiat historical review.
 
 Must include:
 
-- fiat pair selector
-- 1W, 1M, 3M, 6M, 1Y, 2Y ranges
+- fiat pair selector (base + quote, with per-pair lock/unlock state)
+- 1W, 1M, 3M, 6M, 1Y, 2Y ranges (intraday 1H/6H/1D locked behind subscription)
 - historical line chart
 - high, low, and change summary
 - loading, cached, stale, and error states
+- locked-pair UI with rewarded-ad unlock flow (opt-in, 24h temporary access)
+- temp-unlock visual indicators (24h badge, primary-tinted avatar)
 
 Must not include:
 
@@ -148,8 +150,13 @@ Must not include:
 - Charts defaults to `USD -> EUR` (with free swap to `EUR -> USD`).
 - Charts intraday ranges (`1H`, `6H`, `1D`) are subscription-only.
 - Charts "any pair" selection is unlocked by subscription or one-time Charts Pro.
+- Pure-free users (no subscription, no Remove Ads, no Charts Pro) can unlock individual chart pairs for 24h by watching a Rewarded Ad.
+- Rewarded Ad grants bidirectional temporary access to one pair; does NOT unlock intraday ranges.
+- Remove Ads purchase hides ALL ad surfaces AND removes rewarded-ad offer prompts.
+- Temporary unlocks persist in SharedPreferences and survive app restarts until expiry.
 
 Implementation detail and edge cases live in `.agent/monetization-access-rules.md`.
+Rewarded ad implementation plan lives in `.agent/rewarded-chart-unlock-plan.md`.
 
 ## Data And Cache Contract
 
@@ -213,6 +220,7 @@ Stores:
 - latest fiat cache
 - historical chart cache
 - IAP/ad-removal state when implemented
+- temporary chart-pair unlocks (24h TTL, per canonical pair key)
 
 Phase 1 has no account, no backend, no cloud sync, and no tracking.
 

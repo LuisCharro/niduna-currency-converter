@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import 'chart_currency_picker_sheet.dart';
 
@@ -10,8 +11,7 @@ class PairSelector extends StatelessWidget {
     required this.quote,
     required this.onPairChanged,
     required this.onSwap,
-    required this.canSelectAnyPair,
-    required this.adsEnabled,
+    required this.controller,
     super.key,
   });
 
@@ -19,8 +19,7 @@ class PairSelector extends StatelessWidget {
   final String quote;
   final void Function(String base, String quote) onPairChanged;
   final VoidCallback onSwap;
-  final bool canSelectAnyPair;
-  final bool adsEnabled;
+  final MonetizationController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -53,43 +52,23 @@ class PairSelector extends StatelessWidget {
       isScrollControlled: true,
       showDragHandle: true,
       backgroundColor: AppTheme.card,
-      builder: (_) {
-        return ChartCurrencyPickerSheet(
-          title: selectingBase ? 'Select base currency' : 'Select quote currency',
-          selectedCode: selectingBase ? base : quote,
-          adsEnabled: adsEnabled,
-          canSelectAnyPair: canSelectAnyPair,
-        );
-      },
+      builder: (_) => ChartCurrencyPickerSheet(
+        title: selectingBase ? 'Select base currency' : 'Select quote currency',
+        selectedCode: selectingBase ? base : quote,
+        controller: controller,
+        baseCurrency: base,
+        quoteCurrency: quote,
+        selectingBase: selectingBase,
+      ),
     );
 
-    if (!context.mounted) return;
-
-    if (selected == null) return;
+    if (!context.mounted || selected == null) return;
 
     final nextBase = selectingBase ? selected : base;
     final nextQuote = selectingBase ? quote : selected;
     if (nextBase == nextQuote) return;
 
-    if (!_isPairUnlocked(nextBase, nextQuote)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Unlock Charts Pro or Subscription for any pair selection'),
-        ),
-      );
-      return;
-    }
-
     onPairChanged(nextBase, nextQuote);
-  }
-
-  bool _isPairUnlocked(String nextBase, String nextQuote) {
-    if (canSelectAnyPair) {
-      return true;
-    }
-    final isUsdEur = nextBase == 'USD' && nextQuote == 'EUR';
-    final isEurUsd = nextBase == 'EUR' && nextQuote == 'USD';
-    return isUsdEur || isEurUsd;
   }
 }
 

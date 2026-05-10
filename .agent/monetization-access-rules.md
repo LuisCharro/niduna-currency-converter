@@ -55,6 +55,7 @@ Notes:
 - Ads are visible unless `hasRemoveAdsLifetime` is true.
 - Chart pair selection is unlocked only if `hasChartsProLifetime` is true.
 - Intraday ranges remain locked (subscription feature).
+- Pure-free users can optionally use Rewarded Ad for temporary chart-pair unlock.
 
 ### 3) Subscription canceled or expired
 
@@ -75,6 +76,7 @@ Notes:
 | Ranges `1W/1M/3M/6M/1Y/2Y` | Yes | Yes | Yes | Yes |
 | Intraday `1H/6H/1D` | No | No | No | Yes |
 | "All premium chart features" | No | No | Partial | Yes |
+| Rewarded ad offer for temporary pair unlock | Yes | No | No | No need |
 
 ---
 
@@ -99,6 +101,9 @@ Notes:
 - Free users can use only `USD <-> EUR` in charts.
 - If free user taps a locked currency selection path, show lock state + upgrade CTA.
 - If non-subscriber taps `1H`, `6H`, or `1D`, show lock state + subscription CTA.
+- Rewarded ad unlock applies only to chart pair selection, not intraday ranges.
+- Rewarded unlock duration is temporary (`24h`) and pair-specific.
+- Rewarded unlock must be bidirectional for the pair (`USD<->GBP`, not one direction only).
 
 ---
 
@@ -135,6 +140,13 @@ canSelectAnyChartPair = hasActiveSubscription || hasChartsProLifetime
 canUseIntradayRanges = hasActiveSubscription
 ```
 
+Recommended additional helpers:
+
+```text
+canOfferRewardedChartUnlock = !hasActiveSubscription && !hasRemoveAdsLifetime && !hasChartsProLifetime
+isChartPairUnlocked = defaultFreePair || hasActiveSubscription || hasChartsProLifetime || temporaryPairUnlockActive
+```
+
 ---
 
 ## Paywall Trigger Rules
@@ -143,6 +155,11 @@ Trigger upgrade UI when:
 
 - user taps locked chart pair selection (without Subscription or Charts Pro)
 - user taps intraday range (`1H`, `6H`, `1D`) without Subscription
+
+Trigger rewarded unlock UI when:
+
+- user is pure-free and taps a locked chart pair
+- user is shown opt-in CTA to watch ad and unlock selected pair for `24h`
 
 Recommended copy themes:
 
@@ -170,11 +187,17 @@ Keep CTA text short and specific.
 - Use last known valid entitlement cache.
 - Revalidate with store when network returns.
 - Do not grant new premium access without prior entitlement proof.
+- Temporary rewarded unlocks can still work offline until expiration.
 
 ### Restore purchases
 
 - Restored one-time purchases must reactivate immediately.
 - Restored subscription state follows store active/inactive status.
+
+### Remove Ads + Rewarded conflict
+
+- Users with Remove Ads ownership must not see rewarded-ad prompts.
+- If user buys Remove Ads after using rewarded unlocks, rewarded prompts stop immediately.
 
 ---
 
@@ -184,11 +207,14 @@ Validate all flows below:
 
 - Free user sees ads and locked pair selection beyond `USD <-> EUR`.
 - Free user sees locked intraday ranges.
+- Free user can watch rewarded ad and unlock selected pair temporarily.
 - Remove Ads user sees no ads but still has locked pair/intraday unless separately unlocked.
+- Remove Ads user never sees rewarded unlock option.
 - Charts Pro user can pick any pair but still sees ads and locked intraday ranges.
 - Subscription user gets no ads + any pair + intraday ranges.
 - Subscription canceled user falls back correctly to owned one-time unlocks.
 - Restore purchases restores expected entitlement state.
+- Temporary unlock expires and relocks pair automatically.
 
 ---
 

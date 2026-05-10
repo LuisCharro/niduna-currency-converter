@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/monetization/monetization_controller.dart';
+import 'core/monetization/rewarded_ad_service_stub.dart';
 import 'core/theme/app_theme.dart';
 import 'core/rates/rates_service.dart';
 import 'core/rates/clients/frankfurter_client.dart';
@@ -92,7 +93,8 @@ class _AppState extends State<AppShell> {
     _controller!.load();
 
     final ratesCache = SharedPreferencesRatesCache(prefs);
-    _monetization = MonetizationController(prefs);
+    final adService = RewardedAdServiceStub();
+    _monetization = MonetizationController(prefs, adService: adService);
     final ratesService = RatesService(
       client: FrankfurterClient(),
       cache: ratesCache,

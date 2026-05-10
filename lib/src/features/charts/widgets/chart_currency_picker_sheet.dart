@@ -1,93 +1,217 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/monetization/models/temporary_unlock.dart';
+import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../convert/widgets/ad_banner_placeholder.dart';
+import 'locked_pair_action_sheet.dart';
+import 'rewarded_ad_player.dart';
 
 class ChartCurrencyPickerSheet extends StatefulWidget {
   const ChartCurrencyPickerSheet({
     required this.title,
     required this.selectedCode,
-    required this.adsEnabled,
-    required this.canSelectAnyPair,
+    required this.controller,
+    required this.baseCurrency,
+    required this.quoteCurrency,
+    required this.selectingBase,
     super.key,
   });
 
   final String title;
   final String selectedCode;
-  final bool adsEnabled;
-  final bool canSelectAnyPair;
+  final MonetizationController controller;
+  final String baseCurrency;
+  final String quoteCurrency;
+  final bool selectingBase;
 
   @override
-  State<ChartCurrencyPickerSheet> createState() => _ChartCurrencyPickerSheetState();
+  State<ChartCurrencyPickerSheet> createState() =>
+      _ChartCurrencyPickerSheetState();
 }
 
 class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
   String _query = '';
 
+  /// The other side of the pair — what stays fixed while user picks.
+  String get _fixedSide =>
+      widget.selectingBase ? widget.quoteCurrency : widget.baseCurrency;
+
+  bool _isUnlocked(String code) {
+    if (code == _fixedSide) return true; // the fixed side is always valid
+    final candidateBase = widget.selectingBase ? code : widget.baseCurrency;
+    final candidateQuote = widget.selectingBase ? widget.quoteCurrency : code;
+    return widget.controller.isChartPairUnlocked(candidateBase, candidateQuote);
+  }
+
+  bool _isTempUnlocked(String code) {
+    if (code == _fixedSide) return false; // fixed side never shows temp badge
+    if (_isFreeDefaultCurrency(code)) return false;
+    final candidateBase = widget.selectingBase ? code : widget.baseCurrency;
+    final candidateQuote = widget.selectingBase ? widget.quoteCurrency : code;
+    final canonical =
+        TemporaryUnlock.canonicalKey(candidateBase, candidateQuote);
+    // Free-default pairs are permanently unlocked, not "temp"
+    if (_isFreeDefaultPair(candidateBase, candidateQuote)) return false;
+    return widget.controller.tempUnlockedCodes.contains(canonical);
+  }
+
+  bool _isSameAsFixed(String code) => code == _fixedSide;
+
+  static const _freeDefaults = {'USD', 'EUR'};
+
+  bool _isFreeDefaultCurrency(String code) => _freeDefaults.contains(code);
+
+  bool _isFreeDefaultPair(String a, String b) {
+    final sorted = [a, b]..sort();
+    return sorted[0] == 'EUR' && sorted[1] == 'USD';
+  }
+
+  Future<void> _showLockedAction(BuildContext context, String code) async {
+    final choice = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      backgroundColor: AppTheme.card,
+      builder: (_) => SafeArea(
+        top: false,
+        child: LockedPairActionSheet(
+          onWatchAd: () => Navigator.of(context).pop('watch_ad'),
+          onBuyForever: () {
+            Navigator.of(context).pop('buy_forever');
+          },
+        ),
+      ),
+    );
+
+    if (!context.mounted || choice == null) return;
+
+    if (choice == 'buy_forever') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Coming soon — Settings')),
+      );
+      return;
+    }
+
+    final adBase = widget.selectingBase ? code : widget.baseCurrency;
+    final adQuote = widget.selectingBase ? widget.quoteCurrency : code;
+
+    final granted = await Navigator.of(context).push<bool>(
+      MaterialPageRoute<bool>(
+        fullscreenDialog: true,
+        builder: (_) => RewardedAdPlayer(
+          controller: widget.controller,
+          base: adBase,
+          quote: adQuote,
+          onResult: (success) => Navigator.of(context).pop(success),
+        ),
+      ),
+    );
+
+    if (granted == true && context.mounted) {
+      Navigator.of(context).pop(code);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final currencies = supportedCurrencies.where(_matches).toList();
-
     return SafeArea(
       top: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 6, 20, 20),
-        child: Column(
-          children: <Widget>[
-            Text(widget.title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-            const SizedBox(height: 12),
-            TextField(
-              onChanged: (value) => setState(() => _query = value.trim().toUpperCase()),
-              decoration: InputDecoration(
-                hintText: 'Search code or currency name',
-                prefixIcon: const Icon(Icons.search),
-                isDense: true,
-                filled: true,
-                fillColor: AppTheme.container.withValues(alpha: .55),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppTheme.radius),
-                  borderSide: BorderSide(color: AppTheme.border),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            if (widget.adsEnabled) ...[
-              const AdBannerPlaceholder(),
-              const SizedBox(height: 8),
-            ],
-            Expanded(
-              child: ListView.separated(
-                itemCount: currencies.length,
-                separatorBuilder: (context, index) =>
-                    Divider(height: 1, color: AppTheme.border),
-                itemBuilder: (context, index) {
-                  final currency = currencies[index];
-                  final isSelected = currency.code == widget.selectedCode;
-                  final isFreePair = currency.code == 'USD' || currency.code == 'EUR';
-                  final isEnabled = widget.canSelectAnyPair || isFreePair;
-                  return ListTile(
-                    enabled: isEnabled,
-                    onTap: isEnabled
-                        ? () => Navigator.of(context).pop(currency.code)
-                        : null,
-                    leading: CircleAvatar(
-                      backgroundColor: AppTheme.container,
-                      child: Text(currency.symbol),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 6, 20, 8),
+            child: Row(
+              children: <Widget>[
+                Text(widget.title,
+                    style:
+                        const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                const Spacer(),
+                Material(
+                  color: Colors.transparent,
+                  shape: const CircleBorder(),
+                  child: InkWell(
+                    onTap: () => Navigator.of(context).pop(),
+                    borderRadius: BorderRadius.circular(14),
+                    child: Ink(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: AppTheme.border.withValues(alpha: .3)),
+                      ),
+                      child: Icon(Icons.close, size: 16, color: AppTheme.muted),
                     ),
-                    title: Text(currency.code),
-                    subtitle: Text(currency.name),
-                    trailing: isSelected
-                        ? Icon(Icons.check_circle, color: AppTheme.primary)
-                        : isEnabled
-                        ? Icon(Icons.chevron_right, color: AppTheme.subtle)
-                        : Icon(Icons.lock_outline, color: AppTheme.muted),
-                  );
-                },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(child: _buildBody()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBody() {
+    final currencies = supportedCurrencies.where(_matches).toList();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+      child: Column(
+        children: <Widget>[
+          TextField(
+            onChanged: (value) =>
+                setState(() => _query = value.trim().toUpperCase()),
+            decoration: InputDecoration(
+              hintText: 'Search code or currency name',
+              prefixIcon: const Icon(Icons.search),
+              isDense: true,
+              filled: true,
+              fillColor: AppTheme.container.withValues(alpha: .55),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radius),
+                borderSide: BorderSide(color: AppTheme.border),
               ),
             ),
+          ),
+          const SizedBox(height: 10),
+          if (widget.controller.adsEnabled) ...[
+            const AdBannerPlaceholder(),
+            const SizedBox(height: 8),
           ],
-        ),
+          Expanded(
+            child: ListView.separated(
+              itemCount: currencies.length,
+              separatorBuilder: (_, __) =>
+                  Divider(height: 1, color: AppTheme.border),
+              itemBuilder: (context, index) {
+                final currency = currencies[index];
+                final isSelected = currency.code == widget.selectedCode;
+                final isFixed = _isSameAsFixed(currency.code);
+                final unlocked = _isUnlocked(currency.code);
+                final tempUnlocked = _isTempUnlocked(currency.code);
+                return _CurrencyTile(
+                  symbol: currency.symbol,
+                  code: currency.code,
+                  name: currency.name,
+                  isSelected: isSelected,
+                  isFixed: isFixed,
+                  unlocked: unlocked,
+                  tempUnlocked: tempUnlocked,
+                  onTap: isFixed
+                      ? null
+                      : unlocked
+                          ? () => Navigator.of(context).pop(currency.code)
+                          : () =>
+                              _showLockedAction(context, currency.code),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -97,5 +221,179 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
     final code = currency.code.toUpperCase();
     final name = currency.name.toUpperCase();
     return code.contains(_query) || name.contains(_query);
+  }
+}
+
+class _CurrencyTile extends StatelessWidget {
+  const _CurrencyTile({
+    required this.symbol,
+    required this.code,
+    required this.name,
+    required this.isSelected,
+    required this.isFixed,
+    required this.unlocked,
+    required this.tempUnlocked,
+    required this.onTap,
+  });
+
+  final String symbol;
+  final String code;
+  final String name;
+  final bool isSelected;
+  final bool isFixed;
+  final bool unlocked;
+  final bool tempUnlocked;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final locked = !unlocked && !isFixed;
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: <Widget>[
+            CircleAvatar(
+              backgroundColor: tempUnlocked
+                  ? AppTheme.primary.withValues(alpha: .12)
+                  : locked
+                      ? AppTheme.container.withValues(alpha: .5)
+                      : isFixed
+                          ? AppTheme.primary.withValues(alpha: .08)
+                          : AppTheme.container,
+              child: Text(
+                symbol,
+                style: TextStyle(
+                  color: tempUnlocked
+                      ? AppTheme.primary
+                      : locked
+                          ? AppTheme.muted
+                          : isFixed
+                              ? AppTheme.primary.withValues(alpha: .6)
+                              : AppTheme.text,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    code,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: locked ? AppTheme.muted : AppTheme.text,
+                    ),
+                  ),
+                  Text(
+                    locked
+                        ? 'Tap to unlock'
+                        : tempUnlocked
+                            ? 'Unlocked · 24h remaining'
+                            : isFixed
+                                ? 'Current $code'
+                                : name,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: tempUnlocked
+                          ? AppTheme.primary.withValues(alpha: .7)
+                          : locked
+                              ? AppTheme.muted
+                              : isFixed
+                                  ? AppTheme.primary.withValues(alpha: .5)
+                                  : AppTheme.subtle,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (isFixed)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppTheme.primary.withValues(alpha: .06),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                      color: AppTheme.primary.withValues(alpha: .15)),
+                ),
+                child: Text(
+                  'Current',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.primary.withValues(alpha: .5),
+                  ),
+                ),
+              )
+            else if (tempUnlocked)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppTheme.primary.withValues(alpha: .1),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                      color: AppTheme.primary.withValues(alpha: .3)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(Icons.schedule, size: 13, color: AppTheme.primary),
+                    const SizedBox(width: 3),
+                    Text(
+                      '24h',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.primary,
+                      ),
+                    ),
+                    if (isSelected) ...[
+                      const SizedBox(width: 4),
+                      Icon(Icons.check_circle,
+                          size: 13, color: AppTheme.primary),
+                    ],
+                  ],
+                ),
+              )
+            else if (isSelected)
+              Icon(Icons.check_circle, color: AppTheme.primary)
+            else if (unlocked)
+              Icon(Icons.chevron_right, color: AppTheme.subtle)
+            else
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppTheme.container,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                      color: AppTheme.border.withValues(alpha: .4)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(Icons.lock_outline, size: 13, color: AppTheme.muted),
+                    const SizedBox(width: 3),
+                    Text(
+                      'Locked',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.muted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }

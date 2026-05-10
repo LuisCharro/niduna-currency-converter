@@ -25,6 +25,7 @@ class ChartsScreen extends StatefulWidget {
 
 class _ChartsScreenState extends State<ChartsScreen> {
   int _swapVersion = 0;
+  String _lastPairKey = '';
 
   @override
   void initState() {
@@ -33,7 +34,10 @@ class _ChartsScreenState extends State<ChartsScreen> {
   }
 
   void _handleSwap() {
-    setState(() => _swapVersion++);
+    setState(() {
+      _swapVersion++;
+      _lastPairKey = '${widget.controller.state.quote}-${widget.controller.state.base}';
+    });
     widget.controller.swapPair();
   }
 
@@ -58,9 +62,8 @@ class _ChartsScreenState extends State<ChartsScreen> {
                       base: state.base,
                       quote: state.quote,
                       onPairChanged: widget.controller.setPair,
-                          onSwap: _handleSwap,
-                      canSelectAnyPair: widget.monetization.canSelectAnyChartPair,
-                      adsEnabled: widget.monetization.adsEnabled,
+                      onSwap: _handleSwap,
+                      controller: widget.monetization,
                     ),
                     if (state.lastUpdated != null) ...[
                       const SizedBox(height: 8),
@@ -123,19 +126,40 @@ class _ChartsScreenState extends State<ChartsScreen> {
       return _EmptyChart();
     }
 
+    final currentPairKey = '${widget.controller.state.base}-${widget.controller.state.quote}';
+    final isSwap = _lastPairKey.isNotEmpty &&
+        _lastPairKey != currentPairKey &&
+        _swapVersion > 0;
+
+    if (isSwap) {
+      setState(() => _lastPairKey = currentPairKey);
+    }
+
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 650),
+      duration: isSwap
+          ? const Duration(milliseconds: 650)
+          : const Duration(milliseconds: 240),
       switchInCurve: Curves.easeOut,
       switchOutCurve: Curves.easeIn,
       transitionBuilder: (child, animation) {
-        final flip = Tween<double>(begin: 0, end: 1).animate(animation);
-        return RotationTransition(
-          turns: flip,
-          child: FadeTransition(opacity: animation, child: child),
+        if (isSwap) {
+          final flip = Tween<double>(begin: 0, end: 1).animate(animation);
+          return RotationTransition(
+            turns: flip,
+            child: FadeTransition(opacity: animation, child: child),
+          );
+        }
+        final slide = Tween<Offset>(begin: const Offset(.03, 0), end: Offset.zero)
+            .animate(animation);
+        return FadeTransition(
+          opacity: animation,
+          child: SlideTransition(position: slide, child: child),
         );
       },
       child: Padding(
-        key: ValueKey<String>('${state.base}-${state.quote}-${state.range.label}-$_swapVersion'),
+        key: ValueKey<String>(
+          '$currentPairKey-${widget.controller.state.range.label}-$_swapVersion',
+        ),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
         child: RateChart(data: state.data),
       ),

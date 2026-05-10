@@ -58,10 +58,11 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 |------|-------------|---------------|-------------|
 | **Banner** | 320x50 rectangle, bottom | Low | **Primary ad format (only one in Phase 1)** |
 | **Interstitial** | Full-screen between transitions | Medium | Future (Phase 2+) — not in MVP per DEFINITIONS |
+| **Rewarded** | User opt-in full-screen ad for temporary reward | Medium | Phase 1.x optional experiment (chart pair temporary unlock for pure-free users) |
 | **Native** | Blends with app content | Low | Future consideration |
 | **App Open** | Shown when app enters foreground | Medium | Future (if needed for revenue) |
 
-> **DEFINITIONS rule:** Phase 1 = "Banner only (AdMob or similar)". No interstitials, no app open ads.
+> **DEFINITIONS rule:** Core Phase 1 remains banner-first. Optional Phase 1.x can add opt-in Rewarded Ad only for temporary chart-pair unlock, with strict entitlement rules.
 
 ### Placement Decision
 
@@ -339,7 +340,7 @@ lib/
 - [ ] Slice 3: implement local favorites and max-3 rule across Convert/Favorites
 - [ ] Slice 4: implement fiat historical charts with pair/range cache
 - [ ] Slice 5: implement Settings preferences and cache controls
-- [ ] Slice 6: integrate monetization entitlements (banner ads, Remove Ads, Charts Pro, Subscription)
+- [x] Slice 6: integrate monetization entitlements and ad runtime (banner ads, Remove Ads, Charts Pro, Subscription, optional rewarded unlock)
 - [ ] Slice 7: decide optional crypto/backend strategy after MVP
 - [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates
 - [x] Write/update smoke tests as each slice becomes user-visible

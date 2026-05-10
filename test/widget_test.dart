@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:currency_converter/src/app.dart';
 import 'package:currency_converter/src/core/monetization/monetization_controller.dart';
+import 'package:currency_converter/src/core/monetization/rewarded_ad_service_stub.dart';
 import 'package:currency_converter/src/features/convert/data/latest_rates_repository.dart';
 import 'package:currency_converter/src/features/convert/convert_screen.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
@@ -36,7 +37,8 @@ void main() {
       repository: repository,
       favoritesStore: favoritesStore,
     );
-    monetization = MonetizationController(prefs);
+    final adService = RewardedAdServiceStub();
+    monetization = MonetizationController(prefs, adService: adService);
     await controller.load();
   });
 

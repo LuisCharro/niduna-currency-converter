@@ -65,6 +65,11 @@ first or defer the idea.
 - "Choose any chart pair" is premium:
   - unlocked by active subscription
   - or unlocked by one-time Charts Pro ownership
+- Optional Phase 1.x monetization experiment: Rewarded Ad can grant temporary chart-pair unlock to pure-free users.
+  - applies only to chart pair selection
+  - does not unlock intraday ranges (`1H`, `6H`, `1D`)
+  - temporary unlock should be bidirectional for the selected pair
+  - Remove Ads owners must not see rewarded-ad offers
 
 ### Screen ownership
 
@@ -89,6 +94,13 @@ first or defer the idea.
 Build by vertical slices: one user-visible behavior at a time, including its
 minimal data, state, UI, and tests. Do not build one large data layer and one
 large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
+
+### Ads and privacy constraint
+
+- If real ad SDKs are integrated (banner or rewarded), update store privacy disclosures and consent flow configuration before release.
+- Keep purchase promises consistent:
+  - Remove Ads must remove ad surfaces and ad prompts
+  - subscription ad-removal behavior must remain consistent with one-time ownership fallback
 
 ## What's In / What's Out — Phase 1 (MVP)
 
