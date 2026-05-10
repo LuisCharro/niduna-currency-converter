@@ -15,12 +15,14 @@ class ConvertController extends ChangeNotifier {
   ConvertController({
     required ConvertRatesRepository repository,
     FavoritesStore? favoritesStore,
-    String base = 'USD',
+    String defaultBase = 'USD',
     double amount = 100,
     List<String>? selectedCodes,
+    int decimalPlaces = 2,
   }) : _repository = repository,
        _favoritesStore = favoritesStore {
-    configure(base: base, amount: amount, selectedCodes: selectedCodes);
+    _decimalPlaces = decimalPlaces;
+    configure(base: defaultBase, amount: amount, selectedCodes: selectedCodes);
     _favoritesStore?.addListener(_onFavoritesChanged);
   }
 
@@ -31,6 +33,7 @@ class ConvertController extends ChangeNotifier {
   String _amountText = '100.00';
   List<String> _selectedCodes = <String>['CHF', 'EUR', 'GBP', 'JPY'];
   LatestRatesSnapshot? _snapshot;
+  int _decimalPlaces = 2;
 
   ConvertState state = ConvertState.loading();
   LatestRatesSnapshot? get snapshot => _snapshot;
@@ -54,6 +57,15 @@ class ConvertController extends ChangeNotifier {
       amountText: _amountText,
       selectedCodes: _selectedCodes,
     );
+  }
+
+  void setDecimalPlaces(int value) {
+    if (value < 2 || value > 6) return;
+    _decimalPlaces = value;
+    if (_snapshot != null) {
+      state = _stateFromSnapshot(_snapshot!, state.status);
+      _safeNotify();
+    }
   }
 
   @override
@@ -97,6 +109,7 @@ class ConvertController extends ChangeNotifier {
       quotes: buildQuotes(
         snapshot: snapshot,
         amount: _amount,
+        decimalPlaces: _decimalPlaces,
         quoteCodes: _selectedCodes,
       ).map((q) {
         final isFav = favQuotes.contains(q.code);

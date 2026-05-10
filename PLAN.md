@@ -337,9 +337,9 @@ lib/
 - [x] Slice 0: align `DEFINITIONS.md`, `ROADMAP.md`, and `PLAN.md`
 - [x] Slice 1: finalize Convert UI with demo data and small-screen verification
 - [x] Slice 2: add Frankfurter latest-rates client/repository/cache for Convert
-- [ ] Slice 3: implement local favorites and max-3 rule across Convert/Favorites
-- [ ] Slice 4: implement fiat historical charts with pair/range cache
-- [ ] Slice 5: implement Settings preferences and cache controls
+- [x] Slice 3: implement local favorites and max-3 rule across Convert/Favorites
+- [x] Slice 4: implement fiat historical charts with pair/range cache
+- [ ] Slice 5: implement Settings preferences, cache controls, and chart banner ad
 - [x] Slice 6: integrate monetization entitlements and ad runtime (banner ads, Remove Ads, Charts Pro, Subscription, optional rewarded unlock)
 - [ ] Slice 7: decide optional crypto/backend strategy after MVP
 - [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates

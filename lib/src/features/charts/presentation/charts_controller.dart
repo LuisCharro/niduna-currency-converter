@@ -63,11 +63,11 @@ class ChartState {
 class ChartsController extends ChangeNotifier {
   ChartsController({
     required RatesService ratesService,
-    String base = 'USD',
-    String quote = 'EUR',
+    String defaultBase = 'USD',
+    String defaultQuote = 'EUR',
     ChartRange range = ChartRange.oneMonth,
   })  : _ratesService = ratesService,
-       _state = ChartState(base: base, quote: quote, range: range);
+        _state = ChartState(base: defaultBase, quote: defaultQuote, range: range);
 
   final RatesService _ratesService;
   ChartState _state;

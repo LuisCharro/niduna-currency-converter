@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:currency_converter/src/app.dart';
 import 'package:currency_converter/src/core/monetization/monetization_controller.dart';
 import 'package:currency_converter/src/core/monetization/rewarded_ad_service_stub.dart';
+import 'package:currency_converter/src/core/preferences/app_preferences.dart';
 import 'package:currency_converter/src/features/convert/data/latest_rates_repository.dart';
 import 'package:currency_converter/src/features/convert/convert_screen.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
@@ -28,11 +29,13 @@ void main() {
   late FavoritesStore favoritesStore;
   late ConvertController controller;
   late MonetizationController monetization;
+  late AppPreferences preferences;
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
     prefs = await SharedPreferences.getInstance();
     favoritesStore = FavoritesStore(prefs);
+    preferences = AppPreferences(prefs);
     controller = ConvertController(
       repository: repository,
       favoritesStore: favoritesStore,
@@ -131,8 +134,13 @@ void main() {
   });
 
   testWidgets('Settings screen shows placeholder', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: SettingsScreen(monetization: monetization)));
-    expect(find.text('Monetization sandbox'), findsOneWidget);
+    await tester.pumpWidget(MaterialApp(home: SettingsScreen(
+      monetization: monetization,
+      preferences: preferences,
+      onClearCache: () {},
+    )));
+    expect(find.text('Conversion'), findsOneWidget);
+    expect(find.text('Data'), findsOneWidget);
   });
 }
 

@@ -42,7 +42,7 @@ first or defer the idea.
 - Phase 1 has no backend.
 - Phase 1 has no accounts, login, cloud sync, or user profile.
 - Phase 1 has zero tracking, zero analytics, and zero data collection.
-- Phase 1 monetization is banner ads plus one-time Remove Ads.
+- Phase 1 monetization is banner ads, one-time Remove Ads (1.99 CHF), one-time Charts Pro, and optional subscription.
 - Phase 1 has four tabs only: `Convert`, `Favorites`, `Charts`, `Settings`.
 - Phase 1 is English only.
 - RUB is not supported.
@@ -78,7 +78,7 @@ first or defer the idea.
 | `Convert` | amount input, base currency, multi-currency results, favorite toggles, freshness/offline status, banner ad area | charts, settings, accounts, transfers |
 | `Favorites` | local favorite pairs, max-3 rule, edit/delete, jump back to Convert context | unlimited favorites, cloud sync |
 | `Charts` | fiat historical charts up to 2 years, range selector, high/low/change | crypto charts, metals, export, multi-pair compare |
-| `Settings` | local preferences, cache controls, Remove Ads entry, privacy/about/version | account settings, backend sync, subscriptions before Phase 2 |
+| `Settings` | local preferences (default base, decimal places, refresh-on-open), cache controls, Remove Ads entry, privacy/about/version | account settings, backend sync, subscriptions before Phase 2 |
 
 ### Data and cache rules
 
@@ -87,7 +87,8 @@ first or defer the idea.
 | Fiat latest rates | Frankfurter v2 | Keep last successful payload locally | Show cached stale/offline state if refresh fails |
 | Fiat historical rates | Frankfurter historical endpoints | Cache by pair and range | Show cached chart data if available |
 | Favorites | Local storage | Persistent until user deletes | Never requires network |
-| Settings | Local storage | Persistent until user changes | Never requires network |
+| Settings preferences | Local storage (SharedPreferences) | Persistent until user changes | Never requires network |
+| Temp pair unlocks | Local storage (SharedPreferences) | 24h TTL, auto-expire | Never requires network |
 
 ### Implementation guardrail
 

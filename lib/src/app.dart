@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/monetization/monetization_controller.dart';
 import 'core/monetization/rewarded_ad_service_stub.dart';
+import 'core/preferences/app_preferences.dart';
 import 'core/theme/app_theme.dart';
 import 'core/rates/rates_service.dart';
 import 'core/rates/clients/frankfurter_client.dart';
@@ -62,6 +63,7 @@ class _AppState extends State<AppShell> {
   ConvertController? _controller;
   ChartsController? _chartsController;
   MonetizationController? _monetization;
+  AppPreferences? _preferences;
   bool _ready = false;
 
   FavoritesStore get _favoritesStore =>
@@ -76,6 +78,8 @@ class _AppState extends State<AppShell> {
   Future<void> _initAsync() async {
     final prefs = await SharedPreferences.getInstance();
 
+    _preferences = AppPreferences(prefs);
+
     if (widget.favoritesStore == null) {
       _localStore = FavoritesStore(prefs);
     }
@@ -89,17 +93,22 @@ class _AppState extends State<AppShell> {
     _controller = ConvertController(
       repository: repo,
       favoritesStore: _favoritesStore,
+      defaultBase: _preferences!.defaultBaseCurrency,
     );
     _controller!.load();
 
     final ratesCache = SharedPreferencesRatesCache(prefs);
     final adService = RewardedAdServiceStub();
     _monetization = MonetizationController(prefs, adService: adService);
+    await _monetization!.loadTempUnlocks();
     final ratesService = RatesService(
       client: FrankfurterClient(),
       cache: ratesCache,
     );
-    _chartsController = ChartsController(ratesService: ratesService);
+    _chartsController = ChartsController(
+      ratesService: ratesService,
+      defaultBase: _preferences!.defaultBaseCurrency,
+    );
 
     if (mounted) {
       setState(() => _ready = true);
@@ -130,7 +139,11 @@ class _AppState extends State<AppShell> {
         controller: _chartsController!,
         monetization: _monetization!,
       ),
-      SettingsScreen(monetization: _monetization!),
+      SettingsScreen(
+        monetization: _monetization!,
+        preferences: _preferences!,
+        onClearCache: _onClearCache,
+      ),
     ];
 
     return Scaffold(
@@ -171,5 +184,14 @@ class _AppState extends State<AppShell> {
       }
     }
     setState(() => _currentIndex = 0);
+  }
+
+  Future<void> _onClearCache() async {
+    final prefs = _preferences;
+    if (prefs == null || _monetization == null) return;
+    await prefs.clearAllCaches();
+    _monetization!.clearTempUnlocks();
+    _controller?.load();
+    _chartsController?.load();
   }
 }

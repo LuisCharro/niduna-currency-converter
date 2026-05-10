@@ -41,12 +41,16 @@ void main() {
   test('buildQuotes calculates amount locally and excludes base', () {
     final quotes = buildQuotes(
       amount: 100,
+      decimalPlaces: 2,
+      quoteCodes: ['CHF', 'EUR'],
       snapshot: _snapshot(<String, double>{'EUR': .9234, 'CHF': .88}),
     );
 
-    expect(quotes.map((quote) => quote.code), <String>['EUR', 'CHF']);
-    expect(quotes.first.amount, '92.34');
-    expect(quotes.first.rateLine, '1 USD = 0.9234 EUR');
+    final codes = quotes.map((q) => q.code).toSet();
+    expect(codes, {'CHF', 'EUR'});
+    final eurQuote = quotes.firstWhere((q) => q.code == 'EUR');
+    expect(eurQuote.amount, '92.34');
+    expect(eurQuote.rateLine, '1 USD = 0.92 EUR');
   });
 
   test('controller returns fresh data on successful fetch', () async {

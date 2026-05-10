@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/theme/app_theme.dart';
+import '../convert/widgets/ad_banner_placeholder.dart';
 import 'presentation/charts_controller.dart';
 import 'widgets/chart_summary.dart';
 import 'widgets/pair_selector.dart';
@@ -65,7 +66,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                       onSwap: _handleSwap,
                       controller: widget.monetization,
                     ),
-                    if (state.lastUpdated != null) ...[
+if (state.lastUpdated != null) ...[
                       const SizedBox(height: 8),
                       Align(
                         alignment: Alignment.centerRight,
@@ -101,8 +102,12 @@ class _ChartsScreenState extends State<ChartsScreen> {
                   changePercent: state.changePercent,
                 ),
               ),
-                ],
-              );
+              if (widget.monetization.adsEnabled) ...[
+                const Divider(height: 1),
+                const AdBannerPlaceholder(),
+              ],
+            ],
+          );
             },
           );
         },

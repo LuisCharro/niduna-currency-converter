@@ -169,4 +169,10 @@ class MonetizationController extends ChangeNotifier {
     ];
     return freePairs.contains((base, quote));
   }
+
+  void clearTempUnlocks() {
+    _tempUnlocks.clear();
+    _preferences.remove('temp_unlocks_registry');
+    notifyListeners();
+  }
 }

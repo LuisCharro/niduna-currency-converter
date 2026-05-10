@@ -4,17 +4,19 @@ import '../../../core/currency/supported_currencies.dart';
 import '../models/currency_quote.dart';
 import 'latest_rates_snapshot.dart';
 
-final NumberFormat _amountFormat = NumberFormat('#,##0.00', 'en');
-final NumberFormat _rateFormat = NumberFormat('0.0000', 'en');
-
 List<CurrencyQuote> buildQuotes({
   required LatestRatesSnapshot snapshot,
   required double amount,
+  required int decimalPlaces,
   Iterable<String>? quoteCodes,
 }) {
   final selectedCodes =
       quoteCodes?.where((code) => code != snapshot.base).toList() ??
-      supportedCurrencies.map((currency) => currency.code).toList();
+          supportedCurrencies.map((currency) => currency.code).toList();
+
+  final amountDigits = '#,##0.${'0' * decimalPlaces}';
+  final amountFormat = NumberFormat(amountDigits, 'en');
+  final rateFormat = NumberFormat('0.${'0' * decimalPlaces}', 'en');
 
   return selectedCodes
       .map(currencyByCode)
@@ -25,8 +27,8 @@ List<CurrencyQuote> buildQuotes({
           currency.symbol,
           currency.code,
           currency.name,
-          _amountFormat.format(amount * rate),
-          '1 ${snapshot.base} = ${_rateFormat.format(rate)} ${currency.code}',
+          amountFormat.format(amount * rate),
+          '1 ${snapshot.base} = ${rateFormat.format(rate)} ${currency.code}',
         );
       })
       .toList(growable: false);

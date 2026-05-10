@@ -112,6 +112,7 @@ Must include:
 - loading, cached, stale, and error states
 - locked-pair UI with rewarded-ad unlock flow (opt-in, 24h temporary access)
 - temp-unlock visual indicators (24h badge, primary-tinted avatar)
+- banner ad area at bottom of chart screen (same gating as Convert tab)
 
 Must not include:
 
@@ -126,13 +127,13 @@ Purpose: app configuration and trust surface.
 
 Must include:
 
-- default base currency
-- decimal precision
-- theme mode
-- refresh-on-open preference
-- clear cache
-- last updated/cache status
-- Remove Ads one-time purchase entry
+- default base currency selector
+- decimal precision selector (2/3/4 decimals for fiat Phase 1)
+- refresh-on-open preference (smart: only refetch if cache stale >24h)
+- clear cache action (clears rates + chart + temp unlocks)
+- last updated/cache status timestamp
+- Remove Ads one-time purchase entry (when IAP integrated)
+- Dev Sandbox section with entitlement toggles (visible during development)
 - privacy policy/about/version
 
 Must not include:
@@ -528,10 +529,11 @@ expanding code.
 
 ## Next Best Step
 
-Complete Slice 3 (Favorites):
+Complete Slice 5 (Settings):
 
-- implement local persistence for up to 3 favorite pairs
-- integrate star toggle in Convert with favorites storage
-- implement Favorites tab around the same local store
-- enforce max-3 rule when adding pairs
-- navigation back to Convert with selected pair context
+- implement `AppPreferences` (ChangeNotifier backed by SharedPreferences)
+- add `defaultBaseCurrency`, `decimalPlaces` (2/3/4), `refreshOnOpen` preferences
+- rewrite Settings screen with real sections: Conversion, Data, Dev Sandbox, About
+- add banner ad under Charts screen (same pattern as Convert tab)
+- wire preferences into Convert controller (default base, decimal format) and Charts controller
+- keep Dev Sandbox toggles visible during development; add 3s long-press on Version for future hidden toggle
