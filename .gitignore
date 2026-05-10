@@ -47,6 +47,7 @@ app.*.map.json
 
 # Workspace-only files
 .tmp/
+.firebase/
 
 # Agent and shared skills
 .agent-local/

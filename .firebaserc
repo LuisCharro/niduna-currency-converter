@@ -1,0 +1,1 @@
+{"projects": {"default": "currency-converter-by-niduna"}, "targets": {"currency-converter-by-niduna": {"hosting": {"openclaw": ["currency-converter-openclaw"], "luis": ["currency-converter-luis"], "alina": ["currency-converter-alina"]}}}}
