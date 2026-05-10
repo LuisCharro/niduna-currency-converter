@@ -24,10 +24,17 @@ class ChartsScreen extends StatefulWidget {
 }
 
 class _ChartsScreenState extends State<ChartsScreen> {
+  int _swapVersion = 0;
+
   @override
   void initState() {
     super.initState();
     widget.controller.load();
+  }
+
+  void _handleSwap() {
+    setState(() => _swapVersion++);
+    widget.controller.swapPair();
   }
 
   @override
@@ -51,7 +58,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                       base: state.base,
                       quote: state.quote,
                       onPairChanged: widget.controller.setPair,
-                      onSwap: widget.controller.swapPair,
+                          onSwap: _handleSwap,
                       canSelectAnyPair: widget.monetization.canSelectAnyChartPair,
                       adsEnabled: widget.monetization.adsEnabled,
                     ),
@@ -117,19 +124,18 @@ class _ChartsScreenState extends State<ChartsScreen> {
     }
 
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 240),
+      duration: const Duration(milliseconds: 650),
       switchInCurve: Curves.easeOut,
       switchOutCurve: Curves.easeIn,
       transitionBuilder: (child, animation) {
-        final slide = Tween<Offset>(begin: const Offset(.03, 0), end: Offset.zero)
-            .animate(animation);
-        return FadeTransition(
-          opacity: animation,
-          child: SlideTransition(position: slide, child: child),
+        final flip = Tween<double>(begin: 0, end: 1).animate(animation);
+        return RotationTransition(
+          turns: flip,
+          child: FadeTransition(opacity: animation, child: child),
         );
       },
       child: Padding(
-        key: ValueKey<String>('${state.base}-${state.quote}-${state.range.label}'),
+        key: ValueKey<String>('${state.base}-${state.quote}-${state.range.label}-$_swapVersion'),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
         child: RateChart(data: state.data),
       ),
