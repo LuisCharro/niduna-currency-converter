@@ -345,10 +345,42 @@ lib/
 - [x] Slice 5: implement Settings preferences, cache controls, and chart banner ad
 - [x] Slice 6: integrate monetization entitlements and ad runtime (banner ads, Remove Ads, Charts Pro, Subscription, optional rewarded unlock)
 - [x] Slice 8: IAP paywall — PurchaseService stub, IapPurchasePlayer, Settings Premium section, Remove Ads + Charts Pro + Subscription (Coming Soon) buttons, banner CTA, intraday "coming soon" toast
-- [ ] Slice 9: hide Favorites tab, data freshness indicator, dark mode, intraday toast copy fix, subscription v1 copy
+- [x] Slice 9: hide Favorites tab, data freshness indicator, dark mode, intraday toast copy fix, subscription v1 copy
 - [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates
 - [x] Write/update smoke tests as each slice becomes user-visible
 - [ ] Build and test APK before release candidate
+
+---
+
+## UI Redesign — "Professional Polish" Cycle
+
+> **Plan file:** `.agent/ui-redesign-plan.md`
+> **Status:** Planning → Ready to start
+> **Trigger:** Visual quality gap vs competitor (Currency app / miniapatti)
+> **Reference screenshots:** `/Users/luis/Downloads/CurrencyApp/` (7 PNGs)
+
+### Phases
+
+| Phase | Name | Goal | Status |
+|-------|------|------|--------|
+| 1 | Foundation | Theme overhaul + floating pill nav | TODO |
+| 2 | Convert Screen | Clean list layout with green pill values | TODO |
+| 3 | Chart Screen | Full-bleed chart + dynamic trend colors + crosshair | TODO |
+| 4 | Settings Cleanup | Split 808-line file + extract logic into controller | TODO |
+| 5 | Icons & Details | Regenerate blurry icons + new nav icons | TODO |
+| 6 | Polish Cycle | Screenshot comparison + iterative refinement | TODO |
+
+### Key Architecture Rule for Phase 4
+
+**Views must not contain app logic.** All interaction logic (navigation, dialogs, persistence writes, snackbars) lives in `SettingsController`. Views receive callbacks only. This matches the existing pattern used by `ConvertController` and `ChartsController`.
+
+See `.agent/ui-redesign-plan.md` for full spec per phase including:
+- Competitor analysis with side-by-side comparison table
+- Before/after wireframes for each screen
+- Exact token changes (colors, typography, spacing)
+- File-by-file extraction plan for settings cleanup
+- Controller API specification
+- MiniMax icon generation queue
 
 ---
 
