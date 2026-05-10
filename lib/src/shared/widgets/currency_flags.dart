@@ -1,0 +1,43 @@
+class CurrencyFlags {
+  CurrencyFlags._();
+
+  static const Map<String, String> _map = <String, String>{
+    'USD': '🇺🇸',
+    'EUR': '🇪🇺',
+    'GBP': '🇬🇧',
+    'JPY': '🇯🇵',
+    'CHF': '🇨🇭',
+    'CAD': '🇨🇦',
+    'AUD': '🇦🇺',
+    'NZD': '🇳🇿',
+    'SEK': '🇸🇪',
+    'NOK': '🇳🇴',
+    'DKK': '🇩🇰',
+    'PLN': '🇵🇱',
+    'CZK': '🇨🇿',
+    'HUF': '🇭🇺',
+    'RON': '🇷🇴',
+    'BGN': '🇧🇬',
+    'TRY': '🇹🇷',
+    'ILS': '🇮🇱',
+    'CLP': '🇨🇱',
+    'PHP': '🇵🇭',
+    'IDR': '🇮🇩',
+    'MYR': '🇲🇾',
+    'THB': '🇹🇭',
+    'SGD': '🇸🇬',
+    'HKD': '🇭🇰',
+    'KRW': '🇰🇷',
+    'MXN': '🇲🇽',
+    'ZAR': '🇿🇦',
+    'BRL': '🇧🇷',
+    'INR': '🇮🇳',
+    'TWD': '🇹🇼',
+    'CNY': '🇨🇳',
+    'COP': '🇨🇴',
+    'ARS': '🇦🇷',
+  };
+
+  static String forCode(String code) =>
+      _map[code.toUpperCase()] ?? '🏳️';
+}

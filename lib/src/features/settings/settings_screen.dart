@@ -5,6 +5,7 @@ import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../core/theme/app_theme.dart';
+import '../../shared/widgets/currency_flag_icon.dart';
 import 'widgets/iap_purchase_player.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -199,9 +200,10 @@ class _BaseCurrencyPickerState extends State<_BaseCurrencyPicker> {
                 final selected = c.code == widget.currentBase;
                 return ListTile(
                   onTap: selected ? null : () => Navigator.of(context).pop(c.code),
-                  leading: CircleAvatar(
-                    backgroundColor: AppTheme.container,
-                    child: Text(c.symbol, style: const TextStyle(fontSize: 14)),
+                  leading: CurrencyFlagIcon(
+                    code: c.code,
+                    symbol: c.symbol,
+                    radius: 16,
                   ),
                   title: Text(c.code,
                       style: TextStyle(

@@ -50,7 +50,7 @@ void main() {
     controller.dispose();
   });
 
-  testWidgets('app launches with 4 tabs', (WidgetTester tester) async {
+  testWidgets('app launches with 3 tabs', (WidgetTester tester) async {
     await tester.pumpWidget(
       CurrencyConverterApp(
         convertRepository: repository,
@@ -60,9 +60,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(BottomNavigationBar), findsOneWidget);
-    expect(find.text('Favorites'), findsOneWidget);
+    expect(find.text('Convert'), findsOneWidget);
     expect(find.text('Charts'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
+    expect(find.text('Favorites'), findsNothing);
     expect(find.text('Niduna Convert'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
   });

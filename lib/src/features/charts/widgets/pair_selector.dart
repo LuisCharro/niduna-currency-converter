@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/currency_flag_icon.dart';
 import 'chart_currency_picker_sheet.dart';
 
 class PairSelector extends StatelessWidget {
@@ -106,13 +107,20 @@ class _CurrencyButton extends StatelessWidget {
             const SizedBox(height: 2),
             Row(
               children: <Widget>[
+                CurrencyFlagIcon(
+                  code: code,
+                  symbol: currency.symbol,
+                  radius: 12,
+                ),
+                const SizedBox(width: 6),
                 Text(
                   code,
                   style: TextStyle(fontSize: 18, color: AppTheme.text, fontWeight: FontWeight.w800),
                 ),
-                const SizedBox(width: 6),
-                Text(currency.symbol, style: TextStyle(fontSize: 14, color: AppTheme.subtle)),
-                const Spacer(),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(currency.symbol, style: TextStyle(fontSize: 13, color: AppTheme.subtle), overflow: TextOverflow.ellipsis),
+                ),
                 Icon(Icons.expand_more, color: AppTheme.muted),
               ],
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/currency_flag_icon.dart';
 import '../models/currency_quote.dart';
 
 class QuoteIdentity extends StatelessWidget {
@@ -12,16 +13,9 @@ class QuoteIdentity extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        CircleAvatar(
-          radius: 20,
-          backgroundColor: AppTheme.container,
-          child: Text(
-            quote.symbol,
-            style: const TextStyle(
-              fontWeight: FontWeight.w700,
-              color: AppTheme.text,
-            ),
-          ),
+        CurrencyFlagIcon(
+          code: quote.code,
+          symbol: quote.symbol,
         ),
         const SizedBox(width: 14),
         Column(

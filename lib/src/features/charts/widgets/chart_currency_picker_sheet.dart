@@ -5,6 +5,7 @@ import '../../../core/monetization/models/temporary_unlock.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/currency_flag_icon.dart';
 import '../../convert/widgets/ad_banner_placeholder.dart';
 import '../../settings/widgets/iap_purchase_player.dart';
 import 'locked_pair_action_sheet.dart';
@@ -267,26 +268,12 @@ class _CurrencyTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Row(
           children: <Widget>[
-            CircleAvatar(
-              backgroundColor: tempUnlocked
-                  ? AppTheme.primary.withValues(alpha: .12)
-                  : locked
-                      ? AppTheme.container.withValues(alpha: .5)
-                      : isFixed
-                          ? AppTheme.primary.withValues(alpha: .08)
-                          : AppTheme.container,
-              child: Text(
-                symbol,
-                style: TextStyle(
-                  color: tempUnlocked
-                      ? AppTheme.primary
-                      : locked
-                          ? AppTheme.muted
-                          : isFixed
-                              ? AppTheme.primary.withValues(alpha: .6)
-                              : AppTheme.text,
-                  fontSize: 14,
-                ),
+            Opacity(
+              opacity: locked ? .45 : 1,
+              child: CurrencyFlagIcon(
+                code: code,
+                symbol: symbol,
+                radius: 16,
               ),
             ),
             const SizedBox(width: 12),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/currency_flag_icon.dart';
 
 class CurrencyPickerTile extends StatelessWidget {
   const CurrencyPickerTile({
@@ -22,9 +23,10 @@ class CurrencyPickerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: AppTheme.container,
-        child: Text(currency.symbol),
+      leading: CurrencyFlagIcon(
+        code: currency.code,
+        symbol: currency.symbol,
+        radius: 16,
       ),
       title: Text(currency.name),
       subtitle: Text(currency.code),

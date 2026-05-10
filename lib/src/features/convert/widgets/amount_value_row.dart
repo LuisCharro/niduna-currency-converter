@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/currency_flag_icon.dart';
 
 class AmountValueRow extends StatefulWidget {
   const AmountValueRow({
@@ -42,33 +44,40 @@ class _AmountValueRowState extends State<AmountValueRow> {
 
   @override
   Widget build(BuildContext context) {
+    final currency = currencyByCode(widget.base);
     return Row(
-      children: <Widget>[
-        Expanded(
-          child: TextField(
-            controller: _controller,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            onChanged: widget.onAmountChanged,
-            decoration: const InputDecoration.collapsed(hintText: '0.00'),
-            style: TextStyle(
-              fontSize: 46,
-              fontWeight: FontWeight.w700,
-              letterSpacing: -1.2,
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                controller: _controller,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                onChanged: widget.onAmountChanged,
+                decoration:
+                    const InputDecoration.collapsed(hintText: '0.00'),
+                style: TextStyle(
+                  fontSize: 46,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -1.2,
+                ),
+              ),
             ),
-          ),
-        ),
-        FilledButton.tonalIcon(
-          onPressed: widget.onBaseTap,
-          icon: const Icon(Icons.keyboard_arrow_down, size: 18),
-          label: Text(
-            widget.base,
-            style: const TextStyle(fontWeight: FontWeight.w800),
-          ),
-          style: FilledButton.styleFrom(
-            backgroundColor: AppTheme.containerHigh,
-            foregroundColor: AppTheme.text,
-          ),
-        ),
+            FilledButton.tonalIcon(
+              onPressed: widget.onBaseTap,
+              icon: CurrencyFlagIcon(
+                code: widget.base,
+                symbol: currency.symbol,
+                radius: 10,
+              ),
+              label: Text(
+                widget.base,
+                style: const TextStyle(fontWeight: FontWeight.w800),
+              ),
+              style: FilledButton.styleFrom(
+                backgroundColor: AppTheme.containerHigh,
+                foregroundColor: AppTheme.text,
+              ),
+            ),
       ],
     );
   }
