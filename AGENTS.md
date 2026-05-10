@@ -56,7 +56,7 @@ Then read only the relevant shared skill and repo-local guide for the task.
 - `emulator-runbook/SKILL.md` — emulator launch and testing
 - `product-scope-check/SKILL.md` — scope creep prevention
 - `store-release-check/SKILL.md` — store compliance and release
-- `icon-generation/SKILL.md` — icon & image generation with MiniMax CLI
+- `icon-generation/SKILL.md` — currency-flag icon generation with mmx CLI; general mmx reference is the shared skill `mobile/minimax-cli.SKILL.md`
 
 ### Shared (`.agent-local/skills/`)
 
