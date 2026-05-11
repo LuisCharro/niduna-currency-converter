@@ -52,6 +52,7 @@ app.*.map.json
 # Agent and shared skills
 .agent-local/
 .agent/.shared-skills-source
+.opencode/
 
 # Environment variables (API keys, secrets)
 .env
