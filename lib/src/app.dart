@@ -18,6 +18,7 @@ import 'features/favorites/favorites_screen.dart';
 import 'features/charts/charts_screen.dart';
 import 'features/charts/presentation/charts_controller.dart';
 import 'features/settings/settings_screen.dart';
+import 'shared/widgets/floating_pill_nav.dart';
 
 class CurrencyConverterApp extends StatelessWidget {
   const CurrencyConverterApp({
@@ -129,7 +130,11 @@ class _AppState extends State<AppShell> {
       return const Material(child: Center(child: CircularProgressIndicator()));
     }
     final screens = <Widget>[
-      ConvertScreen(controller: _controller!, monetization: _monetization!),
+      ConvertScreen(
+        controller: _controller!,
+        monetization: _monetization!,
+        onNavigateToSettings: () => setState(() => _currentIndex = 2),
+      ),
       ChartsScreen(
         controller: _chartsController!,
         monetization: _monetization!,
@@ -144,25 +149,17 @@ class _AppState extends State<AppShell> {
     return Theme(
       data: _preferences?.isDarkMode == true ? AppTheme.dark : AppTheme.light,
       child: Scaffold(
-        body: screens[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: AppTheme.primary,
-          unselectedItemColor: AppTheme.muted,
-          onTap: (index) => setState(() => _currentIndex = index),
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.swap_horiz),
-              label: 'Convert',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.show_chart),
-              label: 'Charts',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
+        body: Stack(
+          children: <Widget>[
+            Positioned.fill(child: screens[_currentIndex]),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: FloatingPillNav(
+                selectedIndex: _currentIndex,
+                onTap: (index) => setState(() => _currentIndex = index),
+              ),
             ),
           ],
         ),
