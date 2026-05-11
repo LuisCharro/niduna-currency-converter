@@ -7,12 +7,13 @@ import 'package:currency_converter/src/core/monetization/monetization_controller
 import 'package:currency_converter/src/core/monetization/rewarded_ad_service_stub.dart';
 import 'package:currency_converter/src/core/preferences/app_preferences.dart';
 import 'package:currency_converter/src/features/convert/data/latest_rates_repository.dart';
-import 'package:currency_converter/src/features/convert/convert_screen.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
 import 'package:currency_converter/src/features/convert/presentation/convert_controller.dart';
 import 'package:currency_converter/src/features/favorites/data/favorites_store.dart';
 import 'package:currency_converter/src/features/favorites/favorites_screen.dart';
+import 'package:currency_converter/src/features/convert/convert_screen.dart';
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
+import 'package:currency_converter/src/shared/widgets/floating_pill_nav.dart';
 
 void main() {
   final repository = _FakeRatesRepository(
@@ -45,12 +46,12 @@ void main() {
     await controller.load();
   });
 
-  tearDown(() {
+  tearDown() {
     favoritesStore.dispose();
     controller.dispose();
-  });
+  }
 
-  testWidgets('app launches with 3 tabs', (WidgetTester tester) async {
+  testWidgets('app launches with floating pill nav', (WidgetTester tester) async {
     await tester.pumpWidget(
       CurrencyConverterApp(
         convertRepository: repository,
@@ -59,16 +60,16 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(BottomNavigationBar), findsOneWidget);
+    expect(find.byType(FloatingPillNav), findsOneWidget);
     expect(find.text('Convert'), findsOneWidget);
-    expect(find.text('Charts'), findsOneWidget);
+    expect(find.text('Chart'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Favorites'), findsNothing);
-    expect(find.text('Niduna Convert'), findsOneWidget);
+    expect(find.text('Currency'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
   });
 
-  testWidgets('Convert screen shows Stitch-translated content', (
+  testWidgets('Convert screen shows clean layout', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
@@ -76,18 +77,16 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('LOCAL-ONLY DATA'), findsOneWidget);
+    expect(find.text('Currency'), findsOneWidget);
     expect(find.text('USD'), findsOneWidget);
     expect(find.text('EUR'), findsOneWidget);
-    expect(find.text('Fresh rates · 4 shown'), findsOneWidget);
-    expect(find.text('Add'), findsOneWidget);
+    expect(find.text('CHF'), findsWidgets);
     expect(find.text('NZD'), findsNothing);
     expect(find.text('BTC'), findsNothing);
     expect(find.text('ETH'), findsNothing);
-    expect(find.text('ADVERTISEMENT PLACEMENT'), findsOneWidget);
   });
 
-  testWidgets('Convert row tap reveals Set as base action', (
+  testWidgets('Convert row tap highlights active row', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
@@ -95,14 +94,14 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('CHF').first);
-    await tester.pumpAndSettle();
-    expect(find.byTooltip('Set CHF as base'), findsOneWidget);
+    final chfFinder = find.text('Swiss Franc');
+    expect(chfFinder, findsWidgets);
 
-    await tester.tap(find.byTooltip('Set CHF as base'));
+    await tester.tap(chfFinder.first);
     await tester.pumpAndSettle();
-    expect(find.byTooltip('Set CHF as base'), findsNothing);
-    expect(find.text('CHF'), findsWidgets);
+
+    expect(find.text('Swiss Franc'), findsWidgets);
+    expect(find.byIcon(Icons.swap_horiz_rounded), findsWidgets);
   });
 
   testWidgets('Favorites screen shows placeholder', (
@@ -129,12 +128,11 @@ void main() {
         onNavigateToConvert: (a, b) {},
       ),
     ));
-    await tester.pumpAndSettle();
     expect(find.text('USD → EUR'), findsOneWidget);
     expect(find.text('0.9200'), findsOneWidget);
   });
 
-  testWidgets('Settings screen shows placeholder', (WidgetTester tester) async {
+  testWidgets('Settings screen shows sections', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(home: SettingsScreen(
       monetization: monetization,
       preferences: preferences,
@@ -142,6 +140,9 @@ void main() {
     )));
     expect(find.text('Conversion'), findsOneWidget);
     expect(find.text('Data'), findsOneWidget);
+    expect(find.text('Premium'), findsOneWidget);
+    expect(find.text('Default base currency'), findsWidgets);
+    expect(find.text('Dark mode'), findsWidgets);
   });
 }
 
