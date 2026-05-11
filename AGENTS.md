@@ -29,6 +29,7 @@ Non-goals for normal feature work:
 - no accounts
 - no tracking / analytics
 - no cloud sync
+- no complex food database
 
 Primary app shell order:
 
@@ -104,19 +105,24 @@ Then read only the relevant shared skill and repo-local guide for the task.
 
 If repo-local rules conflict with a shared skill, prefer the repo-local rules.
 
-## Repo-local guides
+## Design Workflow
 
-Use these when the task is specifically about this repo:
+For UI work, follow this loop:
 
-- `DEFINITIONS.md`
-- `ROADMAP.md`
-- `PLAN.md`
-- `ARCHITECTURE.md`
-- `agent/README.md`
+```
+1. Read DESIGN.md for tokens and component specs
+2. Read .agent/DESIGN_GUIDELINES.md (when created) for design philosophy
+3. Implement changes in Flutter code
+4. Run ./scripts/check.sh (analyze + test)
+5. Hot restart running emulator app
+6. Capture screenshots with devtools scripts
+7. Compare rendered result against design intent
+8. Repeat until verified
+```
 
-Preferred order for broad interface work in this repo:
+Preferred order for interface work:
 
-```text
+```
 frontend-design-layer
 → .agent/DESIGN_GUIDELINES.md (when created)
 → frontend-design-direction
@@ -168,16 +174,20 @@ lib/
 │   │   └── settings/
 │   │       └── settings_screen.dart  # Settings tab content
 │   └── shared/
-│       └── widgets/
-│           └── ...              # Reusable widgets (each < 60 lines)
+│       └── widgets/               # Reusable widgets (each < 60 lines)
 ```
 
 ### Anti-patterns to avoid
 
-- ❌ One giant 600-line main.dart with all widgets as private classes
-- ❌ Copy-pasting widget code instead of extracting shared widgets
-- ❌ Business logic inside UI widget files
-- ❌ Screens that import things they don't need
+- One giant 600-line main.dart with all widgets as private classes
+- Copy-pasting widget code instead of extracting shared widgets
+- Business logic inside UI widget files
+- Screens that import things they don't need
+- "God Object" pattern (one StatefulWidget holding ALL state)
+- Card inside card inside card
+- Full-width low-priority buttons
+- Repeated explanatory copy above obvious controls
+- File does more than one thing
 
 ### When adding a new feature
 
@@ -204,70 +214,112 @@ FLUTTER_BIN=/path/to/flutter ./scripts/check.sh
 
 For UI work, hot restart or rebuild the running emulator app after successful checks.
 
-## Quick reference for agents
-
-### Repo structure at a glance
-
-```
-lib/
-  main.dart                     — Entry point (5 lines)
-  src/
-    app.dart                  — MaterialApp + AppShell + BottomNav (80 lines)
-    core/theme/
-      app_theme.dart          — Colors, tokens, ThemeData (40 lines)
-    features/
-      convert/convert_screen.dart   — Convert tab
-      favorites/favorites_screen.dart — Favorites tab
-      charts/charts_screen.dart     — Charts tab
-      settings/settings_screen.dart  — Settings tab
-    shared/widgets/               — Reusable widgets (add as needed)
-integration_test/
-  minimal_smoke_test.dart      — Basic smoke test
-  currency_smoke_test.dart     — Currency-specific smoke test
-test_driver/
-  screenshots_driver.dart      — Screenshot capture driver
-scripts/
-  check.sh                     — Verification (analyze + test)
-  analyze.sh                   — Static analysis only
-  test.sh                      — Unit tests
-.devtools/
-  run_ios_minimal_smoke.sh     — iOS smoke test runner
-  capture_ios_screens.sh       — Screenshot capture
-```
-
-### Running the app
+## Common Commands
 
 ```bash
-# Launch app in background (non-blocking) — preferred for agent workflows
+# iOS simulator launch (non-blocking, preferred for agent workflows)
 IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/run_ios_simulator_app.sh
 
-# The above does NOT block. App runs detached. To stop it:
-# xcrun simctl terminate <simulator_id> com.niduna.currencyConverter
-
-# Raw flutter run (BLOCKS terminal — avoid in agent workflows)
-flutter run -d <simulator_id>
+# Stop running app
+xcrun simctl terminate <simulator_id> com.niduna.currencyConverter
 
 # Smoke test
 IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/run_ios_minimal_smoke.sh
+
+# Screenshots via integration test
+IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} SCREEN_OUTPUT_DIR=.tmp/screens/ios \
+  ./.devtools/capture_ios_screens.sh
+
+# Manual screenshot (any time)
+./.devtools/sim_screenshot.sh [name]
+
+# Tap simulator at coordinates
+./.devtools/sim_tap.sh <x> <y> [delay]
+
+# Wait for app to be ready on simulator
+./.devtools/sim_wait_ready.sh
+
+# Fresh install (uninstall + run)
+./.devtools/sim_fresh_install.sh
+
+# Uninstall app from simulator
+./.devtools/sim_uninstall.sh
+
+# Capture all tabs
+./.devtools/capture_tabs.sh
+
+# Seed + launch iOS app with realistic sample data
+./.devtools/run_seeded_ios_app.sh
+
+# Seed iOS simulator only (app already installed)
+SEED_DAYS=90 ./.devtools/seed_ios_simulator_sample_data.sh
+
+# Capture reference screenshots (all surfaces in one bundle)
+./.devtools/capture_ios_ui_review_bundle.sh
 ```
 
 **Important:** Always use `run_ios_simulator_app.sh` in agent workflows. Raw `flutter run` blocks the terminal until the app terminates. The script uses `setsid` to launch the Flutter process in the background, allowing the agent to continue executing other commands.
 
-### Screenshot capture
+## Devtools Scripts Inventory
 
-```bash
-IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} SCREEN_OUTPUT_DIR=.tmp/screens/ios \
-  ./.devtools/capture_ios_screens.sh
-```
+### Simulator Interaction
 
-Screenshot locations:
-- `.tmp/screens/ios/` — main capture output
+| Script | Purpose | Key Env Vars |
+|--------|---------|-------------|
+| `run_ios_simulator_app.sh` | Launch app non-blocking | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
+| `run_ios_minimal_smoke.sh` | Run smoke test | `IOS_SIMULATOR_ID` |
+| `capture_ios_screens.sh` | Integration-test screenshots | `IOS_SIMULATOR_ID`, `SCREEN_OUTPUT_DIR`, `IOS_BUNDLE_ID` |
+| `sim_screenshot.sh` | Manual screenshot | `IOS_SIMULATOR_ID` |
+| `sim_tap.sh` | Tap coordinates | `IOS_SIMULATOR_ID` |
+| `sim_wait_ready.sh` | Poll app ready state | `IOS_SIMULATOR_ID` |
+| `sim_uninstall.sh` | Uninstall from simulator | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
+| `sim_fresh_install.sh` | Uninstall + fresh run | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
+| `capture_tabs.sh` | Auto-capture all tabs | `IOS_SIMULATOR_ID` |
 
-### Google Stitch (design exploration)
+### Seeded Testing
+
+| Script | Purpose | Key Env Vars |
+|--------|---------|-------------|
+| `run_seeded_ios_app.sh` | Build + seed + launch iOS | `IOS_SIMULATOR_ID`, `SEED_DAYS`, `FLUTTER_BIN` |
+| `seed_ios_simulator_sample_data.sh` | Seed iOS simulator prefs | `IOS_SIMULATOR_ID`, `SEED_DAYS` |
+| `seed_emulator_sample_data.sh` | Seed Android shared prefs | `ANDROID_SERIAL`, `SEED_DAYS` |
+| `generate_sample_prefs.dart` | Generate prefs from seed data | `--days`, `--format`, `--today` |
+| `sample_seed_data.dart` | Seed data structure definition | (app-specific — customize per app) |
+
+### Reference Capture
+
+| Script | Purpose | Output Dir |
+|--------|---------|------------|
+| `capture_ios_onboarding_reference_screens.sh` | Onboarding flow | `onboarding-reference/` |
+| `capture_ios_seeded_reference_screens.sh` | Main screens with data | `seeded-reference/` |
+| `capture_ios_add_entry_reference_screens.sh` | Add-entry flow | `add-entry-reference/` |
+| `capture_ios_settings_reference_screens.sh` | Settings deep dive | `settings-reference/` |
+| `capture_ios_post_onboarding_reference_screens.sh` | Empty post-onboarding | `post-onboarding-reference/` |
+| `capture_ios_ui_review_bundle.sh` | ALL captures + manifest | `ui-review-bundle/` |
+| `capture_android_screens.sh` | Android emulator capture | `.tmp/screens/android/` |
+
+All scripts use `IOS_SIMULATOR_ID` (UUID or "booted"). Scripts that target a specific app use `BUNDLE_ID` or `IOS_BUNDLE_ID`.
+
+See `.devtools/README.md` for full documentation.
+
+## Shared Widgets
+
+Ready-to-use shared widgets:
+
+- `lib/src/shared/widgets/floating_pill_nav.dart` — 4-tab floating nav (Today/Progress/History/Settings pattern; adapt to Convert/Favorites/Charts/Settings)
+- `lib/src/shared/widgets/settings_tile.dart` — SettingsTile, SettingsSectionHeader, SettingsDivider
+- `lib/src/shared/widgets/currency_flag_icon.dart` — Currency flag icon widget
+- `lib/src/shared/widgets/currency_flags.dart` — Flag icon map
+- `lib/src/shared/widgets/currency_colors.dart` — Currency color utilities
+
+## Google Stitch (design exploration)
 
 Stitch is available via `mcporter`. Use it for design exploration only — never copy generated code directly.
 
-For mcporter + Stitch setup and detailed workflow, see daily-calorie's `.agent/STITCH.md`.
+Existing Stitch projects:
+- `1489849311730997446` — Reference Driven Redesign (67 screens)
+- `17704915596211555909` — Full App Redesign
+- `1688116472298796651` — Today (Redesign)
 
 Shared Stitch skill: `./.agent-local/skills/publish/google-stitch-workflow/SKILL.md`
 
@@ -279,7 +331,27 @@ For major UI polish or redesign work, prefer this reference loop:
 4. implement in Flutter
 5. compare the rendered result against the screenshot, not just the code diff
 
+## Repo-local guides
+
+Use these when the task is specifically about this repo:
+
+- `DEFINITIONS.md`
+- `ROADMAP.md`
+- `PLAN.md`
+- `ARCHITECTURE.md`
+- `agent/README.md`
+
+Preferred order for broad interface work in this repo:
+
+```text
+frontend-design-layer
+→ .agent/DESIGN_GUIDELINES.md (when created)
+→ frontend-design-direction
+→ small-screen-ui-review
+→ flutter-verification
+```
+
 ## Documentation rule
 
 If you add a recurring workflow, strong UI rule, or new agent-facing convention,
-update the relevant file under `.agent/`.
+update this file or create a new skill under `.agent/skills`.
