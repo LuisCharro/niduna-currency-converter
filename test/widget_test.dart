@@ -73,7 +73,11 @@ void main() {
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(home: ConvertScreen(controller: controller, monetization: monetization)),
+      MaterialApp(home: ConvertScreen(
+        controller: controller,
+        monetization: monetization,
+        onNavigateToSettings: () {},
+      )),
     );
     await tester.pumpAndSettle();
 
@@ -90,7 +94,11 @@ void main() {
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(home: ConvertScreen(controller: controller, monetization: monetization)),
+      MaterialApp(home: ConvertScreen(
+        controller: controller,
+        monetization: monetization,
+        onNavigateToSettings: () {},
+      )),
     );
     await tester.pumpAndSettle();
 
