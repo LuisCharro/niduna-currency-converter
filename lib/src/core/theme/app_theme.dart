@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 class AppTheme {
   AppTheme._();
 
-  static const Color bg = Color(0xFFFFFFFF);
-  static const Color text = Color(0xFF1A1A1A);
-  static const Color muted = Color(0xFF8E8E93);
-  static const Color subtle = Color(0xFFAEAEB2);
-  static const Color card = Color(0xFFFFFFFF);
-  static const Color container = Color(0xFFF2F2F7);
-  static const Color containerHigh = Color(0xFFE5E5EA);
-  static const Color border = Color(0xFFC6C6C8);
-  static const Color primary = Color(0xFF007AFF);
-  static const Color trendUp = Color(0xFF34C759);
-  static const Color trendDown = Color(0xFFFF3B30);
+  static const Color bg = Color(0xFFF6F8EF);
+  static const text = Color(0xFF171D14);
+  static const muted = Color(0xFF707B68);
+  static const subtle = Color(0xFF88987A);
+  static const card = Color(0xFFFFFFFF);
+  static const container = Color(0xFFFFF9EC);
+  static const containerHigh = Color(0xFFF5EDEE);
+  static const border = Color(0xFF3B5D24);
+  static const primary = Color(0xFF285F3B);
+  static const trendUp = Color(0xFF6F8C49);
+  static const trendDown = Color(0xFFDC6543);
   static const double radius = 12;
   static const double cardRadius = 16;
   static const double pillRadius = 20;
   static const List<BoxShadow> subtleShadow = <BoxShadow>[
-    BoxShadow(color: Color(0x0D000000), blurRadius: 10, offset: Offset(0, 2)),
+    BoxShadow(color: Color(0x14285F3B), blurRadius: 10, offset: Offset(0, 2)),
   ];
 
   static const TextStyle display = TextStyle(
@@ -34,7 +34,7 @@ class AppTheme {
     height: 1.25,
   );
 
-  static const TextStyle body = TextStyle(
+  static const body = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     height: 1.4,
@@ -56,7 +56,7 @@ class AppTheme {
   static final ThemeData light = ThemeData(
     useMaterial3: true,
     scaffoldBackgroundColor: bg,
-    fontFamily: 'Inter',
+    fontFamily: 'Manrope',
     colorScheme: ColorScheme.fromSeed(
       seedColor: primary,
       brightness: Brightness.light,
@@ -73,7 +73,7 @@ class AppTheme {
       ),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: Colors.transparent,
+      backgroundColor: container,
       elevation: 0,
       selectedItemColor: primary,
       unselectedItemColor: muted,
@@ -88,18 +88,24 @@ class AppTheme {
       type: BottomNavigationBarType.fixed,
     ),
     dividerTheme: DividerThemeData(
-      color: border.withValues(alpha: .5),
+      color: border.withValues(alpha: 0.15),
       thickness: 0.5,
     ),
     listTileTheme: ListTileThemeData(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
     ),
+    chipTheme: ChipThemeData(
+      selectedColor: primary,
+      labelStyle: TextStyle(color: text),
+      side: const BorderSide(color: Colors.transparent),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(pillRadius)),
+    ),
   );
 
   static final ThemeData dark = ThemeData(
     useMaterial3: true,
-    scaffoldBackgroundColor: const Color(0xFF000000),
-    fontFamily: 'Inter',
+    scaffoldBackgroundColor: const Color(0xFF171D14),
+    fontFamily: 'Manrope',
     colorScheme: ColorScheme.fromSeed(
       seedColor: primary,
       brightness: Brightness.dark,
@@ -107,19 +113,19 @@ class AppTheme {
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: Colors.transparent,
-      foregroundColor: Color(0xFFF5F5F5),
+      foregroundColor: Color(0xFFF6F8EF),
       centerTitle: true,
       titleTextStyle: TextStyle(
-        color: Color(0xFFF5F5F5),
+        color: Color(0xFFF6F8EF),
         fontSize: 17,
         fontWeight: FontWeight.w600,
       ),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: const Color(0xFF1C1C1E),
+      backgroundColor: const Color(0xFF1C2D14),
       elevation: 0,
-      selectedItemColor: const Color(0xFF4A9EFF),
-      unselectedItemColor: const Color(0xFF6B7080),
+      selectedItemColor: const Color(0xFF6F8C49),
+      unselectedItemColor: const Color(0xFF88987A),
       selectedLabelStyle: const TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w600,
@@ -131,7 +137,7 @@ class AppTheme {
       type: BottomNavigationBarType.fixed,
     ),
     dividerTheme: DividerThemeData(
-      color: const Color(0xFF38383A).withValues(alpha: .5),
+      color: const Color(0xFF3B5D24).withValues(alpha: 0.15),
       thickness: 0.5,
     ),
   );

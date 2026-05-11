@@ -18,14 +18,14 @@ class FloatingPillNav extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 24),
       child: Center(
         child: Material(
-          elevation: 6,
-          shadowColor: Colors.black.withValues(alpha: 0.08),
+          elevation: 4,
+          shadowColor: AppTheme.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(28),
           child: Container(
             constraints: const BoxConstraints(minWidth: 220, maxWidth: 280),
             height: 56,
             decoration: BoxDecoration(
-              color: AppTheme.card,
+              color: AppTheme.container,
               borderRadius: BorderRadius.circular(28),
               border: Border.all(color: AppTheme.border.withValues(alpha: .3)),
             ),

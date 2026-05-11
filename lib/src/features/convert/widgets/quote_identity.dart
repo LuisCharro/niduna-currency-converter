@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 import '../models/currency_quote.dart';
 
@@ -33,7 +34,7 @@ class QuoteIdentity extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF8E8E93),
+                color: AppTheme.muted,
                 letterSpacing: 0.3,
               ),
             ),

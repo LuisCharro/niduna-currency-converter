@@ -1,19 +1,21 @@
 ---
 version: alpha
 name: Niduna Currency Converter
-description: Privacy-first fiat currency converter for mobile. Clean, professional, iOS-native feel with minimal chrome.
+description: Privacy-first fiat currency converter for mobile. Warm, editorial, iOS-native feel with Niduna brand identity.
 colors:
-  bg: "#FFFFFF"
-  text: "#1A1A1A"
-  muted: "#8E8E93"
-  subtle: "#AEAEB2"
+  bg: "#F6F8EF"
+  text: "#171D14"
+  muted: "#707B68"
+  subtle: "#88987A"
   card: "#FFFFFF"
-  container: "#F2F2F7"
-  containerHigh: "#E5E5EA"
-  border: "#C6C6C8"
-  primary: "#007AFF"
-  trendUp: "#34C759"
-  trendDown: "#FF3B30"
+  container: "#FFF9EC"
+  containerHigh: "#F5EDE"
+  border: "rgba(40,95,59,0.14)"
+  primary: "#285F3B"
+  trendUp: "#6F8C49"
+  trendDown: "#DC6543"
+  greenBadge: "#EDF5EB"
+  greenBadgeText: "#3D6E2C"
 typography:
   display:
     fontSize: 32px
@@ -37,8 +39,11 @@ typography:
     fontWeight: 600
     lineHeight: 1.2
     letterSpacing: 0.5em
+  serif:
+    fontFamily: "Fraunces"
+    fallback: ["Georgia", "serif"]
 rounded:
-  sm: "12px"
+    sm: "12px"
   md: "16px"
   lg: "20px"
   full: "9999px"
@@ -58,7 +63,7 @@ components:
     backgroundColor: "{colors.card}"
     borderColor: "transparent"
     rounded: "{rounded.lg}"
-    boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
+    boxShadow: "0 2px 10px rgba(40,95,59,0.08)"
   chip-unselected:
     backgroundColor: "transparent"
     borderColor: "transparent"
@@ -66,62 +71,85 @@ components:
   rate-row-divider:
     color: "{colors.border}"
     thickness: "0.5px"
-    opacity: "0.5"
+    opacity: "0.15"
   green-badge:
-    backgroundColor: "#E8F5E9"
-    textColor: "{colors.trendUp}"
+    backgroundColor: "{colors.greenBadge}"
+    textColor: "{colors.greenBadgeText}"
     rounded: "{rounded.full}"
   floating-nav:
     backgroundColor: "{colors.container}"
     rounded: "{rounded.lg}"
-    shadowColor: "rgba(0,0,0,0.08)"
+    shadowColor: "rgba(40,95,59,0.08)"
+  amber-pill:
+    backgroundColor: "#FBF3DB"
+    textColor: "#7A6232"
+  coral-button:
+    backgroundColor: "#FDF0EC"
+    textColor: "#B54E48"
 ---
 
 # Overview
 
-Privacy-first currency converter with a **clean, professional, iOS-native aesthetic**. The UI prioritizes **clarity over decoration** — information density without visual noise. Every pixel serves the primary user job: convert currencies instantly.
+Privacy-first currency converter with a **warm, editorial aesthetic** rooted in the Niduna brand. The UI prioritizes **clarity and warmth** — information density without visual noise, without the cold clinical feel of generic utility apps.
 
 Target audience: travelers, expats, freelancers who need fast, reliable rates without accounts or tracking.
 
-Emotional response: **trustworthy, instant, uncluttered**. The app should feel like a precision tool — not a social feed or dashboard.
+Emotional response: **warm, trustworthy, crafted**. The app should feel like a precision tool made by people who care about design, not a factory-default utility.
+
+**Brand DNA (from niduna-site):**
+- Warm paper canvas (`#F6F8EF`) instead of stark white
+- Forest leaf green (`#285F3B`) as primary accent instead of iOS blue
+- Moss/amber secondary palette for organic warmth
+- Manrope body font + Fraunces serif for editorial headings
+- Subtle noise texture on backgrounds (web only; approximated in mobile via warm gradients)
 
 **Design principles:**
+- **Warmth over clinical precision** — the app should feel inviting to touch, not sterile
 - Dividers, not cards — rows separated by thin lines, not boxed containers
-- Color as information — green/red for trends, blue for interaction, gray for hierarchy
+- Color as information — moss/coral for trends, leaf for interaction, sage for hierarchy
 - Full-bleed content — no card wrappers around charts or lists
-- Typography as structure — weight and size create hierarchy, not borders or backgrounds
-- Floating navigation — bottom nav floats above content, not pushing it up
+- Typography as structure — weight and size create hierarchy, serif headings for editorial warmth
+- Floating navigation — bottom nav floats above content, paper-warm background
+- **Niduna differentiation** — same structural quality as competitor apps but visually distinct through warmth and brand personality
 
 ## Colors
 
-The palette is rooted in **iOS system colors** with a single blue accent. High contrast for readability in any lighting.
+The palette is rooted in the **Niduna brand** (from niduna-site) with warm, organic tones:
 
-- **Background (#FFFFFF):** Pure white canvas. No tinting, no gradients. Maximum clarity.
-- **Text (#1A1A1A):** Near-black for body text. Softer than pure #000 for reduced eye strain.
-- **Muted (#8E8E93):** iOS secondary label color. Used for secondary text, timestamps, metadata.
-- **Subtle (#AEAEB2):** Tertiary text, placeholders, disabled states.
-- **Container (#F2F2F7):** iOS grouped background. Used for nav bar, section backgrounds.
-- **ContainerHigh (#E5E5EA):** Secondary containers, filled backgrounds.
-- **Border (#C6C6C8):** iOS separator color. Thin dividers between rows.
-- **Primary (#007AFF):** iOS system blue. Used for active nav items, links, interactive elements. Never for body text.
-- **Trend Up (#34C759):** iOS green. Positive changes, "up" indicators, success states.
-- **Trend Down (#FF3B30):** iOS red. Negative changes, "down" indicators, error states.
+- **Background (#F6F8EF):** Warm paper canvas. Not pure white — reduces eye strain, adds premium feel. Slightly warmer at bottom via gradient.
+- **Text (#171D14):** Dark forest ink. Softer than pure #000 for reduced eye strain. Reads as near-black but warmer.
+- **Muted (#707B68):** Sage olive. Secondary text, timestamps, metadata. Warmer than iOS gray.
+- **Subtle (#88987A):** Tertiary text, placeholders, disabled states. Harmonious with warm palette.
+- **Container (#FFF9EC):** Paper-warm. Used for nav bar, section backgrounds, floating nav. Cozy, not cold.
+- **ContainerHigh (#F5EDE):** Secondary containers, filled inputs, active states.
+- **Border (rgba(40,95,59,0.14)):** Green-tinted separator. Blends into warm canvas naturally.
+- **Primary (#285F3B):** Forest leaf green. Used for active nav items, links, primary buttons, active states. The signature Niduna color — replaces iOS blue.
+- **Trend Up (#6F8C49):** Moss green. Positive changes, success states, value badges. Warmer and more organic than iOS green.
+- **Trend Down (#DC6543):** Coral. Negative changes, error states, destructive actions. Warmer and less alarming than iOS red.
 
-**Dark mode:** Inverts to pure black (#000000) background with adjusted surface colors. Primary shifts to lighter blue (#4A9EFF). Text becomes warm white (#F5F5F5).
+**Dark mode:** Inverts to dark forest ink (`#171D14`) background with adjusted warm surfaces. Primary shifts to lighter moss (`#6F8C49`). Text becomes warm paper (`#F6F8EF`).
 
 ## Typography
 
-Single font family: **Inter**. Weight and size carry all hierarchy — no font mixing.
+Dual-font system for **editorial warmth + readability**:
 
-- **Display (32/800):** Chart header values ("USD per 1 EUR"). Extra bold for impact at chart top.
-- **Heading (22/700):** Screen titles, section headers. Bold but not overwhelming.
-- **Body (16/500):** Default reading text. Currency names, rate values, settings labels. Medium weight for presence without heaviness.
-- **Caption (12/500):** Secondary info — timestamps, change percentages, hints. Smaller but still readable.
-- **Micro (10/600):** Badges, tags, tiny labels. Uppercase-style spacing for compact display.
+**Manrope (body font)** — Clean modern sans-serif for all UI text:
+- **Display (32/800):** Chart header values ("USD per 1 EUR"). Extra bold for impact.
+- **Heading (22/700):** Screen titles, section headers. Bold but approachable.
+- **Body (16/500):** Default reading text. Currency names, rate values, settings labels. Medium weight for presence.
+- **Caption (12/500):** Secondary info — timestamps, change percentages, hints.
+- **Micro (10/600):** Badges, tags, tiny labels. Uppercase-style spacing.
+
+**Fraunces (serif display font)** — For editorial warmth on key headings only:
+- Use for: "Currency" screen title, chart pair headline ("USD per 1 EUR"), major section headers
+- Do NOT use for: body text, captions, micro labels, code/currency codes
+- Creates instant brand differentiation from apps using only sans-serif
+
+Single font fallback chain: `["Fraunces", "Georgia", "serif"]`
 
 ## Layout
 
-**Single-column mobile layout** with generous safe area padding. Content stretches edge-to-edge; padding is applied per-section, not via wrapper cards.
+**Single-column mobile layout** with generous safe area padding on warm paper canvas:
 
 - Standard horizontal padding: **16px**
 - Section spacing: **24px** vertical between major groups
@@ -131,19 +159,20 @@ Single font family: **Inter**. Weight and size carry all hierarchy — no font m
 
 Spacing follows an **8px base scale** with 4px half-steps for micro-adjustments.
 
+Subtle background gradient (bottom 30% of screen): `#F6F8EF → #FBFCF6 → #FFF9EC` — creates depth without being decorative.
+
 ## Elevation & Depth
 
-**Minimal elevation** — flat design with extremely subtle depth cues only where needed for layer separation.
+**Minimal elevation** — flat design with extremely subtle depth cues:
 
-- Floating nav: single subtle shadow (`0 2px 10px rgba(0,0,0,0.08)`)
+- Floating nav: single subtle shadow (`rgba(40,95,59,0.08)`)
 - Selected chips: same subtle shadow for lift from container
 - No shadows on cards, rows, or list items
-- No drop shadows on text
-- Depth conveyed through **background color contrast** (white on light-gray) rather than shadows
+- Depth conveyed through **background color contrast** (warm white on paper) rather than shadows
 
 ## Shapes
 
-**Rounded-soft language** matching iOS design conventions:
+**Rounded-soft language** matching Niduna brand conventions:
 
 - **Pill radius (20px):** Buttons, chips, badges, nav container — the dominant shape
 - **Card radius (16px):** Large containers, modals, sheets
@@ -155,23 +184,24 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 ## Components
 
 ### Rate Rows (Convert screen)
-- **No card, no border, no shadow** — just InkWell + Padding
-- Separated by **0.5px divider** (border color at 50% opacity)
+- **No card, no border, no shadow** — just InkWell + Padding on warm paper
+- Separated by **0.5px green-tinted divider** (border color at 15% opacity)
 - Flag icon (32px circle) on left
 - Currency name bold (16/w600), code gray (13/w500)
-- Rate value on right; active row gets **green pill badge** (#E8F5E9 bg, #34C759 text)
+- Rate value on right inside **moss-green pill badge** (#EDF5EB bg, #3D6E2C text)
 - Swap icon appears only on the active/tapped row
 
 ### Amount Input
 - Large input field (40px font, w800)
 - Pill-shaped currency button (flag + code) attached to right of input
+- Active state: **leaf green tint** or warm container bg (not cold gray)
 - Timestamp shown top-right in muted caption text
-- No card wrapper — input sits directly on white background
+- No card wrapper — input sits directly on warm paper background
 
 ### Range Selector (Charts)
-- Horizontal scrollable row of chips inside rounded gray container
-- Selected chip: white bg + subtle shadow
-- Unselected: transparent
+- Horizontal scrollable row of chips inside rounded **paper-warm** container
+- Selected chip: **white bg** + subtle green-tinted shadow
+- Unselected: transparent on warm bg
 - Locked ranges: lock icon + muted text, tap shows SnackBar explanation
 
 ### Pair Selector (Charts)
@@ -180,27 +210,37 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 - Shadow on selected state
 
 ### Floating Pill Navigation
-- Rounded container (radius 28) with subtle shadow
+- Rounded container (radius 28) with **paper-warm** background
 - Three tabs: Convert / Charts / Settings
 - Material Symbols Rounded icons
-- Active tab = primary color; inactive = muted
+- Active tab = **leaf green** icon+text; inactive = **sage muted**
 - Positioned at bottom, centered, with margin from edges
+- Shadow: green-tinted (`rgba(40,95,59,0.08)`)
 
 ### Settings Tiles
 - Leading icon or widget, title + subtitle, trailing value or switch
 - Divider between tiles (not full-width cards)
-- Sections grouped by `SectionHeader` (uppercase, spaced)
+- Sections grouped by `SectionHeader` (uppercase, **moss green** color)
+- Toggle switches: **leaf green** when active
+
+### CTA / Action Buttons
+- **Remove Ads:** coral-tinted button (`#FDF0EC` bg, `#B54E48` text) — stands out without being aggressive
+- **Buy/Upgrade:** primary leaf green button
+- **Destructive:** coral red button only
+- **Secondary:** paper-warm background with ink text
 
 ## Do's and Don'ts
 
+- DO use **warm paper background** (#F6F8EF) — never stark white
+- DO use **leaf green (#285F3B)** as primary interactive color — never iOS blue
+- DO use **Fraunces serif** for major headings ("Currency", chart titles) — adds editorial warmth
 - DO use dividers between rows — never wrap individual rows in cards
-- DO use green/red ONLY for trend/information — never for decoration
-- DO keep the primary blue (#007AFF) for interactive elements only — never for body text
-- DO use Inter exclusively — no font mixing within a screen
-- DO maintain 100px bottom padding for floating nav clearance
-- DON'T add shadows to list rows, cards, or content areas
-- DON'T use more than 2 font weights on a single screen (display+body, or heading+caption)
-- DON'T mix sharp corners with rounded corners in the same view
-- DON'T use colored backgrounds for the main canvas — always pure white (or pure black in dark mode)
-- DON'T add branding chrome (logos, taglines, "by Niduna") to content screens
+- DO use moss/coral ONLY for trend/information — never for decoration
+- DO maintain **100px bottom padding** for floating nav clearance
+- DO keep the overall structure clean and minimal — warmth comes from palette, not decoration
+- DON'T use iOS blue (#007AFF) anywhere in this app
+- DON'T use stark white (#FFFFFF) as background
+- DON'T add cold grays to text hierarchy — use sage/ink/muted from brand palette
 - DON'T wrap charts or lists in card containers — full-bleed content only
+- DON'T mix Fraunces into body text or captions — headings only
+- DON'T add branding chrome (logos, taglines) to content screens

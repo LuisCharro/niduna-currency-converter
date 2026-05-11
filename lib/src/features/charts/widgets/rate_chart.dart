@@ -109,7 +109,7 @@ class _RateChartState extends State<RateChart> {
                           radius: isSelected ? 6 : 4,
                           color: lineColor,
                           strokeWidth: 2,
-                          strokeColor: Colors.white,
+                          strokeColor: AppTheme.card,
                         );
                       },
                     ),
@@ -218,11 +218,11 @@ class _DatePill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.card,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: AppTheme.text.withValues(alpha: 0.08),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),

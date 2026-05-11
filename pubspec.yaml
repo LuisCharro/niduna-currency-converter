@@ -64,6 +64,30 @@ flutter:
   assets:
     - assets/icons/currencies/
 
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: fonts/manrope/Manrope-Regular.ttf
+          weight: 400
+        - asset: fonts/manrope/Manrope-Medium.ttf
+          weight: 500
+        - asset: fonts/manrope/Manrope-SemiBold.ttf
+          weight: 600
+        - asset: fonts/manrope/Manrope-Bold.ttf
+          weight: 700
+        - asset: fonts/manrope/Manrope-ExtraBold.ttf
+          weight: 800
+    - family: Fraunces
+      fonts:
+        - asset: fonts/fraunces/Fraunces-Regular.ttf
+          weight: 400
+        - asset: fonts/fraunces/Fraunces-SemiBold.ttf
+          weight: 600
+        - asset: fonts/fraunces/Fraunces-Bold.ttf
+          weight: 700
+        - asset: fonts/fraunces/Fraunces-ExtraBold.ttf
+          weight: 800
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

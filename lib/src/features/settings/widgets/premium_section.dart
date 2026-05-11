@@ -99,7 +99,7 @@ class _PremiumCard extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          Icon(icon, size: 22, color: owned ? Colors.green.shade400 : AppTheme.primary),
+          Icon(icon, size: 22, color: owned ? AppTheme.trendUp : AppTheme.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -131,7 +131,7 @@ class _PremiumCard extends StatelessWidget {
             ),
           ),
           if (owned)
-            Icon(Icons.check_circle, size: 20, color: Colors.green.shade400)
+            Icon(Icons.check_circle, size: 20, color: AppTheme.trendUp)
           else ...[
             GestureDetector(
               onTap: onBuy,

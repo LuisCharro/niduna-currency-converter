@@ -55,20 +55,21 @@ class ConvertScreen extends StatelessWidget {
                       const AdBannerPlaceholder(),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: OutlinedButton.icon(
-                            onPressed: () => _showRemoveAds(context),
-                            icon: Icon(Icons.ad_units_outlined, size: 16, color: AppTheme.muted),
-                            label: Text(
-                              'Remove ads',
-                              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.muted),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: AppTheme.border),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.pillRadius)),
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                            ),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () => _showRemoveAds(context),
+                          icon: Icon(Icons.ad_units_outlined, size: 16, color: AppTheme.trendDown),
+                          label: Text(
+                            'Remove ads',
+                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.trendDown),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: AppTheme.trendDown.withValues(alpha: .4)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.pillRadius)),
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            backgroundColor: AppTheme.trendDown.withValues(alpha: .06),
+                          ),
                           ),
                         ),
                       ),

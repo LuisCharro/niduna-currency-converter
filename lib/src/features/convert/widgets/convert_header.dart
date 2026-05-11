@@ -25,7 +25,13 @@ class ConvertHeader extends StatelessWidget {
           const Expanded(
             child: Text(
               'Currency',
-              style: AppTheme.heading,
+              style: TextStyle(
+                fontFamily: 'Fraunces',
+                fontSize: 26,
+                fontWeight: FontWeight.w700,
+                letterSpacing: -0.3,
+                height: 1.2,
+              ),
               textAlign: TextAlign.center,
             ),
           ),

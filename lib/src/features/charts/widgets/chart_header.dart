@@ -36,7 +36,13 @@ class ChartHeader extends StatelessWidget {
               children: <Widget>[
                 Text(
                   '$base per 1 $quote',
-                  style: AppTheme.display.copyWith(fontSize: 28),
+                  style: const TextStyle(
+                    fontFamily: 'Fraunces',
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
+                    height: 1.2,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 if (rate != null)

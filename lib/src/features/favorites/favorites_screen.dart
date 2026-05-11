@@ -143,10 +143,10 @@ class _FavoritesList extends StatelessWidget {
             padding: const EdgeInsets.only(right: 20),
             margin: const EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-              color: Colors.red.shade50,
+              color: AppTheme.trendDown.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(AppTheme.radius),
             ),
-            child: Icon(Icons.delete_outline, color: Colors.red.shade400),
+            child: Icon(Icons.delete_outline, color: AppTheme.trendDown),
           ),
           child: _FavoriteTile(
             pair: pair,
