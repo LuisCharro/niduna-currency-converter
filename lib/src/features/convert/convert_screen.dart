@@ -12,11 +12,13 @@ class ConvertScreen extends StatelessWidget {
   const ConvertScreen({
     required this.controller,
     required this.monetization,
+    required this.onNavigateToSettings,
     super.key,
   });
 
   final ConvertController controller;
   final MonetizationController monetization;
+  final VoidCallback onNavigateToSettings;
 
   @override
   Widget build(BuildContext context) {
@@ -35,35 +37,45 @@ class ConvertScreen extends StatelessWidget {
                   onSelectBase: controller.setBase,
                   onToggleCode: controller.toggleCode,
                   onToggleFavorite: controller.toggleFavorite,
+                  onMore: onNavigateToSettings,
                   maxFavoritesReached: controller.maxFavoritesReached,
                 ),
               ),
             ),
-            ListenableBuilder(
-              listenable: monetization,
-              builder: (context, _) {
-                if (!monetization.adsEnabled) {
-                  return const SizedBox.shrink();
-                }
-                return Column(
-                  children: [
-                    const AdBannerPlaceholder(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6, bottom: 2),
-                      child: GestureDetector(
-                        onTap: () => _showRemoveAds(context),
-                        child: Text(
-                          'Enjoy without ads · Remove ads →',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: AppTheme.muted,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 74),
+              child: ListenableBuilder(
+                listenable: monetization,
+                builder: (context, _) {
+                  if (!monetization.adsEnabled) {
+                    return const SizedBox.shrink();
+                  }
+                  return Column(
+                    children: [
+                      const AdBannerPlaceholder(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton.icon(
+                            onPressed: () => _showRemoveAds(context),
+                            icon: Icon(Icons.ad_units_outlined, size: 16, color: AppTheme.muted),
+                            label: Text(
+                              'Remove ads',
+                              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.muted),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: AppTheme.border),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.pillRadius)),
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
           ],
         ),

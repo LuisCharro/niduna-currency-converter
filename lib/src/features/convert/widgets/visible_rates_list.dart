@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_theme.dart';
 import '../models/currency_quote.dart';
 import 'currency_rate_row.dart';
 import 'no_rates_card.dart';
@@ -33,7 +34,7 @@ class VisibleRatesList extends StatelessWidget {
       );
     }
     return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
       itemBuilder: (context, index) => CurrencyRateRow(
         quote: quotes[index],
         isActive: activeCode == quotes[index].code,
@@ -43,7 +44,10 @@ class VisibleRatesList extends StatelessWidget {
         onToggleFavorite: () => onToggleFavorite(quotes[index].code),
         maxFavoritesReached: maxFavoritesReached,
       ),
-      separatorBuilder: (context, index) => const SizedBox(height: 8),
+      separatorBuilder: (context, index) => Divider(
+        color: AppTheme.border.withValues(alpha: .4),
+        height: 1,
+      ),
       itemCount: quotes.length,
     );
   }

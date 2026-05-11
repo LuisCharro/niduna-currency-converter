@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../domain/convert_state.dart';
 import 'amount_card.dart';
-import 'convert_info_bar.dart';
 import 'convert_header.dart';
 import 'currency_picker_sheet.dart';
 import 'visible_rates_list.dart';
@@ -15,6 +14,7 @@ class ConvertContent extends StatefulWidget {
     required this.onSelectBase,
     required this.onToggleCode,
     required this.onToggleFavorite,
+    required this.onMore,
     this.maxFavoritesReached = false,
     super.key,
   });
@@ -25,6 +25,7 @@ class ConvertContent extends StatefulWidget {
   final ValueChanged<String> onSelectBase;
   final ValueChanged<String> onToggleCode;
   final ValueChanged<String> onToggleFavorite;
+  final VoidCallback onMore;
   final bool maxFavoritesReached;
 
   @override
@@ -45,12 +46,8 @@ class _ConvertContentState extends State<ConvertContent> {
         ConvertHeader(
           isRefreshing: widget.state.isRefreshing,
           onRefresh: () => widget.onRefresh(),
-        ),
-        ConvertInfoBar(
-          statusLabel: widget.state.statusLabel,
-          message: widget.state.message,
-          count: widget.state.selectedCodes.length,
-          onEdit: () => _openPicker(context, selectBaseMode: false),
+          onAddCurrencies: () => _openPicker(context, selectBaseMode: false),
+          onMore: widget.onMore,
         ),
         AmountCard(
           lastUpdatedLabel: widget.state.lastUpdatedLabel,

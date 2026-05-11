@@ -6,53 +6,39 @@ class ConvertHeader extends StatelessWidget {
   const ConvertHeader({
     required this.onRefresh,
     required this.isRefreshing,
+    required this.onAddCurrencies,
+    required this.onMore,
     super.key,
   });
 
   final VoidCallback onRefresh;
   final bool isRefreshing;
+  final VoidCallback onAddCurrencies;
+  final VoidCallback onMore;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 14, 20, 10),
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
       child: Row(
         children: <Widget>[
-          const Icon(Icons.security, color: AppTheme.primary, size: 20),
-          const SizedBox(width: 8),
           const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Niduna Convert',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    height: 1.1,
-                  ),
-                ),
-                Text(
-                  'LOCAL-ONLY DATA',
-                  style: TextStyle(
-                    color: AppTheme.muted,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: .8,
-                  ),
-                ),
-              ],
+            child: Text(
+              'Currency',
+              style: AppTheme.heading,
+              textAlign: TextAlign.center,
             ),
           ),
           IconButton(
-            onPressed: isRefreshing ? null : onRefresh,
+            onPressed: onAddCurrencies,
             visualDensity: VisualDensity.compact,
-            icon: isRefreshing
-                ? const SizedBox.square(
-                    dimension: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Icon(Icons.sync, color: AppTheme.primary, size: 20),
+            icon: Icon(Icons.add_circle_outline, color: AppTheme.muted, size: 24),
+          ),
+          const SizedBox(width: 4),
+          IconButton(
+            onPressed: onMore,
+            visualDensity: VisualDensity.compact,
+            icon: Icon(Icons.more_horiz, color: AppTheme.muted, size: 24),
           ),
         ],
       ),

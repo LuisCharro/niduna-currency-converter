@@ -46,6 +46,7 @@ class _AmountValueRowState extends State<AmountValueRow> {
   Widget build(BuildContext context) {
     final currency = currencyByCode(widget.base);
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Expanded(
               child: TextField(
@@ -53,29 +54,44 @@ class _AmountValueRowState extends State<AmountValueRow> {
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 onChanged: widget.onAmountChanged,
-                decoration:
-                    const InputDecoration.collapsed(hintText: '0.00'),
-                style: TextStyle(
-                  fontSize: 46,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -1.2,
+                decoration: const InputDecoration.collapsed(hintText: '0.00'),
+                style: const TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -1.0,
+                  height: 1.1,
                 ),
               ),
             ),
-            FilledButton.tonalIcon(
-              onPressed: widget.onBaseTap,
-              icon: CurrencyFlagIcon(
-                code: widget.base,
-                symbol: currency.symbol,
-                radius: 10,
-              ),
-              label: Text(
-                widget.base,
-                style: const TextStyle(fontWeight: FontWeight.w800),
-              ),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppTheme.containerHigh,
-                foregroundColor: AppTheme.text,
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: widget.onBaseTap,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppTheme.container,
+                  borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+                  border: Border.all(color: AppTheme.border.withValues(alpha: .4)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    CurrencyFlagIcon(
+                      code: widget.base,
+                      symbol: currency.symbol,
+                      radius: 12,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      widget.base,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
       ],

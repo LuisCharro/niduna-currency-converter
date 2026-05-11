@@ -7,17 +7,23 @@ class NoRatesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: AppTheme.card,
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
-        border: Border.all(color: AppTheme.border),
-      ),
-      child: const Text(
-        'Rates will appear here after the first successful refresh.',
-        style: TextStyle(color: AppTheme.muted, fontWeight: FontWeight.w700),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
+      child: Column(
+        children: <Widget>[
+          Icon(Icons.currency_exchange_outlined,
+              size: 48, color: AppTheme.subtle),
+          const SizedBox(height: 16),
+          Text(
+            'Rates will appear here',
+            style: AppTheme.body.copyWith(color: AppTheme.muted),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Pull to refresh or tap the sync button',
+            style: AppTheme.caption.copyWith(color: AppTheme.subtle),
+          ),
+        ],
       ),
     );
   }
