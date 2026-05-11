@@ -25,20 +25,36 @@ class PairSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Expanded(
-          child: _CurrencyButton(
-            label: 'Base',
+          child: _CurrencyPill(
             code: base,
             onTap: () => _openPicker(context, selectingBase: true),
           ),
         ),
-        const SizedBox(width: 8),
-        _SwapButton(onTap: onSwap),
-        const SizedBox(width: 8),
+        const SizedBox(width: 12),
+        GestureDetector(
+          onTap: onSwap,
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppTheme.card,
+              border: Border.all(color: AppTheme.border.withValues(alpha: .4)),
+              boxShadow: AppTheme.subtleShadow,
+            ),
+            child: Icon(
+              Icons.swap_vert_rounded,
+              color: AppTheme.text,
+              size: 20,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
         Expanded(
-          child: _CurrencyButton(
-            label: 'Quote',
+          child: _CurrencyPill(
             code: quote,
             onTap: () => _openPicker(context, selectingBase: false),
           ),
@@ -73,85 +89,46 @@ class PairSelector extends StatelessWidget {
   }
 }
 
-class _CurrencyButton extends StatelessWidget {
-  const _CurrencyButton({
-    required this.label,
+class _CurrencyPill extends StatelessWidget {
+  const _CurrencyPill({
     required this.code,
     required this.onTap,
   });
 
-  final String label;
   final String code;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final currency = currencyByCode(code);
-    return InkWell(
-      borderRadius: BorderRadius.circular(AppTheme.radius),
+    return GestureDetector(
       onTap: onTap,
-      child: Ink(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: AppTheme.card,
-          borderRadius: BorderRadius.circular(AppTheme.radius),
-          border: Border.all(color: AppTheme.border.withValues(alpha: .5)),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: AppTheme.border.withValues(alpha: .4)),
+          boxShadow: AppTheme.subtleShadow,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              label,
-              style: TextStyle(fontSize: 11, color: AppTheme.muted, fontWeight: FontWeight.w600),
+            CurrencyFlagIcon(
+              code: code,
+              symbol: currency.symbol,
+              radius: 14,
             ),
-            const SizedBox(height: 2),
-            Row(
-              children: <Widget>[
-                CurrencyFlagIcon(
-                  code: code,
-                  symbol: currency.symbol,
-                  radius: 12,
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  code,
-                  style: TextStyle(fontSize: 18, color: AppTheme.text, fontWeight: FontWeight.w800),
-                ),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: Text(currency.symbol, style: TextStyle(fontSize: 13, color: AppTheme.subtle), overflow: TextOverflow.ellipsis),
-                ),
-                Icon(Icons.expand_more, color: AppTheme.muted),
-              ],
+            const SizedBox(width: 8),
+            Text(
+              code,
+              style: const TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.5,
+              ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SwapButton extends StatelessWidget {
-  const _SwapButton({required this.onTap});
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
-        child: Ink(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: AppTheme.container,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppTheme.border),
-          ),
-          child: Icon(Icons.swap_vert_rounded, color: AppTheme.primary),
         ),
       ),
     );

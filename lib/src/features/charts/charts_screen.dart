@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
@@ -7,6 +6,7 @@ import '../../core/theme/app_theme.dart';
 import '../convert/widgets/ad_banner_placeholder.dart';
 import '../settings/widgets/iap_purchase_player.dart';
 import 'presentation/charts_controller.dart';
+import 'widgets/chart_header.dart';
 import 'widgets/chart_summary.dart';
 import 'widgets/pair_selector.dart';
 import 'widgets/range_selector.dart';
@@ -59,87 +59,100 @@ class _ChartsScreenState extends State<ChartsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Charts')),
-      body: ListenableBuilder(
-        listenable: widget.controller,
-        builder: (context, _) {
-          final state = widget.controller.state;
-          return ListenableBuilder(
-            listenable: widget.monetization,
-            builder: (context, _) {
-              return Column(
-                children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
-                child: Column(
+    return Material(
+      color: AppTheme.bg,
+      child: SafeArea(
+        bottom: false,
+        child: ListenableBuilder(
+          listenable: widget.controller,
+          builder: (context, _) {
+            final state = widget.controller.state;
+            return ListenableBuilder(
+              listenable: widget.monetization,
+              builder: (context, _) {
+                return Column(
                   children: <Widget>[
-                    PairSelector(
+                    ChartHeader(
                       base: state.base,
                       quote: state.quote,
-                      onPairChanged: widget.controller.setPair,
+                      rate: state.currentRate,
+                      changePercent: state.changePercent,
                       onSwap: _handleSwap,
-                      controller: widget.monetization,
                     ),
-if (state.lastUpdated != null) ...[
-                      const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          'Updated ${DateFormat('MMM d').format(state.lastUpdated!)}',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: AppTheme.muted,
-                          ),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+                      child: PairSelector(
+                        base: state.base,
+                        quote: state.quote,
+                        onPairChanged: widget.controller.setPair,
+                        onSwap: _handleSwap,
+                        controller: widget.monetization,
                       ),
-                    ],
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      height: 36,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
                       child: RangeSelector(
                         selected: state.range,
                         onChanged: widget.controller.setRange,
                         canUseLockedRanges: widget.monetization.canUseIntradayRanges,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: _buildChartArea(state),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                child: ChartSummary(
-                  high: state.high,
-                  low: state.low,
-                  changePercent: state.changePercent,
-                ),
-              ),
-              if (widget.monetization.adsEnabled) ...[
-                const Divider(height: 1),
-                Column(
-                  children: [
-                    const AdBannerPlaceholder(),
+                    Expanded(child: _buildChartArea(state)),
                     Padding(
-                      padding: const EdgeInsets.only(top: 6, bottom: 2),
-                      child: GestureDetector(
-                        onTap: () => _showRemoveAds(context),
-                        child: Text(
-                          'Enjoy without ads · Remove ads →',
-                          style: TextStyle(fontSize: 12, color: AppTheme.muted),
-                        ),
+                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+                      child: ChartSummary(
+                        high: state.high,
+                        low: state.low,
+                        changePercent: state.changePercent,
                       ),
                     ),
+                    if (state.lastUpdated != null)
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: widget.monetization.adsEnabled ? 14 : 80,
+                        ),
+                        child: Text(
+                          'Tap currencies above to explore other pairs',
+                          textAlign: TextAlign.center,
+                          style: AppTheme.caption.copyWith(color: AppTheme.subtle),
+                        ),
+                      ),
+                    if (widget.monetization.adsEnabled) ...[
+                      const Divider(height: 1),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 92),
+                        child: Column(
+                          children: [
+                            const AdBannerPlaceholder(),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton.icon(
+                                  onPressed: () => _showRemoveAds(context),
+                                  icon: Icon(Icons.ad_units_outlined, size: 16, color: AppTheme.muted),
+                                  label: Text(
+                                    'Remove ads',
+                                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.muted),
+                                  ),
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(color: AppTheme.border),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.pillRadius)),
+                                    padding: const EdgeInsets.symmetric(vertical: 8),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ],
-                ),
-              ],
-            ],
-          );
-            },
-          );
-        },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -196,7 +209,7 @@ if (state.lastUpdated != null) ...[
         key: ValueKey<String>(
           '$currentPairKey-${widget.controller.state.range.label}-$_swapVersion',
         ),
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+        padding: const EdgeInsets.symmetric(horizontal: 0),
         child: RateChart(data: state.data),
       ),
     );
@@ -209,12 +222,12 @@ class _EmptyChart extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(Icons.show_chart, size: 48, color: AppTheme.muted),
+        children: [
+          Icon(Icons.show_chart_outlined, size: 48, color: AppTheme.muted),
           const SizedBox(height: 12),
           Text(
             'No chart data available',
-            style: TextStyle(fontSize: 15, color: AppTheme.muted),
+            style: AppTheme.body.copyWith(color: AppTheme.muted),
           ),
         ],
       ),
@@ -235,12 +248,12 @@ class _ErrorState extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: [
             Icon(Icons.wifi_off_outlined, size: 48, color: AppTheme.muted),
             const SizedBox(height: 12),
             Text(
               message ?? 'Failed to load chart data',
-              style: TextStyle(fontSize: 14, color: AppTheme.muted),
+              style: AppTheme.body.copyWith(color: AppTheme.muted),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),

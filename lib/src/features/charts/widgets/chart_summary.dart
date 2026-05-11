@@ -17,9 +17,7 @@ class ChartSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPositive = (changePercent ?? 0) >= 0;
-    final changeColor = isPositive
-        ? const Color(0xFF34C759)
-        : const Color(0xFFFF3B30);
+    final changeColor = isPositive ? AppTheme.trendUp : AppTheme.trendDown;
 
     return Row(
       children: <Widget>[
@@ -29,22 +27,14 @@ class ChartSummary extends StatelessWidget {
             value: high != null ? high!.toStringAsFixed(4) : '\u2014',
           ),
         ),
-        Container(
-          width: 1,
-          height: 28,
-          color: AppTheme.border.withValues(alpha: .4),
-        ),
+        Container(width: 1, height: 24, color: AppTheme.border.withValues(alpha: .3)),
         Expanded(
           child: _SummaryItem(
             label: 'Low',
             value: low != null ? low!.toStringAsFixed(4) : '\u2014',
           ),
         ),
-        Container(
-          width: 1,
-          height: 28,
-          color: AppTheme.border.withValues(alpha: .4),
-        ),
+        Container(width: 1, height: 24, color: AppTheme.border.withValues(alpha: .3)),
         Expanded(
           child: _SummaryItem(
             label: 'Change',
@@ -74,11 +64,8 @@ class _SummaryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text(
-          label,
-          style: TextStyle(fontSize: 11, color: AppTheme.muted),
-        ),
-        const SizedBox(height: 3),
+        Text(label, style: AppTheme.micro),
+        const SizedBox(height: 2),
         Text(
           value,
           style: TextStyle(

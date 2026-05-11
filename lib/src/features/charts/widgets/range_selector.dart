@@ -19,12 +19,14 @@ class RangeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: ChartRange.values.map((range) {
           final isSelected = range == selected;
           final isLocked = range.locked && !canUseLockedRanges;
           return Padding(
-            padding: const EdgeInsets.only(right: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: GestureDetector(
               onTap: () {
                 if (isLocked) {
@@ -40,26 +42,25 @@ class RangeSelector extends StatelessWidget {
                 onChanged(range);
               },
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 140),
+                duration: const Duration(milliseconds: 160),
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(
                   color: isLocked
-                      ? AppTheme.border.withValues(alpha: .15)
+                      ? Colors.transparent
                       : isSelected
-                      ? AppTheme.primary
-                      : AppTheme.card,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isLocked
-                        ? AppTheme.border.withValues(alpha: .5)
-                        : isSelected
-                        ? AppTheme.primary
-                        : AppTheme.border.withValues(alpha: .5),
-                  ),
+                          ? AppTheme.card
+                          : Colors.transparent,
+                  borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+                  border: isSelected
+                      ? null
+                      : Border.all(color: Colors.transparent),
+                  boxShadow: isSelected
+                      ? AppTheme.subtleShadow
+                      : null,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
+                  children: [
                     if (isLocked) ...[
                       Icon(Icons.lock_outline, size: 12, color: AppTheme.muted),
                       const SizedBox(width: 4),
@@ -72,8 +73,8 @@ class RangeSelector extends StatelessWidget {
                         color: isLocked
                             ? AppTheme.muted
                             : isSelected
-                            ? Colors.white
-                            : AppTheme.text,
+                                ? AppTheme.text
+                                : AppTheme.subtle,
                       ),
                     ),
                   ],
