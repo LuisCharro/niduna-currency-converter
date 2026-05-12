@@ -78,15 +78,15 @@ class ChartHeader extends StatelessWidget {
                         Icon(
                           Icons.schedule_outlined,
                           size: 12,
-                          color: AppTheme.subtle.withValues(alpha: .6),
+                          color: AppTheme.muted,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           freshnessText,
                           style: TextStyle(
-                            fontSize: 11,
-                            color: AppTheme.subtle.withValues(alpha: .6),
-                            fontWeight: FontWeight.w500,
+                            fontSize: 11.5,
+                            color: AppTheme.muted,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ],

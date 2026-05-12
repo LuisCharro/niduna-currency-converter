@@ -39,9 +39,9 @@ class QuoteValue extends StatelessWidget {
             child: Text(
               quote.rateLine,
               style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-                color: AppTheme.subtle.withValues(alpha: .55),
+                fontSize: 11.5,
+                fontWeight: FontWeight.w700,
+                color: AppTheme.muted,
                 letterSpacing: 0.2,
               ),
             ),

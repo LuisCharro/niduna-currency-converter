@@ -218,9 +218,9 @@ class _RateChartState extends State<RateChart>
                               child: Text(
                                 DateFormat('d MMM').format(sortedDates[index]),
                                 style: TextStyle(
-                                  fontSize: 11,
-                                  color: AppTheme.subtle,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 11.5,
+                                  color: AppTheme.muted,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                             );
@@ -316,7 +316,7 @@ class _RateChartState extends State<RateChart>
                           style: TextStyle(
                             fontSize: 9,
                             fontWeight: FontWeight.w700,
-                            color: AppTheme.subtle,
+                            color: AppTheme.muted,
                             letterSpacing: 0.5,
                           ),
                         ),

@@ -5,8 +5,8 @@ class AppTheme {
 
   static const Color bg = Color(0xFFF6F8EF);
   static const text = Color(0xFF171D14);
-  static const muted = Color(0xFF707B68);
-  static const subtle = Color(0xFF88987A);
+  static const muted = Color(0xFF5F6A58);
+  static const subtle = Color(0xFF66745B);
   static const card = Color(0xFFFFFFFF);
   static const container = Color(0xFFFFF9EC);
   static const containerHigh = Color(0xFFF5EDEE);
@@ -47,13 +47,13 @@ class AppTheme {
 
   static const TextStyle caption = TextStyle(
     fontSize: 12,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
     height: 1.3,
   );
 
   static const TextStyle micro = TextStyle(
-    fontSize: 10,
-    fontWeight: FontWeight.w600,
+    fontSize: 11,
+    fontWeight: FontWeight.w700,
     height: 1.2,
     letterSpacing: 0.5,
   );

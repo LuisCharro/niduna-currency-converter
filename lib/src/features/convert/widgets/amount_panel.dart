@@ -41,17 +41,14 @@ class AmountPanel extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(
-                        Icons.schedule,
-                        size: 11,
-                        color: AppTheme.subtle.withValues(alpha: .6),
-                      ),
+                      Icon(Icons.schedule, size: 11, color: AppTheme.muted),
                       const SizedBox(width: 4),
                       Text(
                         lastUpdatedLabel,
                         style: TextStyle(
                           fontSize: 11,
-                          color: AppTheme.subtle.withValues(alpha: .6),
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.muted,
                         ),
                       ),
                       const SizedBox(width: 6),
@@ -61,7 +58,7 @@ class AmountPanel extends StatelessWidget {
                         child: Icon(
                           Icons.info_outline,
                           size: 12,
-                          color: AppTheme.subtle.withValues(alpha: .5),
+                          color: AppTheme.muted,
                         ),
                       ),
                     ],

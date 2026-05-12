@@ -12,7 +12,7 @@ class ConvertLabel extends StatelessWidget {
     text,
     style: const TextStyle(
       color: AppTheme.muted,
-      fontSize: 10,
+      fontSize: 11,
       fontWeight: FontWeight.w800,
       letterSpacing: .6,
     ),

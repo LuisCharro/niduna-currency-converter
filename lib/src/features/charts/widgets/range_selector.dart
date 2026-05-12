@@ -100,9 +100,9 @@ class RangeSelector extends StatelessWidget {
             child: Text(
               _dateSpanLabel(selected),
               style: TextStyle(
-                fontSize: 10.5,
-                color: AppTheme.subtle.withValues(alpha: .55),
-                fontWeight: FontWeight.w500,
+                fontSize: 11.5,
+                color: AppTheme.muted,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),

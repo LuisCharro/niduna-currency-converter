@@ -229,9 +229,9 @@ class _SubscriptionCard extends StatelessWidget {
                 child: Text(
                   'Coming Soon',
                   style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.subtle,
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.muted,
                   ),
                 ),
               ),
@@ -249,12 +249,16 @@ class _SubscriptionCard extends StatelessWidget {
           const SizedBox(height: 6),
           Row(
             children: <Widget>[
-              Icon(Icons.construction, size: 11, color: AppTheme.subtle),
+              Icon(Icons.construction, size: 12, color: AppTheme.muted),
               const SizedBox(width: 4),
               Flexible(
                 child: Text(
                   '1 week free trial, then X.XX CHF/year',
-                  style: TextStyle(fontSize: 11, color: AppTheme.subtle),
+                  style: TextStyle(
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.muted,
+                  ),
                 ),
               ),
             ],
