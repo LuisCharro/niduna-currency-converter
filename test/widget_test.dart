@@ -63,11 +63,12 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(FloatingPillNav), findsOneWidget);
-    expect(find.text('Convert'), findsOneWidget);
+    expect(find.text('Convert'), findsWidgets);
     expect(find.text('Chart'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Favorites'), findsNothing);
-    expect(find.text('Currency'), findsOneWidget);
+    expect(find.text('Private daily rates'), findsOneWidget);
+    expect(find.text('Currencies'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
   });
 
@@ -83,13 +84,41 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Currency'), findsOneWidget);
+    expect(find.text('Convert'), findsOneWidget);
+    expect(find.text('Currencies'), findsOneWidget);
     expect(find.text('USD'), findsOneWidget);
     expect(find.text('EUR'), findsOneWidget);
     expect(find.text('CHF'), findsWidgets);
     expect(find.text('NZD'), findsNothing);
     expect(find.text('BTC'), findsNothing);
     expect(find.text('ETH'), findsNothing);
+  });
+
+  testWidgets('Convert currency picker opens on a compact viewport', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Currencies'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Visible currencies'), findsOneWidget);
+    expect(find.text('Currency, country, or code'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('Convert row tap highlights active row', (

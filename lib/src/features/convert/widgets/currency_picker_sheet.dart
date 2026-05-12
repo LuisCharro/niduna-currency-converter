@@ -33,55 +33,52 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
   @override
   Widget build(BuildContext context) {
     final currencies = supportedCurrencies.where(_matchesQuery).toList();
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height * .82,
-              child: Column(
-                children: <Widget>[
-                  _PickerHeader(title: widget.title),
-                  const SizedBox(height: 12),
-                  _SearchField(
-                    onChanged: (value) => setState(() => _query = value),
-                  ),
-                  const SizedBox(height: 12),
-                  Expanded(
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        final currency = currencies[index];
-                        final isBase = currency.code == widget.base;
-                        final isSelected = _selectedCodes.contains(
-                          currency.code,
-                        );
-                        return CurrencyPickerTile(
-                          currency: currency,
-                          isBase: isBase,
-                          isSelected: isSelected,
-                          selectBaseMode: widget.selectBaseMode,
-                          onTap: () {
-                            if (widget.selectBaseMode) {
-                              widget.onSelectBase(currency.code);
-                            } else {
-                              _toggle(currency.code);
-                            }
-                          },
-                        );
-                      },
-                      separatorBuilder: (context, index) => Divider(
-                        height: 1,
-                        color: AppTheme.border.withValues(alpha: .15),
-                      ),
-                      itemCount: currencies.length,
-                    ),
-                  ),
-                ],
+    return DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: .84,
+      minChildSize: .42,
+      maxChildSize: .92,
+      builder: (context, scrollController) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
+          child: Column(
+            children: <Widget>[
+              _PickerHeader(title: widget.title),
+              const SizedBox(height: 12),
+              _SearchField(
+                onChanged: (value) => setState(() => _query = value),
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+              Expanded(
+                child: ListView.separated(
+                  controller: scrollController,
+                  itemBuilder: (context, index) {
+                    final currency = currencies[index];
+                    final isBase = currency.code == widget.base;
+                    final isSelected = _selectedCodes.contains(currency.code);
+                    return CurrencyPickerTile(
+                      currency: currency,
+                      isBase: isBase,
+                      isSelected: isSelected,
+                      selectBaseMode: widget.selectBaseMode,
+                      onTap: () {
+                        if (widget.selectBaseMode) {
+                          widget.onSelectBase(currency.code);
+                        } else {
+                          _toggle(currency.code);
+                        }
+                      },
+                    );
+                  },
+                  separatorBuilder: (context, index) => Divider(
+                    height: 1,
+                    color: AppTheme.border.withValues(alpha: .15),
+                  ),
+                  itemCount: currencies.length,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
