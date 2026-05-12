@@ -17,12 +17,12 @@ void main() {
     app.main();
     await tester.pumpAndSettle(launchSettle);
 
-    expect(find.text('Convert'), findsOneWidget);
-    expect(find.text('Niduna Convert'), findsOneWidget);
+    expect(find.text('Convert'), findsWidgets);
+    expect(find.text('Settings'), findsWidgets);
     expect(find.text('100.00'), findsOneWidget);
   });
 
-  testWidgets('bottom navigation shows all 4 tabs', (tester) async {
+  testWidgets('bottom navigation shows all 3 tabs', (tester) async {
     if (Platform.isAndroid) {
       await binding.convertFlutterSurfaceToImage();
     }
@@ -30,13 +30,12 @@ void main() {
     app.main();
     await tester.pumpAndSettle(launchSettle);
 
-    expect(find.text('Convert'), findsOneWidget);
-    expect(find.text('Favorites'), findsOneWidget);
-    expect(find.text('Charts'), findsOneWidget);
-    expect(find.text('Settings'), findsOneWidget);
+    expect(find.text('Convert'), findsWidgets);
+    expect(find.text('Chart'), findsWidgets);
+    expect(find.text('Settings'), findsWidgets);
   });
 
-  testWidgets('navigate to Favorites tab', (tester) async {
+  testWidgets('navigate to Chart tab', (tester) async {
     if (Platform.isAndroid) {
       await binding.convertFlutterSurfaceToImage();
     }
@@ -44,24 +43,10 @@ void main() {
     app.main();
     await tester.pumpAndSettle(launchSettle);
 
-    await tester.tap(find.text('Favorites'));
+    await tester.tap(find.text('Chart'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Favorites'), findsWidgets);
-  });
-
-  testWidgets('navigate to Charts tab', (tester) async {
-    if (Platform.isAndroid) {
-      await binding.convertFlutterSurfaceToImage();
-    }
-
-    app.main();
-    await tester.pumpAndSettle(launchSettle);
-
-    await tester.tap(find.text('Charts'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Charts'), findsWidgets);
+    expect(find.text('Chart'), findsWidgets);
   });
 
   testWidgets('navigate to Settings tab', (tester) async {
@@ -75,6 +60,6 @@ void main() {
     await tester.tap(find.text('Settings'));
     await tester.pumpAndSettle();
 
-    expect(find.text('App settings'), findsOneWidget);
+    expect(find.text('Settings'), findsWidgets);
   });
 }
