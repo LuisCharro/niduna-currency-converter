@@ -125,7 +125,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Convert row tap highlights active row', (
+  testWidgets('Convert row tap selects, then second tap sets base', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
@@ -146,7 +146,16 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Swiss Franc'), findsWidgets);
-    expect(find.byIcon(Icons.swap_horiz_rounded), findsWidgets);
+    expect(find.text('Set as base'), findsOneWidget);
+    expect(find.text('1 USD = 0.88 CHF'), findsOneWidget);
+    expect(find.byIcon(Icons.swap_horiz_rounded), findsNothing);
+    expect(controller.state.base, 'USD');
+
+    await tester.tap(chfFinder.first);
+    await tester.pumpAndSettle();
+
+    expect(controller.state.base, 'CHF');
+    expect(find.text('Set as base'), findsNothing);
   });
 
   testWidgets('Favorites screen shows placeholder', (

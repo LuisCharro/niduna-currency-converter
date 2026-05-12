@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../models/currency_quote.dart';
@@ -29,27 +30,25 @@ class CurrencyRateRow extends StatelessWidget {
           ? AppTheme.trendUp.withValues(alpha: .06)
           : Colors.transparent,
       child: InkWell(
-        onTap: onTap,
+        onTap: () {
+          if (!isActive) {
+            onTap();
+            return;
+          }
+          HapticFeedback.selectionClick();
+          onSetBase();
+        },
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: AppTheme.rowMinHeight),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
             child: Row(
               children: <Widget>[
-                Expanded(child: QuoteIdentity(quote: quote)),
+                Expanded(
+                  child: QuoteIdentity(quote: quote, isActive: isActive),
+                ),
                 const SizedBox(width: 10),
                 QuoteValue(quote: quote, isActive: isActive),
-                if (isActive) ...[
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: onSetBase,
-                    child: Icon(
-                      Icons.swap_horiz_rounded,
-                      color: AppTheme.primary,
-                      size: 20,
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
