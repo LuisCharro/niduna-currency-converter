@@ -13,7 +13,7 @@ class AppPreferences extends ChangeNotifier {
   static const String _darkModeKey = 'pref_dark_mode';
   static const String _selectedCodesKey = 'pref_selected_codes';
 
-  static const List<String> defaultSelectedCodes = ['CHF', 'EUR', 'GBP', 'JPY'];
+  static const List<String> defaultSelectedCodes = ['EUR', 'GBP', 'JPY'];
 
   String get defaultBaseCurrency => _prefs.getString(_defaultBaseKey) ?? 'USD';
   int get decimalPlaces => _prefs.getInt(_decimalPlacesKey) ?? 2;

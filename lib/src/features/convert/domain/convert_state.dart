@@ -19,7 +19,7 @@ class ConvertState {
     lastUpdatedLabel: 'Loading rates',
     base: 'USD',
     amountText: '100.00',
-    selectedCodes: <String>['CHF', 'EUR', 'GBP', 'JPY'],
+    selectedCodes: <String>['EUR', 'GBP', 'JPY'],
   );
 
   final ConvertStatus status;

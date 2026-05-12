@@ -35,7 +35,7 @@ class ConvertController extends ChangeNotifier {
   String _base = 'USD';
   double _amount = 100;
   String _amountText = '100.00';
-  List<String> _selectedCodes = <String>['CHF', 'EUR', 'GBP', 'JPY'];
+  List<String> _selectedCodes = <String>['EUR', 'GBP', 'JPY'];
   LatestRatesSnapshot? _snapshot;
   int _decimalPlaces = 2;
 
@@ -53,7 +53,7 @@ class ConvertController extends ChangeNotifier {
     _amount = amount;
     _amountText = amount.toStringAsFixed(2);
     _selectedCodes = List<String>.from(
-      selectedCodes ?? <String>['CHF', 'EUR', 'GBP', 'JPY'],
+      selectedCodes ?? <String>['EUR', 'GBP', 'JPY'],
     )..remove(base);
     state = ConvertState.loading().copyWith(
       base: _base,
