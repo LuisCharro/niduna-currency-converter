@@ -19,10 +19,7 @@ class CurrencyRateRow extends StatelessWidget {
 
   final CurrencyQuote quote;
   final bool isActive;
-  final VoidCallback onTap;
-  final VoidCallback onSetBase;
-  final VoidCallback onRemove;
-  final VoidCallback onToggleFavorite;
+  final VoidCallback onTap, onSetBase, onRemove, onToggleFavorite;
   final bool maxFavoritesReached;
 
   @override
@@ -33,26 +30,28 @@ class CurrencyRateRow extends StatelessWidget {
           : Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppTheme.radius),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 2),
-          child: Row(
-            children: <Widget>[
-              Expanded(child: QuoteIdentity(quote: quote)),
-              const SizedBox(width: 10),
-              QuoteValue(quote: quote, isActive: isActive),
-              if (isActive) ...[
-                const SizedBox(width: 8),
-                GestureDetector(
-                  onTap: onSetBase,
-                  child: Icon(
-                    Icons.swap_horiz_rounded,
-                    color: AppTheme.primary,
-                    size: 20,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: AppTheme.rowMinHeight),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: QuoteIdentity(quote: quote)),
+                const SizedBox(width: 10),
+                QuoteValue(quote: quote, isActive: isActive),
+                if (isActive) ...[
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: onSetBase,
+                    child: Icon(
+                      Icons.swap_horiz_rounded,
+                      color: AppTheme.primary,
+                      size: 20,
+                    ),
                   ),
-                ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),

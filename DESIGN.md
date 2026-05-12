@@ -92,6 +92,15 @@ components:
 
 Privacy-first currency converter with a **warm, editorial aesthetic** rooted in the Niduna brand. The UI prioritizes **clarity and warmth** — information density without visual noise, without the cold clinical feel of generic utility apps.
 
+## Current Redesign Direction
+
+The active direction is **Niduna hybrid**:
+
+- preserve the Niduna warm paper surface, forest green interaction color, and editorial typography
+- borrow the competitor's useful discipline: strong hierarchy, thin dividers, compact list rows, pill values, full-width charts, and confident touch targets
+- avoid copying the competitor's pure-white/iOS-blue style wholesale
+- use generated imagery only for icons, store assets, or empty states; do not add decorative backgrounds to the core product UI
+
 Target audience: travelers, expats, freelancers who need fast, reliable rates without accounts or tracking.
 
 Emotional response: **warm, trustworthy, crafted**. The app should feel like a precision tool made by people who care about design, not a factory-default utility.

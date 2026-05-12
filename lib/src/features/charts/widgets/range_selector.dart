@@ -20,17 +20,20 @@ class RangeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: ChartRange.values.map((range) {
-              final isSelected = range == selected;
-              final isLocked = range.locked && !canUseLockedRanges;
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: GestureDetector(
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: AppTheme.containerHigh.withValues(alpha: .42),
+            borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+          ),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.all(4),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: ChartRange.values.map((range) {
+                final isSelected = range == selected;
+                final isLocked = range.locked && !canUseLockedRanges;
+                return GestureDetector(
                   onTap: () {
                     if (isLocked) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -47,20 +50,11 @@ class RangeSelector extends StatelessWidget {
                   },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 160),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 7,
-                    ),
+                    constraints: const BoxConstraints(minHeight: 34),
+                    padding: const EdgeInsets.symmetric(horizontal: 13),
                     decoration: BoxDecoration(
-                      color: isLocked
-                          ? Colors.transparent
-                          : isSelected
-                          ? AppTheme.card
-                          : Colors.transparent,
+                      color: isSelected ? AppTheme.card : Colors.transparent,
                       borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-                      border: isSelected
-                          ? null
-                          : Border.all(color: Colors.transparent),
                       boxShadow: isSelected ? AppTheme.subtleShadow : null,
                     ),
                     child: Row(
@@ -78,7 +72,7 @@ class RangeSelector extends StatelessWidget {
                           range.label,
                           style: TextStyle(
                             fontSize: 13,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                             color: isLocked
                                 ? AppTheme.muted
                                 : isSelected
@@ -89,9 +83,9 @@ class RangeSelector extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              }).toList(),
+            ),
           ),
         ),
         if (selected.days > 0)

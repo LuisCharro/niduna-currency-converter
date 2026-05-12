@@ -39,22 +39,30 @@ class SettingsScreen extends StatelessWidget {
         child: ListenableBuilder(
           listenable: Listenable.merge([monetization, preferences]),
           builder: (context, _) => Scaffold(
-            appBar: AppBar(title: const Text('Settings')),
+            backgroundColor: AppTheme.bg,
             body: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 118),
               children: <Widget>[
+                const Text(
+                  'Settings',
+                  style: TextStyle(
+                    fontFamily: 'Fraunces',
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800,
+                    height: 1.05,
+                  ),
+                ),
+                const SizedBox(height: 20),
                 const SectionHeader(title: 'Conversion'),
                 BaseCurrencyTile(controller: controller),
-                const SizedBox(height: 10),
                 DecimalPlacesTile(controller: controller),
-                const SizedBox(height: 10),
                 SwitchTile(
                   title: 'Dark mode',
                   subtitle: 'Follow system default',
                   value: preferences.isDarkMode,
                   onChanged: controller.toggleDarkMode,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
                 const SectionHeader(title: 'Data'),
                 SwitchTile(
                   title: 'Refresh on open',
@@ -62,9 +70,8 @@ class SettingsScreen extends StatelessWidget {
                   value: preferences.refreshOnOpen,
                   onChanged: controller.toggleRefreshOnOpen,
                 ),
-                const SizedBox(height: 10),
                 ClearCacheTile(controller: controller),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
                   child: Text(
@@ -75,14 +82,14 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
                 const SectionHeader(title: 'Premium'),
                 PremiumSection(controller: controller),
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
                 if (preferences.devMode) ...[
                   const SectionHeader(title: 'Dev Sandbox'),
                   DevSandboxSection(monetization: monetization),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 24),
                 ],
                 const SectionHeader(title: 'About'),
                 VersionTile(controller: controller),

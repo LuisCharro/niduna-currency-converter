@@ -81,8 +81,18 @@ class _ChartsScreenState extends State<ChartsScreen> {
                       onSwap: _handleSwap,
                       lastUpdated: state.lastUpdated,
                     ),
+                    Expanded(child: _buildChartArea(state)),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+                      padding: const EdgeInsets.fromLTRB(20, 2, 20, 0),
+                      child: RangeSelector(
+                        selected: state.range,
+                        onChanged: widget.controller.setRange,
+                        canUseLockedRanges:
+                            widget.monetization.canUseIntradayRanges,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 4),
                       child: PairSelector(
                         base: state.base,
                         quote: state.quote,
@@ -92,17 +102,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-                      child: RangeSelector(
-                        selected: state.range,
-                        onChanged: widget.controller.setRange,
-                        canUseLockedRanges:
-                            widget.monetization.canUseIntradayRanges,
-                      ),
-                    ),
-                    Expanded(child: _buildChartArea(state)),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+                      padding: const EdgeInsets.fromLTRB(20, 4, 20, 2),
                       child: ChartSummary(
                         high: state.high,
                         low: state.low,
@@ -112,7 +112,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                     if (state.lastUpdated != null)
                       Padding(
                         padding: EdgeInsets.only(
-                          bottom: widget.monetization.adsEnabled ? 14 : 80,
+                          bottom: widget.monetization.adsEnabled ? 10 : 96,
                         ),
                         child: Text(
                           'Tap currencies above to explore other pairs',
@@ -125,7 +125,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                     if (widget.monetization.adsEnabled) ...[
                       const Divider(height: 1),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 92),
+                        padding: const EdgeInsets.only(bottom: 112),
                         child: Column(
                           children: [
                             const AdBannerPlaceholder(),

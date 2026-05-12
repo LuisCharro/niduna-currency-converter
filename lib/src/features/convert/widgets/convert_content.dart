@@ -111,7 +111,7 @@ class _RatesToolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 2, 20, 4),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 2),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -123,10 +123,10 @@ class _RatesToolbar extends StatelessWidget {
           TextButton.icon(
             onPressed: onEdit,
             icon: const Icon(Icons.format_list_bulleted_rounded, size: 16),
-            label: const Text('Edit list'),
+            label: const Text('Edit'),
             style: TextButton.styleFrom(
               foregroundColor: AppTheme.primary,
-              minimumSize: const Size(0, 36),
+              minimumSize: const Size(0, 34),
               padding: const EdgeInsets.symmetric(horizontal: 10),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               textStyle: const TextStyle(

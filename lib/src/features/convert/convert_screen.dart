@@ -43,7 +43,7 @@ class ConvertScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 72),
+              padding: const EdgeInsets.only(bottom: 96),
               child: ListenableBuilder(
                 listenable: monetization,
                 builder: (context, _) {

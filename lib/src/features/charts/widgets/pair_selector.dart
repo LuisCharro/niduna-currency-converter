@@ -41,9 +41,8 @@ class PairSelector extends StatelessWidget {
             height: 44,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppTheme.card,
-              border: Border.all(color: AppTheme.border.withValues(alpha: .4)),
-              boxShadow: AppTheme.subtleShadow,
+              color: AppTheme.card.withValues(alpha: .78),
+              border: Border.all(color: AppTheme.border.withValues(alpha: .22)),
             ),
             child: Icon(
               Icons.swap_vert_rounded,
@@ -104,12 +103,12 @@ class _CurrencyPill extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        constraints: const BoxConstraints(minHeight: 50),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: AppTheme.card,
+          color: AppTheme.card.withValues(alpha: .78),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: AppTheme.border.withValues(alpha: .4)),
-          boxShadow: AppTheme.subtleShadow,
+          border: Border.all(color: AppTheme.border.withValues(alpha: .22)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

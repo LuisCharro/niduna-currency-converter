@@ -15,7 +15,7 @@ class ConvertHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 10),
+      padding: const EdgeInsets.fromLTRB(20, 6, 20, 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -27,17 +27,15 @@ class ConvertHeader extends StatelessWidget {
                   'Convert',
                   style: TextStyle(
                     fontFamily: 'Fraunces',
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800,
                     letterSpacing: -0.3,
                     height: 1.05,
                   ),
                 ),
-                const SizedBox(height: 3),
+                const SizedBox(height: 2),
                 Text(
-                  isRefreshing
-                      ? 'Refreshing rates now'
-                      : 'Private daily rates · no tracking',
+                  isRefreshing ? 'Refreshing rates' : 'Private daily rates',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTheme.caption.copyWith(color: AppTheme.muted),
@@ -45,36 +43,12 @@ class ConvertHeader extends StatelessWidget {
               ],
             ),
           ),
-          _SettingsAction(label: 'Settings', onTap: onMore),
-        ],
-      ),
-    );
-  }
-}
-
-class _SettingsAction extends StatelessWidget {
-  const _SettingsAction({required this.label, required this.onTap});
-
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: label,
-      button: true,
-      child: Material(
-        color: Colors.transparent,
-        shape: const CircleBorder(),
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: onTap,
-          child: SizedBox(
-            width: 44,
-            height: 44,
-            child: Icon(Icons.tune_rounded, color: AppTheme.muted, size: 21),
+          IconButton(
+            tooltip: 'Settings',
+            onPressed: onMore,
+            icon: Icon(Icons.tune_rounded, color: AppTheme.muted, size: 21),
           ),
-        ),
+        ],
       ),
     );
   }

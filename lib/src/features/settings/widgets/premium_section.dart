@@ -13,29 +13,10 @@ class PremiumSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        _SubscriptionCard(),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Row(
-            children: <Widget>[
-              Expanded(child: Divider(color: AppTheme.border)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  'or buy separately',
-                  style: AppTheme.micro.copyWith(color: AppTheme.subtle),
-                ),
-              ),
-              Expanded(child: Divider(color: AppTheme.border)),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
         _PremiumCard(
           icon: Icons.visibility_off,
           title: 'Remove Ads',
-          description: 'Enjoy the app without any advertisements',
+          description: 'Hide banner placements forever',
           price: '1.99 CHF',
           owned: controller.monetization.hasRemoveAdsLifetime,
           onBuy: () =>
@@ -45,21 +26,23 @@ class PremiumSection extends StatelessWidget {
         _PremiumCard(
           icon: Icons.diamond_outlined,
           title: 'Unlock All Pairs',
-          description: 'Select any currency pair in Charts — forever',
+          description: 'Choose any chart pair forever',
           price: '2.99 CHF',
           owned: controller.monetization.hasChartsProLifetime,
           onBuy: () =>
               controller.purchaseProduct(context, ProductType.chartsPro),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
+        _SubscriptionCard(),
+        const SizedBox(height: 10),
         GestureDetector(
           onTap: () => controller.restorePurchases(context),
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppTheme.radius),
-              border: Border.all(color: AppTheme.border),
+              borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+              border: Border.all(color: AppTheme.border.withValues(alpha: .24)),
             ),
             child: Center(
               child: Text(
@@ -100,9 +83,9 @@ class _PremiumCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
       decoration: BoxDecoration(
-        color: AppTheme.card,
+        color: AppTheme.card.withValues(alpha: .72),
         borderRadius: BorderRadius.circular(AppTheme.radius),
-        border: Border.all(color: AppTheme.border),
+        border: Border.all(color: AppTheme.border.withValues(alpha: .16)),
       ),
       child: Row(
         children: <Widget>[
@@ -125,26 +108,6 @@ class _PremiumCard extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    if (!owned) ...[
-                      const SizedBox(width: 6),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 5,
-                          vertical: 1,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primary.withValues(alpha: .08),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          'in Subscription',
-                          style: TextStyle(
-                            fontSize: 9,
-                            color: AppTheme.primary,
-                          ),
-                        ),
-                      ),
-                    ],
                   ],
                 ),
                 const SizedBox(height: 2),
@@ -167,7 +130,7 @@ class _PremiumCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: AppTheme.primary,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppTheme.pillRadius),
                 ),
                 child: Text(
                   price,
@@ -190,11 +153,11 @@ class _SubscriptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       decoration: BoxDecoration(
-        color: AppTheme.card,
+        color: AppTheme.container.withValues(alpha: .46),
         borderRadius: BorderRadius.circular(AppTheme.radius),
-        border: Border.all(color: AppTheme.primary.withValues(alpha: .4)),
+        border: Border.all(color: AppTheme.primary.withValues(alpha: .16)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,11 +199,6 @@ class _SubscriptionCard extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'All features included',
-            style: TextStyle(fontSize: 13, color: AppTheme.text),
           ),
           const SizedBox(height: 6),
           _SubFeatureRow(Icons.visibility_off, 'Remove ads'),

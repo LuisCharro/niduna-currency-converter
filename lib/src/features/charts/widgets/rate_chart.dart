@@ -114,7 +114,6 @@ class _RateChartState extends State<RateChart>
     final maxY = _maxY!;
     final isPositive = _isPositive;
     final lineColor = isPositive ? AppTheme.trendUp : AppTheme.trendDown;
-    final openPrice = spots.first.y;
 
     return AnimatedBuilder(
       animation: _drawController,
@@ -180,16 +179,7 @@ class _RateChartState extends State<RateChart>
                         dashArray: [4, 4],
                       ),
                     ),
-                    extraLinesData: ExtraLinesData(
-                      horizontalLines: [
-                        HorizontalLine(
-                          y: openPrice,
-                          color: AppTheme.subtle.withValues(alpha: .35),
-                          strokeWidth: 1,
-                          dashArray: [6, 4],
-                        ),
-                      ],
-                    ),
+                    extraLinesData: const ExtraLinesData(),
                     titlesData: FlTitlesData(
                       leftTitles: const AxisTitles(
                         sideTitles: SideTitles(showTitles: false),
@@ -276,54 +266,6 @@ class _RateChartState extends State<RateChart>
                       ),
                     ),
                   ),
-                Positioned(
-                  top: 8,
-                  right: 12,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 3,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppTheme.card,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: AppTheme.subtle.withValues(alpha: .2),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: .06),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text(
-                          openPrice.toStringAsFixed(4),
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Fraunces',
-                            color: AppTheme.text,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          'OPEN',
-                          style: TextStyle(
-                            fontSize: 9,
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.muted,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

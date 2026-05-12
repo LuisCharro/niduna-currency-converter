@@ -1,9 +1,20 @@
 # UI Redesign Plan — "Professional Polish" Cycle
 
-> **Status:** Planning
+> **Status:** Superseded in part by the Niduna hybrid polish direction
 > **Based on:** Competitor analysis (Currency app / miniapatti screenshots)
 > **Reference screens:** `/Users/luis/Downloads/CurrencyApp/` (7 PNGs)
 > **Goal:** Transform app from "functional but ugly" to professional, polished design
+
+## 2026-05-12 Direction Update
+
+This file remains useful for competitor analysis and interaction ideas, but
+the app should not copy the pure-white/iOS-blue visual recommendations below.
+The active direction is **Niduna hybrid**:
+
+- keep the warm Niduna palette, editorial type, and privacy-first personality
+- adopt the competitor's layout discipline: fewer wrappers, clearer rows,
+  stronger chart hierarchy, and touch-friendly controls
+- preserve Phase 1 scope: no active crypto/metals/backend features
 
 ---
 

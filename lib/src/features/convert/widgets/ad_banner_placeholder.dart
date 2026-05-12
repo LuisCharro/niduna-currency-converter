@@ -9,13 +9,13 @@ class AdBannerPlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 48,
-      margin: const EdgeInsets.fromLTRB(20, 2, 20, 4),
+      height: 50,
+      margin: const EdgeInsets.fromLTRB(20, 4, 20, 2),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: AppTheme.container.withValues(alpha: .55),
-        borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-        border: Border.all(color: AppTheme.border.withValues(alpha: .8)),
+        color: AppTheme.card.withValues(alpha: .7),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppTheme.border.withValues(alpha: .18)),
       ),
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,

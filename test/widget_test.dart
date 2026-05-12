@@ -67,8 +67,8 @@ void main() {
     expect(find.text('Chart'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Favorites'), findsNothing);
-    expect(find.text('Private daily rates · no tracking'), findsOneWidget);
-    expect(find.text('Edit list'), findsOneWidget);
+    expect(find.text('Private daily rates'), findsOneWidget);
+    expect(find.text('Edit'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
   });
 
@@ -86,7 +86,7 @@ void main() {
 
     expect(find.text('Convert'), findsOneWidget);
     expect(find.text('4 shown currencies'), findsOneWidget);
-    expect(find.text('Edit list'), findsOneWidget);
+    expect(find.text('Edit'), findsOneWidget);
     expect(find.text('USD'), findsOneWidget);
     expect(find.text('EUR'), findsOneWidget);
     expect(find.text('CHF'), findsWidgets);
@@ -114,7 +114,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Edit list'));
+    await tester.tap(find.text('Edit'));
     await tester.pumpAndSettle();
 
     expect(find.text('Visible currencies'), findsOneWidget);

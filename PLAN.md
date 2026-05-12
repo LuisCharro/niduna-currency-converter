@@ -355,19 +355,28 @@ lib/
 ## UI Redesign — "Professional Polish" Cycle
 
 > **Plan file:** `.agent/ui-redesign-plan.md`
-> **Status:** Planning → Ready to start
+> **Status:** Superseded by Niduna hybrid polish pass
 > **Trigger:** Visual quality gap vs competitor (Currency app / miniapatti)
 > **Reference screenshots:** `/Users/luis/Downloads/CurrencyApp/` (7 PNGs)
+
+### Current Direction
+
+Use a **Niduna hybrid** direction for UI work:
+
+- keep the warm paper background, forest green accent, Manrope/Fraunces type, and privacy-first personality from `DESIGN.md`
+- adopt the competitor's discipline: fewer boxes, thinner dividers, stronger value pills, cleaner chart hierarchy, and larger touch targets
+- do not copy the old pure-white/iOS-blue recommendations from `.agent/ui-redesign-plan.md`
+- treat older TODOs in this section as historical context when the current app already has the capability
 
 ### Phases
 
 | Phase | Name | Goal | Status |
 |-------|------|------|--------|
-| 1 | Foundation | Theme overhaul + floating pill nav | TODO |
-| 2 | Convert Screen | Clean list layout with green pill values | TODO |
-| 3 | Chart Screen | Full-bleed chart + dynamic trend colors + crosshair | TODO |
-| 4 | Settings Cleanup | Split 808-line file + extract logic into controller | TODO |
-| 5 | Icons & Details | Regenerate blurry icons + new nav icons | TODO |
+| 1 | Foundation | Theme/nav/ad polish around Niduna tokens | IN PROGRESS |
+| 2 | Convert Screen | Reduce top weight, cleaner amount panel, sharper rows | IN PROGRESS |
+| 3 | Chart Screen | Stronger hero header, fuller chart, cleaner controls | IN PROGRESS |
+| 4 | Settings Cleanup | Controller extraction is done; visual density cleanup remains | PARTIAL |
+| 5 | Icons & Details | Regenerate blurry icons only if needed after screenshot review | TODO |
 | 6 | Polish Cycle | Screenshot comparison + iterative refinement | TODO |
 
 ### Key Architecture Rule for Phase 4

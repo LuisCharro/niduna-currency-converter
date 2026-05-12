@@ -16,14 +16,16 @@ class AppTheme {
   static const trendDown = Color(0xFFDC6543);
   static const greenBadge = Color(0xFFEDF5EB);
   static const greenBadgeText = Color(0xFF3D6E2C);
+  static const double pagePadding = 20;
   static const double radius = 12;
   static const double cardRadius = 16;
   static const double pillRadius = 20;
+  static const double rowMinHeight = 64;
   static const List<BoxShadow> subtleShadow = <BoxShadow>[
-    BoxShadow(color: Color(0x14285F3B), blurRadius: 10, offset: Offset(0, 2)),
+    BoxShadow(color: Color(0x0F285F3B), blurRadius: 8, offset: Offset(0, 2)),
   ];
   static const List<BoxShadow> floatingShadow = <BoxShadow>[
-    BoxShadow(color: Color(0x10285F3B), blurRadius: 18, offset: Offset(0, 8)),
+    BoxShadow(color: Color(0x18285F3B), blurRadius: 22, offset: Offset(0, 10)),
   ];
 
   static const TextStyle display = TextStyle(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/value_pill.dart';
 import '../models/currency_quote.dart';
 
 class QuoteValue extends StatelessWidget {
@@ -11,28 +12,11 @@ class QuoteValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = isActive ? AppTheme.trendUp : AppTheme.greenBadge;
-    final textColor = isActive ? Colors.white : AppTheme.greenBadgeText;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: BorderRadius.circular(AppTheme.radius),
-          ),
-          child: Text(
-            '${quote.symbol} ${quote.amount}',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w800,
-              color: textColor,
-              fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
-            ),
-          ),
-        ),
+        ValuePill(text: '${quote.symbol} ${quote.amount}', active: isActive),
         if (quote.rateLine.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 2),

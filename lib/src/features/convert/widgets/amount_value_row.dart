@@ -55,9 +55,9 @@ class _AmountValueRowState extends State<AmountValueRow> {
             onChanged: widget.onAmountChanged,
             decoration: const InputDecoration.collapsed(hintText: '0.00'),
             style: const TextStyle(
-              fontSize: 38,
+              fontSize: 35,
               fontWeight: FontWeight.w800,
-              letterSpacing: -1.0,
+              letterSpacing: -0.6,
               height: 1.05,
             ),
           ),
@@ -66,12 +66,12 @@ class _AmountValueRowState extends State<AmountValueRow> {
         GestureDetector(
           onTap: widget.onBaseTap,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            constraints: const BoxConstraints(minHeight: 44),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
             decoration: BoxDecoration(
               color: AppTheme.container,
               borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-              border: Border.all(color: AppTheme.border.withValues(alpha: .35)),
-              boxShadow: AppTheme.subtleShadow,
+              border: Border.all(color: AppTheme.border.withValues(alpha: .22)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

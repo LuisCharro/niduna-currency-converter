@@ -37,7 +37,7 @@ class VisibleRatesList extends StatelessWidget {
     }
 
     final list = ListView.separated(
-      padding: const EdgeInsets.fromLTRB(18, 0, 18, 92),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),
       itemBuilder: (context, index) => CurrencyRateRow(
         quote: quotes[index],
         isActive: activeCode == quotes[index].code,
@@ -50,7 +50,7 @@ class VisibleRatesList extends StatelessWidget {
       separatorBuilder: (context, index) => Padding(
         padding: const EdgeInsets.only(left: 58),
         child: Divider(
-          color: AppTheme.border.withValues(alpha: .2),
+          color: AppTheme.border.withValues(alpha: .16),
           height: .5,
           indent: 0,
         ),

@@ -30,7 +30,7 @@ class ChartSummary extends StatelessWidget {
         Container(
           width: 1,
           height: 24,
-          color: AppTheme.border.withValues(alpha: .3),
+          color: AppTheme.border.withValues(alpha: .16),
         ),
         Expanded(
           child: _SummaryItem(
@@ -41,7 +41,7 @@ class ChartSummary extends StatelessWidget {
         Container(
           width: 1,
           height: 24,
-          color: AppTheme.border.withValues(alpha: .3),
+          color: AppTheme.border.withValues(alpha: .16),
         ),
         Expanded(
           child: _SummaryItem(
@@ -72,7 +72,7 @@ class _SummaryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text(label, style: AppTheme.micro),
+        Text(label, style: AppTheme.micro.copyWith(color: AppTheme.muted)),
         const SizedBox(height: 2),
         Text(
           value,

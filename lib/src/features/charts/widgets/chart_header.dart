@@ -30,7 +30,7 @@ class ChartHeader extends StatelessWidget {
     final freshnessText = _freshnessLabel(lastUpdated);
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -41,20 +41,20 @@ class ChartHeader extends StatelessWidget {
                   '$base per 1 $quote',
                   style: const TextStyle(
                     fontFamily: 'Fraunces',
-                    fontSize: 28,
+                    fontSize: 31,
                     fontWeight: FontWeight.w800,
-                    letterSpacing: -0.5,
-                    height: 1.2,
+                    letterSpacing: -0.6,
+                    height: 1.05,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 6),
                 if (rate != null)
                   Row(
                     children: <Widget>[
                       Text(
                         '${baseCurrency.symbol} ${rate!.toStringAsFixed(4)}',
-                        style: AppTheme.body.copyWith(
-                          fontSize: 18,
+                          style: AppTheme.body.copyWith(
+                          fontSize: 20,
                           color: AppTheme.muted,
                         ),
                       ),
@@ -63,7 +63,7 @@ class ChartHeader extends StatelessWidget {
                         Text(
                           '$arrow ${changePercent!.abs().toStringAsFixed(2)}%',
                           style: AppTheme.body.copyWith(
-                            fontSize: 18,
+                            fontSize: 20,
                             fontWeight: FontWeight.w700,
                             color: trendColor,
                           ),
@@ -98,13 +98,13 @@ class ChartHeader extends StatelessWidget {
           GestureDetector(
             onTap: onSwap,
             child: Container(
-              width: 44,
-              height: 44,
+              width: 48,
+              height: 48,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppTheme.card,
+                color: AppTheme.card.withValues(alpha: .88),
                 border: Border.all(
-                  color: AppTheme.border.withValues(alpha: .4),
+                  color: AppTheme.border.withValues(alpha: .22),
                 ),
                 boxShadow: AppTheme.subtleShadow,
               ),
