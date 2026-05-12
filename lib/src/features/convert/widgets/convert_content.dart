@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../domain/convert_state.dart';
 import 'amount_card.dart';
-import 'convert_header.dart';
 import 'currency_picker_sheet.dart';
 import 'visible_rates_list.dart';
 
@@ -44,14 +43,13 @@ class _ConvertContentState extends State<ConvertContent> {
     }
     return Column(
       children: <Widget>[
-        ConvertHeader(
-          isRefreshing: widget.state.isRefreshing,
-          onMore: widget.onMore,
-        ),
         AmountCard(
+          isRefreshing: widget.state.isRefreshing,
           lastUpdatedLabel: widget.state.lastUpdatedLabel,
           amountText: widget.state.amountText,
           base: widget.state.base,
+          onRefresh: widget.onRefresh,
+          onMore: widget.onMore,
           onAmountChanged: widget.onAmountChanged,
           onBaseTap: () => _openPicker(context, selectBaseMode: true),
         ),

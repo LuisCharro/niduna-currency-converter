@@ -55,23 +55,24 @@ class _AmountValueRowState extends State<AmountValueRow> {
             onChanged: widget.onAmountChanged,
             decoration: const InputDecoration.collapsed(hintText: '0.00'),
             style: const TextStyle(
-              fontSize: 35,
+              fontSize: 42,
               fontWeight: FontWeight.w800,
-              letterSpacing: -0.6,
+              letterSpacing: 0,
               height: 1.05,
             ),
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         GestureDetector(
           onTap: widget.onBaseTap,
           child: Container(
-            constraints: const BoxConstraints(minHeight: 44),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+            constraints: const BoxConstraints(minHeight: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
             decoration: BoxDecoration(
-              color: AppTheme.container,
+              color: AppTheme.card.withValues(alpha: .78),
               borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-              border: Border.all(color: AppTheme.border.withValues(alpha: .22)),
+              border: Border.all(color: AppTheme.border.withValues(alpha: .18)),
+              boxShadow: AppTheme.subtleShadow,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -79,7 +80,7 @@ class _AmountValueRowState extends State<AmountValueRow> {
                 CurrencyFlagIcon(
                   code: widget.base,
                   symbol: currency.symbol,
-                  radius: 12,
+                  radius: 13,
                 ),
                 const SizedBox(width: 6),
                 Text(
