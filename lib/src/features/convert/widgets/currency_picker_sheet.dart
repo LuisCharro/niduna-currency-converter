@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/currency_picker_chrome.dart';
 import 'currency_picker_tile.dart';
 
 class CurrencyPickerSheet extends StatefulWidget {
@@ -43,9 +44,9 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
           child: Column(
             children: <Widget>[
-              _PickerHeader(title: widget.title),
+              CurrencyPickerHeader(title: widget.title),
               const SizedBox(height: 12),
-              _SearchField(
+              CurrencyPickerSearchField(
                 onChanged: (value) => setState(() => _query = value),
               ),
               const SizedBox(height: 12),
@@ -106,54 +107,5 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
       }
     });
     widget.onToggleCode(code);
-  }
-}
-
-class _PickerHeader extends StatelessWidget {
-  const _PickerHeader({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        const SizedBox(width: 48),
-        Expanded(
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
-          ),
-        ),
-        IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.check_circle_rounded, color: AppTheme.primary),
-        ),
-      ],
-    );
-  }
-}
-
-class _SearchField extends StatelessWidget {
-  const _SearchField({required this.onChanged});
-
-  final ValueChanged<String> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      onChanged: onChanged,
-      decoration: InputDecoration(
-        hintText: 'Currency, country, or code',
-        prefixIcon: const Icon(Icons.search_rounded),
-        filled: true,
-        fillColor: AppTheme.container,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
   }
 }

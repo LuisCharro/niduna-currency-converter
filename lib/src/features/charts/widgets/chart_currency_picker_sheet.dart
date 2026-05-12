@@ -5,6 +5,7 @@ import '../../../core/monetization/models/temporary_unlock.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/currency_picker_chrome.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 import '../../convert/widgets/ad_banner_placeholder.dart';
 import '../../settings/widgets/iap_purchase_player.dart';
@@ -132,106 +133,33 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 6, 20, 8),
-            child: Row(
-              children: <Widget>[
-                Text(
-                  widget.title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const Spacer(),
-                Material(
-                  color: Colors.transparent,
-                  shape: const CircleBorder(),
-                  child: InkWell(
-                    onTap: () => Navigator.of(context).pop(),
-                    borderRadius: BorderRadius.circular(14),
-                    child: Ink(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppTheme.border.withValues(alpha: .3),
-                        ),
-                      ),
-                      child: Icon(Icons.close, size: 16, color: AppTheme.muted),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(child: _buildBody()),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBody() {
-    final currencies = supportedCurrencies.where(_matches).toList();
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      child: Column(
-        children: <Widget>[
-          TextField(
-            onChanged: (value) =>
-                setState(() => _query = value.trim().toUpperCase()),
-            decoration: InputDecoration(
-              hintText: 'Search code or currency name',
-              prefixIcon: const Icon(Icons.search),
-              isDense: true,
-              filled: true,
-              fillColor: AppTheme.container.withValues(alpha: .55),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppTheme.radius),
-                borderSide: BorderSide(color: AppTheme.border),
+    return DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: .84,
+      minChildSize: .42,
+      maxChildSize: .92,
+      builder: (context, scrollController) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
+          child: Column(
+            children: <Widget>[
+              CurrencyPickerHeader(title: widget.title),
+              const SizedBox(height: 12),
+              CurrencyPickerSearchField(
+                onChanged: (value) =>
+                    setState(() => _query = value.trim().toUpperCase()),
               ),
-            ),
+              const SizedBox(height: 12),
+              if (widget.controller.adsEnabled) ...[
+                const AdBannerPlaceholder(),
+                const SizedBox(height: 8),
+              ],
+              Expanded(
+                child: _buildCurrencyList(scrollController: scrollController),
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
-          if (widget.controller.adsEnabled) ...[
-            const AdBannerPlaceholder(),
-            const SizedBox(height: 8),
-          ],
-          Expanded(
-            child: ListView.separated(
-              itemCount: currencies.length,
-              separatorBuilder: (context, index) =>
-                  Divider(height: 1, color: AppTheme.border),
-              itemBuilder: (context, index) {
-                final currency = currencies[index];
-                final isSelected = currency.code == widget.selectedCode;
-                final isFixed = _isSameAsFixed(currency.code);
-                final unlocked = _isUnlocked(currency.code);
-                final tempUnlocked = _isTempUnlocked(currency.code);
-                return _CurrencyTile(
-                  symbol: currency.symbol,
-                  code: currency.code,
-                  name: currency.name,
-                  isSelected: isSelected,
-                  isFixed: isFixed,
-                  unlocked: unlocked,
-                  tempUnlocked: tempUnlocked,
-                  onTap: isFixed
-                      ? null
-                      : unlocked
-                      ? () => Navigator.of(context).pop(currency.code)
-                      : () => _showLockedAction(context, currency.code),
-                );
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -241,6 +169,37 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
     final code = currency.code.toUpperCase();
     final name = currency.name.toUpperCase();
     return code.contains(_query) || name.contains(_query);
+  }
+
+  Widget _buildCurrencyList({required ScrollController scrollController}) {
+    final currencies = supportedCurrencies.where(_matches).toList();
+    return ListView.separated(
+      controller: scrollController,
+      itemCount: currencies.length,
+      separatorBuilder: (context, index) =>
+          Divider(height: 1, color: AppTheme.border.withValues(alpha: .15)),
+      itemBuilder: (context, index) {
+        final currency = currencies[index];
+        final isSelected = currency.code == widget.selectedCode;
+        final isFixed = _isSameAsFixed(currency.code);
+        final unlocked = _isUnlocked(currency.code);
+        final tempUnlocked = _isTempUnlocked(currency.code);
+        return _CurrencyTile(
+          symbol: currency.symbol,
+          code: currency.code,
+          name: currency.name,
+          isSelected: isSelected,
+          isFixed: isFixed,
+          unlocked: unlocked,
+          tempUnlocked: tempUnlocked,
+          onTap: isFixed
+              ? null
+              : unlocked
+              ? () => Navigator.of(context).pop(currency.code)
+              : () => _showLockedAction(context, currency.code),
+        );
+      },
+    );
   }
 }
 
