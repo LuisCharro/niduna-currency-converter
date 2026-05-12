@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
 class CurrencyPickerHeader extends StatelessWidget {
-  const CurrencyPickerHeader({required this.title, super.key});
+  const CurrencyPickerHeader({required this.title, this.subtitle, super.key});
 
   final String title;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +14,26 @@ class CurrencyPickerHeader extends StatelessWidget {
       children: <Widget>[
         const SizedBox(width: 48),
         Expanded(
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              if (subtitle != null) ...[
+                const SizedBox(height: 2),
+                Text(
+                  subtitle!,
+                  textAlign: TextAlign.center,
+                  style: AppTheme.caption.copyWith(color: AppTheme.muted),
+                ),
+              ],
+            ],
           ),
         ),
         IconButton(

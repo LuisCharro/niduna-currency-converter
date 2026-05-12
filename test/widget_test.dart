@@ -117,6 +117,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Visible currencies'), findsOneWidget);
+    expect(find.text('4 shown · USD base'), findsOneWidget);
+    expect(find.text('USD · base currency'), findsOneWidget);
+    expect(find.text('CHF · shown now'), findsOneWidget);
     expect(find.text('Currency, country, or code'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });

@@ -33,7 +33,7 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final currencies = supportedCurrencies.where(_matchesQuery).toList();
+    final currencies = _visibleCurrencies();
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: .84,
@@ -44,7 +44,7 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
           child: Column(
             children: <Widget>[
-              CurrencyPickerHeader(title: widget.title),
+              CurrencyPickerHeader(title: widget.title, subtitle: _subtitle),
               const SizedBox(height: 12),
               CurrencyPickerSearchField(
                 onChanged: (value) => setState(() => _query = value),
@@ -90,6 +90,29 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
     if (normalized.isEmpty) return true;
     return currency.code.toLowerCase().contains(normalized) ||
         currency.name.toLowerCase().contains(normalized);
+  }
+
+  List<SupportedCurrency> _visibleCurrencies() {
+    final currencies = supportedCurrencies.where(_matchesQuery).toList();
+    if (widget.selectBaseMode) return currencies;
+    currencies.sort((a, b) {
+      final aRank = _rank(a.code);
+      final bRank = _rank(b.code);
+      if (aRank != bRank) return aRank.compareTo(bRank);
+      return a.code.compareTo(b.code);
+    });
+    return currencies;
+  }
+
+  int _rank(String code) {
+    if (code == widget.base) return 0;
+    if (_selectedCodes.contains(code)) return 1;
+    return 2;
+  }
+
+  String get _subtitle {
+    if (widget.selectBaseMode) return 'Current base ${widget.base}';
+    return '${_selectedCodes.length} shown · ${widget.base} base';
   }
 
   void _toggle(String code) {

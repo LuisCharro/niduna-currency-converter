@@ -143,7 +143,10 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
           child: Column(
             children: <Widget>[
-              CurrencyPickerHeader(title: widget.title),
+              CurrencyPickerHeader(
+                title: widget.title,
+                subtitle: '${widget.baseCurrency}/${widget.quoteCurrency} pair',
+              ),
               const SizedBox(height: 12),
               CurrencyPickerSearchField(
                 onChanged: (value) =>

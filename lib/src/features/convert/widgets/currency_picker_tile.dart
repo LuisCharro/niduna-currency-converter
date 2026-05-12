@@ -34,7 +34,7 @@ class CurrencyPickerTile extends StatelessWidget {
         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
       ),
       subtitle: Text(
-        currency.code,
+        _subtitle,
         style: const TextStyle(
           color: AppTheme.muted,
           fontSize: 13,
@@ -58,5 +58,12 @@ class CurrencyPickerTile extends StatelessWidget {
 
   Color get _color {
     return isBase || isSelected ? AppTheme.primary : AppTheme.subtle;
+  }
+
+  String get _subtitle {
+    if (selectBaseMode) return currency.code;
+    if (isBase) return '${currency.code} · base currency';
+    if (isSelected) return '${currency.code} · shown now';
+    return '${currency.code} · tap to add';
   }
 }
