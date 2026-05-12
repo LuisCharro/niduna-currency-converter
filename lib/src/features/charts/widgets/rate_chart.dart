@@ -151,16 +151,16 @@ class _RateChartState extends State<RateChart>
                         return spotIndexes.map((index) {
                           return TouchedSpotIndicatorData(
                             FlLine(
-                              color: lineColor.withValues(alpha: .35),
-                              strokeWidth: 1.2,
+                              color: lineColor.withValues(alpha: .6),
+                              strokeWidth: 2.6,
                             ),
                             FlDotData(
                               show: true,
                               getDotPainter: (spot, percent, barData, index) {
                                 return FlDotCirclePainter(
-                                  radius: 5,
+                                  radius: 5.5,
                                   color: AppTheme.card,
-                                  strokeWidth: 2.5,
+                                  strokeWidth: 3,
                                   strokeColor: lineColor,
                                 );
                               },

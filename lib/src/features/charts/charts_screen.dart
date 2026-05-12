@@ -27,6 +27,8 @@ class ChartsScreen extends StatefulWidget {
 }
 
 class _ChartsScreenState extends State<ChartsScreen> {
+  static const double _bottomClearanceWithAds = 120;
+  static const double _bottomClearanceWithoutAds = 128;
   int _swapVersion = 0;
   String _lastPairKey = '';
 
@@ -112,7 +114,9 @@ class _ChartsScreenState extends State<ChartsScreen> {
                     if (state.lastUpdated != null)
                       Padding(
                         padding: EdgeInsets.only(
-                          bottom: widget.monetization.adsEnabled ? 10 : 96,
+                          bottom: widget.monetization.adsEnabled
+                              ? 16
+                              : _bottomClearanceWithoutAds,
                         ),
                         child: Text(
                           'Tap currencies above to explore other pairs',
@@ -125,7 +129,9 @@ class _ChartsScreenState extends State<ChartsScreen> {
                     if (widget.monetization.adsEnabled) ...[
                       const Divider(height: 1),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 112),
+                        padding: const EdgeInsets.only(
+                          bottom: _bottomClearanceWithAds,
+                        ),
                         child: Column(
                           children: [
                             const AdBannerPlaceholder(),

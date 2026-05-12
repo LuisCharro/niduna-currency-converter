@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:currency_converter/src/app.dart';
 import 'package:currency_converter/src/core/monetization/monetization_controller.dart';
 import 'package:currency_converter/src/core/monetization/rewarded_ad_service_stub.dart';
 import 'package:currency_converter/src/core/preferences/app_preferences.dart';
+import 'package:currency_converter/src/core/rates/models/rates_snapshot.dart';
+import 'package:currency_converter/src/core/rates/rates_cache.dart';
+import 'package:currency_converter/src/core/rates/rates_client.dart';
+import 'package:currency_converter/src/core/rates/rates_service.dart';
+import 'package:currency_converter/src/features/charts/charts_screen.dart';
 import 'package:currency_converter/src/features/convert/data/latest_rates_repository.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
 import 'package:currency_converter/src/features/convert/presentation/convert_controller.dart';
+import 'package:currency_converter/src/features/charts/presentation/charts_controller.dart';
 import 'package:currency_converter/src/features/favorites/data/favorites_store.dart';
 import 'package:currency_converter/src/features/favorites/favorites_screen.dart';
 import 'package:currency_converter/src/features/convert/convert_screen.dart';
+import 'package:currency_converter/src/features/charts/widgets/rate_chart.dart';
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
 import 'package:currency_converter/src/shared/widgets/floating_pill_nav.dart';
 
@@ -206,6 +214,76 @@ void main() {
     expect(find.text('Default base currency'), findsWidgets);
     expect(find.text('Dark mode'), findsWidgets);
   });
+
+  testWidgets('Rate chart uses a stronger touched indicator', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SizedBox(
+            height: 320,
+            child: RateChart(
+              data: <DateTime, double>{
+                DateTime(2026, 5, 10): 0.8519,
+                DateTime(2026, 5, 11): 0.8542,
+                DateTime(2026, 5, 12): 0.8497,
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final chart = tester.widget<LineChart>(find.byType(LineChart));
+    final data = chart.data;
+    final indicators = data.lineTouchData.getTouchedSpotIndicator(
+      data.lineBarsData.first,
+      <int>[1],
+    );
+    final indicator = indicators.single;
+
+    expect(indicator, isNotNull);
+    expect(
+      indicator!.indicatorBelowLine.strokeWidth,
+      greaterThanOrEqualTo(2.0),
+    );
+  });
+
+  testWidgets('Charts screen keeps helper text above nav when ads are hidden', (
+    WidgetTester tester,
+  ) async {
+    await monetization.setRemoveAdsLifetime(true);
+    final chartsController = ChartsController(
+      ratesService: RatesService(
+        client: _FakeRatesClient(),
+        cache: _FakeRatesCache(),
+      ),
+    );
+    addTearDown(chartsController.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ChartsScreen(
+          controller: chartsController,
+          monetization: monetization,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final helperText = find.text('Tap currencies above to explore other pairs');
+    expect(helperText, findsOneWidget);
+
+    final helperPadding = tester.widget<Padding>(
+      find.ancestor(of: helperText, matching: find.byType(Padding)).first,
+    );
+    expect(
+      helperPadding.padding.resolve(TextDirection.ltr).bottom,
+      greaterThanOrEqualTo(120),
+    );
+  });
 }
 
 LatestRatesSnapshot _snapshot(Map<String, double> rates) {
@@ -232,4 +310,61 @@ class _FakeRatesRepository implements ConvertRatesRepository {
     }
     return fresh!;
   }
+}
+
+class _FakeRatesClient implements RatesClient {
+  @override
+  Future<RatesSnapshot> fetchLatest(String base) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<HistoricalSnapshot> fetchHistorical({
+    required String base,
+    required String quote,
+    required DateTime from,
+    required DateTime to,
+  }) async {
+    return HistoricalSnapshot(
+      base: base,
+      quote: quote,
+      coveredFrom: from,
+      coveredTo: to,
+      savedAt: DateTime(2026, 5, 12, 9),
+      data: <DateTime, double>{
+        DateTime(2026, 5, 10): 0.8519,
+        DateTime(2026, 5, 11): 0.8542,
+        DateTime(2026, 5, 12): 0.8497,
+      },
+    );
+  }
+}
+
+class _FakeRatesCache implements RatesCache {
+  @override
+  Future<void> clear() async {}
+
+  @override
+  Future<void> invalidateHistorical({
+    required String base,
+    required String quote,
+  }) async {}
+
+  @override
+  Future<void> invalidateLatest(String base) async {}
+
+  @override
+  Future<HistoricalSnapshot?> readHistorical({
+    required String base,
+    required String quote,
+  }) async => null;
+
+  @override
+  Future<RatesSnapshot?> readLatest(String base) async => null;
+
+  @override
+  Future<void> writeHistorical(HistoricalSnapshot snapshot) async {}
+
+  @override
+  Future<void> writeLatest(RatesSnapshot snapshot) async {}
 }
