@@ -1,1 +1,26 @@
-{"hosting": [{"target": "openclaw", "public": "build/web", "ignore": ["firebase.json", "**/.*", "**/node_modules/**"], "rewrites": [{"source": "/**", "destination": "/index.html"}]}, {"target": "luis", "public": "build/web", "ignore": ["firebase.json", "**/.*", "**/node_modules/**"], "rewrites": [{"source": "/**", "destination": "/index.html"}]}, {"target": "alina", "public": "build/web", "ignore": ["firebase.json", "**/.*", "**/node_modules/**"], "rewrites": [{"source": "/**", "destination": "/index.html"}]}]}
+{
+  "hosting": [
+    {
+      "target": "openclaw",
+      "public": "build/web",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "/**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "target": "luis",
+      "public": "build/web",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "/**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}
