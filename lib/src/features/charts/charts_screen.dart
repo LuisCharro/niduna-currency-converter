@@ -78,6 +78,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                       rate: state.currentRate,
                       changePercent: state.changePercent,
                       onSwap: _handleSwap,
+                      lastUpdated: state.lastUpdated,
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),

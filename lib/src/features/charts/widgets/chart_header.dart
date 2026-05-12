@@ -10,6 +10,7 @@ class ChartHeader extends StatelessWidget {
     required this.rate,
     required this.changePercent,
     required this.onSwap,
+    this.lastUpdated,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class ChartHeader extends StatelessWidget {
   final double? rate;
   final double? changePercent;
   final VoidCallback onSwap;
+  final DateTime? lastUpdated;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class ChartHeader extends StatelessWidget {
     final isPositive = (changePercent ?? 0) >= 0;
     final trendColor = isPositive ? AppTheme.trendUp : AppTheme.trendDown;
     final arrow = isPositive ? '↑' : '↓';
+    final freshnessText = _freshnessLabel(lastUpdated);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
@@ -67,6 +70,28 @@ class ChartHeader extends StatelessWidget {
                         ),
                     ],
                   ),
+                if (freshnessText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.schedule_outlined,
+                          size: 12,
+                          color: AppTheme.subtle.withValues(alpha: .6),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          freshnessText,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: AppTheme.subtle.withValues(alpha: .6),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
@@ -91,5 +116,18 @@ class ChartHeader extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  static String? _freshnessLabel(DateTime? updated) {
+    if (updated == null) return null;
+    final diff = DateTime.now().difference(updated);
+    if (diff.inMinutes < 1) return 'Just updated';
+    if (diff.inMinutes < 60) {
+      return 'Updated ${diff.inMinutes}m ago';
+    }
+    if (diff.inHours < 24) {
+      return 'Updated ${diff.inHours}h ago';
+    }
+    return 'Updated ${diff.inDays}d ago';
   }
 }
