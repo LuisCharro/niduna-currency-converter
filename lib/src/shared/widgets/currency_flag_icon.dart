@@ -62,10 +62,7 @@ class CurrencyFlagIcon extends StatelessWidget {
       radius: radius,
       child: Text(
         symbol,
-        style: TextStyle(
-          fontWeight: FontWeight.w700,
-          fontSize: radius * 0.75,
-        ),
+        style: TextStyle(fontWeight: FontWeight.w700, fontSize: radius * 0.75),
       ),
     );
   }

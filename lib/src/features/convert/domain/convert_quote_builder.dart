@@ -12,7 +12,7 @@ List<CurrencyQuote> buildQuotes({
 }) {
   final selectedCodes =
       quoteCodes?.where((code) => code != snapshot.base).toList() ??
-          supportedCurrencies.map((currency) => currency.code).toList();
+      supportedCurrencies.map((currency) => currency.code).toList();
 
   final amountDigits = '#,##0.${'0' * decimalPlaces}';
   final amountFormat = NumberFormat(amountDigits, 'en');

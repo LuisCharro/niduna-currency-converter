@@ -39,7 +39,8 @@ class _ChartsScreenState extends State<ChartsScreen> {
   void _handleSwap() {
     setState(() {
       _swapVersion++;
-      _lastPairKey = '${widget.controller.state.quote}-${widget.controller.state.base}';
+      _lastPairKey =
+          '${widget.controller.state.quote}-${widget.controller.state.base}';
     });
     widget.controller.swapPair();
   }
@@ -95,7 +96,8 @@ class _ChartsScreenState extends State<ChartsScreen> {
                       child: RangeSelector(
                         selected: state.range,
                         onChanged: widget.controller.setRange,
-                        canUseLockedRanges: widget.monetization.canUseIntradayRanges,
+                        canUseLockedRanges:
+                            widget.monetization.canUseIntradayRanges,
                       ),
                     ),
                     Expanded(child: _buildChartArea(state)),
@@ -115,7 +117,9 @@ class _ChartsScreenState extends State<ChartsScreen> {
                         child: Text(
                           'Tap currencies above to explore other pairs',
                           textAlign: TextAlign.center,
-                          style: AppTheme.caption.copyWith(color: AppTheme.subtle),
+                          style: AppTheme.caption.copyWith(
+                            color: AppTheme.subtle,
+                          ),
                         ),
                       ),
                     if (widget.monetization.adsEnabled) ...[
@@ -131,16 +135,35 @@ class _ChartsScreenState extends State<ChartsScreen> {
                                 width: double.infinity,
                                 child: OutlinedButton.icon(
                                   onPressed: () => _showRemoveAds(context),
-                                  icon: Icon(Icons.ad_units_outlined, size: 16, color: AppTheme.trendDown),
+                                  icon: Icon(
+                                    Icons.ad_units_outlined,
+                                    size: 16,
+                                    color: AppTheme.trendDown,
+                                  ),
                                   label: Text(
                                     'Remove ads',
-                                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.trendDown),
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.trendDown,
+                                    ),
                                   ),
                                   style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: AppTheme.trendDown.withValues(alpha: .4)),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.pillRadius)),
-                                    padding: const EdgeInsets.symmetric(vertical: 8),
-                                    backgroundColor: AppTheme.trendDown.withValues(alpha: .06),
+                                    side: BorderSide(
+                                      color: AppTheme.trendDown.withValues(
+                                        alpha: .4,
+                                      ),
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        AppTheme.pillRadius,
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 8,
+                                    ),
+                                    backgroundColor: AppTheme.trendDown
+                                        .withValues(alpha: .06),
                                   ),
                                 ),
                               ),
@@ -175,8 +198,10 @@ class _ChartsScreenState extends State<ChartsScreen> {
       return _EmptyChart();
     }
 
-    final currentPairKey = '${widget.controller.state.base}-${widget.controller.state.quote}';
-    final isSwap = _lastPairKey.isNotEmpty &&
+    final currentPairKey =
+        '${widget.controller.state.base}-${widget.controller.state.quote}';
+    final isSwap =
+        _lastPairKey.isNotEmpty &&
         _lastPairKey != currentPairKey &&
         _swapVersion > 0;
 
@@ -200,8 +225,10 @@ class _ChartsScreenState extends State<ChartsScreen> {
             child: FadeTransition(opacity: animation, child: child),
           );
         }
-        final slide = Tween<Offset>(begin: const Offset(.03, 0), end: Offset.zero)
-            .animate(animation);
+        final slide = Tween<Offset>(
+          begin: const Offset(.03, 0),
+          end: Offset.zero,
+        ).animate(animation);
         return FadeTransition(
           opacity: animation,
           child: SlideTransition(position: slide, child: child),
@@ -259,10 +286,7 @@ class _ErrorState extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            OutlinedButton(
-              onPressed: onRetry,
-              child: const Text('Retry'),
-            ),
+            OutlinedButton(onPressed: onRetry, child: const Text('Retry')),
           ],
         ),
       ),

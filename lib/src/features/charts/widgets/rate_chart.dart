@@ -7,10 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../core/theme/app_theme.dart';
 
 class RateChart extends StatefulWidget {
-  const RateChart({
-    required this.data,
-    super.key,
-  });
+  const RateChart({required this.data, super.key});
 
   final Map<DateTime, double> data;
 
@@ -71,11 +68,9 @@ class _RateChartState extends State<RateChart>
     return sorted.last.value >= sorted.first.value;
   }
 
-  double get _dataMin =>
-      widget.data.values.reduce(math.min);
+  double get _dataMin => widget.data.values.reduce(math.min);
 
-  double get _dataMax =>
-      widget.data.values.reduce(math.max);
+  double get _dataMax => widget.data.values.reduce(math.max);
 
   double? get _minY {
     if (widget.data.isEmpty) return null;
@@ -209,7 +204,10 @@ class _RateChartState extends State<RateChart>
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 24,
-                          interval: math.max(1, (spots.length / 5).roundToDouble()),
+                          interval: math.max(
+                            1,
+                            (spots.length / 5).roundToDouble(),
+                          ),
                           getTitlesWidget: (value, meta) {
                             final index = value.toInt();
                             if (index < 0 || index >= sortedDates.length) {
@@ -261,7 +259,11 @@ class _RateChartState extends State<RateChart>
                   Positioned.fill(
                     child: IgnorePointer(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
+                        padding: const EdgeInsets.only(
+                          top: 8,
+                          left: 12,
+                          right: 12,
+                        ),
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: _TouchOverlay(
@@ -278,7 +280,10 @@ class _RateChartState extends State<RateChart>
                   top: 8,
                   right: 12,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: AppTheme.card,
                       borderRadius: BorderRadius.circular(8),
@@ -348,8 +353,7 @@ class _TouchOverlay extends StatelessWidget {
         : 0.0;
     final absoluteChange = value - baseValue;
     final isPositiveChange = changePercent >= 0;
-    final trendColor =
-        isPositiveChange ? AppTheme.trendUp : AppTheme.trendDown;
+    final trendColor = isPositiveChange ? AppTheme.trendUp : AppTheme.trendDown;
     final arrow = isPositiveChange ? '\u2191' : '\u2193';
     final sign = isPositiveChange ? '+' : '';
 

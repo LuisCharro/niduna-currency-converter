@@ -47,53 +47,53 @@ class _AmountValueRowState extends State<AmountValueRow> {
     final currency = currencyByCode(widget.base);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: TextField(
-                controller: _controller,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                onChanged: widget.onAmountChanged,
-                decoration: const InputDecoration.collapsed(hintText: '0.00'),
-                style: const TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -1.0,
-                  height: 1.1,
-                ),
-              ),
+      children: <Widget>[
+        Expanded(
+          child: TextField(
+            controller: _controller,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            onChanged: widget.onAmountChanged,
+            decoration: const InputDecoration.collapsed(hintText: '0.00'),
+            style: const TextStyle(
+              fontSize: 38,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -1.0,
+              height: 1.05,
             ),
-            const SizedBox(width: 10),
-            GestureDetector(
-              onTap: widget.onBaseTap,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  color: AppTheme.container,
-                  borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-                  border: Border.all(color: AppTheme.border.withValues(alpha: .4)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    CurrencyFlagIcon(
-                      code: widget.base,
-                      symbol: currency.symbol,
-                      radius: 12,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      widget.base,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.3,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        GestureDetector(
+          onTap: widget.onBaseTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppTheme.container,
+              borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+              border: Border.all(color: AppTheme.border.withValues(alpha: .35)),
+              boxShadow: AppTheme.subtleShadow,
             ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CurrencyFlagIcon(
+                  code: widget.base,
+                  symbol: currency.symbol,
+                  radius: 12,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  widget.base,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }

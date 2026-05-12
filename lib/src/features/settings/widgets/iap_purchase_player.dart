@@ -155,11 +155,7 @@ class _IapPurchasePlayerState extends State<IapPurchasePlayer>
           color: Colors.green.shade400,
         );
       case _IapPhase.failed:
-        return Icon(
-          Icons.error_outline,
-          size: 56,
-          color: Colors.red.shade400,
-        );
+        return Icon(Icons.error_outline, size: 56, color: Colors.red.shade400);
     }
   }
 
@@ -228,10 +224,8 @@ class _ProgressBarState extends State<_ProgressBar>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    )..forward();
+    _controller = AnimationController(vsync: this, duration: widget.duration)
+      ..forward();
   }
 
   @override

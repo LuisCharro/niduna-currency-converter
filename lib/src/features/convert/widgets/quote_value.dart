@@ -11,17 +11,26 @@ class QuoteValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = isActive ? AppTheme.trendUp : AppTheme.greenBadge;
+    final textColor = isActive ? Colors.white : AppTheme.greenBadgeText;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        Text(
-          '${quote.symbol} ${quote.amount}',
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w700,
-            color: isActive ? AppTheme.trendUp : AppTheme.text,
-            fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(AppTheme.radius),
+          ),
+          child: Text(
+            '${quote.symbol} ${quote.amount}',
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w800,
+              color: textColor,
+              fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+            ),
           ),
         ),
         if (quote.rateLine.isNotEmpty)
@@ -30,7 +39,7 @@ class QuoteValue extends StatelessWidget {
             child: Text(
               quote.rateLine,
               style: TextStyle(
-                fontSize: 10.5,
+                fontSize: 11,
                 fontWeight: FontWeight.w500,
                 color: AppTheme.subtle.withValues(alpha: .55),
                 letterSpacing: 0.2,

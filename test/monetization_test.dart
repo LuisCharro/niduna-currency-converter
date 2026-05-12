@@ -9,11 +9,6 @@ class _ImmediateAdService implements RewardedAdService {
   Future<bool> showRewardedAd({required String rewardType}) async => true;
 }
 
-class _FailingAdService implements RewardedAdService {
-  @override
-  Future<bool> showRewardedAd({required String rewardType}) async => false;
-}
-
 void main() {
   late SharedPreferences prefs;
   late MonetizationController controller;
@@ -147,26 +142,22 @@ void main() {
 
   group('requestRewardedChartUnlock', () {
     test('pure-free user can request and receive unlock', () async {
-      final result =
-          await controller.requestRewardedChartUnlock('USD', 'GBP');
+      final result = await controller.requestRewardedChartUnlock('USD', 'GBP');
       expect(result, isTrue);
       expect(controller.isChartPairUnlocked('USD', 'GBP'), isTrue);
-      expect(
-          controller.isChartPairUnlocked('GBP', 'USD'), isTrue);
+      expect(controller.isChartPairUnlocked('GBP', 'USD'), isTrue);
     });
 
     test('Remove Ads user cannot request rewarded', () async {
       await controller.setRemoveAdsLifetime(true);
-      final result =
-          await controller.requestRewardedChartUnlock('USD', 'GBP');
+      final result = await controller.requestRewardedChartUnlock('USD', 'GBP');
       expect(result, isFalse);
       expect(controller.isChartPairUnlocked('USD', 'GBP'), isFalse);
     });
 
     test('subscription user cannot request rewarded', () async {
       await controller.setSubscriptionActive(true);
-      final result =
-          await controller.requestRewardedChartUnlock('USD', 'GBP');
+      final result = await controller.requestRewardedChartUnlock('USD', 'GBP');
       expect(result, isFalse);
     });
   });

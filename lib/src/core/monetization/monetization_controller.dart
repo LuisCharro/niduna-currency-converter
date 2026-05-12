@@ -9,10 +9,12 @@ import 'rewarded_ad_service_stub.dart';
 import 'temporary_unlock_store.dart';
 
 class MonetizationController extends ChangeNotifier {
-  MonetizationController(this._preferences,
-      {RewardedAdService? adService, PurchaseService? purchaseService})
-      : _adService = adService ?? RewardedAdServiceStub(),
-        _purchaseService = purchaseService ?? PurchaseServiceStub() {
+  MonetizationController(
+    this._preferences, {
+    RewardedAdService? adService,
+    PurchaseService? purchaseService,
+  }) : _adService = adService ?? RewardedAdServiceStub(),
+       _purchaseService = purchaseService ?? PurchaseServiceStub() {
     _load();
   }
 
@@ -80,7 +82,9 @@ class MonetizationController extends ChangeNotifier {
       for (final entry in decoded.entries) {
         try {
           final u = TemporaryUnlock.fromJson(entry.value);
-          if (!u.isExpired) _tempUnlocks[TemporaryUnlock.canonicalKey(u.base, u.quote)] = u;
+          if (!u.isExpired) {
+            _tempUnlocks[TemporaryUnlock.canonicalKey(u.base, u.quote)] = u;
+          }
         } catch (_) {}
       }
     } catch (_) {}
@@ -88,8 +92,7 @@ class MonetizationController extends ChangeNotifier {
 
   Map<String, dynamic> _decodeJsonMap(String source) {
     try {
-      final decoded = _parseJsonMap(source);
-      if (decoded is Map) return decoded.cast<String, dynamic>();
+      return _parseJsonMap(source);
     } catch (_) {}
     return {};
   }
@@ -102,21 +105,34 @@ class MonetizationController extends ChangeNotifier {
         i++;
         while (i < source.length && source[i] != '}') {
           final ks = source.indexOf("':", i);
-          if (ks == -1 || ks >= source.length) break;
-          final k =
-              source.substring(i, ks).trim().replaceAll('"', '').trim();
+          if (ks == -1 || ks >= source.length) {
+            break;
+          }
+          final k = source.substring(i, ks).trim().replaceAll('"', '').trim();
           i = ks + 2;
-          if (i >= source.length) break;
+          if (i >= source.length) {
+            break;
+          }
           final vs = source.indexOf(':', i);
-          if (vs == -1 || vs >= source.length) break;
+          if (vs == -1 || vs >= source.length) {
+            break;
+          }
           i = vs + 1;
-          while (i < source.length && source[i] == ' ') i++;
-          if (i >= source.length) break;
+          while (i < source.length && source[i] == ' ') {
+            i++;
+          }
+          if (i >= source.length) {
+            break;
+          }
           final commaIdx = source.indexOf(',', i);
           final braceIdx = source.indexOf('}', i);
           var ve = commaIdx;
-          if (ve == -1 || (braceIdx >= 0 && braceIdx < ve)) ve = braceIdx;
-          if (ve == -1) ve = source.length;
+          if (ve == -1 || (braceIdx >= 0 && braceIdx < ve)) {
+            ve = braceIdx;
+          }
+          if (ve == -1) {
+            ve = source.length;
+          }
           result[k] = source.substring(i, ve).trim().replaceAll('"', '').trim();
           i = ve + 1;
         }
@@ -168,10 +184,7 @@ class MonetizationController extends ChangeNotifier {
   }
 
   bool _isFreeDefaultPair(String base, String quote) {
-    final freePairs = [
-      ('USD', 'EUR'),
-      ('EUR', 'USD'),
-    ];
+    final freePairs = [('USD', 'EUR'), ('EUR', 'USD')];
     return freePairs.contains((base, quote));
   }
 

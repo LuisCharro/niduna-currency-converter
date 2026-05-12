@@ -25,7 +25,10 @@ class LockedPairActionSheet extends StatelessWidget {
             Text(
               'This pair is locked',
               style: TextStyle(
-                  fontSize: 17, fontWeight: FontWeight.w700, color: AppTheme.text),
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+                color: AppTheme.text,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
@@ -40,7 +43,8 @@ class LockedPairActionSheet extends StatelessWidget {
                 onPressed: onWatchAd,
                 style: FilledButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -60,7 +64,8 @@ class LockedPairActionSheet extends StatelessWidget {
                 onPressed: onBuyForever,
                 style: FilledButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -75,8 +80,7 @@ class LockedPairActionSheet extends StatelessWidget {
             const SizedBox(height: 12),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel',
-                  style: TextStyle(color: AppTheme.subtle)),
+              child: Text('Cancel', style: TextStyle(color: AppTheme.subtle)),
             ),
           ],
         ),

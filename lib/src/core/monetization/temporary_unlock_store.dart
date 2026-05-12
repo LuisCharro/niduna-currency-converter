@@ -80,8 +80,7 @@ class TemporaryUnlockStore {
 
   Map<String, dynamic> _decodeMap(String raw) {
     try {
-      final decoded = _parseJson(raw);
-      if (decoded is Map) return decoded.cast<String, dynamic>();
+      return _parseJson(raw);
     } catch (_) {}
     return {};
   }
@@ -94,24 +93,43 @@ class TemporaryUnlockStore {
         i++;
         while (i < source.length && source[i] != '}') {
           final keyStart = source.indexOf("':", i);
-          if (keyStart == -1 || keyStart >= source.length) break;
-          final key =
-              source.substring(i, keyStart).trim().replaceAll('"', '').trim();
+          if (keyStart == -1 || keyStart >= source.length) {
+            break;
+          }
+          final key = source
+              .substring(i, keyStart)
+              .trim()
+              .replaceAll('"', '')
+              .trim();
           i = keyStart + 2;
-          if (i >= source.length) break;
+          if (i >= source.length) {
+            break;
+          }
           final valStart = source.indexOf(':', i);
-          if (valStart == -1 || valStart >= source.length) break;
+          if (valStart == -1 || valStart >= source.length) {
+            break;
+          }
           i = valStart + 1;
-          while (i < source.length && source[i] == ' ') i++;
-          if (i >= source.length) break;
+          while (i < source.length && source[i] == ' ') {
+            i++;
+          }
+          if (i >= source.length) {
+            break;
+          }
           final commaIdx = source.indexOf(',', i);
           final braceIdx = source.indexOf('}', i);
           var valEnd = commaIdx;
-          if (valEnd == -1 || (braceIdx >= 0 && braceIdx < valEnd))
+          if (valEnd == -1 || (braceIdx >= 0 && braceIdx < valEnd)) {
             valEnd = braceIdx;
-          if (valEnd == -1) valEnd = source.length;
-          result[key] =
-              source.substring(i, valEnd).trim().replaceAll('"', '').trim();
+          }
+          if (valEnd == -1) {
+            valEnd = source.length;
+          }
+          result[key] = source
+              .substring(i, valEnd)
+              .trim()
+              .replaceAll('"', '')
+              .trim();
           i = valEnd + 1;
         }
       } else {

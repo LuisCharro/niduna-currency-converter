@@ -69,7 +69,10 @@ class SettingsScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
                   child: Text(
                     'Rates are fetched once daily from the European Central Bank.\nData may be up to 24 hours old.',
-                    style: AppTheme.caption.copyWith(color: AppTheme.subtle, height: 1.4),
+                    style: AppTheme.caption.copyWith(
+                      color: AppTheme.subtle,
+                      height: 1.4,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),

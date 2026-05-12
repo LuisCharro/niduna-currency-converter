@@ -26,7 +26,11 @@ class ClearCacheTile extends StatelessWidget {
           ),
           child: Text(
             'Clear',
-            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.text),
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: AppTheme.text,
+            ),
           ),
         ),
       ),

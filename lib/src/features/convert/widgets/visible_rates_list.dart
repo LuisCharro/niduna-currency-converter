@@ -37,7 +37,7 @@ class VisibleRatesList extends StatelessWidget {
     }
 
     final list = ListView.separated(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
+      padding: const EdgeInsets.fromLTRB(18, 0, 18, 92),
       itemBuilder: (context, index) => CurrencyRateRow(
         quote: quotes[index],
         isActive: activeCode == quotes[index].code,
@@ -48,7 +48,7 @@ class VisibleRatesList extends StatelessWidget {
         maxFavoritesReached: maxFavoritesReached,
       ),
       separatorBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(left: 52),
+        padding: const EdgeInsets.only(left: 58),
         child: Divider(
           color: AppTheme.border.withValues(alpha: .2),
           height: .5,
@@ -59,61 +59,14 @@ class VisibleRatesList extends StatelessWidget {
     );
 
     if (onRefresh != null) {
-      return Stack(
-        children: <Widget>[
-          RefreshIndicator(
-            onRefresh: onRefresh!,
-            color: AppTheme.trendUp,
-            backgroundColor: AppTheme.card,
-            edgeOffset: 20,
-            child: list,
-          ),
-          Positioned(
-            left: 18,
-            top: 0,
-            bottom: 100,
-            width: 1.2,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    const Color(0x406F8C49),
-                    const Color(0x086F8C49),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(999),
-              ),
-            ),
-          ),
-        ],
+      return RefreshIndicator(
+        onRefresh: onRefresh!,
+        color: AppTheme.trendUp,
+        backgroundColor: AppTheme.card,
+        edgeOffset: 20,
+        child: list,
       );
     }
-
-    return Stack(
-      children: <Widget>[
-        list,
-        Positioned(
-          left: 18,
-          top: 0,
-          bottom: 100,
-          width: 1.2,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              colors: [
-                const Color(0x406F8C49),
-                const Color(0x086F8C49),
-              ],
-              ),
-              borderRadius: BorderRadius.circular(999),
-            ),
-          ),
-        ),
-      ],
-    );
+    return list;
   }
 }

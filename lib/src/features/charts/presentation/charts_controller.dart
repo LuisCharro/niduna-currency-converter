@@ -4,12 +4,7 @@ import '../../../core/rates/rates_service.dart';
 import '../../../core/rates/models/rates_result.dart';
 import '../domain/chart_range.dart';
 
-enum ChartStatus {
-  initial,
-  loading,
-  loaded,
-  error,
-}
+enum ChartStatus { initial, loading, loaded, error }
 
 class ChartState {
   const ChartState({
@@ -66,8 +61,12 @@ class ChartsController extends ChangeNotifier {
     String defaultBase = 'USD',
     String defaultQuote = 'EUR',
     ChartRange range = ChartRange.oneMonth,
-  })  : _ratesService = ratesService,
-        _state = ChartState(base: defaultBase, quote: defaultQuote, range: range);
+  }) : _ratesService = ratesService,
+       _state = ChartState(
+         base: defaultBase,
+         quote: defaultQuote,
+         range: range,
+       );
 
   final RatesService _ratesService;
   ChartState _state;
@@ -90,22 +89,26 @@ class ChartsController extends ChangeNotifier {
 
   void setPair(String base, String quote) {
     if (base == _state.base && quote == _state.quote) return;
-    _setState(_state.copyWith(
-      base: base,
-      quote: quote,
-      status: ChartStatus.loading,
-      data: const {},
-    ));
+    _setState(
+      _state.copyWith(
+        base: base,
+        quote: quote,
+        status: ChartStatus.loading,
+        data: const {},
+      ),
+    );
     _load();
   }
 
   void setRange(ChartRange range) {
     if (range == _state.range || range.locked) return;
-    _setState(_state.copyWith(
-      range: range,
-      status: ChartStatus.loading,
-      data: const {},
-    ));
+    _setState(
+      _state.copyWith(
+        range: range,
+        status: ChartStatus.loading,
+        data: const {},
+      ),
+    );
     _load();
   }
 
@@ -125,10 +128,12 @@ class ChartsController extends ChangeNotifier {
     final requestVersion = ++_requestVersion;
     final from = _state.range.fromDate();
     if (from == null) {
-      _setState(_state.copyWith(
-        status: ChartStatus.error,
-        message: 'Selected range is not available yet.',
-      ));
+      _setState(
+        _state.copyWith(
+          status: ChartStatus.error,
+          message: 'Selected range is not available yet.',
+        ),
+      );
       return;
     }
     final to = DateTime.now();
@@ -150,12 +155,14 @@ class ChartsController extends ChangeNotifier {
         : ChartStatus.loaded;
     final newMessage = result.message;
 
-    _setState(_state.copyWith(
-      data: newData,
-      lastUpdated: newData.isNotEmpty ? DateTime.now() : null,
-      status: newStatus,
-      message: newMessage,
-    ));
+    _setState(
+      _state.copyWith(
+        data: newData,
+        lastUpdated: newData.isNotEmpty ? DateTime.now() : null,
+        status: newStatus,
+        message: newMessage,
+      ),
+    );
   }
 }
 

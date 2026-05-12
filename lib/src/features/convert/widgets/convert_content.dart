@@ -81,7 +81,9 @@ class _ConvertContentState extends State<ConvertContent> {
   void _openPicker(BuildContext context, {required bool selectBaseMode}) {
     showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
       showDragHandle: true,
+      useSafeArea: true,
       builder: (context) => CurrencyPickerSheet(
         title: selectBaseMode ? 'Base currency' : 'Visible currencies',
         base: widget.state.base,

@@ -42,7 +42,9 @@ class DevSandboxSection extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Icon(
-                monetization.adsEnabled ? Icons.visibility : Icons.visibility_off,
+                monetization.adsEnabled
+                    ? Icons.visibility
+                    : Icons.visibility_off,
                 size: 16,
                 color: AppTheme.muted,
               ),
@@ -87,15 +89,26 @@ class _EntitlementSwitch extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(label,
-                    style:
-                        const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 const SizedBox(height: 2),
-                Text(description, style: TextStyle(fontSize: 12, color: AppTheme.muted)),
+                Text(
+                  description,
+                  style: TextStyle(fontSize: 12, color: AppTheme.muted),
+                ),
               ],
             ),
           ),
-          Switch(value: value, onChanged: onChanged, activeTrackColor: AppTheme.primary),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeTrackColor: AppTheme.primary,
+          ),
         ],
       ),
     );

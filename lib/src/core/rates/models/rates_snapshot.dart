@@ -40,8 +40,7 @@ class HistoricalSnapshot {
   }
 
   HistoricalSnapshot mergedWith(HistoricalSnapshot newer) {
-    final mergedData = Map<DateTime, double>.from(data)
-      ..addAll(newer.data);
+    final mergedData = Map<DateTime, double>.from(data)..addAll(newer.data);
     final mergedFrom = coveredFrom.isBefore(newer.coveredFrom)
         ? coveredFrom
         : newer.coveredFrom;

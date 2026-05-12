@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/theme/app_theme.dart';
 import 'currency_picker_tile.dart';
 
 class CurrencyPickerSheet extends StatefulWidget {
@@ -27,47 +28,70 @@ class CurrencyPickerSheet extends StatefulWidget {
 
 class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
   late final Set<String> _selectedCodes = widget.selectedCodes.toSet();
+  String _query = '';
 
   @override
   Widget build(BuildContext context) {
+    final currencies = supportedCurrencies.where(_matchesQuery).toList();
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              widget.title,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  final currency = supportedCurrencies[index];
-                  final isBase = currency.code == widget.base;
-                  final isSelected = _selectedCodes.contains(currency.code);
-                  return CurrencyPickerTile(
-                    currency: currency,
-                    isBase: isBase,
-                    isSelected: isSelected,
-                    selectBaseMode: widget.selectBaseMode,
-                    onTap: () {
-                      if (widget.selectBaseMode) {
-                        widget.onSelectBase(currency.code);
-                      } else {
-                        _toggle(currency.code);
-                      }
-                    },
-                  );
-                },
-                separatorBuilder: (context, index) => const Divider(height: 1),
-                itemCount: supportedCurrencies.length,
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * .82,
+              child: Column(
+                children: <Widget>[
+                  _PickerHeader(title: widget.title),
+                  const SizedBox(height: 12),
+                  _SearchField(
+                    onChanged: (value) => setState(() => _query = value),
+                  ),
+                  const SizedBox(height: 12),
+                  Expanded(
+                    child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        final currency = currencies[index];
+                        final isBase = currency.code == widget.base;
+                        final isSelected = _selectedCodes.contains(
+                          currency.code,
+                        );
+                        return CurrencyPickerTile(
+                          currency: currency,
+                          isBase: isBase,
+                          isSelected: isSelected,
+                          selectBaseMode: widget.selectBaseMode,
+                          onTap: () {
+                            if (widget.selectBaseMode) {
+                              widget.onSelectBase(currency.code);
+                            } else {
+                              _toggle(currency.code);
+                            }
+                          },
+                        );
+                      },
+                      separatorBuilder: (context, index) => Divider(
+                        height: 1,
+                        color: AppTheme.border.withValues(alpha: .15),
+                      ),
+                      itemCount: currencies.length,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  bool _matchesQuery(SupportedCurrency currency) {
+    final normalized = _query.trim().toLowerCase();
+    if (normalized.isEmpty) return true;
+    return currency.code.toLowerCase().contains(normalized) ||
+        currency.name.toLowerCase().contains(normalized);
   }
 
   void _toggle(String code) {
@@ -85,5 +109,54 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
       }
     });
     widget.onToggleCode(code);
+  }
+}
+
+class _PickerHeader extends StatelessWidget {
+  const _PickerHeader({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        const SizedBox(width: 48),
+        Expanded(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+          ),
+        ),
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.check_circle_rounded, color: AppTheme.primary),
+        ),
+      ],
+    );
+  }
+}
+
+class _SearchField extends StatelessWidget {
+  const _SearchField({required this.onChanged});
+
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        hintText: 'Currency, country, or code',
+        prefixIcon: const Icon(Icons.search_rounded),
+        filled: true,
+        fillColor: AppTheme.container,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
   }
 }

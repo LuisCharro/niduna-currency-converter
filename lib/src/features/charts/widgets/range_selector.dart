@@ -36,7 +36,8 @@ class RangeSelector extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                              'Intraday ranges coming soon — requires Premium Subscription'),
+                            'Intraday ranges coming soon — requires Premium Subscription',
+                          ),
                           duration: Duration(seconds: 3),
                         ),
                       );
@@ -46,26 +47,31 @@ class RangeSelector extends StatelessWidget {
                   },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 160),
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 7,
+                    ),
                     decoration: BoxDecoration(
                       color: isLocked
                           ? Colors.transparent
                           : isSelected
-                              ? AppTheme.card
-                              : Colors.transparent,
+                          ? AppTheme.card
+                          : Colors.transparent,
                       borderRadius: BorderRadius.circular(AppTheme.pillRadius),
                       border: isSelected
                           ? null
                           : Border.all(color: Colors.transparent),
-                      boxShadow: isSelected
-                          ? AppTheme.subtleShadow
-                          : null,
+                      boxShadow: isSelected ? AppTheme.subtleShadow : null,
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (isLocked) ...[
-                          Icon(Icons.lock_outline, size: 12, color: AppTheme.muted),
+                          Icon(
+                            Icons.lock_outline,
+                            size: 12,
+                            color: AppTheme.muted,
+                          ),
                           const SizedBox(width: 4),
                         ],
                         Text(
@@ -76,8 +82,8 @@ class RangeSelector extends StatelessWidget {
                             color: isLocked
                                 ? AppTheme.muted
                                 : isSelected
-                                    ? AppTheme.text
-                                    : AppTheme.subtle,
+                                ? AppTheme.text
+                                : AppTheme.subtle,
                           ),
                         ),
                       ],

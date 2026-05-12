@@ -40,9 +40,7 @@ class FavoritesScreen extends StatelessWidget {
                 ),
               ),
               if (!favoritesStore.isFull)
-                _AddButton(
-                  onTap: () => onNavigateToConvert('', ''),
-                )
+                _AddButton(onTap: () => onNavigateToConvert('', ''))
               else
                 _MaxFavoritesCard(),
             ],
@@ -221,11 +219,16 @@ class _FavoriteTile extends StatelessWidget {
               if (onDismissed != null)
                 IconButton(
                   onPressed: onDismissed,
-                  icon: Icon(Icons.remove_circle_outline,
-                      size: 22, color: AppTheme.subtle),
+                  icon: Icon(
+                    Icons.remove_circle_outline,
+                    size: 22,
+                    color: AppTheme.subtle,
+                  ),
                   tooltip: 'Remove ${pair.base}→${pair.quote}',
-                  constraints:
-                      const BoxConstraints.tightFor(width: 44, height: 44),
+                  constraints: const BoxConstraints.tightFor(
+                    width: 44,
+                    height: 44,
+                  ),
                   splashRadius: 20,
                 )
               else
@@ -301,11 +304,7 @@ class _MaxFavoritesCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 6),
-            Icon(
-              Icons.chevron_right,
-              size: 18,
-              color: AppTheme.primary,
-            ),
+            Icon(Icons.chevron_right, size: 18, color: AppTheme.primary),
           ],
         ),
       ),

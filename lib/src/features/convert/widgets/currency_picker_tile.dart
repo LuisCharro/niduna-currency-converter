@@ -23,15 +23,28 @@ class CurrencyPickerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       leading: CurrencyFlagIcon(
         code: currency.code,
         symbol: currency.symbol,
-        radius: 16,
+        radius: 20,
       ),
-      title: Text(currency.name),
-      subtitle: Text(currency.code),
-      trailing: Icon(_icon, color: _color),
+      title: Text(
+        currency.name,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+      ),
+      subtitle: Text(
+        currency.code,
+        style: const TextStyle(
+          color: AppTheme.muted,
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          letterSpacing: .3,
+        ),
+      ),
+      trailing: Icon(_icon, color: _color, size: 26),
       enabled: selectBaseMode || !isBase,
+      minLeadingWidth: 44,
       onTap: onTap,
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../settings_controller.dart';
@@ -23,8 +22,10 @@ class PremiumSection extends StatelessWidget {
               Expanded(child: Divider(color: AppTheme.border)),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text('or buy separately',
-                    style: AppTheme.micro.copyWith(color: AppTheme.subtle)),
+                child: Text(
+                  'or buy separately',
+                  style: AppTheme.micro.copyWith(color: AppTheme.subtle),
+                ),
               ),
               Expanded(child: Divider(color: AppTheme.border)),
             ],
@@ -37,7 +38,8 @@ class PremiumSection extends StatelessWidget {
           description: 'Enjoy the app without any advertisements',
           price: '1.99 CHF',
           owned: controller.monetization.hasRemoveAdsLifetime,
-          onBuy: () => controller.purchaseProduct(context, ProductType.removeAds),
+          onBuy: () =>
+              controller.purchaseProduct(context, ProductType.removeAds),
         ),
         const SizedBox(height: 10),
         _PremiumCard(
@@ -46,7 +48,8 @@ class PremiumSection extends StatelessWidget {
           description: 'Select any currency pair in Charts — forever',
           price: '2.99 CHF',
           owned: controller.monetization.hasChartsProLifetime,
-          onBuy: () => controller.purchaseProduct(context, ProductType.chartsPro),
+          onBuy: () =>
+              controller.purchaseProduct(context, ProductType.chartsPro),
         ),
         const SizedBox(height: 12),
         GestureDetector(
@@ -61,7 +64,11 @@ class PremiumSection extends StatelessWidget {
             child: Center(
               child: Text(
                 'Restore Purchases',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.primary),
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.primary,
+                ),
               ),
             ),
           ),
@@ -99,7 +106,11 @@ class _PremiumCard extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          Icon(icon, size: 22, color: owned ? AppTheme.trendUp : AppTheme.primary),
+          Icon(
+            icon,
+            size: 22,
+            color: owned ? AppTheme.trendUp : AppTheme.primary,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -107,26 +118,40 @@ class _PremiumCard extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(title,
-                        style:
-                            const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     if (!owned) ...[
                       const SizedBox(width: 6),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 1,
+                        ),
                         decoration: BoxDecoration(
                           color: AppTheme.primary.withValues(alpha: .08),
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child: Text('in Subscription',
-                            style:
-                                TextStyle(fontSize: 9, color: AppTheme.primary)),
+                        child: Text(
+                          'in Subscription',
+                          style: TextStyle(
+                            fontSize: 9,
+                            color: AppTheme.primary,
+                          ),
+                        ),
                       ),
                     ],
                   ],
                 ),
                 const SizedBox(height: 2),
-                Text(description, style: TextStyle(fontSize: 12, color: AppTheme.muted)),
+                Text(
+                  description,
+                  style: TextStyle(fontSize: 12, color: AppTheme.muted),
+                ),
               ],
             ),
           ),
@@ -136,7 +161,10 @@ class _PremiumCard extends StatelessWidget {
             GestureDetector(
               onTap: onBuy,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: AppTheme.primary,
                   borderRadius: BorderRadius.circular(8),
@@ -173,29 +201,47 @@ class _SubscriptionCard extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Icon(Icons.workspace_premium_outlined,
-                  size: 22, color: AppTheme.primary),
+              Icon(
+                Icons.workspace_premium_outlined,
+                size: 22,
+                color: AppTheme.primary,
+              ),
               const SizedBox(width: 10),
               Expanded(
-                child: Text('Premium Subscription',
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+                child: Text(
+                  'Premium Subscription',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppTheme.container.withValues(alpha: .6),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: AppTheme.border),
                 ),
-                child: Text('Coming Soon',
-                    style:
-                        TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.subtle)),
+                child: Text(
+                  'Coming Soon',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.subtle,
+                  ),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          Text('All features included',
-              style: TextStyle(fontSize: 13, color: AppTheme.text)),
+          Text(
+            'All features included',
+            style: TextStyle(fontSize: 13, color: AppTheme.text),
+          ),
           const SizedBox(height: 6),
           _SubFeatureRow(Icons.visibility_off, 'Remove ads'),
           _SubFeatureRow(Icons.diamond_outlined, 'Unlock all chart pairs'),
@@ -206,8 +252,10 @@ class _SubscriptionCard extends StatelessWidget {
               Icon(Icons.construction, size: 11, color: AppTheme.subtle),
               const SizedBox(width: 4),
               Flexible(
-                child: Text('1 week free trial, then X.XX CHF/year',
-                    style: TextStyle(fontSize: 11, color: AppTheme.subtle)),
+                child: Text(
+                  '1 week free trial, then X.XX CHF/year',
+                  style: TextStyle(fontSize: 11, color: AppTheme.subtle),
+                ),
               ),
             ],
           ),

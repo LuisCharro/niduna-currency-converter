@@ -63,7 +63,10 @@ class PairSelector extends StatelessWidget {
     );
   }
 
-  Future<void> _openPicker(BuildContext context, {required bool selectingBase}) async {
+  Future<void> _openPicker(
+    BuildContext context, {
+    required bool selectingBase,
+  }) async {
     final selected = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
@@ -90,10 +93,7 @@ class PairSelector extends StatelessWidget {
 }
 
 class _CurrencyPill extends StatelessWidget {
-  const _CurrencyPill({
-    required this.code,
-    required this.onTap,
-  });
+  const _CurrencyPill({required this.code, required this.onTap});
 
   final String code;
   final VoidCallback onTap;
@@ -114,11 +114,7 @@ class _CurrencyPill extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CurrencyFlagIcon(
-              code: code,
-              symbol: currency.symbol,
-              radius: 14,
-            ),
+            CurrencyFlagIcon(code: code, symbol: currency.symbol, radius: 14),
             const SizedBox(width: 8),
             Text(
               code,

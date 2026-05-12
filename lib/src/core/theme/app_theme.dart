@@ -14,11 +14,16 @@ class AppTheme {
   static const primary = Color(0xFF285F3B);
   static const trendUp = Color(0xFF6F8C49);
   static const trendDown = Color(0xFFDC6543);
+  static const greenBadge = Color(0xFFEDF5EB);
+  static const greenBadgeText = Color(0xFF3D6E2C);
   static const double radius = 12;
   static const double cardRadius = 16;
   static const double pillRadius = 20;
   static const List<BoxShadow> subtleShadow = <BoxShadow>[
     BoxShadow(color: Color(0x14285F3B), blurRadius: 10, offset: Offset(0, 2)),
+  ];
+  static const List<BoxShadow> floatingShadow = <BoxShadow>[
+    BoxShadow(color: Color(0x10285F3B), blurRadius: 18, offset: Offset(0, 8)),
   ];
 
   static const TextStyle display = TextStyle(
@@ -98,7 +103,9 @@ class AppTheme {
       selectedColor: primary,
       labelStyle: TextStyle(color: text),
       side: const BorderSide(color: Colors.transparent),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(pillRadius)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(pillRadius),
+      ),
     ),
   );
 

@@ -32,7 +32,8 @@ class SettingsController extends ChangeNotifier {
       builder: (ctx) => AlertDialog(
         title: const Text('Clear all data?'),
         content: const Text(
-            'This will clear rates cache, chart cache, and all temporary pair unlocks.'),
+          'This will clear rates cache, chart cache, and all temporary pair unlocks.',
+        ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
@@ -42,9 +43,9 @@ class SettingsController extends ChangeNotifier {
             onPressed: () {
               Navigator.of(ctx).pop();
               onClearCache();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Cache cleared')),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Cache cleared')));
             },
             child: Text('Clear', style: TextStyle(color: Colors.red.shade400)),
           ),

@@ -38,6 +38,5 @@ class CurrencyFlags {
     'ARS': '🇦🇷',
   };
 
-  static String forCode(String code) =>
-      _map[code.toUpperCase()] ?? '🏳️';
+  static String forCode(String code) => _map[code.toUpperCase()] ?? '🏳️';
 }

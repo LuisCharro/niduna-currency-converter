@@ -38,7 +38,11 @@ class ConvertHeader extends StatelessWidget {
           IconButton(
             onPressed: onAddCurrencies,
             visualDensity: VisualDensity.compact,
-            icon: Icon(Icons.add_circle_outline, color: AppTheme.muted, size: 24),
+            icon: Icon(
+              Icons.add_circle_outline,
+              color: AppTheme.muted,
+              size: 24,
+            ),
           ),
           const SizedBox(width: 4),
           IconButton(

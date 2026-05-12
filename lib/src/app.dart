@@ -14,7 +14,6 @@ import 'features/convert/data/latest_rates_repository.dart';
 import 'features/convert/convert_screen.dart';
 import 'features/convert/presentation/convert_controller.dart';
 import 'features/favorites/data/favorites_store.dart';
-import 'features/favorites/favorites_screen.dart';
 import 'features/charts/charts_screen.dart';
 import 'features/charts/presentation/charts_controller.dart';
 import 'features/settings/settings_screen.dart';
@@ -45,11 +44,7 @@ class CurrencyConverterApp extends StatelessWidget {
 }
 
 class AppShell extends StatefulWidget {
-  const AppShell({
-    this.convertRepository,
-    this.favoritesStore,
-    super.key,
-  });
+  const AppShell({this.convertRepository, this.favoritesStore, super.key});
 
   final ConvertRatesRepository? convertRepository;
   final FavoritesStore? favoritesStore;
@@ -67,8 +62,7 @@ class _AppState extends State<AppShell> {
   AppPreferences? _preferences;
   bool _ready = false;
 
-  FavoritesStore get _favoritesStore =>
-      widget.favoritesStore ?? _localStore!;
+  FavoritesStore get _favoritesStore => widget.favoritesStore ?? _localStore!;
 
   @override
   void initState() {
@@ -85,7 +79,8 @@ class _AppState extends State<AppShell> {
       _localStore = FavoritesStore(prefs);
     }
 
-    final repo = widget.convertRepository ??
+    final repo =
+        widget.convertRepository ??
         LatestRatesRepository(
           client: FrankfurterLatestRatesClient(),
           cache: LatestRatesCache(prefs),
@@ -165,16 +160,6 @@ class _AppState extends State<AppShell> {
         ),
       ),
     );
-  }
-
-  void _navigateToConvert(String base, String quote) {
-    if (_controller != null && base.isNotEmpty) {
-      _controller!.setBase(base);
-      if (quote.isNotEmpty && !_controller!.state.selectedCodes.contains(quote)) {
-        _controller!.toggleCode(quote);
-      }
-    }
-    setState(() => _currentIndex = 0);
   }
 
   Future<void> _onClearCache() async {

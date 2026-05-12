@@ -103,7 +103,9 @@ class ChartHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppTheme.card,
-                border: Border.all(color: AppTheme.border.withValues(alpha: .4)),
+                border: Border.all(
+                  color: AppTheme.border.withValues(alpha: .4),
+                ),
                 boxShadow: AppTheme.subtleShadow,
               ),
               child: Icon(

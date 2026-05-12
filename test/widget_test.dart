@@ -46,12 +46,14 @@ void main() {
     await controller.load();
   });
 
-  tearDown() {
+  tearDown(() {
     favoritesStore.dispose();
     controller.dispose();
-  }
+  });
 
-  testWidgets('app launches with floating pill nav', (WidgetTester tester) async {
+  testWidgets('app launches with floating pill nav', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       CurrencyConverterApp(
         convertRepository: repository,
@@ -69,15 +71,15 @@ void main() {
     expect(find.text('100.00'), findsOneWidget);
   });
 
-  testWidgets('Convert screen shows clean layout', (
-    WidgetTester tester,
-  ) async {
+  testWidgets('Convert screen shows clean layout', (WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(home: ConvertScreen(
-        controller: controller,
-        monetization: monetization,
-        onNavigateToSettings: () {},
-      )),
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -94,11 +96,13 @@ void main() {
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(home: ConvertScreen(
-        controller: controller,
-        monetization: monetization,
-        onNavigateToSettings: () {},
-      )),
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -115,13 +119,15 @@ void main() {
   testWidgets('Favorites screen shows placeholder', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(MaterialApp(
-      home: FavoritesScreen(
-        favoritesStore: favoritesStore,
-        controller: controller,
-        onNavigateToConvert: (a, b) {},
+    await tester.pumpWidget(
+      MaterialApp(
+        home: FavoritesScreen(
+          favoritesStore: favoritesStore,
+          controller: controller,
+          onNavigateToConvert: (a, b) {},
+        ),
       ),
-    ));
+    );
     expect(find.text('No favorite pairs yet'), findsOneWidget);
   });
 
@@ -129,23 +135,29 @@ void main() {
     WidgetTester tester,
   ) async {
     await favoritesStore.add('USD', 'EUR');
-    await tester.pumpWidget(MaterialApp(
-      home: FavoritesScreen(
-        favoritesStore: favoritesStore,
-        controller: controller,
-        onNavigateToConvert: (a, b) {},
+    await tester.pumpWidget(
+      MaterialApp(
+        home: FavoritesScreen(
+          favoritesStore: favoritesStore,
+          controller: controller,
+          onNavigateToConvert: (a, b) {},
+        ),
       ),
-    ));
+    );
     expect(find.text('USD → EUR'), findsOneWidget);
     expect(find.text('0.9200'), findsOneWidget);
   });
 
   testWidgets('Settings screen shows sections', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: SettingsScreen(
-      monetization: monetization,
-      preferences: preferences,
-      onClearCache: () {},
-    )));
+    await tester.pumpWidget(
+      MaterialApp(
+        home: SettingsScreen(
+          monetization: monetization,
+          preferences: preferences,
+          onClearCache: () {},
+        ),
+      ),
+    );
     expect(find.text('Conversion'), findsOneWidget);
     expect(find.text('Data'), findsOneWidget);
     expect(find.text('Premium'), findsOneWidget);

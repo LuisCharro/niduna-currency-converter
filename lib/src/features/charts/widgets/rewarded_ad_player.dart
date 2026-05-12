@@ -51,11 +51,10 @@ class _RewardedAdPlayerState extends State<RewardedAdPlayer>
     if (!mounted) return;
     setState(() => _phase = _AdPhase.playing);
 
-    final success =
-        await widget.controller.requestRewardedChartUnlock(
-          widget.base,
-          widget.quote,
-        );
+    final success = await widget.controller.requestRewardedChartUnlock(
+      widget.base,
+      widget.quote,
+    );
 
     if (!mounted) return;
 
@@ -146,11 +145,7 @@ class _RewardedAdPlayerState extends State<RewardedAdPlayer>
           color: Colors.green.shade400,
         );
       case _AdPhase.failed:
-        return Icon(
-          Icons.error_outline,
-          size: 56,
-          color: Colors.red.shade400,
-        );
+        return Icon(Icons.error_outline, size: 56, color: Colors.red.shade400);
     }
   }
 
@@ -215,9 +210,7 @@ class _ProgressBarState extends State<_ProgressBar>
           child: LinearProgressIndicator(
             value: _controller.value,
             backgroundColor: Colors.white.withValues(alpha: .15),
-            valueColor: AlwaysStoppedAnimation<Color>(
-              AppTheme.primary,
-            ),
+            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
             minHeight: 4,
           ),
         );

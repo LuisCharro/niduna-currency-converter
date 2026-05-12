@@ -47,10 +47,12 @@ class AppPreferences extends ChangeNotifier {
   }
 
   Future<void> clearAllCaches() async {
-    final keysToRemove = _prefs.getKeys().where((k) =>
-        k.startsWith('rates_') ||
-        k.startsWith('historical_') ||
-        k.startsWith('temp_unlock'));
+    final keysToRemove = _prefs.getKeys().where(
+      (k) =>
+          k.startsWith('rates_') ||
+          k.startsWith('historical_') ||
+          k.startsWith('temp_unlock'),
+    );
     for (final key in keysToRemove) {
       await _prefs.remove(key);
     }

@@ -53,8 +53,10 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
     if (_isFreeDefaultCurrency(code)) return false;
     final candidateBase = widget.selectingBase ? code : widget.baseCurrency;
     final candidateQuote = widget.selectingBase ? widget.quoteCurrency : code;
-    final canonical =
-        TemporaryUnlock.canonicalKey(candidateBase, candidateQuote);
+    final canonical = TemporaryUnlock.canonicalKey(
+      candidateBase,
+      candidateQuote,
+    );
     // Free-default pairs are permanently unlocked, not "temp"
     if (_isFreeDefaultPair(candidateBase, candidateQuote)) return false;
     return widget.controller.tempUnlockedCodes.contains(canonical);
@@ -138,9 +140,13 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
             padding: const EdgeInsets.fromLTRB(20, 6, 20, 8),
             child: Row(
               children: <Widget>[
-                Text(widget.title,
-                    style:
-                        const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                Text(
+                  widget.title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 const Spacer(),
                 Material(
                   color: Colors.transparent,
@@ -154,7 +160,8 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                            color: AppTheme.border.withValues(alpha: .3)),
+                          color: AppTheme.border.withValues(alpha: .3),
+                        ),
                       ),
                       child: Icon(Icons.close, size: 16, color: AppTheme.muted),
                     ),
@@ -199,7 +206,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
           Expanded(
             child: ListView.separated(
               itemCount: currencies.length,
-              separatorBuilder: (_, __) =>
+              separatorBuilder: (context, index) =>
                   Divider(height: 1, color: AppTheme.border),
               itemBuilder: (context, index) {
                 final currency = currencies[index];
@@ -218,9 +225,8 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
                   onTap: isFixed
                       ? null
                       : unlocked
-                          ? () => Navigator.of(context).pop(currency.code)
-                          : () =>
-                              _showLockedAction(context, currency.code),
+                      ? () => Navigator.of(context).pop(currency.code)
+                      : () => _showLockedAction(context, currency.code),
                 );
               },
             ),
@@ -270,11 +276,7 @@ class _CurrencyTile extends StatelessWidget {
           children: <Widget>[
             Opacity(
               opacity: locked ? .45 : 1,
-              child: CurrencyFlagIcon(
-                code: code,
-                symbol: symbol,
-                radius: 16,
-              ),
+              child: CurrencyFlagIcon(code: code, symbol: symbol, radius: 16),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -293,19 +295,19 @@ class _CurrencyTile extends StatelessWidget {
                     locked
                         ? 'Tap to unlock'
                         : tempUnlocked
-                            ? 'Unlocked · 24h remaining'
-                            : isFixed
-                                ? 'Current $code'
-                                : name,
+                        ? 'Unlocked · 24h remaining'
+                        : isFixed
+                        ? 'Current $code'
+                        : name,
                     style: TextStyle(
                       fontSize: 12,
                       color: tempUnlocked
                           ? AppTheme.primary.withValues(alpha: .7)
                           : locked
-                              ? AppTheme.muted
-                              : isFixed
-                                  ? AppTheme.primary.withValues(alpha: .5)
-                                  : AppTheme.subtle,
+                          ? AppTheme.muted
+                          : isFixed
+                          ? AppTheme.primary.withValues(alpha: .5)
+                          : AppTheme.subtle,
                     ),
                   ),
                 ],
@@ -313,13 +315,13 @@ class _CurrencyTile extends StatelessWidget {
             ),
             if (isFixed)
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: AppTheme.primary.withValues(alpha: .06),
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                      color: AppTheme.primary.withValues(alpha: .15)),
+                    color: AppTheme.primary.withValues(alpha: .15),
+                  ),
                 ),
                 child: Text(
                   'Current',
@@ -332,13 +334,13 @@ class _CurrencyTile extends StatelessWidget {
               )
             else if (tempUnlocked)
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: AppTheme.primary.withValues(alpha: .1),
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                      color: AppTheme.primary.withValues(alpha: .3)),
+                    color: AppTheme.primary.withValues(alpha: .3),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -355,8 +357,11 @@ class _CurrencyTile extends StatelessWidget {
                     ),
                     if (isSelected) ...[
                       const SizedBox(width: 4),
-                      Icon(Icons.check_circle,
-                          size: 13, color: AppTheme.primary),
+                      Icon(
+                        Icons.check_circle,
+                        size: 13,
+                        color: AppTheme.primary,
+                      ),
                     ],
                   ],
                 ),
@@ -367,13 +372,13 @@ class _CurrencyTile extends StatelessWidget {
               Icon(Icons.chevron_right, color: AppTheme.subtle)
             else
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: AppTheme.container,
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                      color: AppTheme.border.withValues(alpha: .4)),
+                    color: AppTheme.border.withValues(alpha: .4),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

@@ -189,7 +189,9 @@ class RatesService {
 
     if (!_coversRange(merged, from, to)) {
       if (merged.coveredFrom.isAfter(from)) {
-        final olderTo = _toDateOnly(merged.coveredFrom.subtract(const Duration(days: 1)));
+        final olderTo = _toDateOnly(
+          merged.coveredFrom.subtract(const Duration(days: 1)),
+        );
         if (!olderTo.isBefore(from)) {
           final olderResult = await _fetchAndCacheHistorical(
             base: base,
@@ -201,13 +203,17 @@ class RatesService {
           final olderSnapshot = olderResult.snapshot;
           if (olderSnapshot != null) {
             merged = merged.mergedWith(olderSnapshot);
-            fetchedFresh = fetchedFresh || olderResult.status == HistoricalStatus.fresh;
+            fetchedFresh =
+                fetchedFresh || olderResult.status == HistoricalStatus.fresh;
           }
         }
       }
 
-      if (merged.coveredTo.isBefore(to) && _shouldFetchNewerGap(merged.coveredTo, to)) {
-        final newerFrom = _toDateOnly(merged.coveredTo.add(const Duration(days: 1)));
+      if (merged.coveredTo.isBefore(to) &&
+          _shouldFetchNewerGap(merged.coveredTo, to)) {
+        final newerFrom = _toDateOnly(
+          merged.coveredTo.add(const Duration(days: 1)),
+        );
         if (!newerFrom.isAfter(to)) {
           final newerResult = await _fetchAndCacheHistorical(
             base: base,
@@ -219,7 +225,8 @@ class RatesService {
           final newerSnapshot = newerResult.snapshot;
           if (newerSnapshot != null) {
             merged = merged.mergedWith(newerSnapshot);
-            fetchedFresh = fetchedFresh || newerResult.status == HistoricalStatus.fresh;
+            fetchedFresh =
+                fetchedFresh || newerResult.status == HistoricalStatus.fresh;
           }
         }
       }
@@ -236,11 +243,14 @@ class RatesService {
       );
       if (refreshResult.snapshot != null) {
         merged = merged.mergedWith(refreshResult.snapshot!);
-        fetchedFresh = fetchedFresh || refreshResult.status == HistoricalStatus.fresh;
+        fetchedFresh =
+            fetchedFresh || refreshResult.status == HistoricalStatus.fresh;
       }
     }
 
-    final status = fetchedFresh ? HistoricalStatus.fresh : HistoricalStatus.cached;
+    final status = fetchedFresh
+        ? HistoricalStatus.fresh
+        : HistoricalStatus.cached;
     return HistoricalResult(
       status: status,
       snapshot: _filterSnapshot(merged, from, to),
@@ -255,8 +265,12 @@ class RatesService {
     await _cache.clear();
   }
 
-  String _historicalKey(String base, String quote, DateTime from, DateTime to) =>
-      '$base|$quote|${from.toIso8601String()}|${to.toIso8601String()}';
+  String _historicalKey(
+    String base,
+    String quote,
+    DateTime from,
+    DateTime to,
+  ) => '$base|$quote|${from.toIso8601String()}|${to.toIso8601String()}';
 
   DateTime _toDateOnly(DateTime date) {
     return DateTime(date.year, date.month, date.day);

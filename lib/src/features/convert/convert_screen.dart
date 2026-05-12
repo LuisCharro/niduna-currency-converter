@@ -43,7 +43,7 @@ class ConvertScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 74),
+              padding: const EdgeInsets.only(bottom: 72),
               child: ListenableBuilder(
                 listenable: monetization,
                 builder: (context, _) {
@@ -53,24 +53,25 @@ class ConvertScreen extends StatelessWidget {
                   return Column(
                     children: [
                       const AdBannerPlaceholder(),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          onPressed: () => _showRemoveAds(context),
-                          icon: Icon(Icons.ad_units_outlined, size: 16, color: AppTheme.trendDown),
-                          label: Text(
-                            'Remove ads',
-                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.trendDown),
+                      TextButton.icon(
+                        onPressed: () => _showRemoveAds(context),
+                        icon: Icon(
+                          Icons.block_rounded,
+                          size: 13,
+                          color: AppTheme.trendDown,
+                        ),
+                        label: Text(
+                          'Remove ads',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.trendDown,
                           ),
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: AppTheme.trendDown.withValues(alpha: .4)),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.pillRadius)),
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            backgroundColor: AppTheme.trendDown.withValues(alpha: .06),
-                          ),
-                          ),
+                        ),
+                        style: TextButton.styleFrom(
+                          minimumSize: const Size(0, 28),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                       ),
                     ],

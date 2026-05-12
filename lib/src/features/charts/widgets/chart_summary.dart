@@ -27,14 +27,22 @@ class ChartSummary extends StatelessWidget {
             value: high != null ? high!.toStringAsFixed(4) : '\u2014',
           ),
         ),
-        Container(width: 1, height: 24, color: AppTheme.border.withValues(alpha: .3)),
+        Container(
+          width: 1,
+          height: 24,
+          color: AppTheme.border.withValues(alpha: .3),
+        ),
         Expanded(
           child: _SummaryItem(
             label: 'Low',
             value: low != null ? low!.toStringAsFixed(4) : '\u2014',
           ),
         ),
-        Container(width: 1, height: 24, color: AppTheme.border.withValues(alpha: .3)),
+        Container(
+          width: 1,
+          height: 24,
+          color: AppTheme.border.withValues(alpha: .3),
+        ),
         Expanded(
           child: _SummaryItem(
             label: 'Change',

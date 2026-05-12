@@ -14,20 +14,20 @@ class QuoteIdentity extends StatelessWidget {
     return Row(
       children: <Widget>[
         Container(
-          width: 36,
-          height: 36,
+          width: 40,
+          height: 40,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
               color: AppTheme.trendUp.withValues(alpha: .18),
-              width: 1.5,
+              width: 1,
             ),
           ),
           child: Center(
             child: CurrencyFlagIcon(
               code: quote.code,
               symbol: quote.symbol,
-              radius: 13,
+              radius: 18,
             ),
           ),
         ),
@@ -38,9 +38,11 @@ class QuoteIdentity extends StatelessWidget {
           children: <Widget>[
             Text(
               quote.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
                 height: 1.2,
               ),
             ),

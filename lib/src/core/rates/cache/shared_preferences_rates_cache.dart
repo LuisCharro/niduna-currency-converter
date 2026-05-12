@@ -67,9 +67,7 @@ class SharedPreferencesRatesCache implements RatesCache {
     required String base,
     required String quote,
   }) async {
-    final raw = _preferences.getString(
-      _historicalKey(base, quote),
-    );
+    final raw = _preferences.getString(_historicalKey(base, quote));
     if (raw == null) return null;
 
     final decoded = _decodeObject(raw);
@@ -93,11 +91,11 @@ class SharedPreferencesRatesCache implements RatesCache {
     return HistoricalSnapshot(
       base: (decoded['base'] as String?) ?? base,
       quote: (decoded['quote'] as String?) ?? quote,
-      coveredFrom: DateTime.tryParse(
-            (decoded['coveredFrom'] as String?) ?? '',
-          ) ??
+      coveredFrom:
+          DateTime.tryParse((decoded['coveredFrom'] as String?) ?? '') ??
           data.keys.reduce((a, b) => a.isBefore(b) ? a : b),
-      coveredTo: DateTime.tryParse((decoded['coveredTo'] as String?) ?? '') ??
+      coveredTo:
+          DateTime.tryParse((decoded['coveredTo'] as String?) ?? '') ??
           data.keys.reduce((a, b) => a.isAfter(b) ? a : b),
       data: data,
       savedAt: savedAt,
@@ -107,7 +105,10 @@ class SharedPreferencesRatesCache implements RatesCache {
   @override
   Future<void> writeHistorical(HistoricalSnapshot snapshot) async {
     final key = _historicalKey(snapshot.base, snapshot.quote);
-    final existing = await readHistorical(base: snapshot.base, quote: snapshot.quote);
+    final existing = await readHistorical(
+      base: snapshot.base,
+      quote: snapshot.quote,
+    );
     final toSave = existing == null ? snapshot : existing.mergedWith(snapshot);
 
     _preferences.setString(

@@ -29,16 +29,17 @@ class CurrencyRateRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: isActive
-          ? AppTheme.trendUp.withValues(alpha: .05)
+          ? AppTheme.trendUp.withValues(alpha: .06)
           : Colors.transparent,
       child: InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(AppTheme.radius),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 2),
           child: Row(
             children: <Widget>[
-              QuoteIdentity(quote: quote),
-              const Spacer(),
+              Expanded(child: QuoteIdentity(quote: quote)),
+              const SizedBox(width: 10),
               QuoteValue(quote: quote, isActive: isActive),
               if (isActive) ...[
                 const SizedBox(width: 8),

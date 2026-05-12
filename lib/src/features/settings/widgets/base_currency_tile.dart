@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../shared/widgets/currency_flag_icon.dart';
 import '../settings_controller.dart';
 import 'base_currency_picker.dart';
 import '../../../shared/widgets/settings_tile.dart';
@@ -22,7 +21,11 @@ class BaseCurrencyTile extends StatelessWidget {
         children: <Widget>[
           Text(
             '${currency.symbol} ${currency.code}',
-            style: TextStyle(fontSize: 14, color: AppTheme.primary, fontWeight: FontWeight.w700),
+            style: TextStyle(
+              fontSize: 14,
+              color: AppTheme.primary,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           const SizedBox(width: 4),
           Icon(Icons.chevron_right, color: AppTheme.subtle, size: 20),
@@ -38,6 +41,7 @@ class BaseCurrencyTile extends StatelessWidget {
           ),
         );
         if (selected != null) {
+          if (!context.mounted) return;
           controller.pickBaseCurrency(context, selected);
         }
       },

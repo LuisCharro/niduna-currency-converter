@@ -37,8 +37,7 @@ class ConvertController extends ChangeNotifier {
 
   ConvertState state = ConvertState.loading();
   LatestRatesSnapshot? get snapshot => _snapshot;
-  bool get maxFavoritesReached =>
-      _favoritesStore?.isFull ?? false;
+  bool get maxFavoritesReached => _favoritesStore?.isFull ?? false;
   bool _disposed = false;
 
   void configure({
@@ -106,18 +105,23 @@ class ConvertController extends ChangeNotifier {
     final favQuotes = _favoriteQuotes();
     return ConvertState(
       status: status,
-      quotes: buildQuotes(
-        snapshot: snapshot,
-        amount: _amount,
-        decimalPlaces: _decimalPlaces,
-        quoteCodes: _selectedCodes,
-      ).map((q) {
-        final isFav = favQuotes.contains(q.code);
-        return CurrencyQuote(
-          q.symbol, q.code, q.name, q.amount, q.rateLine,
-          favorite: isFav,
-        );
-      }).toList(),
+      quotes:
+          buildQuotes(
+            snapshot: snapshot,
+            amount: _amount,
+            decimalPlaces: _decimalPlaces,
+            quoteCodes: _selectedCodes,
+          ).map((q) {
+            final isFav = favQuotes.contains(q.code);
+            return CurrencyQuote(
+              q.symbol,
+              q.code,
+              q.name,
+              q.amount,
+              q.rateLine,
+              favorite: isFav,
+            );
+          }).toList(),
       lastUpdatedLabel: _formatUpdated(snapshot),
       base: _base,
       amountText: _amountText,

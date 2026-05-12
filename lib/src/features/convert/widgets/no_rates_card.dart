@@ -11,8 +11,11 @@ class NoRatesCard extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
       child: Column(
         children: <Widget>[
-          Icon(Icons.currency_exchange_outlined,
-              size: 48, color: AppTheme.subtle),
+          Icon(
+            Icons.currency_exchange_outlined,
+            size: 48,
+            color: AppTheme.subtle,
+          ),
           const SizedBox(height: 16),
           Text(
             'Rates will appear here',

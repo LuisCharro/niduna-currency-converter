@@ -22,26 +22,30 @@ class AmountPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
       child: Stack(
         children: <Widget>[
           Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
-              side: BorderSide(color: AppTheme.border.withValues(alpha: .15)),
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(color: AppTheme.border.withValues(alpha: .12)),
             ),
             margin: EdgeInsets.zero,
             color: AppTheme.card,
-            shadowColor: Colors.black.withValues(alpha: .04),
+            shadowColor: AppTheme.primary.withValues(alpha: .04),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(18, 14, 18, 16),
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(Icons.schedule, size: 11, color: AppTheme.subtle.withValues(alpha: .6)),
+                      Icon(
+                        Icons.schedule,
+                        size: 11,
+                        color: AppTheme.subtle.withValues(alpha: .6),
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         lastUpdatedLabel,
@@ -52,7 +56,8 @@ class AmountPanel extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Tooltip(
-                        message: 'Rates update once per day from the European Central Bank',
+                        message:
+                            'Rates update once per day from the European Central Bank',
                         child: Icon(
                           Icons.info_outline,
                           size: 12,
@@ -61,7 +66,7 @@ class AmountPanel extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   AmountValueRow(
                     amountText: amountText,
                     base: base,

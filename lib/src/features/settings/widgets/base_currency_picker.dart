@@ -31,8 +31,10 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
           padding: const EdgeInsets.fromLTRB(20, 6, 12, 8),
           child: Row(
             children: <Widget>[
-              const Text('Select base currency',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+              const Text(
+                'Select base currency',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+              ),
               const Spacer(),
               IconButton(
                 icon: Icon(Icons.close, size: 18, color: AppTheme.muted),
@@ -63,16 +65,27 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             shrinkWrap: true,
             itemCount: currencies.length,
-            separatorBuilder: (_, __) => Divider(height: 1, color: AppTheme.border),
-            itemBuilder: (_, i) {
+            separatorBuilder: (context, index) =>
+                Divider(height: 1, color: AppTheme.border),
+            itemBuilder: (context, i) {
               final c = currencies[i];
               final selected = c.code == widget.currentBase;
               return ListTile(
-                onTap: selected ? null : () => Navigator.of(context).pop(c.code),
-                leading: CurrencyFlagIcon(code: c.code, symbol: c.symbol, radius: 16),
-                title: Text(c.code,
-                    style: TextStyle(fontWeight: FontWeight.w700,
-                        color: selected ? AppTheme.muted : AppTheme.text)),
+                onTap: selected
+                    ? null
+                    : () => Navigator.of(context).pop(c.code),
+                leading: CurrencyFlagIcon(
+                  code: c.code,
+                  symbol: c.symbol,
+                  radius: 16,
+                ),
+                title: Text(
+                  c.code,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: selected ? AppTheme.muted : AppTheme.text,
+                  ),
+                ),
                 subtitle: Text(c.name),
                 trailing: selected
                     ? Icon(Icons.check_circle, color: AppTheme.primary)

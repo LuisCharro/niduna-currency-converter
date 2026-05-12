@@ -21,11 +21,11 @@ class TemporaryUnlock {
   String get storageKey => 'temp_unlock_${canonicalKey(base, quote)}';
 
   Map<String, dynamic> toJson() => {
-        'base': base,
-        'quote': quote,
-        'grantedAt': grantedAt.toIso8601String(),
-        'durationMs': duration.inMilliseconds,
-      };
+    'base': base,
+    'quote': quote,
+    'grantedAt': grantedAt.toIso8601String(),
+    'durationMs': duration.inMilliseconds,
+  };
 
   factory TemporaryUnlock.fromJson(Map<String, dynamic> json) {
     return TemporaryUnlock(
