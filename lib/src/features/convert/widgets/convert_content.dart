@@ -120,8 +120,8 @@ class _RatesToolbar extends StatelessWidget {
           ),
           TextButton.icon(
             onPressed: onEdit,
-            icon: const Icon(Icons.format_list_bulleted_rounded, size: 16),
-            label: const Text('Edit'),
+            icon: const Icon(Icons.add_circle_outline, size: 16),
+            label: const Text('Add currencies'),
             style: TextButton.styleFrom(
               foregroundColor: AppTheme.primary,
               minimumSize: const Size(0, 34),
