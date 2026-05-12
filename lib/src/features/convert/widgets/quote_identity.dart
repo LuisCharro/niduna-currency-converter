@@ -13,13 +13,28 @@ class QuoteIdentity extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        CurrencyFlagIcon(
-          code: quote.code,
-          symbol: quote.symbol,
+        Container(
+          width: 36,
+          height: 36,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: AppTheme.trendUp.withValues(alpha: .18),
+              width: 1.5,
+            ),
+          ),
+          child: Center(
+            child: CurrencyFlagIcon(
+              code: quote.code,
+              symbol: quote.symbol,
+              radius: 13,
+            ),
+          ),
         ),
         const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
               quote.name,

@@ -28,7 +28,9 @@ class CurrencyRateRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.transparent,
+      color: isActive
+          ? AppTheme.trendUp.withValues(alpha: .05)
+          : Colors.transparent,
       child: InkWell(
         onTap: onTap,
         child: Padding(

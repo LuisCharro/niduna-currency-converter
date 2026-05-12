@@ -15,38 +15,25 @@ class QuoteValue extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: isActive
-                ? AppTheme.trendUp
-                : AppTheme.trendUp.withValues(alpha: .1),
-            borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                '${quote.symbol} ${quote.amount}',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: isActive ? Colors.white : AppTheme.trendUp,
-                  fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
-                ),
-              ),
-            ],
+        Text(
+          '${quote.symbol} ${quote.amount}',
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+            color: isActive ? AppTheme.trendUp : AppTheme.text,
+            fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
           ),
         ),
         if (quote.rateLine.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.only(top: 3),
+            padding: const EdgeInsets.only(top: 2),
             child: Text(
               quote.rateLine,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 10.5,
                 fontWeight: FontWeight.w500,
-                color: AppTheme.subtle.withValues(alpha: .6),
+                color: AppTheme.subtle.withValues(alpha: .55),
+                letterSpacing: 0.2,
               ),
             ),
           ),
