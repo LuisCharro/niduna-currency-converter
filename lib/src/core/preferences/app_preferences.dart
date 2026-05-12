@@ -11,6 +11,9 @@ class AppPreferences extends ChangeNotifier {
   static const String _refreshOnOpenKey = 'pref_refresh_on_open';
   static const String _devModeKey = 'pref_dev_mode';
   static const String _darkModeKey = 'pref_dark_mode';
+  static const String _selectedCodesKey = 'pref_selected_codes';
+
+  static const List<String> defaultSelectedCodes = ['CHF', 'EUR', 'GBP', 'JPY'];
 
   String get defaultBaseCurrency => _prefs.getString(_defaultBaseKey) ?? 'USD';
   int get decimalPlaces => _prefs.getInt(_decimalPlacesKey) ?? 2;
@@ -19,6 +22,17 @@ class AppPreferences extends ChangeNotifier {
   bool get isDarkMode => _prefs.getBool(_darkModeKey) ?? false;
 
   bool get isDecimalPlacesSupported => decimalPlaces >= 2 && decimalPlaces <= 6;
+
+  List<String> get selectedCodes {
+    final codes = _prefs.getStringList(_selectedCodesKey);
+    if (codes == null || codes.isEmpty) return defaultSelectedCodes;
+    return codes;
+  }
+
+  Future<void> setSelectedCodes(List<String> codes) async {
+    await _prefs.setStringList(_selectedCodesKey, codes);
+    notifyListeners();
+  }
 
   Future<void> setDefaultBaseCurrency(String code) async {
     await _prefs.setString(_defaultBaseKey, code);

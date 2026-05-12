@@ -89,7 +89,9 @@ class _AppState extends State<AppShell> {
     _controller = ConvertController(
       repository: repo,
       favoritesStore: _favoritesStore,
+      preferences: _preferences,
       defaultBase: _preferences!.defaultBaseCurrency,
+      selectedCodes: _preferences!.selectedCodes,
     );
     _controller!.load();
 

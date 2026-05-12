@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/preferences/app_preferences.dart';
 import '../../favorites/data/favorites_store.dart';
 import '../data/latest_rates_repository.dart';
 import '../domain/convert_quote_builder.dart';
@@ -15,12 +16,14 @@ class ConvertController extends ChangeNotifier {
   ConvertController({
     required ConvertRatesRepository repository,
     FavoritesStore? favoritesStore,
+    AppPreferences? preferences,
     String defaultBase = 'USD',
     double amount = 100,
     List<String>? selectedCodes,
     int decimalPlaces = 2,
   }) : _repository = repository,
-       _favoritesStore = favoritesStore {
+       _favoritesStore = favoritesStore,
+       _preferences = preferences {
     _decimalPlaces = decimalPlaces;
     configure(base: defaultBase, amount: amount, selectedCodes: selectedCodes);
     _favoritesStore?.addListener(_onFavoritesChanged);
@@ -28,6 +31,7 @@ class ConvertController extends ChangeNotifier {
 
   final ConvertRatesRepository _repository;
   final FavoritesStore? _favoritesStore;
+  final AppPreferences? _preferences;
   String _base = 'USD';
   double _amount = 100;
   String _amountText = '100.00';

@@ -11,6 +11,7 @@ extension ConvertControllerEditing on ConvertController {
       previousBase,
       ..._selectedCodes.where((selected) => selected != code),
     ];
+    _preferences?.setSelectedCodes(_selectedCodes);
     _snapshot = null;
     state = state.copyWith(
       status: ConvertStatus.loading,
@@ -48,6 +49,7 @@ extension ConvertControllerEditing on ConvertController {
     } else {
       _selectedCodes = <String>[..._selectedCodes, code];
     }
+    _preferences?.setSelectedCodes(_selectedCodes);
     state = _snapshot == null
         ? state.copyWith(selectedCodes: _selectedCodes)
         : _stateFromSnapshot(_snapshot!, state.status);
