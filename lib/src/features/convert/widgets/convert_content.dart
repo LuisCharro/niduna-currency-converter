@@ -60,6 +60,7 @@ class _ConvertContentState extends State<ConvertContent> {
           child: VisibleRatesList(
             quotes: widget.state.quotes,
             activeCode: _activeCode,
+            onRefresh: widget.onRefresh,
             onSelectCode: (code) => setState(() => _activeCode = code),
             onSetBase: (code) {
               setState(() => _activeCode = null);

@@ -14,6 +14,7 @@ class VisibleRatesList extends StatelessWidget {
     required this.onRemove,
     required this.onToggleFavorite,
     this.maxFavoritesReached = false,
+    this.onRefresh,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class VisibleRatesList extends StatelessWidget {
   final ValueChanged<String> onRemove;
   final ValueChanged<String> onToggleFavorite;
   final bool maxFavoritesReached;
+  final Future<void> Function()? onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,8 @@ class VisibleRatesList extends StatelessWidget {
         child: NoRatesCard(),
       );
     }
-    return ListView.separated(
+
+    final list = ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
       itemBuilder: (context, index) => CurrencyRateRow(
         quote: quotes[index],
@@ -50,5 +53,17 @@ class VisibleRatesList extends StatelessWidget {
       ),
       itemCount: quotes.length,
     );
+
+    if (onRefresh != null) {
+      return RefreshIndicator(
+        onRefresh: onRefresh!,
+        color: AppTheme.trendUp,
+        backgroundColor: AppTheme.card,
+        edgeOffset: 20,
+        child: list,
+      );
+    }
+
+    return list;
   }
 }
