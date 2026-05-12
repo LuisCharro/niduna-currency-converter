@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_theme.dart';
 import '../domain/convert_state.dart';
 import 'amount_card.dart';
 import 'convert_header.dart';
@@ -45,8 +46,6 @@ class _ConvertContentState extends State<ConvertContent> {
       children: <Widget>[
         ConvertHeader(
           isRefreshing: widget.state.isRefreshing,
-          onRefresh: () => widget.onRefresh(),
-          onAddCurrencies: () => _openPicker(context, selectBaseMode: false),
           onMore: widget.onMore,
         ),
         AmountCard(
@@ -55,6 +54,10 @@ class _ConvertContentState extends State<ConvertContent> {
           base: widget.state.base,
           onAmountChanged: widget.onAmountChanged,
           onBaseTap: () => _openPicker(context, selectBaseMode: true),
+        ),
+        _RatesToolbar(
+          count: widget.state.selectedCodes.length,
+          onEdit: () => _openPicker(context, selectBaseMode: false),
         ),
         Expanded(
           child: VisibleRatesList(
@@ -94,6 +97,45 @@ class _ConvertContentState extends State<ConvertContent> {
           widget.onSelectBase(code);
         },
         onToggleCode: widget.onToggleCode,
+      ),
+    );
+  }
+}
+
+class _RatesToolbar extends StatelessWidget {
+  const _RatesToolbar({required this.count, required this.onEdit});
+
+  final int count;
+  final VoidCallback onEdit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 2, 20, 4),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              '$count shown currencies',
+              style: AppTheme.caption.copyWith(color: AppTheme.muted),
+            ),
+          ),
+          TextButton.icon(
+            onPressed: onEdit,
+            icon: const Icon(Icons.format_list_bulleted_rounded, size: 16),
+            label: const Text('Edit list'),
+            style: TextButton.styleFrom(
+              foregroundColor: AppTheme.primary,
+              minimumSize: const Size(0, 36),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              textStyle: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
