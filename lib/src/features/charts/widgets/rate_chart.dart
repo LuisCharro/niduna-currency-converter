@@ -58,6 +58,18 @@ class _RateChartState extends State<RateChart> {
     return entries.map((e) => e.key).toList();
   }
 
+  void _handleTouchEnd() {
+    setState(() => _touchedIndex = null);
+  }
+
+  void _handleTouchSet(LineTouchResponse? response) {
+    final index = response?.lineBarSpots?.first.x.toInt();
+    final spots = _spots;
+    if (index != null && index >= 0 && index < spots.length) {
+      setState(() => _touchedIndex = index);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.data.isEmpty) {
@@ -79,37 +91,37 @@ class _RateChartState extends State<RateChart> {
             maxY: maxY,
             lineTouchData: LineTouchData(
               enabled: true,
+              touchTooltipData: LineTouchTooltipData(
+                getTooltipColor: (_) => Colors.transparent,
+                tooltipPadding: EdgeInsets.zero,
+                tooltipMargin: 0,
+                getTooltipItems: (_) => [],
+              ),
               touchCallback: (event, response) {
-                if (event is FlTapUpEvent || event is FlLongPressStart) {
-                  final index = response?.lineBarSpots?.first.x.toInt();
-                  if (index != null && index >= 0 && index < spots.length) {
-                    setState(() => _touchedIndex = index);
-                  }
-                } else if (event is FlPanUpdateEvent || event is FlLongPressMoveUpdate) {
-                  final index = response?.lineBarSpots?.first.x.toInt();
-                  if (index != null && index >= 0 && index < spots.length) {
-                    setState(() => _touchedIndex = index);
-                  }
-                } else if (event is FlTapCancelEvent || event is FlLongPressEnd) {
-                  setState(() => _touchedIndex = null);
+                if (event is FlPanUpdateEvent ||
+                    event is FlLongPressMoveUpdate) {
+                  _handleTouchSet(response);
+                } else if (event is FlPanEndEvent ||
+                    event is FlLongPressEnd ||
+                    event is FlTapCancelEvent) {
+                  _handleTouchEnd();
                 }
               },
               getTouchedSpotIndicator: (barData, spotIndexes) {
                 return spotIndexes.map((index) {
-                  final isSelected = _touchedIndex == index;
                   return TouchedSpotIndicatorData(
                     FlLine(
-                      color: lineColor.withValues(alpha: .3),
-                      strokeWidth: 1,
+                      color: lineColor.withValues(alpha: .35),
+                      strokeWidth: 1.2,
                     ),
                     FlDotData(
                       show: true,
                       getDotPainter: (spot, percent, barData, index) {
                         return FlDotCirclePainter(
-                          radius: isSelected ? 6 : 4,
-                          color: lineColor,
-                          strokeWidth: 2,
-                          strokeColor: AppTheme.card,
+                          radius: 5,
+                          color: AppTheme.card,
+                          strokeWidth: 2.5,
+                          strokeColor: lineColor,
                         );
                       },
                     ),
@@ -185,12 +197,13 @@ class _RateChartState extends State<RateChart> {
           Positioned.fill(
             child: IgnorePointer(
               child: Padding(
-                padding: const EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
                 child: Align(
-                  alignment: Alignment.topCenter,
-                  child: _DatePill(
+                  alignment: Alignment.topLeft,
+                  child: _TouchOverlay(
                     date: sortedDates[_touchedIndex!],
                     value: spots[_touchedIndex!].y,
+                    baseValue: spots.first.y,
                     lineColor: lineColor,
                   ),
                 ),
@@ -202,40 +215,80 @@ class _RateChartState extends State<RateChart> {
   }
 }
 
-class _DatePill extends StatelessWidget {
-  const _DatePill({
+class _TouchOverlay extends StatelessWidget {
+  const _TouchOverlay({
     required this.date,
     required this.value,
+    required this.baseValue,
     required this.lineColor,
   });
 
   final DateTime date;
   final double value;
+  final double baseValue;
   final Color lineColor;
 
   @override
   Widget build(BuildContext context) {
+    final changePercent = baseValue != 0
+        ? ((value - baseValue) / baseValue.abs()) * 100
+        : 0.0;
+    final isPositiveChange = changePercent >= 0;
+    final trendColor = isPositiveChange ? AppTheme.trendUp : AppTheme.trendDown;
+    final arrow = isPositiveChange ? '\u2191' : '\u2193';
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
       decoration: BoxDecoration(
         color: AppTheme.card,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.text.withValues(alpha: 0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: Colors.black.withValues(alpha: 0.10),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Text(
-        DateFormat('d MMM').format(date).toUpperCase(),
-        style: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w700,
-          color: lineColor,
-          letterSpacing: 0.5,
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            DateFormat('d MMM').format(date).toUpperCase(),
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: lineColor,
+              letterSpacing: 0.6,
+            ),
+          ),
+          const SizedBox(height: 3),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                value.toStringAsFixed(4),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: AppTheme.text,
+                  fontFamily: 'Fraunces',
+                  letterSpacing: -0.3,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '$arrow ${changePercent.abs().toStringAsFixed(2)}%',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: trendColor,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
