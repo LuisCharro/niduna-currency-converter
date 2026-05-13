@@ -163,7 +163,10 @@ Single font fallback chain: `["Fraunces", "Georgia", "serif"]`
 - Standard horizontal padding: **16px**
 - Section spacing: **24px** vertical between major groups
 - Row height: **52-56px** for tappable rate rows
-- Bottom padding: **100px** to clear floating navigation pill
+- Bottom chrome uses shared metrics instead of per-screen guesses:
+  - floating nav height: **64px**
+  - floating nav dock offset: **0px** above the safe-area bottom
+  - bottom dock gap above nav: **8px**
 - Max nesting depth: **3 levels** (Screen → List → Row → Content)
 
 Spacing follows an **8px base scale** with 4px half-steps for micro-adjustments.
@@ -223,8 +226,15 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 - Three tabs: Convert / Charts / Settings
 - Material Symbols Rounded icons
 - Active tab = **leaf green** icon+text; inactive = **sage muted**
-- Positioned at bottom, centered, with margin from edges
+- Positioned at bottom, centered, flush to the safe area with no extra dock offset
 - Shadow: green-tinted (`rgba(40,95,59,0.08)`)
+
+### Bottom Chrome System
+- All screens should clear the floating nav through shared constants, not local magic numbers
+- `BottomTabFrame` owns the bottom inset for all tab screens
+- Screens with ad banner + remove-ads CTA reuse the same `AdSupportShelf` component
+- The bottom frame computes clearance from nav height + safe area + shared gap, so tab screens do not carry their own bottom math
+- If the nav is moved, update these metrics together in code and in this document
 
 ### Settings Tiles
 - Leading icon or widget, title + subtitle, trailing value or switch

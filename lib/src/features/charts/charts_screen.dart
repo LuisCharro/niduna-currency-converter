@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
 import '../../core/theme/app_theme.dart';
-import '../convert/widgets/ad_banner_placeholder.dart';
+import '../../shared/widgets/bottom_tab_frame.dart';
+import '../convert/widgets/ad_support_shelf.dart';
 import '../settings/widgets/iap_purchase_player.dart';
 import 'presentation/charts_controller.dart';
 import 'widgets/chart_header.dart';
@@ -27,8 +28,6 @@ class ChartsScreen extends StatefulWidget {
 }
 
 class _ChartsScreenState extends State<ChartsScreen> {
-  static const double _bottomClearanceWithAds = 120;
-  static const double _bottomClearanceWithoutAds = 128;
   int _swapVersion = 0;
   String _lastPairKey = '';
 
@@ -64,127 +63,86 @@ class _ChartsScreenState extends State<ChartsScreen> {
   Widget build(BuildContext context) {
     return Material(
       color: AppTheme.bg,
-      child: SafeArea(
-        bottom: false,
-        child: ListenableBuilder(
-          listenable: widget.controller,
-          builder: (context, _) {
-            final state = widget.controller.state;
-            return ListenableBuilder(
-              listenable: widget.monetization,
-              builder: (context, _) {
-                return Column(
-                  children: <Widget>[
-                    ChartHeader(
+      child: ListenableBuilder(
+        listenable: widget.controller,
+        builder: (context, _) {
+          final state = widget.controller.state;
+          return ListenableBuilder(
+            listenable: widget.monetization,
+            builder: (context, _) => BottomTabFrame(
+              body: Column(
+                children: <Widget>[
+                  ChartHeader(
+                    base: state.base,
+                    quote: state.quote,
+                    rate: state.currentRate,
+                    changePercent: state.changePercent,
+                    onSwap: _handleSwap,
+                    lastUpdated: state.lastUpdated,
+                  ),
+                  Expanded(child: _buildChartArea(state)),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 2, 20, 0),
+                    child: RangeSelector(
+                      selected: state.range,
+                      onChanged: widget.controller.setRange,
+                      canUseLockedRanges:
+                          widget.monetization.canUseIntradayRanges,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 4),
+                    child: PairSelector(
                       base: state.base,
                       quote: state.quote,
-                      rate: state.currentRate,
-                      changePercent: state.changePercent,
+                      onPairChanged: widget.controller.setPair,
                       onSwap: _handleSwap,
-                      lastUpdated: state.lastUpdated,
+                      controller: widget.monetization,
                     ),
-                    Expanded(child: _buildChartArea(state)),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 2, 20, 0),
-                      child: RangeSelector(
-                        selected: state.range,
-                        onChanged: widget.controller.setRange,
-                        canUseLockedRanges:
-                            widget.monetization.canUseIntradayRanges,
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 2),
+                    child: ChartSummary(
+                      high: state.high,
+                      low: state.low,
+                      changePercent: state.changePercent,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 4),
-                      child: PairSelector(
-                        base: state.base,
-                        quote: state.quote,
-                        onPairChanged: widget.controller.setPair,
-                        onSwap: _handleSwap,
-                        controller: widget.monetization,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 4, 20, 2),
-                      child: ChartSummary(
-                        high: state.high,
-                        low: state.low,
-                        changePercent: state.changePercent,
-                      ),
-                    ),
-                    if (state.lastUpdated != null)
-                      Padding(
-                        padding: EdgeInsets.only(
-                          bottom: widget.monetization.adsEnabled
-                              ? 16
-                              : _bottomClearanceWithoutAds,
-                        ),
-                        child: Text(
-                          'Tap currencies above to explore other pairs',
-                          textAlign: TextAlign.center,
-                          style: AppTheme.caption.copyWith(
-                            color: AppTheme.subtle,
-                          ),
-                        ),
-                      ),
-                    if (widget.monetization.adsEnabled) ...[
-                      const Divider(height: 1),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: _bottomClearanceWithAds,
-                        ),
-                        child: Column(
-                          children: [
-                            const AdBannerPlaceholder(),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: OutlinedButton.icon(
-                                  onPressed: () => _showRemoveAds(context),
-                                  icon: Icon(
-                                    Icons.ad_units_outlined,
-                                    size: 16,
-                                    color: AppTheme.trendDown,
-                                  ),
-                                  label: Text(
-                                    'Remove ads',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppTheme.trendDown,
-                                    ),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(
-                                      color: AppTheme.trendDown.withValues(
-                                        alpha: .4,
-                                      ),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        AppTheme.pillRadius,
-                                      ),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 8,
-                                    ),
-                                    backgroundColor: AppTheme.trendDown
-                                        .withValues(alpha: .06),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ],
-                );
-              },
-            );
-          },
-        ),
+                  ),
+                ],
+              ),
+              footer: _buildFooter(context, state),
+            ),
+          );
+        },
       ),
+    );
+  }
+
+  Widget? _buildFooter(BuildContext context, ChartState state) {
+    if (state.lastUpdated == null && !widget.monetization.adsEnabled) {
+      return null;
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        if (state.lastUpdated != null)
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: widget.monetization.adsEnabled ? 16 : 0,
+            ),
+            child: Text(
+              'Tap currencies above to explore other pairs',
+              textAlign: TextAlign.center,
+              style: AppTheme.caption.copyWith(color: AppTheme.subtle),
+            ),
+          ),
+        if (widget.monetization.adsEnabled)
+          AdSupportShelf(
+            showDivider: true,
+            onRemoveAds: () => _showRemoveAds(context),
+          ),
+      ],
     );
   }
 

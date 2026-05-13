@@ -19,9 +19,12 @@ import 'package:currency_converter/src/features/charts/presentation/charts_contr
 import 'package:currency_converter/src/features/favorites/data/favorites_store.dart';
 import 'package:currency_converter/src/features/favorites/favorites_screen.dart';
 import 'package:currency_converter/src/features/convert/convert_screen.dart';
+import 'package:currency_converter/src/features/convert/widgets/ad_support_shelf.dart';
 import 'package:currency_converter/src/features/charts/widgets/rate_chart.dart';
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
+import 'package:currency_converter/src/shared/widgets/bottom_tab_frame.dart';
 import 'package:currency_converter/src/shared/widgets/floating_pill_nav.dart';
+import 'package:currency_converter/src/shared/widgets/remove_ads_button.dart';
 
 void main() {
   final repository = _FakeRatesRepository(
@@ -93,14 +96,17 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Amount'), findsOneWidget);
-    expect(find.text('4 shown currencies'), findsOneWidget);
+    expect(find.text('3 shown currencies'), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
     expect(find.text('USD'), findsOneWidget);
     expect(find.text('EUR'), findsOneWidget);
-    expect(find.text('CHF'), findsWidgets);
+    expect(find.text('CHF'), findsNothing);
     expect(find.text('NZD'), findsNothing);
     expect(find.text('BTC'), findsNothing);
     expect(find.text('ETH'), findsNothing);
+    expect(find.byType(BottomTabFrame), findsOneWidget);
+    expect(find.byType(AdSupportShelf), findsOneWidget);
+    expect(find.byType(RemoveAdsButton), findsOneWidget);
   });
 
   testWidgets('Convert currency picker opens on a compact viewport', (
@@ -126,9 +132,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Visible currencies'), findsOneWidget);
-    expect(find.text('4 shown · USD base'), findsOneWidget);
+    expect(find.text('3 shown · USD base'), findsOneWidget);
     expect(find.text('USD · base currency'), findsOneWidget);
-    expect(find.text('CHF · shown now'), findsOneWidget);
+    expect(find.text('EUR · shown now'), findsOneWidget);
     expect(find.text('Currency, country, or code'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -147,22 +153,22 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final chfFinder = find.text('Swiss Franc');
-    expect(chfFinder, findsWidgets);
+    final euroFinder = find.text('Euro');
+    expect(euroFinder, findsWidgets);
 
-    await tester.tap(chfFinder.first);
+    await tester.tap(euroFinder.first);
     await tester.pumpAndSettle();
 
-    expect(find.text('Swiss Franc'), findsWidgets);
+    expect(find.text('Euro'), findsWidgets);
     expect(find.text('Set as base'), findsOneWidget);
-    expect(find.text('1 USD = 0.88 CHF'), findsOneWidget);
+    expect(find.text('1 USD = 0.92 EUR'), findsOneWidget);
     expect(find.byIcon(Icons.swap_horiz_rounded), findsNothing);
     expect(controller.state.base, 'USD');
 
-    await tester.tap(chfFinder.first);
+    await tester.tap(euroFinder.first);
     await tester.pumpAndSettle();
 
-    expect(controller.state.base, 'CHF');
+    expect(controller.state.base, 'EUR');
     expect(find.text('Set as base'), findsNothing);
   });
 
@@ -213,6 +219,32 @@ void main() {
     expect(find.text('Premium'), findsOneWidget);
     expect(find.text('Default base currency'), findsWidgets);
     expect(find.text('Dark mode'), findsWidgets);
+  });
+
+  testWidgets('Charts screen reuses shared remove ads button', (
+    WidgetTester tester,
+  ) async {
+    final chartsController = ChartsController(
+      ratesService: RatesService(
+        client: _FakeRatesClient(),
+        cache: _FakeRatesCache(),
+      ),
+    );
+    addTearDown(chartsController.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ChartsScreen(
+          controller: chartsController,
+          monetization: monetization,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BottomTabFrame), findsOneWidget);
+    expect(find.byType(AdSupportShelf), findsOneWidget);
+    expect(find.byType(RemoveAdsButton), findsOneWidget);
   });
 
   testWidgets('Rate chart uses a stronger touched indicator', (
@@ -276,13 +308,8 @@ void main() {
     final helperText = find.text('Tap currencies above to explore other pairs');
     expect(helperText, findsOneWidget);
 
-    final helperPadding = tester.widget<Padding>(
-      find.ancestor(of: helperText, matching: find.byType(Padding)).first,
-    );
-    expect(
-      helperPadding.padding.resolve(TextDirection.ltr).bottom,
-      greaterThanOrEqualTo(120),
-    );
+    expect(find.byType(BottomTabFrame), findsOneWidget);
+    expect(find.byType(AdSupportShelf), findsNothing);
   });
 }
 

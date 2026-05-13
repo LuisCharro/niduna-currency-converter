@@ -21,6 +21,9 @@ class AppTheme {
   static const double cardRadius = 16;
   static const double pillRadius = 20;
   static const double rowMinHeight = 64;
+  static const double floatingNavHeight = 64;
+  static const double floatingNavBottomOffset = 0;
+  static const double bottomDockGap = 8;
   static const List<BoxShadow> subtleShadow = <BoxShadow>[
     BoxShadow(color: Color(0x0F285F3B), blurRadius: 8, offset: Offset(0, 2)),
   ];

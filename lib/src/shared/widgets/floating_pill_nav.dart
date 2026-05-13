@@ -15,13 +15,14 @@ class FloatingPillNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bottom = 20 + MediaQuery.paddingOf(context).bottom;
+    final bottom =
+        AppTheme.floatingNavBottomOffset + MediaQuery.paddingOf(context).bottom;
     return Padding(
       padding: EdgeInsets.fromLTRB(20, 0, 20, bottom),
       child: Center(
         child: Container(
           constraints: const BoxConstraints(maxWidth: 330),
-          height: 64,
+          height: AppTheme.floatingNavHeight,
           decoration: BoxDecoration(
             color: AppTheme.container,
             borderRadius: BorderRadius.circular(32),
@@ -49,7 +50,7 @@ class FloatingPillNav extends StatelessWidget {
                 onTap: () => onTap(2),
               ),
             ],
-            ),
+          ),
         ),
       ),
     );
