@@ -11,31 +11,52 @@ class RemoveAdsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
-      child: SizedBox(
-        width: double.infinity,
-        child: OutlinedButton.icon(
-          onPressed: onPressed,
-          icon: Icon(
-            Icons.ad_units_outlined,
-            size: 16,
-            color: AppTheme.trendDown,
-          ),
-          label: Text(
-            'Remove ads',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.trendDown,
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 44),
+        padding: const EdgeInsets.fromLTRB(12, 6, 6, 6),
+        decoration: BoxDecoration(
+          color: AppTheme.container.withValues(alpha: .58),
+          borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+          border: Border.all(color: AppTheme.border.withValues(alpha: .18)),
+        ),
+        child: Row(
+          children: <Widget>[
+            Icon(
+              Icons.favorite_border_rounded,
+              size: 16,
+              color: AppTheme.primary.withValues(alpha: .72),
             ),
-          ),
-          style: OutlinedButton.styleFrom(
-            side: BorderSide(color: AppTheme.trendDown.withValues(alpha: .4)),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Ads support Niduna',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTheme.caption.copyWith(color: AppTheme.muted),
+              ),
             ),
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            backgroundColor: AppTheme.trendDown.withValues(alpha: .06),
-          ),
+            TextButton(
+              onPressed: onPressed,
+              style: TextButton.styleFrom(
+                minimumSize: const Size(0, 36),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                foregroundColor: AppTheme.primary,
+                backgroundColor: AppTheme.card.withValues(alpha: .82),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+                  side: BorderSide(
+                    color: AppTheme.primary.withValues(alpha: .16),
+                  ),
+                ),
+                textStyle: const TextStyle(
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              child: const Text('Remove ads'),
+            ),
+          ],
         ),
       ),
     );

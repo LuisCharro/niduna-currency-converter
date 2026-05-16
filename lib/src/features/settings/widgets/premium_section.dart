@@ -35,22 +35,29 @@ class PremiumSection extends StatelessWidget {
         const SizedBox(height: 10),
         _SubscriptionCard(),
         const SizedBox(height: 10),
-        GestureDetector(
-          onTap: () => controller.restorePurchases(context),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-              border: Border.all(color: AppTheme.border.withValues(alpha: .24)),
-            ),
-            child: Center(
-              child: Text(
-                'Restore Purchases',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.primary,
+        Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+          child: InkWell(
+            onTap: () => controller.restorePurchases(context),
+            borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+                border: Border.all(
+                  color: AppTheme.border.withValues(alpha: .24),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'Restore Purchases',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.primary,
+                  ),
                 ),
               ),
             ),
@@ -121,23 +128,24 @@ class _PremiumCard extends StatelessWidget {
           if (owned)
             Icon(Icons.check_circle, size: 20, color: AppTheme.trendUp)
           else ...[
-            GestureDetector(
-              onTap: onBuy,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: AppTheme.primary,
-                  borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-                ),
-                child: Text(
-                  price,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+            Material(
+              color: AppTheme.primary,
+              borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+              child: InkWell(
+                onTap: onBuy,
+                borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  child: Text(
+                    price,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
