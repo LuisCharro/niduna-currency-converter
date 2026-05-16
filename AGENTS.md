@@ -59,6 +59,9 @@ Then read only the relevant shared skill and repo-local guide for the task.
 - `store-release-check/SKILL.md` — store compliance and release
 - `icon-generation/SKILL.md` — currency-flag icon generation with mmx CLI; general mmx reference is the shared skill `mobile/minimax-cli.SKILL.md`
 
+### Knowledge base (`.agent/`)
+- `ICON_GENERATION_KNOWLEDGE.md` — live findings from icon gen work: audit scores, winning prompts, per-currency tips, vision tool comparison, quota tracking
+
 ### Shared (`.agent-local/skills/`)
 
 **_shared:**
