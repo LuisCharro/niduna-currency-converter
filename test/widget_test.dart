@@ -338,6 +338,7 @@ void main() {
     final data = chart.data;
     expect(data.lineTouchData.handleBuiltInTouches, isFalse);
     expect(data.lineTouchData.touchSpotThreshold, greaterThanOrEqualTo(40));
+    expect(data.lineBarsData.first.dotData.show, isTrue);
 
     final indicators = data.lineTouchData.getTouchedSpotIndicator(
       data.lineBarsData.first,
@@ -352,7 +353,7 @@ void main() {
     );
   });
 
-  testWidgets('Charts screen keeps helper text above nav when ads are hidden', (
+  testWidgets('Charts screen removes helper copy when ads are hidden', (
     WidgetTester tester,
   ) async {
     await monetization.setRemoveAdsLifetime(true);
@@ -374,8 +375,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final helperText = find.text('Tap currencies above to explore other pairs');
-    expect(helperText, findsOneWidget);
+    expect(
+      find.text('Tap currencies above to explore other pairs'),
+      findsNothing,
+    );
 
     expect(find.byType(BottomTabFrame), findsOneWidget);
     expect(find.byType(AdSupportShelf), findsNothing);

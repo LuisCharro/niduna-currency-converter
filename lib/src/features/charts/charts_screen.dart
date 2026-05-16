@@ -110,7 +110,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                   ),
                 ],
               ),
-              footer: _buildFooter(context, state),
+              footer: _buildFooter(context),
             ),
           );
         },
@@ -118,31 +118,14 @@ class _ChartsScreenState extends State<ChartsScreen> {
     );
   }
 
-  Widget? _buildFooter(BuildContext context, ChartState state) {
-    if (state.lastUpdated == null && !widget.monetization.adsEnabled) {
+  Widget? _buildFooter(BuildContext context) {
+    if (!widget.monetization.adsEnabled) {
       return null;
     }
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        if (state.lastUpdated != null)
-          Padding(
-            padding: EdgeInsets.only(
-              bottom: widget.monetization.adsEnabled ? 16 : 0,
-            ),
-            child: Text(
-              'Tap currencies above to explore other pairs',
-              textAlign: TextAlign.center,
-              style: AppTheme.caption.copyWith(color: AppTheme.subtle),
-            ),
-          ),
-        if (widget.monetization.adsEnabled)
-          AdSupportShelf(
-            showDivider: true,
-            onRemoveAds: () => _showRemoveAds(context),
-          ),
-      ],
+    return AdSupportShelf(
+      showDivider: true,
+      onRemoveAds: () => _showRemoveAds(context),
     );
   }
 

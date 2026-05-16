@@ -123,6 +123,12 @@ class _CurrencyPill extends StatelessWidget {
                 letterSpacing: 0.5,
               ),
             ),
+            const SizedBox(width: 3),
+            Icon(
+              Icons.keyboard_arrow_down_rounded,
+              size: 18,
+              color: AppTheme.subtle,
+            ),
           ],
         ),
       ),

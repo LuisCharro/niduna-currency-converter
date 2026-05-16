@@ -25,7 +25,9 @@ class BottomTabFrame extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: footerInset),
               child: footer!,
-            ),
+            )
+          else
+            SizedBox(height: footerInset),
         ],
       ),
     );

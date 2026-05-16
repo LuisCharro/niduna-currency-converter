@@ -46,6 +46,8 @@ class ChartLinePlot extends StatelessWidget {
         ),
         LineChart(
           LineChartData(
+            minX: spots.first.x - .25,
+            maxX: spots.last.x + .25,
             minY: minY,
             maxY: maxY,
             lineTouchData: LineTouchData(
@@ -83,7 +85,16 @@ class ChartLinePlot extends StatelessWidget {
                 color: lineColor,
                 barWidth: 2.8,
                 isStrokeCapRound: true,
-                dotData: const FlDotData(show: false),
+                dotData: FlDotData(
+                  checkToShowDot: (spot, barData) => spot.x == spots.last.x,
+                  getDotPainter: (spot, percent, barData, index) {
+                    return FlDotCirclePainter(
+                      radius: 2.8,
+                      color: lineColor.withValues(alpha: .72),
+                      strokeWidth: 0,
+                    );
+                  },
+                ),
                 showingIndicators: touchedIndex == null
                     ? const <int>[]
                     : <int>[touchedIndex!],
@@ -171,7 +182,13 @@ class ChartLinePlot extends StatelessWidget {
     if (count == 0) return const <int>{};
     if (count <= 8) return List<int>.generate(count, (index) => index).toSet();
 
-    final section = (count - 1) / 4;
-    return <int>{section.round(), (section * 2).round(), (section * 3).round()};
+    final section = (count - 1) / 6;
+    return <int>{
+      section.round(),
+      (section * 2).round(),
+      (section * 3).round(),
+      (section * 4).round(),
+      (section * 5).round(),
+    };
   }
 }
