@@ -74,6 +74,7 @@ class _AppState extends State<AppShell> {
     final prefs = await SharedPreferences.getInstance();
 
     _preferences = AppPreferences(prefs);
+    _preferences!.addListener(_onPreferencesChanged);
 
     if (widget.favoritesStore == null) {
       _localStore = FavoritesStore(prefs);
@@ -91,6 +92,7 @@ class _AppState extends State<AppShell> {
       favoritesStore: _favoritesStore,
       preferences: _preferences,
       defaultBase: _preferences!.defaultBaseCurrency,
+      decimalPlaces: _preferences!.decimalPlaces,
       selectedCodes: _preferences!.selectedCodes,
     );
     _controller!.load();
@@ -115,10 +117,18 @@ class _AppState extends State<AppShell> {
 
   @override
   void dispose() {
+    _preferences?.removeListener(_onPreferencesChanged);
     _localStore?.dispose();
     _controller?.dispose();
     _chartsController?.dispose();
     super.dispose();
+  }
+
+  void _onPreferencesChanged() {
+    final preferences = _preferences;
+    if (preferences == null) return;
+    _controller?.setDecimalPlaces(preferences.decimalPlaces);
+    if (mounted) setState(() {});
   }
 
   @override

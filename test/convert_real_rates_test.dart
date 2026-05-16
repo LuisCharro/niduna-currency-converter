@@ -117,6 +117,23 @@ void main() {
     expect(controller.state.quotes.single.amount, '184.00');
   });
 
+  test('controller reformats quotes when decimal places change', () async {
+    final controller = ConvertController(
+      repository: _FakeRatesRepository(
+        fresh: _snapshot(<String, double>{'EUR': .923456}),
+      ),
+      selectedCodes: <String>['EUR'],
+    );
+
+    await controller.load();
+    expect(controller.state.quotes.single.amount, '92.35');
+
+    controller.setDecimalPlaces(4);
+
+    expect(controller.state.quotes.single.amount, '92.3456');
+    expect(controller.state.quotes.single.rateLine, '1 USD = 0.9235 EUR');
+  });
+
   test('controller treats cleared amount as zero', () async {
     final controller = ConvertController(
       repository: _FakeRatesRepository(
