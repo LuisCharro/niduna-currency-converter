@@ -220,7 +220,12 @@ For UI work, hot restart or rebuild the running emulator app after successful ch
 # iOS simulator launch (non-blocking, preferred for agent workflows)
 IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/run_ios_simulator_app.sh
 
-# Stop running app
+# Build + reinstall + launch updated app (preferred after UI/code changes)
+IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} \
+  BUNDLE_ID=com.niduna.currencyConverter \
+  ./.devtools/sim_reinstall_build.sh
+
+# Stop running app (fallback)
 xcrun simctl terminate <simulator_id> com.niduna.currencyConverter
 
 # Smoke test
@@ -260,6 +265,8 @@ SEED_DAYS=90 ./.devtools/seed_ios_simulator_sample_data.sh
 
 **Important:** Always use `run_ios_simulator_app.sh` in agent workflows. Raw `flutter run` blocks the terminal until the app terminates. The script uses `setsid` to launch the Flutter process in the background, allowing the agent to continue executing other commands.
 
+For build/reinstall workflows after code changes, prefer `sim_reinstall_build.sh` instead of long `xcrun simctl terminate/uninstall/install/launch` chains.
+
 ## Devtools Scripts Inventory
 
 ### Simulator Interaction
@@ -272,6 +279,7 @@ SEED_DAYS=90 ./.devtools/seed_ios_simulator_sample_data.sh
 | `sim_screenshot.sh` | Manual screenshot | `IOS_SIMULATOR_ID` |
 | `sim_tap.sh` | Tap coordinates | `IOS_SIMULATOR_ID` |
 | `sim_wait_ready.sh` | Poll app ready state | `IOS_SIMULATOR_ID` |
+| `sim_reinstall_build.sh` | Build + reinstall + launch updated app | `IOS_SIMULATOR_ID`, `BUNDLE_ID`, `IOS_APP_PATH`, `BUILD_FIRST` |
 | `sim_uninstall.sh` | Uninstall from simulator | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `sim_fresh_install.sh` | Uninstall + fresh run | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `capture_tabs.sh` | Auto-capture all tabs | `IOS_SIMULATOR_ID` |

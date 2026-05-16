@@ -113,6 +113,25 @@ Seeds data in-process and captures screenshots on Android emulator.
 
 Fast sanity check after code changes.
 
+## iOS build + reinstall + launch
+
+```bash
+./.devtools/sim_reinstall_build.sh
+```
+
+What it does:
+
+- builds the current iOS simulator app bundle
+- terminates/uninstalls the old app from the target simulator
+- installs the new bundle and launches it
+
+Useful environment variables:
+
+- `IOS_SIMULATOR_ID`
+- `IOS_BUNDLE_ID` or `BUNDLE_ID`
+- `IOS_APP_PATH` (default: `build/ios/iphonesimulator/Runner.app`)
+- `BUILD_FIRST` (`1` default, set `0` to skip build)
+
 Important:
 
 - run only one iOS `flutter drive` smoke or screenshot script at a time
@@ -121,8 +140,8 @@ Important:
 - after a broken `flutter drive` run, restore normal state with:
 
 ```bash
-xcrun simctl terminate <ios_simulator_id> {{BUNDLE_ID}}
-flutter run -d <ios_simulator_id>
+IOS_SIMULATOR_ID=<ios_simulator_id> BUNDLE_ID={{BUNDLE_ID}} \
+  ./.devtools/sim_reinstall_build.sh
 ```
 
 ## Environment variables
