@@ -1,394 +1,525 @@
 #!/usr/bin/env bash
 #
-# generate_currency_icons.sh — Regenerate all currency flag icons via MiniMax image-01
+# generate_currency_icons.sh — Generate flat circular currency badges via MiniMax or OpenAI
 #
 # Usage:
-#   ./generate_currency_icons.sh              # Full pipeline (anchor → test → batch → deploy)
-#   ./generate_currency_icons.sh --anchor     # Step 1 only: generate anchor (9 quota)
-#   ./generate_currency_icons.sh --test-ref   # Step 2 only: test subject-reference (3 quota)
-#   ./generate_currency_icons.sh --batch      # Step 3 only: generate remaining (~32 quota)
-#   ./generate_currency_icons.sh --quality    # Step 4 only: quality gate + report
-#   ./generate_currency_icons.sh --deploy     # Step 5 only: resize + copy to assets
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --quota
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --anchor
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --test-ref
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --batch
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --one CODE
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --quality
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --deploy
 #
-# Quota budget: ~46 of 50/day (Plus plan)
-#   - Anchor:       9 quota  (--n 9 for USD)
-#   - Subject-ref:  3 quota  (EUR + CHF test)
-#   - Batch gen:   ~32 quota (remaining 31 currencies)
-#   - Regens:       ~6 quota (buffer for failures)
-#
-# Output:
-#   .tmp/icon-v3/anchor/     — anchor generation
-#   .tmp/icon-v3/test-ref/   — subject-ref test
-#   .tmp/icon-v3/singles/    — individual currency icons
-#   .tmp/icon-v3/best/       — curated best picks
-#   assets/icons/currencies/ — final deployed icons (256x256)
+# Design decisions:
+# - Use the word "badge", not "icon"
+# - Never use --prompt-optimizer
+# - Generate one image at a time for sharper single-shot results
+# - MiniMax: use subject-ref only for currencies that allow it in JSON
+# - OpenAI: text-to-image only for now; no subject-ref/reference image pipeline
 #
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PROMPTS_FILE="$SCRIPT_DIR/currency_icon_prompts.json"
-OUT_DIR="$PROJECT_ROOT/.tmp/icon-v3"
-FINAL_DIR="$PROJECT_ROOT/assets/icons/currencies"
+
+PROVIDER="${IMAGE_PROVIDER:-minimax}"
+COMMAND=""
+COMMAND_ARG=""
+
+OPENAI_IMAGE_MODEL="${OPENAI_IMAGE_MODEL:-gpt-image-1}"
+OPENAI_IMAGE_QUALITY="${OPENAI_IMAGE_QUALITY:-medium}"
+OPENAI_IMAGE_SIZE="${OPENAI_IMAGE_SIZE:-1024x1024}"
+
+MINIMAX_IMAGE_MODEL="${MINIMAX_IMAGE_MODEL:-image-01}"
+
+parse_args() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --provider)
+        PROVIDER="${2:-}"
+        [[ -n "$PROVIDER" ]] || {
+          log "ERROR: --provider requires minimax or openai"
+          exit 1
+        }
+        shift 2
+        ;;
+      --quota|--anchor|--test-ref|--batch|--quality|--deploy)
+        COMMAND="$1"
+        shift
+        ;;
+      --one)
+        COMMAND="$1"
+        COMMAND_ARG="${2:-}"
+        shift 2
+        ;;
+      *)
+        log "ERROR: unknown argument: $1"
+        usage
+        exit 1
+        ;;
+    esac
+  done
+
+  case "$PROVIDER" in
+    minimax|openai) ;;
+    *)
+      log "ERROR: unsupported provider: $PROVIDER"
+      log "Supported providers: minimax, openai"
+      exit 1
+      ;;
+  esac
+}
+
+OUT_DIR_BASE="$PROJECT_ROOT/.tmp/icon-v4"
+OUT_DIR=""
 ANCHOR_DIR="$OUT_DIR/anchor"
 TEST_REF_DIR="$OUT_DIR/test-ref"
 SINGLES_DIR="$OUT_DIR/singles"
 BEST_DIR="$OUT_DIR/best"
-QUALITY_LOG="$OUT_DIR/quality-report.txt"
+LOG_DIR="$OUT_DIR/logs"
+QUALITY_REPORT="$OUT_DIR/quality-review.md"
 
-TARGET_SIZE=256
+FINAL_DIR="$PROJECT_ROOT/assets/icons/currencies"
+
 GENERATE_SIZE=1024
+TARGET_SIZE=256
+ANCHOR_CODE="USD"
 
-# Style lock prefix — prepended to EVERY prompt for consistency
-STYLE_LOCK="Geometric flat circular icon. NO drop shadow NO long shadow NO glow NO bevel NO emboss NO gloss NO gradient NO 3D. Flat vector design style like modern fintech app icon. Crisp clean pixel-perfect edges. Vivid solid colors only. Circle background filled with stylized simplified flag pattern. Center overlay: bold thick white currency symbol with subtle dark semi-transparent circle behind it for contrast."
-
-mkdir -p "$ANCHOR_DIR" "$TEST_REF_DIR" "$SINGLES_DIR" "$BEST_DIR" "$OUT_DIR/logs"
-
-log() { echo "[$(date '+%H:%M:%S')] $*"; }
-log() { printf '[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
-
-check_prereqs() {
-  log "Checking prerequisites..."
-  if ! command -v mmx &>/dev/null; then
-    log "ERROR: mmx-cli not found. Run: npm install -g mmx-cli"
-    exit 1
-  fi
-  if ! command -v magick &>/dev/null; then
-    log "ERROR: ImageMagick not found. Run: brew install imagemagick"
-    exit 1
-  fi
-  if ! command -v sips &>/dev/null; then
-    log "ERROR: sips not found (macOS only)"
-    exit 1
-  fi
-  if [ ! -f "$PROMPTS_FILE" ]; then
-    log "ERROR: Prompts file not found: $PROMPTS_FILE"
-    exit 1
-  fi
-  log "mmx $(mmx --version 2>&1 | head -1)"
+log() {
+  printf '[%s] %s\n' "$(date '+%H:%M:%S')" "$*"
 }
 
-check_quota() {
-  log "Checking quota..."
-  local remaining
-  remaining=$(mmx quota show --quiet --non-interactive 2>/dev/null | \
-    python3 -c "
-import sys,json
-d=json.load(sys.stdin)
-for m in d.get('model_remains',[]):
-    if m['model_name']=='image-01':
-        daily=m['current_interval_total_count']-m['current_interval_usage_count']
-        print(daily)
-        sys.exit()
-print('0')
-" 2>/dev/null || echo "?")
-  log "image-01 daily remaining: ${remaining}"
-  echo "$remaining"
+usage() {
+  cat <<'USAGE'
+Usage:
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] --quota
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] --anchor
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] --test-ref
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] --batch
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] --one CODE
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] --quality
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] --deploy
+
+Environment:
+  IMAGE_PROVIDER=minimax|openai        Default provider if --provider is omitted
+  OPENAI_API_KEY=...                  Required for --provider openai generation
+  OPENAI_IMAGE_MODEL=gpt-image-1      OpenAI model override
+  OPENAI_IMAGE_QUALITY=low|medium|high
+  OPENAI_IMAGE_SIZE=1024x1024
+USAGE
+}
+
+require_cmd() {
+  command -v "$1" >/dev/null 2>&1 || {
+    log "ERROR: required command not found: $1"
+    exit 1
+  }
+}
+
+lowercase() {
+  printf '%s' "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+check_prereqs() {
+  local mode="${1:-generation}"
+  require_cmd python3
+  [[ -f "$PROMPTS_FILE" ]] || {
+    log "ERROR: prompts file not found: $PROMPTS_FILE"
+    exit 1
+  }
+  case "$PROVIDER" in
+    minimax)
+      if [[ "$mode" != "deploy" ]]; then
+        require_cmd mmx
+      fi
+      ;;
+    openai)
+      if [[ "$mode" != "deploy" ]]; then
+        [[ -n "${OPENAI_API_KEY:-}" ]] || {
+          log "ERROR: OPENAI_API_KEY is not set"
+          exit 1
+        }
+        python3 - <<'PY' >/dev/null 2>&1 || {
+import openai
+PY
+          log "ERROR: Python package 'openai' is not installed"
+          log "Install with: python3 -m pip install openai"
+          exit 1
+        }
+      fi
+      ;;
+  esac
+  if command -v sips >/dev/null 2>&1; then
+    RESIZE_TOOL="sips"
+  elif command -v magick >/dev/null 2>&1; then
+    RESIZE_TOOL="magick"
+  else
+    RESIZE_TOOL=""
+  fi
+}
+
+configure_paths() {
+  OUT_DIR="$OUT_DIR_BASE/$PROVIDER"
+  ANCHOR_DIR="$OUT_DIR/anchor"
+  TEST_REF_DIR="$OUT_DIR/test-ref"
+  SINGLES_DIR="$OUT_DIR/singles"
+  BEST_DIR="$OUT_DIR/best"
+  LOG_DIR="$OUT_DIR/logs"
+  QUALITY_REPORT="$OUT_DIR/quality-review.md"
+  mkdir -p "$ANCHOR_DIR" "$TEST_REF_DIR" "$SINGLES_DIR" "$BEST_DIR" "$LOG_DIR" "$FINAL_DIR"
+}
+
+quota_remaining() {
+  case "$PROVIDER" in
+    minimax)
+      mmx quota show --quiet --non-interactive 2>/dev/null | python3 -c '
+import json, sys
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    print("?")
+    raise SystemExit
+for item in data.get("model_remains", []):
+    if item.get("model_name") == "image-01":
+        total = item.get("current_interval_total_count", 0)
+        used = item.get("current_interval_usage_count", 0)
+        print(max(total - used, 0))
+        raise SystemExit
+print("?")
+'
+      ;;
+    openai)
+      echo "OpenAI API has billing/rate limits instead of mmx-style daily image quota. Check dashboard usage."
+      ;;
+  esac
+}
+
+all_codes() {
+  python3 - "$PROMPTS_FILE" <<'PY'
+import json, sys
+with open(sys.argv[1], "r", encoding="utf-8") as f:
+    rows = json.load(f)
+for row in rows:
+    print(row["code"])
+PY
+}
+
+json_value() {
+  local code="$1"
+  local key="$2"
+  python3 - "$PROMPTS_FILE" "$code" "$key" <<'PY'
+import json, sys
+path, code, key = sys.argv[1], sys.argv[2].upper(), sys.argv[3]
+with open(path, "r", encoding="utf-8") as f:
+    rows = json.load(f)
+row = next((r for r in rows if r["code"].upper() == code), None)
+if row is None:
+    raise SystemExit(f"Unknown currency code: {code}")
+value = row.get(key, "")
+if isinstance(value, bool):
+    print("true" if value else "false")
+else:
+    print(value)
+PY
 }
 
 build_prompt() {
   local code="$1"
-  local symbol="$2"
-  local flag_desc="$3"
+  python3 - "$PROMPTS_FILE" "$code" <<'PY'
+import json, sys
+path, code = sys.argv[1], sys.argv[2].upper()
+with open(path, "r", encoding="utf-8") as f:
+    rows = json.load(f)
+row = next((r for r in rows if r["code"].upper() == code), None)
+if row is None:
+    raise SystemExit(f"Unknown currency code: {code}")
 
-  echo "${STYLE_LOCK} Currency: ${code}. Symbol: bold white \"${symbol}\" centered. Flag: ${flag_desc}. The circular background shows a stylized simplified version of this country's flag using flat solid color areas only."
+parts = [
+    f"A simple circular badge for {row['name']} currency on plain white background.",
+    "The badge is a perfect filled circle.",
+    f"Inside: {row['flag_desc']}.",
+    f"Over the center sits a large bold {row['text_color']} text {row['symbol']}.",
+]
+flag_colors = (row.get("flag_colors") or "").strip()
+if flag_colors:
+    parts.append(f"Use these flag color references: {flag_colors}.")
+if row.get("contrast_layer"):
+    parts.append("Behind the symbol is a dark semi-transparent circular layer for contrast.")
+notes = (row.get("notes") or "").strip()
+if notes:
+    parts.append(notes)
+parts.extend([
+    "Flat 2D graphic NO 3D NO gloss NO shadow outside circle.",
+    "NO drop shadow NO long shadow NO bevel NO emboss NO ring NO bubble border NO gradient.",
+    "Plain white background. Ultra sharp crisp edges.",
+])
+print(" ".join(parts))
+PY
+}
+
+subject_ref_allowed() {
+  local code="$1"
+  [[ "$(json_value "$code" "subject_ref")" != "never" ]]
+}
+
+generate_one() {
+  local code="$1"
+  local target_dir="$2"
+  local prefix="$3"
+  local anchor_path="${4:-}"
+
+  local prompt
+  prompt="$(build_prompt "$code")"
+
+  case "$PROVIDER" in
+    minimax)
+      generate_one_minimax "$code" "$target_dir" "$prefix" "$anchor_path" "$prompt"
+      ;;
+    openai)
+      generate_one_openai "$code" "$target_dir" "$prefix" "$prompt"
+      ;;
+  esac
+}
+
+generate_one_minimax() {
+  local code="$1"
+  local target_dir="$2"
+  local prefix="$3"
+  local anchor_path="${4:-}"
+  local prompt="$5"
+
+  local -a cmd=(
+    mmx image generate
+    --prompt "$prompt"
+    --width "$GENERATE_SIZE"
+    --height "$GENERATE_SIZE"
+    --aspect-ratio 1:1
+    --out-dir "$target_dir"
+    --out-prefix "$prefix"
+    --quiet
+    --non-interactive
+  )
+
+  if [[ -n "$anchor_path" && -f "$anchor_path" && "$code" != "$ANCHOR_CODE" ]] && subject_ref_allowed "$code"; then
+    cmd+=(--subject-ref "type=character,image=${anchor_path}")
+  fi
+
+  "${cmd[@]}"
+}
+
+generate_one_openai() {
+  local code="$1"
+  local target_dir="$2"
+  local prefix="$3"
+  local prompt="$4"
+  local output_path="$target_dir/${prefix}_001.png"
+
+  mkdir -p "$target_dir"
+  OPENAI_IMAGE_MODEL="$OPENAI_IMAGE_MODEL" \
+  OPENAI_IMAGE_QUALITY="$OPENAI_IMAGE_QUALITY" \
+  OPENAI_IMAGE_SIZE="$OPENAI_IMAGE_SIZE" \
+  OPENAI_IMAGE_PROMPT="$prompt" \
+  OPENAI_IMAGE_OUTPUT="$output_path" \
+  python3 <<'PY'
+import base64
+import os
+import urllib.request
+
+from openai import OpenAI
+
+client = OpenAI()
+kwargs = {
+    "model": os.environ["OPENAI_IMAGE_MODEL"],
+    "prompt": os.environ["OPENAI_IMAGE_PROMPT"],
+    "size": os.environ["OPENAI_IMAGE_SIZE"],
+    "n": 1,
+}
+
+quality = os.environ.get("OPENAI_IMAGE_QUALITY", "").strip()
+if quality:
+    kwargs["quality"] = quality
+
+result = client.images.generate(**kwargs)
+image = result.data[0]
+output_path = os.environ["OPENAI_IMAGE_OUTPUT"]
+
+if getattr(image, "b64_json", None):
+    with open(output_path, "wb") as f:
+        f.write(base64.b64decode(image.b64_json))
+elif getattr(image, "url", None):
+    urllib.request.urlretrieve(image.url, output_path)
+else:
+    raise RuntimeError("OpenAI image response had neither b64_json nor url")
+
+print(output_path)
+PY
+  log "Saved OpenAI $code badge: $output_path"
 }
 
 generate_anchor() {
-  log "=== STEP 1: ANCHOR GENERATION (9 quota) ==="
-  log "Generating USD anchor at ${GENERATE_SIZE}x${GENERATE_SIZE} with --n 9..."
-
-  local prompt
-  prompt=$(build_prompt "USD" "\$" "red and white horizontal stripes, blue canton upper left with white star dots, simplified to bold red-white-blue geometric blocks")
-
-  mmx image generate \
-    --prompt "$prompt" \
-    --n 9 \
-    --width "$GENERATE_SIZE" \
-    --height "$GENERATE_SIZE" \
-    --aspect-ratio 1:1 \
-    --prompt-optimizer \
-    --seed 42 \
-    --out-dir "$ANCHOR_DIR" \
-    --out-prefix usd-anchor \
-    --quiet \
-    --non-interactive \
-    2>>"$OUT_DIR/logs/anchor.log"
-
-  log "Anchor files generated:"
-  ls -la "$ANCHOR_DIR/"*.png "$ANCHOR_DIR/"*.jpg 2>/dev/null | awk '{print "  " $NF}' || log "  (no files yet)"
-
-  log ""
-  log "MANUAL ACTION REQUIRED: Review the 9 USD anchor candidates and pick the best one."
-  log "  Files are in: $ANCHOR_DIR/"
-  log "  Copy the best to: $BEST_DIR/usd.png"
-  log "  Then run: $0 --test-ref"
+  log "Generating USD anchor candidate with provider: $PROVIDER..."
+  generate_one "$ANCHOR_CODE" "$ANCHOR_DIR" "usd-anchor"
+  log "Review the output in: $ANCHOR_DIR"
+  log "Copy the approved anchor to: $BEST_DIR/usd.png"
 }
 
 test_subject_ref() {
-  log "=== STEP 2: SUBJECT-REFERENCE TEST (3 quota) ==="
-
   local anchor="$BEST_DIR/usd.png"
-  if [ ! -f "$anchor" ]; then
-    log "ERROR: Anchor not found at $anchor. Run --anchor first and pick best."
+  [[ -f "$anchor" ]] || {
+    log "ERROR: missing approved USD anchor at $anchor"
     exit 1
+  }
+
+  if [[ "$PROVIDER" == "openai" ]]; then
+    log "OpenAI provider does not use subject-ref in this script; generating EUR/CHF style checks without reference image."
   fi
 
-  log "Testing subject-ref consistency with EUR and CHF..."
-  log "Anchor: $anchor"
+  log "Generating EUR provider consistency test..."
+  generate_one EUR "$TEST_REF_DIR" "eur-ref-test" "$anchor"
 
-  local eur_prompt chf_prompt
-  eur_prompt=$(build_prompt "EUR" "€" "solid blue circle with ring of yellow star dots around perimeter, European Union flag")
-  chf_prompt=$(build_prompt "CHF" "Fr" "solid red background with white equilateral cross centered, Swiss cross flag")
+  log "Generating CHF provider consistency test..."
+  generate_one CHF "$TEST_REF_DIR" "chf-ref-test" "$anchor"
 
-  # Test EUR with subject-ref
-  log "Generating EUR with subject-ref..."
-  mmx image generate \
-    --prompt "$eur_prompt" \
-    --subject-ref "type=character,image=${anchor}" \
-    --n 1 \
-    --width "$GENERATE_SIZE" \
-    --height "$GENERATE_SIZE" \
-    --aspect-ratio 1:1 \
-    --prompt-optimizer \
-    --out-dir "$TEST_REF_DIR" \
-    --out-prefix eur-ref-test \
-    --quiet \
-    --non-interactive \
-    2>>"$OUT_DIR/logs/ref-test.log"
-
-  # Test CHF with subject-ref
-  log "Generating CHF with subject-ref..."
-  mmx image generate \
-    --prompt "$chf_prompt" \
-    --subject-ref "type=character,image=${anchor}" \
-    --n 1 \
-    --width "$GENERATE_SIZE" \
-    --height "$GENERATE_SIZE" \
-    --aspect-ratio 1:1 \
-    --prompt-optimizer \
-    --out-dir "$TEST_REF_DIR" \
-    --out-prefix chf-ref-test \
-    --quiet \
-    --non-interactive \
-    2>>"$OUT_DIR/logs/ref-test.log"
-
-  log ""
-  log "Subject-ref test files:"
-  ls -la "$TEST_REF_DIR/"*ref* 2>/dev/null | awk '{print "  " $NF}' || log "  (no files)"
-  log ""
-  log "MANUAL ACTION REQUIRED: Compare EUR/CHF ref outputs against anchor style."
-  log "  If style matches well → run --batch (will use subject-ref for all)"
-  log "  If style drifts → edit this script: set USE_SUBJECT_REF=false"
+  log "Review provider consistency tests in: $TEST_REF_DIR"
 }
 
-USE_SUBJECT_REF=true
-
 batch_generate() {
-  log "=== STEP 3: BATCH GENERATION ==="
-
   local anchor="$BEST_DIR/usd.png"
-  if [ ! -f "$anchor" ]; then
-    log "ERROR: Anchor not found. Run --anchor first."
+  [[ -f "$anchor" ]] || {
+    log "ERROR: missing approved USD anchor at $anchor"
     exit 1
-  fi
+  }
 
-  local ref_flag=""
-  if [ "$USE_SUBJECT_REF" = true ] && [ -f "$anchor" ]; then
-    ref_flag="--subject-ref type=character,image=${anchor}"
-    log "Using subject-ref mode (style-consistent from anchor)"
-  else
-    log "Using consistent-prompt-prefix mode (no subject-ref)"
-  fi
+  while IFS= read -r code; do
+    [[ "$code" == "$ANCHOR_CODE" ]] && continue
+    local code_lower
+    code_lower="$(lowercase "$code")"
 
-  local total=0
-  local skip_codes=("USD")
-
-  while IFS= read -r line; do
-    code=$(echo "$line" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); print(d['code'])" 2>/dev/null)
-    symbol=$(echo "$line" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); print(d['symbol'])" 2>/dev/null)
-    flag_desc=$(echo "$line" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); print(d['flag_desc'])" 2>/dev/null)
-
-    [ -z "$code" ] && continue
-
-    # Skip already-generated codes
-    for skip in "${skip_codes[@]}"; do
-      if [ "$code" = "$skip" ]; then
-        log "  SKIP $code (already have anchor)"
-        continue 2
-      fi
-    done
-
-    # Skip if best already exists
-    if [ -f "$BEST_DIR/${code,,}.png" ]; then
-      log "  SKIP $code (already in best/)"
+    if compgen -G "$BEST_DIR/${code_lower}.*" >/dev/null; then
+      log "SKIP $code — already present in best/"
       continue
     fi
 
-    total=$((total + 1))
-    prompt=$(build_prompt "$code" "$symbol" "$flag_desc")
-
-    log "  [$total] Generating ${code} ($symbol)..."
-
-    mmx image generate \
-      --prompt "$prompt" \
-      $ref_flag \
-      --n 1 \
-      --width "$GENERATE_SIZE" \
-      --height "$GENERATE_SIZE" \
-      --aspect-ratio 1:1 \
-      --prompt-optimizer \
-      --out-dir "$SINGLES_DIR" \
-      --out-prefix "${code,,}-v3" \
-      --quiet \
-      --non-interactive \
-      2>>"$OUT_DIR/logs/batch.log" && \
-      log "  [$total] ${code} OK" || \
-      log "  [$total] ${code} FAILED (see logs/batch.log)"
+    log "Generating $code..."
+    if ! generate_one "$code" "$SINGLES_DIR" "${code_lower}-v4" "$anchor" 2>>"$LOG_DIR/batch.log"; then
+      log "FAILED $code — see $LOG_DIR/batch.log"
+    fi
 
     sleep 1
-  done < <(python3 -c "
-import json
-with open('$PROMPTS_FILE') as f:
-    data = json.load(f)
-for item in data:
-    print(json.dumps(item))
-")
+  done < <(all_codes)
 
-  log ""
-  log "Batch complete. Generated: $total currencies"
-  log "Output: $SINGLES_DIR/"
+  log "Batch generation finished. Review outputs in: $SINGLES_DIR"
 }
 
-quality_gate() {
-  log "=== STEP 4: QUALITY GATE ==="
-  log "Running vision quality check on all generated icons..."
+generate_single() {
+  local code="${1:-}"
+  [[ -n "$code" ]] || {
+    log "ERROR: --one requires a currency code, e.g. --one EUR"
+    exit 1
+  }
 
-  echo "# Icon Quality Report — $(date)" > "$QUALITY_LOG"
-  echo "" >> "$QUALITY_LOG"
-  echo "| Code | Sharpness | Flag OK | Symbol OK | Verdict |" >> "$QUALITY_LOG"
-  echo "|------|-----------|---------|-----------|---------|" >> "$QUALITY_LOG"
-
-  local pass=0 fail=0
-
-  for f in "$SINGLES_DIR/"*-v3_001.* "$TEST_REF_DIR/"*ref*_001.* "$ANCHOR_DIR/"usd-anchor_001.*; do
-    [ -f "$f" ] || continue
-
-    local fname
-    fname=$(basename "$f")
-    local code
-    code=$(echo "$fname" | sed 's/-v3_001\..*//' | sed 's/-ref-test_001\..*//' | sed 's/-anchor_001\..*//')
-
-    log "  Checking $code..."
-    local result
-    result=$(mmx vision describe \
-      --image "$f" \
-      --prompt "Rate this fintech currency icon for 26-40px display. Reply ONLY as: SHARPNESS:x/5 FLAG:x/5 SYMBOL:x/5 VERDICT:PASS or FAIL. One line." \
-      --quiet \
-      --non-interactive 2>/dev/null | python3 -c "
-import sys,json
-try:
-    d=json.load(sys.stdin)
-    print(d.get('content','')[:200])
-except: print('PARSE_ERROR')
-" 2>/dev/null)
-
-    local verdict="FAIL"
-    echo "$result" | grep -qi "VERDICT:PASS" && verdict="PASS"
-
-    if [ "$verdict" = "PASS" ]; then
-      pass=$((pass + 1))
-    else
-      fail=$((fail + 1))
-    fi
-
-    echo "| ${code^^} | $result | $verdict |" >> "$QUALITY_LOG"
-
-    if [ "$verdict" = "PASS" ]; then
-      cp "$f" "$BEST_DIR/${code,,}.png" 2>/dev/null
-    fi
-  done
-
-  echo "" >> "$QUALITY_LOG"
-  echo "**Summary: $pass passed, $fail failed**" >> "$QUALITY_LOG"
-
-  log ""
-  log "Quality gate: $pass PASS / $fail FAIL"
-  log "Full report: $QUALITY_LOG"
-  log "Passed icons copied to: $BEST_DIR/"
+  local anchor="$BEST_DIR/usd.png"
+  local code_lower
+  code_lower="$(lowercase "$code")"
+  if [[ -f "$anchor" ]]; then
+    generate_one "$code" "$SINGLES_DIR" "${code_lower}-manual" "$anchor"
+  else
+    generate_one "$code" "$SINGLES_DIR" "${code_lower}-manual"
+  fi
 }
 
-deploy() {
-  log "=== STEP 5: DEPLOY TO ASSETS ==="
-  log "Resizing best icons to ${TARGET_SIZE}x${TARGET_SIZE} and deploying to $FINAL_DIR/"
+write_quality_guide() {
+  cat > "$QUALITY_REPORT" <<'MD'
+# Currency Badge Quality Review
+
+Rate each generated badge from 1 to 5 for:
+
+- Sharpness
+- Flag accuracy
+- Symbol clarity
+
+Accept when the average is **>= 3.5**.
+
+Suggested vision prompt:
+
+> Rate [CURRENCY] badge 1-5 for: Sharpness, Flag accuracy, Symbol clarity.  
+> Score format: Sharp:X Flag:X Symbol:X. Accept if average >= 3.5.
+
+Recommended manual checks:
+
+- The badge is a perfect filled circle.
+- The background outside the circle is plain white.
+- There is no glossy ring, 3D frame, bevel, drop shadow, or long shadow.
+- The currency symbol is correct and centered.
+- White symbols over pale flag areas remain readable.
+MD
+
+  log "Wrote QA guide to: $QUALITY_REPORT"
+}
+
+deploy_best() {
+  [[ -n "${RESIZE_TOOL:-}" ]] || {
+    log "ERROR: no supported resize tool found. Install ImageMagick or run on macOS with sips."
+    exit 1
+  }
 
   local deployed=0
-  for f in "$BEST_DIR/"*.png; do
-    [ -f "$f" ] || continue
-    local fname
-    fname=$(basename "$f")
-    local target="$FINAL_DIR/$fname"
+  local src stem target
+  shopt -s nullglob
+  for src in "$BEST_DIR"/*; do
+    [[ -f "$src" ]] || continue
+    stem="$(basename "${src%.*}")"
+    target="$FINAL_DIR/$stem.png"
 
-    sips -z "$TARGET_SIZE" "$TARGET_SIZE" "$f" --out "$target" 2>/dev/null
+    if [[ "$RESIZE_TOOL" == "sips" ]]; then
+      sips -s format png -z "$TARGET_SIZE" "$TARGET_SIZE" "$src" --out "$target" >/dev/null
+    else
+      magick "$src" -resize "${TARGET_SIZE}x${TARGET_SIZE}!" "$target"
+    fi
+
     deployed=$((deployed + 1))
   done
+  shopt -u nullglob
 
-  log "Deployed $deployed icons to $FINAL_DIR/"
-  log ""
-  log "Next: rebuild Flutter app and verify on simulator"
-  log "  IOS_SIMULATOR_ID=\${IOS_SIMULATOR_ID} BUNDLE_ID=com.niduna.currencyConverter ./.devtools/sim_reinstall_build.sh"
+  log "Deployed $deployed badge(s) to: $FINAL_DIR"
 }
 
-case "${1:-}" in
+parse_args "$@"
+configure_paths
+
+case "$COMMAND" in
+  --quota)
+    if [[ "$PROVIDER" == "minimax" ]]; then
+      check_prereqs
+    fi
+    log "$PROVIDER quota/status: $(quota_remaining)"
+    ;;
   --anchor)
     check_prereqs
-    check_quota >/dev/null
     generate_anchor
     ;;
   --test-ref)
     check_prereqs
-    check_quota >/dev/null
     test_subject_ref
     ;;
   --batch)
     check_prereqs
-    check_quota >/dev/null
     batch_generate
     ;;
+  --one)
+    check_prereqs
+    generate_single "$COMMAND_ARG"
+    ;;
   --quality)
-    quality_gate
+    write_quality_guide
     ;;
   --deploy)
-    deploy
-    ;;
-  --quota)
-    check_prereqs
-    check_quota
-    ;;
-  "")
-    check_prereqs
-    remaining=$(check_quota)
-    if [ "$remaining" -lt 10 ] 2>/dev/null; then
-      log "WARNING: Only $remaining image-01 quota remaining today. Consider waiting for reset."
-      log "  Continue anyway? (Ctrl+C to abort)"
-      read -r _
-    fi
-    generate_anchor
-    log ""
-    log "=== PAUSED: Review anchor before continuing ==="
-    log "Pick best USD anchor → copy to $BEST_DIR/usd.png"
-    log "Then re-run: $0 --test-ref"
+    check_prereqs deploy
+    deploy_best
     ;;
   *)
-    echo "Usage: $0 [--anchor|--test-ref|--batch|--quality|--deploy|--quota]"
-    echo ""
-    echo "  (no args)    Full pipeline step 1 (anchor only, then pauses)"
-    echo "  --anchor     Generate 9x USD anchor variations"
-    echo "  --test-ref   Test subject-ref style consistency"
-    echo "  --batch      Generate all remaining currencies"
-    echo "  --quality    Vision quality gate on generated icons"
-    echo "  --deploy     Resize + copy best icons to assets/"
-    echo "  --quota      Show remaining image-01 quota"
-    exit 1
+    usage
     ;;
 esac

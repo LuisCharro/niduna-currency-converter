@@ -1,286 +1,283 @@
-# Currency Icon Generation — Knowledge Base
+# Currency Badge Generation — Knowledge Base
 
-> Everything learned about generating currency flag icons for the Niduna currency-converter app.
+> Working notes for generating currency badges for the Niduna currency-converter app.
 > Last updated: 2026-05-16
 
----
+## Current Verdict
+
+The **v4 toolkit structure is better** than the earlier v3 tooling, but only after restoring the
+historical context and color metadata from v3.
+
+What improved:
+
+- `.devtools/generate_currency_icons.sh` is now a proper CLI with `--quota`, `--anchor`,
+  `--test-ref`, `--batch`, `--one CODE`, `--quality`, and `--deploy`.
+- `.devtools/currency_icon_prompts.json` now stores generation controls per currency:
+  `text_color`, `contrast_layer`, `subject_ref`, `notes`, and restored `flag_colors`.
+- Subject-reference is no longer blindly applied to every currency.
+
+What must stay preserved:
+
+- The v2 audit results and v3 generation history explain why the new rules exist.
+- Human QA overrides matter; a vision score can still miss issues like CLP showing `CL€`.
 
 ## Quick Reference
 
 | Item | Value |
 |------|-------|
-| **Tool** | `mmx-cli` v1.0.12 (`mmx image generate`) |
-| **Model** | `image-01` |
-| **Quota** | Plus plan = **50/day**, Max = 120/day |
-| **Current quota status** | Run `mmx quota show` |
-| **Output target** | 256×256 PNG in `assets/icons/currencies/` |
-| **Generate resolution** | 1024×1024 (downscale to 256) |
-| **Total currencies** | 34 (codes below) |
-| **Widget** | `CurrencyFlagIcon` in `lib/src/shared/widgets/currency_flag_icon.dart` |
-| **Display sizes** | radius 13–20px (26–40px diameter) in app |
+| Tool | `mmx-cli` (`mmx image generate`) |
+| Model | `image-01` |
+| Plan quota | Plus plan = 50 images/day |
+| Generate size | 1024×1024 |
+| App asset size | 256×256 PNG in `assets/icons/currencies/` |
+| Widget | `lib/src/shared/widgets/currency_flag_icon.dart` |
+| v3 accepted sources | `.tmp/icon-v3/best/*.png` |
+| v4 working sources | `.tmp/icon-v4/best/*.png` |
+| Current script | `.devtools/generate_currency_icons.sh` |
+| Resize tools | Prefer `sips` on macOS for simple resize; `magick` (ImageMagick) is also supported and better for crop workflows |
 
-## Vision Quality Check — Which Tool to Use
+## Core Method
 
-### Ranking (tested on same images, 2026-05-16)
+This project works best when prompts describe a **circular badge**, not an **icon**.
 
-| Rank | Method | Cost | Speed | Accuracy | Best For |
-|------|--------|------|-------|----------|----------|
-| **1** | **GLM-5V-Turbo native vision** (model I'm running on) | Free | Instant | Best for accept/reject, bug spotting | **Primary — use after EVERY generation** |
-| **2** | z.ai MCP (`zai-mcp-server_analyze_image`) | Free | ~5s | Good detail, over-generous scores | Borderline cases, final reports |
-| **3** | MiniMax MCP (`MiniMax_understand_image`) | Free | Often "Not connected" | Good when it works | Unreliable — skip |
-| **4** | `mmx vision describe` CLI | Burns text API quota | ~10s per image | Inconsistent, overly harsh | **Don't use** |
+The winning loop is:
 
-### How to use native GLM-5V-Turbo vision (me)
+1. Generate one USD anchor at 1024×1024.
+2. Manually review and copy the winner to `.tmp/icon-v4/best/usd.png`.
+3. Test subject-reference on EUR and CHF.
+4. Generate one currency at a time.
+5. Disable subject-reference for drift-prone currencies.
+6. Review each output manually or with vision.
+7. Copy accepted sources to `.tmp/icon-v4/best/`.
+8. Run `--deploy` to downscale/copy into `assets/icons/currencies/`.
+9. Rebuild the iOS simulator app and inspect at actual app sizes.
 
-Just ask me to look at any image — I can see it directly via `read` tool or inline display. No extra tool needed.
+## Provider Pipelines
 
-```
-After each mmx generate:
-  1. I read the output image → see it instantly
-  2. I say KEEP or RETRY with specific reason
-  3. If RETRY → adjust prompt → regenerate
-```
+The generator script supports two providers from the same prompt JSON:
 
----
+| Provider | Command | Output root | Notes |
+|----------|---------|-------------|-------|
+| MiniMax | `--provider minimax` | `.tmp/icon-v4/minimax/` | Default; supports `--subject-ref` from the USD anchor when JSON allows it. |
+| OpenAI | `--provider openai` | `.tmp/icon-v4/openai/` | Requires `OPENAI_API_KEY`; text-to-image only in this script, no reference image style transfer yet. |
 
-## Prompt Engineering — What We Learned (v3)
+Examples:
 
-### The Winning Prompt Pattern ("badge" framing)
-
-After 5 iterations, this pattern produces PASS-quality icons:
-
-```
-A simple circular badge for [CURRENCY NAME] on plain white background.
-The badge is a perfect filled circle.
-Inside the circle: [SIMPLIFIED FLAG DESCRIPTION as flat color areas].
-Over the center of the circle sits a large bold white [SYMBOL].
-Behind the [SYMBOL] is a slightly darkened circular layer so the white symbol is always readable.
-The entire graphic is contained perfectly within the circle boundary.
-There is nothing outside the circle edge.
-No shadow projects from the circle. No light effect. No depth effect.
-The image looks like a clean digital illustration with solid color fills and sharp borders between colors.
-```
-
-### Patterns that FAILED (do NOT use)
-
-| Anti-pattern | Why it fails |
-|-------------|-------------|
-| `"flat 2D vector icon"` | Model interprets as "flat design WITH long shadow" (2014 trend) |
-| `"NO blur NO softness NO 3D NO gloss NO gradient"` | Model ignores negative constraints when they conflict with its "icon" concept |
-| `--prompt-optimizer true` | Re-injects shadow/gloss keywords we explicitly removed |
-| `"waving flag" / "fabric texture"` | Produces photorealistic blur, not flat graphic |
-| Grid batch (3×3, 4×4) | Cell size too small (~200-250px), forces low-res output |
-| `--n 9` batch | Quality dilution across variations; single shots are sharper |
-
-### Key insight: "badge" > "icon"
-
-The word **"icon"** triggers image-01's baked-in long-shadow template.
-The word **"badge"** or **"circular badge"** bypasses this and produces flatter output.
-
-### Subject-reference (`--subject-ref`): WORKS
-
-Tested USD→EUR and USD→CHF:
-- EUR: Sharpness **4**, Flag **4**, Symbol **5** → **PASS**
-- CHF: Sharpness **5**, Flag **4**, Symbol **5** → **PASS**
-
-**Usage:**
 ```bash
-mmx image generate \
-  --prompt "[BADGE PROMPT FOR NEW CURRENCY]" \
-  --subject-ref "type=character,image=./best/usd.png" \
-  --width 1024 --height 1024 \
-  --aspect-ratio 1:1 \
-  --out-dir .tmp/icon-v3/singles/
+# MiniMax (default)
+.devtools/generate_currency_icons.sh --one CLP
+
+# OpenAI
+OPENAI_API_KEY=... .devtools/generate_currency_icons.sh --provider openai --one CLP
+
+# OpenAI quality/cost knobs
+OPENAI_IMAGE_MODEL=gpt-image-1 \
+OPENAI_IMAGE_QUALITY=medium \
+OPENAI_IMAGE_SIZE=1024x1024 \
+  .devtools/generate_currency_icons.sh --provider openai --one CLP
 ```
 
-Note: API `type` field only supports `"character"` — it's portrait-tuned but works for style transfer on icons.
+## Non-Negotiable Prompt Rules
 
----
+Use these ideas in every prompt:
 
-## Full Audit Results — Current Icons (v2, generated earlier)
+- `badge`, not `icon`
+- `plain white background`
+- `perfect filled circle`
+- `flat 2D graphic`
+- `NO 3D`
+- `NO gloss`
+- `NO shadow outside circle`
+- `NO drop shadow`
+- `NO long shadow`
+- `NO bevel`
+- `NO emboss`
+- `NO ring`
+- `NO bubble border`
+- `NO gradient`
 
-All 34 audited via `mmx vision describe` on 2026-05-16. Scores out of 5.
+Do **not** use `--prompt-optimizer`; it can reintroduce shadow/gloss language.
 
-### Score Distribution
+## Prompt Builder
+
+The v4 script builds prompts from `.devtools/currency_icon_prompts.json`:
+
+```text
+A simple circular badge for [name] currency on plain white background.
+The badge is a perfect filled circle.
+Inside: [flag_desc].
+Over the center sits a large bold [text_color] text [symbol].
+Use these flag color references: [flag_colors].
+[Optional contrast-layer sentence]
+[Optional per-currency notes]
+Flat 2D graphic NO 3D NO gloss NO shadow outside circle.
+NO drop shadow NO long shadow NO bevel NO emboss NO ring NO bubble border NO gradient.
+Plain white background. Ultra sharp crisp edges.
+```
+
+## Subject-Reference Policy
+
+Subject-reference helps style consistency, but it caused drift on several currencies.
+
+Use `subject_ref: "never"` for:
+
+- JPY
+- CAD
+- AUD
+- INR
+- SGD
+- CLP
+- PHP
+- COP
+
+Why:
+
+- JPY drifted into 3D/gloss.
+- CAD got blurry.
+- AUD produced the wrong symbol / over-complex style.
+- INR failed tricolor handling and needed solid saffron.
+- SGD became cartoon-like.
+- CLP confused `$`, `€`, and `₱`.
+- PHP needed sharp symbol handling.
+- COP repeatedly gained glossy bubble rings.
+
+## Vision Quality Check
+
+Preferred review order:
+
+| Rank | Method | Notes |
+|------|--------|-------|
+| 1 | Native multimodal review | Best for quick human-like accept/reject and catching symbol mistakes |
+| 2 | `zai-mcp-server_analyze_image` | Useful structured scoring, but can be over-generous |
+| 3 | `MiniMax_understand_image` | Good when connected, but unreliable |
+| 4 | `mmx vision describe` | Avoid for normal QA; it burns quota and was inconsistent |
+
+Quality rubric:
+
+- Sharpness: 1–5
+- Flag accuracy: 1–5
+- Symbol clarity: 1–5
+
+Accept only if the average is >= 3.5 **and** there are no human-visible dealbreakers.
+
+## v2 Audit Summary
+
+The old v2 set averaged around 2/5. Common problems:
+
+- Long shadows / drop shadows muddied the icon at 26–40px.
+- Glossy Web 2.0 / skeuomorphic look.
+- White symbols disappeared on white flag areas.
+- Flag details were too complex after downscaling.
+- Several symbols were wrong or unreadable.
+
+Score distribution from the v2 audit:
 
 | Score | Count | Codes |
 |-------|-------|-------|
-| **4.0** | 1 | CHF |
-| **3.75** | 1 | SEK |
-| **3.0** | 2 | EUR, RON |
-| **2.5** | 5 | AUD, BGN, CAD, NOK, NZD, CZK |
-| **<2.5** | **25** | All others — must redo |
+| 4.0 | 1 | CHF |
+| 3.75 | 1 | SEK |
+| 3.0 | 2 | EUR, RON |
+| 2.5 | 5 | AUD, BGN, CAD, NOK, NZD/CZK area |
+| <2.5 | 25 | Most of the set |
 
-### Universal problems across ALL 34 old icons
-1. Drop shadows / long shadows → muddy at 26px
-2. Glossy / skeuomorphic / Web 2.0 aesthetic
-3. White symbol on white flag stripe = zero contrast (GBP, MXN, PLN worst)
-4. Over-complex details that don't survive downscaling
-5. Generated at ~250px (grid cell) → resized to 128px = blurry source
+Worst v2 cases:
 
-### Per-currency scores and specific issues
+- COP: extreme blur, about 1/5.
+- TRY: missing star / not recognizable, about 1/5.
+- THB: wrong text (`TBB`) and blur.
+- CLP/MXN/PLN/GBP: white-on-white or wrong symbol issues.
 
-| Code | Score | Sharp | Flag | Symbol | Main Problem |
-|------|-------|-------|------|--------|-------------|
-| ARS | 2.0 | 2 | 3 | 2 | White $ on white stripe, sun becomes blob |
-| AUD | 2.5 | 2 | 2 | 4 | Dated drop shadow, Union Jack clutter |
-| BGN | 2.5 | 3 | 4 | 2 | Glossy 3D, wrong symbol "LLV" |
-| BRL | 2.0 | — | — | — | Garbled "Rr€" text, stars interfere |
-| CAD | 2.5 | 2 | 3 | 3 | White $ on white, maple leaf blurry |
-| CHF | **4.0** | 4 | 5 | 5 | Long shadow at small size (best of old set) |
-| CLP | 2.0 | 2 | 3 | 2 | Wrong flag colors, poor contrast |
-| CNY | 2.0 | 2 | 4 | 2 | Complex character blurs, dated gloss |
-| COP | **1.0** | 1 | 3 | 2 | Extreme blur, worst in set |
-| CZK | 2.5 | 2 | 4 | 2 | White text on white, glossy |
-| DKK | 2.0 | — | — | — | Heavy drop shadow, oversized symbol |
-| EUR | 3.0 | 2 | 5 | 4 | Long shadow muddy, stars too small |
-| GBP | 2.0 | 2 | 3 | **1** | White £ invisible on white stripes, glow |
-| HKD | 2.0 | 3 | 1 | 5 | Flowers become blobs, unrecognizable |
-| HUF | 2.0 | 2 | 4 | 3 | Dated glossy, long drop shadows |
-| IDR | 2.0 | 2 | 4 | 2 | Web 2.0 glossy, "Rp" lacks contrast |
-| ILS | 2.0 | 3 | 3 | **1** | Wrong symbol "Y", white-on-white |
-| INR | 2.0 | — | — | — | Drop shadows, Chakra too detailed |
-| JPY | 2.0 | 2 | 2 | 3 | Rising Sun (controversial), radial blur |
-| KRW | 2.0 | 2 | 3 | 2 | Trigrams too thin, symbol complex |
-| MXN | 2.0 | 2 | 3 | **1** | **Zero contrast** — $ on white stripe |
-| MYR | 2.25 | **1** | 3 | 4 | Extremely blurry, bubble gloss |
-| NOK | 2.5 | 2 | 4 | 2 | Blurry background, heavy drop shadow |
-| NZD | 2.5 | — | — | — | Fine details pixelate, confused with AUD |
-| PHP | 2.0 | 2 | 3 | **1** | Large X obscures flag, cancel connotation |
-| PLN | 2.0 | **2** | 3 | **1** | **Extreme** lack of contrast, glossy |
-| RON | 3.0 | — | — | — | Thin serifs muddy, long shadow |
-| SEK | **3.75** | 3 | 5 | 3 | Long shadow mud, lowercase "kr" ambiguous |
-| SGD | 2.25 | 2 | 3 | 2 | Wrong star count (3 vs 5), poor contrast |
-| THB | **1.5** | **1** | 2 | 3 | Extreme blur, wrong text "TBB" not "฿" |
-| TRY | **1.0** | **1** | **1** | 2 | Blur, missing star, not recognizable |
-| TWD | 2.0 | 2 | 2 | 3 | Sun rays too thin, overlapping elements |
-| USD | 2.0 | — | — | — | Wavy stripes, shadow, complex |
-| ZAR | 2.0 | 2 | 2 | 3 | Flag too complex, dated glossy |
+## v3 Generation Results
 
----
+The first complete v3 run generated 34/34 currency badges and deployed 256×256 assets.
 
-## v3 Generation — COMPLETE ✅
+What worked:
 
-All 34 currencies generated and deployed on 2026-05-16.
+- `badge` prompt framing solved the baked-in long-shadow behavior.
+- Single-shot generation was sharper than batch variations.
+- 1024×1024 source → 256×256 asset was visibly better than old 128×128 assets.
+- Solid-color simplification worked well for BRL and INR.
 
-### Final Results Summary
+Notable v3 wins:
 
-| Metric | Value |
-|--------|-------|
-| **Total generated** | 34 of 34 (100%) |
-| **Quota spent** | ~42 of 50/day (anchors + retries included) |
-| **First-pass accept rate** | 30/34 (88%) |
-| **Retries needed** | 4 (JPY, CAD, AUD, SGD → 3D/gloss; INR ×2 → white-band issue) |
-| **Avg quality score** | ~4.5/5 (vs v2 avg ~2.0/5) |
-| **Resolution upgrade** | 128×128 → 256×256 (2× sharper @2x/@3x) |
-| **In-app verified** | Yes — screenshot confirmed crisp fintech look (4.5/5) |
+- BRL improved from blurry/garbled to a clean green/yellow `R$` badge.
+- COP improved dramatically in automated scoring, but human review later disliked the glossy ring.
+- INR succeeded after switching from tricolor to solid saffron with navy `₹`.
+- EUR needed an explicit `exactly twelve yellow stars` instruction.
 
-### Per-Currency v3 Scores
+Human review follow-ups from the v3 set:
 
-| Code | Score | Notes |
-|------|-------|-------|
-| USD | 4.67 | Anchor — blue field + white $ + stars |
-| EUR | PASS | Subject-ref from USD — EU blue + € |
-| CHF | PASS | Subject-ref from USD — red cross |
-| GBP | ACCEPT | Union Jack + £ |
-| JPY | ACCEPT (v3b retry) | Red circle + ¥ (v3a was 3D glossy) |
-| CAD | ACCEPT (v3b retry) | Red-white + maple leaf $ (v3a blur) |
-| AUD | ACCEPT (v3b retry) | Blue + Union Jack elements + $ (v3a wrong symbol) |
-| NZD | ACCEPT | Dark blue + Southern Cross + $ |
-| SEK | ACCEPT | Blue-yellow cross + kr |
-| NOK | ACCEPT | Red-blue cross + kr |
-| DKK | ACCEPT | Red-white cross + kr |
-| PLN | ACCEPT | White-red stripes + zł |
-| CZK | ACCEPT | Blue-white-red tricolor + Kč |
-| HUF | ACCEPT | Red-white-green tricolor + Ft |
-| RON | ACCEPT | Blue-yellow-red vertical + lei |
-| BGN | ACCEPT | White-green-red vertical + лв |
-| TRY | ACCEPT | Red + crescent-star + ₺ |
-| ILS | ACCEPT | Blue-white + ₪ |
-| CLP | ACCEPT | Blue-red-white star + $ |
-| PHP | ACCEPT | Blue-red-white + ₱ |
-| IDR | ACCEPT | Red-white + Rp |
-| MYR | ACCEPT | Blue-yellow crescent + RM |
-| THB | ACCEPT | Red-blue-white stripes + ฿ |
-| SGD | ACCEPT (v3b retry) | Red-white + S$ (v3a cartoon character) |
-| HKD | ACCEPT | Red-white + bauhinia + HK$ |
-| KRW | ACCEPT | Taegeuk red-blue + ₩ |
-| MXN | ACCEPT | Green-white-red vertical + MX$ |
-| ZAR | ACCEPT | Y-shape red-green-blue + R |
-| BRL | **5.0** | Green + yellow R$ (was worst v2 blur) |
-| INR | ACCEPT (v3c) | Solid orange + navy ₹ (v3a/v3b white-band failed) |
-| TWD | **5.0** | Red + NT$ |
-| CNY | **5.0** | Red + yellow 元 |
-| COP | **5.0** | Yellow-blue-red + COL$ (was v2 worst 1/5!) |
-| ARS | **5.0** | Light-blue-white stripes + $ |
+- CLP: wrong symbol (`CL€` / later `CL₱` attempts). Use plain `$` only.
+- COP: visually ugly glossy bubble ring. Forbid ring/border/bubble frame and review manually.
+- EUR: initial version lost stars; v4 candidate fixed 12 stars.
+- PHP: initial version looked blurry; v4 candidate improved sharpness.
 
-### Key Learnings from Full Run
+## Known Currency-Specific Fixes
 
-1. **Solid-color backgrounds beat tricolors for problematic flags**: INR needed 3 attempts with tricolor before solid orange worked (4.67). Same pattern as BRL (solid green = 5/5).
-2. **Subject-ref drift on some currencies**: JPY, SGD went 3D/cartoon with subject-ref. Fall back to no-subject-ref + stronger anti-3D prompt.
-3. **"Badge" framing held up across all 34**: Zero long-shadow failures in v3 (vs 100% in v2).
-4. **Single-shot `--n 1` is essential**: Every accepted icon was single-shot.
+| Code | Fix |
+|------|-----|
+| EUR | Say **exactly twelve yellow stars arranged in a circle**. |
+| JPY | Keep prompt extremely simple; no subject-ref. |
+| CAD | No subject-ref; use simple red-white split and plain `$`. |
+| AUD | No subject-ref; keep simplified Union Jack/star cluster. |
+| INR | Use solid saffron/orange background, not tricolor. |
+| BRL | Solid green background with yellow `R$` gives sharper output. |
+| TRY | Require **crescent moon and five-pointed star**. |
+| CLP | Use only a plain `$`; avoid `CL$` if the model confuses it. |
+| PHP | Emphasize `₱` shape and ultra-sharp crisp edges. |
+| THB | Say Thai baht symbol `฿`, not `TBB`. |
+| SGD | No subject-ref; avoid anything cartoon-like. |
+| COP | No subject-ref; forbid glossy ring, border, bevel, and bubble frame. |
 
-### Files in v3 pipeline
-
-| File | Purpose |
-|------|---------|
-| `.devtools/generate_currency_icons.sh` | Automated pipeline script |
-| `.devtools/currency_icon_prompts.json` | 34 currency definitions |
-| `.agent/skills/icon-generation/SKILL.md` | Updated skill doc with v3 methodology |
-| `.agent/ICON_GENERATION_KNOWLEDGE.md` | This file — live knowledge base |
-| `.tmp/icon-v3/best/*.png` | 34 accepted icons (1024×1024 source) |
-| `assets/icons/currencies/*.png` | 34 deployed icons (256×256 final) |
-
----
-
-## Per-Currency Prompt Tips (for generation)
-
-Based on v2 failures, these need special attention:
-
-| Code | Watch Out For | Prompt Adjustment |
-|------|--------------|-------------------|
-| GBP | White £ disappears on white cross stripes | Emphasize dark backing circle, describe as "navy blue base with white-red crosses" |
-| MXN | $ invisible on white middle stripe | Dark backing critical |
-| PLN | "zł" invisible on white stripe | Same — dark backing |
-| TRY | Star missing, looks like Red Crescent | Explicitly say "white crescent AND five-pointed star" |
-| THB | Model writes "TBB" instead of ฿ | Give Unicode "฿" explicitly |
-| JPY | May use Rising Sun (controversial) | Say "solid red circle on plain white, Hinomaru ONLY" |
-| BRL | Always slightly blurry (complex emblem) | Simplify to "green with yellow diamond and blue circle" |
-| COP | Worst blur score (1/5) | Extra "vivid" keywords |
-| MYR | Heavy glossy bubble | Extra anti-gloss emphasis |
-| KRW | Trigrams too thin | Simplify to "red-blue yin-yang center circle only" |
-| ILS | Generates wrong symbol "Y" | Describe shape: "U-shape with double vertical stroke" |
-| PHP | Large X has cancel/error connotation | Describe: "P with double horizontal strike through" |
-| SGD | Wrong star count (3 not 5) | Explicitly "five-pointed stars" |
-| HKD | Bauhinia flower too detailed | "white stylized five-petal flower shape" |
-| ZAR | Flag too complex for small size | Heavily simplify to "green-red-blue Y shape" |
-| ARS | Sun details become blob | "golden circle with simple ray lines" |
-
----
-
-## Commands Cheat Sheet
+## Commands
 
 ```bash
 # Check quota
-mmx quota show
+.devtools/generate_currency_icons.sh --quota
 
-# Generate single icon (winning pattern)
-mmx image generate \
-  --prompt "A simple circular badge for [CURRENCY]..." \
-  --subject-ref "type=character,image=.tmp/icon-v3/best/usd.png" \
-  --width 1024 --height 1024 \
-  --aspect-ratio 1:1 \
-  --out-dir .tmp/icon-v3/singles/ \
-  --out-prefix [code]-v3 \
-  --quiet --non-interactive
+# Generate USD anchor candidate
+.devtools/generate_currency_icons.sh --anchor
 
-# Resize to final size
-sips -z 256 256 source.png --out assets/icons/currencies/code.png
+# Generate subject-ref test candidates
+.devtools/generate_currency_icons.sh --test-ref
 
-# Verify in app
-IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} BUNDLE_ID=com.niduna.currencyConverter .devtools/sim_reinstall_build.sh
+# Generate one currency
+.devtools/generate_currency_icons.sh --one CLP
 
-# Screenshot
-.devtools/sim_screenshot.sh [name]
+# Generate one currency with OpenAI
+OPENAI_API_KEY=... .devtools/generate_currency_icons.sh --provider openai --one CLP
+
+# Generate remaining currencies missing from best/
+.devtools/generate_currency_icons.sh --batch
+
+# Write QA guide
+.devtools/generate_currency_icons.sh --quality
+
+# Deploy accepted best/ images to app assets
+.devtools/generate_currency_icons.sh --deploy
 ```
+
+Provider-specific deploy uses the selected provider's `best/` folder:
+
+```bash
+.devtools/generate_currency_icons.sh --provider minimax --deploy
+.devtools/generate_currency_icons.sh --provider openai --deploy
+```
+
+The deploy step resizes accepted source images to 256×256. It uses macOS `sips` when
+available and falls back to ImageMagick `magick`. If future grid/crop workflows return, use
+`magick` for cropping; for the current one-badge-per-image workflow, resize-only is enough.
+
+After deploy, rebuild the simulator app:
+
+```bash
+IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} \
+  BUNDLE_ID=com.niduna.currencyConverter \
+  ./.devtools/sim_reinstall_build.sh
+```
+
+## App Integration
+
+- Final app assets live at `assets/icons/currencies/*.png`.
+- `CurrencyFlagIcon` maps currency codes to asset paths.
+- `pubspec.yaml` includes `assets/icons/currencies/` under Flutter assets.
