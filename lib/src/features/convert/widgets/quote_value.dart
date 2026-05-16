@@ -28,8 +28,8 @@ class QuoteValue extends StatelessWidget {
               quote.rateLine,
               style: TextStyle(
                 fontSize: 11.5,
-                fontWeight: FontWeight.w700,
-                color: AppTheme.muted,
+                fontWeight: FontWeight.w600,
+                color: AppTheme.muted.withValues(alpha: .88),
                 letterSpacing: 0.2,
               ),
             ),

@@ -111,13 +111,27 @@ class _RatesToolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 2),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 6),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: Text(
-              '$count currencies',
-              style: AppTheme.caption.copyWith(color: AppTheme.muted),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Converted to',
+                  style: AppTheme.caption.copyWith(
+                    color: AppTheme.text,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 1),
+                Text(
+                  '$count currencies',
+                  style: AppTheme.caption.copyWith(color: AppTheme.muted),
+                ),
+              ],
             ),
           ),
           TextButton.icon(
@@ -126,9 +140,13 @@ class _RatesToolbar extends StatelessWidget {
             label: const Text('Add'),
             style: TextButton.styleFrom(
               foregroundColor: AppTheme.primary,
-              minimumSize: const Size(0, 34),
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              backgroundColor: AppTheme.container.withValues(alpha: .48),
+              minimumSize: const Size(66, 38),
+              padding: const EdgeInsets.symmetric(horizontal: 11),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+              ),
               textStyle: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w800,

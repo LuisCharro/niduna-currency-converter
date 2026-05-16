@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../domain/convert_state.dart';
+import 'amount_header_row.dart';
 import 'amount_status_bar.dart';
 import 'amount_value_row.dart';
 
@@ -34,25 +35,12 @@ class AmountPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 6, 20, 8),
+      padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: AmountStatusBar(
-                  isRefreshing: isRefreshing,
-                  lastUpdatedLabel: lastUpdatedLabel,
-                  nextUpdateLabel: nextUpdateLabel,
-                  status: status,
-                ),
-              ),
-              const SizedBox(width: 12),
-              AmountUtilityPill(onRefresh: () => onRefresh(), onMore: onMore),
-            ],
-          ),
-          const SizedBox(height: 12),
+          AmountHeaderRow(onRefresh: () => onRefresh(), onMore: onMore),
+          const SizedBox(height: 18),
           Text(
             'Amount',
             style: AppTheme.caption.copyWith(
@@ -67,10 +55,17 @@ class AmountPanel extends StatelessWidget {
             onAmountChanged: onAmountChanged,
             onBaseTap: onBaseTap,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
+          AmountStatusBar(
+            isRefreshing: isRefreshing,
+            lastUpdatedLabel: lastUpdatedLabel,
+            nextUpdateLabel: nextUpdateLabel,
+            status: status,
+          ),
+          const SizedBox(height: 12),
           DecoratedBox(
             decoration: BoxDecoration(
-              color: AppTheme.border.withValues(alpha: .16),
+              color: AppTheme.border.withValues(alpha: .14),
               borderRadius: BorderRadius.circular(2),
             ),
             child: const SizedBox(height: 1, width: double.infinity),
