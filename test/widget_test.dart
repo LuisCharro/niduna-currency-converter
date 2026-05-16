@@ -114,7 +114,7 @@ void main() {
     expect(find.byType(RemoveAdsButton), findsOneWidget);
   });
 
-  testWidgets('Convert amount input selects and clears quickly', (
+  testWidgets('Convert amount input uses sheet keypad and presets', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
@@ -128,21 +128,40 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byType(TextField).first);
+    await tester.tap(find.text('100.00'));
     await tester.pumpAndSettle();
 
-    final editable = tester.state<EditableTextState>(
-      find.byType(EditableText).first,
-    );
-    expect(editable.textEditingValue.selection.baseOffset, 0);
-    expect(editable.textEditingValue.selection.extentOffset, '100.00'.length);
-    expect(find.byTooltip('Clear amount'), findsOneWidget);
+    expect(find.text('Done'), findsOneWidget);
+    expect(find.text('1K'), findsOneWidget);
+    expect(find.byIcon(Icons.backspace_outlined), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Clear amount'));
+    await tester.tap(find.text('5'));
     await tester.pumpAndSettle();
 
-    expect(controller.state.amountText, '');
-    expect(controller.state.quotes.first.amount, '0.00');
+    expect(controller.state.amountText, '5');
+    expect(controller.state.quotes.first.amount, '4.60');
+
+    await tester.tap(find.text('.'));
+    await tester.tap(find.text('2'));
+    await tester.pumpAndSettle();
+
+    expect(controller.state.amountText, '5.2');
+
+    await tester.tap(find.byIcon(Icons.backspace_outlined));
+    await tester.pumpAndSettle();
+
+    expect(controller.state.amountText, '5.');
+
+    await tester.tap(find.text('1K'));
+    await tester.pumpAndSettle();
+
+    expect(controller.state.amountText, '1000');
+    expect(controller.state.quotes.first.amount, '920.00');
+
+    await tester.tap(find.text('Done'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Done'), findsNothing);
   });
 
   testWidgets('Convert daily rates info opens from compact status', (

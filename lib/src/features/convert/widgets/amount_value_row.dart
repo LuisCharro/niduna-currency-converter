@@ -25,6 +25,7 @@ class AmountValueRow extends StatelessWidget {
         Expanded(
           child: AmountEditingField(
             amountText: amountText,
+            base: base,
             onAmountChanged: onAmountChanged,
           ),
         ),
