@@ -91,7 +91,7 @@ Then read only the relevant shared skill and repo-local guide for the task.
 - `design-system-consistency.SKILL.md` — design token consistency
 - `frontend-implementation-baseline.SKILL.md` — frontend standards
 
-**Publish:**
+**Frontend (Stitch Design):**
 - `publish/google-stitch-workflow/SKILL.md` — Stitch-assisted UI design
 
 **Release:**
