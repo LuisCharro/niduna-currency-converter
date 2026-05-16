@@ -42,6 +42,11 @@ class DailyRatesInfoSheet extends StatelessWidget {
                 'The next expected update is shown in your local time.',
                 style: AppTheme.caption.copyWith(color: AppTheme.subtle),
               ),
+              const SizedBox(height: 8),
+              Text(
+                'Faster updates are planned for a future Premium subscription.',
+                style: AppTheme.caption.copyWith(color: AppTheme.subtle),
+              ),
             ],
           ),
         ),

@@ -203,7 +203,9 @@ class _SubscriptionCard extends StatelessWidget {
           const SizedBox(height: 6),
           _SubFeatureRow(Icons.visibility_off, 'Remove ads'),
           _SubFeatureRow(Icons.diamond_outlined, 'Unlock all chart pairs'),
-          _SubFeatureRow(Icons.show_chart, 'Intraday ranges (1H/6H/1D)'),
+          _SubFeatureRow(Icons.speed_rounded, 'Faster updates, planned hourly'),
+          _SubFeatureRow(Icons.notifications_active_outlined, 'Rate alerts'),
+          _SubFeatureRow(Icons.show_chart, 'Intraday chart ranges'),
           const SizedBox(height: 6),
           Row(
             children: <Widget>[
@@ -211,7 +213,7 @@ class _SubscriptionCard extends StatelessWidget {
               const SizedBox(width: 4),
               Flexible(
                 child: Text(
-                  '1 week free trial, then X.XX CHF/year',
+                  '1 week free trial planned. Price depends on provider costs.',
                   style: TextStyle(
                     fontSize: 11.5,
                     fontWeight: FontWeight.w700,

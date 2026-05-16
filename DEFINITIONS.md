@@ -111,7 +111,7 @@ large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 |---------|------|-------------|------|
 | Remove Ads — forever | One-time | **1.99** | Core unlock; below My Currency Pro ($3.99) |
 | Charts Pro — all pairs forever | One-time | **2.99** | Unlocks any chart pair selection |
-| Subscription | Recurring | **Coming Soon** — "1 week free, then X.XX CHF/year" | Informational only in Phase 1; real pricing TBD |
+| Subscription | Recurring | **Coming Soon** — 1-week free trial planned; store-local yearly price TBD | Informational only in Phase 1; real pricing TBD |
 
 > Remove Ads purchase hides ALL ad surfaces AND removes rewarded-ad offer prompts (per monetization-access-rules.md).
 

@@ -170,7 +170,7 @@ Must not include:
 |---------|------|-------|------|
 | Remove Ads | One-time | 1.99 CHF | ✅ (simulated 2s purchase) |
 | Charts Pro | One-time | 2.99 CHF | ✅ (simulated 2s purchase) |
-| Subscription | Recurring | Coming Soon — "1 week free, then X.XX CHF/year" | Informational only |
+| Subscription | Recurring | Coming Soon — 1-week free trial planned; store-local yearly price TBD | Informational only |
 
 #### Paywall entry points (Phase 1)
 

@@ -136,6 +136,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.textContaining('shown in your local time'), findsOneWidget);
+    expect(find.textContaining('future Premium subscription'), findsOneWidget);
   });
 
   testWidgets('Convert currency picker opens on a compact viewport', (
@@ -248,6 +249,10 @@ void main() {
     expect(find.text('Premium'), findsOneWidget);
     expect(find.text('Default base currency'), findsWidgets);
     expect(find.text('Dark mode'), findsWidgets);
+    expect(find.text('Faster updates, planned hourly'), findsOneWidget);
+    expect(find.text('Rate alerts'), findsOneWidget);
+    expect(find.text('Intraday chart ranges'), findsOneWidget);
+    expect(find.textContaining('1 week free trial planned'), findsOneWidget);
   });
 
   testWidgets('Charts screen reuses shared remove ads button', (
