@@ -80,7 +80,6 @@ void main() {
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Favorites'), findsNothing);
     expect(find.textContaining('Updated'), findsOneWidget);
-    expect(find.textContaining('Daily rates'), findsOneWidget);
     expect(find.textContaining('Next around'), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
@@ -99,7 +98,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Amount'), findsOneWidget);
-    expect(find.text('Daily rates · Updated May 8'), findsOneWidget);
+    expect(find.textContaining('Updated May 8'), findsOneWidget);
     expect(find.textContaining('Next around'), findsOneWidget);
     expect(find.text('3 shown currencies'), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
@@ -178,7 +177,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Daily rates · Updated May 8'));
+    await tester.tap(find.textContaining('Updated May 8'));
     await tester.pumpAndSettle();
 
     expect(find.text('Daily exchange rates'), findsOneWidget);

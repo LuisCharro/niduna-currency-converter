@@ -10,8 +10,6 @@ class AmountStatusBar extends StatelessWidget {
     required this.lastUpdatedLabel,
     required this.nextUpdateLabel,
     required this.status,
-    required this.onRefresh,
-    required this.onMore,
     super.key,
   });
 
@@ -19,33 +17,14 @@ class AmountStatusBar extends StatelessWidget {
   final String lastUpdatedLabel;
   final String nextUpdateLabel;
   final ConvertStatus status;
-  final Future<void> Function() onRefresh;
-  final VoidCallback onMore;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: _FreshnessButton(
-            status: status,
-            isRefreshing: isRefreshing,
-            lastUpdatedLabel: lastUpdatedLabel,
-            nextUpdateLabel: nextUpdateLabel,
-          ),
-        ),
-        _ActionButton(
-          tooltip: 'Refresh rates',
-          icon: Icons.sync_rounded,
-          onPressed: onRefresh,
-        ),
-        const SizedBox(width: 6),
-        _ActionButton(
-          tooltip: 'Settings',
-          icon: Icons.tune_rounded,
-          onPressed: onMore,
-        ),
-      ],
+    return _FreshnessButton(
+      status: status,
+      isRefreshing: isRefreshing,
+      lastUpdatedLabel: lastUpdatedLabel,
+      nextUpdateLabel: nextUpdateLabel,
     );
   }
 }
@@ -72,45 +51,22 @@ class _FreshnessButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppTheme.radius),
         onTap: () => _showInfo(context),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 3),
+          padding: const EdgeInsets.symmetric(vertical: 4),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               _StatusDot(active: isRefreshing),
               const SizedBox(width: 7),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTheme.caption.copyWith(
-                        color: AppTheme.muted,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    Text(
-                      nextUpdateLabel,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppTheme.subtle,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        height: 1.2,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  '$title · $nextUpdateLabel',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTheme.caption.copyWith(
+                    color: AppTheme.muted,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 4),
-              const Icon(
-                Icons.info_outline_rounded,
-                size: 14,
-                color: AppTheme.subtle,
               ),
             ],
           ),
@@ -121,12 +77,11 @@ class _FreshnessButton extends StatelessWidget {
 
   String get _title {
     return switch (status) {
-      ConvertStatus.loading => 'Daily rates · Loading',
-      ConvertStatus.refreshing => 'Daily rates · Refreshing',
-      ConvertStatus.stale => 'Cached daily rates · $lastUpdatedLabel',
+      ConvertStatus.loading => 'Daily rates loading',
+      ConvertStatus.refreshing => 'Refreshing daily rates',
+      ConvertStatus.stale => 'Cached · $lastUpdatedLabel',
       ConvertStatus.noCache => 'Daily rates unavailable',
-      ConvertStatus.cached ||
-      ConvertStatus.fresh => 'Daily rates · $lastUpdatedLabel',
+      ConvertStatus.cached || ConvertStatus.fresh => lastUpdatedLabel,
     };
   }
 
@@ -142,11 +97,12 @@ class _FreshnessButton extends StatelessWidget {
   }
 }
 
-class _ActionButton extends StatelessWidget {
-  const _ActionButton({
+class AmountActionButton extends StatelessWidget {
+  const AmountActionButton({
     required this.tooltip,
     required this.icon,
     required this.onPressed,
+    super.key,
   });
 
   final String tooltip;
@@ -160,12 +116,12 @@ class _ActionButton extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(icon, size: 19),
       style: IconButton.styleFrom(
-        backgroundColor: AppTheme.card.withValues(alpha: .72),
+        backgroundColor: AppTheme.card.withValues(alpha: .48),
         foregroundColor: AppTheme.primary,
-        fixedSize: const Size(42, 42),
-        minimumSize: const Size(42, 42),
+        fixedSize: const Size(44, 44),
+        minimumSize: const Size(44, 44),
         padding: EdgeInsets.zero,
-        side: BorderSide(color: AppTheme.border.withValues(alpha: .16)),
+        side: BorderSide(color: AppTheme.border.withValues(alpha: .12)),
       ),
     );
   }

@@ -43,18 +43,33 @@ class AmountPanel extends StatelessWidget {
             lastUpdatedLabel: lastUpdatedLabel,
             nextUpdateLabel: nextUpdateLabel,
             status: status,
-            onRefresh: onRefresh,
-            onMore: onMore,
           ),
-          const SizedBox(height: 14),
-          Text(
-            'Amount',
-            style: AppTheme.caption.copyWith(
-              color: AppTheme.muted,
-              fontWeight: FontWeight.w800,
-            ),
+          const SizedBox(height: 10),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  'Amount',
+                  style: AppTheme.caption.copyWith(
+                    color: AppTheme.muted,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              AmountActionButton(
+                tooltip: 'Refresh rates',
+                icon: Icons.sync_rounded,
+                onPressed: () => onRefresh(),
+              ),
+              const SizedBox(width: 8),
+              AmountActionButton(
+                tooltip: 'Settings',
+                icon: Icons.tune_rounded,
+                onPressed: onMore,
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           AmountValueRow(
             amountText: amountText,
             base: base,
