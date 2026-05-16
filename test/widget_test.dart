@@ -336,6 +336,9 @@ void main() {
 
     final chart = tester.widget<LineChart>(find.byType(LineChart));
     final data = chart.data;
+    expect(data.lineTouchData.handleBuiltInTouches, isFalse);
+    expect(data.lineTouchData.touchSpotThreshold, greaterThanOrEqualTo(40));
+
     final indicators = data.lineTouchData.getTouchedSpotIndicator(
       data.lineBarsData.first,
       <int>[1],

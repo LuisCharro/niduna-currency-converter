@@ -1,0 +1,177 @@
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../../../core/theme/app_theme.dart';
+
+class ChartLinePlot extends StatelessWidget {
+  const ChartLinePlot({
+    required this.spots,
+    required this.dates,
+    required this.minY,
+    required this.maxY,
+    required this.lineColor,
+    required this.touchedIndex,
+    required this.onTouch,
+    required this.touchSpotThreshold,
+    super.key,
+  });
+
+  final List<FlSpot> spots;
+  final List<DateTime> dates;
+  final double minY;
+  final double maxY;
+  final Color lineColor;
+  final int? touchedIndex;
+  final BaseTouchCallback<LineTouchResponse> onTouch;
+  final double touchSpotThreshold;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Positioned.fill(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  AppTheme.card.withValues(alpha: .18),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+        ),
+        LineChart(
+          LineChartData(
+            minY: minY,
+            maxY: maxY,
+            lineTouchData: LineTouchData(
+              enabled: true,
+              handleBuiltInTouches: false,
+              touchSpotThreshold: touchSpotThreshold,
+              touchTooltipData: LineTouchTooltipData(
+                getTooltipColor: (_) => Colors.transparent,
+                tooltipPadding: EdgeInsets.zero,
+                tooltipMargin: 0,
+                getTooltipItems: (_) => [],
+              ),
+              touchCallback: onTouch,
+              getTouchedSpotIndicator: _spotIndicators,
+            ),
+            gridData: FlGridData(
+              show: true,
+              drawVerticalLine: false,
+              horizontalInterval: (maxY - minY) / 2,
+              getDrawingHorizontalLine: (_) => FlLine(
+                color: AppTheme.border.withValues(alpha: .1),
+                strokeWidth: .5,
+                dashArray: [5, 5],
+              ),
+            ),
+            extraLinesData: const ExtraLinesData(),
+            titlesData: _titlesData(),
+            borderData: FlBorderData(show: false),
+            lineBarsData: <LineChartBarData>[
+              LineChartBarData(
+                spots: spots,
+                isCurved: true,
+                curveSmoothness: 0.35,
+                preventCurveOverShooting: true,
+                color: lineColor,
+                barWidth: 2.8,
+                isStrokeCapRound: true,
+                dotData: const FlDotData(show: false),
+                showingIndicators: touchedIndex == null
+                    ? const <int>[]
+                    : <int>[touchedIndex!],
+                belowBarData: BarAreaData(
+                  show: true,
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: <Color>[
+                      lineColor.withValues(alpha: .18),
+                      lineColor.withValues(alpha: .02),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<TouchedSpotIndicatorData?> _spotIndicators(
+    LineChartBarData barData,
+    List<int> spotIndexes,
+  ) {
+    return spotIndexes.map((index) {
+      return TouchedSpotIndicatorData(
+        FlLine(
+          color: lineColor.withValues(alpha: .72),
+          strokeWidth: 2.4,
+          dashArray: [5, 4],
+        ),
+        FlDotData(
+          show: true,
+          getDotPainter: (spot, percent, barData, index) {
+            return FlDotCirclePainter(
+              radius: 5.5,
+              color: AppTheme.card,
+              strokeWidth: 3.2,
+              strokeColor: lineColor,
+            );
+          },
+        ),
+      );
+    }).toList();
+  }
+
+  FlTitlesData _titlesData() {
+    return FlTitlesData(
+      leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      bottomTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 24,
+          interval: 1,
+          minIncluded: false,
+          maxIncluded: false,
+          getTitlesWidget: (value, meta) {
+            final index = value.toInt();
+            if (value != index.toDouble() || !_labelIndexes().contains(index)) {
+              return const SizedBox.shrink();
+            }
+            return Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                DateFormat('d MMM').format(dates[index]),
+                style: TextStyle(
+                  fontSize: 11.5,
+                  color: AppTheme.muted,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Set<int> _labelIndexes() {
+    final count = dates.length;
+    if (count == 0) return const <int>{};
+    if (count <= 8) return List<int>.generate(count, (index) => index).toSet();
+
+    final section = (count - 1) / 4;
+    return <int>{section.round(), (section * 2).round(), (section * 3).round()};
+  }
+}
