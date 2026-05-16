@@ -28,6 +28,8 @@ What must stay preserved:
 | Tool | `mmx-cli` (`mmx image generate`) |
 | Model | `image-01` |
 | Plan quota | Plus plan = 50 images/day |
+| OpenAI model | `gpt-image-2` |
+| OpenAI observed cost | `$1.92 / 36` successful images = about `$0.053` per 1024x1024 `medium` image; failed model-access requests cost $0 because no image is generated |
 | Generate size | 1024×1024 |
 | App asset size | 256×256 PNG in `assets/icons/currencies/` |
 | Widget | `lib/src/shared/widgets/currency_flag_icon.dart` |
@@ -59,7 +61,7 @@ The generator script supports two providers from the same prompt JSON:
 | Provider | Command | Output root | Notes |
 |----------|---------|-------------|-------|
 | MiniMax | `--provider minimax` | `.tmp/icon-v4/minimax/` | Default; supports `--subject-ref` from the USD anchor when JSON allows it. |
-| OpenAI | `--provider openai` | `.tmp/icon-v4/openai/` | Requires `OPENAI_API_KEY`; text-to-image only in this script, no reference image style transfer yet. |
+| OpenAI | `--provider openai` | `.tmp/icon-v4/openai/` | Uses `gpt-image-2`; requires `OPENAI_API_KEY`; text-to-image only in this script, no reference image style transfer yet. |
 
 Examples:
 
@@ -68,14 +70,65 @@ Examples:
 .devtools/generate_currency_icons.sh --one CLP
 
 # OpenAI
-OPENAI_API_KEY=... .devtools/generate_currency_icons.sh --provider openai --one CLP
+.devtools/generate_currency_icons.sh --provider openai --one CLP
+
+# Or pass the key directly for this one command
+.devtools/generate_currency_icons.sh --provider openai --openai-api-key sk-... --one CLP
 
 # OpenAI quality/cost knobs
-OPENAI_IMAGE_MODEL=gpt-image-1 \
+OPENAI_IMAGE_MODEL=gpt-image-2 \
 OPENAI_IMAGE_QUALITY=medium \
 OPENAI_IMAGE_SIZE=1024x1024 \
   .devtools/generate_currency_icons.sh --provider openai --one CLP
 ```
+
+OpenAI credentials can be provided three ways:
+
+1. `OPENAI_API_KEY=...` environment variable.
+2. `.env.local` or `OPENAI_ENV_FILE=/path/to/file`.
+3. `--openai-api-key sk-...` command parameter.
+
+`.env.local` is gitignored; never commit API keys. Prefer `.env.local` over command-line keys
+when possible because shell history/process lists can expose command arguments.
+
+This repo intentionally keeps the OpenAI key repo-scoped in `.env.local` instead of relying on
+global shell environment variables. Luis has a `codex-safe` wrapper that strips OpenAI variables
+before launching Codex, so Codex/Codex Desktop should not inherit the key. The badge-generation
+script reads `.env.local` directly when `--provider openai` is used.
+
+Example `.env.local` content:
+
+```bash
+OPENAI_API_KEY=sk-...
+```
+
+OpenAI cost notes from dashboard observation:
+
+- `gpt-image-2`, `1024x1024`, `quality=medium`, `n=1` generated a high-quality PHP badge.
+- The OpenAI dashboard showed `$1.92` for `36` successful image generations, so use
+  `$0.053` per successful image as the practical budget number for this setting.
+- Failed attempts against unavailable models such as `gpt-image-1` or `dall-e-3` returned errors
+  before generating an image and should cost `$0.00`.
+- Use a hard cap of one attempt per currency unless the user explicitly approves more spend.
+- Rotate the API key after ad-hoc testing if it was pasted into chat or logs.
+
+OpenAI v4 batch result on 2026-05-16:
+
+- Generated one `USD` anchor, then batch-generated the remaining candidates with `gpt-image-2`.
+- `PHP` was accidentally regenerated once because the accepted best file was uppercase `PHP.png`
+  while the batch skip check looked for lowercase `php.*`; the script now checks both cases.
+- Accepted/deployed 32 OpenAI source badges: all generated pass candidates plus the original
+  manually accepted PHP source.
+- Rejected and did not deploy OpenAI `PLN`: rendered `zt` instead of `zł`.
+- Rejected and did not deploy OpenAI `THB`: rendered a Bitcoin-like `₿` instead of Thai baht `฿`.
+- `COP` passed because the prompt intentionally uses `COL$`; review tools may flag this as
+  non-standard if they expect only `$`.
+- `HKD` passed with `HK$`; `TRY` passed with the Turkish lira `₺` after individual review.
+- Dashboard-observed cost after the batch/retry work was `$1.92` for `36` successful images,
+  about `$0.053` each.
+- `CHF` batch output was rejected by human review because it added ugly bracket/extra-square
+  artifacts around `CHF`. Regenerated once with black `CHF`, no contrast layer, and a strict
+  "exactly one white Swiss cross" prompt; the replacement was deployed.
 
 ## Non-Negotiable Prompt Rules
 

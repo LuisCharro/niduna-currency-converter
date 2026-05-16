@@ -28,18 +28,36 @@ The same script can also use the OpenAI Images API when `--provider openai` is p
 To use OpenAI instead of MiniMax:
 
 ```bash
-OPENAI_API_KEY=... .devtools/generate_currency_icons.sh --provider openai --one CLP
-OPENAI_API_KEY=... .devtools/generate_currency_icons.sh --provider openai --batch
+.devtools/generate_currency_icons.sh --provider openai --one CLP
+.devtools/generate_currency_icons.sh --provider openai --batch
 .devtools/generate_currency_icons.sh --provider openai --deploy
+
+# Direct parameter alternative for one-off local use:
+.devtools/generate_currency_icons.sh --provider openai --openai-api-key sk-... --one CLP
 ```
 
 OpenAI tuning environment variables:
 
 ```bash
-OPENAI_IMAGE_MODEL=gpt-image-1
+OPENAI_IMAGE_MODEL=gpt-image-2
 OPENAI_IMAGE_QUALITY=low|medium|high
 OPENAI_IMAGE_SIZE=1024x1024
 ```
+
+The script also loads `.env.local` by default, or `OPENAI_ENV_FILE=/path/to/file` when set.
+It also accepts `--openai-api-key KEY`. Keep API keys in ignored local files when possible;
+never commit them, and avoid command-line keys if shell history/process visibility matters.
+
+For this repo, `.env.local` is the preferred key location because Luis intentionally strips
+OpenAI variables from Codex via `codex-safe`. The script reads `.env.local` directly only when
+OpenAI generation is requested, so Codex/Codex Desktop should not inherit the key.
+
+Cost expectation for the tested OpenAI path:
+
+- `gpt-image-2`, `1024x1024`, `quality=medium`, `n=1` is about `$0.053` per successful image based on the OpenAI dashboard observation: `$1.92 / 36` images.
+- Failed requests for unavailable models should not bill image-generation cost because no image is produced.
+- Default to one attempt per currency unless the user approves more spend.
+- Rotate pasted API keys after testing if they appeared in chat or logs.
 
 To regenerate one currency only:
 
@@ -65,6 +83,9 @@ provider is MiniMax.
 
 The OpenAI path is currently text-to-image only. Keep its outputs under `.tmp/icon-v4/openai/`
 and compare them manually with MiniMax outputs before deploying.
+
+The first successful OpenAI test was PHP with `gpt-image-2`; manual and vision review rated it
+excellent, and it was deployed to `assets/icons/currencies/`.
 
 The following default to `subject_ref: "never"` because they previously drifted or became unstable:
 

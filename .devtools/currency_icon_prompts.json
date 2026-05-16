@@ -47,12 +47,12 @@
     "code": "CHF",
     "name": "Swiss Franc",
     "symbol": "CHF",
-    "text_color": "white",
-    "flag_desc": "red circle with a white Greek cross plus sign",
+    "text_color": "black",
+    "flag_desc": "solid Swiss red circle with one clean centered white Swiss cross",
     "flag_colors": "#FF0000 white",
-    "contrast_layer": true,
+    "contrast_layer": false,
     "subject_ref": "auto",
-    "notes": "CHF text follows the original specification; Fr. can be substituted manually if preferred."
+    "notes": "Render exactly one simple white Swiss cross, not extra square blocks. Place large bold black CHF text centered over the cross. No brackets, no side bars, no duplicated cross pieces."
   },
   {
     "code": "CAD",

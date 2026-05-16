@@ -3,13 +3,13 @@
 # generate_currency_icons.sh — Generate flat circular currency badges via MiniMax or OpenAI
 #
 # Usage:
-#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --quota
-#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --anchor
-#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --test-ref
-#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --batch
-#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --one CODE
-#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --quality
-#   .devtools/generate_currency_icons.sh [--provider minimax|openai] --deploy
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --quota
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --anchor
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --test-ref
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --batch
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --one CODE
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --quality
+#   .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --deploy
 #
 # Design decisions:
 # - Use the word "badge", not "icon"
@@ -28,9 +28,11 @@ PROVIDER="${IMAGE_PROVIDER:-minimax}"
 COMMAND=""
 COMMAND_ARG=""
 
-OPENAI_IMAGE_MODEL="${OPENAI_IMAGE_MODEL:-gpt-image-1}"
+OPENAI_IMAGE_MODEL="${OPENAI_IMAGE_MODEL:-gpt-image-2}"
 OPENAI_IMAGE_QUALITY="${OPENAI_IMAGE_QUALITY:-medium}"
 OPENAI_IMAGE_SIZE="${OPENAI_IMAGE_SIZE:-1024x1024}"
+OPENAI_ENV_FILE="${OPENAI_ENV_FILE:-$PROJECT_ROOT/.env.local}"
+OPENAI_API_KEY_ARG=""
 
 MINIMAX_IMAGE_MODEL="${MINIMAX_IMAGE_MODEL:-image-01}"
 
@@ -41,6 +43,14 @@ parse_args() {
         PROVIDER="${2:-}"
         [[ -n "$PROVIDER" ]] || {
           log "ERROR: --provider requires minimax or openai"
+          exit 1
+        }
+        shift 2
+        ;;
+      --openai-api-key)
+        OPENAI_API_KEY_ARG="${2:-}"
+        [[ -n "$OPENAI_API_KEY_ARG" ]] || {
+          log "ERROR: --openai-api-key requires a value"
           exit 1
         }
         shift 2
@@ -95,17 +105,18 @@ usage() {
   cat <<'USAGE'
 Usage:
   .devtools/generate_currency_icons.sh [--provider minimax|openai] --quota
-  .devtools/generate_currency_icons.sh [--provider minimax|openai] --anchor
-  .devtools/generate_currency_icons.sh [--provider minimax|openai] --test-ref
-  .devtools/generate_currency_icons.sh [--provider minimax|openai] --batch
-  .devtools/generate_currency_icons.sh [--provider minimax|openai] --one CODE
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --anchor
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --test-ref
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --batch
+  .devtools/generate_currency_icons.sh [--provider minimax|openai] [--openai-api-key KEY] --one CODE
   .devtools/generate_currency_icons.sh [--provider minimax|openai] --quality
   .devtools/generate_currency_icons.sh [--provider minimax|openai] --deploy
 
 Environment:
   IMAGE_PROVIDER=minimax|openai        Default provider if --provider is omitted
   OPENAI_API_KEY=...                  Required for --provider openai generation
-  OPENAI_IMAGE_MODEL=gpt-image-1      OpenAI model override
+  --openai-api-key KEY                Alternative to OPENAI_API_KEY/.env.local
+  OPENAI_IMAGE_MODEL=gpt-image-2      OpenAI model override
   OPENAI_IMAGE_QUALITY=low|medium|high
   OPENAI_IMAGE_SIZE=1024x1024
 USAGE
@@ -120,6 +131,18 @@ require_cmd() {
 
 lowercase() {
   printf '%s' "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+load_openai_key() {
+  [[ -n "$OPENAI_API_KEY_ARG" ]] && {
+    OPENAI_API_KEY="$OPENAI_API_KEY_ARG"
+    return
+  }
+  [[ -n "${OPENAI_API_KEY:-}" ]] && return
+  [[ -f "$OPENAI_ENV_FILE" ]] && {
+    OPENAI_API_KEY="$(grep -E '^OPENAI_API_KEY=' "$OPENAI_ENV_FILE" | head -1 | cut -d= -f2-)"
+    [[ -n "$OPENAI_API_KEY" ]] && return
+  }
 }
 
 check_prereqs() {
@@ -137,8 +160,9 @@ check_prereqs() {
       ;;
     openai)
       if [[ "$mode" != "deploy" ]]; then
+        load_openai_key
         [[ -n "${OPENAI_API_KEY:-}" ]] || {
-          log "ERROR: OPENAI_API_KEY is not set"
+          log "ERROR: OPENAI_API_KEY is not set (env, --openai-api-key, or $OPENAI_ENV_FILE)"
           exit 1
         }
         python3 - <<'PY' >/dev/null 2>&1 || {
@@ -317,6 +341,12 @@ generate_one_openai() {
   local output_path="$target_dir/${prefix}_001.png"
 
   mkdir -p "$target_dir"
+  load_openai_key
+  [[ -n "${OPENAI_API_KEY:-}" ]] || {
+    log "ERROR: OPENAI_API_KEY is not set (env, --openai-api-key, or $OPENAI_ENV_FILE)"
+    exit 1
+  }
+  OPENAI_API_KEY="$OPENAI_API_KEY" \
   OPENAI_IMAGE_MODEL="$OPENAI_IMAGE_MODEL" \
   OPENAI_IMAGE_QUALITY="$OPENAI_IMAGE_QUALITY" \
   OPENAI_IMAGE_SIZE="$OPENAI_IMAGE_SIZE" \
@@ -397,7 +427,7 @@ batch_generate() {
     local code_lower
     code_lower="$(lowercase "$code")"
 
-    if compgen -G "$BEST_DIR/${code_lower}.*" >/dev/null; then
+    if compgen -G "$BEST_DIR/${code_lower}.*" >/dev/null || compgen -G "$BEST_DIR/${code}.*" >/dev/null; then
       log "SKIP $code — already present in best/"
       continue
     fi
@@ -470,7 +500,7 @@ deploy_best() {
   shopt -s nullglob
   for src in "$BEST_DIR"/*; do
     [[ -f "$src" ]] || continue
-    stem="$(basename "${src%.*}")"
+    stem="$(lowercase "$(basename "${src%.*}")")"
     target="$FINAL_DIR/$stem.png"
 
     if [[ "$RESIZE_TOOL" == "sips" ]]; then
