@@ -83,6 +83,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
       builder: (_) => SafeArea(
         top: false,
         child: LockedPairActionSheet(
+          canWatchAd: widget.controller.canOfferRewardedChartUnlock,
           onWatchAd: () => Navigator.of(context).pop('watch_ad'),
           onBuyForever: () {
             Navigator.of(context).pop('buy_forever');

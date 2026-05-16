@@ -29,9 +29,7 @@ extension ConvertControllerEditing on ConvertController {
   void setAmountText(String text) {
     _amountText = text;
     final parsed = double.tryParse(text.replaceAll(',', '.'));
-    if (parsed != null) {
-      _amount = parsed;
-    }
+    _amount = parsed ?? (text.trim().isEmpty ? 0 : _amount);
     state = _snapshot == null
         ? state.copyWith(amountText: _amountText)
         : _stateFromSnapshot(_snapshot!, state.status);

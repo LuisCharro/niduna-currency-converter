@@ -12,6 +12,7 @@ import 'package:currency_converter/src/core/rates/rates_cache.dart';
 import 'package:currency_converter/src/core/rates/rates_client.dart';
 import 'package:currency_converter/src/core/rates/rates_service.dart';
 import 'package:currency_converter/src/features/charts/charts_screen.dart';
+import 'package:currency_converter/src/features/charts/widgets/locked_pair_action_sheet.dart';
 import 'package:currency_converter/src/features/convert/data/latest_rates_repository.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
 import 'package:currency_converter/src/features/convert/presentation/convert_controller.dart';
@@ -111,6 +112,37 @@ void main() {
     expect(find.byType(BottomTabFrame), findsOneWidget);
     expect(find.byType(AdSupportShelf), findsOneWidget);
     expect(find.byType(RemoveAdsButton), findsOneWidget);
+  });
+
+  testWidgets('Convert amount input selects and clears quickly', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(TextField).first);
+    await tester.pumpAndSettle();
+
+    final editable = tester.state<EditableTextState>(
+      find.byType(EditableText).first,
+    );
+    expect(editable.textEditingValue.selection.baseOffset, 0);
+    expect(editable.textEditingValue.selection.extentOffset, '100.00'.length);
+    expect(find.byTooltip('Clear amount'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Clear amount'));
+    await tester.pumpAndSettle();
+
+    expect(controller.state.amountText, '');
+    expect(controller.state.quotes.first.amount, '0.00');
   });
 
   testWidgets('Convert daily rates info opens from compact status', (
@@ -344,6 +376,48 @@ void main() {
 
     expect(find.byType(BottomTabFrame), findsOneWidget);
     expect(find.byType(AdSupportShelf), findsNothing);
+  });
+
+  testWidgets('Locked chart pair hides rewarded ad when unavailable', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: LockedPairActionSheet(
+            canWatchAd: false,
+            onWatchAd: () {},
+            onBuyForever: () {},
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Watch ad · Unlock for 24h'), findsNothing);
+    expect(find.text('Unlock all pairs forever'), findsOneWidget);
+    expect(
+      find.text('Rewarded ads are unavailable after Remove Ads'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('Locked chart pair offers rewarded ad for free users', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: LockedPairActionSheet(
+            canWatchAd: true,
+            onWatchAd: () {},
+            onBuyForever: () {},
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Watch ad · Unlock for 24h'), findsOneWidget);
+    expect(find.text('Unlock all pairs forever'), findsOneWidget);
   });
 }
 

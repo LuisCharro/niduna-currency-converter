@@ -117,6 +117,21 @@ void main() {
     expect(controller.state.quotes.single.amount, '184.00');
   });
 
+  test('controller treats cleared amount as zero', () async {
+    final controller = ConvertController(
+      repository: _FakeRatesRepository(
+        fresh: _snapshot(<String, double>{'EUR': .92}),
+      ),
+      selectedCodes: <String>['EUR'],
+    );
+
+    await controller.load();
+    controller.setAmountText('');
+
+    expect(controller.state.amountText, '');
+    expect(controller.state.quotes.single.amount, '0.00');
+  });
+
   test('controller can add and remove visible currencies', () async {
     final controller = ConvertController(
       repository: _FakeRatesRepository(

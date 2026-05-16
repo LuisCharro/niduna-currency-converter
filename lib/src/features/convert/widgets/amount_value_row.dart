@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/currency/supported_currencies.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../shared/widgets/currency_flag_icon.dart';
+import 'amount_base_button.dart';
+import 'amount_editing_field.dart';
 
-class AmountValueRow extends StatefulWidget {
+class AmountValueRow extends StatelessWidget {
   const AmountValueRow({
     required this.amountText,
     required this.base,
@@ -19,82 +18,18 @@ class AmountValueRow extends StatefulWidget {
   final VoidCallback onBaseTap;
 
   @override
-  State<AmountValueRow> createState() => _AmountValueRowState();
-}
-
-class _AmountValueRowState extends State<AmountValueRow> {
-  late final TextEditingController _controller = TextEditingController(
-    text: widget.amountText,
-  );
-
-  @override
-  void didUpdateWidget(covariant AmountValueRow oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.amountText != oldWidget.amountText &&
-        widget.amountText != _controller.text) {
-      _controller.text = widget.amountText;
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final currency = currencyByCode(widget.base);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Expanded(
-          child: TextField(
-            controller: _controller,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            onChanged: widget.onAmountChanged,
-            decoration: const InputDecoration.collapsed(hintText: '0.00'),
-            style: const TextStyle(
-              fontSize: 42,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 0,
-              height: 1.05,
-            ),
+          child: AmountEditingField(
+            amountText: amountText,
+            onAmountChanged: onAmountChanged,
           ),
         ),
         const SizedBox(width: 12),
-        GestureDetector(
-          onTap: widget.onBaseTap,
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 50),
-            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppTheme.card.withValues(alpha: .78),
-              borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-              border: Border.all(color: AppTheme.border.withValues(alpha: .18)),
-              boxShadow: AppTheme.subtleShadow,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                CurrencyFlagIcon(
-                  code: widget.base,
-                  symbol: currency.symbol,
-                  radius: 13,
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  widget.base,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 0.3,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        AmountBaseButton(base: base, onTap: onBaseTap),
       ],
     );
   }

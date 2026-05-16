@@ -4,11 +4,13 @@ import '../../../core/theme/app_theme.dart';
 
 class LockedPairActionSheet extends StatelessWidget {
   const LockedPairActionSheet({
+    required this.canWatchAd,
     required this.onWatchAd,
     required this.onBuyForever,
     super.key,
   });
 
+  final bool canWatchAd;
   final VoidCallback onWatchAd;
   final VoidCallback onBuyForever;
 
@@ -32,31 +34,36 @@ class LockedPairActionSheet extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              'Choose how to unlock it',
+              canWatchAd
+                  ? 'Choose how to unlock it'
+                  : 'Rewarded ads are unavailable after Remove Ads',
               style: TextStyle(fontSize: 13, color: AppTheme.muted),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: FilledButton.tonal(
-                onPressed: onWatchAd,
-                style: FilledButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+            if (canWatchAd) ...<Widget>[
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: FilledButton.tonal(
+                  onPressed: onWatchAd,
+                  style: FilledButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.play_circle_outline, size: 18),
+                      const SizedBox(width: 8),
+                      Text('Watch ad · Unlock for 24h'),
+                    ],
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.play_circle_outline, size: 18),
-                    const SizedBox(width: 8),
-                    Text('Watch ad · Unlock for 24h'),
-                  ],
-                ),
               ),
-            ),
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
+            ],
             SizedBox(
               width: double.infinity,
               height: 48,
