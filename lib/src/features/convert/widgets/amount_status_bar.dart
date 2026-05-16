@@ -45,21 +45,21 @@ class _FreshnessButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = _title;
+    final nextLabel = nextUpdateLabel.replaceFirst('Next around ', 'Next ');
     return Tooltip(
       message: 'Rates update once per day. Tap for details.',
       child: InkWell(
         borderRadius: BorderRadius.circular(AppTheme.radius),
         onTap: () => _showInfo(context),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
+          padding: const EdgeInsets.symmetric(vertical: 5),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               _StatusDot(active: isRefreshing),
-              const SizedBox(width: 7),
+              const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  '$title · $nextUpdateLabel',
+                  '$title · $nextLabel',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTheme.caption.copyWith(
@@ -97,12 +97,56 @@ class _FreshnessButton extends StatelessWidget {
   }
 }
 
-class AmountActionButton extends StatelessWidget {
-  const AmountActionButton({
+class AmountUtilityPill extends StatelessWidget {
+  const AmountUtilityPill({
+    required this.onRefresh,
+    required this.onMore,
+    super.key,
+  });
+
+  final VoidCallback onRefresh;
+  final VoidCallback onMore;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppTheme.card.withValues(alpha: .62),
+        borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+        border: Border.all(color: AppTheme.border.withValues(alpha: .12)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          _UtilityIconButton(
+            tooltip: 'Refresh rates',
+            icon: Icons.sync_rounded,
+            onPressed: onRefresh,
+          ),
+          SizedBox(
+            height: 20,
+            child: VerticalDivider(
+              width: 1,
+              thickness: 1,
+              color: AppTheme.border.withValues(alpha: .1),
+            ),
+          ),
+          _UtilityIconButton(
+            tooltip: 'Settings',
+            icon: Icons.tune_rounded,
+            onPressed: onMore,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _UtilityIconButton extends StatelessWidget {
+  const _UtilityIconButton({
     required this.tooltip,
     required this.icon,
     required this.onPressed,
-    super.key,
   });
 
   final String tooltip;
@@ -116,12 +160,11 @@ class AmountActionButton extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(icon, size: 19),
       style: IconButton.styleFrom(
-        backgroundColor: AppTheme.card.withValues(alpha: .48),
         foregroundColor: AppTheme.primary,
         fixedSize: const Size(44, 44),
         minimumSize: const Size(44, 44),
         padding: EdgeInsets.zero,
-        side: BorderSide(color: AppTheme.border.withValues(alpha: .12)),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
     );
   }
@@ -136,8 +179,8 @@ class _StatusDot extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
-      width: 8,
-      height: 8,
+      width: 7,
+      height: 7,
       decoration: BoxDecoration(
         color: active ? AppTheme.primary : AppTheme.trendUp,
         shape: BoxShape.circle,

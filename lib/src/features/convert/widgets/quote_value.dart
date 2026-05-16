@@ -16,7 +16,11 @@ class QuoteValue extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        ValuePill(text: '${quote.symbol} ${quote.amount}', active: isActive),
+        ValuePill(
+          text: '${quote.symbol} ${quote.amount}',
+          active: isActive,
+          compact: true,
+        ),
         if (quote.rateLine.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 2),

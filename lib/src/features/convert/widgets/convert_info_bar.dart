@@ -19,8 +19,8 @@ class ConvertInfoBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final details = message == null
-        ? '$statusLabel · $count shown'
-        : '$statusLabel · $message · $count shown';
+        ? '$statusLabel · $count currencies'
+        : '$statusLabel · $message · $count currencies';
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
       child: Container(
@@ -51,8 +51,8 @@ class ConvertInfoBar extends StatelessWidget {
                 visualDensity: VisualDensity.compact,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
               ),
-              icon: const Icon(Icons.add_circle_outline, size: 17),
-              label: const Text('Add currencies'),
+              icon: const Icon(Icons.add_rounded, size: 17),
+              label: const Text('Add'),
             ),
           ],
         ),

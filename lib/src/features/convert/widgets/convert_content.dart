@@ -116,18 +116,18 @@ class _RatesToolbar extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Text(
-              '$count shown currencies',
+              '$count currencies',
               style: AppTheme.caption.copyWith(color: AppTheme.muted),
             ),
           ),
           TextButton.icon(
             onPressed: onEdit,
-            icon: const Icon(Icons.add_circle_outline, size: 16),
-            label: const Text('Add currencies'),
+            icon: const Icon(Icons.add_rounded, size: 17),
+            label: const Text('Add'),
             style: TextButton.styleFrom(
               foregroundColor: AppTheme.primary,
               minimumSize: const Size(0, 34),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               textStyle: const TextStyle(
                 fontSize: 12,

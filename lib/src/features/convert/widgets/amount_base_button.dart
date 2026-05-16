@@ -24,11 +24,10 @@ class AmountBaseButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppTheme.pillRadius),
           child: Container(
             constraints: const BoxConstraints(minHeight: 50, minWidth: 76),
-            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+            padding: const EdgeInsets.fromLTRB(13, 8, 11, 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-              border: Border.all(color: AppTheme.border.withValues(alpha: .18)),
-              boxShadow: AppTheme.subtleShadow,
+              border: Border.all(color: AppTheme.border.withValues(alpha: .14)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -46,6 +45,12 @@ class AmountBaseButton extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.3,
                   ),
+                ),
+                const SizedBox(width: 2),
+                Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  size: 17,
+                  color: AppTheme.muted,
                 ),
               ],
             ),

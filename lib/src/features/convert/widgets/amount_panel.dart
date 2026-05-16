@@ -34,52 +34,43 @@ class AmountPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+      padding: const EdgeInsets.fromLTRB(20, 6, 20, 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          AmountStatusBar(
-            isRefreshing: isRefreshing,
-            lastUpdatedLabel: lastUpdatedLabel,
-            nextUpdateLabel: nextUpdateLabel,
-            status: status,
-          ),
-          const SizedBox(height: 10),
           Row(
             children: <Widget>[
               Expanded(
-                child: Text(
-                  'Amount',
-                  style: AppTheme.caption.copyWith(
-                    color: AppTheme.muted,
-                    fontWeight: FontWeight.w800,
-                  ),
+                child: AmountStatusBar(
+                  isRefreshing: isRefreshing,
+                  lastUpdatedLabel: lastUpdatedLabel,
+                  nextUpdateLabel: nextUpdateLabel,
+                  status: status,
                 ),
               ),
-              AmountActionButton(
-                tooltip: 'Refresh rates',
-                icon: Icons.sync_rounded,
-                onPressed: () => onRefresh(),
-              ),
-              const SizedBox(width: 8),
-              AmountActionButton(
-                tooltip: 'Settings',
-                icon: Icons.tune_rounded,
-                onPressed: onMore,
-              ),
+              const SizedBox(width: 12),
+              AmountUtilityPill(onRefresh: () => onRefresh(), onMore: onMore),
             ],
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 12),
+          Text(
+            'Amount',
+            style: AppTheme.caption.copyWith(
+              color: AppTheme.muted,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 1),
           AmountValueRow(
             amountText: amountText,
             base: base,
             onAmountChanged: onAmountChanged,
             onBaseTap: onBaseTap,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           DecoratedBox(
             decoration: BoxDecoration(
-              color: AppTheme.border.withValues(alpha: .2),
+              color: AppTheme.border.withValues(alpha: .16),
               borderRadius: BorderRadius.circular(2),
             ),
             child: const SizedBox(height: 1, width: double.infinity),
