@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../domain/convert_state.dart';
 import 'amount_panel.dart';
 
 class AmountCard extends StatelessWidget {
   const AmountCard({
     required this.isRefreshing,
     required this.lastUpdatedLabel,
+    required this.nextUpdateLabel,
+    required this.status,
     required this.amountText,
     required this.base,
     required this.onRefresh,
@@ -17,6 +20,8 @@ class AmountCard extends StatelessWidget {
 
   final bool isRefreshing;
   final String lastUpdatedLabel;
+  final String nextUpdateLabel;
+  final ConvertStatus status;
   final String amountText;
   final String base;
   final Future<void> Function() onRefresh;
@@ -29,6 +34,8 @@ class AmountCard extends StatelessWidget {
     return AmountPanel(
       isRefreshing: isRefreshing,
       lastUpdatedLabel: lastUpdatedLabel,
+      nextUpdateLabel: nextUpdateLabel,
+      status: status,
       amountText: amountText,
       base: base,
       onRefresh: onRefresh,

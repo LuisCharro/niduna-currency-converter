@@ -46,6 +46,8 @@ class _ConvertContentState extends State<ConvertContent> {
         AmountCard(
           isRefreshing: widget.state.isRefreshing,
           lastUpdatedLabel: widget.state.lastUpdatedLabel,
+          nextUpdateLabel: widget.state.nextUpdateLabel,
+          status: widget.state.status,
           amountText: widget.state.amountText,
           base: widget.state.base,
           onRefresh: widget.onRefresh,

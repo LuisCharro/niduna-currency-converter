@@ -19,6 +19,7 @@ extension ConvertControllerEditing on ConvertController {
       base: _base,
       selectedCodes: _selectedCodes,
       lastUpdatedLabel: 'Loading rates',
+      nextUpdateLabel: 'Updates once daily',
       message: null,
     );
     _safeNotify();

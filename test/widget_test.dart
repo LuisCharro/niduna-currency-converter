@@ -79,6 +79,8 @@ void main() {
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Favorites'), findsNothing);
     expect(find.textContaining('Updated'), findsOneWidget);
+    expect(find.textContaining('Daily rates'), findsOneWidget);
+    expect(find.textContaining('Next around'), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
   });
@@ -96,6 +98,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Amount'), findsOneWidget);
+    expect(find.text('Daily rates · Updated May 8'), findsOneWidget);
+    expect(find.textContaining('Next around'), findsOneWidget);
     expect(find.text('3 shown currencies'), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
     expect(find.text('USD'), findsOneWidget);
@@ -107,6 +111,31 @@ void main() {
     expect(find.byType(BottomTabFrame), findsOneWidget);
     expect(find.byType(AdSupportShelf), findsOneWidget);
     expect(find.byType(RemoveAdsButton), findsOneWidget);
+  });
+
+  testWidgets('Convert daily rates info opens from compact status', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Daily rates · Updated May 8'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Daily exchange rates'), findsOneWidget);
+    expect(
+      find.textContaining('not minute-by-minute market prices'),
+      findsOneWidget,
+    );
+    expect(find.textContaining('shown in your local time'), findsOneWidget);
   });
 
   testWidgets('Convert currency picker opens on a compact viewport', (

@@ -4,6 +4,7 @@ import 'package:currency_converter/src/features/convert/data/frankfurter_latest_
 import 'package:currency_converter/src/features/convert/domain/convert_quote_builder.dart';
 import 'package:currency_converter/src/features/convert/domain/convert_state.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
+import 'package:currency_converter/src/features/convert/domain/rate_freshness.dart';
 import 'package:currency_converter/src/features/convert/presentation/convert_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -64,6 +65,41 @@ void main() {
 
     expect(controller.state.status, ConvertStatus.fresh);
     expect(controller.state.quotes.single.code, 'EUR');
+    expect(controller.state.lastUpdatedLabel, 'Updated May 8');
+    expect(controller.state.nextUpdateLabel, contains('Next around'));
+  });
+
+  test('rate freshness formats date-only updates without fake midnight', () {
+    final label = RateFreshness.updatedLabel(
+      rateDate: DateTime(2026, 5, 8),
+      savedAt: DateTime(2026, 5, 8, 9),
+    );
+
+    expect(label, 'Updated May 8');
+  });
+
+  test('rate freshness calculates summer weekday update in Central Europe', () {
+    final next = RateFreshness.nextExpectedUpdate(
+      now: DateTime.utc(2026, 5, 15, 10),
+    );
+
+    expect(next.toUtc(), DateTime.utc(2026, 5, 15, 14));
+  });
+
+  test('rate freshness skips weekends', () {
+    final next = RateFreshness.nextExpectedUpdate(
+      now: DateTime.utc(2026, 5, 16, 10),
+    );
+
+    expect(next.toUtc(), DateTime.utc(2026, 5, 18, 14));
+  });
+
+  test('rate freshness calculates winter weekday update in Central Europe', () {
+    final next = RateFreshness.nextExpectedUpdate(
+      now: DateTime.utc(2026, 2, 2, 10),
+    );
+
+    expect(next.toUtc(), DateTime.utc(2026, 2, 2, 15));
   });
 
   test('controller recalculates visible quotes when amount changes', () async {

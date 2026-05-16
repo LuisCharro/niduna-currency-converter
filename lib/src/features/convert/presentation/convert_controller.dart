@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 
 import '../../../core/preferences/app_preferences.dart';
 import '../../favorites/data/favorites_store.dart';
@@ -7,6 +6,7 @@ import '../data/latest_rates_repository.dart';
 import '../domain/convert_quote_builder.dart';
 import '../domain/convert_state.dart';
 import '../domain/latest_rates_snapshot.dart';
+import '../domain/rate_freshness.dart';
 import '../models/currency_quote.dart';
 
 part 'convert_controller_editing.dart';
@@ -127,6 +127,7 @@ class ConvertController extends ChangeNotifier {
             );
           }).toList(),
       lastUpdatedLabel: _formatUpdated(snapshot),
+      nextUpdateLabel: RateFreshness.nextUpdateLabel(),
       base: _base,
       amountText: _amountText,
       selectedCodes: List<String>.unmodifiable(_selectedCodes),
@@ -134,8 +135,10 @@ class ConvertController extends ChangeNotifier {
   }
 
   String _formatUpdated(LatestRatesSnapshot snapshot) {
-    final date = snapshot.date ?? snapshot.savedAt;
-    return 'Updated: ${DateFormat('MMM d, HH:mm').format(date)}';
+    return RateFreshness.updatedLabel(
+      rateDate: snapshot.date,
+      savedAt: snapshot.savedAt,
+    );
   }
 
   void _safeNotify() {

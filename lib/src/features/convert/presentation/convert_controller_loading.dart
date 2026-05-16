@@ -32,6 +32,7 @@ extension ConvertControllerLoading on ConvertController {
               status: ConvertStatus.noCache,
               quotes: const <CurrencyQuote>[],
               lastUpdatedLabel: 'No cached rates',
+              nextUpdateLabel: 'Connect to refresh daily rates',
               message: 'Connect to the internet to load rates.',
             );
     }

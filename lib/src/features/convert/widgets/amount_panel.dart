@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../domain/convert_state.dart';
 import 'amount_status_bar.dart';
 import 'amount_value_row.dart';
 
@@ -8,6 +9,8 @@ class AmountPanel extends StatelessWidget {
   const AmountPanel({
     required this.isRefreshing,
     required this.lastUpdatedLabel,
+    required this.nextUpdateLabel,
+    required this.status,
     required this.amountText,
     required this.base,
     required this.onRefresh,
@@ -19,6 +22,8 @@ class AmountPanel extends StatelessWidget {
 
   final bool isRefreshing;
   final String lastUpdatedLabel;
+  final String nextUpdateLabel;
+  final ConvertStatus status;
   final String amountText;
   final String base;
   final Future<void> Function() onRefresh;
@@ -36,6 +41,8 @@ class AmountPanel extends StatelessWidget {
           AmountStatusBar(
             isRefreshing: isRefreshing,
             lastUpdatedLabel: lastUpdatedLabel,
+            nextUpdateLabel: nextUpdateLabel,
+            status: status,
             onRefresh: onRefresh,
             onMore: onMore,
           ),
