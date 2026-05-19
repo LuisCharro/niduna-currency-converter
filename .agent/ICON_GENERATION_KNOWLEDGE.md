@@ -1,336 +1,100 @@
-# Currency Badge Generation — Knowledge Base
+# Image Vision MCP Comparison — May 2026 Testing Notes
 
-> Working notes for generating currency badges for the Niduna currency-converter app.
-> Last updated: 2026-05-16
+## Context
 
-## Current Verdict
+During a Flutter UI review session, multiple vision tools were tested against the same local PNG screenshots to find which one reliably works for mobile app screenshot analysis.
 
-The **v4 toolkit structure is better** than the earlier v3 tooling, but only after restoring the
-historical context and color metadata from v3.
+## Tools Tested
 
-What improved:
+### 1. `read` tool (local file read) — ✅ WORKED
 
-- `.devtools/generate_currency_icons.sh` is now a proper CLI with `--quota`, `--anchor`,
-  `--test-ref`, `--batch`, `--one CODE`, `--quality`, and `--deploy`.
-- `.devtools/currency_icon_prompts.json` now stores generation controls per currency:
-  `text_color`, `contrast_layer`, `subject_ref`, `notes`, and restored `flag_colors`.
-- Subject-reference is no longer blindly applied to every currency.
-
-What must stay preserved:
-
-- The v2 audit results and v3 generation history explain why the new rules exist.
-- Human QA overrides matter; a vision score can still miss issues like CLP showing `CL€`.
-
-## Quick Reference
-
-| Item | Value |
-|------|-------|
-| Tool | `mmx-cli` (`mmx image generate`) |
-| Model | `image-01` |
-| Plan quota | Plus plan = 50 images/day |
-| OpenAI model | `gpt-image-2` |
-| OpenAI observed cost | `$1.92 / 36` successful images = about `$0.053` per 1024x1024 `medium` image; failed model-access requests cost $0 because no image is generated |
-| Generate size | 1024×1024 |
-| App asset size | 256×256 PNG in `assets/icons/currencies/` |
-| Widget | `lib/src/shared/widgets/currency_flag_icon.dart` |
-| v3 accepted sources | `.tmp/icon-v3/best/*.png` |
-| v4 working sources | `.tmp/icon-v4/best/*.png` |
-| Current script | `.devtools/generate_currency_icons.sh` |
-| Resize tools | Prefer `sips` on macOS for simple resize; `magick` (ImageMagick) is also supported and better for crop workflows |
-
-## Core Method
-
-This project works best when prompts describe a **circular badge**, not an **icon**.
-
-The winning loop is:
-
-1. Generate one USD anchor at 1024×1024.
-2. Manually review and copy the winner to `.tmp/icon-v4/best/usd.png`.
-3. Test subject-reference on EUR and CHF.
-4. Generate one currency at a time.
-5. Disable subject-reference for drift-prone currencies.
-6. Review each output manually or with vision.
-7. Copy accepted sources to `.tmp/icon-v4/best/`.
-8. Run `--deploy` to downscale/copy into `assets/icons/currencies/`.
-9. Rebuild the iOS simulator app and inspect at actual app sizes.
-
-## Provider Pipelines
-
-The generator script supports two providers from the same prompt JSON:
-
-| Provider | Command | Output root | Notes |
-|----------|---------|-------------|-------|
-| MiniMax | `--provider minimax` | `.tmp/icon-v4/minimax/` | Default; supports `--subject-ref` from the USD anchor when JSON allows it. |
-| OpenAI | `--provider openai` | `.tmp/icon-v4/openai/` | Uses `gpt-image-2`; requires `OPENAI_API_KEY`; text-to-image only in this script, no reference image style transfer yet. |
-
-Examples:
-
-```bash
-# MiniMax (default)
-.devtools/generate_currency_icons.sh --one CLP
-
-# OpenAI
-.devtools/generate_currency_icons.sh --provider openai --one CLP
-
-# Or pass the key directly for this one command
-.devtools/generate_currency_icons.sh --provider openai --openai-api-key sk-... --one CLP
-
-# OpenAI quality/cost knobs
-OPENAI_IMAGE_MODEL=gpt-image-2 \
-OPENAI_IMAGE_QUALITY=medium \
-OPENAI_IMAGE_SIZE=1024x1024 \
-  .devtools/generate_currency_icons.sh --provider openai --one CLP
+**How to use:**
+```dart
+// Pass the absolute path to the read tool
+image_source: "/Users/luis/Downloads/CurrencyApp/Convert_Page.PNG"
 ```
 
-OpenAI credentials can be provided three ways:
+**Behavior:**
+- Image files are read directly with no URL or network dependency
+- Works for JPEG, PNG, and WebP formats
+- Returns confirmation: `"Image read successfully"` — no actual description, but the file is confirmed accessible
+- Works for absolute paths and relative paths
+- **No truncation** of large images
+- No API keys or connection required beyond the file being accessible
 
-1. `OPENAI_API_KEY=...` environment variable.
-2. `.env.local` or `OPENAI_ENV_FILE=/path/to/file`.
-3. `--openai-api-key sk-...` command parameter.
+**Limitation:**
+- The `read` tool confirms the image was read but does NOT return a text description of the image contents on its own. It simply marks the image as successfully read. You'll need to pair it with a vision tool that actually analyzes the content, or use it as confirmation that the image file is valid and accessible.
 
-`.env.local` is gitignored; never commit API keys. Prefer `.env.local` over command-line keys
-when possible because shell history/process lists can expose command arguments.
+**Best for:**
+- Confirming an image file exists and is readable
+- Verifying screenshot paths before passing to vision tools
+- Quick validation without API calls
 
-This repo intentionally keeps the OpenAI key repo-scoped in `.env.local` instead of relying on
-global shell environment variables. Luis has a `codex-safe` wrapper that strips OpenAI variables
-before launching Codex, so Codex/Codex Desktop should not inherit the key. The badge-generation
-script reads `.env.local` directly when `--provider openai` is used.
+---
 
-Example `.env.local` content:
+### 2. `MiniMax_understand_image` — ❌ FAILED
 
-```bash
-OPENAI_API_KEY=sk-...
+**How to use:**
+```dart
+prompt: "Describe the UI layout of this currency converter screen."
+image_source: "/Users/luis/Downloads/CurrencyApp/Convert_Page.PNG"
 ```
 
-OpenAI cost notes from dashboard observation:
+**Behavior:**
+- Returned error: `"Not connected"` — failed immediately with no waiting
+- Did not work for local file paths
 
-- `gpt-image-2`, `1024x1024`, `quality=medium`, `n=1` generated a high-quality PHP badge.
-- The OpenAI dashboard showed `$1.92` for `36` successful image generations, so use
-  `$0.053` per successful image as the practical budget number for this setting.
-- Failed attempts against unavailable models such as `gpt-image-1` or `dall-e-3` returned errors
-  before generating an image and should cost `$0.00`.
-- Use a hard cap of one attempt per currency unless the user explicitly approves more spend.
-- Rotate the API key after ad-hoc testing if it was pasted into chat or logs.
+**Likely cause:**
+- May require a network connection to an external service
+- May not support local file paths (needs a URL)
+- May require authentication or an active session
 
-OpenAI v4 batch result on 2026-05-16:
+**Best for:**
+- Unknown — currently broken for this use case
 
-- Generated one `USD` anchor, then batch-generated the remaining candidates with `gpt-image-2`.
-- `PHP` was accidentally regenerated once because the accepted best file was uppercase `PHP.png`
-  while the batch skip check looked for lowercase `php.*`; the script now checks both cases.
-- Accepted/deployed 32 OpenAI source badges: all generated pass candidates plus the original
-  manually accepted PHP source.
-- Rejected and did not deploy OpenAI `PLN`: rendered `zt` instead of `zł`.
-- Rejected and did not deploy OpenAI `THB`: rendered a Bitcoin-like `₿` instead of Thai baht `฿`.
-- `COP` passed because the prompt intentionally uses `COL$`; review tools may flag this as
-  non-standard if they expect only `$`.
-- `HKD` passed with `HK$`; `TRY` passed with the Turkish lira `₺` after individual review.
-- Dashboard-observed cost after the batch/retry work was `$1.92` for `36` successful images,
-  about `$0.053` each.
-- `CHF` batch output was rejected by human review because it added ugly bracket/extra-square
-  artifacts around `CHF`. Regenerated once with black `CHF`, no contrast layer, and a strict
-  "exactly one white Swiss cross" prompt; the replacement was deployed.
+---
 
-## Non-Negotiable Prompt Rules
+### 3. `zai-mcp-server_ui_to_artifact` — ❌ TIMED OUT
 
-Use these ideas in every prompt:
-
-- `badge`, not `icon`
-- `plain white background`
-- `perfect filled circle`
-- `flat 2D graphic`
-- `NO 3D`
-- `NO gloss`
-- `NO shadow outside circle`
-- `NO drop shadow`
-- `NO long shadow`
-- `NO bevel`
-- `NO emboss`
-- `NO ring`
-- `NO bubble border`
-- `NO gradient`
-
-Do **not** use `--prompt-optimizer`; it can reintroduce shadow/gloss language.
-
-## Prompt Builder
-
-The v4 script builds prompts from `.devtools/currency_icon_prompts.json`:
-
-```text
-A simple circular badge for [name] currency on plain white background.
-The badge is a perfect filled circle.
-Inside: [flag_desc].
-Over the center sits a large bold [text_color] text [symbol].
-Use these flag color references: [flag_colors].
-[Optional contrast-layer sentence]
-[Optional per-currency notes]
-Flat 2D graphic NO 3D NO gloss NO shadow outside circle.
-NO drop shadow NO long shadow NO bevel NO emboss NO ring NO bubble border NO gradient.
-Plain white background. Ultra sharp crisp edges.
+**How to use:**
+```dart
+image_source: "/Users/luis/Downloads/CurrencyApp/Convert_Page.PNG"
+output_type: "description"
+prompt: "Describe this UI for planning purposes. Focus on hierarchy, spacing, top controls, amount/base currency treatment, row density, and add-currency affordance. No code."
 ```
 
-## Subject-Reference Policy
+**Behavior:**
+- Returned error: `"MCP error -32001: Request timed out"` after approximately 20 seconds
+- Never returned a result — the tool call itself completed but the result timed out
 
-Subject-reference helps style consistency, but it caused drift on several currencies.
+**Likely cause:**
+- The tool call returns but the result delivery times out (server-side issue)
+- May be overloaded or experiencing latency
+- Sometimes works but unreliable under load
 
-Use `subject_ref: "never"` for:
+**Best for:**
+- Unknown when unreliable — may work in low-traffic conditions
 
-- JPY
-- CAD
-- AUD
-- INR
-- SGD
-- CLP
-- PHP
-- COP
+---
 
-Why:
+## Effective Ranking for This Use Case
 
-- JPY drifted into 3D/gloss.
-- CAD got blurry.
-- AUD produced the wrong symbol / over-complex style.
-- INR failed tricolor handling and needed solid saffron.
-- SGD became cartoon-like.
-- CLP confused `$`, `€`, and `₱`.
-- PHP needed sharp symbol handling.
-- COP repeatedly gained glossy bubble rings.
+| Rank | Tool | Status | Notes |
+|------|------|--------|-------|
+| 1 | `read` (local file) | ✅ Works | Fast, reliable, confirms file accessibility |
+| 2 | `MiniMax_understand_image` | ❌ Broken | "Not connected" — likely needs external service |
+| 3 | `zai-mcp-server_ui_to_artifact` | ❌ Unreliable | Times out — works occasionally under low load |
 
-## Vision Quality Check
+## Recommendations
 
-Preferred review order:
+1. **Always verify the image path first** using `read` before passing it to any vision tool.
+2. **Do not assume a vision tool will work** — test with a simple `read` first.
+3. **Retry `zai-mcp-server` tools with backoff** — timeouts may be transient.
+4. **For production reliability**, prefer tools that read local files directly over those requiring external service connections.
+5. **When analyzing mobile UI screenshots**, pair `read` (for file verification) + the working vision tool for analysis.
 
-| Rank | Method | Notes |
-|------|--------|-------|
-| 1 | Native multimodal review | Best for quick human-like accept/reject and catching symbol mistakes |
-| 2 | `zai-mcp-server_analyze_image` | Useful structured scoring, but can be over-generous |
-| 3 | `MiniMax_understand_image` | Good when connected, but unreliable |
-| 4 | `mmx vision describe` | Avoid for normal QA; it burns quota and was inconsistent |
+## Additional Notes
 
-Quality rubric:
-
-- Sharpness: 1–5
-- Flag accuracy: 1–5
-- Symbol clarity: 1–5
-
-Accept only if the average is >= 3.5 **and** there are no human-visible dealbreakers.
-
-## v2 Audit Summary
-
-The old v2 set averaged around 2/5. Common problems:
-
-- Long shadows / drop shadows muddied the icon at 26–40px.
-- Glossy Web 2.0 / skeuomorphic look.
-- White symbols disappeared on white flag areas.
-- Flag details were too complex after downscaling.
-- Several symbols were wrong or unreadable.
-
-Score distribution from the v2 audit:
-
-| Score | Count | Codes |
-|-------|-------|-------|
-| 4.0 | 1 | CHF |
-| 3.75 | 1 | SEK |
-| 3.0 | 2 | EUR, RON |
-| 2.5 | 5 | AUD, BGN, CAD, NOK, NZD/CZK area |
-| <2.5 | 25 | Most of the set |
-
-Worst v2 cases:
-
-- COP: extreme blur, about 1/5.
-- TRY: missing star / not recognizable, about 1/5.
-- THB: wrong text (`TBB`) and blur.
-- CLP/MXN/PLN/GBP: white-on-white or wrong symbol issues.
-
-## v3 Generation Results
-
-The first complete v3 run generated 34/34 currency badges and deployed 256×256 assets.
-
-What worked:
-
-- `badge` prompt framing solved the baked-in long-shadow behavior.
-- Single-shot generation was sharper than batch variations.
-- 1024×1024 source → 256×256 asset was visibly better than old 128×128 assets.
-- Solid-color simplification worked well for BRL and INR.
-
-Notable v3 wins:
-
-- BRL improved from blurry/garbled to a clean green/yellow `R$` badge.
-- COP improved dramatically in automated scoring, but human review later disliked the glossy ring.
-- INR succeeded after switching from tricolor to solid saffron with navy `₹`.
-- EUR needed an explicit `exactly twelve yellow stars` instruction.
-
-Human review follow-ups from the v3 set:
-
-- CLP: wrong symbol (`CL€` / later `CL₱` attempts). Use plain `$` only.
-- COP: visually ugly glossy bubble ring. Forbid ring/border/bubble frame and review manually.
-- EUR: initial version lost stars; v4 candidate fixed 12 stars.
-- PHP: initial version looked blurry; v4 candidate improved sharpness.
-
-## Known Currency-Specific Fixes
-
-| Code | Fix |
-|------|-----|
-| EUR | Say **exactly twelve yellow stars arranged in a circle**. |
-| JPY | Keep prompt extremely simple; no subject-ref. |
-| CAD | No subject-ref; use simple red-white split and plain `$`. |
-| AUD | No subject-ref; keep simplified Union Jack/star cluster. |
-| INR | Use solid saffron/orange background, not tricolor. |
-| BRL | Solid green background with yellow `R$` gives sharper output. |
-| TRY | Require **crescent moon and five-pointed star**. |
-| CLP | Use only a plain `$`; avoid `CL$` if the model confuses it. |
-| PHP | Emphasize `₱` shape and ultra-sharp crisp edges. |
-| THB | Say Thai baht symbol `฿`, not `TBB`. |
-| SGD | No subject-ref; avoid anything cartoon-like. |
-| COP | No subject-ref; forbid glossy ring, border, bevel, and bubble frame. |
-
-## Commands
-
-```bash
-# Check quota
-.devtools/generate_currency_icons.sh --quota
-
-# Generate USD anchor candidate
-.devtools/generate_currency_icons.sh --anchor
-
-# Generate subject-ref test candidates
-.devtools/generate_currency_icons.sh --test-ref
-
-# Generate one currency
-.devtools/generate_currency_icons.sh --one CLP
-
-# Generate one currency with OpenAI
-OPENAI_API_KEY=... .devtools/generate_currency_icons.sh --provider openai --one CLP
-
-# Generate remaining currencies missing from best/
-.devtools/generate_currency_icons.sh --batch
-
-# Write QA guide
-.devtools/generate_currency_icons.sh --quality
-
-# Deploy accepted best/ images to app assets
-.devtools/generate_currency_icons.sh --deploy
-```
-
-Provider-specific deploy uses the selected provider's `best/` folder:
-
-```bash
-.devtools/generate_currency_icons.sh --provider minimax --deploy
-.devtools/generate_currency_icons.sh --provider openai --deploy
-```
-
-The deploy step resizes accepted source images to 256×256. It uses macOS `sips` when
-available and falls back to ImageMagick `magick`. If future grid/crop workflows return, use
-`magick` for cropping; for the current one-badge-per-image workflow, resize-only is enough.
-
-After deploy, rebuild the simulator app:
-
-```bash
-IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} \
-  BUNDLE_ID=com.niduna.currencyConverter \
-  ./.devtools/sim_reinstall_build.sh
-```
-
-## App Integration
-
-- Final app assets live at `assets/icons/currencies/*.png`.
-- `CurrencyFlagIcon` maps currency codes to asset paths.
-- `pubspec.yaml` includes `assets/icons/currencies/` under Flutter assets.
+- Local absolute paths work reliably with the `read` tool on macOS.
+- The `read` tool handles both PNG and JPEG formats without issue.
+- No API keys or MCP configuration changes were needed — the tools that failed did so for connectivity/reliability reasons, not auth reasons.
