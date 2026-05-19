@@ -1,5 +1,5 @@
 import '../domain/latest_rates_snapshot.dart';
-import 'frankfurter_latest_rates_client.dart';
+import 'latest_rates_client.dart';
 import 'latest_rates_cache.dart';
 
 abstract class ConvertRatesRepository {
@@ -9,12 +9,12 @@ abstract class ConvertRatesRepository {
 
 class LatestRatesRepository implements ConvertRatesRepository {
   const LatestRatesRepository({
-    required FrankfurterLatestRatesClient client,
+    required LatestRatesClient client,
     required LatestRatesCache cache,
   }) : _client = client,
        _cache = cache;
 
-  final FrankfurterLatestRatesClient _client;
+  final LatestRatesClient _client;
   final LatestRatesCache _cache;
 
   @override

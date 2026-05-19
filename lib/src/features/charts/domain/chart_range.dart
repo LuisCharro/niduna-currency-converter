@@ -15,6 +15,8 @@ enum ChartRange {
   final int days;
   final bool locked;
 
+  bool get supportsCrypto => days > 0 && days <= 365;
+
   DateTime? fromDate() {
     if (days <= 0) return null;
     return DateTime.now().subtract(Duration(days: days));

@@ -13,7 +13,7 @@ class ClearCacheTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsTile(
       title: 'Clear all data',
-      subtitle: 'Rates cache, chart cache and temporary unlocks',
+      subtitle: 'Fiat rates, crypto rates, chart history and temporary unlocks',
       trailing: InkWell(
         onTap: () => controller.requestClearCache(context),
         borderRadius: BorderRadius.circular(8),

@@ -10,7 +10,20 @@ extension ConvertControllerLoading on ConvertController {
       state = _stateFromSnapshot(cached, ConvertStatus.cached);
       _safeNotify();
     }
+    if (!_shouldRefreshOnLoad(cached)) {
+      return;
+    }
     await refresh(hasCached: cached != null);
+  }
+
+  bool _shouldRefreshOnLoad(LatestRatesSnapshot? cached) {
+    if (_preferences?.refreshOnOpen == false) {
+      return cached == null;
+    }
+    if (cached == null) {
+      return true;
+    }
+    return RateRefreshPolicy.shouldRefresh(cached.savedAt);
   }
 
   Future<void> refresh({bool hasCached = false}) async {

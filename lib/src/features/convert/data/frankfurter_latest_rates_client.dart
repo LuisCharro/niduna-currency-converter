@@ -4,8 +4,9 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/currency/supported_currencies.dart';
 import '../domain/latest_rates_snapshot.dart';
+import 'latest_rates_client.dart';
 
-class FrankfurterLatestRatesClient {
+class FrankfurterLatestRatesClient implements LatestRatesClient {
   FrankfurterLatestRatesClient({http.Client? client})
     : _client = client ?? http.Client();
 
@@ -13,9 +14,10 @@ class FrankfurterLatestRatesClient {
 
   final http.Client _client;
 
+  @override
   Future<LatestRatesSnapshot> fetchLatest(String base) async {
     currencyByCode(base);
-    final quotes = supportedCurrencies
+    final quotes = supportedFiatCurrencies
         .where((currency) => currency.code != base)
         .map((currency) => currency.code)
         .join(',');

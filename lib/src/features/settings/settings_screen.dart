@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../core/theme/app_theme.dart';
+import '../../shared/widgets/settings_tile.dart';
 import 'settings_controller.dart';
 import 'widgets/base_currency_tile.dart';
 import 'widgets/clear_cache_tile.dart';
@@ -70,12 +71,22 @@ class SettingsScreen extends StatelessWidget {
                   value: preferences.refreshOnOpen,
                   onChanged: controller.toggleRefreshOnOpen,
                 ),
+                SettingsTile(
+                  title: 'Data details',
+                  subtitle:
+                      'Refresh rules, crypto range limits and cache behavior',
+                  onTap: () => controller.openDataDetails(context),
+                  trailing: Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppTheme.subtle,
+                  ),
+                ),
                 ClearCacheTile(controller: controller),
                 const SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
                   child: Text(
-                    'Rates are fetched once daily from the European Central Bank.\nData may be up to 24 hours old.',
+                    'Fiat and crypto data follow a daily app refresh policy.\nOpen Data details for sources, limits, and cache behavior.',
                     style: AppTheme.caption.copyWith(
                       color: AppTheme.subtle,
                       height: 1.4,
@@ -92,6 +103,16 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(height: 24),
                 ],
                 const SectionHeader(title: 'About'),
+                SettingsTile(
+                  title: 'Data sources',
+                  subtitle:
+                      'Frankfurter, ECB, CoinPaprika and crypto fallback attribution',
+                  onTap: () => controller.openDataSources(context),
+                  trailing: Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppTheme.subtle,
+                  ),
+                ),
                 VersionTile(controller: controller),
               ],
             ),

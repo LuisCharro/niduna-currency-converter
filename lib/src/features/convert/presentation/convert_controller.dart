@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../core/preferences/app_preferences.dart';
+import '../../../core/rates/rate_refresh_policy.dart';
 import '../../favorites/data/favorites_store.dart';
 import '../data/latest_rates_repository.dart';
 import '../domain/convert_quote_builder.dart';

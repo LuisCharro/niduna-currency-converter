@@ -10,7 +10,7 @@ class SupportedCurrency {
   final String symbol;
 }
 
-const List<SupportedCurrency> supportedCurrencies = <SupportedCurrency>[
+const List<SupportedCurrency> supportedFiatCurrencies = <SupportedCurrency>[
   SupportedCurrency(code: 'USD', name: 'US Dollar', symbol: r'$'),
   SupportedCurrency(code: 'EUR', name: 'Euro', symbol: '€'),
   SupportedCurrency(code: 'GBP', name: 'British Pound', symbol: '£'),
@@ -29,9 +29,29 @@ const List<SupportedCurrency> supportedCurrencies = <SupportedCurrency>[
   SupportedCurrency(code: 'CHF', name: 'Swiss Franc', symbol: 'Fr'),
 ];
 
+const List<SupportedCurrency> supportedCryptoCurrencies = <SupportedCurrency>[
+  SupportedCurrency(code: 'BTC', name: 'Bitcoin', symbol: 'BTC'),
+  SupportedCurrency(code: 'ETH', name: 'Ethereum', symbol: 'ETH'),
+];
+
+const List<SupportedCurrency> supportedCurrencies = supportedFiatCurrencies;
+
+List<SupportedCurrency> get allSupportedCurrencies => <SupportedCurrency>[
+  ...supportedFiatCurrencies,
+  ...supportedCryptoCurrencies,
+];
+
+bool isFiatCurrency(String code) {
+  return supportedFiatCurrencies.any((currency) => currency.code == code);
+}
+
+bool isCryptoCurrency(String code) {
+  return supportedCryptoCurrencies.any((currency) => currency.code == code);
+}
+
 SupportedCurrency currencyByCode(String code) {
-  return supportedCurrencies.firstWhere(
+  return allSupportedCurrencies.firstWhere(
     (currency) => currency.code == code,
-    orElse: () => throw ArgumentError.value(code, 'code', 'Unsupported fiat'),
+    orElse: () => throw ArgumentError.value(code, 'code', 'Unsupported currency'),
   );
 }

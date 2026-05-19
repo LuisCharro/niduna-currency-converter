@@ -7,12 +7,14 @@ class RangeSelector extends StatelessWidget {
     required this.selected,
     required this.onChanged,
     required this.canUseLockedRanges,
+    required this.includesCrypto,
     super.key,
   });
 
   final ChartRange selected;
   final ValueChanged<ChartRange> onChanged;
   final bool canUseLockedRanges;
+  final bool includesCrypto;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class RangeSelector extends StatelessWidget {
           children: ChartRange.values.map((range) {
             final isSelected = range == selected;
             final isLocked = range.locked && !canUseLockedRanges;
+            final isCryptoUnavailable = includesCrypto && !range.supportsCrypto;
             return GestureDetector(
               onTap: () {
                 if (isLocked) {
@@ -36,6 +39,17 @@ class RangeSelector extends StatelessWidget {
                     const SnackBar(
                       content: Text(
                         'Intraday ranges coming soon — requires Premium Subscription',
+                      ),
+                      duration: Duration(seconds: 3),
+                    ),
+                  );
+                  return;
+                }
+                if (isCryptoUnavailable) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Crypto charts support up to 1Y with no-key providers',
                       ),
                       duration: Duration(seconds: 3),
                     ),
@@ -59,13 +73,16 @@ class RangeSelector extends StatelessWidget {
                     if (isLocked) ...[
                       Icon(Icons.lock_outline, size: 12, color: AppTheme.muted),
                       const SizedBox(width: 4),
+                    ] else if (isCryptoUnavailable) ...[
+                      Icon(Icons.block, size: 12, color: AppTheme.muted),
+                      const SizedBox(width: 4),
                     ],
                     Text(
                       range.label,
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
-                        color: isLocked
+                        color: isLocked || isCryptoUnavailable
                             ? AppTheme.muted
                             : isSelected
                             ? AppTheme.text

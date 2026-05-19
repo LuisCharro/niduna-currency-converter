@@ -88,6 +88,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                       onChanged: widget.controller.setRange,
                       canUseLockedRanges:
                           widget.monetization.canUseIntradayRanges,
+                      includesCrypto: state.includesCrypto,
                     ),
                   ),
                   Padding(

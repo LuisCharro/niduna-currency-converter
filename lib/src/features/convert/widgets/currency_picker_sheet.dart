@@ -93,7 +93,11 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
   }
 
   List<SupportedCurrency> _visibleCurrencies() {
-    final currencies = supportedCurrencies.where(_matchesQuery).toList();
+    final currencies = (widget.selectBaseMode
+            ? supportedFiatCurrencies
+            : allSupportedCurrencies)
+        .where(_matchesQuery)
+        .toList();
     if (widget.selectBaseMode) return currencies;
     currencies.sort((a, b) {
       final aRank = _rank(a.code);

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../core/currency/supported_currencies.dart';
 import '../../../core/rates/rates_service.dart';
 import '../../../core/rates/models/rates_result.dart';
 import '../domain/chart_range.dart';
@@ -53,6 +54,8 @@ class ChartState {
   }
 
   String get pairLabel => '$base → $quote';
+
+  bool get includesCrypto => isCryptoCurrency(base) || isCryptoCurrency(quote);
 }
 
 class ChartsController extends ChangeNotifier {
@@ -89,10 +92,16 @@ class ChartsController extends ChangeNotifier {
 
   void setPair(String base, String quote) {
     if (base == _state.base && quote == _state.quote) return;
+    final range = _normalizeRangeForPair(
+      base: base,
+      quote: quote,
+      range: _state.range,
+    );
     _setState(
       _state.copyWith(
         base: base,
         quote: quote,
+        range: range,
         status: ChartStatus.loading,
         data: const {},
       ),
@@ -101,10 +110,15 @@ class ChartsController extends ChangeNotifier {
   }
 
   void setRange(ChartRange range) {
-    if (range == _state.range || range.locked) return;
+    final nextRange = _normalizeRangeForPair(
+      base: _state.base,
+      quote: _state.quote,
+      range: range,
+    );
+    if (nextRange == _state.range || nextRange.locked) return;
     _setState(
       _state.copyWith(
-        range: range,
+        range: nextRange,
         status: ChartStatus.loading,
         data: const {},
       ),
@@ -163,6 +177,18 @@ class ChartsController extends ChangeNotifier {
         message: newMessage,
       ),
     );
+  }
+
+  ChartRange _normalizeRangeForPair({
+    required String base,
+    required String quote,
+    required ChartRange range,
+  }) {
+    final includesCrypto = isCryptoCurrency(base) || isCryptoCurrency(quote);
+    if (!includesCrypto || range.supportsCrypto) {
+      return range;
+    }
+    return ChartRange.oneYear;
   }
 }
 

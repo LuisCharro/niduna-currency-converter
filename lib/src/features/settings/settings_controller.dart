@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
 import '../../core/preferences/app_preferences.dart';
+import 'widgets/data_details_page.dart';
+import 'widgets/data_sources_page.dart';
 import 'widgets/iap_purchase_player.dart';
+import 'widgets/settings_detail_route.dart';
 
 class SettingsController extends ChangeNotifier {
   SettingsController({
@@ -26,13 +29,25 @@ class SettingsController extends ChangeNotifier {
 
   void toggleDarkMode(bool value) => preferences.setDarkMode(value);
 
+  void openDataDetails(BuildContext context) {
+    Navigator.of(context).push(
+      buildSettingsDetailRoute<void>(builder: (_) => const DataDetailsPage()),
+    );
+  }
+
+  void openDataSources(BuildContext context) {
+    Navigator.of(context).push(
+      buildSettingsDetailRoute<void>(builder: (_) => const DataSourcesPage()),
+    );
+  }
+
   void requestClearCache(BuildContext context) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Clear all data?'),
         content: const Text(
-          'This will clear rates cache, chart cache, and all temporary pair unlocks.',
+          'This will clear latest fiat rates, latest crypto rates, chart history, crypto chart history, and all temporary pair unlocks.',
         ),
         actions: <Widget>[
           TextButton(

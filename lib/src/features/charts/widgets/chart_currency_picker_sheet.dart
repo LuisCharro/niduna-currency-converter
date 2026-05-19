@@ -176,7 +176,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
   }
 
   Widget _buildCurrencyList({required ScrollController scrollController}) {
-    final currencies = supportedCurrencies.where(_matches).toList();
+    final currencies = allSupportedCurrencies.where(_matches).toList();
     return ListView.separated(
       controller: scrollController,
       itemCount: currencies.length,

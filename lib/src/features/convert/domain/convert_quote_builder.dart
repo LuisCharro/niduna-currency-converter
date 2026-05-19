@@ -23,13 +23,50 @@ List<CurrencyQuote> buildQuotes({
       .where((currency) => snapshot.rates.containsKey(currency.code))
       .map((currency) {
         final rate = snapshot.rates[currency.code]!;
+        final quoteAmount = _formatAmount(
+          amount * rate,
+          currency.code,
+          decimalPlaces,
+        );
+        final rateLine = _formatRateLine(
+          base: snapshot.base,
+          quote: currency.code,
+          rate: rate,
+          decimalPlaces: decimalPlaces,
+        );
         return CurrencyQuote(
           currency.symbol,
           currency.code,
           currency.name,
-          amountFormat.format(amount * rate),
-          '1 ${snapshot.base} = ${rateFormat.format(rate)} ${currency.code}',
+          isCryptoCurrency(currency.code) ? quoteAmount : amountFormat.format(amount * rate),
+          isCryptoCurrency(currency.code)
+              ? rateLine
+              : '1 ${snapshot.base} = ${rateFormat.format(rate)} ${currency.code}',
         );
       })
       .toList(growable: false);
+}
+
+String _formatAmount(double value, String code, int decimalPlaces) {
+  final digits = switch (code) {
+    'BTC' => 8,
+    'ETH' => 6,
+    _ => decimalPlaces,
+  };
+  return NumberFormat('#,##0.${'0' * digits}', 'en').format(value);
+}
+
+String _formatRateLine({
+  required String base,
+  required String quote,
+  required double rate,
+  required int decimalPlaces,
+}) {
+  final digits = switch (quote) {
+    'BTC' => 8,
+    'ETH' => 6,
+    _ => decimalPlaces,
+  };
+  final format = NumberFormat('0.${'0' * digits}', 'en');
+  return '1 $base = ${format.format(rate)} $quote';
 }

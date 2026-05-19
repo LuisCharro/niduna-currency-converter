@@ -5,12 +5,20 @@ import 'core/monetization/monetization_controller.dart';
 import 'core/monetization/rewarded_ad_service_stub.dart';
 import 'core/preferences/app_preferences.dart';
 import 'core/theme/app_theme.dart';
+import 'core/rates/crypto/coinpaprika_crypto_usd_price_client.dart';
+import 'core/rates/crypto/coinpaprika_crypto_usd_history_client.dart';
+import 'core/rates/crypto/crypto_usd_history_cache.dart';
+import 'core/rates/crypto/crypto_usd_price_cache.dart';
+import 'core/rates/crypto/fallback_crypto_usd_price_client.dart';
+import 'core/rates/crypto/fawazahmed_crypto_usd_price_client.dart';
+import 'core/rates/multi_provider_rates_client.dart';
 import 'core/rates/rates_service.dart';
 import 'core/rates/clients/frankfurter_client.dart';
 import 'core/rates/cache/shared_preferences_rates_cache.dart';
 import 'features/convert/data/frankfurter_latest_rates_client.dart';
 import 'features/convert/data/latest_rates_cache.dart';
 import 'features/convert/data/latest_rates_repository.dart';
+import 'features/convert/data/multi_provider_latest_rates_repository.dart';
 import 'features/convert/convert_screen.dart';
 import 'features/convert/presentation/convert_controller.dart';
 import 'features/favorites/data/favorites_store.dart';
@@ -82,9 +90,14 @@ class _AppState extends State<AppShell> {
 
     final repo =
         widget.convertRepository ??
-        LatestRatesRepository(
-          client: FrankfurterLatestRatesClient(),
-          cache: LatestRatesCache(prefs),
+        MultiProviderLatestRatesRepository(
+          fiatClient: FrankfurterLatestRatesClient(),
+          latestCache: LatestRatesCache(prefs),
+          cryptoCache: CryptoUsdPriceCache(prefs),
+          cryptoClient: FallbackCryptoUsdPriceClient(
+            primary: CoinPaprikaCryptoUsdPriceClient(),
+            fallback: FawazahmedCryptoUsdPriceClient(),
+          ),
         );
 
     _controller = ConvertController(
@@ -102,7 +115,11 @@ class _AppState extends State<AppShell> {
     _monetization = MonetizationController(prefs, adService: adService);
     await _monetization!.loadTempUnlocks();
     final ratesService = RatesService(
-      client: FrankfurterClient(),
+      client: MultiProviderRatesClient(
+        fiatClient: FrankfurterClient(),
+        cryptoHistoryClient: CoinPaprikaCryptoUsdHistoryClient(),
+        cryptoHistoryCache: CryptoUsdHistoryCache(prefs),
+      ),
       cache: ratesCache,
     );
     _chartsController = ChartsController(

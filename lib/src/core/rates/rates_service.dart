@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../currency/supported_currencies.dart';
 import 'models/rates_snapshot.dart';
 import 'models/rates_result.dart';
 import 'rates_cache.dart';
@@ -210,7 +211,7 @@ class RatesService {
       }
 
       if (merged.coveredTo.isBefore(to) &&
-          _shouldFetchNewerGap(merged.coveredTo, to)) {
+          _shouldFetchNewerGap(merged.coveredTo, to, base, quote)) {
         final newerFrom = _toDateOnly(
           merged.coveredTo.add(const Duration(days: 1)),
         );
@@ -281,11 +282,20 @@ class RatesService {
         !snapshot.coveredTo.isBefore(to);
   }
 
-  bool _shouldFetchNewerGap(DateTime coveredTo, DateTime requestedTo) {
+  bool _shouldFetchNewerGap(
+    DateTime coveredTo,
+    DateTime requestedTo,
+    String base,
+    String quote,
+  ) {
     final to = _toDateOnly(requestedTo);
     final lastCovered = _toDateOnly(coveredTo);
     if (!lastCovered.isBefore(to)) {
       return false;
+    }
+
+    if (isCryptoCurrency(base) || isCryptoCurrency(quote)) {
+      return true;
     }
 
     if (!_isWeekend(to)) {

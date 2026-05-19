@@ -15,7 +15,9 @@ class FrankfurterClient implements RatesClient {
 
   @override
   Future<RatesSnapshot> fetchLatest(String base) async {
-    currencyByCode(base);
+    if (!isFiatCurrency(base)) {
+      throw RatesClientException('Frankfurter latest does not support $base');
+    }
     final quotes = supportedCurrencies
         .where((currency) => currency.code != base)
         .map((currency) => currency.code)
@@ -67,6 +69,11 @@ class FrankfurterClient implements RatesClient {
     required DateTime from,
     required DateTime to,
   }) async {
+    if (!isFiatCurrency(base) || !isFiatCurrency(quote)) {
+      throw RatesClientException(
+        'Frankfurter historical does not support $base/$quote',
+      );
+    }
     final fromStr = from.toIso8601String().split('T').first;
     final toStr = to.toIso8601String().split('T').first;
     final range = '$fromStr..$toStr';
