@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../core/currency/supported_currencies.dart';
 import '../../../core/preferences/app_preferences.dart';
 import '../../../core/rates/rate_refresh_policy.dart';
 import '../../favorites/data/favorites_store.dart';

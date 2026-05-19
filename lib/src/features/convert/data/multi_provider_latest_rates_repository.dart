@@ -33,7 +33,35 @@ class MultiProviderLatestRatesRepository implements ConvertRatesRepository {
       <String, Future<LatestRatesSnapshot>>{};
 
   @override
-  Future<LatestRatesSnapshot?> readCached(String base) => _latestCache.read(base);
+  Future<LatestRatesSnapshot?> readCached(String base) async {
+    final cached = await _latestCache.read(base);
+    if (cached == null || isCryptoCurrency(base)) {
+      return cached;
+    }
+
+    if (_hasAllCryptoRates(cached)) {
+      return cached;
+    }
+
+    final cryptoSnapshot = await _readFreshCryptoCache();
+    if (cryptoSnapshot == null) {
+      return cached;
+    }
+
+    return LatestRatesSnapshot(
+      base: cached.base,
+      date: cached.date,
+      savedAt: cached.savedAt,
+      rates: Map<String, double>.from(cached.rates)
+        ..addAll(
+          _normalizer.normalizeFiatBase(
+            base: base,
+            fiatRates: cached.rates,
+            cryptoUsdPrices: cryptoSnapshot.pricesUsd,
+          )..removeWhere((code, _) => isFiatCurrency(code)),
+        ),
+    );
+  }
 
   @override
   Future<LatestRatesSnapshot> fetchLatest(String base) async {
@@ -107,5 +135,14 @@ class MultiProviderLatestRatesRepository implements ConvertRatesRepository {
     } catch (_) {
       return null;
     }
+  }
+
+  bool _hasAllCryptoRates(LatestRatesSnapshot snapshot) {
+    for (final currency in supportedCryptoCurrencies) {
+      if (!snapshot.rates.containsKey(currency.code)) {
+        return false;
+      }
+    }
+    return true;
   }
 }

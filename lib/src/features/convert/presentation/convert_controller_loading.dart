@@ -18,12 +18,25 @@ extension ConvertControllerLoading on ConvertController {
 
   bool _shouldRefreshOnLoad(LatestRatesSnapshot? cached) {
     if (_preferences?.refreshOnOpen == false) {
-      return cached == null;
+      return cached == null || _isIncompleteCryptoSnapshot(cached);
     }
     if (cached == null) {
       return true;
     }
+    if (_isIncompleteCryptoSnapshot(cached)) {
+      return true;
+    }
     return RateRefreshPolicy.shouldRefresh(cached.savedAt);
+  }
+
+  bool _isIncompleteCryptoSnapshot(LatestRatesSnapshot? snapshot) {
+    if (snapshot == null) return false;
+    for (final currency in supportedCryptoCurrencies) {
+      if (!snapshot.rates.containsKey(currency.code)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   Future<void> refresh({bool hasCached = false}) async {

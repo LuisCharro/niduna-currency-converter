@@ -59,12 +59,19 @@ class MultiProviderRatesClient implements RatesClient {
     }
 
     if (isFiatCurrency(base) && isCryptoCurrency(quote)) {
-      final fiatToUsd = await _fiatClient.fetchHistorical(
-        base: base,
-        quote: 'USD',
-        from: from.subtract(const Duration(days: 7)),
-        to: to,
-      );
+      final fiatToUsd = base == 'USD'
+          ? _usdIdentityHistory(
+              base: base,
+              quote: 'USD',
+              from: from.subtract(const Duration(days: 7)),
+              to: to,
+            )
+          : await _fiatClient.fetchHistorical(
+              base: base,
+              quote: 'USD',
+              from: from.subtract(const Duration(days: 7)),
+              to: to,
+            );
       final quoteUsd = await _getCryptoHistory(quote, from, to);
       return _historicalComposer.composeFiatToCrypto(
         base: base,
@@ -78,12 +85,19 @@ class MultiProviderRatesClient implements RatesClient {
 
     if (isCryptoCurrency(base) && isFiatCurrency(quote)) {
       final baseUsd = await _getCryptoHistory(base, from, to);
-      final usdToFiat = await _fiatClient.fetchHistorical(
-        base: 'USD',
-        quote: quote,
-        from: from.subtract(const Duration(days: 7)),
-        to: to,
-      );
+      final usdToFiat = quote == 'USD'
+          ? _usdIdentityHistory(
+              base: 'USD',
+              quote: quote,
+              from: from.subtract(const Duration(days: 7)),
+              to: to,
+            )
+          : await _fiatClient.fetchHistorical(
+              base: 'USD',
+              quote: quote,
+              from: from.subtract(const Duration(days: 7)),
+              to: to,
+            );
       return _historicalComposer.composeCryptoToFiat(
         base: base,
         quote: quote,
@@ -114,5 +128,29 @@ class MultiProviderRatesClient implements RatesClient {
     );
     await _cryptoHistoryCache.write(fetched);
     return (await _cryptoHistoryCache.read(code)) ?? fetched;
+  }
+
+  HistoricalSnapshot _usdIdentityHistory({
+    required String base,
+    required String quote,
+    required DateTime from,
+    required DateTime to,
+  }) {
+    final data = <DateTime, double>{};
+    var day = DateTime(from.year, from.month, from.day);
+    final end = DateTime(to.year, to.month, to.day);
+    while (!day.isAfter(end)) {
+      data[day] = 1;
+      day = day.add(const Duration(days: 1));
+    }
+
+    return HistoricalSnapshot(
+      base: base,
+      quote: quote,
+      coveredFrom: DateTime(from.year, from.month, from.day),
+      coveredTo: DateTime(to.year, to.month, to.day),
+      data: data,
+      savedAt: DateTime.now(),
+    );
   }
 }
