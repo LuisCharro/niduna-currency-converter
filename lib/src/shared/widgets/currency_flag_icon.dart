@@ -45,6 +45,8 @@ class CurrencyFlagIcon extends StatelessWidget {
     'INR': 'assets/icons/currencies/inr.png',
     'TWD': 'assets/icons/currencies/twd.png',
     'CNY': 'assets/icons/currencies/cny.png',
+    'BTC': 'assets/icons/currencies/btc.png',
+    'ETH': 'assets/icons/currencies/eth.png',
     'COP': 'assets/icons/currencies/cop.png',
     'ARS': 'assets/icons/currencies/ars.png',
   };

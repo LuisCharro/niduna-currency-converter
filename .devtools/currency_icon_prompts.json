@@ -363,6 +363,28 @@
     "notes": ""
   },
   {
+    "code": "BTC",
+    "name": "Bitcoin",
+    "symbol": "₿",
+    "text_color": "white",
+    "flag_desc": "solid bitcoin orange circle",
+    "flag_colors": "#F7931A white",
+    "contrast_layer": false,
+    "subject_ref": "never",
+    "notes": "Use the exact Bitcoin symbol ₿ centered and bold."
+  },
+  {
+    "code": "ETH",
+    "name": "Ethereum",
+    "symbol": "Ξ",
+    "text_color": "white",
+    "flag_desc": "charcoal gray circle",
+    "flag_colors": "#23292F #8A92B2 white",
+    "contrast_layer": false,
+    "subject_ref": "never",
+    "notes": "Use the exact Ethereum symbol Ξ centered and bold."
+  },
+  {
     "code": "COP",
     "name": "Colombian Peso",
     "symbol": "COL$",
