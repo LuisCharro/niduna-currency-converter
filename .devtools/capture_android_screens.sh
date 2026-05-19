@@ -38,6 +38,17 @@ find_adb() {
 }
 
 main() {
+  local provider_profile="${PROVIDER_PROFILE:-dev_coinpaprika}"
+  local app_dev_mode="${APP_DEV_MODE:-true}"
+  local flutter_args=()
+  while IFS= read -r arg; do
+    flutter_args+=("${arg}")
+  done < <(
+    PROVIDER_PROFILE="${provider_profile}" \
+      APP_DEV_MODE="${app_dev_mode}" \
+      flutter_app_define_args
+  )
+
   local adb_bin
   adb_bin="$(find_adb)"
 
@@ -51,7 +62,8 @@ main() {
   SCREEN_OUTPUT_DIR="${output_dir}" run_flutter drive \
     --driver="${driver_path}" \
     --target="${target_path}" \
-    -d "${android_serial}"
+    -d "${android_serial}" \
+    "${flutter_args[@]}"
 
   "${adb_bin}" -s "${android_serial}" shell am force-stop "${package_name}" >/dev/null 2>&1 || true
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
+import '../../core/rates/provider_config.dart';
 import '../../core/theme/app_theme.dart';
 import '../../shared/widgets/bottom_tab_frame.dart';
 import '../convert/widgets/ad_support_shelf.dart';
@@ -96,6 +97,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                     child: PairSelector(
                       base: state.base,
                       quote: state.quote,
+                      allowCryptoCharts: ProviderConfig.cryptoChartsEnabled,
                       onPairChanged: widget.controller.setPair,
                       onSwap: _handleSwap,
                       controller: widget.monetization,

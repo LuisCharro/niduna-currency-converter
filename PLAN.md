@@ -50,6 +50,23 @@ Slice order:
 
 See `ROADMAP.md` for acceptance criteria and guardrails.
 
+## Provider Profile Plan
+
+- Add a centralized build-time provider config under `lib/src/core/rates/`
+- Default to `PROVIDER_PROFILE=release_safe`
+- Support `PROVIDER_PROFILE=dev_coinpaprika` for local verification only
+- Support `APP_DEV_MODE=true` in local emulator/test scripts so the hidden dev UI is visible by default there
+- Release-safe profile rules:
+  - fiat latest + charts: Frankfurter
+  - crypto latest: fawazahmed0
+  - crypto charts: disabled
+- Dev profile rules:
+  - crypto latest: CoinPaprika primary, fawazahmed0 fallback
+  - crypto charts: CoinPaprika historical ticks
+- Settings should show the active profile and provider order
+- The developer surface should stay hidden in normal builds and be unlockable from the version row
+- Release builds must fail fast if a non-safe profile is selected
+
 ---
 
 ## Ad Types & Placement

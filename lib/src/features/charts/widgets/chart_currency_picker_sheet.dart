@@ -16,6 +16,7 @@ class ChartCurrencyPickerSheet extends StatefulWidget {
   const ChartCurrencyPickerSheet({
     required this.title,
     required this.selectedCode,
+    required this.allowCryptoCharts,
     required this.controller,
     required this.baseCurrency,
     required this.quoteCurrency,
@@ -25,6 +26,7 @@ class ChartCurrencyPickerSheet extends StatefulWidget {
 
   final String title;
   final String selectedCode;
+  final bool allowCryptoCharts;
   final MonetizationController controller;
   final String baseCurrency;
   final String quoteCurrency;
@@ -176,7 +178,13 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
   }
 
   Widget _buildCurrencyList({required ScrollController scrollController}) {
-    final currencies = allSupportedCurrencies.where(_matches).toList();
+    final currencies = allSupportedCurrencies
+        .where(
+          (currency) =>
+              widget.allowCryptoCharts || !isCryptoCurrency(currency.code),
+        )
+        .where(_matches)
+        .toList();
     return ListView.separated(
       controller: scrollController,
       itemCount: currencies.length,

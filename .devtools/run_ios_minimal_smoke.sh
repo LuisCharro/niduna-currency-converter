@@ -34,6 +34,17 @@ resolve_simulator_id() {
 }
 
 main() {
+  local provider_profile="${PROVIDER_PROFILE:-dev_coinpaprika}"
+  local app_dev_mode="${APP_DEV_MODE:-true}"
+  local flutter_args=()
+  while IFS= read -r arg; do
+    flutter_args+=("${arg}")
+  done < <(
+    PROVIDER_PROFILE="${provider_profile}" \
+      APP_DEV_MODE="${app_dev_mode}" \
+      flutter_app_define_args
+  )
+
   local resolved_simulator_id
   resolved_simulator_id="$(resolve_simulator_id)"
   if [[ -z "${resolved_simulator_id}" ]]; then
@@ -45,7 +56,8 @@ main() {
   run_flutter drive \
     --driver="${driver_path}" \
     --target="${target_path}" \
-    -d "${resolved_simulator_id}"
+    -d "${resolved_simulator_id}" \
+    "${flutter_args[@]}"
 }
 
 main "$@"

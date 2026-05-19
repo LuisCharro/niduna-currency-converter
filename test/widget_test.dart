@@ -306,6 +306,7 @@ void main() {
     WidgetTester tester,
   ) async {
     final chartsController = ChartsController(
+      allowCryptoCharts: true,
       ratesService: RatesService(
         client: _FakeRatesClient(),
         cache: _FakeRatesCache(),
@@ -373,6 +374,7 @@ void main() {
   ) async {
     await monetization.setRemoveAdsLifetime(true);
     final chartsController = ChartsController(
+      allowCryptoCharts: true,
       ratesService: RatesService(
         client: _FakeRatesClient(),
         cache: _FakeRatesCache(),

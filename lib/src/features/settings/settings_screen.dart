@@ -106,7 +106,7 @@ class SettingsScreen extends StatelessWidget {
                 SettingsTile(
                   title: 'Data sources',
                   subtitle:
-                      'Frankfurter, ECB, CoinPaprika and crypto fallback attribution',
+                      'Frankfurter, ECB, crypto sources and chart availability',
                   onTap: () => controller.openDataSources(context),
                   trailing: Icon(
                     Icons.chevron_right_rounded,

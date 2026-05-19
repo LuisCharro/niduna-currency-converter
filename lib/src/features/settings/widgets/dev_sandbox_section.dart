@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/monetization/monetization_controller.dart';
+import '../../../core/rates/provider_config.dart';
 import '../../../core/theme/app_theme.dart';
 
 class DevSandboxSection extends StatelessWidget {
@@ -12,6 +13,41 @@ class DevSandboxSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppTheme.container.withValues(alpha: .5),
+            borderRadius: BorderRadius.circular(AppTheme.radius),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Provider profile',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Profile: ${ProviderConfig.profileLabel}',
+                style: TextStyle(fontSize: 12, color: AppTheme.muted),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                'Latest: ${ProviderConfig.latestProvidersLabel}',
+                style: TextStyle(fontSize: 12, color: AppTheme.muted),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                'Charts: ${ProviderConfig.chartsProviderLabel}',
+                style: TextStyle(fontSize: 12, color: AppTheme.muted),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
         _EntitlementSwitch(
           label: 'Subscription active',
           description: 'Unlocks all premium features and removes ads',

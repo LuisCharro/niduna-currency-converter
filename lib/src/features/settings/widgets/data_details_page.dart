@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/rates/provider_config.dart';
 import '../../../core/theme/app_theme.dart';
 
 class DataDetailsPage extends StatelessWidget {
@@ -7,6 +8,16 @@ class DataDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cryptoLines = <String>[
+      'BTC and ETH latest rates refresh on the same daily app policy.',
+      if (ProviderConfig.cryptoChartsEnabled)
+        'Crypto charts support daily ranges up to 1 year.'
+      else
+        'Crypto charts are disabled in this release-safe build.',
+      if (ProviderConfig.cryptoChartsEnabled)
+        'Mixed fiat/crypto charts carry forward the last fiat close across weekends and holidays.',
+    ];
+
     return Scaffold(
       backgroundColor: AppTheme.bg,
       appBar: AppBar(
@@ -17,8 +28,8 @@ class DataDetailsPage extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
-        children: const <Widget>[
-          _DetailCard(
+        children: <Widget>[
+          const _DetailCard(
             title: 'Refresh policy',
             lines: <String>[
               'The app refreshes rates at most once per local day.',
@@ -26,8 +37,8 @@ class DataDetailsPage extends StatelessWidget {
               'Manual refresh still lets you request a fresh daily snapshot.',
             ],
           ),
-          SizedBox(height: 16),
-          _DetailCard(
+          const SizedBox(height: 16),
+          const _DetailCard(
             title: 'Fiat data',
             lines: <String>[
               'Fiat latest rates come from Frankfurter / ECB data.',
@@ -35,17 +46,10 @@ class DataDetailsPage extends StatelessWidget {
               'When offline, the app shows cached fiat data if available.',
             ],
           ),
-          SizedBox(height: 16),
-          _DetailCard(
-            title: 'Crypto data',
-            lines: <String>[
-              'BTC and ETH latest rates refresh on the same daily app policy.',
-              'Crypto charts support daily ranges up to 1 year.',
-              'Mixed fiat/crypto charts carry forward the last fiat close across weekends and holidays.',
-            ],
-          ),
-          SizedBox(height: 16),
-          _DetailCard(
+          const SizedBox(height: 16),
+          _DetailCard(title: 'Crypto data', lines: cryptoLines),
+          const SizedBox(height: 16),
+          const _DetailCard(
             title: 'Clear cache',
             lines: <String>[
               'Clear all data removes latest fiat cache.',

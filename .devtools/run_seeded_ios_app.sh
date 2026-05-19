@@ -34,6 +34,17 @@ resolve_simulator_id() {
 }
 
 main() {
+  local provider_profile="${PROVIDER_PROFILE:-dev_coinpaprika}"
+  local app_dev_mode="${APP_DEV_MODE:-true}"
+  local flutter_args=()
+  while IFS= read -r arg; do
+    flutter_args+=("${arg}")
+  done < <(
+    PROVIDER_PROFILE="${provider_profile}" \
+      APP_DEV_MODE="${app_dev_mode}" \
+      flutter_app_define_args
+  )
+
   local resolved_simulator_id
   resolved_simulator_id="$(resolve_simulator_id)"
   if [[ -z "${resolved_simulator_id}" ]]; then
@@ -43,7 +54,7 @@ main() {
 
   echo "Installing debug app on ${resolved_simulator_id}..."
   xcrun simctl terminate "${resolved_simulator_id}" "${bundle_id}" >/dev/null 2>&1 || true
-  run_flutter build ios --simulator --debug --target lib/main.dart
+  run_flutter build ios --simulator --debug --target lib/main.dart "${flutter_args[@]}"
   run_flutter install -d "${resolved_simulator_id}" --debug
 
   echo "Seeding ${seed_days}-day sample dataset..."

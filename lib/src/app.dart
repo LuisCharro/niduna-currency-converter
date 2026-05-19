@@ -4,17 +4,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'core/monetization/monetization_controller.dart';
 import 'core/monetization/rewarded_ad_service_stub.dart';
 import 'core/preferences/app_preferences.dart';
-import 'core/theme/app_theme.dart';
-import 'core/rates/crypto/coinpaprika_crypto_usd_price_client.dart';
-import 'core/rates/crypto/coinpaprika_crypto_usd_history_client.dart';
+import 'core/rates/provider_config.dart';
+import 'core/rates/provider_factory.dart';
 import 'core/rates/crypto/crypto_usd_history_cache.dart';
 import 'core/rates/crypto/crypto_usd_price_cache.dart';
-import 'core/rates/crypto/fallback_crypto_usd_price_client.dart';
-import 'core/rates/crypto/fawazahmed_crypto_usd_price_client.dart';
 import 'core/rates/multi_provider_rates_client.dart';
 import 'core/rates/rates_service.dart';
 import 'core/rates/clients/frankfurter_client.dart';
 import 'core/rates/cache/shared_preferences_rates_cache.dart';
+import 'core/theme/app_theme.dart';
 import 'features/convert/data/frankfurter_latest_rates_client.dart';
 import 'features/convert/data/latest_rates_cache.dart';
 import 'features/convert/data/latest_rates_repository.dart';
@@ -79,6 +77,7 @@ class _AppState extends State<AppShell> {
   }
 
   Future<void> _initAsync() async {
+    ProviderConfig.validateReleaseMode();
     final prefs = await SharedPreferences.getInstance();
 
     _preferences = AppPreferences(prefs);
@@ -94,10 +93,7 @@ class _AppState extends State<AppShell> {
           fiatClient: FrankfurterLatestRatesClient(),
           latestCache: LatestRatesCache(prefs),
           cryptoCache: CryptoUsdPriceCache(prefs),
-          cryptoClient: FallbackCryptoUsdPriceClient(
-            primary: CoinPaprikaCryptoUsdPriceClient(),
-            fallback: FawazahmedCryptoUsdPriceClient(),
-          ),
+          cryptoClient: ProviderFactory.createCryptoLatestClient(),
         );
 
     _controller = ConvertController(
@@ -117,13 +113,14 @@ class _AppState extends State<AppShell> {
     final ratesService = RatesService(
       client: MultiProviderRatesClient(
         fiatClient: FrankfurterClient(),
-        cryptoHistoryClient: CoinPaprikaCryptoUsdHistoryClient(),
+        cryptoHistoryClient: ProviderFactory.createCryptoHistoryClient(),
         cryptoHistoryCache: CryptoUsdHistoryCache(prefs),
       ),
       cache: ratesCache,
     );
     _chartsController = ChartsController(
       ratesService: ratesService,
+      allowCryptoCharts: ProviderConfig.cryptoChartsEnabled,
       defaultBase: _preferences!.defaultBaseCurrency,
     );
 

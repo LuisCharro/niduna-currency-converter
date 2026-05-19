@@ -97,58 +97,65 @@ void main() {
     },
   );
 
-  test('multi-provider client handles USD to BTC without Frankfurter USD/USD', () async {
-    SharedPreferences.setMockInitialValues(<String, Object>{});
-    final prefs = await SharedPreferences.getInstance();
-    final client = MultiProviderRatesClient(
-      fiatClient: _ThrowingUsdUsdFrankfurterClient(),
-      cryptoHistoryClient: _FakeCryptoUsdHistoryClient(
-        snapshots: <String, CryptoUsdHistorySnapshot>{
-          'BTC': _cryptoHistory('BTC', <DateTime, double>{
-            DateTime(2026, 5, 16): 50000,
-          }),
-        },
-      ),
-      cryptoHistoryCache: CryptoUsdHistoryCache(prefs),
-    );
+  test(
+    'multi-provider client handles USD to BTC without Frankfurter USD/USD',
+    () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      final prefs = await SharedPreferences.getInstance();
+      final client = MultiProviderRatesClient(
+        fiatClient: _ThrowingUsdUsdFrankfurterClient(),
+        cryptoHistoryClient: _FakeCryptoUsdHistoryClient(
+          snapshots: <String, CryptoUsdHistorySnapshot>{
+            'BTC': _cryptoHistory('BTC', <DateTime, double>{
+              DateTime(2026, 5, 16): 50000,
+            }),
+          },
+        ),
+        cryptoHistoryCache: CryptoUsdHistoryCache(prefs),
+      );
 
-    final result = await client.fetchHistorical(
-      base: 'USD',
-      quote: 'BTC',
-      from: DateTime(2026, 5, 16),
-      to: DateTime(2026, 5, 16),
-    );
+      final result = await client.fetchHistorical(
+        base: 'USD',
+        quote: 'BTC',
+        from: DateTime(2026, 5, 16),
+        to: DateTime(2026, 5, 16),
+      );
 
-    expect(result.data[DateTime(2026, 5, 16)], closeTo(0.00002, 0.000000001));
-  });
+      expect(result.data[DateTime(2026, 5, 16)], closeTo(0.00002, 0.000000001));
+    },
+  );
 
-  test('multi-provider client handles BTC to USD without Frankfurter USD/USD', () async {
-    SharedPreferences.setMockInitialValues(<String, Object>{});
-    final prefs = await SharedPreferences.getInstance();
-    final client = MultiProviderRatesClient(
-      fiatClient: _ThrowingUsdUsdFrankfurterClient(),
-      cryptoHistoryClient: _FakeCryptoUsdHistoryClient(
-        snapshots: <String, CryptoUsdHistorySnapshot>{
-          'BTC': _cryptoHistory('BTC', <DateTime, double>{
-            DateTime(2026, 5, 16): 50000,
-          }),
-        },
-      ),
-      cryptoHistoryCache: CryptoUsdHistoryCache(prefs),
-    );
+  test(
+    'multi-provider client handles BTC to USD without Frankfurter USD/USD',
+    () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      final prefs = await SharedPreferences.getInstance();
+      final client = MultiProviderRatesClient(
+        fiatClient: _ThrowingUsdUsdFrankfurterClient(),
+        cryptoHistoryClient: _FakeCryptoUsdHistoryClient(
+          snapshots: <String, CryptoUsdHistorySnapshot>{
+            'BTC': _cryptoHistory('BTC', <DateTime, double>{
+              DateTime(2026, 5, 16): 50000,
+            }),
+          },
+        ),
+        cryptoHistoryCache: CryptoUsdHistoryCache(prefs),
+      );
 
-    final result = await client.fetchHistorical(
-      base: 'BTC',
-      quote: 'USD',
-      from: DateTime(2026, 5, 16),
-      to: DateTime(2026, 5, 16),
-    );
+      final result = await client.fetchHistorical(
+        base: 'BTC',
+        quote: 'USD',
+        from: DateTime(2026, 5, 16),
+        to: DateTime(2026, 5, 16),
+      );
 
-    expect(result.data[DateTime(2026, 5, 16)], 50000);
-  });
+      expect(result.data[DateTime(2026, 5, 16)], 50000);
+    },
+  );
 
   test('charts controller downgrades 2Y to 1Y for crypto pair', () {
     final controller = ChartsController(
+      allowCryptoCharts: true,
       ratesService: RatesService(
         client: _FakeRatesClient(),
         cache: _MemoryRatesCache(),

@@ -12,13 +12,17 @@ class AppPreferences extends ChangeNotifier {
   static const String _devModeKey = 'pref_dev_mode';
   static const String _darkModeKey = 'pref_dark_mode';
   static const String _selectedCodesKey = 'pref_selected_codes';
+  static const bool _defaultDevMode = bool.fromEnvironment(
+    'APP_DEV_MODE',
+    defaultValue: false,
+  );
 
   static const List<String> defaultSelectedCodes = ['EUR', 'GBP', 'JPY'];
 
   String get defaultBaseCurrency => _prefs.getString(_defaultBaseKey) ?? 'USD';
   int get decimalPlaces => _prefs.getInt(_decimalPlacesKey) ?? 2;
   bool get refreshOnOpen => _prefs.getBool(_refreshOnOpenKey) ?? true;
-  bool get devMode => _prefs.getBool(_devModeKey) ?? true;
+  bool get devMode => _prefs.getBool(_devModeKey) ?? _defaultDevMode;
   bool get isDarkMode => _prefs.getBool(_darkModeKey) ?? false;
 
   bool get isDecimalPlacesSupported => decimalPlaces >= 2 && decimalPlaces <= 6;

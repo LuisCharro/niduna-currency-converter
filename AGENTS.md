@@ -217,6 +217,44 @@ FLUTTER_BIN=/path/to/flutter ./scripts/check.sh
 
 For UI work, hot restart or rebuild the running emulator app after successful checks.
 
+## Provider Profiles
+
+Provider selection is build-time controlled.
+
+- Default safe profile: `PROVIDER_PROFILE=release_safe`
+- Dev-only full crypto profile: `PROVIDER_PROFILE=dev_coinpaprika`
+- Hidden developer UI flag: `APP_DEV_MODE=true|false`
+
+Rules:
+
+- Normal release-style builds must stay on `release_safe`
+- Dev/emulator/screenshot flows may use `dev_coinpaprika`
+- Do not add a normal user-facing Settings toggle that can switch providers in production
+- Release builds must not ship the CoinPaprika dev profile
+
+Current behavior:
+
+- iOS/Android emulator and screenshot helper scripts default to:
+  - `PROVIDER_PROFILE=dev_coinpaprika`
+  - `APP_DEV_MODE=true`
+- `scripts/build_apk.sh` and `scripts/build_appbundle.sh` default to:
+  - `PROVIDER_PROFILE=release_safe`
+  - `APP_DEV_MODE=false`
+
+## Hidden Developer UI
+
+The developer section in Settings is hidden in normal builds unless one of these is true:
+
+- build sets `APP_DEV_MODE=true`
+- user unlocks it from the `Version` row in Settings
+
+Current secret gestures on the `Version` row:
+
+- tap 7 times quickly
+- or press and hold for 10 seconds
+
+This toggles developer mode on or off.
+
 ## Common Commands
 
 ```bash
@@ -227,6 +265,12 @@ IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/run_ios_simulator_app.sh
 IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} \
   BUNDLE_ID=com.niduna.currencyConverter \
   ./.devtools/sim_reinstall_build.sh
+
+# Override emulator to safe release-style providers if needed
+IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} \
+  PROVIDER_PROFILE=release_safe \
+  APP_DEV_MODE=false \
+  ./.devtools/run_ios_simulator_app.sh
 
 # Stop running app (fallback)
 xcrun simctl terminate <simulator_id> com.niduna.currencyConverter
@@ -258,6 +302,12 @@ IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} SCREEN_OUTPUT_DIR=.tmp/screens/ios \
 
 # Seed + launch iOS app with realistic sample data
 ./.devtools/run_seeded_ios_app.sh
+
+# Android release-style build (safe profile by default)
+./scripts/build_apk.sh
+
+# Android App Bundle release-style build (safe profile by default)
+./scripts/build_appbundle.sh
 
 # Seed iOS simulator only (app already installed)
 SEED_DAYS=90 ./.devtools/seed_ios_simulator_sample_data.sh

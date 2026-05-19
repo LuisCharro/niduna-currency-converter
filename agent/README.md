@@ -45,6 +45,14 @@ Non-goals for normal feature work:
 - smoke test (iOS): `.devtools/run_ios_minimal_smoke.sh`
 - screenshot capture: `.devtools/capture_ios_screens.sh`
 
+## Provider profiles
+
+- default build profile: `PROVIDER_PROFILE=release_safe`
+- dev-only full crypto profile: `PROVIDER_PROFILE=dev_coinpaprika`
+- emulator and screenshot scripts also set `APP_DEV_MODE=true` by default
+- release builds must never ship the dev CoinPaprika profile
+- normal builds keep the developer section hidden; unlock it from the Version row with the secret gesture if needed
+
 ## Common iOS simulator blockers
 
 **Multiple booted simulators** is the most common blocker:

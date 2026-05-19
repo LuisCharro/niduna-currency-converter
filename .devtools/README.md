@@ -3,6 +3,19 @@
 This folder contains local development helpers for loading realistic sample data
 into Android emulators and iOS simulators without changing app code.
 
+## Build profile defaults
+
+These helpers now pass app build defines automatically.
+
+- emulator, smoke, seeded-run, and screenshot scripts default to:
+  - `PROVIDER_PROFILE=dev_coinpaprika`
+  - `APP_DEV_MODE=true`
+- release build scripts under `scripts/` default to:
+  - `PROVIDER_PROFILE=release_safe`
+  - `APP_DEV_MODE=false`
+
+Override either variable explicitly if you need a different local run mode.
+
 ## iOS seed script
 
 ```bash
@@ -38,6 +51,7 @@ What it does:
 - installs the current debug build onto the selected iOS simulator
 - seeds the sample dataset
 - launches the app without a follow-up `flutter run`
+- defaults to the dev crypto provider profile and visible developer UI
 
 Use this when you want to review seeded app state on iOS and avoid the common
 workflow mistake where a later reinstall drops the sample data and sends the
@@ -73,6 +87,7 @@ What it does:
 - runs an `integration_test` flow against the selected iOS simulator
 - navigates key app views and captures screenshots into `.tmp/screens/ios/`
 - doubles as a basic end-to-end smoke pass for those flows
+- defaults to the dev crypto provider profile and visible developer UI
 
 Useful environment variables:
 
@@ -105,6 +120,8 @@ Each script writes to its own subdirectory under `.tmp/screens/ios/`.
 
 Seeds data in-process and captures screenshots on Android emulator.
 
+It defaults to the dev crypto provider profile and visible developer UI.
+
 ## iOS minimal smoke test
 
 ```bash
@@ -112,6 +129,8 @@ Seeds data in-process and captures screenshots on Android emulator.
 ```
 
 Fast sanity check after code changes.
+
+It defaults to the dev crypto provider profile and visible developer UI.
 
 ## iOS build + reinstall + launch
 
@@ -124,6 +143,7 @@ What it does:
 - builds the current iOS simulator app bundle
 - terminates/uninstalls the old app from the target simulator
 - installs the new bundle and launches it
+- defaults to the dev crypto provider profile and visible developer UI
 
 Useful environment variables:
 
@@ -155,6 +175,8 @@ IOS_SIMULATOR_ID=<ios_simulator_id> BUNDLE_ID={{BUNDLE_ID}} \
 | `ANDROID_PACKAGE_NAME` | Android package name | `{{ANDROID_PACKAGE_NAME}}` |
 | `ADB_BIN` | Explicit path to adb | auto-detected |
 | `FLUTTER_BIN` | Explicit path to flutter | auto-detected |
+| `PROVIDER_PROFILE` | App provider profile define | `dev_coinpaprika` in `.devtools/`, `release_safe` in release scripts |
+| `APP_DEV_MODE` | Show hidden developer section by default | `true` in `.devtools/`, `false` in release scripts |
 | `SEED_DAYS` | Days of seed data to generate | `90` |
 | `SCREEN_OUTPUT_DIR` | Screenshot output directory | `.tmp/screens/ios/` |
 | `SEED_BEFORE_CAPTURE` | Reseed before capture | `0` |

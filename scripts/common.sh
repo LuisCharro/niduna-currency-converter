@@ -35,6 +35,14 @@ run_flutter() {
   exit 1
 }
 
+flutter_app_define_args() {
+  local provider_profile="${PROVIDER_PROFILE:-release_safe}"
+  local app_dev_mode="${APP_DEV_MODE:-false}"
+
+  printf '%s\n' "--dart-define=PROVIDER_PROFILE=${provider_profile}"
+  printf '%s\n' "--dart-define=APP_DEV_MODE=${app_dev_mode}"
+}
+
 resolve_firebase_bin() {
   if [[ -n "${FIREBASE_BIN:-}" ]]; then
     if [[ ! -x "${FIREBASE_BIN}" ]]; then

@@ -10,6 +10,7 @@ class PairSelector extends StatelessWidget {
   const PairSelector({
     required this.base,
     required this.quote,
+    required this.allowCryptoCharts,
     required this.onPairChanged,
     required this.onSwap,
     required this.controller,
@@ -18,6 +19,7 @@ class PairSelector extends StatelessWidget {
 
   final String base;
   final String quote;
+  final bool allowCryptoCharts;
   final void Function(String base, String quote) onPairChanged;
   final VoidCallback onSwap;
   final MonetizationController controller;
@@ -74,6 +76,7 @@ class PairSelector extends StatelessWidget {
       builder: (_) => ChartCurrencyPickerSheet(
         title: selectingBase ? 'Select base currency' : 'Select quote currency',
         selectedCode: selectingBase ? base : quote,
+        allowCryptoCharts: allowCryptoCharts,
         controller: controller,
         baseCurrency: base,
         quoteCurrency: quote,

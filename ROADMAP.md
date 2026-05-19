@@ -144,6 +144,7 @@ Must include:
 - **"Remove ads" CTA row** below banner ad areas (Convert + Charts tabs): subtle text link below/beside the banner
 - Dev Sandbox section with entitlement toggles (visible during development)
 - privacy policy/about/version
+- active provider profile and data-source disclosure
 
 Must not include:
 
@@ -230,8 +231,8 @@ Supported scope:
 
 Sources:
 
-- CoinPaprika for BTC/ETH latest and historical
-- fawazahmed0 as latest-only fallback
+- release-safe profile: fawazahmed0 for BTC/ETH latest, crypto charts disabled
+- dev CoinPaprika profile: CoinPaprika for BTC/ETH latest and historical, fawazahmed0 as latest fallback
 
 Still deferred:
 
@@ -239,6 +240,18 @@ Still deferred:
 - intraday crypto charts
 - crypto history beyond 1 year
 - any crypto path that requires embedding an API key
+
+### Provider Profiles
+
+Provider selection must be controlled by a build-time profile, not by a normal
+user-facing settings toggle.
+
+- default profile: `release_safe`
+- optional dev profile: `dev_coinpaprika`
+- release builds must reject non-safe profiles
+- Settings should disclose the active profile and current provider order
+- dev-only UI may display provider diagnostics, but release UI must not let users
+  enable restricted providers
 
 ### Local User Data
 

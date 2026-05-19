@@ -16,7 +16,7 @@
 
 ## Key Decisions (2026-05-07 / updated 2026-05-08)
 
-- Phase 1.x includes a no-key crypto extension: BTC and ETH latest rates in Convert plus daily crypto charts up to 1 year. No backend, no account, and no embedded API key are allowed.
+- Phase 1.x includes a no-key crypto extension: BTC and ETH latest rates in Convert plus daily crypto charts up to 1 year. No backend, no account, and no embedded API key are allowed. Release builds must use a Play Store safe provider profile.
 - Metals (XAU gold, XAG silver) deferred to Phase 3 (no good free API)
 - Phase 2 subscription minimum: **1 CHF/mes = 12 CHF/año**; break-even at ~10 subscribers
 - Grandfathering confirmed: Google Play auto-preserves prices; Apple requires "Preserve prices for existing subscribers" in App Store Connect
@@ -88,8 +88,8 @@ first or defer the idea.
 |------|----------------|------------|------------------|
 | Fiat latest rates | Frankfurter v2 | Keep last successful payload locally | Show cached stale/offline state if refresh fails |
 | Fiat historical rates | Frankfurter historical endpoints | Cache by pair and range | Show cached chart data if available |
-| Crypto latest rates (BTC, ETH) | CoinPaprika primary + fawazahmed0 fallback | Keep normalized USD source cache plus final latest snapshot cache | Preserve cached crypto if fresh enough and provider refresh fails |
-| Crypto historical rates (BTC, ETH) | CoinPaprika historical ticks | Cache source USD history by asset and final chart snapshots by pair | Show cached chart data if available |
+| Crypto latest rates (BTC, ETH) | Build-time provider profile. Release-safe default: fawazahmed0. Dev profile may use CoinPaprika primary + fawazahmed0 fallback | Keep normalized USD source cache plus final latest snapshot cache | Preserve cached crypto if fresh enough and provider refresh fails |
+| Crypto historical rates (BTC, ETH) | Build-time provider profile. Release-safe default: disabled. Dev profile may use CoinPaprika historical ticks | Cache source USD history by asset and final chart snapshots by pair | Show cached chart data if available |
 | Favorites | Local storage | Persistent until user deletes | Never requires network |
 | Settings preferences | Local storage (SharedPreferences) | Persistent until user changes | Never requires network |
 | Temp pair unlocks | Local storage (SharedPreferences) | 24h TTL, auto-expire | Never requires network |
@@ -296,8 +296,8 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 
 ### Crypto API (No-Key Phase 1.x)
 
-- BTC and ETH latest rates use CoinPaprika as primary and fawazahmed0 as fallback.
-- BTC and ETH daily historical charts use CoinPaprika historical ticks.
+- BTC and ETH latest rates follow a build-time provider profile. Release-safe builds use fawazahmed0. Dev builds may use CoinPaprika as primary and fawazahmed0 as fallback.
+- BTC and ETH daily historical charts are disabled in the release-safe profile. Dev builds may use CoinPaprika historical ticks.
 - No API key is embedded in the mobile app.
 - No backend/proxy is required for this limited BTC/ETH scope.
 - Crypto-involved chart ranges are limited to 1 year on the no-key path.

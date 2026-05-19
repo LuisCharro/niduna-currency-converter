@@ -36,6 +36,17 @@ resolve_simulator_id() {
 }
 
 main() {
+  local provider_profile="${PROVIDER_PROFILE:-dev_coinpaprika}"
+  local app_dev_mode="${APP_DEV_MODE:-true}"
+  local flutter_args=()
+  while IFS= read -r arg; do
+    flutter_args+=("${arg}")
+  done < <(
+    PROVIDER_PROFILE="${provider_profile}" \
+      APP_DEV_MODE="${app_dev_mode}" \
+      flutter_app_define_args
+  )
+
   open -a Simulator >/dev/null 2>&1 || true
 
   local resolved_simulator_id
@@ -50,7 +61,7 @@ main() {
 
   if [[ "${build_first}" == "1" ]]; then
     echo "Building iOS simulator app..."
-    run_flutter build ios --simulator
+    run_flutter build ios --simulator "${flutter_args[@]}"
   fi
 
   if [[ ! -d "${repo_root}/${app_path}" ]]; then

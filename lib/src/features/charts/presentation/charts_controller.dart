@@ -61,17 +61,24 @@ class ChartState {
 class ChartsController extends ChangeNotifier {
   ChartsController({
     required RatesService ratesService,
+    required bool allowCryptoCharts,
     String defaultBase = 'USD',
     String defaultQuote = 'EUR',
     ChartRange range = ChartRange.oneMonth,
   }) : _ratesService = ratesService,
+       _allowCryptoCharts = allowCryptoCharts,
        _state = ChartState(
-         base: defaultBase,
-         quote: defaultQuote,
+         base: _normalizeCode(defaultBase, allowCryptoCharts),
+         quote: _normalizeCode(
+           defaultQuote,
+           allowCryptoCharts,
+           fallback: 'EUR',
+         ),
          range: range,
        );
 
   final RatesService _ratesService;
+  final bool _allowCryptoCharts;
   ChartState _state;
   bool _disposed = false;
   int _requestVersion = 0;
@@ -140,6 +147,15 @@ class ChartsController extends ChangeNotifier {
 
   Future<void> _load() async {
     final requestVersion = ++_requestVersion;
+    if (_state.includesCrypto && !_allowCryptoCharts) {
+      _setState(
+        _state.copyWith(
+          status: ChartStatus.error,
+          message: 'Crypto charts are not available in this release.',
+        ),
+      );
+      return;
+    }
     final from = _state.range.fromDate();
     if (from == null) {
       _setState(
@@ -189,6 +205,17 @@ class ChartsController extends ChangeNotifier {
       return range;
     }
     return ChartRange.oneYear;
+  }
+
+  static String _normalizeCode(
+    String code,
+    bool allowCryptoCharts, {
+    String fallback = 'USD',
+  }) {
+    if (!allowCryptoCharts && isCryptoCurrency(code)) {
+      return fallback;
+    }
+    return code;
   }
 }
 

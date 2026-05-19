@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/rates/provider_config.dart';
 import '../../../core/theme/app_theme.dart';
 
 class DataSourcesPage extends StatelessWidget {
@@ -7,6 +8,10 @@ class DataSourcesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cryptoChartsDetail = ProviderConfig.cryptoChartsEnabled
+        ? 'Crypto-involved charts use ${ProviderConfig.chartsProviderLabel}. Crypto ranges stay limited to 1 year on the no-key path.'
+        : 'Crypto charts are disabled in this build to keep the release profile safe for store publication.';
+
     return Scaffold(
       backgroundColor: AppTheme.bg,
       appBar: AppBar(
@@ -17,33 +22,25 @@ class DataSourcesPage extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
-        children: const <Widget>[
-          _SourceCard(
+        children: <Widget>[
+          const _SourceCard(
             title: 'Fiat latest and fiat charts',
             provider: 'Frankfurter / ECB',
             detail:
                 'Frankfurter provides the fiat latest and historical exchange rates used by the app. Fiat charts support daily ranges up to 2 years.',
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           _SourceCard(
             title: 'Crypto latest',
-            provider: 'CoinPaprika',
+            provider: 'Configured by build profile',
             detail:
-                'CoinPaprika is the primary source for BTC and ETH latest prices. The app keeps a no-key fallback for latest crypto rates when needed.',
+                'BTC and ETH latest prices use the active crypto provider chain for this build. Developer profile details are shown only inside the Dev Sandbox.',
           ),
-          SizedBox(height: 16),
-          _SourceCard(
-            title: 'Crypto latest fallback',
-            provider: 'fawazahmed0/exchange-api',
-            detail:
-                'This fallback is used only for latest crypto prices if the primary source fails. It is not used for historical chart ranges.',
-          ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           _SourceCard(
             title: 'Crypto charts',
-            provider: 'CoinPaprika historical ticks',
-            detail:
-                'BTC/ETH and mixed fiat/crypto charts use CoinPaprika daily historical data. Crypto-involved charts are limited to 1 year on the no-key path.',
+            provider: ProviderConfig.chartsProviderLabel,
+            detail: cryptoChartsDetail,
           ),
         ],
       ),

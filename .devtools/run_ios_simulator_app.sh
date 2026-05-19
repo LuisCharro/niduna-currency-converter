@@ -33,6 +33,17 @@ resolve_simulator_id() {
 }
 
 main() {
+  local provider_profile="${PROVIDER_PROFILE:-dev_coinpaprika}"
+  local app_dev_mode="${APP_DEV_MODE:-true}"
+  local flutter_args=()
+  while IFS= read -r arg; do
+    flutter_args+=("${arg}")
+  done < <(
+    PROVIDER_PROFILE="${provider_profile}" \
+      APP_DEV_MODE="${app_dev_mode}" \
+      flutter_app_define_args
+  )
+
   open -a Simulator >/dev/null 2>&1 || true
 
   local resolved_simulator_id
@@ -47,7 +58,9 @@ main() {
 
   echo "Running app on ${resolved_simulator_id}..."
   run_flutter pub get
-  setsid run_flutter run -d "${resolved_simulator_id}" > /dev/null 2>&1 < /dev/null &
+  setsid run_flutter run \
+    -d "${resolved_simulator_id}" \
+    "${flutter_args[@]}" > /dev/null 2>&1 < /dev/null &
   echo "App launched in background. Flutter DevTools available at http://127.0.0.1:51853/"
 }
 
