@@ -1,8 +1,150 @@
-# Provider Rate Limits and Call Budget
+# Provider Rate Limits, Licensing, and Call Budget
 
 > Last updated: 2026-05-19
-> Purpose: document free provider limits, how the app makes calls, and whether
-> current usage is safe.
+> Purpose: document free provider limits, licensing status for commercial
+> publication, how the app makes calls, and replacement strategies.
+
+---
+
+## Licensing Summary (Can I Publish on Play Store?)
+
+### TL;DR
+
+| Provider | Use in App | License | Commercial Use | Play Store Safe? | Action Needed |
+|----------|-----------|---------|----------------|-----------------|---------------|
+| **Frankfurter** | Fiat latest + historical | Unlicense (open source) | **Yes — explicitly** stated on their site: *"Is the API free for commercial use? Yes, absolutely."* | **YES** | None |
+| **fawazahmed0** | BTC/ETH latest fallback | **CC0-1.0** (public domain) | **Yes** — CC0 allows commercial use, modification, distribution with no restrictions | **YES** | None |
+| **CoinPaprika** | BTC/ETH latest + charts | Proprietary ToS | **NO** — free plan forbids commercial use; paid plans ($99–$1,499/mo) are **internal tools only**; user-facing apps require custom Enterprise contract | **NO** | **Must replace before Play Store release** |
+
+### Detailed License Analysis
+
+#### Frankfurter — GREEN
+
+- **Source**: https://frankfurter.dev — FAQ section
+- **Quote**: *"Is the API free for commercial use? Yes, absolutely."*
+- **License**: Unlicense (public domain equivalent). Open-source project on GitHub.
+- **Attribution**: Not required
+- **Data source**: ECB + 55 central banks (public reference rates)
+- **Risk**: None. Publish anywhere, monetize however you want.
+
+#### fawazahmed0/exchange-api — GREEN
+
+- **Source**: https://github.com/fawazahmed0/exchange-api
+- **License**: CC0-1.0 (Creative Commons Zero — full public domain dedication)
+- **CC0 grants**: commercial use, modification, distribution, no attribution required
+- **Served via**: jsdelivr CDN + Cloudflare Pages fallback — both are standard CDN infrastructure
+- **Includes**: 200+ currencies including BTC/ETH
+- **Risk**: None. Fully open data.
+
+#### CoinPaprika — RED (BLOCKING)
+
+- **Source**: https://coinpaprika.com/api-terms-of-use/
+- **ToS Section 2.5 (definition)**: *"Commercial use means any use of API directly or indirectly in connection with any business or other undertaking intended directly or indirectly for any profit."*
+- **ToS Section 3.6 (restriction)**: *"You are eligible to use API for Commercial use only in Plans other than 'Free'."*
+- **ToS Section 3.9 (attribution)**: Must display *"Powered by CoinPaprika"* in font size 10+, fully visible to users.
+- **Even paid plans don't help**: Independent research (CoinGecko comparison, 2026) confirms that **all standard paid plans** ($99/mo Starter through $1,499/mo Ultimate) are restricted to **internal company tools only**. Any application displaying data to end users requires a separate **Enterprise contract** (custom pricing).
+- **Jurisdiction**: ToS governed by Polish law, courts in Poznań.
+- **Risk**: **HIGH**. Publishing this app on Google Play with CoinPaprika = commercial use = ToS violation, even if you pay $99/mo.
+
+### Google Play Store: Does a Currency Converter Need Special Approval?
+
+#### Financial Features Declaration — Required but Simple
+
+Google requires **every app** to complete a Financial Features Declaration in Play Console
+(Policy and programs > App content). The categories are:
+
+| Feature | This app? |
+|---------|-----------|
+| Cryptocurrency wallet | No |
+| Cryptocurrency exchange | No |
+| Tokenized digital asset (NFT) | No |
+| Stock trading / portfolio management | No |
+| Mobile payments / digital wallets | No |
+| Banking / loans | No |
+| Insurance | No |
+
+**Correct declaration**: *"My app doesn't provide any financial features."*
+
+A currency converter that **displays exchange rates** is not a financial service. It does
+not hold funds, execute trades, facilitate transactions, or manage wallets.
+
+#### Cryptocurrency Exchanges & Wallets Policy (2025 Update) — NOT in Scope
+
+Google's 2025 policy targets **actual crypto exchanges and custodial wallets** — apps where
+users buy, sell, trade, or store cryptocurrency. Displaying BTC/ETH prices in a converter
+is no different from any existing "Crypto & Currency Converter" app already on Play Store.
+
+- Non-custodial wallets: explicitly exempt
+- Price display apps: not mentioned in scope
+- License requirements: only apply to exchanges/wallets holding or trading user funds
+
+---
+
+## CoinPaprika Replacement Options
+
+Since CoinPaprika **cannot** be used for Play Store publication, the crypto data
+needs a different provider. Options ranked by feasibility:
+
+### Option A: Expand fawazahmed0 Usage (Recommended — Free, Immediate)
+
+fawazahmed0 already provides BTC/ETH latest rates as a fallback. It could become
+the primary crypto provider.
+
+- **Latest rates**: already works — just promote from fallback to primary
+- **Historical charts**: fawazahmed0 supports date-specific URLs
+  (`@2025-01-01/v1/currencies/btc.json`) — would need to fetch multiple dates
+  and compose a time series. Less elegant but functional for short ranges.
+- **Cost**: Free (CC0)
+- **Limitation**: daily granularity only, data quality is good but not
+  exchange-grade (occasional bad values — app already validates with sanity ranges)
+- **Risk**: None (CC0 license)
+
+### Option B: CoinGecko Demo Plan (Free Tier, Commercial Path)
+
+- **Free plan**: 10,000 calls/month, 50+ endpoints, 1 year historical
+- **Commercial licensing**: available from **Analyst plan ($129/mo)** onwards
+  — no separate Enterprise contract needed
+- **Coverage**: 18,000+ coins, 250+ networks
+- **Free tier limitation**: Demo plan may not include commercial rights —
+  verify before relying on this. If it doesn't, you'd need the $129/mo plan
+  for Play Store publication.
+- **API key required**: Yes (but free to generate)
+
+### Option C: DIA (diadata.org) (Free, No Key)
+
+- **Free crypto price API**: no registration, no API key, no credit card
+- **Coverage**: 3,000+ tokens
+- **License**: appears permissive but verify terms before publishing
+- **Historical data**: check availability and granularity
+
+### Option D: CoinPaprika Enterprise Contract
+
+- **Cost**: Custom pricing (likely $500+/month)
+- **Effort**: sales negotiation required
+- **When**: only if you need CoinPaprika-specific data and have revenue
+
+### Option E: Drop Crypto Charts for Phase 1 Launch
+
+- Keep BTC/ETH **latest rates** (use fawazahmed0 as primary — CC0, no issues)
+- Remove crypto **chart** functionality temporarily
+- Add crypto charts back when a compliant provider is integrated
+- Simplest path to Play Store release
+
+### Recommended Path
+
+```
+Phase 1 (Play Store launch):
+  Latest rates:  Frankfurter (fiat) + fawazahmed0 (crypto, promoted to primary)
+  Charts:        Frankfurter (fiat only) — crypto charts disabled or using fawazahmed0 time series
+  Cost:          $0
+  License:       All clear (Unlicense + CC0)
+
+Phase 2 (when revenue justifies):
+  Latest rates:  Frankfurter + CoinGecko Analyst ($129/mo, commercial license)
+  Charts:        Frankfurter (fiat) + CoinGecko (crypto, full historical)
+  Cost:          ~$129/mo
+  License:       Commercial use explicitly granted
+```
 
 ---
 
@@ -25,7 +167,7 @@ When the app calls a provider, the HTTP request contains:
 
 **Yes, all HTTP servers log IPs by default.** But:
 
-- **Frankfurter**: open-source project (h县城 auf GitHub). No known tracking or user profiling. Server logs are standard access logs, not analytics. Self-hostable if needed.
+- **Frankfurter**: open-source project. No known tracking or user profiling. Server logs are standard access logs, not analytics. Self-hostable if needed.
 - **CoinPaprika**: commercial API service. They likely log IPs for rate limiting (20K/month quota is enforced per IP or per subnet). They have a published Privacy Policy at `coinpaprika.com`. The free plan has no account, so they track usage by IP.
 - **fawazahmed0**: served via jsdelivr CDN and Cloudflare. These CDNs log IPs for caching and abuse prevention. No user profiling.
 
@@ -35,24 +177,16 @@ When the app calls a provider, the HTTP request contains:
 
 1. The app sends **zero personal data** — no name, no email, no device ID, no location.
 2. The only identifying information is the **IP address**, which every internet service sees.
-3. Each user's IP is **different** — CoinPaprika sees 100 different IPs from 100 users, not "100 calls from one app."
+3. Each user's IP is **different** — providers see 100 different IPs from 100 users, not "100 calls from one app."
 4. The daily cache means each user makes **at most ~3-8 calls per day** across all providers.
 5. This is identical to any website user loading a page — your app's users are making fewer requests than a single web browsing session.
-
-### What CoinPaprika Actually Tracks
-
-CoinPaprika's rate limit (20K/month) applies **per IP address** on the free plan, not per app. This means:
-
-- 100 users = 100 different IPs = 100 separate 20K/month quotas
-- The app does **not** pool all users into one quota
-- There is no way for CoinPaprika to know these calls come from the same app
 
 ### Your Backend Plan Solves Everything
 
 When you implement the backend:
 
 ```
-User's phone → Your backend → Paid provider
+User's phone → Your backend → Provider
               (your server IP)   (one identity)
 ```
 
@@ -66,11 +200,11 @@ User's phone → Your backend → Paid provider
 
 ## Providers Overview
 
-| Provider | Use | Auth | Rate Limit |
-|----------|-----|------|------------|
-| **Frankfurter** (`api.frankfurter.dev`) | Fiat latest + historical | No key | ~10 req/min (soft); no hard monthly quota |
-| **CoinPaprika** (`api.coinpaprika.com`) | BTC/ETH latest + historical | No key | **20,000 calls/month** on free plan |
-| **fawazahmed0** (`cdn.jsdelivr.net`) | BTC/ETH latest fallback | No key | **No rate limit** (static CDN file, CC0) |
+| Provider | Use | Auth | Rate Limit | License |
+|----------|-----|------|------------|---------|
+| **Frankfurter** (`api.frankfurter.dev`) | Fiat latest + historical | No key | ~10 req/min (soft); no hard monthly quota | Unlicense (commercial OK) |
+| **CoinPaprika** (`api.coinpaprika.com`) | BTC/ETH latest + historical | No key | **20,000 calls/month** on free plan | Proprietary (commercial **NOT** allowed on free or standard paid plans) |
+| **fawazahmed0** (`cdn.jsdelivr.net`) | BTC/ETH latest (fallback → primary candidate) | No key | **No rate limit** (static CDN file) | **CC0** (commercial OK) |
 
 ### Frankfurter Details
 
@@ -80,8 +214,9 @@ User's phone → Your backend → Paid provider
 - No API key, no account
 - The v1 endpoint (`/v1/{date}`) supports date ranges like `2024-01-01..2024-06-01`
 - The v2 endpoint (`/v2/rates`) returns latest rates
-- Self-hostable via Docker if needed at scale (`lineofflight/frankfurter`)
+- Self-hostable via Docker if needed at scale
 - Soft limit: ~10 requests/minute observed; no published hard cap
+- **License**: Unlicense — explicitly free for commercial use
 
 ### CoinPaprika Details
 
@@ -90,17 +225,23 @@ User's phone → Your backend → Paid provider
 - Rate: roughly 4 calls/second on free plan
 - Historical ticks: daily interval supports up to 1 year lookback
 - Historical OHLC: only last 24 hours (not used by this app)
-- Paid plans: Starter $99/mo (400K calls), Pro ($1M calls), Business ($5M calls)
+- Paid plans: Starter $99/mo (400K calls), Pro, Business, Ultimate $1,499/mo
+- **CRITICAL**: ALL plans (free through $1,499/mo Ultimate) are **internal tools only**
+- User-facing apps require a separate Enterprise contract (custom pricing)
+- **Must display "Powered by CoinPaprika" attribution** (ToS Section 3.9)
+- **BLOCKER FOR PLAY STORE**: commercial use forbidden on free plan,
+  user-facing display forbidden on all standard paid plans
 
 ### fawazahmed0 Details
 
 - Static JSON file served via jsdelivr CDN + Cloudflare Pages fallback
 - Updated daily
 - No rate limit (it is a static file, not a dynamic API)
-- CC0 license
+- **CC0-1.0 license** — full public domain, commercial use explicitly allowed
 - Includes 200+ currencies including BTC/ETH
 - Known issue: occasional bad crypto data (e.g. inverted BTC values on 2025-12-06)
 - The app validates prices against sanity ranges before accepting
+- **Best candidate for primary crypto provider** (replacing CoinPaprika)
 
 ---
 
@@ -114,20 +255,17 @@ The app makes plain `GET` requests. No POST, no body, no custom headers, no auth
 ```
 GET https://api.frankfurter.dev/v2/rates?base=USD&quotes=EUR,GBP,JPY,...
 ```
-→ Returns JSON array of `{date, base, quote, rate}` objects.
 
 **Convert — crypto latest (CoinPaprika, 2 calls):**
 ```
 GET https://api.coinpaprika.com/v1/tickers/btc-bitcoin?quotes=USD
 GET https://api.coinpaprika.com/v1/tickers/eth-ethereum?quotes=USD
 ```
-→ Each returns `{symbol, last_updated, quotes: {USD: {price: ...}}}`.
 
 **Convert — crypto fallback (fawazahmed0, only if CoinPaprika fails):**
 ```
 GET https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json
 ```
-→ Returns `{date, usd: {btc: ..., eth: ...}}` static JSON. Lowercase keys, inverted (USD per 1 BTC, not BTC per 1 USD — the app inverts it).
 
 **Charts — fiat historical (Frankfurter):**
 ```
@@ -207,44 +345,26 @@ Cache behavior: once a range is fetched, it is cached persistently. Only new dat
 
 ## Monthly Call Budget Analysis
 
-### CoinPaprika (the tightest constraint)
+### CoinPaprika (the tightest constraint — and a licensing blocker)
 
-Free plan: **20,000 calls/month**
+Free plan: **20,000 calls/month** — but **cannot be used commercially** anyway.
 
-| Scenario | Users | Convert calls/mo | Chart calls/mo | Total | Safe? |
-|----------|-------|-------------------|-----------------|-------|-------|
-| Development (1 user) | 1 | ~60 | ~30 | **~90** | Yes |
-| Soft launch (100 DAU) | 100 | ~6,000 | ~3,000 | **~9,000** | Yes |
-| Growth (300 DAU) | 300 | ~18,000 | ~9,000 | **~27,000** | **Over** |
-| Target MVP (500 DAU) | 500 | ~30,000 | ~15,000 | **~45,000** | **Over** |
+| Scenario | Users | Convert calls/mo | Chart calls/mo | Total | Under quota? | License OK? |
+|----------|-------|-------------------|-----------------|-------|-------------|-------------|
+| Development (1 user) | 1 | ~60 | ~30 | **~90** | Yes | **No** |
+| Soft launch (100 DAU) | 100 | ~6,000 | ~3,000 | **~9,000** | Yes | **No** |
+| Growth (300 DAU) | 300 | ~18,000 | ~9,000 | **~27,000** | Over | **No** |
 
-Assumes each user opens Convert once/day and views ~3 chart pairs with crypto.
+The quota discussion is **moot** — the license forbids commercial use regardless of call volume.
 
-### Why It Is Probably Fine In Practice
+### Why fawazahmed0 As Primary Crypto Provider Works
 
-1. **Daily cache policy**: Convert refreshes at most once per local day. Most users open the app briefly and leave — they do not trigger multiple refreshes.
-2. **Chart caching**: historical data is cached persistently. Only new date gaps are fetched. A user viewing BTC/ETH 1M today and again tomorrow only fetches 1 new day.
-3. **Fiat charts cost zero CoinPaprika calls**: only crypto-involving pairs use CoinPaprika.
-4. **Not all users view crypto charts**: most users stay on fiat pairs.
-5. **fawazahmed0 is the safety net**: if CoinPaprika quota is exhausted, the fallback still provides latest BTC/ETH rates for Convert (though not charts).
-
-### When To Worry
-
-- Above ~200 DAU regularly viewing crypto charts, start monitoring.
-- At ~500 DAU, consider self-hosting or upgrading CoinPaprika.
-- Phase 2 backend proxy removes all provider quotas from client devices.
-
----
-
-## Frankfurter Safety
-
-Frankfurter has no published hard monthly quota. The soft rate limit (~10 req/min) is generous for a mobile app:
-
-- Convert: 1 call per day per user
-- Charts: 1 call per pair+range (cached forever after)
-- 500 DAU: ~500 Convert + ~1,500 chart = **~2,000 Frankfurter calls/month**
-
-Completely safe. If ever needed, self-host via Docker.
+1. **CC0 license**: no commercial use restrictions, no attribution required
+2. **No rate limit**: static CDN file, not a dynamic API
+3. **Already in the codebase**: currently a fallback, just needs promotion to primary
+4. **Includes BTC/ETH**: same data already used
+5. **Daily update**: matches the app's daily cache policy
+6. **Limitation**: no native historical time series endpoint (each date is a separate file) — charts would need a different approach or a secondary provider
 
 ---
 
@@ -261,18 +381,21 @@ Completely safe. If ever needed, self-host via Docker.
 | 1Y | Yes | Yes | CoinPaprika free plan max |
 | 2Y | Yes | **No** | CoinPaprika free plan does not support > 1Y |
 
-### Should 2Y Be Reduced For Fiat?
+### After CoinPaprika Replacement
 
-**No.** Reasons:
+Crypto chart ranges will depend on the replacement provider's capabilities:
 
-1. Frankfurter has no hard quota — 2Y fiat charts cost nothing extra.
-2. 2Y is a competitive feature (Currency app offers it).
-3. 2Y charts are cached permanently after first fetch.
-4. Removing 2Y would reduce app value without saving meaningful cost.
+| Replacement | Historical Available | Max Range | Commercial OK? |
+|-------------|---------------------|-----------|----------------|
+| fawazahmed0 (date files) | Daily snapshots | Unlimited (1 date per call) | Yes (CC0) |
+| CoinGecko Demo | 1 year daily | 1Y | Verify free tier terms |
+| CoinGecko Analyst ($129/mo) | Full historical | Unlimited | Yes |
+| DIA | TBD | TBD | Verify |
 
 ### Recommendation
 
-Keep current range structure. 2Y fiat is safe and free. 1Y crypto max is a CoinPaprika constraint, not a choice.
+Keep current range structure for fiat. Crypto ranges adjust based on replacement provider.
+2Y fiat is safe and free (Frankfurter, no quota).
 
 ---
 
@@ -280,28 +403,33 @@ Keep current range structure. 2Y fiat is safe and free. 1Y crypto max is a CoinP
 
 ### Key Insight: Each User Has An Independent Quota
 
-Because there is **no API key** and **no shared identity**, CoinPaprika and Frankfurter treat each user as an independent caller:
+Because there is **no API key** and **no shared identity**, providers treat each user
+as an independent caller:
 
-- **User A** on WiFi at home → IP `203.0.113.5` → their own 20K/month CoinPaprika quota
-- **User B** on mobile data → IP `198.51.100.12` → their own 20K/month CoinPaprika quota
+- **User A** on WiFi at home → IP `203.0.113.5` → their own quota
+- **User B** on mobile data → IP `198.51.100.12` → their own quota
 - The providers **cannot tell** these users are using the same app
 
-This means **1,000 users = 1,000 independent quotas of 20K/month each**. The app will never hit a global "all users combined" limit.
+This means **1,000 users = 1,000 independent quotas**. The app will never hit a
+global "all users combined" limit.
 
 ### Edge Case: Shared IPs (Corporate/School WiFi)
 
-Many users behind one IP (e.g. office WiFi) share the per-IP rate limit. But daily caching limits each device to ~3-8 calls/day, so even 50 users behind one IP = ~150-400 calls/day = ~12K/month — still under 20K.
+Many users behind one IP (e.g. office WiFi) share the per-IP rate limit. But daily
+caching limits each device to ~3-8 calls/day, so even 50 users behind one IP =
+~150-400 calls/day = ~12K/month — still under most quotas.
 
-### Your Backend Plan Is The Correct Strategy
+### Your Backend Plan Is The Correct Long-Term Strategy
 
 ```
-Phase 1 (now, free):                Phase 2 (when you have users):
+Phase 1 (now, free):                  Phase 2 (when you have revenue):
 
-Phone → CoinPaprika (direct)        Phone → Your backend → Paid provider
-Phone → Frankfurter (direct)                    ↓
-Phone → fawazahmed0 (direct)              Cache + rate control
-                                          One server IP to provider
-                                          ~$10-20/mo server cost
+Phone → Frankfurter (fiat)            Phone → Your backend → Frankfurter
+Phone → fawazahmed0 (crypto)                      ↓
+                                      Your backend → CoinGecko ($129/mo, commercial)
+                                      Cache + rate control
+                                      One server IP to provider
+                                      ~$10-20/mo server cost
 ```
 
 **Benefits of the backend proxy:**
@@ -312,20 +440,20 @@ Phone → fawazahmed0 (direct)              Cache + rate control
 5. You can switch providers without app updates
 6. You can add rate limiting, monitoring, and analytics on your side
 
-**When to build the backend:** when you have real users and can justify the $10-20/month server cost. Until then, the free direct-call architecture works perfectly.
+**When to build the backend:** when you have real users and can justify the $10-20/month server cost + provider subscription. Until then, free providers (Frankfurter + fawazahmed0) cover all needs legally.
 
 ---
 
-## Mitigation Strategies (Future)
+## Mitigation Strategies
 
-| Strategy | When | Cost |
-|----------|------|------|
-| **Current architecture** | < 200 DAU | Free |
-| **Daily cache enforcement** | Always | Free (already implemented) |
-| **Reduce crypto chart to 6M max** | If CoinPaprika quota pressure | Free (reduces data per fetch) |
-| **Phase 2 backend proxy** | ~500 DAU | ~$10/mo server |
-| **CoinPaprika Starter plan** | If needed before backend | $99/mo (400K calls) |
-| **Self-hosted Frankfurter** | If Frankfurter rate-limits | Docker on existing VPS |
+| Strategy | When | Cost | License OK? |
+|----------|------|------|-------------|
+| **Frankfurter + fawazahmed0 only** (drop CoinPaprika) | Phase 1 launch | Free | Yes (Unlicense + CC0) |
+| **Add CoinGecko Demo** for crypto charts | If fawazahmed0 charts insufficient | Free | Verify free tier terms |
+| **CoinGecko Analyst** ($129/mo) | When revenue justifies | $129/mo | Yes (commercial license included) |
+| **Phase 2 backend proxy** | ~500+ DAU | ~$10/mo server + provider | Yes |
+| **Self-hosted Frankfurter** | If Frankfurter rate-limits | Docker on existing VPS | Yes |
+| **CoinPaprika Enterprise** | Only if specifically needed | Custom ($500+/mo estimate) | Yes (with contract) |
 
 ---
 
@@ -333,11 +461,11 @@ Phone → fawazahmed0 (direct)              Cache + rate control
 
 | Question | Answer |
 |----------|--------|
+| Can I publish on Play Store with current providers? | **NO** — CoinPaprika ToS forbids commercial use on free plan and user-facing display on all standard paid plans. **Must replace CoinPaprika.** |
+| What should I replace CoinPaprika with? | **fawazahmed0** (CC0, already in codebase) for latest rates. For charts, either compose from fawazahmed0 date files, or add CoinGecko. |
+| Are Frankfurter and fawazahmed0 safe? | **Yes** — both explicitly allow commercial use (Unlicense + CC0). |
+| Does Google Play require special approval? | **No** — declare "no financial features." A rate display app is not a crypto exchange or wallet. |
 | Am I doing too many calls? | **No**, not at current scale. Daily caching keeps calls minimal. |
-| How many calls per provider? | CoinPaprika: 20K/mo free. Frankfurter: no hard limit. fawazahmed0: no limit. |
-| Should I reduce chart ranges? | **No**, keep 2Y fiat. 1Y crypto is already the free-plan max. |
-| When will I hit limits? | ~200-300 DAU regularly using crypto charts. |
-| What happens if CoinPaprika quota runs out? | Latest BTC/ETH rates fall back to fawazahmed0 (still works). Crypto charts stop updating until month resets. Fiat is unaffected. |
-| Will Google Play / App Store users cause problems? | **No** — each user has a different IP, so CoinPaprika's 20K/month limit applies per-user, not per-app. |
-| Do I pass any value from me to providers? | **No** — no API key, no user ID, no app identifier. Just standard HTTP GET requests. |
-| Is my backend plan the right approach? | **Yes** — backend proxy is the correct scale-up strategy. Free for now, migrate when you have real users. |
+| Should I reduce chart ranges? | **No** for fiat. Crypto ranges depend on replacement provider. |
+| What happens if a provider fails? | fawazahmed0 fallback provides latest BTC/ETH. Fiat is independent. Charts cache persists. |
+| Is my backend plan the right approach? | **Yes** — backend proxy is the correct scale-up strategy. Free for now (Frankfurter + fawazahmed0), upgrade to CoinGecko when you have revenue. |
