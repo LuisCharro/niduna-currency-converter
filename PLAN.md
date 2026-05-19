@@ -11,10 +11,11 @@ Currency converter app for Android (iOS later) under Niduna brand. Privacy-first
 
 **Reference app:** Currency (currencyapp.com) — clone with privacy-first differentiation
 
-**3-Phase Roadmap:**
+**Roadmap:**
 - Phase 1: MVP (free + ads, no backend)
+- Phase 1.x: No-key BTC/ETH extension
 - Phase 2: Backend + Subscriptions (~2,000 DAU trigger)
-- Phase 3: Crypto charts + Metals + Extensions
+- Phase 3: Metals + Extended Crypto + Extensions
 
 ## Planning Sources
 
@@ -44,7 +45,8 @@ Slice order:
 5. Fiat charts
 6. Settings
 7. Ads and Remove Ads
-8. Optional crypto/backend planning after MVP
+8. No-key BTC/ETH extension
+9. Optional backend planning after MVP
 
 See `ROADMAP.md` for acceptance criteria and guardrails.
 
@@ -108,7 +110,7 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 **Features:**
 - Amount input (numeric keypad)
 - Base currency selector (dropdown or tap base row)
-- Scrollable list: 16 fiat currencies
+- Scrollable list: fiat currencies plus optional BTC/ETH quote rows
 - Each row shows: flag + currency code + converted amount
 - Star button on each row to add pair to favorites
 - Pull-to-refresh for rates
@@ -167,7 +169,7 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 │  │   (fl_chart)          │  │
 │  └───────────────────────┘  │
 ├─────────────────────────────┤
-│  [1W] [1M] [3M] [6M] [1Y] [2Y]│ ← Date range
+│  [1W] [1M] [3M] [6M] [1Y] [2Y]│ ← Date range (2Y fiat-only)
 ├─────────────────────────────┤
 │  High: 0.95  Low: 0.88      │
 │  Change: +2.3%             │
@@ -239,7 +241,9 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 
 **Phase 2 enhancement:** More frequent refresh (hourly via backend), expand to all 200 Frankfurter currencies.
 
-**Future enhancement:** Crypto/metals require a backend or explicit API-key strategy before implementation.
+**Current extension:** BTC/ETH latest rates and daily charts up to 1 year can use no-key providers.
+
+**Future enhancement:** broader crypto coverage, intraday crypto, or more than 1 year of crypto history require a new provider or backend strategy.
 
 ---
 
@@ -308,7 +312,9 @@ lib/
 |---------|--------|-------|
 | 16 fiat currencies | DONE | USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF |
 | Conversion | DONE | Client-side `amount × rate` |
-| Historical charts | DONE | Daily rates, up to 2 years |
+| Historical charts | DONE | Fiat daily rates, up to 2 years |
+| BTC/ETH latest in Convert | DONE | No-key providers, quote-only in first slice |
+| BTC/ETH and mixed crypto charts | TODO | Daily charts up to 1 year |
 | Favorite pairs | DONE | Save up to 3 locally (SharedPreferences) |
 | Offline mode | DONE | Cache last known rates |
 | Dark mode | TODO | Free in 2026 |
@@ -323,6 +329,8 @@ lib/
 | Source | Use | Key |
 |--------|-----|-----|
 | Frankfurter v2 | Fiat rates | No API key |
+| CoinPaprika | BTC/ETH latest + historical | No API key |
+| fawazahmed0 | BTC/ETH latest fallback | No API key |
 
 ### Technical Decisions
 
@@ -346,6 +354,8 @@ lib/
 - [x] Slice 6: integrate monetization entitlements and ad runtime (banner ads, Remove Ads, Charts Pro, Subscription, optional rewarded unlock)
 - [x] Slice 8: IAP paywall — PurchaseService stub, IapPurchasePlayer, Settings Premium section, Remove Ads + Charts Pro + Subscription (Coming Soon) buttons, banner CTA, intraday "coming soon" toast
 - [x] Slice 9: hide Favorites tab, data freshness indicator, dark mode, intraday toast copy fix, subscription v1 copy
+- [ ] Slice 10: update root docs for the no-key BTC/ETH scope
+- [ ] Slice 11: add BTC/ETH and mixed fiat/crypto charts up to 1 year
 - [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates
 - [x] Write/update smoke tests as each slice becomes user-visible
 - [ ] Build and test APK before release candidate
@@ -439,13 +449,33 @@ Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, serve
 
 ---
 
-## Phase 3 — Crypto + Metals + Extensions
+## Phase 1.x — No-Key BTC/ETH Extension
+
+### Features
+
+| Feature | Scope |
+|---------|-------|
+| BTC/ETH latest in Convert | No-key, daily refresh, quote-only |
+| BTC/ETH charts | Daily, up to 1 year |
+| Mixed fiat/crypto charts | Daily, up to 1 year |
+| Fiat charts | Unchanged, up to 2 years |
+
+### TODO (Phase 1.x)
+
+- [x] Add BTC/ETH latest with no-key providers
+- [ ] Add BTC/ETH and mixed fiat/crypto chart routing
+- [ ] Disable `2Y` for crypto-involved pairs
+- [ ] Add chart tests for crypto/crypto and fiat/crypto formulas
+
+---
+
+## Phase 3 — Metals + Extended Crypto + Extensions
 
 ### Features
 
 | Feature | Price |
 |---------|-------|
-| Crypto charts (BTC, ETH) | 1-1.50 CHF one-time pack |
+| Extended crypto pack (> BTC/ETH, intraday, or > 1Y) | 1-1.50 CHF one-time pack or add-on |
 | Metals (XAU, XAG) | Included in crypto pack |
 | Apple Watch support | 0.99 CHF or included in Remove Ads |
 | 10-year charts | Free for all |
@@ -453,7 +483,7 @@ Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, serve
 ### TODO (Phase 3)
 
 - [ ] Add metals API (TBD source)
-- [ ] Crypto charts implementation
+- [ ] Extended crypto implementation
 - [ ] Apple Watch app
 - [ ] Multi-pair chart with metals overlay
 
@@ -469,11 +499,11 @@ Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, serve
 - **Total Phase 1 calls per refresh:** 1 Frankfurter call
 - Self-host at 10,000+ DAU via Docker (`lineofflight/frankfurter`)
 
-### Crypto API (Deferred)
+### Crypto API
 
-- CoinGecko Demo API requires a key.
-- Do not embed that key in the Phase 1 mobile app.
-- Revisit BTC/ETH prices only with backend/proxy or an explicit API-key decision.
+- Current BTC/ETH support uses no-key providers.
+- Do not embed CoinGecko or similar API keys in the mobile app.
+- Revisit broader crypto coverage only with backend/proxy or an explicit public-key decision.
 
 ### Caching Strategy
 
@@ -483,7 +513,9 @@ Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, serve
 | Data | Cache TTL | Reason |
 |------|----------|--------|
 | Fiat rates | Until next app open | Offline mode: show last known rates when no network |
+| Crypto latest USD source | Daily | Avoid repeat provider calls within the day |
 | Historical data | Persistent | Avoid re-fetching chart data already loaded |
+| Crypto historical USD source | Persistent | Reuse source series across BTC/ETH and mixed chart pairs |
 | User favorites | Persistent | SharedPreferences, never expires |
 
 ---

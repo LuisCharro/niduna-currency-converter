@@ -32,7 +32,7 @@ Before implementation expands, keep `DEFINITIONS.md` as the source of truth for:
 - Phase 1 data sources
 - Phase 1 monetization
 - privacy promises
-- phase triggers for backend, subscriptions, crypto/metals, and exports
+- phase triggers for backend, subscriptions, expanded crypto/metals, and exports
 - open questions that block implementation
 
 Do not implement a feature just because it appears in a UI idea or generated
@@ -47,9 +47,9 @@ Phase 1 has four primary tabs.
 
 | Tab | Primary job | Required content | Required states | Explicitly excluded |
 |-----|-------------|------------------|-----------------|---------------------|
-| `Convert` | Convert one amount into the Phase 1 fiat set | amount input, base selector, 16 fiat result rows, favorite star per row, last updated, local-only/privacy signal, refresh action, banner reserve | fresh, loading refresh, cached, stale/offline, fetch error with cached fallback, empty/no-cache error | crypto, transfers, accounts, RUB |
+| `Convert` | Convert one amount into the supported fiat set plus BTC/ETH quote rows | amount input, base selector, fiat result rows, optional BTC/ETH quote rows, favorite star per row, last updated, local-only/privacy signal, refresh action, banner reserve | fresh, loading refresh, cached, stale/offline, fetch error with cached fallback, empty/no-cache error | transfers, accounts, RUB |
 | `Favorites` | Manage up to 3 local pairs | saved pair rows, last known value, delete/edit action, empty state, add/select pair flow | empty, 1-3 saved pairs, max reached, stale value, local storage error | cloud sync, login, unlimited favorites |
-| `Charts` | Review fiat history | fiat pair selector, 1W/1M/3M/6M/1Y/2Y ranges, chart, high/low/change, last updated | loading, fresh, cached, stale/offline, no historical data, fetch error with cached fallback | crypto charts, metals, export, multi-pair comparison |
+| `Charts` | Review fiat and limited crypto history | pair selector, 1W/1M/3M/6M/1Y/2Y ranges, chart, high/low/change, last updated | loading, fresh, cached, stale/offline, no historical data, fetch error with cached fallback | crypto history beyond 1Y, metals, export, multi-pair comparison |
 | `Settings` | Configure local behavior and trust surface | default base, decimal precision, theme, refresh-on-open, clear cache, cache status, Remove Ads, privacy/about/version, subscription restore/management entry | normal, cache cleared, restore purchase/loading, IAP unavailable, no network for purchase | accounts, cloud backup |
 
 Use this matrix as the first checklist before generating or editing Stitch
@@ -67,7 +67,7 @@ Must include:
 - amount input
 - base currency selector
 - multi-currency results list
-- fiat currencies from the Phase 1 list
+- fiat currencies from the Phase 1 list plus optional BTC/ETH quote rows
 - favorite toggle per row
 - **data freshness indicator** (last-updated timestamp + `(i)` info icon with ECB once-daily tooltip)
 - last updated status
@@ -103,12 +103,13 @@ Must not include:
 
 ### Charts
 
-Purpose: fiat historical review.
+Purpose: fiat historical review plus limited BTC/ETH chart support.
 
 Must include:
 
-- fiat pair selector (base + quote, with per-pair lock/unlock state)
-- 1W, 1M, 3M, 6M, 1Y, 2Y ranges (intraday 1H/6H/1D locked behind subscription)
+- pair selector (base + quote, with per-pair lock/unlock state)
+- 1W, 1M, 3M, 6M, 1Y, 2Y ranges for fiat pairs
+- 1W, 1M, 3M, 6M, 1Y ranges for crypto-involved pairs
 - historical line chart
 - high, low, and change summary
 - loading, cached, stale, and error states
@@ -118,7 +119,7 @@ Must include:
 
 Must not include:
 
-- crypto charts in Phase 1
+- crypto history beyond 1 year
 - metals
 - chart export
 - multi-pair chart comparison
@@ -219,19 +220,25 @@ App behavior:
 
 ### Crypto Data
 
-Phase 1 does not include crypto data.
+Phase 1.x includes limited no-key crypto data.
 
-Reason:
+Supported scope:
 
-- CoinGecko Demo API requires a key.
-- A mobile app cannot keep that key secret.
-- The MVP should avoid backend/API-key complexity.
+- BTC and ETH latest rates in Convert
+- BTC/ETH daily charts up to 1 year
+- mixed fiat/crypto daily charts up to 1 year
 
-Revisit BTC/ETH prices only when there is:
+Sources:
 
-- a backend/proxy
-- a paid API plan with acceptable key controls
-- an explicit decision that a public mobile key is acceptable
+- CoinPaprika for BTC/ETH latest and historical
+- fawazahmed0 as latest-only fallback
+
+Still deferred:
+
+- crypto beyond BTC/ETH
+- intraday crypto charts
+- crypto history beyond 1 year
+- any crypto path that requires embedding an API key
 
 ### Local User Data
 
@@ -470,14 +477,14 @@ Done when:
 
 Goal:
 
-- implement fiat-only historical charts
+- implement historical charts
 - add range selection and historical cache
 
 Done when:
 
 - chart data loads for supported fiat pairs
 - cached chart data is reused offline
-- crypto charts remain unavailable in Phase 1
+- crypto-involved pairs work up to 1 year only
 
 ### Slice 5: Settings
 
@@ -504,17 +511,18 @@ Done when:
 - removed-ads state hides ad surfaces
 - store/release privacy implications are documented
 
-### Slice 7: Optional Crypto/Backend Planning
+### Slice 7: No-Key Crypto Extension
 
 Goal:
 
-- decide whether BTC/ETH prices belong in Phase 2 or Phase 3
-- choose backend/proxy/API-key strategy before implementation
+- ship the constrained no-key BTC/ETH extension without breaking privacy rules
+- document the range and provider limits clearly
 
 Done when:
 
-- no API key is embedded in the mobile app without an explicit documented decision
-- crypto scope, monetization, and cache rules are recorded in `DEFINITIONS.md`
+- no API key is embedded in the mobile app
+- BTC/ETH latest and chart scope is recorded in `DEFINITIONS.md`
+- crypto charts remain limited to 1 year until a new provider decision exists
 
 ## Architecture Guardrails
 

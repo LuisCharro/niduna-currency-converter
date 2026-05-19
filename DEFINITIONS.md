@@ -16,15 +16,15 @@
 
 ## Key Decisions (2026-05-07 / updated 2026-05-08)
 
-- Phase 1 is fiat-only. Crypto (BTC, ETH prices and charts) is deferred out of MVP because shipping a CoinGecko API key inside the mobile app is not an acceptable launch trade-off.
+- Phase 1.x includes a no-key crypto extension: BTC and ETH latest rates in Convert plus daily crypto charts up to 1 year. No backend, no account, and no embedded API key are allowed.
 - Metals (XAU gold, XAG silver) deferred to Phase 3 (no good free API)
 - Phase 2 subscription minimum: **1 CHF/mes = 12 CHF/año**; break-even at ~10 subscribers
 - Grandfathering confirmed: Google Play auto-preserves prices; Apple requires "Preserve prices for existing subscribers" in App Store Connect
 - Phase 2 subscription tiers: Basic (12 CHF/año = rate alerts + hourly refresh) + possible crypto add-on if served through backend/proxy
 - Phase 3 crypto pack as separate one-time purchase: 1–1.50 CHF
-- Charts: unlimited free fiat charts (up to 2 years) in Phase 1; crypto charts deferred to Phase 2/3
-- Phase 1 = MVP (free, ads, no backend); Phase 2 = Backend + Subscriptions; Phase 3 = Crypto + Metals + Extensions
-- CoinGecko API key required — do not embed it in the Phase 1 mobile app. Revisit only with backend/proxy or a deliberate public-key decision.
+- Charts: fiat charts remain available up to 2 years; crypto-involved charts are limited to 1 year on the no-key path.
+- Phase 1 = MVP (free, ads, no backend); Phase 1.x = no-key BTC/ETH latest + daily charts; Phase 2 = Backend + Subscriptions; Phase 3 = Metals + Extensions
+- CoinGecko API key required — do not embed it in the mobile app. Current BTC/ETH support uses no-key providers instead.
 - i18n: Phase 1 ships with **English only** — add DE, FR, IT, ES, PT in Phase 1.x updates
 - Rate alerts are deferred out of Phase 1. Phase 2 owns push alerts; optional in-app-only alerts can be reconsidered after the MVP ships.
 - Monetization access policy (approved): active subscription unlocks all premium features and hides ads; without subscription, users can still buy one-time unlocks.
@@ -47,7 +47,7 @@ first or defer the idea.
 - Phase 1 is English only.
 - RUB is not supported.
 - Dark mode is free and available in v1 (follows system default; toggle in Settings).
-- Data freshness: Frankfurter/ECB rates update once daily (~16:00 CET). App must communicate this clearly via freshness indicator + Settings explanation.
+- Data freshness: Frankfurter/ECB fiat rates update once daily (~16:00 CET). Crypto latest and crypto charts also refresh on a daily app policy. App must communicate app-level freshness clearly.
 
 ### Monetization access policy
 
@@ -77,9 +77,9 @@ first or defer the idea.
 
 | Screen | Owns | Does not own |
 |--------|------|--------------|
-| `Convert` | amount input, base currency, multi-currency results, favorite toggles, freshness/offline status, banner ad area | charts, settings, accounts, transfers |
+| `Convert` | amount input, base currency, multi-currency results, BTC/ETH quote rows, favorite toggles, freshness/offline status, banner ad area | charts, settings, accounts, transfers |
 | `Favorites` | local favorite pairs, max-3 rule, edit/delete, jump back to Convert context | unlimited favorites, cloud sync |
-| `Charts` | fiat historical charts up to 2 years, range selector, high/low/change | crypto charts, metals, export, multi-pair compare |
+| `Charts` | fiat historical charts up to 2 years, BTC/ETH and mixed fiat/crypto charts up to 1 year, range selector, high/low/change | crypto history beyond 1 year, metals, export, multi-pair compare |
 | `Settings` | local preferences (default base, decimal places, refresh-on-open), cache controls, Remove Ads entry, privacy/about/version | account settings, backend sync, subscriptions before Phase 2 |
 
 ### Data and cache rules
@@ -88,6 +88,8 @@ first or defer the idea.
 |------|----------------|------------|------------------|
 | Fiat latest rates | Frankfurter v2 | Keep last successful payload locally | Show cached stale/offline state if refresh fails |
 | Fiat historical rates | Frankfurter historical endpoints | Cache by pair and range | Show cached chart data if available |
+| Crypto latest rates (BTC, ETH) | CoinPaprika primary + fawazahmed0 fallback | Keep normalized USD source cache plus final latest snapshot cache | Preserve cached crypto if fresh enough and provider refresh fails |
+| Crypto historical rates (BTC, ETH) | CoinPaprika historical ticks | Cache source USD history by asset and final chart snapshots by pair | Show cached chart data if available |
 | Favorites | Local storage | Persistent until user deletes | Never requires network |
 | Settings preferences | Local storage (SharedPreferences) | Persistent until user changes | Never requires network |
 | Temp pair unlocks | Local storage (SharedPreferences) | 24h TTL, auto-expire | Never requires network |
@@ -134,7 +136,7 @@ large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 
 | Feature | Why |
 |---------|-----|
-| **Crypto prices and charts** | Deferred. Requires CoinGecko or another source; do not embed API keys in Phase 1 mobile app |
+| **Crypto beyond BTC/ETH, intraday crypto, or crypto history beyond 1 year** | Deferred. Current no-key scope is limited to BTC/ETH latest + daily charts up to 1 year |
 | **Metals (XAU, XAG)** | Deferred to Phase 3 — no good free API |
 | **Charts beyond 2 years** | Phase 1 scope |
 | **Rate alerts (push)** | Requires backend for push notifications; one-time payment can't sustain hosting costs |
@@ -292,12 +294,14 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 | 10,000–50,000 | 50,000–250,000 | Backend proxy + paid API |
 | 50,000+ | 250,000+ | Self-host Frankfurter or enterprise paid API |
 
-### Crypto API (Deferred)
+### Crypto API (No-Key Phase 1.x)
 
-- CoinGecko Demo API requires a key.
-- Do not ship that key directly inside the Phase 1 mobile app.
-- Revisit BTC/ETH prices when there is a backend/proxy, a paid API plan, or an explicit decision that a public mobile key is acceptable.
-- Crypto charts remain out of MVP.
+- BTC and ETH latest rates use CoinPaprika as primary and fawazahmed0 as fallback.
+- BTC and ETH daily historical charts use CoinPaprika historical ticks.
+- No API key is embedded in the mobile app.
+- No backend/proxy is required for this limited BTC/ETH scope.
+- Crypto-involved chart ranges are limited to 1 year on the no-key path.
+- Revisit broader crypto coverage, intraday crypto, and crypto beyond 1 year when there is a backend/proxy, a paid API plan, or an explicit public-key decision.
 
 ### When to switch to paid API
 
@@ -335,16 +339,16 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 | Tier | Price | Includes |
 |------|-------|---------|
 | Basic | 12 CHF/año | Rate alerts (push) + hourly refresh |
-| Crypto/Metals add-on | 5–8 CHF/año extra | BTC, ETH, XAU, XAG if backend/API strategy is approved |
+| Crypto/Metals add-on | 5–8 CHF/año extra | broader crypto coverage, intraday crypto, XAU, XAG if backend/API strategy is approved |
 
 - **Backend stack**: ASP.NET Core Minimal API + PostgreSQL + Nginx on Hostinger VPS + Firebase Cloud Messaging (free tier)
 - **Additional cost**: ~$10/month (ExchangeRate-API Pro)
 
-### Phase 3 — Crypto + Metals + Extensions
+### Phase 3 — Metals + Extended Crypto + Extensions
 
 | Feature | Price |
 |---------|-------|
-| Crypto charts (BTC, ETH) | 1–1.50 CHF one-time pack |
+| Extended crypto pack (> BTC/ETH, > 1Y, or intraday) | 1–1.50 CHF one-time pack or subscription add-on |
 | Metals (XAU, XAG) | Included in crypto pack or separate |
 | Apple Watch support | 0.99 CHF or included in Remove Ads |
 | 10-year charts | Free for all |
@@ -361,8 +365,9 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 4. Daily rates + 2-year charts + offline cache
 5. Banner ads only
 6. One-time **Remove Ads** at **1.99 CHF** (+ optional 30-day rental at 0.50 CHF — consider omitting at launch)
-7. No backend, no subscription, no crypto/metals at launch
-8. Self-host Frankfurter only if/when DAU exceeds ~10,000
+7. No backend, no account, no API keys at launch
+8. Phase 1.x may include BTC/ETH latest rates and daily charts up to 1 year via no-key providers
+9. Self-host Frankfurter only if/when DAU exceeds ~10,000
 
 ---
 
@@ -372,7 +377,8 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 |------|--------|----------|
 | 2026-05-07 | RUB removed from MVP — Frankfurter confirmed without RUB (ECB suspended EUR/RUB on 2022-03-01) | curl: `api.frankfurter.dev/currencies` → RUB=false |
 | 2026-05-07 | RUB → TRY (Turkish Lira) in MVP currency list | Frankfurter confirmed TRY available |
-| 2026-05-08 | Crypto moved out of Phase 1. Reason: CoinGecko requires an API key and embedding that key in the mobile app is not an acceptable launch trade-off. | Product decision |
+| 2026-05-08 | Crypto moved out of initial Phase 1 scope. Reason: CoinGecko requires an API key and embedding that key in the mobile app is not an acceptable launch trade-off. | Product decision |
+| 2026-05-19 | BTC/ETH restored as a constrained Phase 1.x no-key scope: Convert latest rates plus daily charts up to 1 year using CoinPaprika and fallback/latest no-key providers. | Product decision |
 | 2026-05-07 | Historical note: BTC/ETH prices were previously considered for Phase 1, while BTC/ETH charts were deferred. Superseded on 2026-05-08. | Superseded |
 | 2026-05-07 | CoinGecko Demo API rate limit confirmed: 30 calls/min, 10,000/month, API key required | Web search + curl verification |
 | 2026-05-07 | Frankfurter currency count confirmed: **200** (not 165) from official frankfurter.dev | Official docs |
@@ -386,10 +392,10 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 
 | Decision | Phase 1 | Phase 2 | Phase 3 |
 |----------|---------|---------|----------|
-| **Data source** | Frankfurter free | ExchangeRate-API Pro + Frankfurter + optional crypto provider via backend | + CoinGecko or approved crypto provider |
+| **Data source** | Frankfurter free + CoinPaprika no-key for BTC/ETH | ExchangeRate-API Pro + Frankfurter + optional broader crypto provider via backend | + expanded crypto/metals providers |
 | **Backend** | None | ASP.NET Core + PostgreSQL on Hostinger | Same |
-| **Currencies** | 16 fiat currencies | All 200 from Frankfurter | + Crypto charts + Metals (XAU/XAG) |
-| **Charts** | 2-year daily, unlimited free | + Multi-pair comparison | + Metals overlays |
+| **Currencies** | 16 fiat currencies + BTC/ETH quote support | All 200 from Frankfurter + broader crypto if approved | + Metals (XAU/XAG) |
+| **Charts** | fiat daily up to 2Y; BTC/ETH daily up to 1Y | + Multi-pair comparison | + Metals overlays + extended crypto |
 | **Rate alerts** | No | Push via backend (subscription) | + Crypto price alerts |
 | **Monetization** | Ads + Remove Ads one-time | + Subscriptions (Basic: 12 CHF/año) | + Crypto/Metals add-on |
 | **Ads** | Banner only | Banner for free tier | Banner for free tier |
@@ -400,10 +406,10 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 ## Luis's Key Questions — Answered Directly
 
 **Q: Which phases?**
-3 phases: MVP (free + ads, fiat-only), Phase 2 (backend + subscriptions and optional crypto API strategy), Phase 3 (crypto charts + metals + extensions).
+4 practical buckets: Phase 1 MVP, Phase 1.x no-key BTC/ETH extension, Phase 2 (backend + subscriptions and optional broader crypto API strategy), Phase 3 (metals + extended crypto + extensions).
 
-**Q: What's in MVP?**
-16 fiat currencies + 2-year fiat charts + offline cache + banner ads + Remove Ads (one-time 1.99 CHF). No crypto, no metals, no alerts, no backend.
+**Q: What's in the current launch scope?**
+16 fiat currencies + BTC/ETH latest in Convert + fiat charts up to 2 years + BTC/ETH and mixed fiat/crypto charts up to 1 year + offline cache + banner ads + Remove Ads (one-time 1.99 CHF). No backend, no metals, no alerts.
 
 **Q: How to monetize not just cover costs?**
 Phase 1: ads + one-time Remove Ads accumulates cash reserve. Phase 2: subscriptions for alerts/hourly create recurring revenue. Don't use one-time purchases to fund ongoing backend — that's the fundamental mistake.

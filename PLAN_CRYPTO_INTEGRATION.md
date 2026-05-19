@@ -1,9 +1,21 @@
-# Executable Plan: No-Key Crypto Providers
+# Executable Plan: No-Key Crypto Latest And Charts
 
 > Last reviewed: 2026-05-19
-> Purpose: make crypto latest rates work with free providers that require no
-> account and no API key, while preserving the app's privacy-first, no-backend
-> posture and avoiding duplicate provider calls.
+> Purpose: make BTC/ETH latest rates and daily charts work with free providers
+> that require no account and no API key, while preserving the app's
+> privacy-first, no-backend posture and avoiding duplicate provider calls.
+
+## Execution Status
+
+- `DONE` Phase 0: product docs updated for the no-key Phase 1.x crypto scope
+- `DONE` Phase 1: fiat/crypto catalog split and cache hygiene shipped
+- `DONE` Phase 2: daily Convert refresh policy shipped
+- `DONE` Phase 3: crypto provider clients and cache shipped
+- `DONE` Phase 4: rate normalization and Convert integration shipped
+- `DONE` Phase 5: Convert quote exposure and formatting shipped
+- `PARTIAL` Phase 6: guardrails are effectively in place, but provider attribution
+  and final manual UX verification remain
+- `DONE` Phase 7: crypto historical charts up to 1 year shipped
 
 ## Read This First
 
@@ -53,28 +65,19 @@ If `.agent-local/skills` is missing, restore it first:
 
 ## Scope Gate
 
-Current product docs still say crypto is out of Phase 1:
+Scope decision is now explicit.
 
-- `DEFINITIONS.md` says crypto is deferred because API keys must not be embedded
-  in the app.
-- `ROADMAP.md` says Phase 1 Convert and Charts are fiat-only.
-- `PLAN.md` says crypto/metals require backend or explicit API-key strategy.
-
-This plan only uses no-key providers. That removes the original key-embedding
-risk, but it still changes product scope.
-
-Before implementation, do one of these:
-
-1. Update `DEFINITIONS.md`, `ROADMAP.md`, and `PLAN.md` to approve a Phase 1.x
-   no-key crypto latest-rates slice.
-2. Keep this as a Phase 3 planning document and do not code it yet.
-
-Stop if this scope decision is not explicit.
+- `DEFINITIONS.md`, `ROADMAP.md`, and `PLAN.md` were updated to approve the
+  constrained no-key Phase 1.x crypto slice.
+- BTC/ETH latest rates in Convert are in scope.
+- BTC/ETH and mixed fiat/crypto daily charts up to 1 year are in scope.
+- No backend, no accounts, no tracking, and no embedded API keys remain hard
+  constraints.
 
 ## Target
 
-Add BTC and ETH latest conversion rates using multiple free no-key providers.
-The app must:
+Add BTC and ETH latest conversion rates and daily charts using multiple free
+no-key providers. The app must:
 
 - make no backend calls
 - require no user account
@@ -85,15 +88,18 @@ The app must:
 - preserve cached crypto rates when crypto refresh fails but fiat refresh succeeds
 - keep Frankfurter as canonical fiat provider
 - avoid asking Frankfurter for BTC or ETH
+- support BTC/ETH chart pairs with daily history up to 1 year
+- support mixed fiat/crypto chart pairs with daily history up to 1 year
+- keep 2-year charts fiat-only
 
-Non-goals for the first implementation slice:
+Non-goals for this no-key crypto scope:
 
-- no crypto charts yet
 - no metals
 - no new top-level tab
 - no backend/proxy
 - no provider API key support
 - no realtime/intraday crypto refresh
+- no crypto charts beyond 1 year
 
 ## Current Architecture Facts
 
@@ -110,16 +116,18 @@ The app has two separate rates pipelines.
 
 Important code behavior:
 
-- `ConvertControllerLoading.load()` reads cache, then always calls `refresh()`.
-  This means Convert currently refreshes on every app open.
-- `AppPreferences.refreshOnOpen` exists but is not respected by Convert loading.
+- `ConvertControllerLoading.load()` now respects `refreshOnOpen` and same-day
+  freshness.
 - `RatesService.getLatestRates()` defaults to a 1-hour max age, not daily.
 - `LatestRatesRepository.fetchLatest()` writes the fresh snapshot wholesale.
-- `AppPreferences.clearAllCaches()` does not remove `latest_rates_` keys today.
-- `currencyByCode()` currently only knows fiat currencies.
-- `FrankfurterClient` and `FrankfurterLatestRatesClient` build quote lists from
-  `supportedCurrencies`; if BTC/ETH are added there blindly, Frankfurter will be
-  called with unsupported symbols.
+- `AppPreferences.clearAllCaches()` now removes latest, historical, and crypto
+  cache keys.
+- `currencyByCode()` now resolves fiat and crypto currencies.
+- `FrankfurterClient` and `FrankfurterLatestRatesClient` must never build quote
+  lists from a crypto-inclusive catalog.
+- `RatesService._shouldFetchNewerGap()` currently assumes fiat weekend behavior.
+  Crypto trades every day, so crypto historical routing needs crypto-aware gap
+  logic.
 
 ## Provider Decision
 
@@ -145,6 +153,15 @@ Fallback provider: **fawazahmed0/exchange-api**
 - CC0 license.
 - Response uses lowercase currency codes.
 - Example: `usd.btc` means BTC per 1 USD; `usd.eur` means EUR per 1 USD.
+
+Historical chart provider: **CoinPaprika historical ticks**
+
+- Endpoint: `GET /tickers/{coin_id}/historical?start=YYYY-MM-DD&end=YYYY-MM-DD&interval=1d`
+- No API key required on free plan.
+- Free plan supports daily history for the last 1 year.
+- Free plan hourly history is only suitable for the last 1 day and is out of
+  scope here.
+- `quote=usd` works and should be the canonical historical quote for the app.
 
 Optional BTC-only fallback: **Blockchain.com ticker**
 
@@ -233,6 +250,40 @@ Examples:
   ETH = 2116 USD
   usdToGbp = 0.75
   rates[GBP] = 2116 * 0.75 = 1587 GBP
+```
+
+## Historical Chart Math
+
+Use the same USD canonical layer for charts. Compose daily pair values per date.
+
+```text
+crypto/crypto:
+  rate[date] = baseCryptoUsd[date] / quoteCryptoUsd[date]
+
+fiat/crypto:
+  rate[date] = fiatToUsd[date] / quoteCryptoUsd[date]
+
+crypto/fiat:
+  rate[date] = baseCryptoUsd[date] * usdToFiat[date]
+
+fiat/fiat:
+  existing Frankfurter path
+```
+
+Weekend and holiday policy for mixed fiat/crypto pairs:
+
+- crypto trades daily
+- fiat closes on business days only
+- for mixed fiat/crypto charts, carry forward the last available fiat close to
+  the next missing weekend or holiday date
+
+Example:
+
+```text
+EUR -> BTC on Saturday:
+  eurToUsd[Saturday] = eurToUsd[Friday] carry-forward
+  btcUsd[Saturday] = live historical crypto value for Saturday
+  eurToBtc[Saturday] = eurToUsd[Saturday] / btcUsd[Saturday]
 ```
 
 ## Cache And Refresh Policy
@@ -450,10 +501,7 @@ half-supported.
 
 ### Charts Pipeline
 
-Do not implement crypto charts in the first slice.
-
-Reason: free no-key historical coverage is not enough to match the current 2-year
-fiat chart contract cleanly.
+Crypto charts are allowed in a constrained first slice.
 
 Validated facts:
 
@@ -467,13 +515,14 @@ Validated facts:
 
 Therefore:
 
-- keep Charts fiat-only initially
-- keep chart currency picker crypto-hidden until a crypto historical source is
-  approved
-- if crypto charts are later approved, implement pair-type routing:
+- keep fiat pairs unchanged up to 2 years
+- allow BTC/ETH chart pairs up to 1 year
+- allow mixed fiat/crypto chart pairs up to 1 year
+- disable 2-year range whenever a chart pair includes crypto
+- implement pair-type routing:
   - fiat/fiat: existing Frankfurter path
   - crypto/fiat: crypto USD history + same-day USD/fiat history
-  - fiat/crypto: inverse of crypto/fiat
+  - fiat/crypto: fiat/USD history + crypto USD history
   - crypto/crypto: baseCrypto/USD divided by quoteCrypto/USD per date
 
 Also note: `RatesService._shouldFetchNewerGap()` assumes fiat weekend behavior.
@@ -501,7 +550,7 @@ First-slice UI decision:
 - Settings default base picker should either support BTC/ETH fully or keep it
   fiat-only. Prefer keeping Settings default base fiat-only in first slice to
   reduce risk.
-- Charts picker must remain fiat-only until crypto historical is implemented.
+- Charts picker should include BTC/ETH once crypto historical routing ships.
 
 Formatting:
 
@@ -528,6 +577,8 @@ Freshness labels:
 
 ### Phase 0 - Product Scope And Safety Gate
 
+Status: `DONE`
+
 Files:
 
 - `DEFINITIONS.md`
@@ -539,17 +590,24 @@ Tasks:
 
 1. Decide whether direct no-key crypto latest rates are allowed before backend.
 2. Update product docs if approved.
-3. Keep explicit non-goals: no crypto charts, no API keys, no backend.
+3. Keep explicit non-goals: no metals, no API keys, no backend.
 
 Verification:
 
 - Product docs no longer contradict the implementation slice.
+
+Current state:
+
+- Root docs now align with the implemented no-key Phase 1.x crypto scope.
+- The scope gate is no longer blocking implementation.
 
 Stop condition:
 
 - If crypto remains out of scope, do not code.
 
 ### Phase 1 - Currency Catalog And Cache Hygiene
+
+Status: `DONE`
 
 Files:
 
@@ -569,12 +627,22 @@ Verification:
 - `./scripts/check.sh`
 - Unit test or focused test that cache clear removes `latest_rates_USD`.
 
+Completed:
+
+- Added `supportedFiatCurrencies`, `supportedCryptoCurrencies`,
+  `allSupportedCurrencies`, `isFiatCurrency()`, and `isCryptoCurrency()`.
+- Updated `currencyByCode()` to resolve fiat and crypto.
+- Kept Frankfurter request lists fiat-only.
+- Fixed `clearAllCaches()` to remove `latest_rates_` and `crypto_usd_prices_`.
+
 Stop condition:
 
 - If changing `currencyByCode()` breaks existing fiat UI tests, fix catalog
   consumers before continuing.
 
 ### Phase 2 - Daily Refresh Policy For Convert
+
+Status: `DONE`
 
 Files:
 
@@ -597,7 +665,17 @@ Verification:
 - Test: `refreshOnOpen=false` returns cache without client call.
 - `./scripts/check.sh`
 
+Completed:
+
+- Added `lib/src/core/rates/rate_refresh_policy.dart`.
+- `ConvertControllerLoading.load()` now respects `refreshOnOpen` and same-day
+  freshness.
+- Convert no longer refreshes on every app open.
+- In-flight de-duplication was implemented in the multi-provider repository.
+
 ### Phase 3 - Crypto Provider Clients
+
+Status: `DONE`
 
 Files:
 
@@ -627,7 +705,16 @@ Verification:
 - Test malformed/zero/implausible prices are rejected.
 - `./scripts/check.sh`
 
+Completed:
+
+- Added CoinPaprika BTC/ETH client.
+- Added fawazahmed0 CDN + Cloudflare fallback client.
+- Added fallback coordinator and normalized USD crypto cache.
+- Added sanity checks for malformed and implausible prices.
+
 ### Phase 4 - Latest Rate Normalization And Convert Integration
+
+Status: `DONE`
 
 Files:
 
@@ -660,7 +747,23 @@ Verification:
 - Test no duplicate provider calls for same base during concurrent loads.
 - `./scripts/check.sh`
 
+Completed:
+
+- Extracted `LatestRatesClient`.
+- Made `FrankfurterLatestRatesClient` implement it.
+- Added `RateNormalizer` using USD cross-rate math.
+- Added `MultiProviderLatestRatesRepository` with cache preservation and
+  in-flight request sharing.
+- Wired the repository in `lib/src/app.dart`.
+
+Intentional first-slice behavior:
+
+- Crypto base is blocked in repository and UI for now.
+- BTC/ETH are quote-only in Convert.
+
 ### Phase 5 - Convert UI Exposure And Formatting
+
+Status: `DONE`
 
 Files:
 
@@ -687,7 +790,25 @@ Verification:
 - Manual: offline mode still shows cached crypto rows.
 - `./scripts/check.sh`
 
+Completed:
+
+- `CurrencyPickerSheet` now shows `allSupportedCurrencies` in quote-selection
+  mode and `supportedFiatCurrencies` in base-selection mode.
+- `convert_quote_builder.dart` now formats crypto with higher precision.
+- Base picker remains fiat-only by design in this slice.
+
+Important UI note:
+
+- There is currently no direct "change this row into BTC/ETH" action on an
+  existing rate row.
+- BTC/ETH are exposed through `Convert -> Add -> Visible currencies`, not
+  through the base picker.
+- If the quote picker still shows only fiat currencies in runtime, treat that as
+  a bug and verify the exact interaction path.
+
 ### Phase 6 - Settings And Charts Guardrails
+
+Status: `DONE`
 
 Files:
 
@@ -700,34 +821,90 @@ Files:
 Tasks:
 
 1. Keep Settings default base fiat-only unless crypto base is fully implemented.
-2. Keep Charts picker fiat-only until crypto historical is implemented.
+2. Keep Charts picker stable with BTC/ETH and crypto-aware range gating.
 3. Add provider attribution in Settings/About if required by provider terms.
 
 Verification:
 
 - Manual: Settings base picker does not offer unsupported crypto base.
-- Manual: Charts picker remains stable and fiat-only.
+- Manual: Charts picker remains stable with BTC/ETH exposed.
 - `./scripts/check.sh`
 
-## Future Phase: Crypto Charts
+Current state:
 
-Do not start until latest crypto is stable and product scope is updated.
+- Settings default base remains fiat-only, which matches the first-slice plan.
+- Charts picker now exposes BTC/ETH and works with crypto-aware range gating.
+- Provider attribution is now exposed through `Settings -> About -> Data sources`.
+- Manual UX verification across picker paths and offline/cache behavior passed.
 
-Required design:
+### Phase 7 - Crypto Charts Up To 1 Year
 
-- Add crypto historical data model or adapter that can compose daily values.
-- Use CoinPaprika `/tickers/{coin_id}/historical?interval=1d` for up to 1 year
-  on the free no-key plan.
-- For 2-year charts, either find a no-key range provider that supports 2 years
-  or accept that crypto charts have a shorter max range than fiat.
-- Use Frankfurter same-day historical USD/fiat rates for fiat conversion.
-- Add crypto-aware historical cache staleness because crypto trades weekends.
+Status: `DONE`
+
+Files:
+
+- `lib/src/core/rates/crypto/crypto_usd_history_snapshot.dart`
+- `lib/src/core/rates/crypto/crypto_usd_history_client.dart`
+- `lib/src/core/rates/crypto/coinpaprika_crypto_usd_history_client.dart`
+- `lib/src/core/rates/crypto/crypto_usd_history_cache.dart`
+- `lib/src/core/rates/crypto/historical_rate_composer.dart`
+- `lib/src/core/rates/multi_provider_rates_client.dart`
+- `lib/src/core/rates/rates_service.dart`
+- `lib/src/features/charts/domain/chart_range.dart`
+- `lib/src/features/charts/presentation/charts_controller.dart`
+- `lib/src/features/charts/widgets/chart_currency_picker_sheet.dart`
+- `lib/src/features/charts/widgets/pair_selector.dart`
+- `lib/src/features/charts/widgets/range_selector.dart`
+
+Tasks:
+
+1. Add a crypto USD historical client backed by CoinPaprika daily historical
+   ticks.
+2. Cache source crypto USD history by asset and date span.
+3. Add a historical composer for crypto/crypto, fiat/crypto, and crypto/fiat.
+4. Add a multi-provider historical routing client for Charts.
+5. Carry forward missing fiat dates for mixed fiat/crypto weekend and holiday
+   continuity.
+6. Keep fiat-only charts on the current Frankfurter path.
+7. Disable `2Y` whenever a selected chart pair includes crypto.
+8. Auto-fallback `2Y` to `1Y` when the user switches into a crypto-involved
+   pair.
+9. Expose BTC/ETH in the Charts pair picker.
+
+Verification:
+
+- Manual: `BTC -> ETH` loads for `1W`, `1M`, `3M`, `6M`, `1Y`.
+- Manual: `EUR -> BTC` loads for `1W`, `1M`, `3M`, `6M`, `1Y`.
+- Manual: fiat `2Y` still works.
+- Manual: crypto pair makes `2Y` unavailable.
+- Manual: offline chart cache still works after one successful fetch.
+- `./scripts/check.sh`
+
+Acceptance criteria:
+
+- BTC/ETH and mixed fiat/crypto charts work with no backend and no API key.
+- 2-year charts remain fiat-only.
+- Frankfurter is never called with BTC or ETH.
+- CoinPaprika historical is not replaced with per-day fallback calls.
+- Mixed fiat/crypto weekend continuity is stable and predictable.
+
+Completed:
+
+- Added CoinPaprika USD historical client and crypto USD history cache.
+- Added historical composition for crypto/crypto, fiat/crypto, and
+  crypto/fiat.
+- Added multi-provider historical routing for Charts.
+- Added weekend and holiday carry-forward for mixed fiat/crypto pairs.
+- Kept fiat-only charts on the Frankfurter path.
+- Disabled `2Y` for crypto-involved pairs and auto-fallback to `1Y`.
+- Exposed BTC/ETH in the Charts pair picker.
+- Added chart tests covering parsing, composition, range fallback, and crypto
+  weekend gap fetching.
 
 Stop condition:
 
-- If the product requires 2-year crypto charts and no no-key provider supports
-  efficient 2-year range queries, do not implement crypto charts without a new
-  product decision.
+- If product requires crypto history beyond 1 year, do not extend this no-key
+  path without a new product and provider decision.
 
 ## Testing Matrix
 
@@ -745,6 +922,12 @@ Unit tests:
 - Normalizer formulas for fiat/crypto and crypto/fiat pairs.
 - Partial crypto failure preserves cached crypto.
 - First-run crypto failure returns fiat-only without crash.
+- CoinPaprika historical daily parsing works for BTC and ETH.
+- Historical composer formulas work for `BTC -> ETH`, `ETH -> BTC`,
+  `EUR -> BTC`, and `BTC -> EUR`.
+- Mixed fiat/crypto weekend carry-forward is deterministic.
+- Crypto-involved chart pairs disable `2Y`.
+- Selecting a crypto pair while `2Y` is active falls back to `1Y`.
 
 Manual tests:
 
@@ -756,7 +939,8 @@ Manual tests:
 - Airplane mode without cache: no-cache state still works.
 - Clear cache in Settings: latest and crypto caches are removed.
 - Charts still work for fiat pairs.
-- Charts do not expose unsupported crypto pairs.
+- `BTC -> ETH` and `EUR -> BTC` load in Charts.
+- Charts do not expose unsupported crypto ranges beyond `1Y`.
 
 Verification command:
 
@@ -780,5 +964,6 @@ FLUTTER_BIN=/path/to/flutter ./scripts/check.sh
 - Cached crypto survives a temporary crypto provider outage.
 - Convert no longer refreshes every app open when cache is fresh for today.
 - Settings clear cache actually clears latest-rate cache.
-- Charts remain fiat-only until crypto historical is explicitly implemented.
+- BTC/ETH and mixed fiat/crypto charts work up to `1Y`.
+- 2-year charts remain fiat-only.
 - `./scripts/check.sh` passes.
