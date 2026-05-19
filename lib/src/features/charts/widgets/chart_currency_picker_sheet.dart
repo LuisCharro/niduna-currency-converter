@@ -46,6 +46,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
 
   bool _isUnlocked(String code) {
     if (code == _fixedSide) return true; // the fixed side is always valid
+    if (_isFreeDefaultCurrency(code)) return true;
     final candidateBase = widget.selectingBase ? code : widget.baseCurrency;
     final candidateQuote = widget.selectingBase ? widget.quoteCurrency : code;
     return widget.controller.isChartPairUnlocked(candidateBase, candidateQuote);

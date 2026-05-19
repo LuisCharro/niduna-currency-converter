@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_theme.dart';
+import 'chart_value_formatter.dart';
 
 class ChartHeader extends StatelessWidget {
   const ChartHeader({
@@ -52,8 +53,8 @@ class ChartHeader extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                        '${baseCurrency.symbol} ${rate!.toStringAsFixed(4)}',
-                          style: AppTheme.body.copyWith(
+                        '${baseCurrency.symbol} ${formatChartValue(rate!)}',
+                        style: AppTheme.body.copyWith(
                           fontSize: 20,
                           color: AppTheme.muted,
                         ),

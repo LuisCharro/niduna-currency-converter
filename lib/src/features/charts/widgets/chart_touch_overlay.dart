@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/theme/app_theme.dart';
+import 'chart_value_formatter.dart';
 
 class ChartTouchOverlay extends StatelessWidget {
   const ChartTouchOverlay({
     required this.date,
+    required this.currencySymbol,
     required this.value,
     required this.baseValue,
     required this.lineColor,
@@ -13,6 +15,7 @@ class ChartTouchOverlay extends StatelessWidget {
   });
 
   final DateTime date;
+  final String currencySymbol;
   final double value;
   final double baseValue;
   final Color lineColor;
@@ -58,7 +61,7 @@ class ChartTouchOverlay extends StatelessWidget {
             ),
             const SizedBox(height: 3),
             Text(
-              value.toStringAsFixed(4),
+              '$currencySymbol ${formatChartValue(value)}',
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w800,
@@ -81,7 +84,7 @@ class ChartTouchOverlay extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  '$sign${absoluteChange.abs().toStringAsFixed(4)}',
+                  '$currencySymbol $sign${formatChartValue(absoluteChange.abs())}',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,

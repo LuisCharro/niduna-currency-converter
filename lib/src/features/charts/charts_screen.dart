@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/currency/supported_currencies.dart';
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
 import '../../core/rates/provider_config.dart';
@@ -189,7 +190,10 @@ class _ChartsScreenState extends State<ChartsScreen> {
           '$currentPairKey-${widget.controller.state.range.label}-$_swapVersion',
         ),
         padding: const EdgeInsets.symmetric(horizontal: 0),
-        child: RateChart(data: state.data),
+        child: RateChart(
+          data: state.data,
+          currencySymbol: currencyByCode(state.base).symbol,
+        ),
       ),
     );
   }

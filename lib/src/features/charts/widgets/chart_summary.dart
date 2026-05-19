@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import 'chart_value_formatter.dart';
 
 class ChartSummary extends StatelessWidget {
   const ChartSummary({
@@ -24,7 +25,7 @@ class ChartSummary extends StatelessWidget {
         Expanded(
           child: _SummaryItem(
             label: 'High',
-            value: high != null ? high!.toStringAsFixed(4) : '\u2014',
+            value: high != null ? formatChartValue(high!) : '\u2014',
           ),
         ),
         Container(
@@ -35,7 +36,7 @@ class ChartSummary extends StatelessWidget {
         Expanded(
           child: _SummaryItem(
             label: 'Low',
-            value: low != null ? low!.toStringAsFixed(4) : '\u2014',
+            value: low != null ? formatChartValue(low!) : '\u2014',
           ),
         ),
         Container(

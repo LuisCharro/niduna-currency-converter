@@ -12,6 +12,7 @@ import 'package:currency_converter/src/core/rates/rates_cache.dart';
 import 'package:currency_converter/src/core/rates/rates_client.dart';
 import 'package:currency_converter/src/core/rates/rates_service.dart';
 import 'package:currency_converter/src/features/charts/charts_screen.dart';
+import 'package:currency_converter/src/features/charts/widgets/chart_currency_picker_sheet.dart';
 import 'package:currency_converter/src/features/charts/widgets/locked_pair_action_sheet.dart';
 import 'package:currency_converter/src/features/convert/data/latest_rates_repository.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
@@ -338,6 +339,7 @@ void main() {
           body: SizedBox(
             height: 320,
             child: RateChart(
+              currencySymbol: r'$',
               data: <DateTime, double>{
                 DateTime(2026, 5, 10): 0.8519,
                 DateTime(2026, 5, 11): 0.8542,
@@ -441,6 +443,55 @@ void main() {
 
     expect(find.text('Watch ad · Unlock for 24h'), findsOneWidget);
     expect(find.text('Unlock all pairs forever'), findsOneWidget);
+  });
+
+  testWidgets('chart picker keeps USD and EUR selectable for crypto pairs', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: ChartCurrencyPickerSheet(
+            title: 'Select quote currency',
+            selectedCode: 'BTC',
+            allowCryptoCharts: true,
+            controller: monetization,
+            baseCurrency: 'ETH',
+            quoteCurrency: 'BTC',
+            selectingBase: false,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final eurTile = find.ancestor(
+      of: find.text('EUR'),
+      matching: find.byType(InkWell),
+    );
+    final usdTile = find.ancestor(
+      of: find.text('USD'),
+      matching: find.byType(InkWell),
+    );
+
+    expect(find.text('EUR'), findsOneWidget);
+    expect(find.text('USD'), findsOneWidget);
+    expect(
+      find.descendant(of: eurTile, matching: find.text('Tap to unlock')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(of: usdTile, matching: find.text('Tap to unlock')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(of: eurTile, matching: find.text('Locked')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(of: usdTile, matching: find.text('Locked')),
+      findsNothing,
+    );
   });
 }
 
