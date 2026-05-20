@@ -38,6 +38,22 @@ Primary app shell order:
 - `Charts` — historical exchange rate charts
 - `Settings` — app config, Remove Ads IAP
 
+## Versioning policy (pre-MVP)
+
+Until this app reaches a validated MVP milestone, keep the app version in
+`0.x.x` (never `1.x.x`).
+
+Rules for this phase:
+
+- `pubspec.yaml` version must stay `0.x.x+build`
+- Firebase deploy script version labels must match the same `0.x.x` line
+- Move to `1.0.0` only when MVP scope is explicitly confirmed
+
+Current baseline:
+
+- App version: `0.1.0+1`
+- Firebase version label: `0.1.0`
+
 ## Read first
 
 Before substantial work, read:

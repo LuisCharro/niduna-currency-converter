@@ -5,6 +5,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/common.sh"
 
+APP_VERSION="0.1.0"
+
 require_openclaw_target
 
 echo "=== Building Flutter web (release) ==="
@@ -16,8 +18,8 @@ echo "=== Deploying to Firebase Hosting (LIVE) ==="
 run_firebase hosting deploy \
   --only hosting:luis \
   --project currency-converter-by-niduna \
-  --message "live: $(date '+%Y-%m-%d %H:%M')"
+  --message "live: v${APP_VERSION} $(date '+%Y-%m-%d %H:%M')"
 
 echo ""
 echo "=== Live URL ==="
-echo "https://currency-converter-luis.web.app"
+echo "https://currency-converter-luis.web.app?v=${APP_VERSION}"

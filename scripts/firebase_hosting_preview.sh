@@ -7,6 +7,7 @@ source "${SCRIPT_DIR}/common.sh"
 
 TARGET="${1:-openclaw}"
 CHANNEL="${2:-${TARGET}}"
+APP_VERSION="0.1.0"
 
 require_openclaw_target
 
@@ -21,12 +22,12 @@ echo "Channel: ${CHANNEL}"
 run_firebase hosting deploy \
   --only hosting:${TARGET} \
   --project currency-converter-by-niduna \
-  --message "preview: ${CHANNEL} ($(date '+%Y-%m-%d %H:%M'))"
+  --message "preview: ${CHANNEL} v${APP_VERSION} ($(date '+%Y-%m-%d %H:%M'))"
 
 echo ""
 echo "=== Preview URL ==="
 case "${TARGET}" in
-  openclaw) echo "https://currency-converter-openclaw.web.app" ;;
-  luis)     echo "https://currency-converter-luis.web.app" ;;
+  openclaw) echo "https://currency-converter-openclaw.web.app?v=${APP_VERSION}" ;;
+  luis)     echo "https://currency-converter-luis.web.app?v=${APP_VERSION}" ;;
   alina)    echo "https://currency-converter-alina.web.app" ;;
 esac
