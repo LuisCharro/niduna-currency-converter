@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/rates/provider_config.dart';
+import '../../../core/rates/provider_usage_info.dart';
 import '../../../core/theme/app_theme.dart';
 
 class DataDetailsPage extends StatelessWidget {
@@ -8,13 +8,14 @@ class DataDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final usage = ProviderUsageInfo.fromBuildConfig();
     final cryptoLines = <String>[
       'BTC and ETH latest rates refresh on the same daily app policy.',
-      if (ProviderConfig.cryptoChartsEnabled)
+      if (usage.cryptoChartsEnabled)
         'Crypto charts support daily ranges up to 1 year.'
       else
         'Crypto charts are disabled in this release-safe build.',
-      if (ProviderConfig.cryptoChartsEnabled)
+      if (usage.cryptoChartsEnabled)
         'Mixed fiat/crypto charts carry forward the last fiat close across weekends and holidays.',
     ];
 

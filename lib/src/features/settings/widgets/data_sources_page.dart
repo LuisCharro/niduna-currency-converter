@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/rates/provider_config.dart';
+import '../../../core/rates/provider_usage_info.dart';
 import '../../../core/theme/app_theme.dart';
 
 class DataSourcesPage extends StatelessWidget {
@@ -8,8 +8,15 @@ class DataSourcesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cryptoChartsDetail = ProviderConfig.cryptoChartsEnabled
-        ? 'Crypto-involved charts use ${ProviderConfig.chartsProviderLabel}. Crypto ranges stay limited to 1 year on the no-key path.'
+    final usage = ProviderUsageInfo.fromBuildConfig();
+    final cryptoLatestProvider = usage.roles
+        .firstWhere((role) => role.title == 'Crypto latest')
+        .provider;
+    final cryptoChartsProvider = usage.roles
+        .firstWhere((role) => role.title == 'Crypto charts')
+        .provider;
+    final cryptoChartsDetail = usage.cryptoChartsEnabled
+        ? 'Crypto-involved charts use $cryptoChartsProvider. Crypto ranges stay limited to 1 year on the no-key path.'
         : 'Crypto charts are disabled in this build to keep the release profile safe for store publication.';
 
     return Scaffold(
@@ -23,11 +30,6 @@ class DataSourcesPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: <Widget>[
-          Text(
-            'Sources and limits',
-            style: AppTheme.heading.copyWith(fontFamily: 'Fraunces'),
-          ),
-          const SizedBox(height: 12),
           const _SourceCard(
             title: 'Fiat latest and fiat charts',
             provider: 'Frankfurter / ECB',
@@ -37,16 +39,16 @@ class DataSourcesPage extends StatelessWidget {
           const SizedBox(height: 16),
           _SourceCard(
             title: 'Crypto latest',
-            provider: 'Configured by build profile',
+            provider: cryptoLatestProvider,
             detail:
                 'BTC and ETH latest prices use the active crypto provider chain for this build. Developer profile details are shown only inside the Dev Sandbox.',
           ),
           const SizedBox(height: 16),
           _SourceCard(
             title: 'Crypto charts',
-            provider: ProviderConfig.chartsProviderLabel,
+            provider: cryptoChartsProvider,
             detail:
-                '$cryptoChartsDetail Crypto pricing data provided by CoinGecko.',
+                cryptoChartsDetail,
           ),
         ],
       ),
