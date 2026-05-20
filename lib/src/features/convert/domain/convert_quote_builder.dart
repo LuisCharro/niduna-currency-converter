@@ -10,9 +10,20 @@ List<CurrencyQuote> buildQuotes({
   required int decimalPlaces,
   Iterable<String>? quoteCodes,
 }) {
-  final selectedCodes =
+  final explicitCodes =
       quoteCodes?.where((code) => code != snapshot.base).toList() ??
       supportedCurrencies.map((currency) => currency.code).toList();
+
+  // Auto-include crypto currencies that have rates in the snapshot,
+  // regardless of user selection. Keeps BTC/ETH visible in the Convert tab.
+  final cryptoCodes = supportedCryptoCurrencies
+      .map((c) => c.code)
+      .where((code) => snapshot.rates.containsKey(code));
+
+  final selectedCodes = <String>{
+    ...explicitCodes,
+    ...cryptoCodes,
+  }.toList();
 
   final amountDigits = '#,##0.${'0' * decimalPlaces}';
   final amountFormat = NumberFormat(amountDigits, 'en');
