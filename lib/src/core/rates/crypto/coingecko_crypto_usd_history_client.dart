@@ -6,17 +6,15 @@ import 'crypto_asset.dart';
 import 'crypto_usd_history_client.dart';
 import 'crypto_usd_history_snapshot.dart';
 
-/// CoinCap.io history client for crypto/USD daily historical data.
+/// CoinGecko history client for crypto/USD daily historical data.
 ///
-/// CoinCap uses different IDs from CoinPaprika (e.g. 'bitcoin' vs 'btc-bitcoin').
-/// The [CryptoAsset.coinCapId] field provides the correct CoinCap asset ID.
-///
-/// Data is returned as daily OHLC candles. We extract the closing price only.
-class CoincapCryptoUsdHistoryClient implements CryptoUsdHistoryClient {
-  CoincapCryptoUsdHistoryClient({http.Client? client})
+/// CoinGecko uses the same asset IDs as CoinCap's `coinCapId` field
+/// (e.g. 'bitcoin', 'ethereum'), so no changes to CryptoAsset are needed.
+class CoingeckoCryptoUsdHistoryClient implements CryptoUsdHistoryClient {
+  CoingeckoCryptoUsdHistoryClient({http.Client? client})
     : _client = client ?? http.Client();
 
-  static const String _baseUrl = 'https://api.coincap.io/v2';
+  static const String _baseUrl = 'https://api.coingecko.com/api/v3';
 
   final http.Client _client;
 
@@ -27,58 +25,53 @@ class CoincapCryptoUsdHistoryClient implements CryptoUsdHistoryClient {
     required DateTime to,
   }) async {
     final asset = cryptoAssetByCode(code);
-    final uri = Uri.parse('$_baseUrl/assets/${asset.coinCapId}/history').replace(
-      queryParameters: {
-        'interval': 'd1',
-        'start': from.millisecondsSinceEpoch.toString(),
-        'end': to.millisecondsSinceEpoch.toString(),
-      },
-    );
+    // Use days-based endpoint — automatically returns daily granularity for ranges > 90 days
+    final days = to.difference(from).inDays + 1;
+    final uri = Uri.parse('$_baseUrl/coins/${asset.coinCapId}/market_chart')
+        .replace(queryParameters: {
+      'vs_currency': 'usd',
+      'days': days.toString(),
+    });
 
     final response = await _client.get(uri);
 
     if (response.statusCode != 200) {
       throw CryptoUsdHistoryException(
-        'CoinCap historical returned ${response.statusCode} for $code',
+        'CoinGecko returned ${response.statusCode} for $code',
       );
     }
 
     final json = jsonDecode(response.body);
     if (json is! Map<String, dynamic>) {
       throw CryptoUsdHistoryException(
-        'CoinCap historical returned invalid payload for $code',
+        'CoinGecko returned invalid payload for $code',
       );
     }
 
-    final data = json['data'];
-    if (data is! List<dynamic>) {
+    final prices = json['prices'];
+    if (prices is! List<dynamic>) {
       throw CryptoUsdHistoryException(
-        'CoinCap historical missing data array for $code',
+        'CoinGecko missing prices array for $code',
       );
     }
 
     final pricesUsd = <DateTime, double>{};
-    for (final row in data) {
-      if (row is! Map<String, dynamic>) continue;
+    for (final entry in prices) {
+      if (entry is! List<dynamic> || entry.length < 2) continue;
 
-      // priceUsd is a String in CoinCap responses
-      final priceStr = row['priceUsd'] as String?;
-      final dateStr = row['date'] as String?;
+      // CoinGecko returns [unix_ms_timestamp, price_usd]
+      final ts = entry[0];
+      final price = entry[1];
 
-      if (priceStr == null || dateStr == null) continue;
+      if (ts is! num || price is! num) continue;
 
-      // CoinCap returns ISO date string like "2025-01-01T00:00:00.000Z"
-      final timestamp = DateTime.tryParse(dateStr);
-      final price = double.tryParse(priceStr);
-
-      if (timestamp == null || price == null || price <= 0) continue;
-
+      final timestamp = DateTime.fromMillisecondsSinceEpoch(ts.toInt());
       final normalizedDate = DateTime(
         timestamp.year,
         timestamp.month,
         timestamp.day,
       );
-      pricesUsd[normalizedDate] = price;
+      pricesUsd[normalizedDate] = price.toDouble();
     }
 
     _validate(code, pricesUsd);
@@ -97,16 +90,16 @@ class CoincapCryptoUsdHistoryClient implements CryptoUsdHistoryClient {
   void _validate(String code, Map<DateTime, double> pricesUsd) {
     if (pricesUsd.isEmpty) {
       throw CryptoUsdHistoryException(
-        'CoinCap historical returned no data for $code',
+        'CoinGecko returned no data for $code',
       );
     }
-    // Same plausibility bounds as CoinPaprika
+    // Same plausibility bounds as CoinPaprika and the old CoinCap client
     final min = code == 'BTC' ? 1000.0 : 50.0;
     final max = code == 'BTC' ? 1000000.0 : 100000.0;
     for (final price in pricesUsd.values) {
       if (price.isNaN || price <= 0 || price < min || price > max) {
         throw CryptoUsdHistoryException(
-          'CoinCap historical returned implausible prices for $code',
+          'CoinGecko returned implausible prices for $code',
         );
       }
     }

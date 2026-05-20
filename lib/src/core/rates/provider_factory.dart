@@ -1,5 +1,5 @@
 import 'crypto/coinpaprika_crypto_usd_history_client.dart';
-import 'crypto/coincap_crypto_usd_history_client.dart';
+import 'crypto/coingecko_crypto_usd_history_client.dart';
 import 'crypto/coinpaprika_crypto_usd_price_client.dart';
 import 'crypto/crypto_usd_history_client.dart';
 import 'crypto/crypto_usd_price_client.dart';
@@ -27,8 +27,8 @@ class ProviderFactory {
     switch (ProviderConfig.cryptoHistoryProvider) {
       case CryptoHistoryProvider.coinPaprika:
         return CoinPaprikaCryptoUsdHistoryClient();
-      case CryptoHistoryProvider.coincap:
-        return CoincapCryptoUsdHistoryClient();
+      case CryptoHistoryProvider.coingecko:
+        return CoingeckoCryptoUsdHistoryClient();
       case CryptoHistoryProvider.none:
         return const UnsupportedCryptoUsdHistoryClient(
           'Crypto charts are not available in this release.',
