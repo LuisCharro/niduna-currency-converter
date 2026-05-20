@@ -15,7 +15,7 @@ run_flutter build web --release --dart-define=FLAVOR=production
 echo ""
 echo "=== Deploying to Firebase Hosting (LIVE) ==="
 
-run_firebase hosting deploy \
+run_firebase deploy \
   --only hosting:luis \
   --project currency-converter-by-niduna \
   --message "live: v${APP_VERSION} $(date '+%Y-%m-%d %H:%M')"

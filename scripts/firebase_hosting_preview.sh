@@ -19,7 +19,7 @@ echo "=== Deploying to Firebase Hosting ==="
 echo "Target: ${TARGET}"
 echo "Channel: ${CHANNEL}"
 
-run_firebase hosting deploy \
+run_firebase deploy \
   --only hosting:${TARGET} \
   --project currency-converter-by-niduna \
   --message "preview: ${CHANNEL} v${APP_VERSION} ($(date '+%Y-%m-%d %H:%M'))"
