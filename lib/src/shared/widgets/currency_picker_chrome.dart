@@ -21,7 +21,8 @@ class CurrencyPickerHeader extends StatelessWidget {
                 title,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 22,
+                  fontFamily: 'Fraunces',
+                  fontSize: 24,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -58,7 +59,7 @@ class CurrencyPickerSearchField extends StatelessWidget {
         hintText: 'Currency, country, or code',
         prefixIcon: const Icon(Icons.search_rounded),
         filled: true,
-        fillColor: AppTheme.container,
+        fillColor: AppTheme.container.withValues(alpha: .72),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppTheme.pillRadius),
           borderSide: BorderSide.none,
