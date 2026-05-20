@@ -12,6 +12,13 @@ extension ConvertControllerEditing on ConvertController {
       ..._selectedCodes.where((selected) => selected != code),
     ];
     _preferences?.setSelectedCodes(_selectedCodes);
+    final nextSnapshot = _buildSnapshotWithCryptoBase(code);
+    if (nextSnapshot != null) {
+      state = _stateFromSnapshot(nextSnapshot, state.status);
+      _safeNotify();
+      return;
+    }
+
     _snapshot = null;
     state = state.copyWith(
       status: ConvertStatus.loading,
@@ -24,6 +31,33 @@ extension ConvertControllerEditing on ConvertController {
     );
     _safeNotify();
     await load();
+  }
+
+  LatestRatesSnapshot? _buildSnapshotWithCryptoBase(String code) {
+    if (!isCryptoCurrency(code) || _snapshot == null) {
+      return null;
+    }
+
+    final current = _snapshot!;
+    final baseRate = current.rates[code];
+    if (baseRate == null || baseRate == 0) {
+      return null;
+    }
+
+    final rates = <String, double>{
+      current.base: 1 / baseRate,
+    };
+    for (final entry in current.rates.entries) {
+      if (entry.key == code) continue;
+      rates[entry.key] = entry.value / baseRate;
+    }
+
+    return LatestRatesSnapshot(
+      base: code,
+      date: current.date,
+      savedAt: current.savedAt,
+      rates: rates,
+    );
   }
 
   void setAmountText(String text) {

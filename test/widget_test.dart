@@ -253,6 +253,50 @@ void main() {
     expect(find.text('Set as base'), findsNothing);
   });
 
+  testWidgets('Convert crypto row can be set as base', (
+    WidgetTester tester,
+  ) async {
+    final cryptoRepository = _FakeRatesRepository(
+      fresh: _snapshot(<String, double>{
+        'EUR': .92,
+        'BTC': .00001342,
+      }),
+    );
+    final cryptoController = ConvertController(repository: cryptoRepository)
+      ..configure(base: 'USD', amount: 100, selectedCodes: <String>['EUR']);
+    await cryptoController.load();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: cryptoController,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final bitcoinFinder = find.text('Bitcoin');
+    expect(bitcoinFinder, findsWidgets);
+
+    await tester.tap(bitcoinFinder.first);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Set as base'), findsOneWidget);
+    expect(cryptoController.state.base, 'USD');
+
+    await tester.tap(bitcoinFinder.first);
+    await tester.pumpAndSettle();
+
+    expect(cryptoController.state.base, 'BTC');
+    expect(find.text('Set as base'), findsNothing);
+    expect(cryptoController.state.quotes, isNotEmpty);
+    expect(find.text('Euro'), findsWidgets);
+
+    cryptoController.dispose();
+  });
+
   testWidgets('Favorites screen shows placeholder', (
     WidgetTester tester,
   ) async {

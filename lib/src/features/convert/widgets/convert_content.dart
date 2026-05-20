@@ -37,8 +37,8 @@ class _ConvertContentState extends State<ConvertContent> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedCodes = widget.state.selectedCodes.toSet();
-    if (_activeCode != null && !selectedCodes.contains(_activeCode)) {
+    final visibleCodes = widget.state.quotes.map((quote) => quote.code).toSet();
+    if (_activeCode != null && !visibleCodes.contains(_activeCode)) {
       _activeCode = null;
     }
     return Column(

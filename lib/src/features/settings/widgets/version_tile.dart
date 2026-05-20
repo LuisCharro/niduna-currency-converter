@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/settings_tile.dart';
@@ -23,12 +24,27 @@ class _VersionTileState extends State<VersionTile> {
   Timer? _tapResetTimer;
   Timer? _holdTimer;
   int _tapCount = 0;
+  String _appVersion = '--';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAppVersion();
+  }
 
   @override
   void dispose() {
     _tapResetTimer?.cancel();
     _holdTimer?.cancel();
     super.dispose();
+  }
+
+  Future<void> _loadAppVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    if (!mounted) return;
+    setState(() {
+      _appVersion = info.version;
+    });
   }
 
   void _handleTap() {
@@ -73,7 +89,7 @@ class _VersionTileState extends State<VersionTile> {
       child: SettingsTile(
         title: 'Version',
         trailing: Text(
-          '1.0.0${devModeEnabled ? ' · DEV' : ''}',
+          '$_appVersion${devModeEnabled ? ' · DEV' : ''}',
           style: AppTheme.caption.copyWith(color: AppTheme.muted),
         ),
       ),
