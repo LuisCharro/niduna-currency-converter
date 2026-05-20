@@ -53,6 +53,11 @@ class SettingsScreen extends StatelessWidget {
                     height: 1.05,
                   ),
                 ),
+                const SizedBox(height: 6),
+                Text(
+                  'Preferences, cache, and trust surfaces.',
+                  style: AppTheme.caption.copyWith(color: AppTheme.muted),
+                ),
                 const SizedBox(height: 20),
                 const SectionHeader(title: 'Conversion'),
                 BaseCurrencyTile(controller: controller),
@@ -86,7 +91,7 @@ class SettingsScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
                   child: Text(
-                    'Fiat and crypto data follow a daily app refresh policy.\nOpen Data details for sources, limits, and cache behavior.',
+                    'Rates refresh daily from ECB-backed data. Open Data details for limits and cache behavior.',
                     style: AppTheme.caption.copyWith(
                       color: AppTheme.subtle,
                       height: 1.4,

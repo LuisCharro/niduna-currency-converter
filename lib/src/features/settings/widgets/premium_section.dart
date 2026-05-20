@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
+import 'upgrade_shelf.dart';
 
 class PremiumSection extends StatelessWidget {
   const PremiumSection({required this.controller, super.key});
@@ -13,246 +14,30 @@ class PremiumSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        _PremiumCard(
-          icon: Icons.visibility_off,
-          title: 'Remove Ads',
-          description: 'Hide banner placements forever',
-          price: '1.99 CHF',
-          owned: controller.monetization.hasRemoveAdsLifetime,
-          onBuy: () =>
-              controller.purchaseProduct(context, ProductType.removeAds),
-        ),
-        const SizedBox(height: 10),
-        _PremiumCard(
-          icon: Icons.diamond_outlined,
-          title: 'Unlock All Pairs',
-          description: 'Choose any chart pair forever',
-          price: '2.99 CHF',
-          owned: controller.monetization.hasChartsProLifetime,
-          onBuy: () =>
-              controller.purchaseProduct(context, ProductType.chartsPro),
-        ),
-        const SizedBox(height: 10),
-        _SubscriptionCard(),
-        const SizedBox(height: 10),
-        Material(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-          child: InkWell(
-            onTap: () => controller.restorePurchases(context),
-            borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-                border: Border.all(
-                  color: AppTheme.border.withValues(alpha: .24),
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  'Restore Purchases',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.primary,
-                  ),
-                ),
-              ),
+        UpgradeShelf(controller: controller),
+        const SizedBox(height: 14),
+        SettingsTile(
+          title: 'Subscription',
+          subtitle: 'Not available in v1 · 1 week free trial planned later',
+          trailing: Text(
+            'Soon',
+            style: AppTheme.caption.copyWith(
+              color: AppTheme.muted,
+              fontWeight: FontWeight.w800,
             ),
           ),
+        ),
+        SettingsTile(
+          title: 'Restore purchases',
+          subtitle: 'Re-check local store purchases on this device',
+          trailing: Icon(
+            Icons.chevron_right_rounded,
+            color: AppTheme.subtle,
+          ),
+          showDivider: false,
+          onTap: () => controller.restorePurchases(context),
         ),
       ],
-    );
-  }
-}
-
-class _PremiumCard extends StatelessWidget {
-  const _PremiumCard({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.price,
-    required this.owned,
-    required this.onBuy,
-  });
-
-  final IconData icon;
-  final String title;
-  final String description;
-  final String price;
-  final bool owned;
-  final VoidCallback onBuy;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
-      decoration: BoxDecoration(
-        color: AppTheme.card.withValues(alpha: .72),
-        borderRadius: BorderRadius.circular(AppTheme.radius),
-        border: Border.all(color: AppTheme.border.withValues(alpha: .16)),
-      ),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            icon,
-            size: 22,
-            color: owned ? AppTheme.trendUp : AppTheme.primary,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  description,
-                  style: TextStyle(fontSize: 12, color: AppTheme.muted),
-                ),
-              ],
-            ),
-          ),
-          if (owned)
-            Icon(Icons.check_circle, size: 20, color: AppTheme.trendUp)
-          else ...[
-            Material(
-              color: AppTheme.primary,
-              borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-              child: InkWell(
-                onTap: onBuy,
-                borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  child: Text(
-                    price,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class _SubscriptionCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: AppTheme.container.withValues(alpha: .46),
-        borderRadius: BorderRadius.circular(AppTheme.radius),
-        border: Border.all(color: AppTheme.primary.withValues(alpha: .16)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Icon(
-                Icons.workspace_premium_outlined,
-                size: 22,
-                color: AppTheme.primary,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  'Premium Subscription',
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: AppTheme.container.withValues(alpha: .6),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.border),
-                ),
-                child: Text(
-                  'Coming Soon',
-                  style: TextStyle(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.muted,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          _SubFeatureRow(Icons.visibility_off, 'Remove ads'),
-          _SubFeatureRow(Icons.diamond_outlined, 'Unlock all chart pairs'),
-          _SubFeatureRow(Icons.speed_rounded, 'Faster updates, planned hourly'),
-          _SubFeatureRow(Icons.notifications_active_outlined, 'Rate alerts'),
-          _SubFeatureRow(Icons.show_chart, 'Intraday chart ranges'),
-          const SizedBox(height: 6),
-          Row(
-            children: <Widget>[
-              Icon(Icons.construction, size: 12, color: AppTheme.muted),
-              const SizedBox(width: 4),
-              Flexible(
-                child: Text(
-                  '1 week free trial planned. Price depends on provider costs.',
-                  style: TextStyle(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.muted,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SubFeatureRow extends StatelessWidget {
-  const _SubFeatureRow(this.icon, this.label);
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        children: <Widget>[
-          Icon(icon, size: 14, color: AppTheme.muted),
-          const SizedBox(width: 8),
-          Text(label, style: TextStyle(fontSize: 12, color: AppTheme.muted)),
-        ],
-      ),
     );
   }
 }

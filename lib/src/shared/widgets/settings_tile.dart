@@ -8,6 +8,7 @@ class SettingsTile extends StatelessWidget {
     this.subtitle,
     required this.trailing,
     this.onTap,
+    this.showDivider = true,
     super.key,
   });
 
@@ -15,14 +16,19 @@ class SettingsTile extends StatelessWidget {
   final String? subtitle;
   final Widget trailing;
   final VoidCallback? onTap;
+  final bool showDivider;
 
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppTheme.border.withValues(alpha: .14)),
-        ),
+        border: showDivider
+            ? Border(
+                bottom: BorderSide(
+                  color: AppTheme.border.withValues(alpha: .14),
+                ),
+              )
+            : null,
       ),
       child: InkWell(
         onTap: onTap,

@@ -15,8 +15,8 @@ class SectionHeader extends StatelessWidget {
         title,
         style: AppTheme.caption.copyWith(
           color: AppTheme.primary,
-          letterSpacing: .5,
-          fontWeight: FontWeight.w700,
+          letterSpacing: 1.0,
+          fontWeight: FontWeight.w800,
         ),
       ),
     );

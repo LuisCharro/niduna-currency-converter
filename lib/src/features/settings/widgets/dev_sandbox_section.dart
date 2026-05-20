@@ -18,6 +18,7 @@ class DevSandboxSection extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppTheme.container.withValues(alpha: .5),
             borderRadius: BorderRadius.circular(AppTheme.radius),
+            border: Border.all(color: AppTheme.border.withValues(alpha: .12)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,6 +72,7 @@ class DevSandboxSection extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppTheme.container.withValues(alpha: .5),
             borderRadius: BorderRadius.circular(AppTheme.radius),
+            border: Border.all(color: AppTheme.border.withValues(alpha: .12)),
           ),
           child: Row(
             children: <Widget>[
@@ -156,9 +158,9 @@ class _EntitlementSwitch extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 10, 8, 10),
       decoration: BoxDecoration(
-        color: AppTheme.card,
+        color: AppTheme.containerHigh.withValues(alpha: .38),
         borderRadius: BorderRadius.circular(AppTheme.radius),
-        border: Border.all(color: AppTheme.border),
+        border: Border.all(color: AppTheme.border.withValues(alpha: .14)),
       ),
       child: Row(
         children: <Widget>[

@@ -23,6 +23,11 @@ class DataSourcesPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: <Widget>[
+          Text(
+            'Sources and limits',
+            style: AppTheme.heading.copyWith(fontFamily: 'Fraunces'),
+          ),
+          const SizedBox(height: 12),
           const _SourceCard(
             title: 'Fiat latest and fiat charts',
             provider: 'Frankfurter / ECB',

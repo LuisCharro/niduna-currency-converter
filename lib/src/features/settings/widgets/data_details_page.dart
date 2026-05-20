@@ -29,6 +29,11 @@ class DataDetailsPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: <Widget>[
+          Text(
+            'Daily data policy',
+            style: AppTheme.heading.copyWith(fontFamily: 'Fraunces'),
+          ),
+          const SizedBox(height: 12),
           const _DetailCard(
             title: 'Refresh policy',
             lines: <String>[
