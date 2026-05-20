@@ -22,28 +22,25 @@ class DevSandboxSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
+              const Text(
                 'Provider profile',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(
-                'Profile: ${ProviderConfig.profileLabel}',
-                style: TextStyle(fontSize: 12, color: AppTheme.muted),
+                ProviderConfig.profileLabel,
+                style: const TextStyle(fontSize: 12, color: AppTheme.muted),
               ),
-              const SizedBox(height: 2),
-              Text(
-                'Latest: ${ProviderConfig.latestProvidersLabel}',
-                style: TextStyle(fontSize: 12, color: AppTheme.muted),
+              const SizedBox(height: 10),
+              const Text(
+                'All providers',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
               ),
-              const SizedBox(height: 2),
-              Text(
-                'Charts: ${ProviderConfig.chartsProviderLabel}',
-                style: TextStyle(fontSize: 12, color: AppTheme.muted),
-              ),
+              const SizedBox(height: 6),
+              _ProviderTable(providers: ProviderConfig.allProviders),
             ],
           ),
         ),
@@ -78,20 +75,64 @@ class DevSandboxSection extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Icon(
-                monetization.adsEnabled
-                    ? Icons.visibility
-                    : Icons.visibility_off,
+                monetization.adsEnabled ? Icons.visibility : Icons.visibility_off,
                 size: 16,
                 color: AppTheme.muted,
               ),
               const SizedBox(width: 8),
               Text(
                 monetization.adsEnabled ? 'Ads: visible' : 'Ads: hidden',
-                style: TextStyle(fontSize: 13, color: AppTheme.muted),
+                style: const TextStyle(fontSize: 13, color: AppTheme.muted),
               ),
             ],
           ),
         ),
+      ],
+    );
+  }
+}
+
+class _ProviderTable extends StatelessWidget {
+  const _ProviderTable({required this.providers});
+
+  final List<ProviderInfo> providers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Table(
+      columnWidths: const {
+        0: FlexColumnWidth(2),
+        1: FlexColumnWidth(2.5),
+        2: IntrinsicColumnWidth(),
+      },
+      children: <TableRow>[
+        const TableRow(
+          children: <Widget>[
+            Text('Provider', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.muted)),
+            Text('Type', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.muted)),
+            Text('Status', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.muted)),
+          ],
+        ),
+        ...providers.map((p) => TableRow(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Text(p.name, style: const TextStyle(fontSize: 11)),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Text(p.type, style: const TextStyle(fontSize: 11, color: AppTheme.muted)),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Icon(
+                p.active ? Icons.check_circle : Icons.cancel_outlined,
+                size: 14,
+                color: p.active ? Colors.green : AppTheme.muted,
+              ),
+            ),
+          ],
+        )),
       ],
     );
   }
@@ -135,7 +176,7 @@ class _EntitlementSwitch extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   description,
-                  style: TextStyle(fontSize: 12, color: AppTheme.muted),
+                  style: const TextStyle(fontSize: 12, color: AppTheme.muted),
                 ),
               ],
             ),

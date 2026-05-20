@@ -40,7 +40,8 @@ class DataSourcesPage extends StatelessWidget {
           _SourceCard(
             title: 'Crypto charts',
             provider: ProviderConfig.chartsProviderLabel,
-            detail: cryptoChartsDetail,
+            detail:
+                '${cryptoChartsDetail} Crypto pricing data provided by CoinGecko.',
           ),
         ],
       ),

@@ -6,6 +6,17 @@ enum CryptoLatestProvider { coinPaprika, fawazahmed0 }
 
 enum CryptoHistoryProvider { none, coinPaprika, coingecko }
 
+class ProviderInfo {
+  const ProviderInfo({
+    required this.name,
+    required this.type,
+    required this.active,
+  });
+  final String name;
+  final String type;
+  final bool active;
+}
+
 class ProviderConfig {
   static const String _profileValue = String.fromEnvironment(
     'PROVIDER_PROFILE',
@@ -71,6 +82,29 @@ class ProviderConfig {
         return 'Disabled in this build';
     }
   }
+
+  static List<ProviderInfo> get allProviders => <ProviderInfo>[
+        ProviderInfo(
+          name: 'Frankfurter',
+          type: 'Fiat latest + history',
+          active: true,
+        ),
+        ProviderInfo(
+          name: 'fawazahmed0',
+          type: 'Crypto latest',
+          active: isPlayStoreSafe,
+        ),
+        ProviderInfo(
+          name: 'CoinPaprika',
+          type: 'Crypto latest + history',
+          active: !isPlayStoreSafe,
+        ),
+        ProviderInfo(
+          name: 'CoinGecko',
+          type: 'Crypto history',
+          active: cryptoHistoryProvider == CryptoHistoryProvider.coingecko,
+        ),
+      ];
 
   static void validateReleaseMode() {
     if (kReleaseMode && !isPlayStoreSafe) {
