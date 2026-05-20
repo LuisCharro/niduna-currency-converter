@@ -28,22 +28,14 @@ class ChartSummary extends StatelessWidget {
             value: high != null ? formatChartValue(high!) : '\u2014',
           ),
         ),
-        Container(
-          width: 1,
-          height: 24,
-          color: AppTheme.border.withValues(alpha: .16),
-        ),
+        const SizedBox(width: 8),
         Expanded(
           child: _SummaryItem(
             label: 'Low',
             value: low != null ? formatChartValue(low!) : '\u2014',
           ),
         ),
-        Container(
-          width: 1,
-          height: 24,
-          color: AppTheme.border.withValues(alpha: .16),
-        ),
+        const SizedBox(width: 8),
         Expanded(
           child: _SummaryItem(
             label: 'Change',
@@ -71,19 +63,27 @@ class _SummaryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text(label, style: AppTheme.micro.copyWith(color: AppTheme.muted)),
-        const SizedBox(height: 2),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
-            color: valueColor ?? AppTheme.text,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppTheme.container.withValues(alpha: .4),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: AppTheme.border.withValues(alpha: .08)),
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(label, style: AppTheme.micro.copyWith(color: AppTheme.muted)),
+          const SizedBox(height: 2),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: valueColor ?? AppTheme.text,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

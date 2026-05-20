@@ -20,7 +20,7 @@ class RangeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppTheme.containerHigh.withValues(alpha: .42),
+        color: AppTheme.containerHigh.withValues(alpha: .36),
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
       ),
       child: SingleChildScrollView(
@@ -60,10 +60,15 @@ class RangeSelector extends StatelessWidget {
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 160),
-                constraints: const BoxConstraints(minHeight: 34),
+                constraints: const BoxConstraints(minHeight: 36),
                 padding: const EdgeInsets.symmetric(horizontal: 13),
                 decoration: BoxDecoration(
                   color: isSelected ? AppTheme.card : Colors.transparent,
+                  border: Border.all(
+                    color: isSelected
+                        ? AppTheme.border.withValues(alpha: .12)
+                        : Colors.transparent,
+                  ),
                   borderRadius: BorderRadius.circular(AppTheme.pillRadius),
                   boxShadow: isSelected ? AppTheme.subtleShadow : null,
                 ),

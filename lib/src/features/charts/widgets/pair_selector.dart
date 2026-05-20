@@ -43,8 +43,8 @@ class PairSelector extends StatelessWidget {
             height: 44,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppTheme.card.withValues(alpha: .78),
-              border: Border.all(color: AppTheme.border.withValues(alpha: .22)),
+              color: AppTheme.container.withValues(alpha: .7),
+              border: Border.all(color: AppTheme.border.withValues(alpha: .16)),
             ),
             child: Icon(
               Icons.swap_vert_rounded,
@@ -109,9 +109,9 @@ class _CurrencyPill extends StatelessWidget {
         constraints: const BoxConstraints(minHeight: 50),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: AppTheme.card.withValues(alpha: .78),
+          color: AppTheme.container.withValues(alpha: .56),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: AppTheme.border.withValues(alpha: .22)),
+          border: Border.all(color: AppTheme.border.withValues(alpha: .16)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

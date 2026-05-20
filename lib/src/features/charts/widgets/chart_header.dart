@@ -31,49 +31,70 @@ class ChartHeader extends StatelessWidget {
     final freshnessText = _freshnessLabel(lastUpdated);
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  '$base per 1 $quote',
+                  'Charts',
+                  style: AppTheme.micro.copyWith(
+                    color: AppTheme.primary,
+                    letterSpacing: 1.1,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '$base / $quote',
                   style: const TextStyle(
                     fontFamily: 'Fraunces',
-                    fontSize: 31,
+                    fontSize: 29,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.6,
                     height: 1.05,
                   ),
                 ),
                 const SizedBox(height: 6),
-                if (rate != null)
-                  Row(
-                    children: <Widget>[
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 6,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[
+                    if (rate != null)
                       Text(
                         '${baseCurrency.symbol} ${formatChartValue(rate!)}',
                         style: AppTheme.body.copyWith(
-                          fontSize: 20,
-                          color: AppTheme.muted,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.text,
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      if (changePercent != null)
-                        Text(
+                    if (changePercent != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: trendColor.withValues(alpha: .12),
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                        child: Text(
                           '$arrow ${changePercent!.abs().toStringAsFixed(2)}%',
-                          style: AppTheme.body.copyWith(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                          style: AppTheme.caption.copyWith(
                             color: trendColor,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
+                ),
                 if (freshnessText != null)
                   Padding(
-                    padding: const EdgeInsets.only(top: 3),
+                    padding: const EdgeInsets.only(top: 5),
                     child: Row(
                       children: <Widget>[
                         Icon(

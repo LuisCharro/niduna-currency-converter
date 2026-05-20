@@ -131,9 +131,11 @@ class _RateChartState extends State<RateChart>
         final progress = Curves.easeOut.transform(_drawController.value);
         return Opacity(
           opacity: progress,
-          child: Stack(
-            children: <Widget>[
-              ChartLinePlot(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
+            child: Stack(
+              children: <Widget>[
+                ChartLinePlot(
                 spots: spots,
                 dates: sortedDates,
                 minY: minY,
@@ -143,29 +145,30 @@ class _RateChartState extends State<RateChart>
                 touchSpotThreshold: _touchThreshold(spots.length),
                 onTouch: _handleTouch,
               ),
-              if (_touchedIndex != null && _touchedIndex! < sortedDates.length)
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                        left: 12,
-                        right: 12,
-                      ),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: ChartTouchOverlay(
-                          date: sortedDates[_touchedIndex!],
-                          currencySymbol: widget.currencySymbol,
-                          value: spots[_touchedIndex!].y,
-                          baseValue: spots.first.y,
-                          lineColor: lineColor,
+                if (_touchedIndex != null && _touchedIndex! < sortedDates.length)
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8,
+                          left: 12,
+                          right: 12,
+                        ),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: ChartTouchOverlay(
+                            date: sortedDates[_touchedIndex!],
+                            currencySymbol: widget.currencySymbol,
+                            value: spots[_touchedIndex!].y,
+                            baseValue: spots.first.y,
+                            lineColor: lineColor,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         );
       },

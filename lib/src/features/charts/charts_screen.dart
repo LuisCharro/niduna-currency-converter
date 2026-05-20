@@ -82,9 +82,8 @@ class _ChartsScreenState extends State<ChartsScreen> {
                     onSwap: _handleSwap,
                     lastUpdated: state.lastUpdated,
                   ),
-                  Expanded(child: _buildChartArea(state)),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 2, 20, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
                     child: RangeSelector(
                       selected: state.range,
                       onChanged: widget.controller.setRange,
@@ -93,8 +92,9 @@ class _ChartsScreenState extends State<ChartsScreen> {
                       includesCrypto: state.includesCrypto,
                     ),
                   ),
+                  Expanded(child: _buildChartArea(state)),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 4),
+                    padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
                     child: PairSelector(
                       base: state.base,
                       quote: state.quote,
@@ -105,7 +105,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 2),
+                    padding: const EdgeInsets.fromLTRB(20, 8, 20, 2),
                     child: ChartSummary(
                       high: state.high,
                       low: state.low,
@@ -189,7 +189,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
         key: ValueKey<String>(
           '$currentPairKey-${widget.controller.state.range.label}-$_swapVersion',
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 0),
+        padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
         child: RateChart(
           data: state.data,
           currencySymbol: currencyByCode(state.base).symbol,
