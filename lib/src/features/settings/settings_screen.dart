@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../core/theme/app_theme.dart';
-import '../../shared/widgets/settings_tile.dart';
 import 'settings_controller.dart';
 import 'widgets/base_currency_tile.dart';
-import 'widgets/clear_cache_tile.dart';
 import 'widgets/decimal_places_tile.dart';
 import 'widgets/dev_sandbox_section.dart';
 import 'widgets/premium_section.dart';
+import 'widgets/settings_about_section.dart';
+import 'widgets/settings_data_section.dart';
 import 'widgets/section_header.dart';
 import 'widgets/switch_tile.dart';
-import 'widgets/version_tile.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({
@@ -64,35 +63,7 @@ class SettingsScreen extends StatelessWidget {
                   onChanged: controller.toggleDarkMode,
                 ),
                 const SizedBox(height: 24),
-                const SectionHeader(title: 'Data'),
-                SwitchTile(
-                  title: 'Refresh on open',
-                  subtitle: 'Fetch new rates when the app starts',
-                  value: preferences.refreshOnOpen,
-                  onChanged: controller.toggleRefreshOnOpen,
-                ),
-                SettingsTile(
-                  title: 'Data details',
-                  subtitle:
-                      'Refresh rules, crypto range limits and cache behavior',
-                  onTap: () => controller.openDataDetails(context),
-                  trailing: Icon(
-                    Icons.chevron_right_rounded,
-                    color: AppTheme.subtle,
-                  ),
-                ),
-                ClearCacheTile(controller: controller),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-                  child: Text(
-                    'Fiat and crypto data follow a daily app refresh policy.\nOpen Data details for sources, limits, and cache behavior.',
-                    style: AppTheme.caption.copyWith(
-                      color: AppTheme.subtle,
-                      height: 1.4,
-                    ),
-                  ),
-                ),
+                SettingsDataSection(controller: controller),
                 const SizedBox(height: 24),
                 const SectionHeader(title: 'Premium'),
                 PremiumSection(controller: controller),
@@ -102,18 +73,7 @@ class SettingsScreen extends StatelessWidget {
                   DevSandboxSection(monetization: monetization),
                   const SizedBox(height: 24),
                 ],
-                const SectionHeader(title: 'About'),
-                SettingsTile(
-                  title: 'Data sources',
-                  subtitle:
-                      'Frankfurter, ECB, crypto sources and chart availability',
-                  onTap: () => controller.openDataSources(context),
-                  trailing: Icon(
-                    Icons.chevron_right_rounded,
-                    color: AppTheme.subtle,
-                  ),
-                ),
-                VersionTile(controller: controller),
+                SettingsAboutSection(controller: controller),
               ],
             ),
           ),
