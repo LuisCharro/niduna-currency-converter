@@ -4,7 +4,7 @@ enum ProviderProfile { releaseSafe, devCoinPaprika }
 
 enum CryptoLatestProvider { coinPaprika, fawazahmed0 }
 
-enum CryptoHistoryProvider { none, coinPaprika }
+enum CryptoHistoryProvider { none, coinPaprika, coincap }
 
 class ProviderConfig {
   static const String _profileValue = String.fromEnvironment(
@@ -44,7 +44,7 @@ class ProviderConfig {
       case ProviderProfile.devCoinPaprika:
         return CryptoHistoryProvider.coinPaprika;
       case ProviderProfile.releaseSafe:
-        return CryptoHistoryProvider.none;
+        return CryptoHistoryProvider.coincap;
     }
   }
 
@@ -65,6 +65,8 @@ class ProviderConfig {
     switch (cryptoHistoryProvider) {
       case CryptoHistoryProvider.coinPaprika:
         return 'CoinPaprika historical ticks';
+      case CryptoHistoryProvider.coincap:
+        return 'CoinCap historical data';
       case CryptoHistoryProvider.none:
         return 'Disabled in this build';
     }

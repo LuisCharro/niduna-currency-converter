@@ -1,13 +1,18 @@
 class CryptoAsset {
-  const CryptoAsset({required this.code, required this.coinPaprikaId});
+  const CryptoAsset({
+    required this.code,
+    required this.coinPaprikaId,
+    required this.coinCapId,
+  });
 
   final String code;
   final String coinPaprikaId;
+  final String coinCapId;
 }
 
 const List<CryptoAsset> supportedCryptoAssets = <CryptoAsset>[
-  CryptoAsset(code: 'BTC', coinPaprikaId: 'btc-bitcoin'),
-  CryptoAsset(code: 'ETH', coinPaprikaId: 'eth-ethereum'),
+  CryptoAsset(code: 'BTC', coinPaprikaId: 'btc-bitcoin', coinCapId: 'bitcoin'),
+  CryptoAsset(code: 'ETH', coinPaprikaId: 'eth-ethereum', coinCapId: 'ethereum'),
 ];
 
 CryptoAsset cryptoAssetByCode(String code) {
