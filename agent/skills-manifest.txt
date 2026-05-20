@@ -6,3 +6,4 @@ frontend/
 mobile/
 release/
 publish/google-stitch-workflow/
+frontend/visual-distinctiveness-review.SKILL.md
