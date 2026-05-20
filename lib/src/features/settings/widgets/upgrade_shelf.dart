@@ -58,6 +58,7 @@ class UpgradeShelf extends StatelessWidget {
                   label: 'Charts Pro · 2.99 CHF',
                   onTap: () =>
                       controller.purchaseProduct(context, ProductType.chartsPro),
+                  emphasized: true,
                 ),
               if (controller.monetization.hasRemoveAdsLifetime)
                 _OwnedPill(label: 'Remove Ads owned'),

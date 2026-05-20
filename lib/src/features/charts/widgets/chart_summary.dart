@@ -71,15 +71,25 @@ class _SummaryItem extends StatelessWidget {
         border: Border.all(color: AppTheme.border.withValues(alpha: .08)),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(label, style: AppTheme.micro.copyWith(color: AppTheme.muted)),
           const SizedBox(height: 2),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: valueColor ?? AppTheme.text,
+          SizedBox(
+            width: double.infinity,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                value,
+                maxLines: 1,
+                softWrap: false,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: valueColor ?? AppTheme.text,
+                ),
+              ),
             ),
           ),
         ],

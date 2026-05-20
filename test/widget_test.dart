@@ -101,7 +101,7 @@ void main() {
     expect(find.text('Amount'), findsOneWidget);
     expect(find.textContaining('Updated May 8'), findsOneWidget);
     expect(find.textContaining('Next'), findsOneWidget);
-    expect(find.text('3 currencies'), findsOneWidget);
+    expect(find.text('3 currencies visible'), findsOneWidget);
     expect(find.text('Add'), findsOneWidget);
     expect(find.text('USD'), findsOneWidget);
     expect(find.text('EUR'), findsOneWidget);
@@ -309,7 +309,7 @@ void main() {
         ),
       ),
     );
-    expect(find.text('No favorite pairs yet'), findsOneWidget);
+    expect(find.text('No saved pairs yet'), findsOneWidget);
   });
 
   testWidgets('Favorites screen shows pair with rate', (

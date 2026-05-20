@@ -233,7 +233,7 @@ void main() {
   });
 }
 
-final DateTime _today = DateTime(2026, 5, 19, 10);
+final DateTime _today = DateTime.now();
 
 class _FakeLatestRatesClient implements LatestRatesClient {
   const _FakeLatestRatesClient(this.snapshot);
