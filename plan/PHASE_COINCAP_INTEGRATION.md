@@ -1,7 +1,7 @@
 # Plan: CoinCap Integration for Crypto Charts in Release Safe
 
 **Date:** 2026-05-20
-**Status:** REVIEWED — ready for implementation with caveats
+**Status:** DONE — committed as `8ac33f7`
 **Repo:** `/workspace/repos/niduna-currency-converter`
 
 ---
