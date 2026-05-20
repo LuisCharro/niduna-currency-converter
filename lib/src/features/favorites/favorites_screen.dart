@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';
-import '../convert/presentation/convert_controller.dart';
+import '../../shared/widgets/divider_list_row.dart';
+import '../../shared/widgets/pill_action.dart';
 import '../convert/domain/latest_rates_snapshot.dart';
+import '../convert/presentation/convert_controller.dart';
 import 'data/favorites_store.dart';
 import 'domain/favorite_pair.dart';
 
@@ -20,63 +22,145 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Favorites')),
-      body: ListenableBuilder(
-        listenable: favoritesStore,
-        builder: (context, _) {
-          if (favoritesStore.isEmpty) {
-            return _EmptyState();
-          }
-          return Column(
-            children: <Widget>[
-              Expanded(
-                child: _FavoritesList(
-                  pairs: favoritesStore.pairs,
-                  snapshot: controller.snapshot,
-                  onTap: (pair) => onNavigateToConvert(pair.base, pair.quote),
-                  onDismissed: (pair) =>
-                      favoritesStore.remove(pair.base, pair.quote),
+    return Material(
+      color: AppTheme.bg,
+      child: SafeArea(
+        child: ListenableBuilder(
+          listenable: favoritesStore,
+          builder: (context, _) {
+            final hasFavorites = !favoritesStore.isEmpty;
+            return Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 10),
+                  child: _Header(
+                    count: favoritesStore.pairs.length,
+                    canAdd: !favoritesStore.isFull,
+                    onAdd: () => onNavigateToConvert('', ''),
+                  ),
                 ),
-              ),
-              if (!favoritesStore.isFull)
-                _AddButton(onTap: () => onNavigateToConvert('', ''))
-              else
-                _MaxFavoritesCard(),
-            ],
-          );
-        },
+                if (!hasFavorites)
+                  Expanded(
+                    child: _EmptyState(
+                      canAdd: !favoritesStore.isFull,
+                      onAdd: () => onNavigateToConvert('', ''),
+                    ),
+                  )
+                else
+                  Expanded(
+                    child: _FavoritesList(
+                      pairs: favoritesStore.pairs,
+                      snapshot: controller.snapshot,
+                      onTap: (pair) =>
+                          onNavigateToConvert(pair.base, pair.quote),
+                      onDismissed: (pair) =>
+                          favoritesStore.remove(pair.base, pair.quote),
+                    ),
+                  ),
+                if (hasFavorites && favoritesStore.isFull)
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 24),
+                    child: _MaxFavoritesNote(),
+                  ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 }
 
+class _Header extends StatelessWidget {
+  const _Header({
+    required this.count,
+    required this.canAdd,
+    required this.onAdd,
+  });
+
+  final int count;
+  final bool canAdd;
+  final VoidCallback onAdd;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Favorites',
+                style: AppTheme.heading.copyWith(
+                  fontFamily: 'Fraunces',
+                  fontSize: 28,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Saved pairs · $count',
+                style: AppTheme.caption.copyWith(color: AppTheme.muted),
+              ),
+            ],
+          ),
+        ),
+        if (canAdd)
+          PillAction(label: 'Add', icon: Icons.add_rounded, onTap: onAdd),
+      ],
+    );
+  }
+}
+
 class _EmptyState extends StatelessWidget {
+  const _EmptyState({required this.canAdd, required this.onAdd});
+
+  final bool canAdd;
+  final VoidCallback onAdd;
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.star_outline, size: 56, color: AppTheme.muted),
-            const SizedBox(height: 16),
-            Text(
-              'No favorite pairs yet',
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.text,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
+          decoration: BoxDecoration(
+            color: AppTheme.container.withValues(alpha: .5),
+            borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+            border: Border.all(color: AppTheme.border.withValues(alpha: .12)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(Icons.star_outline_rounded, size: 52, color: AppTheme.muted),
+              const SizedBox(height: 14),
+              Text(
+                'No saved pairs yet',
+                style: AppTheme.heading.copyWith(fontSize: 20),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Star a currency in Convert to save it here',
-              style: TextStyle(fontSize: 14, color: AppTheme.muted),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                'Star a row in Convert and it will stay here like a pinned instrument.',
+                style: AppTheme.body.copyWith(
+                  color: AppTheme.muted,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              if (canAdd) ...<Widget>[
+                const SizedBox(height: 18),
+                PillAction(
+                  label: 'Open Convert',
+                  icon: Icons.arrow_forward_rounded,
+                  onTap: onAdd,
+                  emphasized: true,
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );
@@ -103,9 +187,7 @@ class _FavoritesList extends StatelessWidget {
     final rates = _allRates;
     final snapBase = _snapBase;
 
-    if (snapBase == pair.base) {
-      return rates[pair.quote];
-    }
+    if (snapBase == pair.base) return rates[pair.quote];
     if (snapBase == pair.quote) {
       final baseRate = rates[pair.base];
       if (baseRate == null || baseRate == 0) return null;
@@ -120,37 +202,30 @@ class _FavoritesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final computedRates = <int, double?>{};
-    for (var i = 0; i < pairs.length; i++) {
-      computedRates[i] = _rateFor(pairs[i]);
-    }
-
-    return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+    return ListView.builder(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
       itemCount: pairs.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 10),
       itemBuilder: (context, index) {
         final pair = pairs[index];
-        final rate = computedRates[index];
         return Dismissible(
           key: Key(pair.toKey()),
           direction: DismissDirection.endToStart,
           onDismissed: (_) => onDismissed(pair),
           background: Container(
             alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 20),
-            margin: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.only(right: 12),
             decoration: BoxDecoration(
               color: AppTheme.trendDown.withValues(alpha: .1),
-              borderRadius: BorderRadius.circular(AppTheme.radius),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(Icons.delete_outline, color: AppTheme.trendDown),
           ),
-          child: _FavoriteTile(
+          child: _FavoriteRow(
             pair: pair,
-            rate: rate,
+            rate: _rateFor(pair),
+            showDivider: index != pairs.length - 1,
             onTap: () => onTap(pair),
-            onDismissed: () => onDismissed(pair),
+            onRemove: () => onDismissed(pair),
           ),
         );
       },
@@ -158,156 +233,92 @@ class _FavoritesList extends StatelessWidget {
   }
 }
 
-class _FavoriteTile extends StatelessWidget {
-  const _FavoriteTile({
+class _FavoriteRow extends StatelessWidget {
+  const _FavoriteRow({
     required this.pair,
     required this.rate,
+    required this.showDivider,
     required this.onTap,
-    this.onDismissed,
+    required this.onRemove,
   });
 
   final FavoritePair pair;
   final double? rate;
+  final bool showDivider;
   final VoidCallback onTap;
-  final VoidCallback? onDismissed;
+  final VoidCallback onRemove;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppTheme.radius),
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(18, 14, 8, 14),
-          decoration: BoxDecoration(
-            color: AppTheme.card,
-            borderRadius: BorderRadius.circular(AppTheme.radius),
-            border: Border.all(color: AppTheme.border.withValues(alpha: .5)),
+    return DividerListRow(
+      onTap: onTap,
+      showDivider: showDivider,
+      leadingAccent: AppTheme.primary.withValues(alpha: .18),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          IconButton(
+            onPressed: onRemove,
+            icon: Icon(
+              Icons.remove_circle_outline,
+              size: 20,
+              color: AppTheme.subtle,
+            ),
+            tooltip: 'Remove ${pair.base}→${pair.quote}',
           ),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      '${pair.base} \u2192 ${pair.quote}',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: AppTheme.muted,
-                        letterSpacing: 0.2,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      rate != null ? rate!.toStringAsFixed(4) : '\u2014',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: AppTheme.text,
-                        fontFeatures: <FontFeature>[
-                          const FontFeature.tabularFigures(),
-                        ],
-                      ),
-                    ),
-                  ],
+          Icon(Icons.chevron_right_rounded, color: AppTheme.subtle),
+        ],
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  '${pair.base} → ${pair.quote}',
+                  style: AppTheme.caption.copyWith(
+                    color: AppTheme.muted,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              if (onDismissed != null)
-                IconButton(
-                  onPressed: onDismissed,
-                  icon: Icon(
-                    Icons.remove_circle_outline,
-                    size: 22,
-                    color: AppTheme.subtle,
+                const SizedBox(height: 4),
+                Text(
+                  rate != null ? rate!.toStringAsFixed(4) : '—',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                    color: AppTheme.text,
+                    fontFeatures: <FontFeature>[
+                      FontFeature.tabularFigures(),
+                    ],
                   ),
-                  tooltip: 'Remove ${pair.base}→${pair.quote}',
-                  constraints: const BoxConstraints.tightFor(
-                    width: 44,
-                    height: 44,
-                  ),
-                  splashRadius: 20,
-                )
-              else
-                const SizedBox(width: 8),
-              Icon(Icons.chevron_right, color: AppTheme.subtle, size: 22),
-            ],
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 }
 
-class _AddButton extends StatelessWidget {
-  const _AddButton({required this.onTap});
-
-  final VoidCallback onTap;
+class _MaxFavoritesNote extends StatelessWidget {
+  const _MaxFavoritesNote();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
-      child: SizedBox(
-        width: double.infinity,
-        height: 48,
-        child: OutlinedButton.icon(
-          onPressed: onTap,
-          icon: Icon(Icons.add, size: 20, color: AppTheme.primary),
-          label: Text(
-            'Add favorite',
-            style: TextStyle(
-              color: AppTheme.primary,
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
-            ),
-          ),
-          style: OutlinedButton.styleFrom(
-            side: BorderSide(color: AppTheme.primary.withValues(alpha: .4)),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppTheme.radius),
-            ),
+    return Row(
+      children: <Widget>[
+        Icon(Icons.lock_outline, size: 16, color: AppTheme.primary),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            'Phase 1 keeps favorites capped at 3 pairs.',
+            style: AppTheme.caption.copyWith(color: AppTheme.muted),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _MaxFavoritesCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
-      child: Container(
-        width: double.infinity,
-        height: 52,
-        decoration: BoxDecoration(
-          color: AppTheme.primary.withValues(alpha: .06),
-          borderRadius: BorderRadius.circular(AppTheme.radius),
-          border: Border.all(color: AppTheme.primary.withValues(alpha: .15)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.lock_outline, size: 18, color: AppTheme.primary),
-            const SizedBox(width: 10),
-            Text(
-              'Unlock more favorites',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.primary,
-              ),
-            ),
-            const SizedBox(width: 6),
-            Icon(Icons.chevron_right, size: 18, color: AppTheme.primary),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }
