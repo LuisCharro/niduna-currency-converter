@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/pill_action.dart';
 import '../domain/convert_state.dart';
 import 'amount_card.dart';
 import 'currency_picker_sheet.dart';
@@ -120,7 +121,7 @@ class _RatesToolbar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Converted to',
+                  'Rates',
                   style: AppTheme.caption.copyWith(
                     color: AppTheme.text,
                     fontWeight: FontWeight.w800,
@@ -128,31 +129,13 @@ class _RatesToolbar extends StatelessWidget {
                 ),
                 const SizedBox(height: 1),
                 Text(
-                  '$count currencies',
+                  '$count currencies visible',
                   style: AppTheme.caption.copyWith(color: AppTheme.muted),
                 ),
               ],
             ),
           ),
-          TextButton.icon(
-            onPressed: onEdit,
-            icon: const Icon(Icons.add_rounded, size: 17),
-            label: const Text('Add'),
-            style: TextButton.styleFrom(
-              foregroundColor: AppTheme.primary,
-              backgroundColor: AppTheme.container.withValues(alpha: .48),
-              minimumSize: const Size(66, 38),
-              padding: const EdgeInsets.symmetric(horizontal: 11),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-              ),
-              textStyle: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
+          PillAction(label: 'Add', icon: Icons.add_rounded, onTap: onEdit),
         ],
       ),
     );

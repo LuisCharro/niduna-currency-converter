@@ -27,7 +27,7 @@ class CurrencyRateRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: isActive
-          ? AppTheme.trendUp.withValues(alpha: .06)
+          ? AppTheme.trendUp.withValues(alpha: .055)
           : Colors.transparent,
       child: InkWell(
         onTap: () {
@@ -41,9 +41,21 @@ class CurrencyRateRow extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: AppTheme.rowMinHeight),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 2),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
             child: Row(
               children: <Widget>[
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  width: 3,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: isActive
+                        ? AppTheme.primary.withValues(alpha: .9)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: QuoteIdentity(quote: quote, isActive: isActive),
                 ),

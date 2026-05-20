@@ -41,7 +41,7 @@ class DataSourcesPage extends StatelessWidget {
             title: 'Crypto charts',
             provider: ProviderConfig.chartsProviderLabel,
             detail:
-                '${cryptoChartsDetail} Crypto pricing data provided by CoinGecko.',
+                '$cryptoChartsDetail Crypto pricing data provided by CoinGecko.',
           ),
         ],
       ),

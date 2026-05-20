@@ -22,30 +22,46 @@ class CurrencyPickerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-      leading: CurrencyFlagIcon(
-        code: currency.code,
-        symbol: currency.symbol,
-        radius: 20,
-      ),
-      title: Text(
-        currency.name,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-      ),
-      subtitle: Text(
-        _subtitle,
-        style: const TextStyle(
-          color: AppTheme.muted,
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-          letterSpacing: .3,
+    return InkWell(
+      onTap: selectBaseMode || !isBase ? onTap : null,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          children: <Widget>[
+            CurrencyFlagIcon(
+              code: currency.code,
+              symbol: currency.symbol,
+              radius: 20,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    currency.name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 1),
+                  Text(
+                    _subtitle,
+                    style: const TextStyle(
+                      color: AppTheme.muted,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: .3,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(_icon, color: _color, size: 24),
+          ],
         ),
       ),
-      trailing: Icon(_icon, color: _color, size: 26),
-      enabled: selectBaseMode || !isBase,
-      minLeadingWidth: 44,
-      onTap: onTap,
     );
   }
 

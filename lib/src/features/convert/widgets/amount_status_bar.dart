@@ -53,9 +53,9 @@ class _FreshnessButton extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
           decoration: BoxDecoration(
-            color: AppTheme.container.withValues(alpha: .5),
+            color: AppTheme.container.withValues(alpha: .42),
             borderRadius: BorderRadius.circular(AppTheme.cardRadius),
-            border: Border.all(color: AppTheme.border.withValues(alpha: .1)),
+            border: Border.all(color: AppTheme.border.withValues(alpha: .08)),
           ),
           child: Row(
             children: <Widget>[
@@ -103,7 +103,7 @@ class _FreshnessButton extends StatelessWidget {
 
   String get _title {
     return switch (status) {
-      ConvertStatus.loading => 'Daily rates loading',
+      ConvertStatus.loading => 'Ledger loading',
       ConvertStatus.refreshing => 'Refreshing daily rates',
       ConvertStatus.stale => 'Cached · $lastUpdatedLabel',
       ConvertStatus.noCache => 'Daily rates unavailable',

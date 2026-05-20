@@ -71,9 +71,12 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
                       },
                     );
                   },
-                  separatorBuilder: (context, index) => Divider(
-                    height: 1,
-                    color: AppTheme.border.withValues(alpha: .15),
+                  separatorBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.only(left: 52),
+                    child: Divider(
+                      height: 1,
+                      color: AppTheme.border.withValues(alpha: .15),
+                    ),
                   ),
                   itemCount: currencies.length,
                 ),
