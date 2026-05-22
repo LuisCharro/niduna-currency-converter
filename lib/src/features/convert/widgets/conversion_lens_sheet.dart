@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../core/currency/supported_currencies.dart';
 import '../models/currency_quote.dart';
 
 class ConversionLensSheet extends StatelessWidget {
@@ -121,8 +122,8 @@ class _LensCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final quickBase = _baseValues(amount);
     final reverseTargets = _reverseTargets();
-    final amountLabel = _formatValue(amount, base);
-    final convertedLabel = _formatValue(amount * quote.rate, quote.code);
+    final amountLabel = _formatHeroBase(amount, base);
+    final convertedLabel = _formatHeroConverted(amount * quote.rate, quote.code);
     final copyLabel = '$amountLabel $base = $convertedLabel ${quote.code}';
 
     return Material(
@@ -267,7 +268,7 @@ _LensSection(
 
   List<double> _baseValues(double currentAmount) {
     final values = <double>{1, 10, 50, 100, 1000};
-    if (currentAmount > 0) values.add(double.parse(currentAmount.toStringAsFixed(2)));
+    if (currentAmount > 0) values.add(currentAmount);
     final sorted = values.toList()..sort();
     return sorted;
   }
@@ -276,6 +277,34 @@ _LensSection(
     if (quote.code == 'BTC') return <double>[0.001, 0.01, 0.1];
     if (quote.code == 'ETH') return <double>[0.01, 0.1, 1];
     return <double>[10, 50, 100];
+  }
+
+  String _formatHeroBase(double value, String code) {
+    if (isCryptoCurrency(code)) {
+      final digits = code == 'BTC' ? 8 : 6;
+      return _stripTrailingZeros(
+        NumberFormat('#,##0.${'0' * digits}', 'en').format(value),
+      );
+    }
+    return _stripTrailingZeros(
+      NumberFormat('#,##0.######', 'en').format(value),
+    );
+  }
+
+  String _formatHeroConverted(double value, String code) {
+    if (isCryptoCurrency(code)) {
+      final digits = code == 'BTC' ? 8 : 6;
+      return _stripTrailingZeros(
+        NumberFormat('#,##0.${'0' * digits}', 'en').format(value),
+      );
+    }
+    if (value >= 100) {
+      return NumberFormat('#,##0.00', 'en').format(value);
+    }
+    if (value >= 10) {
+      return NumberFormat('#,##0.00', 'en').format(value);
+    }
+    return NumberFormat('#,##0.000', 'en').format(value);
   }
 
   String _formatValue(double value, String code) {
@@ -300,6 +329,13 @@ _LensSection(
     if (value >= 100) return value.toStringAsFixed(0);
     if (value >= 10) return value.toStringAsFixed(2);
     return value.toStringAsFixed(3);
+  }
+
+  static String _stripTrailingZeros(String formatted) {
+    if (!formatted.contains('.')) return formatted;
+    var result = formatted.replaceAll(RegExp(r'0+$'), '');
+    if (result.endsWith('.')) result = result.substring(0, result.length - 1);
+    return result;
   }
 }
 
