@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/designed_state_panel.dart';
 import '../models/currency_quote.dart';
+import 'conversion_lens_sheet.dart';
 import 'currency_row_swipe_actions.dart';
 import 'currency_rate_row.dart';
 
 class VisibleRatesList extends StatefulWidget {
   const VisibleRatesList({
     required this.quotes,
+    required this.base,
+    required this.amount,
+    required this.onAmountChanged,
     required this.onSetBase,
     required this.onRemove,
     required this.onToggleFavorite,
@@ -18,6 +22,9 @@ class VisibleRatesList extends StatefulWidget {
   });
 
   final List<CurrencyQuote> quotes;
+  final String base;
+  final double amount;
+  final ValueChanged<String> onAmountChanged;
   final ValueChanged<String> onSetBase;
   final ValueChanged<String> onRemove;
   final ValueChanged<String> onToggleFavorite;
@@ -72,6 +79,16 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
           onSwap: () {
             setState(() => _openCode = null);
             widget.onSetBase(quote.code);
+          },
+          onPressed: (position) {
+            ConversionLensSheet.show(
+              context: context,
+              anchor: position,
+              quote: quote,
+              base: widget.base,
+              amount: widget.amount,
+              onAmountChanged: widget.onAmountChanged,
+            );
           },
           child: CurrencyRateRow(quote: quote),
         );

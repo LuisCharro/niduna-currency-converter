@@ -53,6 +53,7 @@ List<CurrencyQuote> buildQuotes({
           isCryptoCurrency(currency.code)
               ? rateLine
               : '1 ${snapshot.base} = ${rateFormat.format(rate)} ${currency.code}',
+          rate: rate,
         );
       })
       .toList(growable: false);

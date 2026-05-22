@@ -11,6 +11,7 @@ class CurrencyRowSwipeActions extends StatefulWidget {
     required this.onOpenChanged,
     required this.onRemove,
     required this.onSwap,
+    required this.onPressed,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class CurrencyRowSwipeActions extends StatefulWidget {
   final ValueChanged<bool> onOpenChanged;
   final VoidCallback onRemove;
   final VoidCallback onSwap;
+  final ValueChanged<Offset> onPressed;
 
   @override
   State<CurrencyRowSwipeActions> createState() => _CurrencyRowSwipeActionsState();
@@ -29,9 +31,12 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
   static const double _actionWidth = 60;
   static const double _maxReveal = 184;
   static const Duration _duration = Duration(milliseconds: 220);
+  static const Duration _pressDuration = Duration(milliseconds: 160);
 
   double _reveal = 0;
   bool _isDragging = false;
+  bool _isPressed = false;
+  Offset? _tapPosition;
 
   @override
   void initState() {
@@ -50,6 +55,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
   Widget build(BuildContext context) {
     final baseProgress = _windowProgress(_reveal, start: 18, end: 138);
     final hideProgress = _windowProgress(_reveal, start: 86, end: 182);
+    final revealProgress = _reveal / _maxReveal;
     final rail = ClipRRect(
       borderRadius: BorderRadius.circular(18),
       child: Container(
@@ -99,8 +105,25 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
             right: _reveal,
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTap: widget.isOpen ? () => widget.onOpenChanged(false) : null,
-              onHorizontalDragStart: (_) => _isDragging = true,
+              onTapDown: (details) {
+                _tapPosition = details.globalPosition;
+                if (widget.isOpen) return;
+                _setPressed(true, withHaptic: true);
+              },
+              onTapUp: (_) => _setPressed(false),
+              onTapCancel: () => _setPressed(false),
+              onTap: () {
+                _setPressed(false);
+                if (widget.isOpen) {
+                  widget.onOpenChanged(false);
+                  return;
+                }
+                widget.onPressed(_tapPosition ?? Offset.zero);
+              },
+              onHorizontalDragStart: (_) {
+                _setPressed(false);
+                _isDragging = true;
+              },
               onHorizontalDragUpdate: (details) {
                 setState(() {
                   _reveal = (_reveal - details.delta.dx).clamp(0, _maxReveal);
@@ -114,21 +137,30 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
                 _finishDrag(shouldOpen);
               },
               onHorizontalDragCancel: () => _finishDrag(widget.isOpen),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.bg,
-                  borderRadius: BorderRadius.circular(18),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: AppTheme.primary.withValues(
-                        alpha: 0.04 + (0.04 * (_reveal / _maxReveal)),
+              child: AnimatedScale(
+                duration: _pressDuration,
+                curve: Curves.easeOutCubic,
+                scale: _isPressed ? 1.018 : 1,
+                child: AnimatedContainer(
+                  duration: _pressDuration,
+                  curve: Curves.easeOutCubic,
+                  transform: Matrix4.translationValues(0, _isPressed ? -2 : 0, 0),
+                  transformAlignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: AppTheme.bg,
+                    borderRadius: BorderRadius.circular(18),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: AppTheme.primary.withValues(
+                          alpha: _isPressed ? 0.1 : 0.04 + (0.04 * revealProgress),
+                        ),
+                        blurRadius: _isPressed ? 16 : 8 + (4 * revealProgress),
+                        offset: Offset(0, _isPressed ? 6 : 2),
                       ),
-                      blurRadius: 8 + (4 * (_reveal / _maxReveal)),
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+                    ],
+                  ),
+                  child: widget.child,
                 ),
-                child: widget.child,
               ),
             ),
           ),
@@ -140,9 +172,18 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
   void _finishDrag(bool open) {
     setState(() {
       _isDragging = false;
+      _isPressed = false;
       _reveal = open ? _maxReveal : 0;
     });
     widget.onOpenChanged(open);
+  }
+
+  void _setPressed(bool value, {bool withHaptic = false}) {
+    if (_isPressed == value) return;
+    setState(() => _isPressed = value);
+    if (value && withHaptic) {
+      HapticFeedback.lightImpact();
+    }
   }
 
   void _handleRemove() {

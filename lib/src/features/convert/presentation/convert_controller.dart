@@ -125,6 +125,7 @@ class ConvertController extends ChangeNotifier {
               q.name,
               q.amount,
               q.rateLine,
+              rate: q.rate,
               favorite: isFav,
             );
           }).toList(),

@@ -321,6 +321,71 @@ void main() {
     expect(find.text('Euro'), findsNothing);
   });
 
+  testWidgets('Convert row tap opens conversion lens with quick values', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Euro').first);
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('conversion_lens')), findsOneWidget);
+    final lensRect = tester.getRect(find.byKey(const Key('conversion_lens')));
+    expect(lensRect.height, greaterThan(500));
+    expect(lensRect.bottom, lessThanOrEqualTo(792));
+    expect(find.byKey(const Key('conversion_lens_copy_button')), findsOneWidget);
+    expect(find.text('Copy'), findsNothing);
+    expect(find.text('CONVERSION LENS'), findsOneWidget);
+    expect(find.text('Quick base amounts'), findsOneWidget);
+    expect(find.text('Reverse targets'), findsOneWidget);
+    expect(find.text('Use'), findsNWidgets(3));
+  });
+
+  testWidgets('Conversion lens reverse target can update main amount', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Euro').first);
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('Use').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Use').first);
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('conversion_lens')), findsNothing);
+    expect(controller.state.amountText, '10.87');
+  });
+
   testWidgets('Favorites screen shows placeholder', (
     WidgetTester tester,
   ) async {

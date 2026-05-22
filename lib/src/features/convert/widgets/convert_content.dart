@@ -55,6 +55,9 @@ class _ConvertContentState extends State<ConvertContent> {
         Expanded(
           child: VisibleRatesList(
             quotes: widget.state.quotes,
+            base: widget.state.base,
+            amount: double.tryParse(widget.state.amountText) ?? 0,
+            onAmountChanged: widget.onAmountChanged,
             onRefresh: widget.onRefresh,
             onSetBase: widget.onSelectBase,
             onRemove: widget.onToggleCode,
