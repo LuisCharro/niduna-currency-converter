@@ -169,44 +169,53 @@ class _LensCard extends StatelessWidget {
                 color: AppTheme.container,
                 borderRadius: BorderRadius.circular(20),
               ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(amountLabel, style: AppTheme.sectionLabel.copyWith(letterSpacing: 0.4)),
-                    const SizedBox(height: 4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            '$convertedLabel ${quote.code}',
-                            style: AppTheme.pairTitleFraunces.copyWith(fontSize: 26),
-                          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              '$amountLabel $base = $convertedLabel ${quote.code}',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                                height: 1.15,
+                                letterSpacing: -0.3,
+                                color: AppTheme.text,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              '1 $base = ${_formatRaw(quote.rate, quote.code)} ${quote.code}',
+                              style: const TextStyle(
+                                fontSize: 12.5,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.muted,
+                              ),
+                            ),
+                          ],
                         ),
-                        IconButton(
-                          key: const Key('conversion_lens_copy_button'),
-                          onPressed: () async {
-                            await Clipboard.setData(ClipboardData(text: copyLabel));
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Copied $copyLabel')),
-                              );
-                            }
-                          },
-                          tooltip: 'Copy conversion to clipboard',
-                          icon: const Icon(Icons.content_copy_rounded, size: 20),
-                          visualDensity: VisualDensity.compact,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '1 $base = ${_formatRaw(quote.rate, quote.code)} ${quote.code}',
-                    style: const TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.muted,
-                    ),
+                      ),
+                      IconButton(
+                        key: const Key('conversion_lens_copy_button'),
+                        onPressed: () async {
+                          await Clipboard.setData(ClipboardData(text: copyLabel));
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Copied $copyLabel')),
+                            );
+                          }
+                        },
+                        tooltip: 'Copy conversion to clipboard',
+                        icon: const Icon(Icons.content_copy_rounded, size: 20),
+                        visualDensity: VisualDensity.compact,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -228,7 +237,7 @@ class _LensCard extends StatelessWidget {
                           .toList(),
                     ),
                     const SizedBox(height: 12),
-                    _LensSection(
+_LensSection(
                       title: 'Reverse targets',
                       children: reverseTargets
                           .map(
