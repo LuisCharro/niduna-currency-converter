@@ -11,17 +11,24 @@ Use it together with:
 
 ## Current Reality
 
-The repo currently has:
+The app has all Phase 1 slices implemented (slices 0-9, 11) and a UI redesign
+iteration 2 on branch `turbo/ui-redesign`. Feature audit completed 2026-05-22.
 
-- a Flutter shell with four tabs: `Convert`, `Favorites`, `Charts`, `Settings`
-- a Stitch-derived `Convert` visual direction implemented with demo data
+- a Flutter app with three visible tabs: `Convert`, `Charts`, `Settings`
+  (Favorites code retained but hidden from nav for Phase 2)
+- real fiat rates from Frankfurter v2 + BTC/ETH latest from no-key providers
+- historical charts: fiat up to 2Y, crypto up to 1Y
+- full monetization stubs: banner ad placeholders, Remove Ads, Charts Pro,
+  rewarded ad chart-pair unlock, subscription "Coming Soon" card
+- dark mode, data freshness indicator, pull-to-refresh, modal currency picker
+- branded splash screens + adaptive icons (Android)
+- store publishing checklists for Play Store and App Store
 - product docs covering privacy, monetization, APIs, and phase boundaries
 - repo-local agent docs and skills
 - scripts for analysis, tests, and builds
 
-The app is not yet a real data product. The next work should make product,
-navigation, API, cache, and screen contracts explicit before adding more
-Flutter feature code.
+Remaining Phase 1 work: dark mode system-follow, real AdMob SDK, release
+signing, privacy policy, store listing assets, branded app names.
 
 ## Product Contract First
 
@@ -231,7 +238,7 @@ Supported scope:
 
 Sources:
 
-- release-safe profile: fawazahmed0 for BTC/ETH latest, crypto charts disabled
+- release-safe profile: fawazahmed0 for BTC/ETH latest, Coingecko for BTC/ETH historical charts
 - dev CoinPaprika profile: CoinPaprika for BTC/ETH latest and historical, fawazahmed0 as latest fallback
 
 Still deferred:
@@ -573,13 +580,60 @@ Use these gates to avoid surprises:
 If a change fails one of these gates, stop and update the relevant doc before
 expanding code.
 
-## Next Best Step
+## Feature Audit (2026-05-22)
 
-Complete Slice 9 (Polish + UX):
+All Phase 1 slices (0-9) and the BTC/ETH extension (Slice 11) are **implemented**.
+UI redesign iteration 2 is on branch `turbo/ui-redesign` (not yet merged).
 
-- **hide Favorites tab** from BottomNavigationBar (screen code kept, just hidden from nav; re-enable in Phase 2)
-- add **data freshness indicator** in Convert tab: `(i)` info icon next to "Updated: May 10, 16:21" with tooltip explaining ECB once-daily updates
-- add **data explanation text** in Settings > Data section: *"Rates fetched once daily from ECB. Last update: [date]. Data may be up to 24h old."*
-- fix **intraday range toast**: change from "Intraday ranges require Subscription" to "Intraday ranges coming soon — requires Premium Subscription"
-- implement **dark mode**: AppTheme.dark + isDarkMode in AppPreferences + toggle in Settings (default: follow system)
-- update **Subscription card copy** in Settings Premium: clarify "Not available in v1"
+### Done
+
+| Feature | Evidence |
+|---------|----------|
+| 16 fiat currencies + BTC/ETH latest | `supported_currencies.dart`, `multi_provider_latest_rates_repository.dart` |
+| Client-side conversion | `amount × rate` in Convert |
+| Historical charts (fiat up to 2Y, crypto up to 1Y) | `multi_provider_rates_client.dart` handles all pair types |
+| BTC/ETH + mixed fiat/crypto charts | `charts_controller.dart` clamps crypto to 1Y; picker includes BTC/ETH |
+| Favorites (max 3, local storage) | `FavoritesStore` wired into `ConvertController` |
+| Favorites tab **hidden** from nav | `floating_pill_nav.dart` has 3 tabs: Convert, Chart, Settings |
+| Offline mode / cache | Cache per base/range; stale fallback works |
+| Dark mode | `AppTheme.dark` + Settings toggle + wired in `app.dart` |
+| Banner ad placeholders | `AdBannerPlaceholder` in Convert, Charts, Chart Picker |
+| Remove Ads IAP stub | `PurchaseServiceStub`, `IapPurchasePlayer`, 1.99 CHF |
+| Charts Pro IAP stub | Same infrastructure, 2.99 CHF |
+| Subscription card | "Not available in v1 · 1 week free trial planned later" + "Soon" badge |
+| Rewarded ad (chart pair unlock) | `LockedPairActionSheet` → `RewardedAdPlayer` → 24h unlock |
+| Data freshness indicator | `(i)` icon in `amount_status_bar.dart` → `DailyRatesInfoSheet` |
+| Intraday toast (fixed copy) | "Intraday ranges coming soon — requires Premium Subscription" |
+| Pull-to-refresh on Convert | `RefreshIndicator` wrapping rates list |
+| Modal bottom sheet for currency picker | `CurrencyPickerSheet` via `showModalBottomSheet` |
+| Settings: base currency, decimals, refresh-on-open, clear cache | All wired and functional |
+| Provider profiles (release_safe / dev_coinpaprika) | Build-time env var; release guard throws on non-safe profile |
+| Branded splash screens | Native Android + iOS launch screens |
+| Android adaptive icons | Foreground seal + warm paper background layer |
+| Store publishing checklists | `.plan/PLAY_STORE_PUBLISH_CHECKLIST.md`, `.plan/APP_STORE_PUBLISH_CHECKLIST.md` |
+
+### Pending (within Phase 1 scope)
+
+| Item | Status | Notes |
+|------|--------|-------|
+| Dark mode follows system default | **Caveat** | Toggle subtitle says "Follow system default" but it is a manual boolean — does NOT read `MediaQuery.platformBrightness` or `ThemeMode.system` |
+| Long-press context menu on currency rows | **NOT DONE** | No `onLongPress` handler on `CurrencyRateRow`; listed as exploration item |
+| Slice 10: update root docs for BTC/ETH scope | **NOT DONE** | `DEFINITIONS.md` / `PLAN.md` need final alignment pass |
+| Real AdMob SDK (replace placeholders) | **NOT DONE** | Current banners are visual placeholders only |
+| Build and test APK before release candidate | **NOT DONE** | `scripts/build_apk.sh` exists but no formal RC build yet |
+| Keystore signing for release | **NOT DONE** | Still using debug signing config |
+| CoinPaprika replacement for release_safe | **NOT DONE** | Current release_safe uses Coingecko for crypto history; CoinPaprika still in dev profile |
+| Privacy policy URL | **NOT DONE** | Required for both stores |
+| Store listing assets (screenshots, description) | **NOT DONE** | Both stores |
+| Branded CFBundleDisplayName / android:label | **NOT DONE** | Currently generic "Currency Converter" / "currency_converter" |
+| i18n (DE, FR, IT, ES, PT) | **NOT DONE** | English only; planned for Phase 1.x |
+
+### Next Best Step
+
+With all core slices implemented, the remaining Phase 1 work is:
+
+1. **Dark mode system-follow** — fix the toggle to respect `ThemeMode.system` instead of manual-only
+2. **Store release blockers** — keystore signing, CoinPaprika replacement, privacy policy, branded app names
+3. **Real AdMob SDK** — replace placeholder banners with live `google_mobile_ads`
+4. **Long-press context menu** — nice UX polish for currency rows
+5. **Slice 10 doc alignment** — ensure `DEFINITIONS.md` and `PLAN.md` reflect final BTC/ETH scope

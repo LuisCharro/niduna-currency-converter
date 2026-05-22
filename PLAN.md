@@ -1,7 +1,7 @@
 # Currency Converter — Development Plan
 
-> **Based on:** DEFINITIONS.md (2026-05-07)
-> **Status:** Planning
+> **Based on:** DEFINITIONS.md (2026-05-22)
+> **Status:** Phase 1 implementation nearly complete; store release blockers remain
 
 ---
 
@@ -59,7 +59,7 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 - Release-safe profile rules:
   - fiat latest + charts: Frankfurter
   - crypto latest: fawazahmed0
-  - crypto charts: disabled
+  - crypto charts: Coingecko (no API key)
 - Dev profile rules:
   - crypto latest: CoinPaprika primary, fawazahmed0 fallback
   - crypto charts: CoinPaprika historical ticks
@@ -267,8 +267,8 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 ### Navigation Ideas to Explore
 
 - [x] BottomNavigationBar with 4 tabs
-- [ ] Modal bottom sheet for currency selection (vs dropdown)
-- [ ] Pull-to-refresh on currency list (Convert tab)
+- [x] Modal bottom sheet for currency selection (vs dropdown) — `CurrencyPickerSheet`
+- [x] Pull-to-refresh on currency list (Convert tab) — `RefreshIndicator`
 - [ ] Context menu (long press) for quick actions (add to favorites, view chart)
 - [ ] Swipe on Favorites to delete
 - [ ] Rate alerts: deferred to Phase 2 unless `DEFINITIONS.md` is updated after MVP validation
@@ -331,23 +331,31 @@ lib/
 | Conversion | DONE | Client-side `amount × rate` |
 | Historical charts | DONE | Fiat daily rates, up to 2 years |
 | BTC/ETH latest in Convert | DONE | No-key providers, quote-only in first slice |
-| BTC/ETH and mixed crypto charts | TODO | Daily charts up to 1 year |
+| BTC/ETH and mixed crypto charts | DONE | Daily charts up to 1 year; `multi_provider_rates_client.dart` handles all pair types |
 | Favorite pairs | DONE | Save up to 3 locally (SharedPreferences) |
 | Offline mode | DONE | Cache last known rates |
-| Dark mode | TODO | Free in 2026 |
-| Banner ads | DONE | Bottom banner, safe distance from input |
+| Dark mode | DONE | `AppTheme.dark` + Settings toggle; caveat: manual toggle only, does NOT follow system |
+| Banner ads | DONE (placeholders) | `AdBannerPlaceholder` in Convert, Charts, Chart Picker; no live AdMob SDK yet |
 | Remove Ads IAP | DONE | 1.99 CHF one-time (stub) |
 | Charts Pro IAP | DONE | Unlock all pairs forever (stub) |
-| Subscription UI | DONE | Coming Soon card (informational) |
+| Subscription UI | DONE | "Not available in v1 · 1 week free trial planned later" + "Soon" badge |
 | Rewarded Ad (chart pair unlock) | DONE | 24h temporary unlock for pure-free users |
+| Data freshness indicator | DONE | `(i)` icon → `DailyRatesInfoSheet` explains ECB once-daily |
+| Pull-to-refresh on Convert | DONE | `RefreshIndicator` wrapping rates list |
+| Modal currency picker | DONE | `CurrencyPickerSheet` via `showModalBottomSheet` |
+| Provider profiles | DONE | Build-time `PROVIDER_PROFILE` env var; release guard |
+| Branded splash screens | DONE | Native Android + iOS launch screens |
+| Android adaptive icons | DONE | Foreground seal + warm paper background layer |
+| Store publishing checklists | DONE | Play Store + App Store checklists in `.plan/` |
 
 ### Data Sources
 
 | Source | Use | Key |
 |--------|-----|-----|
 | Frankfurter v2 | Fiat rates | No API key |
-| CoinPaprika | BTC/ETH latest + historical | No API key |
+| Coingecko | BTC/ETH historical (release_safe profile) | No API key |
 | fawazahmed0 | BTC/ETH latest fallback | No API key |
+| CoinPaprika | BTC/ETH latest + historical (dev profile only) | No API key |
 
 ### Technical Decisions
 
@@ -372,10 +380,22 @@ lib/
 - [x] Slice 8: IAP paywall — PurchaseService stub, IapPurchasePlayer, Settings Premium section, Remove Ads + Charts Pro + Subscription (Coming Soon) buttons, banner CTA, intraday "coming soon" toast
 - [x] Slice 9: hide Favorites tab, data freshness indicator, dark mode, intraday toast copy fix, subscription v1 copy
 - [ ] Slice 10: update root docs for the no-key BTC/ETH scope
-- [ ] Slice 11: add BTC/ETH and mixed fiat/crypto charts up to 1 year
+- [x] Slice 11: add BTC/ETH and mixed fiat/crypto charts up to 1 year
 - [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates
 - [x] Write/update smoke tests as each slice becomes user-visible
 - [ ] Build and test APK before release candidate
+
+### Remaining Phase 1 work
+
+- [ ] Dark mode: make toggle follow `ThemeMode.system` (currently manual boolean only)
+- [ ] Long-press context menu on currency rows (exploration item)
+- [ ] Real AdMob SDK integration (replace placeholder banners)
+- [ ] Release keystore signing (currently debug signing config)
+- [ ] CoinPaprika replacement for release-safe profile
+- [ ] Privacy policy URL (required for both stores)
+- [ ] Branded app name: `CFBundleDisplayName` and `android:label`
+- [ ] Store listing assets: screenshots, description, keywords
+- [ ] iOS deployment target update (currently 13.0, too old)
 
 ---
 
@@ -399,11 +419,11 @@ Use a **Niduna hybrid** direction for UI work:
 
 | Phase | Name | Goal | Status |
 |-------|------|------|--------|
-| 1 | Foundation | Theme/nav/ad polish around Niduna tokens | IN PROGRESS |
-| 2 | Convert Screen | Reduce top weight, cleaner amount panel, sharper rows | IN PROGRESS |
-| 3 | Chart Screen | Stronger hero header, fuller chart, cleaner controls | IN PROGRESS |
-| 4 | Settings Cleanup | Controller extraction is done; visual density cleanup remains | PARTIAL |
-| 5 | Icons & Details | Regenerate blurry icons only if needed after screenshot review | TODO |
+| 1 | Foundation | Theme/nav/ad polish around Niduna tokens | DONE (iter 2 on `turbo/ui-redesign`) |
+| 2 | Convert Screen | Reduce top weight, cleaner amount panel, sharper rows | DONE (iter 2 on `turbo/ui-redesign`) |
+| 3 | Chart Screen | Stronger hero header, fuller chart, cleaner controls | DONE (iter 2 on `turbo/ui-redesign`) |
+| 4 | Settings Cleanup | Controller extraction is done; visual density cleanup | DONE (controller extraction), PARTIAL (visual density) |
+| 5 | Icons & Details | Regenerate blurry icons only if needed after screenshot review | DONE (app icons, splash, adaptive icons) |
 | 6 | Polish Cycle | Screenshot comparison + iterative refinement | TODO |
 
 ### Key Architecture Rule for Phase 4
@@ -480,8 +500,8 @@ Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, serve
 ### TODO (Phase 1.x)
 
 - [x] Add BTC/ETH latest with no-key providers
-- [ ] Add BTC/ETH and mixed fiat/crypto chart routing
-- [ ] Disable `2Y` for crypto-involved pairs
+- [x] Add BTC/ETH and mixed fiat/crypto chart routing
+- [x] Disable `2Y` for crypto-involved pairs
 - [ ] Add chart tests for crypto/crypto and fiat/crypto formulas
 
 ---

@@ -135,9 +135,9 @@ the primary crypto provider.
 ```
 Phase 1 (Play Store launch):
   Latest rates:  Frankfurter (fiat) + fawazahmed0 (crypto, promoted to primary)
-  Charts:        Frankfurter (fiat only) — crypto charts disabled or using fawazahmed0 time series
+  Charts:        Frankfurter (fiat) + Coingecko (crypto, no API key, up to 1Y)
   Cost:          $0
-  License:       All clear (Unlicense + CC0)
+  License:       All clear (Unlicense + CC0 + Coingecko free tier)
 
 Phase 2 (when revenue justifies):
   Latest rates:  Frankfurter + CoinGecko Analyst ($129/mo, commercial license)
