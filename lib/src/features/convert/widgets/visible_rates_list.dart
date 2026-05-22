@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../../shared/widgets/inline_empty_panel.dart';
+import '../../../shared/widgets/designed_state_panel.dart';
 import '../models/currency_quote.dart';
 import 'currency_rate_row.dart';
 
@@ -32,10 +32,10 @@ class VisibleRatesList extends StatelessWidget {
     if (quotes.isEmpty) {
       return SingleChildScrollView(
         padding: AppTheme.pageInsets,
-        child: InlineEmptyPanel(
-          icon: Icons.currency_exchange_outlined,
-          title: 'Rates will appear here',
-          subtitle: 'Pull to refresh or tap sync',
+        child: DesignedStatePanel(
+          icon: Icons.currency_exchange_rounded,
+          title: 'No rates on the ledger yet',
+          subtitle: 'Pull to refresh or tap sync when you are back online',
           actionLabel: 'Refresh',
           onAction: onRefresh != null ? () => onRefresh!() : null,
         ),
@@ -44,7 +44,7 @@ class VisibleRatesList extends StatelessWidget {
 
     final list = ListView.separated(
       key: const Key('convert_rates_list'),
-      padding: AppTheme.pageInsets.copyWith(bottom: 8),
+      padding: AppTheme.pageInsets.copyWith(bottom: AppTheme.space2),
       itemBuilder: (context, index) => CurrencyRateRow(
         quote: quotes[index],
         isActive: activeCode == quotes[index].code,
@@ -57,9 +57,8 @@ class VisibleRatesList extends StatelessWidget {
       separatorBuilder: (context, index) => Padding(
         padding: const EdgeInsets.only(left: 58),
         child: Divider(
-          color: AppTheme.border.withValues(alpha: .16),
+          color: AppTheme.border.withValues(alpha: .15),
           height: .5,
-          indent: 0,
         ),
       ),
       itemCount: quotes.length,

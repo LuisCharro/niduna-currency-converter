@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
-import '../../core/theme/app_theme.dart';
 import '../../shared/widgets/bottom_tab_frame.dart';
+import '../../shared/widgets/canvas_background.dart';
 import '../convert/widgets/ad_support_shelf.dart';
 import '../settings/widgets/iap_purchase_player.dart';
 import 'presentation/charts_controller.dart';
@@ -46,8 +46,9 @@ class _ChartsScreenState extends State<ChartsScreen> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppTheme.bg,
-      child: ListenableBuilder(
+      color: Colors.transparent,
+      child: CanvasBackground(
+        child: ListenableBuilder(
         listenable: widget.controller,
         builder: (context, _) {
           return ListenableBuilder(
@@ -58,14 +59,12 @@ class _ChartsScreenState extends State<ChartsScreen> {
                 monetization: widget.monetization,
               ),
               footer: widget.monetization.adsEnabled
-                  ? AdSupportShelf(
-                      showDivider: true,
-                      onRemoveAds: () => _showRemoveAds(context),
-                    )
+                  ? AdSupportShelf(onRemoveAds: () => _showRemoveAds(context))
                   : null,
             ),
           );
         },
+        ),
       ),
     );
   }

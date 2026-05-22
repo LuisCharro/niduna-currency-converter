@@ -15,7 +15,6 @@ class PremiumSection extends StatelessWidget {
     return Column(
       children: <Widget>[
         UpgradeShelf(controller: controller),
-        const SizedBox(height: 14),
         SettingsTile(
           title: 'Subscription',
           subtitle: 'Not available in v1 · 1 week free trial planned later',

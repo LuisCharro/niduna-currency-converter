@@ -37,7 +37,11 @@ Implement and read colors from `AppTheme` — do not duplicate hex in widgets.
 | `containerHigh` | `#F5EDEE` |
 | `trendUp` / `trendDown` | `#6F8C49` / `#DC6543` |
 
-**Layout:** `pagePadding` / `pageInsets` = 20px horizontal; `sectionGap` = 24px; `rowMinHeight` = 64px.
+**Layout:** `pagePadding` / `pageInsets` = 20px horizontal; `sectionGap` = 24px; `rowMinHeight` = 64px; spacing scale `space1`–`space8` (8px base).
+
+**v2 typography:** `heroAmount` (50px) / `heroAmountCompact` (40px at text scale ≥1.3×); `pairTitleFraunces`; `metricValue`; `sectionLabel`.
+
+**v2 surfaces:** `InstrumentPanel`, `CanvasBackground`, `DesignedStatePanel`; semantic `instrumentFill`, `instrumentBorder`, `coralSurface`, `coralInk`.
 
 **Dark mode:** `AppTheme.dark` — scaffold `#171D14`, paper text `#F6F8EF`, selected nav moss `#6F8C49`. Toggle in Settings; audit new UI for hardcoded light-only colors.
 
@@ -56,8 +60,8 @@ Implement and read colors from `AppTheme` — do not duplicate hex in widgets.
 ## Dividers-not-cards
 
 - List rows: `DividerListRow` / hairline dividers on paper — no `Card` wrapper.
-- Empty/error on primary tabs: `InlineEmptyPanel` on paper — no boxed empty state.
-- Allowed raised surfaces: `UpgradeShelf`, `RangeSelector` rail, selected chips, touch overlay tooltip.
+- Empty/error on primary tabs: `DesignedStatePanel` (or `InlineEmptyPanel` for minor cases) on paper — no boxed empty state.
+- Allowed raised surfaces: `RangeSelector` rail, selected chips, swap FAB, touch overlay tooltip — not list rows or premium marketing cards.
 
 ## Monetization visual rules
 

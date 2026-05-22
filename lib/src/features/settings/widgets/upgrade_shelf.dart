@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../shared/widgets/pill_action.dart';
+import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
 
+/// Divider-integrated premium group (D2-SET-3).
 class UpgradeShelf extends StatelessWidget {
   const UpgradeShelf({required this.controller, super.key});
 
@@ -12,83 +13,104 @@ class UpgradeShelf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasPremium = controller.monetization.hasActiveSubscription ||
-        controller.monetization.hasChartsProLifetime ||
-        controller.monetization.hasRemoveAdsLifetime;
+    final m = controller.monetization;
+    final hasPremium = m.hasActiveSubscription ||
+        m.hasChartsProLifetime ||
+        m.hasRemoveAdsLifetime;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-      decoration: BoxDecoration(
-        color: AppTheme.container.withValues(alpha: .5),
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
-        border: Border.all(color: AppTheme.border.withValues(alpha: .12)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Premium',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(2, AppTheme.space2, 2, AppTheme.space2),
+          child: Text(
+            hasPremium ? 'Premium active' : 'Premium unlocks',
             style: AppTheme.heading.copyWith(
               fontFamily: 'Fraunces',
-              fontSize: 22,
+              fontSize: 20,
             ),
           ),
-          const SizedBox(height: 6),
-          Text(
-            hasPremium
-                ? 'Paid unlocks stay active on this device.'
-                : 'One-time unlocks only — no account required.',
-            style: AppTheme.caption.copyWith(color: AppTheme.muted, height: 1.35),
+        ),
+        Text(
+          hasPremium
+              ? 'Paid unlocks stay on this device.'
+              : 'One-time purchases — no account required.',
+          style: AppTheme.caption.copyWith(color: AppTheme.muted, height: 1.35),
+        ),
+        const SizedBox(height: AppTheme.space3),
+        if (!m.hasRemoveAdsLifetime)
+          SettingsTile(
+            title: 'Remove Ads',
+            subtitle: '1.99 CHF · lifetime on this device',
+            trailing: _BuyChip(label: 'Buy'),
+            onTap: () =>
+                controller.purchaseProduct(context, ProductType.removeAds),
+          )
+        else
+          const SettingsTile(
+            title: 'Remove Ads',
+            subtitle: 'Owned on this device',
+            trailing: _OwnedBadge(),
           ),
-          const SizedBox(height: 14),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: <Widget>[
-              if (!controller.monetization.hasRemoveAdsLifetime)
-                PillAction(
-                  label: 'Remove Ads · 1.99 CHF',
-                  onTap: () =>
-                      controller.purchaseProduct(context, ProductType.removeAds),
-                  emphasized: true,
-                ),
-              if (!controller.monetization.hasChartsProLifetime)
-                PillAction(
-                  label: 'Charts Pro · 2.99 CHF',
-                  onTap: () =>
-                      controller.purchaseProduct(context, ProductType.chartsPro),
-                  emphasized: true,
-                ),
-              if (controller.monetization.hasRemoveAdsLifetime)
-                _OwnedPill(label: 'Remove Ads owned'),
-              if (controller.monetization.hasChartsProLifetime)
-                _OwnedPill(label: 'Charts Pro owned'),
-            ],
+        if (!m.hasChartsProLifetime)
+          SettingsTile(
+            title: 'Charts Pro',
+            subtitle: '2.99 CHF · unlock all pairs forever',
+            trailing: _BuyChip(label: 'Buy'),
+            onTap: () =>
+                controller.purchaseProduct(context, ProductType.chartsPro),
+          )
+        else
+          const SettingsTile(
+            title: 'Charts Pro',
+            subtitle: 'Owned on this device',
+            trailing: _OwnedBadge(),
+            showDivider: false,
           ),
-        ],
-      ),
+      ],
     );
   }
 }
 
-class _OwnedPill extends StatelessWidget {
-  const _OwnedPill({required this.label});
+class _BuyChip extends StatelessWidget {
+  const _BuyChip({required this.label});
 
   final String label;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: AppTheme.trendUp.withValues(alpha: .12),
+        color: AppTheme.primary,
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
       ),
       child: Text(
         label,
         style: AppTheme.caption.copyWith(
-          color: AppTheme.primary,
+          color: Colors.white,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    );
+  }
+}
+
+class _OwnedBadge extends StatelessWidget {
+  const _OwnedBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: AppTheme.trendUp.withValues(alpha: .14),
+        borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+      ),
+      child: Text(
+        'Owned',
+        style: AppTheme.caption.copyWith(
+          color: AppTheme.trendUp,
           fontWeight: FontWeight.w800,
         ),
       ),

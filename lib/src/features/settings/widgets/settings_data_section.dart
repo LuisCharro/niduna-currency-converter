@@ -24,8 +24,8 @@ class SettingsDataSection extends StatelessWidget {
           onChanged: controller.toggleRefreshOnOpen,
         ),
         SettingsTile(
-          title: 'Data details',
-          subtitle: 'Refresh rules, crypto range limits and cache behavior',
+          title: 'Data & sources',
+          subtitle: 'ECB daily policy, cache rules, and provider details',
           onTap: () => controller.openDataDetails(context),
           trailing: Icon(
             Icons.chevron_right_rounded,
@@ -33,14 +33,6 @@ class SettingsDataSection extends StatelessWidget {
           ),
         ),
         ClearCacheTile(controller: controller),
-        const SizedBox(height: 8),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-          child: Text(
-            'Fiat and crypto data follow a daily app refresh policy.\nOpen Data details for sources, limits, and cache behavior.',
-            style: AppTheme.caption.copyWith(color: AppTheme.subtle, height: 1.4),
-          ),
-        ),
       ],
     );
   }

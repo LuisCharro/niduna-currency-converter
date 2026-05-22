@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/theme/app_theme.dart';
 import '../domain/chart_range.dart';
 
@@ -18,21 +19,17 @@ class RangeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppTheme.containerHigh.withValues(alpha: .36),
-        borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-      ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.all(4),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: ChartRange.values.map((range) {
-            final isSelected = range == selected;
-            final isLocked = range.locked && !canUseLockedRanges;
-            final isCryptoUnavailable = includesCrypto && !range.supportsCrypto;
-            return GestureDetector(
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: AppTheme.space2),
+      child: Row(
+        children: ChartRange.values.map((range) {
+          final isSelected = range == selected;
+          final isLocked = range.locked && !canUseLockedRanges;
+          final isCryptoUnavailable = includesCrypto && !range.supportsCrypto;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: GestureDetector(
               onTap: () {
                 if (isLocked) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -59,14 +56,14 @@ class RangeSelector extends StatelessWidget {
                 onChanged(range);
               },
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 160),
-                constraints: const BoxConstraints(minHeight: 36),
-                padding: const EdgeInsets.symmetric(horizontal: 13),
+                duration: const Duration(milliseconds: 180),
+                constraints: const BoxConstraints(minHeight: 36, minWidth: 44),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   color: isSelected ? AppTheme.card : Colors.transparent,
                   border: Border.all(
                     color: isSelected
-                        ? AppTheme.border.withValues(alpha: .12)
+                        ? AppTheme.instrumentBorder(.14)
                         : Colors.transparent,
                   ),
                   borderRadius: BorderRadius.circular(AppTheme.pillRadius),
@@ -97,9 +94,9 @@ class RangeSelector extends StatelessWidget {
                   ],
                 ),
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

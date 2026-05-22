@@ -11,6 +11,8 @@ import 'package:currency_converter/src/core/rates/rates_service.dart';
 import 'package:currency_converter/src/features/charts/charts_screen.dart';
 import 'package:currency_converter/src/features/charts/domain/chart_range.dart';
 import 'package:currency_converter/src/features/charts/presentation/charts_controller.dart';
+import 'package:currency_converter/src/features/charts/widgets/chart_metric_rail.dart';
+import 'package:currency_converter/src/features/charts/widgets/chart_pair_pill.dart';
 import 'package:currency_converter/src/features/charts/widgets/range_selector.dart';
 import 'package:currency_converter/src/features/convert/data/latest_rates_repository.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
@@ -102,6 +104,70 @@ void main() {
     expect(find.byKey(const Key('charts_range_selector')), findsOneWidget);
   });
 
+  testWidgets('ChartPairPill temp badge fits narrow chart strip', (
+    WidgetTester tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(142, 70));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(1.3)),
+          child: Scaffold(
+            body: Center(
+              child: SizedBox(
+                width: 142,
+                child: ChartPairPill(
+                  code: 'BTC',
+                  locked: false,
+                  tempBadge: true,
+                  onTap: () {},
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('24h'), findsOneWidget);
+    expect(find.byIcon(Icons.keyboard_arrow_down_rounded), findsNothing);
+  });
+
+  testWidgets('ChartMetricRail prioritizes crypto values over period label', (
+    WidgetTester tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(390, 90));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(1.0)),
+          child: Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ChartMetricRail(
+                high: 0.00001289,
+                low: 0.00001173,
+                changePercent: 0.77,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('0.00001289'), findsOneWidget);
+    expect(find.text('0.00001173'), findsOneWidget);
+    expect(find.text('Period'), findsNothing);
+  });
+
   testWidgets('Charts screen exposes pair and retry keys in error path', (
     WidgetTester tester,
   ) async {
@@ -113,6 +179,9 @@ void main() {
       ),
     );
     addTearDown(chartsController.dispose);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(
       MaterialApp(

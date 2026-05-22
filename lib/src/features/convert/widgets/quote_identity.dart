@@ -10,17 +10,19 @@ class QuoteIdentity extends StatelessWidget {
   final CurrencyQuote quote;
   final bool isActive;
 
+  static const double _flagSize = 36;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         Container(
-          width: 42,
-          height: 42,
+          width: _flagSize,
+          height: _flagSize,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: AppTheme.trendUp.withValues(alpha: .18),
+              color: AppTheme.border.withValues(alpha: .2),
               width: 1,
             ),
           ),
@@ -28,11 +30,11 @@ class QuoteIdentity extends StatelessWidget {
             child: CurrencyFlagIcon(
               code: quote.code,
               symbol: quote.symbol,
-              radius: 19,
+              radius: 17,
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: AppTheme.space3),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
-import '../../core/theme/app_theme.dart';
 import '../../shared/widgets/bottom_tab_frame.dart';
+import '../../shared/widgets/canvas_background.dart';
+import '../settings/widgets/iap_purchase_player.dart';
 import 'presentation/convert_controller.dart';
 import 'widgets/ad_support_shelf.dart';
 import 'widgets/convert_content.dart';
-import '../settings/widgets/iap_purchase_player.dart';
 
 class ConvertScreen extends StatelessWidget {
   const ConvertScreen({
@@ -24,8 +24,9 @@ class ConvertScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppTheme.bg,
-      child: ListenableBuilder(
+      color: Colors.transparent,
+      child: CanvasBackground(
+        child: ListenableBuilder(
         listenable: monetization,
         builder: (context, _) => BottomTabFrame(
           body: ListenableBuilder(
@@ -44,6 +45,7 @@ class ConvertScreen extends StatelessWidget {
           footer: monetization.adsEnabled
               ? AdSupportShelf(onRemoveAds: () => _showRemoveAds(context))
               : null,
+        ),
         ),
       ),
     );

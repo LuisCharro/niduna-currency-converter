@@ -17,31 +17,42 @@ class AmountEditingField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final display = amountText.isEmpty ? '0.00' : amountText;
+    final style = AppTheme.heroAmountFor(context).copyWith(
+      color: amountText.isEmpty ? AppTheme.muted : AppTheme.text,
+    );
+
     return Semantics(
       button: true,
       label: 'Edit amount, currently ${amountText.isEmpty ? '0' : amountText}',
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
         child: InkWell(
           onTap: () => _openAmountSheet(context),
-          borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+          borderRadius: BorderRadius.circular(AppTheme.radius),
           child: Container(
-            constraints: const BoxConstraints(minHeight: 58),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppTheme.cardRadius),
-            ),
+            constraints: const BoxConstraints(minHeight: 56),
             alignment: Alignment.centerLeft,
-            child: Text(
-              amountText.isEmpty ? '0.00' : amountText,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: amountText.isEmpty ? AppTheme.muted : AppTheme.text,
-                fontSize: 42,
-                fontWeight: FontWeight.w800,
-                height: 1.05,
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 240),
+              switchInCurve: Curves.easeOut,
+              switchOutCurve: Curves.easeIn,
+              transitionBuilder: (child, animation) {
+                final slide = Tween<Offset>(
+                  begin: const Offset(0, 0.06),
+                  end: Offset.zero,
+                ).animate(animation);
+                return FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(position: slide, child: child),
+                );
+              },
+              child: Text(
+                display,
+                key: ValueKey<String>(display),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: style,
               ),
             ),
           ),

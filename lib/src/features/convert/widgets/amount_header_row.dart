@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import 'amount_utility_pill.dart';
 
+/// Micro rail: CONVERT label + refresh/settings actions (D2-CON-2).
 class AmountHeaderRow extends StatelessWidget {
   const AmountHeaderRow({
     required this.onRefresh,
@@ -17,31 +18,14 @@ class AmountHeaderRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'Niduna',
-                style: AppTheme.micro.copyWith(
-                  color: AppTheme.primary,
-                  letterSpacing: 1.1,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                'Convert',
-                style: AppTheme.heading.copyWith(
-                  fontFamily: 'Fraunces',
-                  fontSize: 28,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -0.5,
-                ),
-              ),
-            ],
+        Text(
+          'CONVERT',
+          style: AppTheme.sectionLabel.copyWith(
+            color: AppTheme.trendUp,
+            letterSpacing: 1.2,
           ),
         ),
-        const SizedBox(width: 12),
+        const Spacer(),
         AmountUtilityPill(onRefresh: onRefresh, onMore: onMore),
       ],
     );

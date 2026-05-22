@@ -4,6 +4,7 @@ import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_theme.dart';
 import 'chart_value_formatter.dart';
 
+/// Compact chart masthead (D2-CHT-1).
 class ChartHeader extends StatelessWidget {
   const ChartHeader({
     required this.base,
@@ -31,52 +32,42 @@ class ChartHeader extends StatelessWidget {
     final freshnessText = _freshnessLabel(lastUpdated);
 
     return Padding(
-      padding: AppTheme.pageInsets.copyWith(top: 8),
+      padding: AppTheme.pageInsets.copyWith(
+        top: AppTheme.space2,
+        bottom: AppTheme.space2,
+      ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Charts',
-                  style: AppTheme.micro.copyWith(
-                    color: AppTheme.primary,
+                  'CHARTS',
+                  style: AppTheme.sectionLabel.copyWith(
+                    color: AppTheme.trendUp,
                     letterSpacing: 1.1,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  '$base / $quote',
-                  style: const TextStyle(
-                    fontFamily: 'Fraunces',
-                    fontSize: 29,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.6,
-                    height: 1.05,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 6,
-                  crossAxisAlignment: WrapCrossAlignment.center,
+                const SizedBox(height: AppTheme.space1),
+                Text('$base / $quote', style: AppTheme.pairTitleFraunces),
+                const SizedBox(height: AppTheme.space2),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
                   children: <Widget>[
                     if (rate != null)
                       Text(
                         '${baseCurrency.symbol} ${formatChartValue(rate!)}',
-                        style: AppTheme.body.copyWith(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                          color: AppTheme.text,
-                        ),
+                        style: AppTheme.metricValue,
                       ),
-                    if (changePercent != null)
+                    if (changePercent != null) ...<Widget>[
+                      const SizedBox(width: AppTheme.space3),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
+                          horizontal: 8,
+                          vertical: 4,
                         ),
                         decoration: BoxDecoration(
                           color: trendColor.withValues(alpha: .12),
@@ -84,34 +75,18 @@ class ChartHeader extends StatelessWidget {
                         ),
                         child: Text(
                           '$arrow ${changePercent!.abs().toStringAsFixed(2)}%',
-                          style: AppTheme.caption.copyWith(
-                            color: trendColor,
-                            fontWeight: FontWeight.w800,
-                          ),
+                          style: AppTheme.metricDelta.copyWith(color: trendColor),
                         ),
                       ),
+                    ],
                   ],
                 ),
                 if (freshnessText != null)
                   Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.schedule_outlined,
-                          size: 12,
-                          color: AppTheme.muted,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          freshnessText,
-                          style: TextStyle(
-                            fontSize: 11.5,
-                            color: AppTheme.muted,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      freshnessText,
+                      style: AppTheme.caption.copyWith(color: AppTheme.muted),
                     ),
                   ),
               ],
@@ -120,15 +95,12 @@ class ChartHeader extends StatelessWidget {
           GestureDetector(
             onTap: onSwap,
             child: Container(
-              width: 48,
-              height: 48,
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppTheme.card.withValues(alpha: .88),
-                border: Border.all(
-                  color: AppTheme.border.withValues(alpha: .22),
-                ),
-                boxShadow: AppTheme.subtleShadow,
+                border: Border.all(color: AppTheme.instrumentBorder(.2)),
               ),
               child: Icon(
                 Icons.swap_vert_rounded,
@@ -146,12 +118,8 @@ class ChartHeader extends StatelessWidget {
     if (updated == null) return null;
     final diff = DateTime.now().difference(updated);
     if (diff.inMinutes < 1) return 'Just updated';
-    if (diff.inMinutes < 60) {
-      return 'Updated ${diff.inMinutes}m ago';
-    }
-    if (diff.inHours < 24) {
-      return 'Updated ${diff.inHours}h ago';
-    }
+    if (diff.inMinutes < 60) return 'Updated ${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return 'Updated ${diff.inHours}h ago';
     return 'Updated ${diff.inDays}d ago';
   }
 }

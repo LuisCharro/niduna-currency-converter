@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../domain/convert_state.dart';
-import 'amount_card.dart';
+import 'amount_panel.dart';
 import 'currency_picker_sheet.dart';
 import 'rates_section_header.dart';
 import 'visible_rates_list.dart';
@@ -43,7 +43,7 @@ class _ConvertContentState extends State<ConvertContent> {
     }
     return Column(
       children: <Widget>[
-        AmountCard(
+        AmountPanel(
           isRefreshing: widget.state.isRefreshing,
           lastUpdatedLabel: widget.state.lastUpdatedLabel,
           nextUpdateLabel: widget.state.nextUpdateLabel,

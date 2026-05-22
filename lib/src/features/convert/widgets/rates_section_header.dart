@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../../shared/widgets/instrument_section_label.dart';
-import '../../../shared/widgets/pill_action.dart';
 
+/// Rates ledger header with light Edit affordance (D2-CON-5).
 class RatesSectionHeader extends StatelessWidget {
   const RatesSectionHeader({required this.onEdit, super.key});
 
@@ -14,18 +13,31 @@ class RatesSectionHeader extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         AppTheme.pagePadding,
-        0,
+        AppTheme.space2,
         AppTheme.pagePadding,
-        6,
+        AppTheme.space2,
       ),
-      child: InstrumentSectionLabel(
-        title: 'Rates',
-        subtitle: 'Edit list',
-        trailing: PillAction(
-          label: 'Add',
-          icon: Icons.add_rounded,
-          onTap: onEdit,
-        ),
+      child: Row(
+        children: <Widget>[
+          Text(
+            'RATES',
+            style: AppTheme.sectionLabel.copyWith(color: AppTheme.muted),
+          ),
+          const Spacer(),
+          TextButton(
+            onPressed: onEdit,
+            style: TextButton.styleFrom(
+              foregroundColor: AppTheme.primary,
+              padding: const EdgeInsets.symmetric(horizontal: AppTheme.space3),
+              minimumSize: const Size(48, 36),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: const Text(
+              'Edit',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800),
+            ),
+          ),
+        ],
       ),
     );
   }

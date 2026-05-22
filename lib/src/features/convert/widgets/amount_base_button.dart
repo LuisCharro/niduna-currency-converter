@@ -17,42 +17,45 @@ class AmountBaseButton extends StatelessWidget {
       button: true,
       label: 'Change base currency, currently $base',
       child: Material(
-        color: AppTheme.card.withValues(alpha: .82),
+        color: AppTheme.card.withValues(alpha: .9),
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 50, minWidth: 76),
-            padding: const EdgeInsets.fromLTRB(13, 8, 11, 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-              border: Border.all(color: AppTheme.border.withValues(alpha: .14)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                CurrencyFlagIcon(
-                  code: base,
-                  symbol: currency.symbol,
-                  radius: 13,
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  base,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 0.3,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 220),
+            child: Container(
+              key: ValueKey<String>(base),
+              constraints: const BoxConstraints(minHeight: 48, minWidth: 76),
+              padding: const EdgeInsets.fromLTRB(12, 8, 10, 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+                border: Border.all(color: AppTheme.instrumentBorder(.16)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  CurrencyFlagIcon(
+                    code: base,
+                    symbol: currency.symbol,
+                    radius: 17,
                   ),
-                ),
-                const SizedBox(width: 2),
-                Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  size: 17,
-                  color: AppTheme.muted,
-                ),
-              ],
+                  const SizedBox(width: 6),
+                  Text(
+                    base,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 17,
+                    color: AppTheme.muted,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

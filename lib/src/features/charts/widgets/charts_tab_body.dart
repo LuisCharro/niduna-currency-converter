@@ -5,9 +5,9 @@ import '../../../core/rates/provider_config.dart';
 import '../../../core/theme/app_theme.dart';
 import '../presentation/charts_controller.dart';
 import 'chart_header.dart';
-import 'chart_summary.dart';
+import 'chart_metric_rail.dart';
+import 'chart_pair_strip.dart';
 import 'charts_chart_section.dart';
-import 'pair_selector.dart';
 
 class ChartsTabBody extends StatefulWidget {
   const ChartsTabBody({
@@ -60,25 +60,17 @@ class _ChartsTabBodyState extends State<ChartsTabBody> {
             onSwapSettled: (key) => setState(() => _lastPairKey = key),
           ),
         ),
-        Padding(
-          padding: AppTheme.pageInsets.copyWith(top: 8),
-          child: PairSelector(
-            base: state.base,
-            quote: state.quote,
-            allowCryptoCharts: ProviderConfig.cryptoChartsEnabled,
-            onPairChanged: widget.controller.setPair,
-            onSwap: _handleSwap,
-            controller: widget.monetization,
-          ),
+        ChartPairStrip(
+          base: state.base,
+          quote: state.quote,
+          allowCryptoCharts: ProviderConfig.cryptoChartsEnabled,
+          onPairChanged: widget.controller.setPair,
+          onSwap: _handleSwap,
+          controller: widget.monetization,
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(
-            AppTheme.pagePadding,
-            8,
-            AppTheme.pagePadding,
-            2,
-          ),
-          child: ChartSummary(
+          padding: AppTheme.pageInsets.copyWith(bottom: AppTheme.space2),
+          child: ChartMetricRail(
             high: state.high,
             low: state.low,
             changePercent: state.changePercent,

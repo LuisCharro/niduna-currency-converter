@@ -30,17 +30,17 @@ class DataDetailsPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
           AppTheme.pagePadding,
-          8,
+          AppTheme.space2,
           AppTheme.pagePadding,
-          32,
+          AppTheme.space7,
         ),
         children: <Widget>[
           Text(
             'Daily data policy',
             style: AppTheme.heading.copyWith(fontFamily: 'Fraunces'),
           ),
-          const SizedBox(height: 12),
-          const _DetailSection(
+          const SizedBox(height: AppTheme.space4),
+          const _DetailBlock(
             title: 'Refresh policy',
             lines: <String>[
               'The app refreshes rates at most once per local day.',
@@ -48,7 +48,7 @@ class DataDetailsPage extends StatelessWidget {
               'Manual refresh still lets you request a fresh daily snapshot.',
             ],
           ),
-          const _DetailSection(
+          const _DetailBlock(
             title: 'Fiat data',
             lines: <String>[
               'Fiat latest rates come from Frankfurter / ECB data.',
@@ -56,8 +56,8 @@ class DataDetailsPage extends StatelessWidget {
               'When offline, the app shows cached fiat data if available.',
             ],
           ),
-          _DetailSection(title: 'Crypto data', lines: cryptoLines),
-          const _DetailSection(
+          _DetailBlock(title: 'Crypto data', lines: cryptoLines),
+          const _DetailBlock(
             title: 'Clear cache',
             lines: <String>[
               'Clear all data removes latest fiat cache.',
@@ -72,8 +72,8 @@ class DataDetailsPage extends StatelessWidget {
   }
 }
 
-class _DetailSection extends StatelessWidget {
-  const _DetailSection({
+class _DetailBlock extends StatelessWidget {
+  const _DetailBlock({
     required this.title,
     required this.lines,
     this.showDivider = true,
@@ -90,30 +90,27 @@ class _DetailSection extends StatelessWidget {
       children: <Widget>[
         Text(
           title,
-          style: AppTheme.caption.copyWith(
+          style: AppTheme.sectionLabel.copyWith(
             color: AppTheme.primary,
-            fontWeight: FontWeight.w800,
             letterSpacing: 0.6,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppTheme.space2),
         for (final line in lines) ...<Widget>[
           Text(
             line,
             style: AppTheme.body.copyWith(color: AppTheme.muted, height: 1.45),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppTheme.space2),
         ],
         if (showDivider)
           Padding(
-            padding: const EdgeInsets.only(top: 4, bottom: 16),
+            padding: const EdgeInsets.only(bottom: AppTheme.space4),
             child: Divider(
               color: AppTheme.border.withValues(alpha: .14),
               height: .5,
             ),
-          )
-        else
-          const SizedBox(height: 8),
+          ),
       ],
     );
   }

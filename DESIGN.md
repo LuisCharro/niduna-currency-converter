@@ -53,6 +53,16 @@ spacing:
   md: "16px"
   lg: "24px"
   xl: "32px"
+  hero: "40px"
+typography_v2:
+  heroAmount: "50px / 800 Manrope (40px compact at text scale ≥1.3×)"
+  pairTitleFraunces: "30px / 800 Fraunces"
+  metricValue: "20px / 700 Manrope"
+  sectionLabel: "11px / 700 Manrope uppercase rails"
+surfaces_v2:
+  instrumentPanel: "containerHigh fill + 1px instrumentBorder"
+  canvasGradient: "bg → #FAFBF4 → #FFF9EC (bottom-weighted)"
+  coralCta: "#FDF0EC / #B54E48 Remove Ads"
 components:
   pill-button:
     backgroundColor: "{colors.primary}"

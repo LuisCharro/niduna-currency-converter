@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../../shared/widgets/inline_empty_panel.dart';
+import '../../../shared/widgets/designed_state_panel.dart';
 
 class ChartsErrorState extends StatelessWidget {
   const ChartsErrorState({
@@ -16,16 +16,15 @@ class ChartsErrorState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SingleChildScrollView(
-        padding: AppTheme.pageInsets,
-        child: InlineEmptyPanel(
-          compact: true,
-          icon: Icons.wifi_off_outlined,
-          title: message ?? 'Failed to load chart data',
-          actionLabel: 'Retry',
-          actionKey: const Key('charts_retry'),
-          onAction: onRetry,
-        ),
+      child: DesignedStatePanel(
+        compact: true,
+        icon: Icons.wifi_off_rounded,
+        accent: AppTheme.trendDown,
+        title: message ?? 'Offline — showing cache',
+        subtitle: 'Check your connection and try again',
+        actionLabel: 'Retry',
+        actionKey: const Key('charts_retry'),
+        onAction: onRetry,
       ),
     );
   }

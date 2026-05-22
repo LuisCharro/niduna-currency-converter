@@ -16,6 +16,24 @@ class AppTheme {
   static const trendDown = Color(0xFFDC6543);
   static const greenBadge = Color(0xFFEDF5EB);
   static const greenBadgeText = Color(0xFF3D6E2C);
+  static const Color coralSurface = Color(0xFFFDF0EC);
+  static const Color coralInk = Color(0xFFB54E48);
+
+  static const double space1 = 4;
+  static const double space2 = 8;
+  static const double space3 = 12;
+  static const double space4 = 16;
+  static const double space5 = 20;
+  static const double space6 = 24;
+  static const double space7 = 32;
+  static const double space8 = 40;
+
+  static Color instrumentFill([double alpha = 0.62]) =>
+      containerHigh.withValues(alpha: alpha);
+
+  static Color instrumentBorder([double alpha = 0.15]) =>
+      border.withValues(alpha: alpha);
+
   static const double pagePadding = 20;
   static const EdgeInsets pageInsets = EdgeInsets.symmetric(
     horizontal: pagePadding,
@@ -83,6 +101,57 @@ class AppTheme {
     height: 1.2,
     letterSpacing: 0.5,
   );
+
+  static const TextStyle heroAmount = TextStyle(
+    fontSize: 50,
+    fontWeight: FontWeight.w800,
+    height: 1.05,
+    letterSpacing: -1,
+    color: text,
+  );
+
+  static const TextStyle heroAmountCompact = TextStyle(
+    fontSize: 40,
+    fontWeight: FontWeight.w800,
+    height: 1.05,
+    letterSpacing: -0.6,
+    color: text,
+  );
+
+  static const TextStyle pairTitleFraunces = TextStyle(
+    fontFamily: 'Fraunces',
+    fontSize: 30,
+    fontWeight: FontWeight.w800,
+    letterSpacing: -0.6,
+    height: 1.05,
+    color: text,
+  );
+
+  static const TextStyle metricValue = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    height: 1.2,
+    color: text,
+  );
+
+  static const TextStyle metricDelta = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w800,
+    height: 1.2,
+  );
+
+  static const TextStyle sectionLabel = TextStyle(
+    fontSize: 11,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.9,
+    height: 1.2,
+    color: muted,
+  );
+
+  static TextStyle heroAmountFor(BuildContext context) {
+    final scale = MediaQuery.textScalerOf(context).scale(1);
+    return scale >= 1.3 ? heroAmountCompact : heroAmount;
+  }
 
   static final ThemeData light = ThemeData(
     useMaterial3: true,

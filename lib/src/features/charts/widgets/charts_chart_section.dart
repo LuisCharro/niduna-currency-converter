@@ -31,26 +31,41 @@ class ChartsChartSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loading = state.status == ChartStatus.loading && state.data.isEmpty;
+
     return Padding(
-      padding: AppTheme.pageInsets.copyWith(top: 4),
+      padding: AppTheme.pageInsets.copyWith(top: AppTheme.space1),
       child: DecoratedBox(
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: AppTheme.border.withValues(alpha: .12)),
-            bottom: BorderSide(color: AppTheme.border.withValues(alpha: .12)),
+            top: BorderSide(color: AppTheme.instrumentBorder(.1)),
           ),
         ),
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 8, 0, 6),
-              child: RangeSelector(
-                selected: state.range,
-                onChanged: onRangeChanged,
-                canUseLockedRanges: canUseLockedRanges,
-                includesCrypto: state.includesCrypto,
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: AppTheme.container,
+                border: Border(
+                  bottom: BorderSide(color: AppTheme.instrumentBorder(.1)),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
+                child: RangeSelector(
+                  selected: state.range,
+                  onChanged: onRangeChanged,
+                  canUseLockedRanges: canUseLockedRanges,
+                  includesCrypto: state.includesCrypto,
+                ),
               ),
             ),
+            if (loading)
+              LinearProgressIndicator(
+                minHeight: 2,
+                backgroundColor: Colors.transparent,
+                color: AppTheme.trendUp.withValues(alpha: .7),
+              ),
             Expanded(child: _buildPlot(context)),
           ],
         ),
@@ -60,14 +75,11 @@ class ChartsChartSection extends StatelessWidget {
 
   Widget _buildPlot(BuildContext context) {
     if (state.status == ChartStatus.loading && state.data.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return const SizedBox.shrink();
     }
 
     if (state.status == ChartStatus.error && state.data.isEmpty) {
-      return ChartsErrorState(
-        message: state.message,
-        onRetry: onRetry,
-      );
+      return ChartsErrorState(message: state.message, onRetry: onRetry);
     }
 
     if (state.data.isEmpty) {
@@ -100,20 +112,16 @@ class ChartsChartSection extends StatelessWidget {
             child: FadeTransition(opacity: animation, child: child),
           );
         }
-        final slide = Tween<Offset>(
-          begin: const Offset(.03, 0),
-          end: Offset.zero,
-        ).animate(animation);
         return FadeTransition(
           opacity: animation,
-          child: SlideTransition(position: slide, child: child),
+          child: child,
         );
       },
       child: Padding(
         key: ValueKey<String>(
           '$currentPairKey-${state.range.label}-$swapVersion',
         ),
-        padding: const EdgeInsets.only(top: 4, bottom: 6),
+        padding: const EdgeInsets.only(top: 2, bottom: 4),
         child: RateChart(
           data: state.data,
           currencySymbol: currencyByCode(state.base).symbol,

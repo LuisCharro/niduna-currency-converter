@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../core/theme/app_theme.dart';
+import '../../shared/widgets/canvas_background.dart';
 import '../../shared/widgets/screen_title.dart';
 import 'settings_controller.dart';
 import 'widgets/base_currency_tile.dart';
@@ -35,22 +36,23 @@ class SettingsScreen extends StatelessWidget {
     );
 
     return Material(
-      color: AppTheme.bg,
-      child: SafeArea(
+      color: Colors.transparent,
+      child: CanvasBackground(
+        child: SafeArea(
         child: ListenableBuilder(
           listenable: Listenable.merge([monetization, preferences]),
           builder: (context, _) => Scaffold(
-            backgroundColor: AppTheme.bg,
+            backgroundColor: Colors.transparent,
             body: ListView(
               padding: EdgeInsets.fromLTRB(
                 AppTheme.pagePadding,
-                10,
+                AppTheme.space7,
                 AppTheme.pagePadding,
                 AppTheme.tabScrollBottomPadding(context),
               ),
               children: <Widget>[
                 const ScreenTitle('Settings'),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppTheme.space6),
                 const SectionHeader(title: 'Conversion'),
                 BaseCurrencyTile(controller: controller),
                 DecimalPlacesTile(controller: controller),
@@ -75,6 +77,7 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
           ),
+        ),
         ),
       ),
     );
