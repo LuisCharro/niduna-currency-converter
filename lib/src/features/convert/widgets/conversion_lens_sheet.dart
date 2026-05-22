@@ -233,7 +233,7 @@ class _LensCard extends StatelessWidget {
                       children: reverseTargets
                           .map(
                             (target) => _LensRow(
-                              leading: '${_formatValue(target, quote.code)} ${quote.code}',
+                              leading: _formatValue(target, quote.code),
                               trailing:
                                   '${_formatValue(target / quote.rate, base)} $base',
                               actionLabel: 'Use',
