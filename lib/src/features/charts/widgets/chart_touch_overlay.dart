@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/theme/app_theme.dart';
+import 'chart_theme_text.dart';
 import 'chart_value_formatter.dart';
 
 class ChartTouchOverlay extends StatelessWidget {
@@ -52,23 +53,12 @@ class ChartTouchOverlay extends StatelessWidget {
           children: <Widget>[
             Text(
               DateFormat('EEE d MMM').format(date).toUpperCase(),
-              style: TextStyle(
-                fontSize: 10.5,
-                fontWeight: FontWeight.w800,
-                color: lineColor,
-                letterSpacing: 0.7,
-              ),
+              style: ChartThemeText.micro(color: lineColor),
             ),
             const SizedBox(height: 3),
             Text(
               '$currencySymbol ${formatChartValue(value)}',
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w800,
-                color: AppTheme.text,
-                fontFamily: 'Fraunces',
-                letterSpacing: -0.35,
-              ),
+              style: ChartThemeText.frauncesValue(),
             ),
             const SizedBox(height: 1),
             Row(
@@ -76,20 +66,15 @@ class ChartTouchOverlay extends StatelessWidget {
               children: <Widget>[
                 Text(
                   '$arrow ${changePercent.abs().toStringAsFixed(2)}%',
-                  style: TextStyle(
+                  style: ChartThemeText.caption(color: trendColor).copyWith(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w800,
-                    color: trendColor,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Text(
                   '$currencySymbol $sign${formatChartValue(absoluteChange.abs())}',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.muted,
-                  ),
+                  style: ChartThemeText.caption(),
                 ),
               ],
             ),

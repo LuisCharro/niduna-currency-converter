@@ -8,7 +8,7 @@ class AmountEditingField extends StatelessWidget {
     required this.amountText,
     required this.base,
     required this.onAmountChanged,
-    super.key,
+    super.key = const Key('convert_amount_field'),
   });
 
   final String amountText;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../core/theme/app_theme.dart';
+import '../../shared/widgets/screen_title.dart';
 import 'settings_controller.dart';
 import 'widgets/base_currency_tile.dart';
 import 'widgets/decimal_places_tile.dart';
@@ -41,17 +42,14 @@ class SettingsScreen extends StatelessWidget {
           builder: (context, _) => Scaffold(
             backgroundColor: AppTheme.bg,
             body: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 118),
+              padding: EdgeInsets.fromLTRB(
+                AppTheme.pagePadding,
+                10,
+                AppTheme.pagePadding,
+                AppTheme.tabScrollBottomPadding(context),
+              ),
               children: <Widget>[
-                const Text(
-                  'Settings',
-                  style: TextStyle(
-                    fontFamily: 'Fraunces',
-                    fontSize: 28,
-                    fontWeight: FontWeight.w800,
-                    height: 1.05,
-                  ),
-                ),
+                const ScreenTitle('Settings'),
                 const SizedBox(height: 20),
                 const SectionHeader(title: 'Conversion'),
                 BaseCurrencyTile(controller: controller),
@@ -62,16 +60,16 @@ class SettingsScreen extends StatelessWidget {
                   value: preferences.isDarkMode,
                   onChanged: controller.toggleDarkMode,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.sectionGap),
                 SettingsDataSection(controller: controller),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.sectionGap),
                 const SectionHeader(title: 'Premium'),
                 PremiumSection(controller: controller),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppTheme.sectionGap),
                 if (preferences.devMode) ...[
                   const SectionHeader(title: 'Dev Sandbox'),
                   DevSandboxSection(monetization: monetization),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppTheme.sectionGap),
                 ],
                 SettingsAboutSection(controller: controller),
               ],

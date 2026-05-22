@@ -35,7 +35,7 @@ class AmountPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 10),
+      padding: AppTheme.pageInsets.copyWith(top: 8, bottom: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

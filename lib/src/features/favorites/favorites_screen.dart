@@ -1,3 +1,4 @@
+// Favorites tab hidden in v1 shell (see app.dart). Restyle when Phase 2 re-enables.
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';

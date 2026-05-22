@@ -8,7 +8,7 @@ class RangeSelector extends StatelessWidget {
     required this.onChanged,
     required this.canUseLockedRanges,
     required this.includesCrypto,
-    super.key,
+    super.key = const Key('charts_range_selector'),
   });
 
   final ChartRange selected;

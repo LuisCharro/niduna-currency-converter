@@ -31,7 +31,7 @@ class ChartHeader extends StatelessWidget {
     final freshnessText = _freshnessLabel(lastUpdated);
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+      padding: AppTheme.pageInsets.copyWith(top: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

@@ -31,6 +31,7 @@ class PairSelector extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: _CurrencyPill(
+            key: const Key('charts_pair_base'),
             code: base,
             onTap: () => _openPicker(context, selectingBase: true),
           ),
@@ -56,6 +57,7 @@ class PairSelector extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: _CurrencyPill(
+            key: const Key('charts_pair_quote'),
             code: quote,
             onTap: () => _openPicker(context, selectingBase: false),
           ),
@@ -95,7 +97,11 @@ class PairSelector extends StatelessWidget {
 }
 
 class _CurrencyPill extends StatelessWidget {
-  const _CurrencyPill({required this.code, required this.onTap});
+  const _CurrencyPill({
+    required this.code,
+    required this.onTap,
+    super.key,
+  });
 
   final String code;
   final VoidCallback onTap;

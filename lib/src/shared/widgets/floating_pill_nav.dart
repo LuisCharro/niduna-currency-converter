@@ -25,7 +25,7 @@ class FloatingPillNav extends StatelessWidget {
           height: AppTheme.floatingNavHeight,
           decoration: BoxDecoration(
             color: AppTheme.container,
-            borderRadius: BorderRadius.circular(32),
+            borderRadius: BorderRadius.circular(AppTheme.navOuterRadius),
             border: Border.all(color: AppTheme.border.withValues(alpha: .22)),
             boxShadow: AppTheme.floatingShadow,
           ),

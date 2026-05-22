@@ -37,8 +37,8 @@ class UpgradeShelf extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             hasPremium
-                ? 'Your paid unlocks stay local and active on this device.'
-                : 'One restrained shelf for paid unlocks. No aggressive paywall, no account required.',
+                ? 'Paid unlocks stay active on this device.'
+                : 'One-time unlocks only — no account required.',
             style: AppTheme.caption.copyWith(color: AppTheme.muted, height: 1.35),
           ),
           const SizedBox(height: 14),

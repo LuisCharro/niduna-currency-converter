@@ -24,6 +24,7 @@ class AmountUtilityPill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           _UtilityIconButton(
+            key: const Key('convert_refresh'),
             tooltip: 'Refresh rates',
             icon: Icons.sync_rounded,
             onPressed: onRefresh,
@@ -52,6 +53,7 @@ class _UtilityIconButton extends StatelessWidget {
     required this.tooltip,
     required this.icon,
     required this.onPressed,
+    super.key,
   });
 
   final String tooltip;

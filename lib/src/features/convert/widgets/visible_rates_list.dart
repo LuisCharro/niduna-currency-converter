@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/inline_empty_panel.dart';
 import '../models/currency_quote.dart';
 import 'currency_rate_row.dart';
-import 'no_rates_card.dart';
 
 class VisibleRatesList extends StatelessWidget {
   const VisibleRatesList({
@@ -30,14 +30,21 @@ class VisibleRatesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (quotes.isEmpty) {
-      return const SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 16),
-        child: NoRatesCard(),
+      return SingleChildScrollView(
+        padding: AppTheme.pageInsets,
+        child: InlineEmptyPanel(
+          icon: Icons.currency_exchange_outlined,
+          title: 'Rates will appear here',
+          subtitle: 'Pull to refresh or tap sync',
+          actionLabel: 'Refresh',
+          onAction: onRefresh != null ? () => onRefresh!() : null,
+        ),
       );
     }
 
     final list = ListView.separated(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),
+      key: const Key('convert_rates_list'),
+      padding: AppTheme.pageInsets.copyWith(bottom: 8),
       itemBuilder: (context, index) => CurrencyRateRow(
         quote: quotes[index],
         isActive: activeCode == quotes[index].code,

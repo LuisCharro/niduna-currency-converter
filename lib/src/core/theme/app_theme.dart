@@ -17,6 +17,19 @@ class AppTheme {
   static const greenBadge = Color(0xFFEDF5EB);
   static const greenBadgeText = Color(0xFF3D6E2C);
   static const double pagePadding = 20;
+  static const EdgeInsets pageInsets = EdgeInsets.symmetric(
+    horizontal: pagePadding,
+  );
+  static const double sectionGap = 24;
+  static const double navOuterRadius = 32;
+  static const TextStyle screenTitleFraunces = TextStyle(
+    fontFamily: 'Fraunces',
+    fontSize: 28,
+    fontWeight: FontWeight.w800,
+    height: 1.05,
+    letterSpacing: -0.5,
+    color: text,
+  );
   static const double radius = 12;
   static const double cardRadius = 16;
   static const double pillRadius = 20;
@@ -27,6 +40,14 @@ class AppTheme {
   static const List<BoxShadow> subtleShadow = <BoxShadow>[
     BoxShadow(color: Color(0x0F285F3B), blurRadius: 8, offset: Offset(0, 2)),
   ];
+  static double tabScrollBottomPadding(BuildContext context) {
+    return MediaQuery.paddingOf(context).bottom +
+        floatingNavHeight +
+        floatingNavBottomOffset +
+        bottomDockGap +
+        12;
+  }
+
   static const List<BoxShadow> floatingShadow = <BoxShadow>[
     BoxShadow(color: Color(0x18285F3B), blurRadius: 22, offset: Offset(0, 10)),
   ];

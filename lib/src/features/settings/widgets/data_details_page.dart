@@ -28,14 +28,19 @@ class DataDetailsPage extends StatelessWidget {
         title: const Text('Data details'),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+        padding: const EdgeInsets.fromLTRB(
+          AppTheme.pagePadding,
+          8,
+          AppTheme.pagePadding,
+          32,
+        ),
         children: <Widget>[
           Text(
             'Daily data policy',
             style: AppTheme.heading.copyWith(fontFamily: 'Fraunces'),
           ),
           const SizedBox(height: 12),
-          const _DetailCard(
+          const _DetailSection(
             title: 'Refresh policy',
             lines: <String>[
               'The app refreshes rates at most once per local day.',
@@ -43,8 +48,7 @@ class DataDetailsPage extends StatelessWidget {
               'Manual refresh still lets you request a fresh daily snapshot.',
             ],
           ),
-          const SizedBox(height: 16),
-          const _DetailCard(
+          const _DetailSection(
             title: 'Fiat data',
             lines: <String>[
               'Fiat latest rates come from Frankfurter / ECB data.',
@@ -52,16 +56,15 @@ class DataDetailsPage extends StatelessWidget {
               'When offline, the app shows cached fiat data if available.',
             ],
           ),
-          const SizedBox(height: 16),
-          _DetailCard(title: 'Crypto data', lines: cryptoLines),
-          const SizedBox(height: 16),
-          const _DetailCard(
+          _DetailSection(title: 'Crypto data', lines: cryptoLines),
+          const _DetailSection(
             title: 'Clear cache',
             lines: <String>[
               'Clear all data removes latest fiat cache.',
               'It also removes crypto latest cache, fiat charts, crypto chart history, and temporary chart unlocks.',
               'It does not remove your theme or normal app preferences.',
             ],
+            showDivider: false,
           ),
         ],
       ),
@@ -69,43 +72,49 @@ class DataDetailsPage extends StatelessWidget {
   }
 }
 
-class _DetailCard extends StatelessWidget {
-  const _DetailCard({required this.title, required this.lines});
+class _DetailSection extends StatelessWidget {
+  const _DetailSection({
+    required this.title,
+    required this.lines,
+    this.showDivider = true,
+  });
 
   final String title;
   final List<String> lines;
+  final bool showDivider;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppTheme.card.withValues(alpha: .9),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppTheme.border.withValues(alpha: .2)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: 10),
-            for (final line in lines) ...<Widget>[
-              Text(
-                line,
-                style: AppTheme.body.copyWith(
-                  color: AppTheme.muted,
-                  height: 1.45,
-                ),
-              ),
-              const SizedBox(height: 8),
-            ],
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: AppTheme.caption.copyWith(
+            color: AppTheme.primary,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.6,
+          ),
         ),
-      ),
+        const SizedBox(height: 8),
+        for (final line in lines) ...<Widget>[
+          Text(
+            line,
+            style: AppTheme.body.copyWith(color: AppTheme.muted, height: 1.45),
+          ),
+          const SizedBox(height: 8),
+        ],
+        if (showDivider)
+          Padding(
+            padding: const EdgeInsets.only(top: 4, bottom: 16),
+            child: Divider(
+              color: AppTheme.border.withValues(alpha: .14),
+              height: .5,
+            ),
+          )
+        else
+          const SizedBox(height: 8),
+      ],
     );
   }
 }
