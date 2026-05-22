@@ -5,10 +5,9 @@ import '../../../shared/widgets/currency_flag_icon.dart';
 import '../models/currency_quote.dart';
 
 class QuoteIdentity extends StatelessWidget {
-  const QuoteIdentity({required this.quote, this.isActive = false, super.key});
+  const QuoteIdentity({required this.quote, super.key});
 
   final CurrencyQuote quote;
-  final bool isActive;
 
   static const double _flagSize = 36;
 
@@ -50,32 +49,18 @@ class QuoteIdentity extends StatelessWidget {
                   height: 1.2,
                 ),
               ),
-              Text(
-                quote.code,
+                Text(
+                  quote.code,
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: AppTheme.muted,
-                  letterSpacing: 0.3,
-                ),
-              ),
-              if (isActive)
-                Padding(
-                  padding: const EdgeInsets.only(top: 2),
-                  child: Text(
-                    'Set as base',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.primary,
-                    ),
+                    letterSpacing: 0.3,
                   ),
                 ),
-            ],
+              ],
+            ),
           ),
-        ),
       ],
     );
   }

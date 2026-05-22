@@ -4,10 +4,9 @@ import '../../../core/theme/app_theme.dart';
 import '../models/currency_quote.dart';
 
 class QuoteValue extends StatelessWidget {
-  const QuoteValue({required this.quote, this.isActive = false, super.key});
+  const QuoteValue({required this.quote, super.key});
 
   final CurrencyQuote quote;
-  final bool isActive;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class QuoteValue extends StatelessWidget {
         Text(
           '${quote.symbol} ${quote.amount}',
           style: TextStyle(
-            fontSize: isActive ? 19 : 18,
+            fontSize: 18,
             fontWeight: FontWeight.w800,
             color: AppTheme.text,
             fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],

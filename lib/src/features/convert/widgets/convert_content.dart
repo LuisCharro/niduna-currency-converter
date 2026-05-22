@@ -33,14 +33,8 @@ class ConvertContent extends StatefulWidget {
 }
 
 class _ConvertContentState extends State<ConvertContent> {
-  String? _activeCode;
-
   @override
   Widget build(BuildContext context) {
-    final visibleCodes = widget.state.quotes.map((quote) => quote.code).toSet();
-    if (_activeCode != null && !visibleCodes.contains(_activeCode)) {
-      _activeCode = null;
-    }
     return Column(
       children: <Widget>[
         AmountPanel(
@@ -61,17 +55,9 @@ class _ConvertContentState extends State<ConvertContent> {
         Expanded(
           child: VisibleRatesList(
             quotes: widget.state.quotes,
-            activeCode: _activeCode,
             onRefresh: widget.onRefresh,
-            onSelectCode: (code) => setState(() => _activeCode = code),
-            onSetBase: (code) {
-              setState(() => _activeCode = null);
-              widget.onSelectBase(code);
-            },
-            onRemove: (code) {
-              setState(() => _activeCode = null);
-              widget.onToggleCode(code);
-            },
+            onSetBase: widget.onSelectBase,
+            onRemove: widget.onToggleCode,
             onToggleFavorite: widget.onToggleFavorite,
             maxFavoritesReached: widget.maxFavoritesReached,
           ),
