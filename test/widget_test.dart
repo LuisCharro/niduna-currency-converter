@@ -362,7 +362,7 @@ void main() {
     cryptoController.dispose();
   });
 
-  testWidgets('Convert row tap opens conversion lens with quick values', (
+  testWidgets('Convert row long-press opens conversion lens with quick values', (
     WidgetTester tester,
   ) async {
     tester.view.physicalSize = const Size(390, 844);
@@ -381,7 +381,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Euro').first);
+    await tester.press(find.text('Euro').first);
+    await tester.pump(const Duration(milliseconds: 850));
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('conversion_lens')), findsOneWidget);
@@ -415,7 +416,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Euro').first);
+    await tester.press(find.text('Euro').first);
+    await tester.pump(const Duration(milliseconds: 850));
     await tester.pumpAndSettle();
 
     await tester.ensureVisible(find.text('Use').first);

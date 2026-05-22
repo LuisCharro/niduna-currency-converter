@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,21 +29,60 @@ class CurrencyRowSwipeActions extends StatefulWidget {
   State<CurrencyRowSwipeActions> createState() => _CurrencyRowSwipeActionsState();
 }
 
-class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
+class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
+    with TickerProviderStateMixin {
   static const double _actionWidth = 60;
   static const double _maxReveal = 184;
   static const Duration _duration = Duration(milliseconds: 220);
   static const Duration _pressDuration = Duration(milliseconds: 160);
+  static const Duration _chargeDuration = Duration(milliseconds: 800);
 
   double _reveal = 0;
   bool _isDragging = false;
   bool _isPressed = false;
+  bool _isHolding = false;
   Offset? _tapPosition;
+  Offset? _localTapPosition;
+
+  late AnimationController _chargeController;
+  double _lastHapticThreshold = 0;
 
   @override
   void initState() {
     super.initState();
     _reveal = widget.isOpen ? _maxReveal : 0;
+    _chargeController = AnimationController(
+      vsync: this,
+      duration: _chargeDuration,
+    )..addStatusListener(_onChargeStatusChanged)
+     ..addListener(_onChargeProgress);
+  }
+
+  @override
+  void dispose() {
+    _chargeController.removeListener(_onChargeProgress);
+    _chargeController.dispose();
+    super.dispose();
+  }
+
+  void _onChargeProgress() {
+    final value = _chargeController.value;
+    if (value >= 0.4 && _lastHapticThreshold < 0.4) {
+      _lastHapticThreshold = 0.4;
+      HapticFeedback.selectionClick();
+    }
+    if (value >= 0.75 && _lastHapticThreshold < 0.75) {
+      _lastHapticThreshold = 0.75;
+      HapticFeedback.lightImpact();
+    }
+  }
+
+  void _onChargeStatusChanged(AnimationStatus status) {
+    if (status == AnimationStatus.completed && _isHolding && !widget.isOpen) {
+      HapticFeedback.mediumImpact();
+      _cancelCharge();
+      widget.onPressed(_tapPosition ?? Offset.zero);
+    }
   }
 
   @override
@@ -107,21 +148,31 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
               behavior: HitTestBehavior.translucent,
               onTapDown: (details) {
                 _tapPosition = details.globalPosition;
+                _localTapPosition = details.localPosition;
                 if (widget.isOpen) return;
                 _setPressed(true, withHaptic: true);
+                _isHolding = true;
+                _lastHapticThreshold = 0;
+                _chargeController.forward(from: 0);
               },
-              onTapUp: (_) => _setPressed(false),
-              onTapCancel: () => _setPressed(false),
+              onTapUp: (_) {
+                _setPressed(false);
+                _cancelCharge();
+              },
+              onTapCancel: () {
+                _setPressed(false);
+                _cancelCharge();
+              },
               onTap: () {
                 _setPressed(false);
                 if (widget.isOpen) {
                   widget.onOpenChanged(false);
                   return;
                 }
-                widget.onPressed(_tapPosition ?? Offset.zero);
               },
               onHorizontalDragStart: (_) {
                 _setPressed(false);
+                _cancelCharge();
                 _isDragging = true;
               },
               onHorizontalDragUpdate: (details) {
@@ -159,7 +210,31 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
                       ),
                     ],
                   ),
-                  child: widget.child,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: Stack(
+                      children: <Widget>[
+                        widget.child,
+                        AnimatedBuilder(
+                          animation: _chargeController,
+                          builder: (context, _) {
+                            if (_chargeController.value == 0 ||
+                                _localTapPosition == null) {
+                              return const SizedBox.shrink();
+                            }
+                            return Positioned.fill(
+                              child: CustomPaint(
+                                painter: _RadialFillPainter(
+                                  progress: _chargeController.value,
+                                  center: _localTapPosition!,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -183,6 +258,14 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
     setState(() => _isPressed = value);
     if (value && withHaptic) {
       HapticFeedback.lightImpact();
+    }
+  }
+
+  void _cancelCharge() {
+    _isHolding = false;
+    _chargeController.stop();
+    if (_chargeController.value > 0) {
+      _chargeController.animateTo(0, duration: const Duration(milliseconds: 120));
     }
   }
 
@@ -213,6 +296,42 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
     if (reveal >= end) return 1;
     return (reveal - start) / (end - start);
   }
+}
+
+class _RadialFillPainter extends CustomPainter {
+  const _RadialFillPainter({
+    required this.progress,
+    required this.center,
+  });
+
+  final double progress;
+  final Offset center;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (progress <= 0) return;
+    final maxRadius = math.sqrt(
+      size.width * size.width + size.height * size.height,
+    ) * 0.6;
+    final easedProgress = Curves.easeOut.transform(progress.clamp(0.0, 1.0));
+    final radius = maxRadius * easedProgress;
+    final opacity = Curves.easeIn.transform(progress.clamp(0.0, 1.0));
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()
+        ..color = Color.fromRGBO(
+          45,
+          106,
+          70,
+          opacity * 0.15,
+        ),
+    );
+  }
+
+  @override
+  bool shouldRepaint(_RadialFillPainter oldDelegate) =>
+      progress != oldDelegate.progress || center != oldDelegate.center;
 }
 
 class _ActionButton extends StatelessWidget {
@@ -247,8 +366,8 @@ class _ActionButton extends StatelessWidget {
       label: label,
       child: SizedBox(
         width: _CurrencyRowSwipeActionsState._actionWidth,
-child: IgnorePointer(
-              ignoring: clampedProgress < 0.35,
+        child: IgnorePointer(
+          ignoring: clampedProgress < 0.35,
           child: Opacity(
             opacity: clampedProgress,
             child: Transform.translate(
