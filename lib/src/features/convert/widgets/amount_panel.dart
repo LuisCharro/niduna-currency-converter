@@ -6,6 +6,7 @@ import '../domain/convert_state.dart';
 import 'amount_header_row.dart';
 import 'amount_status_bar.dart';
 import 'amount_value_row.dart';
+import 'amount_base_button.dart';
 
 /// Hero conversion instrument well (D2-CON-1).
 class AmountPanel extends StatelessWidget {
@@ -56,18 +57,23 @@ class AmountPanel extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  'AMOUNT',
-                  style: AppTheme.sectionLabel.copyWith(
-                    color: AppTheme.muted,
-                  ),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      'AMOUNT',
+                      style: AppTheme.sectionLabel.copyWith(
+                        color: AppTheme.muted,
+                      ),
+                    ),
+                    const Spacer(),
+                    AmountBaseButton(base: base, onTap: onBaseTap),
+                  ],
                 ),
                 const SizedBox(height: AppTheme.space2),
                 AmountValueRow(
                   amountText: amountText,
                   base: base,
                   onAmountChanged: onAmountChanged,
-                  onBaseTap: onBaseTap,
                 ),
                 const SizedBox(height: AppTheme.space3),
                 AmountStatusBar(

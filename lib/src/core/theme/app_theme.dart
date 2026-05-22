@@ -118,6 +118,8 @@ class AppTheme {
     color: text,
   );
 
+  static const List<double> heroAmountSizes = [50.0, 44.0, 38.0, 32.0];
+
   static const TextStyle pairTitleFraunces = TextStyle(
     fontFamily: 'Fraunces',
     fontSize: 30,

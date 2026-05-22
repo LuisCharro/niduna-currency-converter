@@ -18,7 +18,7 @@ class AmountEditingField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final display = amountText.isEmpty ? '0.00' : amountText;
-    final style = AppTheme.heroAmountFor(context).copyWith(
+    final baseStyle = AppTheme.heroAmountFor(context).copyWith(
       color: amountText.isEmpty ? AppTheme.muted : AppTheme.text,
     );
 
@@ -33,32 +33,50 @@ class AmountEditingField extends StatelessWidget {
           child: Container(
             constraints: const BoxConstraints(minHeight: 56),
             alignment: Alignment.centerLeft,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 240),
-              switchInCurve: Curves.easeOut,
-              switchOutCurve: Curves.easeIn,
-              transitionBuilder: (child, animation) {
-                final slide = Tween<Offset>(
-                  begin: const Offset(0, 0.06),
-                  end: Offset.zero,
-                ).animate(animation);
-                return FadeTransition(
-                  opacity: animation,
-                  child: SlideTransition(position: slide, child: child),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final style = _adaptiveStyleForWidth(
+                  display, baseStyle, constraints.maxWidth,
+                );
+                return AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 150),
+                  curve: Curves.easeOut,
+                  style: style,
+                  child: Text(
+                    display,
+                    key: ValueKey<String>(display),
+                    maxLines: 1,
+                    overflow: TextOverflow.visible,
+                  ),
                 );
               },
-              child: Text(
-                display,
-                key: ValueKey<String>(display),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: style,
-              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  TextStyle _adaptiveStyleForWidth(
+    String text,
+    TextStyle baseStyle,
+    double maxWidth,
+  ) {
+    for (final fontSize in AppTheme.heroAmountSizes) {
+      if (fontSize < baseStyle.fontSize!) break;
+      final candidate = baseStyle.copyWith(fontSize: fontSize);
+      final painter = TextPainter(
+        text: TextSpan(text: text, style: candidate),
+        textDirection: TextDirection.ltr,
+        maxLines: 1,
+      )..layout(maxWidth: maxWidth);
+      if (painter.didExceedMaxLines == false) {
+        painter.dispose();
+        return candidate;
+      }
+      painter.dispose();
+    }
+    return baseStyle.copyWith(fontSize: AppTheme.heroAmountSizes.last);
   }
 
   void _openAmountSheet(BuildContext context) {

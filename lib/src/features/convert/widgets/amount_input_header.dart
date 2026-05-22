@@ -40,21 +40,55 @@ class AmountInputHeader extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            Text(
-              '${currency.symbol} ${amount.isEmpty ? '0' : amount}',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 34,
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.4,
-                height: 1.1,
-              ),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final display =
+                    '${currency.symbol} ${amount.isEmpty ? '0' : amount}';
+                final style = _adaptiveStyleForWidth(display, constraints.maxWidth);
+                return AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 150),
+                  curve: Curves.easeOut,
+                  style: style,
+                  child: Text(
+                    display,
+                    key: ValueKey<String>(display),
+                    maxLines: 1,
+                    overflow: TextOverflow.visible,
+                  ),
+                );
+              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  static const List<double> _sheetAmountSizes = [34.0, 30.0, 26.0, 22.0];
+
+  TextStyle _adaptiveStyleForWidth(String text, double maxWidth) {
+    const baseStyle = TextStyle(
+      fontSize: 34,
+      fontWeight: FontWeight.w800,
+      letterSpacing: -0.4,
+      height: 1.1,
+      color: AppTheme.text,
+    );
+    for (final fontSize in _sheetAmountSizes) {
+      if (fontSize > baseStyle.fontSize!) break;
+      final candidate = baseStyle.copyWith(fontSize: fontSize);
+      final painter = TextPainter(
+        text: TextSpan(text: text, style: candidate),
+        textDirection: TextDirection.ltr,
+        maxLines: 1,
+      )..layout(maxWidth: maxWidth);
+      if (painter.didExceedMaxLines == false) {
+        painter.dispose();
+        return candidate;
+      }
+      painter.dispose();
+    }
+    return baseStyle.copyWith(fontSize: _sheetAmountSizes.last);
   }
 }
 
@@ -92,7 +126,7 @@ class _CurrencyChip extends StatelessWidget {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           CurrencyFlagIcon(code: base, symbol: currency.symbol, radius: 11),
           const SizedBox(width: 6),
           Text(base, style: const TextStyle(fontWeight: FontWeight.w800)),
