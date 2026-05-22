@@ -247,8 +247,8 @@ class _ActionButton extends StatelessWidget {
       label: label,
       child: SizedBox(
         width: _CurrencyRowSwipeActionsState._actionWidth,
-        child: IgnorePointer(
-          ignoring: clampedProgress < 0.55,
+child: IgnorePointer(
+              ignoring: clampedProgress < 0.35,
           child: Opacity(
             opacity: clampedProgress,
             child: Transform.translate(

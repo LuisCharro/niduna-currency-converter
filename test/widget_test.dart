@@ -321,6 +321,47 @@ void main() {
     expect(find.text('Euro'), findsNothing);
   });
 
+  testWidgets('Convert crypto row swipe hide removes crypto from visible list', (
+    WidgetTester tester,
+  ) async {
+    final cryptoRepository = _FakeRatesRepository(
+      fresh: _snapshot(<String, double>{
+        'EUR': .92,
+        'BTC': .00001342,
+      }),
+    );
+    final cryptoController = ConvertController(repository: cryptoRepository)
+      ..configure(base: 'USD', amount: 100, selectedCodes: <String>['EUR']);
+    await cryptoController.load();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: cryptoController,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final bitcoinFinder = find.text('Bitcoin');
+    expect(bitcoinFinder, findsWidgets);
+
+    await tester.drag(bitcoinFinder.first, const Offset(-160, 0));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('remove_BTC')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('remove_BTC')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Bitcoin'), findsNothing);
+    expect(cryptoController.state.quotes.any((q) => q.code == 'BTC'), isFalse);
+
+    cryptoController.dispose();
+  });
+
   testWidgets('Convert row tap opens conversion lens with quick values', (
     WidgetTester tester,
   ) async {

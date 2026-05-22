@@ -9,16 +9,18 @@ List<CurrencyQuote> buildQuotes({
   required double amount,
   required int decimalPlaces,
   Iterable<String>? quoteCodes,
+  Set<String> excludeCodes = const <String>{},
 }) {
   final explicitCodes =
       quoteCodes?.where((code) => code != snapshot.base).toList() ??
       supportedCurrencies.map((currency) => currency.code).toList();
 
   // Auto-include crypto currencies that have rates in the snapshot,
-  // regardless of user selection. Keeps BTC/ETH visible in the Convert tab.
+  // unless the user explicitly hid them via swipe-to-hide.
   final cryptoCodes = supportedCryptoCurrencies
       .map((c) => c.code)
-      .where((code) => snapshot.rates.containsKey(code));
+      .where((code) => snapshot.rates.containsKey(code))
+      .where((code) => !excludeCodes.contains(code));
 
   final selectedCodes = <String>{
     ...explicitCodes,
