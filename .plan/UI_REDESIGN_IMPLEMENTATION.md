@@ -1,295 +1,374 @@
-# UI Redesign — Implementation Playbook
+# UI Redesign — Iteration 2 Implementation Playbook
 
-> Maps every demand in [UI_REDESIGN.md](./UI_REDESIGN.md) to actionable Flutter work.
-> **Do not implement from this file in one shot** — execute phases in order; verify each phase before the next.
+> Maps [UI_REDESIGN.md](./UI_REDESIGN.md) **Iteration 2** demands to Flutter work.  
+> **Docs-only predecessor:** v1 shipped in commit `92f8dcf`. This playbook assumes that baseline is on the branch.  
+> **Execute in waves** — each wave ends with a **visible delta screenshot** before the next.  
+> **Current branch note:** this file has been continued mid-plan. Several Wave A/B/C items already exist; do not restart them unless verification fails.
+
+---
+
+## Iteration 2 playbook summary
+
+| Principle | v1 | v2 |
+|-----------|----|----|
+| Goal | Cohesion, doc sync, file splits | **Obvious visual transformation** |
+| Acceptance | Engineer checklist | **Non-dev screenshot diff** (S2-1) |
+| Convert | Polish rows + empty panel | **Hero instrument + ledger** |
+| Charts | Attach range to plot | **Plot-first flagship + metric rail** |
+| Settings | ScreenTitle + tiles | **De-card premium + data pages** |
+| Tokens | Sync existing | **Add hero type scale + spacing names + semantic colors** |
 
 ---
 
 ## Preconditions & read order
 
-### Read before Phase 0
+### Read before Wave A.0
 
-1. `README.md`, `AGENTS.md`, `DEFINITIONS.md`, `ROADMAP.md`, `DESIGN.md`, `ARCHITECTURE.md`
-2. `.plan/UI_REDESIGN.md` (this pass demand spec)
-3. Skills:
+1. `AGENTS.md`, `DEFINITIONS.md`, `ROADMAP.md`, `DESIGN.md`, `.agent/DESIGN_GUIDELINES.md`
+2. `.plan/UI_REDESIGN.md` (v2 demand spec)
+3. Skills (sync if missing: `./agent/sync-shared-skills.sh`):
    - `.agent-local/skills/frontend/frontend-design-layer.SKILL.md`
    - `.agent-local/skills/frontend/frontend-design-direction.SKILL.md`
    - `.agent-local/skills/frontend/design-system-consistency.SKILL.md`
    - `.agent-local/skills/mobile/mobile-ui-review.SKILL.md`
+   - `.agent-local/skills/mobile/flutter/flutter-small-screen-ui.SKILL.md`
    - `.agent/skills/small-screen-ui-review/SKILL.md`
+   - `.agent-local/skills/mobile/chart-ux-review.SKILL.md`
 
-### Repo state assumptions (validated May 2026)
+### Repo baseline after v1 (May 2026)
 
-- 3-tab shell in `lib/src/app.dart` — no Favorites tab index
-- `AppTheme.pagePadding == 20` — canonical over `DESIGN.md` 16px
-- `charts_screen.dart` is **249 lines** — must split in Phase 3
-- Monetization stubs wired; AdMob may still be placeholder
-- `.agent/DESIGN_GUIDELINES.md` **missing** — create in Phase 0
-
-### Environment
+| Item | State |
+|------|-------|
+| `charts_screen.dart` | 72 lines orchestrator ✅ |
+| `AmountCard` | Thin wrapper → `AmountPanel` — **rename/replace in v2** |
+| `no_rates_card.dart` | Deleted ✅ |
+| `UpgradeShelf` | Card-style container — **refactor in Wave C** |
+| `ChartSummary` | Oval pill metrics — **replace layout in Wave B** |
+| `pair_selector.dart` | Heavy shadow pills — **refactor in Wave B** |
 
 ```bash
 flutter pub get
 ./scripts/check.sh
 ```
 
-If Flutter not on PATH:
+---
+
+## Baseline capture (v1 — do not overwrite)
+
+Store v1 reference screenshots before v2 edits:
 
 ```bash
-FLUTTER_BIN=/path/to/flutter ./scripts/check.sh
+mkdir -p .tmp/screens/ios/ui-redesign-baseline
+IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/sim_reinstall_build.sh
+IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/sim_wait_ready.sh
+./.devtools/sim_screenshot.sh ui-redesign-baseline/convert
+# Tap Charts → ./.devtools/sim_screenshot.sh ui-redesign-baseline/charts
+# Tap Settings → ./.devtools/sim_screenshot.sh ui-redesign-baseline/settings
 ```
 
----
+Optional full bundle:
 
-## Baseline capture (before any UI edits)
+```bash
+IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} SCREEN_OUTPUT_DIR=.tmp/screens/ios/ui-redesign-baseline \
+  ./.devtools/capture_ios_ui_review_bundle.sh
+```
 
-Run once per redesign branch; store under `.tmp/screens/ios/ui-redesign-baseline/`.
+Record: device, iOS version, `PROVIDER_PROFILE`, `APP_DEV_MODE`, text scale `1.0`.
 
-| Step | Command | Output |
-|------|---------|--------|
-| B-1 | `IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/sim_reinstall_build.sh` | Fresh build on simulator |
-| B-2 | `IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/sim_wait_ready.sh` | App ready |
-| B-3 | `./.devtools/sim_screenshot.sh baseline-convert` | Convert tab |
-| B-4 | Tap Charts tab → `./.devtools/sim_screenshot.sh baseline-charts` | Charts tab |
-| B-5 | Tap Settings → `./.devtools/sim_screenshot.sh baseline-settings` | Settings tab |
-| B-6 | Optional full bundle | `IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/capture_ios_ui_review_bundle.sh` |
-
-Record: device model, iOS version, `PROVIDER_PROFILE`, `APP_DEV_MODE`, text scale `1.0`.
+**v2 output directory:** `.tmp/screens/ios/ui-redesign-v2/` (same filenames with `v2-` prefix).
 
 ---
 
-## Phase 0: Token & theme foundation
+## v1 files: refactor vs replace
 
-**Goal:** Single source of truth; docs match code.
+| File | v1 role | v2 action |
+|------|---------|-----------|
+| `amount_card.dart` | Wrapper name | **Replace** — delete; call `AmountPanel` or `ConvertInstrumentHeader` from `convert_content.dart` |
+| `amount_panel.dart` | Flat header stack | **Refactor** — hero instrument well |
+| `amount_editing_field.dart` | 42px amount | **Refactor** — use `AppTheme.heroAmount` |
+| `amount_header_row.dart` | Title + actions | **Refactor** — slim micro rail |
+| `amount_status_bar.dart` | Status | **Refactor** — single-line signal strip |
+| `convert_content.dart` | Column layout | **Refactor** — instrument + ledger |
+| `rates_section_header.dart` | Rates + Add pill | **Refactor** — lighter Edit affordance |
+| `currency_rate_row.dart` | Divider row | **Polish** — accent/wash only |
+| `visible_rates_list.dart` | List | **Refactor** — use `DesignedStatePanel` |
+| `inline_empty_panel.dart` | Generic empty | **Extend** or add `designed_state_panel.dart` |
+| `charts_tab_body.dart` | Layout column | **Refactor** — plot-first order |
+| `charts_chart_section.dart` | Range + plot | **Refactor** — de-box, loading line |
+| `chart_header.dart` | Tall header | **Refactor** — compact masthead |
+| `chart_summary.dart` | Oval pills | **Replace** → `chart_metric_rail.dart` |
+| `pair_selector.dart` | Heavy pills | **Refactor** → `chart_pair_strip.dart` |
+| `range_selector.dart` | Chip rail | **Polish** — flush to plot |
+| `charts_empty_state.dart` / `charts_error_state.dart` | Inline empty | **Refactor** — personality copy |
+| `upgrade_shelf.dart` | Card shelf | **Refactor** — divider-integrated |
+| `data_details_page.dart` | Detail cards | **Refactor** — divider blocks |
+| `data_sources_page.dart` | Source cards | **Refactor** — divider blocks |
+| `ad_support_shelf.dart` | Footer ads | **Refactor** — instrument footer |
+| `app_theme.dart` | Tokens | **Extend** — hero type + spacing + semantics |
+| N/A | — | **Create** `instrument_panel.dart`, `canvas_background.dart`, `chart_metric_rail.dart`, `chart_pair_strip.dart`, `designed_state_panel.dart` |
+
+---
+
+## Mid-implementation checkpoint — current branch state
+
+This branch already contains substantial v2 work. Use this checkpoint to continue safely from the middle instead of redoing Wave A.
+
+### Already present in code
+
+| Demand | Observed files | Status |
+|--------|----------------|--------|
+| A.0 token foundation | `app_theme.dart` has hero styles, named spacing, instrument colors, coral colors | Present — verify tests/docs |
+| Canvas/panel primitives | `canvas_background.dart`, `instrument_panel.dart`, `designed_state_panel.dart` | Present |
+| Amount card removal | No `amount_card.dart` in `convert/widgets`; `ConvertContent` calls `AmountPanel` | Present |
+| Convert instrument | `amount_panel.dart`, `amount_header_row.dart`, `amount_value_row.dart`, `amount_status_bar.dart` | Present — screenshot verify height |
+| Charts plot-first pieces | `charts_tab_body.dart`, `charts_chart_section.dart`, `chart_pair_strip.dart`, `chart_pair_pill.dart`, `chart_metric_rail.dart` | Present — screenshot verify proportions |
+| Settings de-card pass | `upgrade_shelf.dart`, `data_details_page.dart`, `data_sources_page.dart` use divider-oriented structure | Present — verify dark mode and typography |
+| Test scaffolding | `app_theme_test.dart`, `ui_redesign_widget_test.dart` | Present — run full check |
+
+### Continue from here
+
+| Step | Action | Why |
+|------|--------|-----|
+| R.1 | Run `./scripts/check.sh` | Establish whether current branch compiles/tests before polishing |
+| R.2 | Rebuild/reinstall iOS simulator with `.devtools/sim_reinstall_build.sh` | Verify the renderer, not just code structure |
+| R.3 | Capture Convert, Charts, Settings screenshots at 1.0× text scale | Decide whether S2-1 visual leap is already achieved |
+| R.4 | Capture or manually inspect 1.3×/2.0× text scale for Convert hero and Charts range/pair controls | Compact-screen release risk |
+| R.5 | Only patch screenshot failures: Convert first viewport, Charts plot height, Settings premium calmness, ad footer integration, dark mode | Avoid churn after core v2 components already landed |
+| R.6 | Complete Wave D sign-off | Motion, flags, haptics, dark screenshots, non-dev review |
+
+### Likely remaining polish targets
+
+| Area | Check before editing |
+|------|----------------------|
+| Convert | Does `AmountPanel` plus status leave ≥3 rate rows visible on SE? If not, reduce vertical gaps before shrinking hero typography |
+| Convert | Does `AdSupportShelf` look like an integrated footer instrument, or still like a rectangular ad block? |
+| Charts | Does the expanded chart visibly own ≥40% viewport? If not, reduce masthead/pair/metric vertical padding first |
+| Charts | Does `ChartMetricRail` fit at 2.0× without ellipsis hiding important values? If not, allow horizontal scroll or reduce visible metric count at high text scale |
+| Settings | Does `UpgradeShelf` read as a settings group, not a marketing block? If not, align it closer to `SettingsTile` rhythm |
+| Dark mode | Do `containerHigh`, `card`, badges, and chart tooltip surfaces still look light-theme-only? |
+
+### Verification run — current continuation checkpoint
+
+| Gate | Result | Notes |
+|------|--------|-------|
+| `./scripts/check.sh` | Passed | Analyzer clean; all tests passed |
+| iOS simulator build/reinstall | Passed | `sim_reinstall_build.sh` built, installed, and launched current code |
+| Convert screenshot | Captured | `.tmp/screens/ios/ui-redesign-v2/v2-convert-100326.png` |
+| Charts/Settings screenshots | Invalid capture | Manual tap coordinates missed the bottom nav; captured Convert again. Recapture with `capture_ios_ui_review_bundle.sh`, integration screenshot flow, or corrected simulator coordinates before judging S2-3/S2-10 |
+| Preliminary Convert visual read | Needs human/product review | Functional first viewport is good (hero + 3+ rows visible), but the top instrument may still read as a rounded card and the ad footer may feel intrusive against the v2 north star |
+
+Do not make Charts/Settings visual decisions from the invalid screenshots. The next action is a reliable screenshot bundle, then targeted polish only where images fail S2 gates.
+
+---
+
+## Wave A.0 — Tokens & canvas foundation
+
+**Goal:** Land v2 type/spacing semantics without layout moves yet.  
+**Visible delta:** Subtle — amount slightly larger if hero style applied early; full delta comes Wave A.1.
 
 ### Files
 
-| Action | Path |
-|--------|------|
-| Edit | `lib/src/core/theme/app_theme.dart` |
-| Edit | `DESIGN.md` (token section only — small sync) |
-| Create | `.agent/DESIGN_GUIDELINES.md` (minimal — see template below) |
-| Optional | `test/app_theme_test.dart` — assert key constants |
+| Action | Path | Budget |
+|--------|------|--------|
+| Edit | `lib/src/core/theme/app_theme.dart` | ≤ 120 lines |
+| Create | `lib/src/shared/widgets/canvas_background.dart` | ≤ 45 lines |
+| Create | `lib/src/shared/widgets/instrument_panel.dart` | ≤ 55 lines |
+| Edit | `DESIGN.md` | token section |
+| Edit | `.agent/DESIGN_GUIDELINES.md` | hero + instrument rules |
 
-### Tasks
-
-| Step | Task | Demand IDs |
-|------|------|------------|
-| 0.1 | Confirm canonical colors match table in UI_REDESIGN § Design tokens | G-3 |
-| 0.2 | Add `AppTheme.pageInsets` → `EdgeInsets.symmetric(horizontal: pagePadding)` for migration | G-3 |
-| 0.3 | Add `AppTheme.sectionGap` = 24, `AppTheme.screenTitleFraunces` TextStyle (28, w800) to reduce duplication | G-3 |
-| 0.4 | Update `DESIGN.md`: `spacing.md` horizontal padding **20px**; fix `containerHigh` → `#F5EDEE`; fix `muted`/`subtle` to AppTheme hex; fix `letterSpacing` to px not `em` | S-1 |
-| 0.5 | Create `.agent/DESIGN_GUIDELINES.md` (~80–120 lines): posture, tokens pointer, divider-not-cards, Fraunces rules, bottom chrome, anti-generic bullets | S-1 |
-| 0.6 | Document dark mode token overrides in DESIGN_GUIDELINES (bg `#171D14`, text paper, primary moss) | D-SET-4 |
-| 0.7 | Run `./scripts/check.sh` | S-2 |
-
-### `.agent/DESIGN_GUIDELINES.md` minimum sections
-
-1. Product posture (privacy-first, 3 tabs)
-2. Canonical token file = `app_theme.dart`
-3. Typography rules (Fraunces vs Manrope)
-4. Layout: page padding 20, bottom chrome via `BottomTabFrame`
-5. Dividers-not-cards + when `card` token is allowed
-6. Monetization visual rules (shelf, coral Remove Ads, no aggressive paywall)
-7. Verification: check.sh + screenshots + text scale
-
-### Acceptance criteria
-
-- [ ] `DESIGN.md` padding and `containerHigh` match `AppTheme`
-- [ ] `DESIGN_GUIDELINES.md` exists and links to `UI_REDESIGN.md`
-- [ ] No new analyzer issues
-- [ ] No Flutter code behavior change required in Phase 0 (docs + small theme helpers only)
-
----
-
-## Phase 1: Shared widgets & primitives
-
-**Goal:** Reusable pieces for Phases 2–4; line budgets ≤ 60 lines per new widget file.
-
-### Build or extend
-
-| Widget | Path | Budget | Keys (tests) |
-|--------|------|--------|--------------|
-| `PagePadding` / use `AppTheme.pageInsets` | `lib/src/shared/widgets/page_padding.dart` | ≤ 30 | — |
-| `InlineEmptyPanel` | `lib/src/shared/widgets/inline_empty_panel.dart` | ≤ 55 | `Key('inline_empty_panel')` |
-| `ScreenTitle` (Fraunces) | `lib/src/shared/widgets/screen_title.dart` | ≤ 40 | `Key('screen_title')` |
-| `InstrumentSectionLabel` | `lib/src/shared/widgets/instrument_section_label.dart` | ≤ 45 | — |
-| Extend `DividerListRow` | `lib/src/shared/widgets/divider_list_row.dart` | existing | — |
-| `ChartThemeText` helper | `lib/src/features/charts/widgets/chart_theme_text.dart` | ≤ 40 | — |
-
-### Tasks
+### Steps
 
 | Step | Task | Demand IDs |
 |------|------|------------|
-| 1.1 | Create `InlineEmptyPanel`: icon + title + optional subtitle + optional TextButton — **no** `BoxDecoration` card | D-CON-9, D-CHT-9 |
-| 1.2 | Create `ScreenTitle` wrapping Fraunces 28/w800 pattern from Settings | D-SET-1, G-6 |
-| 1.3 | Add `ChartThemeText.caption` / `.micro` static methods wrapping `AppTheme` for chart overlays | D-CHT-8 |
-| 1.4 | Export shared widgets from a barrel only if already used elsewhere — avoid drive-by refactors | — |
-| 1.5 | `./scripts/check.sh` | S-2 |
+| A.0.1 | Add `heroAmount`, `heroAmountCompact`, `pairTitleFraunces`, `metricValue`, `sectionLabel` TextStyles | G2-4 |
+| A.0.2 | Add `space1`…`space8` static const doubles | G2-4 |
+| A.0.3 | Add `instrumentFill`, `instrumentBorder`, `coralSurface`, `coralInk` colors | G2-4 |
+| A.0.4 | Create `CanvasBackground` — wraps child with bottom-weighted gradient on `AppTheme.bg` | G2-5 |
+| A.0.5 | Create `InstrumentPanel` — padding, fill, border, optional `header` slot | G2-4 |
+| A.0.6 | Extend `test/app_theme_test.dart` for new constants | S2-5 |
+| A.0.7 | `./scripts/check.sh` | S2-5 |
 
-### Must / must-not
+### Acceptance
 
-- **Must** use `AppTheme` colors only in new shared widgets
-- **Must not** introduce `Card` widget for list/empty patterns
-- **Must not** exceed 60 lines per new file
-
----
-
-## Phase 2: Convert vertical slice
-
-**Goal:** Play Store–ready Convert tab; screen orchestrator ≤ 80 lines.
-
-### File split map
-
-| Current | Target | Lines target |
-|---------|--------|--------------|
-| `convert_screen.dart` (64) | keep | ≤ 80 |
-| `convert_content.dart` (144) | split toolbar + list wrapper | each ≤ 80 |
-| `no_rates_card.dart` (42) | replace with `InlineEmptyPanel` usage | delete or deprecate |
-| `_RatesToolbar` in `convert_content.dart` | `rates_section_header.dart` | ≤ 50 |
-
-### Step-by-step
-
-| Step | Task | Demand IDs |
-|------|------|------------|
-| 2.1 | Replace `NoRatesCard` with `InlineEmptyPanel` in `visible_rates_list.dart` | D-CON-9 |
-| 2.2 | Extract `_RatesToolbar` → `rates_section_header.dart`: title “Rates” only OR micro subtitle “Edit list” — **remove** “N currencies visible” | D-CON-8 |
-| 2.3 | Migrate horizontal padding to `AppTheme.pageInsets` in `amount_panel.dart`, `convert_content.dart`, `visible_rates_list.dart` | G-3 |
-| 2.4 | Verify `AmountPanel` has no outer card decoration (only bottom hairline divider) | D-CON-10 |
-| 2.5 | Verify freshness rail + info sheet for ECB copy | D-CON-3 |
-| 2.6 | Verify `CurrencyRateRow` uses accent not card; favorite affordance visible | D-CON-4, D-CON-7 |
-| 2.7 | Verify `AdSupportShelf` when `adsEnabled`; CTA opens `IapPurchasePlayer` Remove Ads | D-CON-6, M-2 |
-| 2.8 | Add widget keys: `convert_amount_field`, `convert_rates_list`, `convert_refresh` | S-4 |
-| 2.9 | Widget test: text scale 1.3 on `ConvertContent` — no overflow on amount row | S-3 |
-| 2.10 | `./scripts/check.sh` | S-2 |
-| 2.11 | `IOS_SIMULATOR_ID=… ./.devtools/sim_reinstall_build.sh` | — |
-| 2.12 | Screenshots: `polish-convert-1x`, `polish-convert-1.3x` (set text scale in simulator settings) | S-3 |
-
-### States to implement / verify
-
-| State | UI behavior |
-|-------|-------------|
-| Fresh | Status rail green/moss copy; no error banner |
-| Refreshing | Subtle progress on refresh control |
-| Cached / stale | Status distinguishes; values still visible |
-| Error / no cache | `InlineEmptyPanel` + retry |
-| Max favorites | Snackbar or disabled star — no crash |
-
-### Must-not
-
-- Card empty state; admin count copy; paywall on launch; RUB in list
+- [ ] No analyzer errors
+- [ ] `DESIGN.md` documents hero scale and instrument panel
 
 ---
 
-## Phase 3: Charts vertical slice
+## Wave A.1 — Convert instrument (highest visible impact)
 
-**Goal:** Instrument-style Charts; split oversized screen; range attached to chart.
+**Goal:** Convert tab reads as a **precision instrument**, not a form.  
+**Visible delta checkpoint:** Screenshot `v2-convert-1x` — obvious hero well, larger amount, warm panel, ledger below.
 
-### File split map
-
-| Current | Target | Lines target |
-|---------|--------|--------------|
-| `charts_screen.dart` (249) | `charts_screen.dart` orchestrator only | ≤ 80 |
-| — | `charts_tab_body.dart` — Column layout | ≤ 100 |
-| — | `charts_chart_section.dart` — range + expanded chart | ≤ 90 |
-| `_EmptyChart`, `_ErrorState` | `charts_empty_state.dart`, `charts_error_state.dart` | ≤ 50 each |
-
-### Layout target (ASCII)
+### Target layout (ASCII)
 
 ```
-┌─────────────────────────────┐
-│ ChartHeader (compact)       │
-├─────────────────────────────┤
-│ ┌─ chart area ────────────┐ │
-│ │ [RangeSelector rail]    │ │  ← D-CHT-9: top or bottom edge of chart block
-│ │   Line chart full bleed │ │
-│ └─────────────────────────┘ │
-│ PairSelector rail           │
-│ ChartSummary (compact)      │
-├─────────────────────────────┤
-│ AdSupportShelf (if ads)     │
-└─────────────────────────────┘
+┌─────────────────────────────────────┐
+│ CONVERT          [refresh] [more]   │  micro rail
+├─────────────────────────────────────┤
+│ ┌─ InstrumentPanel (containerHigh)─┐│
+│ │  AMOUNT                           ││
+│ │  48–52px hero amount    [EUR ▼]  ││
+│ │  ● Fresh · Updated 16:21  (i)    ││  signal strip
+│ └───────────────────────────────────┘│
+├─────────────────────────────────────┤
+│ RATES                    Edit       │
+│ │▌ USD  US Dollar      [1.08]      ││
+│ │  EUR  Euro           [0.92]      ││
+│ │  GBP  …              […]         ││
+├─────────────────────────────────────┤
+│ ─── ad footer instrument ───        │
+└─────────────────────────────────────┘
 ```
 
-### Step-by-step
+### File map
+
+| File | Lines target | Action |
+|------|--------------|--------|
+| `convert_content.dart` | ≤ 80 | Refactor layout |
+| `amount_panel.dart` | ≤ 90 | Hero instrument |
+| `amount_editing_field.dart` | ≤ 60 | Hero typography |
+| `amount_header_row.dart` | ≤ 50 | Micro rail |
+| `amount_status_bar.dart` | ≤ 70 | Signal strip |
+| `rates_section_header.dart` | ≤ 45 | Lighter Edit |
+| `convert_screen.dart` | ≤ 80 | Wrap body with `CanvasBackground` |
+| `amount_card.dart` | — | **Delete** |
+| `designed_state_panel.dart` | ≤ 60 | **Create** |
+| `visible_rates_list.dart` | ≤ 90 | Use designed states |
+| `ad_support_shelf.dart` | ≤ 70 | Footer instrument |
+
+### Steps
 
 | Step | Task | Demand IDs |
 |------|------|------------|
-| 3.1 | Split `charts_screen.dart` per file map; no behavior change yet | D-CHT-11, S-7 |
-| 3.2 | Move `RangeSelector` into `charts_chart_section.dart` directly above or below `RateChart` with shared horizontal padding | D-CHT-9, D-CHT-10 |
-| 3.3 | Move `PairSelector` + `ChartSummary` below chart section | D-CHT-10 |
-| 3.4 | Reduce `ChartHeader` vertical padding if first viewport fails SE test | D-CHT-1 |
-| 3.5 | Replace `_EmptyChart` / centered columns with `InlineEmptyPanel` | D-CHT-9 |
-| 3.6 | Audit `chart_touch_overlay.dart`, `chart_summary.dart`, `pair_selector.dart` — replace raw `TextStyle` with `ChartThemeText` / `AppTheme` | D-CHT-8 |
-| 3.7 | Theme `rewarded_ad_player.dart`: replace `Colors.green/red/white` with `AppTheme` dark overlay palette | D-CHT-8, M-7 |
-| 3.8 | Verify locked pair flow + `locked_pair_action_sheet` copy | D-CHT-4, M-6 |
-| 3.9 | Verify intraday snackbar exact string per ROADMAP | D-CHT-3, M-8 |
-| 3.10 | Keys: `charts_range_selector`, `charts_pair_base`, `charts_pair_quote`, `charts_retry` | S-4 |
-| 3.11 | Widget test: text scale 1.3 on range chips — horizontal scroll, no clipped locks | S-3 |
-| 3.12 | `./scripts/check.sh` + `sim_reinstall_build.sh` | S-2 |
-| 3.13 | Screenshots: `polish-charts-default`, `polish-charts-locked-pair` | S-1 |
+| A.1.1 | Delete `amount_card.dart`; update `convert_content.dart` to use `AmountPanel` only | D2-CON-6 |
+| A.1.2 | Wrap amount region in `InstrumentPanel`; apply `heroAmount` / compact fallback from `MediaQuery.textScaler` | D2-CON-1, D2-CON-2 |
+| A.1.3 | Refactor `AmountHeaderRow` → micro “CONVERT” + icon buttons (drop redundant Fraunces title if duplicate) | D2-CON-2 |
+| A.1.4 | `AmountStatusBar` → single-line moss/amber/coral signal | D2-CON-3 |
+| A.1.5 | `RatesSectionHeader`: text-button “Edit” instead of emphasized `PillAction` Add | D2-CON-5 |
+| A.1.6 | `AnimatedSwitcher` on amount text key | D2-CON-8 |
+| A.1.7 | Create `DesignedStatePanel`; wire in `visible_rates_list.dart` for error/empty | D2-CON-7 |
+| A.1.8 | `AdSupportShelf`: top hairline + `container` strip styling | D2-CON-10, M2-1, M2-2 |
+| A.1.9 | `ConvertScreen` / tab root: `CanvasBackground` | G2-5 |
+| A.1.10 | Widget keys: `convert_amount_field`, `convert_rates_list`, `convert_refresh` | S2-6 |
+| A.1.11 | Update `test/ui_redesign_widget_test.dart` — hero style, text scale 1.3 | S2-5 |
+| A.1.12 | `./scripts/check.sh` + `sim_reinstall_build.sh` | S2-5 |
+| A.1.13 | Screenshot `v2-convert-1x`, `v2-convert-1.3x` | S2-1, S2-2 |
 
-### Must-not
+### Visible delta checkpoint (A.1)
 
-- Card around chart; range floating far above chart; neon rewarded player colors
+Compare to `ui-redesign-baseline/convert`:
+
+- [ ] Warm **filled** amount well visible (not just padding on paper)
+- [ ] Amount clearly **larger** than v1
+- [ ] “Card” naming gone from code and visual
+- [ ] Non-dev says “different” without hints
 
 ---
 
-## Phase 4: Settings vertical slice
+## Wave B — Charts flagship surface
 
-**Goal:** Consistent divider system; premium shelf density; data trust copy.
+**Goal:** Charts tab is a **market instrument** — plot dominates.  
+**Visible delta checkpoint:** `v2-charts-1x` — plot ≥40% viewport; metric rail is flat row; pair strip slim.
 
-### File split map
+### Target layout (ASCII)
 
-| Current | Target |
-|---------|--------|
-| `settings_screen.dart` (84) | keep ≤ 80 — extract list children if needed |
-| `data_sources_page.dart` / `data_details_page.dart` | replace `_DetailCard` with inline sections or divider groups (Phase 4b) |
+```
+┌─────────────────────────────────────┐
+│ CHARTS                              │
+│ USD / EUR     1.0842  ↑ 0.4%   [⇅] │  compact masthead
+├─────────────────────────────────────┤
+│ [1W][1M][3M][6M][1Y][2Y]            │  range flush top
+│                                     │
+│         full-bleed line chart       │
+│                                     │
+├─────────────────────────────────────┤
+│ [USD]  ⇄  [EUR 🔒]                  │  pair strip
+│ High 1.09 │ Low 1.06 │ Chg +0.4%   │  metric rail
+└─────────────────────────────────────┘
+```
 
-### Step-by-step
+### File map
+
+| File | Lines target | Action |
+|------|--------------|--------|
+| `charts_tab_body.dart` | ≤ 85 | Reorder children |
+| `chart_header.dart` | ≤ 75 | Compact masthead |
+| `charts_chart_section.dart` | ≤ 95 | De-box plot, loading line |
+| `chart_metric_rail.dart` | ≤ 65 | **Create** (replaces summary layout) |
+| `chart_pair_strip.dart` | ≤ 80 | **Create** from `pair_selector` |
+| `pair_selector.dart` | — | **Deprecate** — export strip from new file |
+| `chart_summary.dart` | — | **Delete** after migration |
+| `charts_empty_state.dart` | ≤ 40 | Personality |
+| `charts_error_state.dart` | ≤ 45 | Personality |
+| `range_selector.dart` | ≤ 70 | Visual flush |
+
+### Steps
 
 | Step | Task | Demand IDs |
 |------|------|------------|
-| 4.1 | Use `ScreenTitle` for Settings header | D-SET-1 |
-| 4.2 | Verify `SectionHeader` moss uppercase on all sections | D-SET-2 |
-| 4.3 | `UpgradeShelf`: shorten body copy to one line if height budget fails | D-SET-6 |
-| 4.4 | Subscription row: “Not available in v1” visible | D-SET-4, M-4 |
-| 4.5 | `SettingsDataSection`: ECB once-daily explanation + last update | D-SET-5 |
-| 4.6 | `ClearCacheTile`: coral destructive styling only here | D-SET-5 |
-| 4.7 | Dark mode toggle + `AppShell` `Theme` wrapper audit for dark scaffold on all tabs | D-SET-4 |
-| 4.8 | Dev sandbox gated by `preferences.devMode` | D-SET-7 |
-| 4.9 | Migrate list padding to `AppTheme.pageInsets`; bottom padding via nav clearance constant not magic `118` if possible | G-3 |
-| 4.10 | Phase 4b (optional): refactor `_DetailCard` in data pages to divider layout | D-SET-3 |
-| 4.11 | `./scripts/check.sh` + screenshots `polish-settings` | S-2 |
+| B.1 | `ChartHeader`: reduce vertical padding; use `pairTitleFraunces` + `metricValue` + delta chip | D2-CHT-1 |
+| B.2 | `charts_tab_body.dart`: order = masthead → `ChartsChartSection` → `ChartPairStrip` → `ChartMetricRail` | D2-CHT-2 |
+| B.3 | `ChartsChartSection`: lighter border (hairline); optional remove side borders; loading = top `LinearProgressIndicator` moss | D2-CHT-3, D2-CHT-4 |
+| B.4 | Create `ChartMetricRail` — three columns + dividers, no `FittedBox` on primary values | D2-CHT-6 |
+| B.5 | Create `ChartPairStrip` from `pair_selector` logic — slim pills, no heavy shadow | D2-CHT-5 |
+| B.6 | Update `charts_empty_state.dart` / `charts_error_state.dart` copy + `DesignedStatePanel` | D2-CHT-8 |
+| B.7 | Range change: fade-only `AnimatedSwitcher` (disable flip except swap) | D2-CHT-9 |
+| B.8 | `AdSupportShelf` on Charts matches Convert footer | D2-CHT-12 |
+| B.9 | Keys: `charts_range_selector`, `charts_pair_base`, `charts_pair_quote` | S2-6 |
+| B.10 | Widget test: text scale 1.3 on range chips | S2-5 |
+| B.11 | `./scripts/check.sh` + screenshots `v2-charts-1x`, `v2-charts-locked` | S2-1, S2-3 |
 
-### Must-not
+### Visible delta checkpoint (B)
 
-- Stacked premium cards; account settings; subscription purchase in v1
+Compare to `ui-redesign-baseline/charts`:
+
+- [ ] Plot visibly taller; header shorter
+- [ ] Metrics are **one flat rail**, not three pills
+- [ ] Pair controls slimmer, below chart
+- [ ] Non-dev obvious diff
 
 ---
 
-## Phase 5: Cross-cutting
+## Wave C — Settings calm utility
+
+**Goal:** Settings feels like **trust desk**, not marketing cards.  
+**Visible delta checkpoint:** `v2-settings-1x` — Premium is divider-group; data pages flat.
+
+### Steps
 
 | Step | Task | Demand IDs |
 |------|------|------------|
-| 5.1 | `FloatingPillNav`: verify labels Convert / Chart / Settings; active color `AppTheme.primary` | G-1 |
-| 5.2 | `BottomTabFrame`: ensure Convert/Charts body bottom list padding uses frame inset — remove duplicate `96` bottom padding in lists where redundant | G-3 |
-| 5.3 | `AdSupportShelf` divider on Charts only (`showDivider: true`) | M-1 |
-| 5.4 | Dark mode: grep `lib/src` for hardcoded light `Color(0xFFF6F8EF)` outside theme | D-SET-4 |
-| 5.5 | Favorites: confirm no route from nav; optional comment in `favorites_screen.dart` | D-FAV-1 |
-| 5.6 | Version stays `0.x.x` in `pubspec.yaml` | README |
-| 5.7 | Stitch: only update prompts/refs in design docs — no generated code import | G-8 |
+| C.1 | Refactor `UpgradeShelf` → divider header + `SettingsTile`-style purchase rows + inline owned badges | D2-SET-3 |
+| C.2 | `PremiumSection`: subscription/restore as normal tiles | D2-SET-4 |
+| C.3 | `SettingsDataSection`: single tile with subtitle → navigates to details | D2-SET-5 |
+| C.4 | `data_details_page.dart`: `_DetailBlock` with dividers, no card boxes | D2-SET-6 |
+| C.5 | `data_sources_page.dart`: same pattern | D2-SET-6 |
+| C.6 | Dark mode audit: replace hardcoded `AppTheme.card` fills with theme-aware surfaces | D2-SET-8 |
+| C.7 | `settings_screen.dart`: top spacing `space7` | D2-SET-1 |
+| C.8 | `./scripts/check.sh` + `v2-settings-1x` | S2-1 |
 
-### AdMob (release sub-task — product gate)
+### Visible delta checkpoint (C)
 
-| Step | Task |
-|------|------|
-| 5.8 | Replace `AdBannerPlaceholder` with AdMob when approved |
-| 5.9 | Update store privacy disclosures per `DEFINITIONS.md` |
+- [ ] No large rounded Premium card floating on paper
+- [ ] Data subpages match divider system
 
 ---
 
-## Phase 6: Verification matrix & sign-off
+## Wave D — Motion, flags, sign-off
+
+| Step | Task | Demand IDs |
+|------|------|------------|
+| D.1 | Flag circles unified 36px in `quote_identity.dart`, pair strip, pickers | G2-8 |
+| D.2 | Review haptics on row select / swap | G2-6 |
+| D.3 | Dark mode screenshots all tabs | S2-10 |
+| D.4 | Run non-dev screenshot test (3 viewers) — record S2-1 | S2-1 |
+| D.5 | Full bundle: `capture_ios_ui_review_bundle.sh` → `ui-redesign-v2/` | S2-1 |
+| D.6 | Anti-generic checklist in UI_REDESIGN.md — all pass | — |
+
+---
+
+## Verification matrix
 
 ### Automated
 
@@ -300,66 +379,78 @@ IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/run_ios_minimal_smoke.sh
 
 ### Manual matrix
 
-| Check | 1.0× | 1.3× | 2.0× | Screenshot name |
-|-------|------|------|------|-----------------|
-| Convert first viewport | ☐ | ☐ | ☐ | `polish-convert-*` |
-| Charts range+chart attached | ☐ | ☐ | ☐ | `polish-charts-*` |
-| Settings premium + data | ☐ | ☐ | ☐ | `polish-settings-*` |
-| Remove Ads hides shelf | ☐ | — | — | dev entitlement toggle |
-| Locked chart pair sheet | ☐ | — | — | `polish-charts-locked` |
-| Dark mode all tabs | ☐ | ☐ | ☐ | `polish-dark-*` |
+| Check | 1.0× | 1.3× | 2.0× | Screenshot |
+|-------|------|------|------|------------|
+| S2-1 non-dev obvious diff | ☐ | — | — | baseline vs v2 side-by-side |
+| Convert hero + 3 rows (S2-2) | ☐ | ☐ | ☐ | `v2-convert-*` |
+| Charts plot height (S2-3) | ☐ | ☐ | ☐ | `v2-charts-*` |
+| Settings premium de-card | ☐ | — | — | `v2-settings-*` |
+| Remove Ads hides shelf | ☐ | — | — | dev entitlement |
+| Locked pair sheet | ☐ | — | — | `v2-charts-locked` |
+| Dark mode all tabs | ☐ | ☐ | ☐ | `v2-dark-*` |
+| Ad footer integrated | ☐ | — | — | Convert + Charts |
 
-### Sign-off checklist
+### Sign-off
 
-- [ ] Anti-generic checklist in UI_REDESIGN.md — all pass items checked
-- [ ] Traceability table below — every P0 demand has Step + Verified by
-- [ ] `DESIGN.md` synced with `AppTheme`
-- [ ] `.agent/DESIGN_GUIDELINES.md` present
-- [ ] `charts_screen.dart` orchestrator ≤ 80 lines
-- [ ] No new Phase 2 features in UI
-- [ ] User informed on AdMob placeholder vs live ads decision
+- [ ] S2-1 passed (document viewer names + verdict)
+- [ ] `./scripts/check.sh` clean
+- [ ] No file > 200 lines in touched paths
+- [ ] Traceability table below complete
+- [ ] User informed on AdMob placeholder decision
 
 ---
 
-## Traceability table
+## Traceability table (D2-* → files → steps)
 
-| Demand ID | UI_REDESIGN section | Primary files | Step # | Verified by |
-|-----------|---------------------|---------------|--------|-------------|
-| S-1 | Success criteria | all features | 2.12, 3.13, 4.11, 6 | Screenshots |
-| S-2 | Quality gate | — | 0.7, 1.5, 2.10, 3.12, 4.11, 6 | `./scripts/check.sh` |
-| S-3 | Store-readiness QA | Convert, Charts | 2.9, 3.11, 6 | Text scale tests + screenshots |
-| S-4 | Store-readiness QA | touch targets | 2.8, 3.10 | Widget keys + manual |
-| S-5 | Monetization | `monetization/`, `ad_support_shelf.dart` | 2.7, 3.8, 5.3 | Manual + dev toggles |
-| S-6 | Product posture | — | 5.5 | Code review |
-| S-7 | Modularity | `charts_screen.dart` | 3.1 | Line count |
-| G-1 | Global layout | `app.dart`, `floating_pill_nav.dart` | 5.1 | Code review |
-| G-2 | Favorites deferred | `app.dart` | 5.5 | Code review |
-| G-3 | Tokens / padding | `app_theme.dart`, screens | 0.2, 2.3, 4.9 | Code review |
-| G-6 | Typography | headlines | 0.5, 1.2 | Visual |
-| G-8 | Stitch | docs only | 5.7 | Doc review |
-| D-CON-1 | Convert | `amount_header_row.dart` | 2.4 | Screenshot |
-| D-CON-3 | Convert | `amount_status_bar.dart` | 2.5 | Manual |
-| D-CON-4 | Convert | `currency_rate_row.dart` | 2.6 | Screenshot |
-| D-CON-6 | Convert | `ad_support_shelf.dart` | 2.7 | Manual |
-| D-CON-7 | Convert | controller + row | 2.6 | Manual |
-| D-CON-8 | Convert | `rates_section_header.dart` | 2.2 | Screenshot |
-| D-CON-9 | Convert | `inline_empty_panel.dart` | 2.1 | Screenshot |
-| D-CON-10 | Convert | `amount_panel.dart` | 2.4 | Code review |
-| D-CHT-1 | Charts | `chart_header.dart` | 3.4 | Screenshot |
-| D-CHT-8 | Charts | chart widgets | 3.6, 3.7 | Code + visual |
-| D-CHT-9 | Charts | `charts_chart_section.dart` | 3.2 | Screenshot |
-| D-CHT-10 | Charts | layout reorder | 3.2, 3.3 | Screenshot |
-| D-CHT-11 | Charts | split files | 3.1 | Line count |
-| D-SET-1 | Settings | `settings_screen.dart` | 4.1 | Screenshot |
-| D-SET-5 | Settings | `settings_data_section.dart` | 4.5 | Manual |
-| D-SET-6 | Settings | `upgrade_shelf.dart` | 4.3 | Screenshot |
-| D-FAV-1 | Favorites | `app.dart` | 5.5 | Code review |
-| M-1 | Monetization | `ad_banner_placeholder.dart` | 5.8 | Product gate |
-| M-2 | Monetization | `remove_ads_button.dart` | 2.7 | Manual |
-| M-4 | Monetization | `premium_section.dart` | 4.4 | Screenshot |
-| M-6 | Monetization | `locked_pair_action_sheet.dart` | 3.8 | Screenshot |
-| M-7 | Monetization | `rewarded_ad_player.dart` | 3.7 | Visual |
-| M-8 | Monetization | `range_selector.dart` | 3.9 | Manual tap |
+| Demand ID | Primary files | Step | Verified by |
+|-----------|---------------|------|-------------|
+| S2-1 | all tabs | D.4 | Non-dev review |
+| S2-2 | `amount_panel.dart`, `visible_rates_list.dart` | A.1.13 | Screenshot SE |
+| S2-3 | `charts_chart_section.dart`, `chart_header.dart` | B.11 | Screenshot SE |
+| S2-5 | tests, simulator | A.1.11, B.10 | check.sh + text scale |
+| S2-6 | touch targets | A.1.10, B.9 | Manual |
+| S2-10 | theme + screens | C.6, D.3 | Dark screenshots |
+| G2-4 | `instrument_panel.dart` | A.0.5, A.1.2 | Visual |
+| G2-5 | `canvas_background.dart` | A.0.4, A.1.9 | Visual |
+| G2-6 | amount/charts switchers | A.1.6, B.7 | Visual |
+| G2-8 | `quote_identity.dart`, pair strip | D.1 | Visual |
+| D2-CON-1 | `amount_panel.dart`, `amount_editing_field.dart` | A.1.2 | v2-convert |
+| D2-CON-2 | `amount_header_row.dart` | A.1.3 | v2-convert |
+| D2-CON-3 | `amount_status_bar.dart` | A.1.4 | v2-convert |
+| D2-CON-5 | `rates_section_header.dart` | A.1.5 | v2-convert |
+| D2-CON-6 | delete `amount_card.dart` | A.1.1 | Code review |
+| D2-CON-7 | `designed_state_panel.dart` | A.1.7 | v2-convert empty |
+| D2-CON-8 | `amount_editing_field.dart` | A.1.6 | Visual |
+| D2-CON-10 | `ad_support_shelf.dart` | A.1.8 | v2-convert footer |
+| D2-CHT-1 | `chart_header.dart` | B.1 | v2-charts |
+| D2-CHT-2 | `charts_tab_body.dart` | B.2 | v2-charts |
+| D2-CHT-3 | `charts_chart_section.dart` | B.3 | v2-charts |
+| D2-CHT-5 | `chart_pair_strip.dart` | B.5 | v2-charts |
+| D2-CHT-6 | `chart_metric_rail.dart` | B.4 | v2-charts |
+| D2-CHT-8 | empty/error states | B.6 | v2-charts |
+| D2-CHT-9 | `charts_chart_section.dart` | B.7 | Visual |
+| D2-CHT-12 | `ad_support_shelf.dart` | B.8 | v2-charts footer |
+| D2-SET-3 | `upgrade_shelf.dart` | C.1 | v2-settings |
+| D2-SET-5 | `settings_data_section.dart` | C.3 | Manual |
+| D2-SET-6 | `data_details_page.dart`, `data_sources_page.dart` | C.4–C.5 | Navigation |
+| D2-SET-8 | settings + theme | C.6 | Dark |
+| M2-1 | `ad_support_shelf.dart` | A.1.8, B.8 | Screenshot |
+| M2-2 | `remove_ads_button.dart` | A.1.8 | Screenshot |
+| M2-3 | `upgrade_shelf.dart` | C.1 | v2-settings |
+
+---
+
+## Estimated effort
+
+| Wave | Effort | Visible impact |
+|------|--------|----------------|
+| A.0 | 0.5 day | Low (foundation) |
+| A.1 | 1.5 days | **Highest** |
+| B | 1.5 days | **Very high** |
+| C | 0.75 day | Medium |
+| D | 0.5 day | Polish + S2-1 gate |
+
+**Total:** ~4.5–5 focused days including QA and non-dev screenshot review.
 
 ---
 
@@ -367,23 +458,19 @@ IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/run_ios_minimal_smoke.sh
 
 | File | When |
 |------|------|
-| `DESIGN.md` | After Phase 0 |
-| `.agent/DESIGN_GUIDELINES.md` | Phase 0 create; refine after Phase 6 |
-| `ROADMAP.md` | Only if screen contract wording changes — avoid drive-by |
-| `AGENTS.md` | If new screenshot names or verification loop becomes standard |
+| `DESIGN.md` | After A.0 — hero scale, instrument panel, gradient |
+| `.agent/DESIGN_GUIDELINES.md` | After D — v2 verification loop |
+| `AGENTS.md` | If `v2-*` screenshot names become standard |
 
 ---
 
-## Estimated effort (guidance)
+## Stitch (exploration only)
 
-| Phase | Effort |
-|-------|--------|
-| 0 | 0.5 day |
-| 1 | 0.5 day |
-| 2 | 1 day |
-| 3 | 1.5 days |
-| 4 | 0.5 day |
-| 5 | 0.5 day |
-| 6 | 0.5 day |
+If v2 visuals stall, run Stitch **after** Wave A.1 screenshot exists:
 
-**Total:** ~4–5 focused days including QA loops.
+1. Capture `v2-convert-1x` + reference competitors
+2. Extract composition ideas (hero well proportion, chart masthead density)
+3. Implement in Flutter — **never** import generated code
+4. Re-screenshot against baseline for S2-1
+
+Stitch project IDs: see `AGENTS.md`.
