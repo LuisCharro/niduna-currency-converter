@@ -35,6 +35,41 @@ run_flutter() {
   exit 1
 }
 
+resolve_adb_bin() {
+  if [[ -n "${ADB_BIN:-}" ]]; then
+    if [[ ! -x "${ADB_BIN}" ]]; then
+      echo "ADB_BIN is set but not executable: ${ADB_BIN}" >&2
+      exit 1
+    fi
+    printf '%s\n' "${ADB_BIN}"
+    return
+  fi
+
+  if command -v adb >/dev/null 2>&1; then
+    command -v adb
+    return
+  fi
+
+  for candidate in \
+    "${HOME}/Library/Android/sdk/platform-tools/adb" \
+    /opt/homebrew/bin/adb \
+    /usr/local/bin/adb; do
+    if [[ -x "${candidate}" ]]; then
+      printf '%s\n' "${candidate}"
+      return
+    fi
+  done
+
+  echo "adb was not found. Install Android platform-tools or set ADB_BIN." >&2
+  exit 1
+}
+
+run_adb() {
+  local adb_bin
+  adb_bin="$(resolve_adb_bin)"
+  run_in_repo "${adb_bin}" "$@"
+}
+
 flutter_app_define_args() {
   local provider_profile="${PROVIDER_PROFILE:-release_safe}"
   local app_dev_mode="${APP_DEV_MODE:-false}"

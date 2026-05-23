@@ -282,6 +282,11 @@ IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} \
   BUNDLE_ID=com.niduna.currencyConverter \
   ./.devtools/sim_reinstall_build.sh
 
+# Android emulator build + reinstall + launch updated app
+ANDROID_SERIAL=${ANDROID_SERIAL:-booted} \
+  ANDROID_PACKAGE_NAME=com.niduna.currency_converter \
+  ./.devtools/android_reinstall_build.sh
+
 # Override emulator to safe release-style providers if needed
 IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} \
   PROVIDER_PROFILE=release_safe \
@@ -349,6 +354,7 @@ For build/reinstall workflows after code changes, prefer `sim_reinstall_build.sh
 | `sim_tap.sh` | Tap coordinates | `IOS_SIMULATOR_ID` |
 | `sim_wait_ready.sh` | Poll app ready state | `IOS_SIMULATOR_ID` |
 | `sim_reinstall_build.sh` | Build + reinstall + launch updated app | `IOS_SIMULATOR_ID`, `BUNDLE_ID`, `IOS_APP_PATH`, `BUILD_FIRST` |
+| `android_reinstall_build.sh` | Build + reinstall + launch updated app on Android | `ANDROID_SERIAL` (or auto-detect), `ANDROID_PACKAGE_NAME`, `ANDROID_APK_PATH`, `BUILD_FIRST` |
 | `sim_uninstall.sh` | Uninstall from simulator | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `sim_fresh_install.sh` | Uninstall + fresh run | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `capture_tabs.sh` | Auto-capture all tabs | `IOS_SIMULATOR_ID` |

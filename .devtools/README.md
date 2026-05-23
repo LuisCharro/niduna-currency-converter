@@ -164,6 +164,37 @@ IOS_SIMULATOR_ID=<ios_simulator_id> BUNDLE_ID={{BUNDLE_ID}} \
   ./.devtools/sim_reinstall_build.sh
 ```
 
+## Android build + reinstall + launch
+
+```bash
+./.devtools/android_reinstall_build.sh
+```
+
+What it does:
+
+- builds the current Android debug APK
+- force-stops the old app on the target emulator/device
+- reinstalls the APK, falling back to uninstall + reinstall if needed
+- if the full debug APK fails because the emulator is low on space, it automatically builds a split APK for the device ABI and retries with the smaller package
+- launches the app after install
+- defaults to the dev crypto provider profile and visible developer UI
+
+Useful environment variables:
+
+- `ANDROID_SERIAL` (default: `booted`, auto-detect first running emulator/device)
+- `ANDROID_PACKAGE_NAME` (default: `{{ANDROID_PACKAGE_NAME}}`)
+- `ANDROID_APK_PATH` (default: `build/app/outputs/flutter-apk/app-debug.apk`)
+- `ADB_BIN` (auto-detected if unset)
+- `BUILD_FIRST` (`1` default, set `0` to skip build)
+- `GRANT_PERMISSIONS` (`1` default, set `0` to skip `adb install -g`)
+- `UNINSTALL_FIRST` (`1` default, set `0` to skip the pre-install uninstall)
+- `SPLIT_PER_ABI_ON_LOW_STORAGE` (`1` default, set `0` to disable automatic low-storage fallback)
+
+If `ANDROID_SERIAL` is unset, the script prefers the first running emulator
+reported by `adb devices`. If no emulator is running, it falls back to the
+first connected Android device. If neither exists, it prints connected devices
+plus available AVD names to help you pick a target.
+
 ## Environment variables
 
 | Variable | Purpose | Default |
@@ -171,7 +202,7 @@ IOS_SIMULATOR_ID=<ios_simulator_id> BUNDLE_ID={{BUNDLE_ID}} \
 | `IOS_SIMULATOR_ID` | Target iOS simulator UUID | `booted` |
 | `IOS_BUNDLE_ID` | iOS bundle identifier | `{{BUNDLE_ID}}` |
 | `BUNDLE_ID` | Alias for IOS_BUNDLE_ID | `{{BUNDLE_ID}}` |
-| `ANDROID_SERIAL` | Target Android device/emulator | `emulator-5554` |
+| `ANDROID_SERIAL` | Target Android device/emulator | `booted` (auto-detect first running target) |
 | `ANDROID_PACKAGE_NAME` | Android package name | `{{ANDROID_PACKAGE_NAME}}` |
 | `ADB_BIN` | Explicit path to adb | auto-detected |
 | `FLUTTER_BIN` | Explicit path to flutter | auto-detected |
