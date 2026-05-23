@@ -30,12 +30,14 @@ class AmountValueRow extends StatelessWidget {
         final inlineWidth = constraints.maxWidth -
             AmountBaseButton.estimatedWidth(compact: true) -
             AppTheme.space3;
+        final safeInlineWidth = inlineWidth < 1 ? 1.0 : inlineWidth;
         final inlineStyle = _adaptiveStyleForWidth(
           display,
           baseStyle,
-          inlineWidth,
+          safeInlineWidth,
         );
-        final showsInlineSelector = _fitsWidth(display, inlineStyle, inlineWidth);
+        final showsInlineSelector =
+            _fitsWidth(display, inlineStyle, safeInlineWidth);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

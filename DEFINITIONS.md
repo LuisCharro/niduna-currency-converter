@@ -25,7 +25,7 @@
 - Charts: fiat charts remain available up to 2 years; crypto-involved charts are limited to 1 year on the no-key path.
 - Phase 1 = MVP (free, ads, no backend); Phase 1.x = no-key BTC/ETH latest + daily charts; Phase 2 = Backend + Subscriptions; Phase 3 = Metals + Extensions
 - CoinGecko API key required — do not embed it in the mobile app. Current BTC/ETH support uses no-key providers instead.
-- i18n: Phase 1 ships with **English only** — add DE, FR, IT, ES, PT in Phase 1.x updates
+- i18n: MVP must ship with **EN, DE, ES, IT, FR** for user-facing app text
 - Rate alerts are deferred out of Phase 1. Phase 2 owns push alerts; optional in-app-only alerts can be reconsidered after the MVP ships.
 - Monetization access policy (approved): active subscription unlocks all premium features and hides ads; without subscription, users can still buy one-time unlocks.
 
@@ -44,7 +44,7 @@ first or defer the idea.
 - Phase 1 has zero tracking, zero analytics, and zero data collection.
 - Phase 1 monetization is banner ads, one-time Remove Ads (1.99 CHF), one-time Charts Pro (2.99 CHF), and optional subscription (Coming Soon — pricing TBD).
 - Phase 1 has four tabs only: `Convert`, `Favorites`, `Charts`, `Settings`. (Favorites tab hidden in v1 UI; code retained for Phase 2 re-enablement)
-- Phase 1 is English only.
+- Phase 1 includes EN, DE, ES, IT, FR localization for meaningful user-facing text.
 - RUB is not supported.
 - Dark mode is free and available in v1 (follows system default; toggle in Settings).
 - Data freshness: Frankfurter/ECB fiat rates update once daily (~16:00 CET). Crypto latest and crypto charts also refresh on a daily app policy. App must communicate app-level freshness clearly.
@@ -131,6 +131,7 @@ large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 | **Dark mode** | Free in 2026 — do NOT charge for this |
 | **Ads** | Banner only (AdMob or similar) |
 | **Data source** | Frankfurter v2 (`api.frankfurter.dev`), no API key, no monthly quota, anti-abuse rate limiting |
+| **Localization** | App UI text localized in EN, DE, ES, IT, FR (currency codes/tickers remain standard) |
 
 ### ❌ Phase 1 OUT
 
@@ -320,7 +321,7 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 | Single or dual Remove Ads option at launch? | ⚠️ | Recommend launching with **one option only** (1.99 CHF forever); add rental in Phase 2 if data shows demand |
 | Currency app chart limit | ⚠️ | **Unverified from public sources** — Luis observed 1-chart free, but App Store listing does NOT specify this. Must verify directly in the app before publishing |
 | RUB compliance | ⚠️ | Swiss law / export regulations on showing RUB rates via an alternative source — consult a lawyer if RUB is important |
-| i18n languages | ✅ Decided | Phase 1: English only. Phase 1.x: add DE, FR, IT, ES, PT |
+| i18n languages | ✅ Decided | MVP includes EN, DE, ES, IT, FR; user-facing text should be localized across core screens |
 
 ---
 

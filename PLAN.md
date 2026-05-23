@@ -381,7 +381,9 @@ lib/
 - [x] Slice 9: hide Favorites tab, data freshness indicator, dark mode, intraday toast copy fix, subscription v1 copy
 - [ ] Slice 10: update root docs for the no-key BTC/ETH scope
 - [x] Slice 11: add BTC/ETH and mixed fiat/crypto charts up to 1 year
-- [ ] Keep English-only launch text; add DE, FR, IT, ES, PT in Phase 1.x updates
+- [ ] Implement MVP localization for EN, DE, ES, IT, FR across meaningful user-facing text
+  - Step 1 (system wiring): connect `MaterialApp` to `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales`; migrate meaningful user-facing labels/messages to localization keys (`AppLocalizations.of(context)`)
+  - Step 2 (language content): add and validate ARB translations for EN, DE, ES, IT, FR across Convert, Charts, Settings, dialogs/sheets, empty/error states, and accessibility labels/tooltips where user-visible
 - [x] Write/update smoke tests as each slice becomes user-visible
 - [ ] Build and test APK before release candidate
 

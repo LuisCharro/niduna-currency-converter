@@ -157,7 +157,7 @@ storeFile=/Users/luis/niduna-release-key.jks
 | 8.2 | Short description (max 80 chars) | ❌ | See 7.6 above |
 | 8.3 | Full description (max 4000 chars) | ❌ | See 7.7 above |
 | 8.4 | Contact email / website / privacy policy URL | ❌ | Required fields in Console |
-| 8.5 | Default language set (English) | ❌ | Add translations later |
+| 8.5 | Default language set + localized listings (EN, DE, ES, IT, FR) | ❌ | MVP scope: provide localized app/store text for these languages |
 
 ---
 
@@ -258,7 +258,8 @@ Items marked ⏸️ can be shipped in a future update:
 - Analytics / crash reporting
 - Tablet-specific screenshots
 - Promo video
-- Translations beyond English
+
+MVP note: translations are NOT deferred. Release scope includes EN, DE, ES, IT, FR for meaningful user-facing app and listing text.
 
 ---
 

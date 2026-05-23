@@ -190,7 +190,7 @@ Apple has stricter screenshot requirements than Play Store.
 | 8.4 | Full description (4000 char max) | ❌ | Feature list, privacy-first positioning, what makes it different |
 | 8.5 | What's New text drafted | ❌ | Required for every update. First submit: describe initial feature set |
 | 8.6 | Copyright notice | ❌ | Format: `© 2026 Luis Charro` (or your legal entity) |
-| 8.7 | Default language set (English) | ❌ | Add localizations later |
+| 8.7 | Default language + localized metadata (EN, DE, ES, IT, FR) | ❌ | MVP scope: provide localized app/store text for these languages |
 | 8.8 | Contact info in App Store Connect | ❌ | Name, email, phone (visible to users) |
 
 ---
@@ -327,8 +327,9 @@ Items marked ⏸️ can be shipped in a future update:
 - Analytics / crash reporting
 - iPad-specific screenshots (if not claiming iPad support initially)
 - App preview video
-- Translations beyond English
 - TestFlight external testing setup
+
+MVP note: translations are NOT deferred. Release scope includes EN, DE, ES, IT, FR for meaningful user-facing app and listing text.
 
 ---
 

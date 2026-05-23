@@ -626,7 +626,7 @@ UI redesign iteration 2 is on branch `turbo/ui-redesign` (not yet merged).
 | Privacy policy URL | **NOT DONE** | Required for both stores |
 | Store listing assets (screenshots, description) | **NOT DONE** | Both stores |
 | Branded CFBundleDisplayName / android:label | **NOT DONE** | Currently generic "Currency Converter" / "currency_converter" |
-| i18n (DE, FR, IT, ES, PT) | **NOT DONE** | English only; planned for Phase 1.x |
+| i18n (EN, DE, ES, IT, FR) | **NOT DONE** | MVP requirement: localize meaningful user-facing text on core screens |
 
 ### Next Best Step
 
