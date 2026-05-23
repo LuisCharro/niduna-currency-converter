@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 
 class AmountPresets extends StatelessWidget {
-  const AmountPresets({required this.onSelected, super.key});
+  const AmountPresets({
+    required this.onSelected,
+    required this.selectedValue,
+    super.key,
+  });
 
   final ValueChanged<String> onSelected;
+  final String selectedValue;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +22,7 @@ class AmountPresets extends StatelessWidget {
               label: preset.label,
               value: preset.value,
               onSelected: onSelected,
+              isSelected: selectedValue == preset.value,
             ),
           ),
           if (preset != _presets.last) const SizedBox(width: 8),
@@ -31,11 +37,13 @@ class _PresetChip extends StatelessWidget {
     required this.label,
     required this.value,
     required this.onSelected,
+    required this.isSelected,
   });
 
   final String label;
   final String value;
   final ValueChanged<String> onSelected;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +51,15 @@ class _PresetChip extends StatelessWidget {
       onPressed: () => onSelected(value),
       style: OutlinedButton.styleFrom(
         minimumSize: const Size(0, 44),
-        foregroundColor: AppTheme.primary,
-        side: BorderSide(color: AppTheme.border.withValues(alpha: .16)),
+        foregroundColor: isSelected ? AppTheme.card : AppTheme.primary,
+        backgroundColor: isSelected
+            ? AppTheme.primary
+            : AppTheme.container.withValues(alpha: .45),
+        side: BorderSide(
+          color: isSelected
+              ? AppTheme.primary
+              : AppTheme.border.withValues(alpha: .16),
+        ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         textStyle: const TextStyle(fontWeight: FontWeight.w800),
       ),

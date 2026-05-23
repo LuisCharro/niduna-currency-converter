@@ -9,58 +9,68 @@ class AmountInputHeader extends StatelessWidget {
     required this.amount,
     required this.currency,
     required this.base,
+    required this.onCancel,
     super.key,
   });
 
   final String amount;
   final SupportedCurrency currency;
   final String base;
+  final VoidCallback onCancel;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppTheme.container.withValues(alpha: .52),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppTheme.border.withValues(alpha: .12)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(
-                  'Amount',
-                  style: AppTheme.caption.copyWith(color: AppTheme.muted),
-                ),
-                const Spacer(),
-                _CurrencyChip(currency: currency, base: base),
-              ],
+            Text(
+              'Edit amount',
+              style: AppTheme.caption.copyWith(color: AppTheme.muted),
             ),
-            const SizedBox(height: 10),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final display =
-                    '${currency.symbol} ${amount.isEmpty ? '0' : amount}';
-                final style = _adaptiveStyleForWidth(display, constraints.maxWidth);
-                return AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 150),
-                  curve: Curves.easeOut,
-                  style: style,
-                  child: Text(
-                    display,
-                    key: ValueKey<String>(display),
-                    maxLines: 1,
-                    overflow: TextOverflow.visible,
-                  ),
-                );
-              },
+            const Spacer(),
+            TextButton(
+              onPressed: onCancel,
+              style: TextButton.styleFrom(
+                foregroundColor: AppTheme.muted,
+                textStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              child: const Text('Cancel'),
             ),
           ],
         ),
-      ),
+        const SizedBox(height: 2),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final display = '${currency.symbol} ${amount.isEmpty ? '0' : amount}';
+            final style = _adaptiveStyleForWidth(display, constraints.maxWidth);
+            return AnimatedDefaultTextStyle(
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeOut,
+              style: style,
+              child: Text(
+                display,
+                key: ValueKey<String>(display),
+                maxLines: 1,
+                overflow: TextOverflow.visible,
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+        _CurrencyChip(currency: currency, base: base),
+        const SizedBox(height: 14),
+        Divider(color: AppTheme.border.withValues(alpha: .12), height: 1),
+        const SizedBox(height: 14),
+        Text(
+          'Quick amounts',
+          style: AppTheme.caption.copyWith(color: AppTheme.muted),
+        ),
+      ],
     );
   }
 
@@ -118,7 +128,7 @@ class _CurrencyChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
       decoration: BoxDecoration(
         color: AppTheme.card,
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
@@ -127,9 +137,12 @@ class _CurrencyChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CurrencyFlagIcon(code: base, symbol: currency.symbol, radius: 11),
-          const SizedBox(width: 6),
-          Text(base, style: const TextStyle(fontWeight: FontWeight.w800)),
+          CurrencyFlagIcon(code: base, symbol: currency.symbol, radius: 10),
+          const SizedBox(width: 5),
+          Text(
+            base,
+            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13),
+          ),
         ],
       ),
     );

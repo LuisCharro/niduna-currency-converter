@@ -130,36 +130,40 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Done'), findsOneWidget);
+    expect(find.text('Cancel'), findsOneWidget);
+    expect(find.text('Quick amounts'), findsOneWidget);
     expect(find.text('1K'), findsOneWidget);
     expect(find.byIcon(Icons.backspace_outlined), findsOneWidget);
 
     await tester.tap(find.text('5'));
     await tester.pumpAndSettle();
 
-    expect(controller.state.amountText, '5');
-    expect(controller.state.quotes.first.amount, '4.60');
+    expect(controller.state.amountText, '100.00');
+    expect(controller.state.quotes.first.amount, '92.00');
 
     await tester.tap(find.text('.'));
     await tester.tap(find.text('2'));
     await tester.pumpAndSettle();
 
-    expect(controller.state.amountText, '5.2');
+    expect(controller.state.amountText, '100.00');
 
     await tester.tap(find.byIcon(Icons.backspace_outlined));
     await tester.pumpAndSettle();
 
-    expect(controller.state.amountText, '5.');
+    expect(controller.state.amountText, '100.00');
 
     await tester.tap(find.text('1K'));
     await tester.pumpAndSettle();
 
-    expect(controller.state.amountText, '1000');
-    expect(controller.state.quotes.first.amount, '920.00');
+    expect(controller.state.amountText, '100.00');
+    expect(controller.state.quotes.first.amount, '92.00');
 
     await tester.tap(find.text('Done'));
     await tester.pumpAndSettle();
 
     expect(find.text('Done'), findsNothing);
+    expect(controller.state.amountText, '1000');
+    expect(controller.state.quotes.first.amount, '920.00');
   });
 
   testWidgets('Convert daily rates info opens from compact status', (

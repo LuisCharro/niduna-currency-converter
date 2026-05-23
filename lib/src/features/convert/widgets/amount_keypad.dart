@@ -60,21 +60,33 @@ class _Key extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppTheme.containerHigh.withValues(alpha: .35),
+      color: AppTheme.container.withValues(alpha: .9),
       borderRadius: BorderRadius.circular(18),
+      shadowColor: AppTheme.primary.withValues(alpha: .08),
+      elevation: 1,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(18),
-        child: Center(
-          child: icon == null
-              ? Text(
-                  label!,
-                  style: const TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w800,
-                  ),
-                )
-              : Icon(icon, color: AppTheme.text, size: 22),
+        overlayColor: WidgetStatePropertyAll(
+          AppTheme.primary.withValues(alpha: .06),
+        ),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AppTheme.border.withValues(alpha: .08)),
+          ),
+          child: Center(
+            child: icon == null
+                ? Text(
+                    label!,
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w800,
+                      color: AppTheme.text,
+                    ),
+                  )
+                : Icon(icon, color: AppTheme.text, size: 22),
+          ),
         ),
       ),
     );

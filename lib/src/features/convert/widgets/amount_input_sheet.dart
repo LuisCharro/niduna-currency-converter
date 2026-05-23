@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_theme.dart';
@@ -10,13 +11,11 @@ class AmountInputSheet extends StatefulWidget {
   const AmountInputSheet({
     required this.amountText,
     required this.base,
-    required this.onAmountChanged,
     super.key,
   });
 
   final String amountText;
   final String base;
-  final ValueChanged<String> onAmountChanged;
 
   @override
   State<AmountInputSheet> createState() => _AmountInputSheetState();
@@ -26,16 +25,18 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
   late String _amount = widget.amountText;
   bool _shouldReplace = true;
 
+  bool get _isDirty => _amount != widget.amountText;
+
   void _setAmount(String value, {bool replaceNext = false}) {
     final next = value == '0' ? '' : value;
     setState(() {
       _amount = next;
       _shouldReplace = replaceNext;
     });
-    widget.onAmountChanged(next);
   }
 
   void _handleDigit(String digit) {
+    HapticFeedback.selectionClick();
     if (_shouldReplace || _amount == '0') {
       _setAmount(digit);
       return;
@@ -44,11 +45,13 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
   }
 
   void _handleDecimal() {
+    HapticFeedback.selectionClick();
     if (_amount.contains('.')) return;
     _setAmount(_shouldReplace || _amount.isEmpty ? '0.' : '$_amount.');
   }
 
   void _handleBackspace() {
+    HapticFeedback.selectionClick();
     if (_amount.isEmpty || _shouldReplace) {
       _setAmount('');
       return;
@@ -73,9 +76,16 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
               amount: _amount,
               currency: currency,
               base: widget.base,
+              onCancel: () => Navigator.of(context).pop(),
             ),
-            const SizedBox(height: 16),
-            AmountPresets(onSelected: (value) => _setAmount(value)),
+            const SizedBox(height: 14),
+            AmountPresets(
+              selectedValue: _amount,
+              onSelected: (value) {
+                HapticFeedback.selectionClick();
+                _setAmount(value);
+              },
+            ),
             const SizedBox(height: 14),
             AmountKeypad(
               onDigit: _handleDigit,
@@ -84,11 +94,15 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
             ),
             const SizedBox(height: 14),
             FilledButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(context).pop(_amount),
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
-                backgroundColor: AppTheme.primary,
-                foregroundColor: AppTheme.card,
+                backgroundColor: _isDirty
+                    ? AppTheme.primary
+                    : AppTheme.primary.withValues(alpha: .82),
+                foregroundColor: AppTheme.card.withValues(
+                  alpha: _isDirty ? 1 : .94,
+                ),
                 textStyle: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w800,

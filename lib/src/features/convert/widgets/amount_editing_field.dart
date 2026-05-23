@@ -79,17 +79,20 @@ class AmountEditingField extends StatelessWidget {
     return baseStyle.copyWith(fontSize: AppTheme.heroAmountSizes.last);
   }
 
-  void _openAmountSheet(BuildContext context) {
-    showModalBottomSheet<void>(
+  Future<void> _openAmountSheet(BuildContext context) async {
+    final nextAmount = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
       backgroundColor: AppTheme.card,
+      barrierColor: Colors.black.withValues(alpha: .36),
       builder: (context) => AmountInputSheet(
         amountText: amountText,
         base: base,
-        onAmountChanged: onAmountChanged,
       ),
     );
+    if (nextAmount != null) {
+      onAmountChanged(nextAmount);
+    }
   }
 }
