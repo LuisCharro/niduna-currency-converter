@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/currency/supported_currencies.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../models/currency_quote.dart';
 
 class ConversionLensSheet extends StatelessWidget {
@@ -122,6 +123,7 @@ class _LensCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final l10n = AppLocalizations.of(context);
     final quickBase = _baseValues(amount);
     final reverseTargets = _reverseTargets();
     final amountLabel = _formatHeroBase(amount, base);
@@ -149,7 +151,7 @@ class _LensCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('CONVERSION LENS', style: AppTheme.sectionLabel),
+                      Text(l10n?.conversionLensTitle ?? "Conversion Lens", style: AppTheme.sectionLabel),
                       const SizedBox(height: 6),
                       Text(
                         '${quote.name} · ${quote.code}',

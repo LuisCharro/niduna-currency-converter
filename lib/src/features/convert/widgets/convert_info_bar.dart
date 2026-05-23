@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class ConvertInfoBar extends StatelessWidget {
   const ConvertInfoBar({
@@ -19,6 +20,7 @@ class ConvertInfoBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final colors = AppColors.of(context);
     final details = message == null
         ? '$statusLabel · $count currencies'
@@ -54,7 +56,7 @@ class ConvertInfoBar extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
               ),
               icon: const Icon(Icons.add_rounded, size: 17),
-              label: const Text('Add'),
+              label: Text(l10n?.btnAdd ?? "Add"),
             ),
           ],
         ),

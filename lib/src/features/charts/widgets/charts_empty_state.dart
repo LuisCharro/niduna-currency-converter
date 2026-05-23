@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/designed_state_panel.dart';
 
 class ChartsEmptyState extends StatelessWidget {
@@ -8,11 +9,12 @@ class ChartsEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final l10n = AppLocalizations.of(context);
+    return Center(
       child: DesignedStatePanel(
         compact: true,
         icon: Icons.show_chart_rounded,
-        title: 'No history yet',
+        title: l10n?.noRatesTitle ?? 'No history yet',
         subtitle: 'Try another range or currency pair',
         accent: AppTheme.primary,
       ),

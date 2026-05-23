@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'amount_input_header.dart';
 import 'amount_keypad.dart';
 import 'amount_presets.dart';
@@ -61,6 +62,7 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final currency = currencyByCode(widget.base);
     final colors = AppColors.of(context);
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
@@ -109,7 +111,7 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
                   fontWeight: FontWeight.w800,
                 ),
               ),
-              child: const Text('Done'),
+              child: Text(l10n?.btnDone ?? "Done"),
             ),
           ],
         ),

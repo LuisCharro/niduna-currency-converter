@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/currency_picker_chrome.dart';
 import 'currency_picker_tile.dart';
 
@@ -33,6 +34,7 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final currencies = _visibleCurrencies();
     return DraggableScrollableSheet(
       expand: false,
@@ -44,7 +46,7 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
           child: Column(
             children: <Widget>[
-              CurrencyPickerHeader(title: widget.title, subtitle: _subtitle),
+              CurrencyPickerHeader(title: widget.title, subtitle: _subtitle(l10n)),
               const SizedBox(height: 12),
               CurrencyPickerSearchField(
                 onChanged: (value) => setState(() => _query = value),
@@ -125,7 +127,7 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
     return isFiatCurrency(code) ? 0 : 1;
   }
 
-  String get _subtitle {
+  String _subtitle(AppLocalizations? l10n) {
     if (widget.selectBaseMode) {
       return 'Current base ${widget.base} · fiat and crypto';
     }

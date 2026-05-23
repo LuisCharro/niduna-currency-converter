@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
+import '../../../l10n/app_localizations_safe.dart';
 import '../../shared/widgets/divider_list_row.dart';
 import '../../shared/widgets/pill_action.dart';
 import '../convert/domain/latest_rates_snapshot.dart';
@@ -86,6 +87,7 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = l10n(context);
     return Row(
       children: <Widget>[
         Expanded(
@@ -93,7 +95,7 @@ class _Header extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Favorites',
+                loc.tabFavorites,
                 style: AppTheme.heading.copyWith(
                   fontFamily: 'Fraunces',
                   fontSize: 28,
@@ -109,7 +111,7 @@ class _Header extends StatelessWidget {
           ),
         ),
         if (canAdd)
-          PillAction(label: 'Add', icon: Icons.add_rounded, onTap: onAdd),
+          PillAction(label: loc.btnAdd, icon: Icons.add_rounded, onTap: onAdd),
       ],
     );
   }
@@ -123,6 +125,7 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = l10n(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -140,7 +143,7 @@ class _EmptyState extends StatelessWidget {
               Icon(Icons.star_outline_rounded, size: 52, color: AppColors.of(context).muted),
               const SizedBox(height: 14),
               Text(
-                'No saved pairs yet',
+                loc.labelNoFavorites,
                 style: AppTheme.heading.copyWith(fontSize: 20),
               ),
               const SizedBox(height: 8),

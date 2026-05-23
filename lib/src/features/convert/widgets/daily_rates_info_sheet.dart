@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class DailyRatesInfoSheet extends StatelessWidget {
   const DailyRatesInfoSheet({
@@ -16,6 +17,7 @@ class DailyRatesInfoSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final l10n = AppLocalizations.of(context);
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -24,7 +26,7 @@ class DailyRatesInfoSheet extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Daily exchange rates', style: AppTheme.heading),
+              Text(l10n?.dailyRatesTitle ?? "Daily exchange rates", style: AppTheme.heading),
               const SizedBox(height: 12),
               Text(
                 'The free version updates exchange rates once per day. They are '

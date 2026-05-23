@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/rates/provider_usage_info.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 
 class DataSourcesPage extends StatelessWidget {
   const DataSourcesPage({super.key});
@@ -10,6 +11,7 @@ class DataSourcesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final usage = ProviderUsageInfo.fromBuildConfig();
+    final loc = l10n(context);
     final cryptoLatestProvider = usage.roles
         .firstWhere((role) => role.title == 'Crypto latest')
         .provider;
@@ -26,7 +28,7 @@ class DataSourcesPage extends StatelessWidget {
         backgroundColor: AppColors.of(context).bg,
         foregroundColor: AppColors.of(context).text,
         elevation: 0,
-        title: const Text('Data sources'),
+        title: Text(loc.labelDataSources),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(

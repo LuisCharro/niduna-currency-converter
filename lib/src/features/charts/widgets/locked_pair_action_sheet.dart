@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LockedPairActionSheet extends StatelessWidget {
   const LockedPairActionSheet({
@@ -16,6 +17,7 @@ class LockedPairActionSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
@@ -87,7 +89,7 @@ class LockedPairActionSheet extends StatelessWidget {
             const SizedBox(height: 12),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel', style: TextStyle(color: AppColors.of(context).subtle)),
+              child: Text(l10n?.btnCancel ?? 'Cancel', style: TextStyle(color: AppColors.of(context).subtle)),
             ),
           ],
         ),

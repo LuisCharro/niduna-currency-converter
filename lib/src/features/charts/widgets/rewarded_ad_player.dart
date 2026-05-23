@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations.dart';
 
 enum _AdPhase { loading, playing, completed, failed }
 
@@ -79,6 +80,7 @@ class _RewardedAdPlayerState extends State<RewardedAdPlayer>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return FadeTransition(
       opacity: _fadeAnimation,
       child: Material(
@@ -92,13 +94,13 @@ class _RewardedAdPlayerState extends State<RewardedAdPlayer>
                 _buildIcon(context),
                 const SizedBox(height: 20),
                 Text(
-                  _title,
+                  _title(l10n),
                   textAlign: TextAlign.center,
                   style: AppTheme.heading.copyWith(color: _overlayPaper),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  _subtitle,
+                  _subtitle(l10n),
                   textAlign: TextAlign.center,
                   style: AppTheme.caption.copyWith(
                     color: _overlayPaper.withValues(alpha: .65),
@@ -152,7 +154,7 @@ class _RewardedAdPlayerState extends State<RewardedAdPlayer>
     }
   }
 
-  String get _title {
+  String _title(AppLocalizations? l10n) {
     switch (_phase) {
       case _AdPhase.loading:
         return 'Loading ad...';
@@ -165,7 +167,7 @@ class _RewardedAdPlayerState extends State<RewardedAdPlayer>
     }
   }
 
-  String get _subtitle {
+  String _subtitle(AppLocalizations? l10n) {
     switch (_phase) {
       case _AdPhase.loading:
         return 'Preparing your reward';
@@ -174,7 +176,7 @@ class _RewardedAdPlayerState extends State<RewardedAdPlayer>
       case _AdPhase.completed:
         return '${widget.base}/${widget.quote} unlocked for 24h';
       case _AdPhase.failed:
-        return 'Try again later or unlock forever';
+        return l10n?.tryAgainLater ?? 'Try again later or unlock forever';
     }
   }
 }

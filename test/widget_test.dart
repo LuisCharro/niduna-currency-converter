@@ -241,7 +241,7 @@ void main() {
     await tester.tap(find.byKey(const Key('open_base_currency_picker')));
     await tester.pumpAndSettle();
 
-    expect(find.text('Base currency'), findsOneWidget);
+    expect(find.text('Select base currency'), findsOneWidget);
     expect(find.text('Current base USD · fiat and crypto'), findsOneWidget);
     await tester.scrollUntilVisible(
       find.text('Bitcoin'),
@@ -426,7 +426,7 @@ void main() {
     expect(lensRect.bottom, lessThanOrEqualTo(792));
     expect(find.byKey(const Key('conversion_lens_copy_button')), findsOneWidget);
     expect(find.text('Copy'), findsNothing);
-    expect(find.text('CONVERSION LENS'), findsOneWidget);
+    expect(find.text('Conversion Lens'), findsOneWidget);
     expect(find.text('Quick base amounts'), findsOneWidget);
     expect(find.text('Reverse targets'), findsOneWidget);
     expect(find.text('Use'), findsNWidgets(3));
@@ -476,7 +476,7 @@ void main() {
         ),
       ),
     );
-    expect(find.text('No saved pairs yet'), findsOneWidget);
+    expect(find.text('No favorites yet'), findsOneWidget);
   });
 
   testWidgets('Favorites screen shows pair with rate', (

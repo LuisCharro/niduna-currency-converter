@@ -23,6 +23,7 @@ import 'features/favorites/data/favorites_store.dart';
 import 'features/charts/charts_screen.dart';
 import 'features/charts/presentation/charts_controller.dart';
 import 'features/settings/settings_screen.dart';
+import '../../l10n/app_localizations.dart';
 import 'shared/widgets/floating_pill_nav.dart';
 
 class CurrencyConverterApp extends StatelessWidget {
@@ -41,6 +42,8 @@ class CurrencyConverterApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Currency Converter',
       theme: AppTheme.light,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: AppShell(
         convertRepository: convertRepository,
         favoritesStore: favoritesStore,

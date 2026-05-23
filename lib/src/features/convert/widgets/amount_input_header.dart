@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 
 class AmountInputHeader extends StatelessWidget {
@@ -22,13 +23,14 @@ class AmountInputHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
           children: <Widget>[
             Text(
-              'Edit amount',
+              l10n?.amountSheetTitle ?? "Edit amount",
               style: AppTheme.caption.copyWith(color: colors.muted),
             ),
             const Spacer(),
@@ -41,7 +43,7 @@ class AmountInputHeader extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              child: const Text('Cancel'),
+              child: Text(l10n?.btnCancel ?? "Cancel"),
             ),
           ],
         ),
@@ -68,8 +70,8 @@ class AmountInputHeader extends StatelessWidget {
         const SizedBox(height: 14),
         Divider(color: colors.border.withValues(alpha: .12), height: 1),
         const SizedBox(height: 14),
-        Text(
-          'Quick amounts',
+         Text(
+           l10n?.quickAmounts ?? "Quick amounts",
           style: AppTheme.caption.copyWith(color: colors.muted),
         ),
       ],

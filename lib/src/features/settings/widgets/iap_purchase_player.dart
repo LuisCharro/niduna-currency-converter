@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 
 enum _IapPhase { loading, processing, completed, failed }
 
@@ -82,6 +83,7 @@ class _IapPurchasePlayerState extends State<IapPurchasePlayer>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return FadeTransition(
       opacity: _fadeAnimation,
       child: Material(
@@ -95,7 +97,7 @@ class _IapPurchasePlayerState extends State<IapPurchasePlayer>
                 _buildIcon(),
                 const SizedBox(height: 20),
                 Text(
-                  _title,
+                  _title(l10n),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 18,
@@ -105,7 +107,7 @@ class _IapPurchasePlayerState extends State<IapPurchasePlayer>
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  _subtitle,
+                  _subtitle(l10n),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 13,
@@ -159,51 +161,51 @@ class _IapPurchasePlayerState extends State<IapPurchasePlayer>
     }
   }
 
-  String get _title {
+  String _title(AppLocalizations? l10n) {
     switch (_phase) {
       case _IapPhase.loading:
-        return 'Purchasing...';
+        return l10n?.purchasing ?? "Purchasing...";
       case _IapPhase.processing:
-        return 'Processing payment...';
+        return l10n?.processingPayment ?? "Processing payment...";
       case _IapPhase.completed:
-        return 'Purchase complete!';
+        return l10n?.purchaseComplete ?? "Purchase complete!";
       case _IapPhase.failed:
-        return 'Purchase failed';
+        return l10n?.purchaseFailed ?? "Purchase failed";
     }
   }
 
-  String get _subtitle {
+  String _subtitle(AppLocalizations? l10n) {
     switch (_phase) {
       case _IapPhase.loading:
-        return _productName;
+        return _productName(l10n);
       case _IapPhase.processing:
-        return 'Please wait';
+        return l10n?.pleaseWait ?? "Please wait";
       case _IapPhase.completed:
-        return _successMessage;
+        return _successMessage(l10n);
       case _IapPhase.failed:
-        return 'Try again later';
+        return l10n?.tryAgainLater ?? "Try again later";
     }
   }
 
-  String get _productName {
+  String _productName(AppLocalizations? l10n) {
     switch (widget.product) {
       case ProductType.removeAds:
-        return 'Removing ads';
+        return l10n?.removingAds ?? "Removing Ads";
       case ProductType.chartsPro:
-        return 'Unlocking all pairs';
+        return l10n?.unlockingPairs ?? "Unlocking all pairs";
       case ProductType.subscription:
-        return 'Starting subscription';
+        return l10n?.startingSubscription ?? "Starting subscription";
     }
   }
 
-  String get _successMessage {
+  String _successMessage(AppLocalizations? l10n) {
     switch (widget.product) {
       case ProductType.removeAds:
-        return 'All ads removed forever';
+        return l10n?.adsRemovedForever ?? 'All ads removed forever';
       case ProductType.chartsPro:
-        return 'All chart pairs unlocked';
+        return l10n?.allPairsUnlocked ?? 'All chart pairs unlocked';
       case ProductType.subscription:
-        return 'Subscription active';
+        return l10n?.subscriptionActive ?? 'Subscription active';
     }
   }
 }
