@@ -10,13 +10,13 @@ class DataDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final usage = ProviderUsageInfo.fromBuildConfig();
     final cryptoLines = <String>[
-      'BTC and ETH latest rates refresh on the same daily app policy.',
+      'BTC and ETH rates follow the same daily update schedule as fiat rates.',
       if (usage.cryptoChartsEnabled)
-        'Crypto charts support daily ranges up to 1 year.'
+        'Crypto charts show daily history for up to 1 year.'
       else
-        'Crypto charts are disabled in this release-safe build.',
+        'Crypto charts are not available in this build.',
       if (usage.cryptoChartsEnabled)
-        'Mixed fiat/crypto charts carry forward the last fiat close across weekends and holidays.',
+        'For mixed fiat and crypto charts, fiat values stay on the last available market close over weekends and holidays.',
     ];
 
     return Scaffold(
@@ -40,29 +40,34 @@ class DataDetailsPage extends StatelessWidget {
             style: AppTheme.heading.copyWith(fontFamily: 'Fraunces'),
           ),
           const SizedBox(height: AppTheme.space4),
+          const Text(
+            'This app uses exchange-rate data to show conversions and charts. Your data stays on this device.',
+            style: AppTheme.body,
+          ),
+          const SizedBox(height: AppTheme.space5),
           const _DetailBlock(
-            title: 'Refresh policy',
+            title: 'Updates',
             lines: <String>[
-              'The app refreshes rates at most once per local day.',
-              'Refresh on open only fetches when cached data is stale.',
-              'Manual refresh still lets you request a fresh daily snapshot.',
+              'Rates update at most once per day.',
+              'Refresh on open only checks for new data when your saved data is old.',
+              'You can still use manual refresh to request the latest daily update.',
             ],
           ),
           const _DetailBlock(
             title: 'Fiat data',
             lines: <String>[
-              'Fiat latest rates come from Frankfurter / ECB data.',
-              'Fiat charts support up to 2 years of daily history.',
-              'When offline, the app shows cached fiat data if available.',
+              'Fiat rates come from Frankfurter using ECB data.',
+              'Fiat charts can show up to 2 years of daily history.',
+              'If you are offline, the app uses saved data when available.',
             ],
           ),
           _DetailBlock(title: 'Crypto data', lines: cryptoLines),
           const _DetailBlock(
-            title: 'Clear cache',
+            title: 'Clear data',
             lines: <String>[
-              'Clear all data removes latest fiat cache.',
-              'It also removes crypto latest cache, fiat charts, crypto chart history, and temporary chart unlocks.',
-              'It does not remove your theme or normal app preferences.',
+              'Clear all data removes saved rate and chart data from this device.',
+              'It also removes temporary chart unlocks.',
+              'It does not remove your theme or normal app settings.',
             ],
             showDivider: false,
           ),
