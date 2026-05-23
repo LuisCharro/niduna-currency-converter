@@ -38,6 +38,7 @@ class AmountBaseButton extends StatelessWidget {
         color: AppTheme.card.withValues(alpha: .9),
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
         child: InkWell(
+          key: const Key('open_base_currency_picker'),
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppTheme.pillRadius),
           child: AnimatedSwitcher(

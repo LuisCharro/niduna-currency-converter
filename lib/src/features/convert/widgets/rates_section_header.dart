@@ -24,16 +24,26 @@ class RatesSectionHeader extends StatelessWidget {
             style: AppTheme.sectionLabel.copyWith(color: AppTheme.muted),
           ),
           const Spacer(),
-          TextButton(
+          OutlinedButton.icon(
+            key: const Key('open_currency_picker'),
             onPressed: onEdit,
-            style: TextButton.styleFrom(
+            style: OutlinedButton.styleFrom(
               foregroundColor: AppTheme.primary,
-              padding: const EdgeInsets.symmetric(horizontal: AppTheme.space3),
-              minimumSize: const Size(48, 36),
+              backgroundColor: AppTheme.container.withValues(alpha: .55),
+              side: BorderSide(color: AppTheme.border.withValues(alpha: .14)),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppTheme.space3,
+                vertical: 8,
+              ),
+              minimumSize: const Size(48, 40),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+              ),
             ),
-            child: const Text(
-              'Edit',
+            icon: const Icon(Icons.add_rounded, size: 18),
+            label: const Text(
+              'Add currencies',
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800),
             ),
           ),

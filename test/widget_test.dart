@@ -81,7 +81,8 @@ void main() {
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Favorites'), findsNothing);
     expect(find.textContaining('Fresh'), findsOneWidget);
-    expect(find.text('Edit'), findsOneWidget);
+    expect(find.byKey(const Key('open_currency_picker')), findsOneWidget);
+    expect(find.text('Add currencies'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
   });
 
@@ -99,7 +100,8 @@ void main() {
 
     expect(find.text('AMOUNT'), findsOneWidget);
     expect(find.textContaining('Fresh'), findsOneWidget);
-    expect(find.text('Edit'), findsOneWidget);
+    expect(find.byKey(const Key('open_currency_picker')), findsOneWidget);
+    expect(find.text('Add currencies'), findsOneWidget);
     expect(find.textContaining('currencies visible'), findsNothing);
     expect(find.text('USD'), findsOneWidget);
     expect(find.text('EUR'), findsOneWidget);
@@ -211,7 +213,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Edit'));
+    await tester.tap(find.byKey(const Key('open_currency_picker')));
     await tester.pumpAndSettle();
 
     expect(find.text('Visible currencies'), findsOneWidget);
@@ -220,6 +222,35 @@ void main() {
     expect(find.text('EUR · shown now'), findsOneWidget);
     expect(find.text('Currency, country, or code'), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Convert base picker includes crypto currencies', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('open_base_currency_picker')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Base currency'), findsOneWidget);
+    expect(find.text('Current base USD · fiat and crypto'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('Bitcoin'),
+      300,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Bitcoin'), findsOneWidget);
+    expect(find.text('Ethereum'), findsOneWidget);
   });
 
   testWidgets('Convert row swipe actions remove the tap-again flow and swap base', (
