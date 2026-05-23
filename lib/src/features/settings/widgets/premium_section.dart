@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
 import 'upgrade_shelf.dart';
@@ -13,14 +14,15 @@ class PremiumSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = l10n(context);
     return Column(
       children: <Widget>[
         UpgradeShelf(controller: controller),
         SettingsTile(
-          title: 'Subscription',
-          subtitle: 'Not available in v1 · 1 week free trial planned later',
+          title: loc.labelSubscription,
+          subtitle: loc.labelSubscriptionSubtitle,
           trailing: Text(
-            'Soon',
+            loc.labelSoon,
             style: AppTheme.caption.copyWith(
               color: AppColors.of(context).muted,
               fontWeight: FontWeight.w800,
@@ -28,8 +30,8 @@ class PremiumSection extends StatelessWidget {
           ),
         ),
         SettingsTile(
-          title: 'Restore purchases',
-          subtitle: 'Re-check local store purchases on this device',
+          title: loc.labelRestorePurchases,
+          subtitle: loc.labelRestorePurchasesSubtitle,
           trailing: Icon(
             Icons.chevron_right_rounded,
             color: AppColors.of(context).subtle,

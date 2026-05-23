@@ -5,8 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/currency/supported_currencies.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../models/currency_quote.dart';
 
 class ConversionLensSheet extends StatelessWidget {
@@ -122,6 +124,7 @@ class _LensCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final l10n = AppLocalizations.of(context);
     final quickBase = _baseValues(amount);
     final reverseTargets = _reverseTargets();
     final amountLabel = _formatHeroBase(amount, base);
@@ -149,7 +152,7 @@ class _LensCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('CONVERSION LENS', style: AppTheme.sectionLabel),
+                      Text(l10n?.conversionLensTitle ?? "Conversion Lens", style: AppTheme.sectionLabel),
                       const SizedBox(height: 6),
                       Text(
                         '${quote.name} · ${quote.code}',
@@ -161,7 +164,7 @@ class _LensCard extends StatelessWidget {
                 IconButton(
                   onPressed: () => Navigator.of(context).pop(),
                   icon: const Icon(Icons.close_rounded),
-                  tooltip: 'Close lens',
+                  tooltip: closeLensTooltip(context),
                 ),
               ],
             ),
@@ -210,11 +213,15 @@ class _LensCard extends StatelessWidget {
                           await Clipboard.setData(ClipboardData(text: copyLabel));
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Copied $copyLabel')),
+                              SnackBar(
+                                content: Text(
+                                  copiedConversionMessage(context, copyLabel),
+                                ),
+                              ),
                             );
                           }
                         },
-                        tooltip: 'Copy conversion to clipboard',
+                        tooltip: copyConversionTooltip(context),
                         icon: const Icon(Icons.content_copy_rounded, size: 20),
                         visualDensity: VisualDensity.compact,
                       ),
@@ -229,7 +236,7 @@ class _LensCard extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     _LensSection(
-                      title: 'Quick base amounts',
+                      title: quickBaseAmountsLabel(context),
                       children: quickBase
                           .map(
                             (value) => _LensRow(
@@ -240,15 +247,15 @@ class _LensCard extends StatelessWidget {
                           .toList(),
                     ),
                     const SizedBox(height: 12),
-_LensSection(
-                      title: 'Reverse targets',
+ _LensSection(
+                      title: reverseTargetsLabel(context),
                       children: reverseTargets
                           .map(
                             (target) => _LensRow(
                               leading: _formatValue(target, quote.code),
                               trailing:
                                   '${_formatValue(target / quote.rate, base)} $base',
-                              actionLabel: 'Use',
+                              actionLabel: useActionLabel(context),
                               onAction: () {
                                 HapticFeedback.selectionClick();
                                 onAmountChanged(_formatInput(target / quote.rate));

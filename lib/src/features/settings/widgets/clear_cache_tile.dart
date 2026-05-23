@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 import '../settings_controller.dart';
 import '../../../shared/widgets/settings_tile.dart';
 
@@ -11,9 +12,10 @@ class ClearCacheTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = l10n(context);
     return SettingsTile(
-      title: 'Clear all data',
-      subtitle: 'Fiat rates, crypto rates, chart history and temporary unlocks',
+      title: loc.labelClearAllData,
+      subtitle: loc.labelClearAllDataSubtitle,
       trailing: InkWell(
         onTap: () => controller.requestClearCache(context),
         borderRadius: BorderRadius.circular(8),
@@ -25,7 +27,7 @@ class ClearCacheTile extends StatelessWidget {
             border: Border.all(color: AppColors.of(context).border),
           ),
           child: Text(
-            'Clear',
+            loc.btnClear,
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_theme.dart';
 import 'amount_utility_pill.dart';
 
@@ -19,7 +20,7 @@ class AmountHeaderRow extends StatelessWidget {
     return Row(
       children: <Widget>[
         Text(
-          'CONVERT',
+          convertHeaderLabel(context),
           style: AppTheme.sectionLabel.copyWith(
             color: AppTheme.trendUp,
             letterSpacing: 1.2,

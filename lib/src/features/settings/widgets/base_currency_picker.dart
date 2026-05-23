@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 
 class BaseCurrencyPicker extends StatefulWidget {
@@ -19,6 +20,7 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = l10n(context);
     final currencies = supportedCurrencies.where((c) {
       if (_query.isEmpty) return true;
       return c.code.toUpperCase().contains(_query) ||
@@ -32,8 +34,8 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
           padding: const EdgeInsets.fromLTRB(20, 6, 12, 8),
           child: Row(
             children: <Widget>[
-              const Text(
-                'Select base currency',
+              Text(
+                loc.selectBaseCurrency,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
               ),
               const Spacer(),
@@ -49,7 +51,7 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
           child: TextField(
             onChanged: (v) => setState(() => _query = v.trim().toUpperCase()),
             decoration: InputDecoration(
-              hintText: 'Search code or name',
+              hintText: loc.searchCodeOrName,
               prefixIcon: const Icon(Icons.search, size: 20),
               isDense: true,
               filled: true,

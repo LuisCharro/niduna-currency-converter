@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
+import '../../../l10n/app_localizations.dart';
 import 'floating_pill_nav_item.dart';
 
 class FloatingPillNav extends StatelessWidget {
@@ -16,6 +17,7 @@ class FloatingPillNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final bottom =
         AppTheme.floatingNavBottomOffset + MediaQuery.paddingOf(context).bottom;
     final colors = AppColors.of(context);
@@ -35,19 +37,19 @@ class FloatingPillNav extends StatelessWidget {
             children: <Widget>[
               FloatingPillNavItem(
                 icon: Icons.swap_horiz_rounded,
-                label: 'Convert',
+                label: l10n?.tabConvert ?? "Convert",
                 isSelected: selectedIndex == 0,
                 onTap: () => onTap(0),
               ),
               FloatingPillNavItem(
                 icon: Icons.show_chart_rounded,
-                label: 'Chart',
+                label: l10n?.tabCharts ?? "Chart",
                 isSelected: selectedIndex == 1,
                 onTap: () => onTap(1),
               ),
               FloatingPillNavItem(
                 icon: Icons.settings_rounded,
-                label: 'Settings',
+                label: l10n?.tabSettings ?? "Settings",
                 isSelected: selectedIndex == 2,
                 onTap: () => onTap(2),
               ),

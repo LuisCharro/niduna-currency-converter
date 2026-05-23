@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Coral Remove Ads link aligned under the banner (M2-2).
 class RemoveAdsButton extends StatelessWidget {
@@ -12,6 +13,7 @@ class RemoveAdsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         AppTheme.space5,
@@ -35,8 +37,8 @@ class RemoveAdsButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppTheme.pillRadius),
             ),
           ),
-          child: const Text(
-            'Remove ads',
+          child: Text(
+            l10n?.labelRemoveAds ?? 'Remove ads',
             style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800),
           ),
         ),

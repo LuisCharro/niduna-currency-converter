@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../core/theme/app_theme.dart';
+import '../../../l10n/app_localizations_safe.dart';
 import '../../shared/widgets/canvas_background.dart';
 import '../../shared/widgets/screen_title.dart';
 import 'settings_controller.dart';
@@ -29,6 +30,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = l10n(context);
     final controller = SettingsController(
       preferences: preferences,
       monetization: monetization,
@@ -51,21 +53,21 @@ class SettingsScreen extends StatelessWidget {
                 AppTheme.tabScrollBottomPadding(context),
               ),
               children: <Widget>[
-                const ScreenTitle('Settings'),
+                ScreenTitle(loc.tabSettings),
                 const SizedBox(height: AppTheme.space6),
-                const SectionHeader(title: 'Conversion'),
+                SectionHeader(title: loc.labelConversion),
                 BaseCurrencyTile(controller: controller),
                 DecimalPlacesTile(controller: controller),
                 SwitchTile(
-                  title: 'Dark mode',
-                  subtitle: preferences.isDarkMode ? 'On' : 'Follows system',
+                  title: loc.labelDarkMode,
+                  subtitle: preferences.isDarkMode ? loc.labelDarkModeOn : loc.labelDarkModeFollowsSystem,
                   value: preferences.isDarkMode,
                   onChanged: controller.toggleDarkMode,
                 ),
                 const SizedBox(height: AppTheme.sectionGap),
                 SettingsDataSection(controller: controller),
                 const SizedBox(height: AppTheme.sectionGap),
-                const SectionHeader(title: 'Premium'),
+                SectionHeader(title: loc.labelPremium),
                 PremiumSection(controller: controller),
                 const SizedBox(height: AppTheme.sectionGap),
                 if (preferences.devMode) ...[

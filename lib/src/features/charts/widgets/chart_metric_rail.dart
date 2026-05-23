@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import 'chart_value_formatter.dart';
@@ -37,21 +38,21 @@ class ChartMetricRail extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: _MetricCell(
-                label: 'High',
+                label: metricHigh(context),
                 value: high != null ? formatChartValue(high!) : '—',
               ),
             ),
             _railDivider(context),
             Expanded(
               child: _MetricCell(
-                label: 'Low',
+                label: metricLow(context),
                 value: low != null ? formatChartValue(low!) : '—',
               ),
             ),
             _railDivider(context),
             Expanded(
               child: _MetricCell(
-                label: 'Change',
+                label: metricChange(context),
                 value: changeText,
                 valueColor: changePercent != null ? changeColor : null,
               ),

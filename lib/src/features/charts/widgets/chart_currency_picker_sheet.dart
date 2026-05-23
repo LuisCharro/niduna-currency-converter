@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/monetization/models/temporary_unlock.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/monetization/purchase_service.dart';
@@ -149,7 +150,11 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
             children: <Widget>[
               CurrencyPickerHeader(
                 title: widget.title,
-                subtitle: '${widget.baseCurrency}/${widget.quoteCurrency} pair',
+                subtitle: chartPairSubtitle(
+                  context,
+                  widget.baseCurrency,
+                  widget.quoteCurrency,
+                ),
               ),
               const SizedBox(height: 12),
               CurrencyPickerSearchField(
@@ -265,11 +270,11 @@ class _CurrencyTile extends StatelessWidget {
                   ),
                   Text(
                     locked
-                        ? 'Tap to unlock'
+                        ? tapToUnlockLabel(context)
                         : tempUnlocked
-                        ? 'Unlocked · 24h remaining'
+                        ? unlockedFor24hLabel(context)
                         : isFixed
-                        ? 'Current $code'
+                        ? currentCurrencyLabel(context, code)
                         : name,
                     style: TextStyle(
                       fontSize: 12,
@@ -295,9 +300,9 @@ class _CurrencyTile extends StatelessWidget {
                     color: AppColors.of(context).primary.withValues(alpha: .15),
                   ),
                 ),
-                child: Text(
-                  'Current',
-                  style: TextStyle(
+                  child: Text(
+                  currentBadgeLabel(context),
+                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: AppColors.of(context).primary.withValues(alpha: .5),
@@ -358,7 +363,7 @@ class _CurrencyTile extends StatelessWidget {
                     Icon(Icons.lock_outline, size: 13, color: AppColors.of(context).muted),
                     const SizedBox(width: 3),
                     Text(
-                      'Locked',
+                      lockedBadgeLabel(context),
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,

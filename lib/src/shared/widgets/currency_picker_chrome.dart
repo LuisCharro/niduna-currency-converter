@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 class CurrencyPickerHeader extends StatelessWidget {
   const CurrencyPickerHeader({required this.title, this.subtitle, super.key});
@@ -55,11 +56,12 @@ class CurrencyPickerSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final colors = AppColors.of(context);
     return TextField(
       onChanged: onChanged,
       decoration: InputDecoration(
-        hintText: 'Currency, country, or code',
+        hintText: l10n?.searchCurrencies ?? 'Currency, country, or code',
         prefixIcon: const Icon(Icons.search_rounded),
         filled: true,
         fillColor: colors.container.withValues(alpha: .72),

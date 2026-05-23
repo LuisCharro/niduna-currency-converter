@@ -5,6 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
 
@@ -82,13 +83,14 @@ class _VersionTileState extends State<VersionTile> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = l10n(context);
     final devModeEnabled = widget.controller.preferences.devMode;
     return GestureDetector(
       onTap: _handleTap,
       onLongPressStart: (_) => _startHoldUnlock(),
       onLongPressEnd: (_) => _cancelHoldUnlock(),
       child: SettingsTile(
-        title: 'Version',
+        title: loc.labelVersion,
         trailing: Text(
           '$_appVersion${devModeEnabled ? ' · DEV' : ''}',
           style: AppTheme.caption.copyWith(color: AppColors.of(context).muted),

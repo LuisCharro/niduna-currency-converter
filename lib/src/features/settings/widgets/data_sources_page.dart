@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/rates/provider_usage_info.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 
 class DataSourcesPage extends StatelessWidget {
   const DataSourcesPage({super.key});
@@ -10,15 +12,18 @@ class DataSourcesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final usage = ProviderUsageInfo.fromBuildConfig();
+    final loc = l10n(context);
     final cryptoLatestProvider = usage.roles
         .firstWhere((role) => role.title == 'Crypto latest')
         .provider;
     final cryptoChartsProvider = usage.roles
         .firstWhere((role) => role.title == 'Crypto charts')
         .provider;
-    final cryptoChartsDetail = usage.cryptoChartsEnabled
-        ? 'Crypto-involved charts use $cryptoChartsProvider. Crypto ranges stay limited to 1 year on the no-key path.'
-        : 'Crypto charts are disabled in this build to keep the release profile safe for store publication.';
+    final cryptoChartsDetail = dataSourceCryptoChartsDetail(
+      context,
+      cryptoChartsProvider,
+      usage.cryptoChartsEnabled,
+    );
 
     return Scaffold(
       backgroundColor: AppColors.of(context).bg,
@@ -26,7 +31,7 @@ class DataSourcesPage extends StatelessWidget {
         backgroundColor: AppColors.of(context).bg,
         foregroundColor: AppColors.of(context).text,
         elevation: 0,
-        title: const Text('Data sources'),
+        title: Text(loc.labelDataSources),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
@@ -37,19 +42,17 @@ class DataSourcesPage extends StatelessWidget {
         ),
         children: <Widget>[
           _SourceBlock(
-            title: 'Fiat latest and fiat charts',
+            title: dataSourceFiatTitle(context),
             provider: 'Frankfurter / ECB',
-            detail:
-                'Frankfurter provides the fiat latest and historical exchange rates used by the app. Fiat charts support daily ranges up to 2 years.',
+            detail: dataSourceFiatDetail(context),
           ),
           _SourceBlock(
-            title: 'Crypto latest',
+            title: dataSourceCryptoLatestTitle(context),
             provider: cryptoLatestProvider,
-            detail:
-                'BTC and ETH latest prices use the active crypto provider chain for this build. Developer profile details are shown only inside the Dev Sandbox.',
+            detail: dataSourceCryptoLatestDetail(context),
           ),
           _SourceBlock(
-            title: 'Crypto charts',
+            title: dataSourceCryptoChartsTitle(context),
             provider: cryptoChartsProvider,
             detail: cryptoChartsDetail,
             showDivider: false,

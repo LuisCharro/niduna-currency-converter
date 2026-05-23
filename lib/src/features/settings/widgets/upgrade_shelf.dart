@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
 
@@ -14,6 +15,7 @@ class UpgradeShelf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = l10n(context);
     final m = controller.monetization;
     final hasPremium = m.hasActiveSubscription ||
         m.hasChartsProLifetime ||
@@ -25,7 +27,7 @@ class UpgradeShelf extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(2, AppTheme.space2, 2, AppTheme.space2),
           child: Text(
-            hasPremium ? 'Premium active' : 'Premium unlocks',
+            hasPremium ? loc.premiumActive : loc.premiumUnlocks,
             style: AppTheme.heading.copyWith(
               fontFamily: 'Fraunces',
               fontSize: 20,
@@ -34,37 +36,37 @@ class UpgradeShelf extends StatelessWidget {
         ),
         Text(
           hasPremium
-              ? 'Paid unlocks stay on this device.'
-              : 'One-time purchases — no account required.',
+              ? loc.paidUnlocksStay
+              : loc.oneTimePurchaseNote,
           style: AppTheme.caption.copyWith(color: AppColors.of(context).muted, height: 1.35),
         ),
         const SizedBox(height: AppTheme.space3),
         if (!m.hasRemoveAdsLifetime)
           SettingsTile(
-            title: 'Remove Ads',
+            title: loc.labelRemoveAds,
             subtitle: '1.99 CHF · lifetime on this device',
-            trailing: _BuyChip(label: 'Buy'),
+            trailing: _BuyChip(label: loc.btnBuy),
             onTap: () =>
                 controller.purchaseProduct(context, ProductType.removeAds),
           )
         else
-          const SettingsTile(
+          SettingsTile(
             title: 'Remove Ads',
-            subtitle: 'Owned on this device',
+            subtitle: loc.ownedOnDevice,
             trailing: _OwnedBadge(),
           ),
         if (!m.hasChartsProLifetime)
           SettingsTile(
-            title: 'Charts Pro',
+            title: loc.chartsProTitle,
             subtitle: '2.99 CHF · unlock all pairs forever',
-            trailing: _BuyChip(label: 'Buy'),
+            trailing: _BuyChip(label: loc.btnBuy),
             onTap: () =>
                 controller.purchaseProduct(context, ProductType.chartsPro),
           )
         else
-          const SettingsTile(
+          SettingsTile(
             title: 'Charts Pro',
-            subtitle: 'Owned on this device',
+            subtitle: loc.ownedOnDevice,
             trailing: _OwnedBadge(),
             showDivider: false,
           ),

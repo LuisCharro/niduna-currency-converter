@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
@@ -48,7 +49,7 @@ class CurrencyPickerTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 1),
                   Text(
-                    _subtitle,
+                    _subtitle(context),
                     style: TextStyle(
                       color: colors.muted,
                       fontSize: 13,
@@ -78,10 +79,10 @@ class CurrencyPickerTile extends StatelessWidget {
     return isBase || isSelected ? colors.primary : colors.subtle;
   }
 
-  String get _subtitle {
+  String _subtitle(BuildContext context) {
     if (selectBaseMode) return currency.code;
-    if (isBase) return '${currency.code} · base currency';
-    if (isSelected) return '${currency.code} · shown now';
-    return '${currency.code} · tap to add';
+    if (isBase) return convertPickerBaseSubtitle(context, currency.code);
+    if (isSelected) return convertPickerShownSubtitle(context, currency.code);
+    return convertPickerTapToAddSubtitle(context, currency.code);
   }
 }

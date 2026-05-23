@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/monetization/models/temporary_unlock.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/theme/app_colors.dart';
@@ -108,7 +109,9 @@ class ChartPairStrip extends StatelessWidget {
       showDragHandle: true,
       backgroundColor: AppColors.of(context).card,
       builder: (_) => ChartCurrencyPickerSheet(
-        title: selectingBase ? 'Select base currency' : 'Select quote currency',
+        title: selectingBase
+            ? selectBaseCurrencyForChart(context)
+            : selectQuoteCurrencyForChart(context),
         selectedCode: selectingBase ? base : quote,
         allowCryptoCharts: allowCryptoCharts,
         controller: controller,

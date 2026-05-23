@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import 'amount_base_button.dart';
@@ -21,6 +22,7 @@ class AmountValueRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final display = amountText.isEmpty ? '0.00' : amountText;
     final colors = AppColors.of(context);
     final baseStyle = AppTheme.heroAmountFor(context).copyWith(
@@ -47,7 +49,7 @@ class AmountValueRow extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  'AMOUNT',
+                  l10n?.labelAmount.toUpperCase() ?? 'AMOUNT',
                   style: AppTheme.sectionLabel.copyWith(color: colors.muted),
                 ),
                 if (!showsInlineSelector) ...<Widget>[

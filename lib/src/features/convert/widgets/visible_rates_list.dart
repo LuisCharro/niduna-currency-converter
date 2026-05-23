@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/designed_state_panel.dart';
 import '../models/currency_quote.dart';
 import 'conversion_lens_sheet.dart';
@@ -42,14 +43,15 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final l10n = AppLocalizations.of(context);
     if (widget.quotes.isEmpty) {
       return SingleChildScrollView(
         padding: AppTheme.pageInsets,
         child: DesignedStatePanel(
           icon: Icons.currency_exchange_rounded,
-          title: 'No rates on the ledger yet',
-          subtitle: 'Pull to refresh or tap sync when you are back online',
-          actionLabel: 'Refresh',
+          title: l10n?.noRatesTitle ?? 'No rates on the ledger yet',
+          subtitle: l10n?.noRatesSubtitle ?? 'Pull to refresh or tap sync when you are back online',
+          actionLabel: l10n?.btnRefresh ?? 'Refresh',
           onAction: widget.onRefresh != null ? () => widget.onRefresh!() : null,
         ),
       );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../domain/chart_range.dart';
@@ -34,10 +35,8 @@ class RangeSelector extends StatelessWidget {
               onTap: () {
                 if (isLocked) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Intraday ranges coming soon — requires Premium Subscription',
-                      ),
+                    SnackBar(
+                      content: Text(intradayPremiumMessage(context)),
                       duration: Duration(seconds: 3),
                     ),
                   );
@@ -45,10 +44,8 @@ class RangeSelector extends StatelessWidget {
                 }
                 if (isCryptoUnavailable) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Crypto charts support up to 1Y with no-key providers',
-                      ),
+                    SnackBar(
+                      content: Text(cryptoRangeLimitMessage(context)),
                       duration: Duration(seconds: 3),
                     ),
                   );
@@ -81,7 +78,7 @@ class RangeSelector extends StatelessWidget {
                       const SizedBox(width: 4),
                     ],
                     Text(
-                      range.label,
+                      chartRangeLabel(context, range.label),
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,

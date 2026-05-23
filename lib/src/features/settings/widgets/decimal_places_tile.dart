@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/preferences/app_preferences.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 import '../settings_controller.dart';
 import '../../../shared/widgets/settings_tile.dart';
 
@@ -12,8 +13,9 @@ class DecimalPlacesTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = l10n(context);
     return SettingsTile(
-      title: 'Decimal places',
+      title: loc.labelDecimalPlaces,
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: AppPreferences.supportedDecimalPlaces.map((v) {

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class CurrencyRowSwipeActions extends StatefulWidget {
   const CurrencyRowSwipeActions({
@@ -96,6 +97,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final l10n = AppLocalizations.of(context);
     final baseProgress = _windowProgress(_reveal, start: 18, end: 138);
     final hideProgress = _windowProgress(_reveal, start: 86, end: 182);
     final revealProgress = _reveal / _maxReveal;
@@ -116,7 +118,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
               iconBadgeColor: const Color(0xFFEBC0B3),
                color: colors.coralInk,
               label: 'Remove currency',
-              shortLabel: 'Hide',
+              shortLabel: l10n?.btnRemove ?? 'Hide',
               progress: _motionProgress(hideProgress),
               onTap: _handleRemove,
             ),

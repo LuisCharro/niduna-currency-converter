@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LockedPairActionSheet extends StatelessWidget {
   const LockedPairActionSheet({
@@ -16,6 +18,7 @@ class LockedPairActionSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
@@ -25,7 +28,7 @@ class LockedPairActionSheet extends StatelessWidget {
             Icon(Icons.lock_outline, size: 40, color: AppColors.of(context).muted),
             const SizedBox(height: 12),
             Text(
-              'This pair is locked',
+              pairLockedTitle(context),
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w700,
@@ -34,9 +37,7 @@ class LockedPairActionSheet extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              canWatchAd
-                  ? 'Choose how to unlock it'
-                  : 'Rewarded ads are unavailable after Remove Ads',
+              pairLockedSubtitle(context, canWatchAd),
               style: TextStyle(fontSize: 13, color: AppColors.of(context).muted),
               textAlign: TextAlign.center,
             ),
@@ -55,10 +56,10 @@ class LockedPairActionSheet extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Icon(Icons.play_circle_outline, size: 18),
-                      const SizedBox(width: 8),
-                      Text('Watch ad · Unlock for 24h'),
-                    ],
+                       Icon(Icons.play_circle_outline, size: 18),
+                       const SizedBox(width: 8),
+                       Text(watchAdUnlockLabel(context)),
+                     ],
                   ),
                 ),
               ),
@@ -77,17 +78,17 @@ class LockedPairActionSheet extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.diamond_outlined, size: 18),
-                    const SizedBox(width: 8),
-                    Text('Unlock all pairs forever'),
-                  ],
+                     Icon(Icons.diamond_outlined, size: 18),
+                     const SizedBox(width: 8),
+                     Text(unlockAllPairsForeverLabel(context)),
+                   ],
                 ),
               ),
             ),
             const SizedBox(height: 12),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel', style: TextStyle(color: AppColors.of(context).subtle)),
+              child: Text(l10n?.btnCancel ?? 'Cancel', style: TextStyle(color: AppColors.of(context).subtle)),
             ),
           ],
         ),

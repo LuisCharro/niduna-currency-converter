@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../domain/convert_state.dart';
 import 'amount_panel.dart';
 import 'currency_picker_sheet.dart';
@@ -70,13 +71,14 @@ class _ConvertContentState extends State<ConvertContent> {
   }
 
   void _openPicker(BuildContext context, {required bool selectBaseMode}) {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
       useSafeArea: true,
       builder: (context) => CurrencyPickerSheet(
-        title: selectBaseMode ? 'Base currency' : 'Visible currencies',
+        title: selectBaseMode ? l10n?.selectBaseCurrency ?? 'Select base currency' : l10n?.addCurrenciesTitle ?? 'Visible currencies',
         base: widget.state.base,
         selectedCodes: widget.state.selectedCodes,
         selectBaseMode: selectBaseMode,
