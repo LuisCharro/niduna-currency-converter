@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/rates/provider_usage_info.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
@@ -12,15 +13,7 @@ class DataDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final usage = ProviderUsageInfo.fromBuildConfig();
     final loc = l10n(context);
-    final cryptoLines = <String>[
-      'BTC and ETH rates follow the same daily update schedule as fiat rates.',
-      if (usage.cryptoChartsEnabled)
-        'Crypto charts show daily history for up to 1 year.'
-      else
-        'Crypto charts are not available in this build.',
-      if (usage.cryptoChartsEnabled)
-        'For mixed fiat and crypto charts, fiat values stay on the last available market close over weekends and holidays.',
-    ];
+    final cryptoLines = cryptoDataLines(context, usage.cryptoChartsEnabled);
 
     return Scaffold(
       backgroundColor: AppColors.of(context).bg,

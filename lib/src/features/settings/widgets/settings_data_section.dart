@@ -27,7 +27,7 @@ class SettingsDataSection extends StatelessWidget {
         ),
         SettingsTile(
           title: loc.labelDataSources,
-          subtitle: 'ECB daily policy, cache rules, and provider details',
+          subtitle: loc.dataSourcesSubtitle,
           onTap: () => controller.openDataDetails(context),
           trailing: Icon(
             Icons.chevron_right_rounded,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/monetization/monetization_controller.dart';
@@ -44,6 +45,20 @@ class CurrencyConverterApp extends StatelessWidget {
       theme: AppTheme.light,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      localeListResolutionCallback: (locales, supportedLocales) {
+        final preferred = locales?.first;
+        Locale resolved = supportedLocales.first;
+
+        if (preferred != null) {
+          resolved = supportedLocales.firstWhere(
+            (locale) => locale.languageCode == preferred.languageCode,
+            orElse: () => supportedLocales.first,
+          );
+        }
+
+        intl.Intl.defaultLocale = resolved.languageCode;
+        return resolved;
+      },
       home: AppShell(
         convertRepository: convertRepository,
         favoritesStore: favoritesStore,

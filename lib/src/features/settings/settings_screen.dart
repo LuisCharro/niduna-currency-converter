@@ -53,7 +53,7 @@ class SettingsScreen extends StatelessWidget {
                 AppTheme.tabScrollBottomPadding(context),
               ),
               children: <Widget>[
-                const ScreenTitle('Settings'),
+                ScreenTitle(loc.tabSettings),
                 const SizedBox(height: AppTheme.space6),
                 SectionHeader(title: loc.labelConversion),
                 BaseCurrencyTile(controller: controller),

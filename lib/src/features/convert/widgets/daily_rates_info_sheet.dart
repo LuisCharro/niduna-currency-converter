@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -29,9 +30,7 @@ class DailyRatesInfoSheet extends StatelessWidget {
               Text(l10n?.dailyRatesTitle ?? "Daily exchange rates", style: AppTheme.heading),
               const SizedBox(height: 12),
               Text(
-                'The free version updates exchange rates once per day. They are '
-                'useful for everyday conversion, but they are not minute-by-minute '
-                'market prices.',
+                dailyRatesBody(context),
                 style: AppTheme.body.copyWith(color: colors.muted),
               ),
               const SizedBox(height: 18),
@@ -43,12 +42,12 @@ class DailyRatesInfoSheet extends StatelessWidget {
               _InfoLine(icon: Icons.schedule_rounded, text: nextUpdateLabel),
               const SizedBox(height: 18),
               Text(
-                'The next expected update is shown in your local time.',
+                nextUpdateLocalTime(context),
                 style: AppTheme.caption.copyWith(color: colors.subtle),
               ),
               const SizedBox(height: 8),
               Text(
-                'Faster updates are planned for a future Premium subscription.',
+                fasterUpdatesPlanned(context),
                 style: AppTheme.caption.copyWith(color: colors.subtle),
               ),
             ],

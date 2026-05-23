@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../domain/convert_state.dart';
@@ -25,7 +26,7 @@ class AmountStatusBar extends StatelessWidget {
     final colors = AppColors.of(context);
     final accent = _accentColor(context);
     return Tooltip(
-      message: 'Rates update once per day. Tap for details.',
+      message: dailyRatesTooltip(context),
       child: InkWell(
         onTap: () => _showInfo(context),
         borderRadius: BorderRadius.circular(AppTheme.radius),
@@ -37,7 +38,7 @@ class AmountStatusBar extends StatelessWidget {
               const SizedBox(width: AppTheme.space2),
               Expanded(
                 child: Text(
-                  _line,
+                  _line(context),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTheme.caption.copyWith(
@@ -68,14 +69,14 @@ class AmountStatusBar extends StatelessWidget {
     };
   }
 
-  String get _line {
+  String _line(BuildContext context) {
     return switch (status) {
-      ConvertStatus.loading => 'Loading daily rates…',
-      ConvertStatus.refreshing => 'Refreshing · $lastUpdatedLabel',
-      ConvertStatus.stale => 'Cached · $lastUpdatedLabel',
-      ConvertStatus.noCache => 'Offline — rates unavailable',
+      ConvertStatus.loading => loadingDailyRates(context),
+      ConvertStatus.refreshing => refreshingRates(context, lastUpdatedLabel),
+      ConvertStatus.stale => cachedRatesLabel(context, lastUpdatedLabel),
+      ConvertStatus.noCache => offlineRatesUnavailable(context),
       ConvertStatus.cached || ConvertStatus.fresh =>
-        'Fresh · $lastUpdatedLabel',
+        freshRatesLabel(context, lastUpdatedLabel),
     };
   }
 

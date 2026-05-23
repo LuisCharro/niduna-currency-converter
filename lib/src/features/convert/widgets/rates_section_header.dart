@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -24,7 +25,7 @@ class RatesSectionHeader extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Text(
-            'RATES',
+            ratesSectionLabel(context),
             style: AppTheme.sectionLabel.copyWith(color: colors.muted),
           ),
           const Spacer(),
@@ -46,7 +47,7 @@ class RatesSectionHeader extends StatelessWidget {
               ),
             ),
             icon: const Icon(Icons.add_rounded, size: 18),
-              label: Text(l10n?.btnAdd ?? 'Add currencies',
+            label: Text(l10n?.btnAdd ?? 'Add currencies',
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800),
             ),
           ),

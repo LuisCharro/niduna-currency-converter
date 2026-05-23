@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -129,9 +130,9 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
 
   String _subtitle(AppLocalizations? l10n) {
     if (widget.selectBaseMode) {
-      return 'Current base ${widget.base} · fiat and crypto';
+      return currentBaseSubtitle(context, widget.base);
     }
-    return '${_selectedCodes.length} shown · ${widget.base} base';
+    return shownBaseSubtitle(context, _selectedCodes.length, widget.base);
   }
 
   void _toggle(String code) {
