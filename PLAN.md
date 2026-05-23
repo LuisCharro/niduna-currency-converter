@@ -379,25 +379,24 @@ lib/
 - [x] Slice 6: integrate monetization entitlements and ad runtime (banner ads, Remove Ads, Charts Pro, Subscription, optional rewarded unlock)
 - [x] Slice 8: IAP paywall — PurchaseService stub, IapPurchasePlayer, Settings Premium section, Remove Ads + Charts Pro + Subscription (Coming Soon) buttons, banner CTA, intraday "coming soon" toast
 - [x] Slice 9: hide Favorites tab, data freshness indicator, dark mode, intraday toast copy fix, subscription v1 copy
-- [ ] Slice 10: update root docs for the no-key BTC/ETH scope
+- [x] Slice 10: update root docs for the no-key BTC/ETH scope (aligned in commits 764340f + ad8caab)
 - [x] Slice 11: add BTC/ETH and mixed fiat/crypto charts up to 1 year
-- [ ] Implement MVP localization for EN, DE, ES, IT, FR across meaningful user-facing text
-  - Step 1 (system wiring): connect `MaterialApp` to `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales`; migrate meaningful user-facing labels/messages to localization keys (`AppLocalizations.of(context)`)
-  - Step 2 (language content): add and validate ARB translations for EN, DE, ES, IT, FR across Convert, Charts, Settings, dialogs/sheets, empty/error states, and accessibility labels/tooltips where user-visible
 - [x] Write/update smoke tests as each slice becomes user-visible
-- [ ] Build and test APK before release candidate
 
-### Remaining Phase 1 work
+### Remaining Phase 1 work (priority order)
 
-- [ ] Dark mode: make toggle follow `ThemeMode.system` (currently manual boolean only)
-- [ ] Long-press context menu on currency rows (exploration item)
-- [ ] Real AdMob SDK integration (replace placeholder banners)
-- [ ] Release keystore signing (currently debug signing config)
-- [ ] CoinPaprika replacement for release-safe profile
-- [ ] Privacy policy URL (required for both stores)
-- [ ] Branded app name: `CFBundleDisplayName` and `android:label`
-- [ ] Store listing assets: screenshots, description, keywords
-- [ ] iOS deployment target update (currently 13.0, too old)
+- [ ] **P1 — Dark mode**: make toggle follow `ThemeMode.system` instead of manual boolean only
+- [ ] **P2 — Localization Step 1** (system wiring): connect `MaterialApp` to `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales`; migrate meaningful user-facing labels/messages to localization keys (`AppLocalizations.of(context)`)
+- [ ] **P3 — Localization Step 2** (language content): add and validate ARB translations for EN, DE, ES, IT, FR across Convert, Charts, Settings, dialogs/sheets, empty/error states, and accessibility labels/tooltips where user-visible
+- [ ] **P4 — Real AdMob SDK**: replace placeholder banners with live `google_mobile_ads`
+- [ ] **P5 — CoinPaprika replacement**: swap Coingecko out of the release-safe profile for a stable no-key provider
+- [ ] **P6 — Release keystore signing**: move from debug signing config to proper release keystore
+- [ ] **P7 — Branded app name**: set `CFBundleDisplayName` (iOS) and `android:label` (Android)
+- [ ] **P8 — Privacy policy URL**: required by both stores before submission
+- [ ] **P9 — iOS deployment target update**: currently 13.0, too old for App Store review
+- [ ] **P10 — Build and test APK / App Bundle**: formal RC build validating all above together
+- [ ] **P11 — Store listing assets**: screenshots, descriptions, keywords for both stores (do after app is finalized)
+- [ ] **P12 — Long-press context menu** on currency rows (nice-to-have UX polish)
 
 ---
 

@@ -616,24 +616,29 @@ UI redesign iteration 2 is on branch `turbo/ui-redesign` (not yet merged).
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Dark mode follows system default | **Caveat** | Toggle subtitle says "Follow system default" but it is a manual boolean — does NOT read `MediaQuery.platformBrightness` or `ThemeMode.system` |
-| Long-press context menu on currency rows | **NOT DONE** | No `onLongPress` handler on `CurrencyRateRow`; listed as exploration item |
-| Slice 10: update root docs for BTC/ETH scope | **NOT DONE** | `DEFINITIONS.md` / `PLAN.md` need final alignment pass |
-| Real AdMob SDK (replace placeholders) | **NOT DONE** | Current banners are visual placeholders only |
-| Build and test APK before release candidate | **NOT DONE** | `scripts/build_apk.sh` exists but no formal RC build yet |
-| Keystore signing for release | **NOT DONE** | Still using debug signing config |
-| CoinPaprika replacement for release_safe | **NOT DONE** | Current release_safe uses Coingecko for crypto history; CoinPaprika still in dev profile |
-| Privacy policy URL | **NOT DONE** | Required for both stores |
-| Store listing assets (screenshots, description) | **NOT DONE** | Both stores |
-| Branded CFBundleDisplayName / android:label | **NOT DONE** | Currently generic "Currency Converter" / "currency_converter" |
-| i18n (EN, DE, ES, IT, FR) | **NOT DONE** | MVP requirement: localize meaningful user-facing text on core screens |
+| Slice 10: update root docs for BTC/ETH scope | **DONE** | Aligned in commits 764340f + ad8caab |
+| Dark mode follows system default | **P1** | Toggle subtitle says "Follow system default" but it is a manual boolean — does NOT read `MediaQuery.platformBrightness` or `ThemeMode.system` |
+| i18n Step 1 — system wiring | **P2** | Connect MaterialApp to AppLocalizations delegates/locales; migrate labels to keys |
+| i18n Step 2 — ARB translations | **P3** | Add DE, ES, IT, FR ARB files for Convert, Charts, Settings, dialogs, errors |
+| Real AdMob SDK (replace placeholders) | **P4** | Current banners are visual placeholders only |
+| CoinPaprika replacement for release_safe | **P5** | Current release_safe uses Coingecko for crypto history; CoinPaprika still in dev profile |
+| Keystore signing for release | **P6** | Still using debug signing config |
+| Branded CFBundleDisplayName / android:label | **P7** | Currently generic "Currency Converter" / "currency_converter" |
+| Privacy policy URL | **P8** | Required by both stores |
+| iOS deployment target update | **P9** | Currently 13.0, too old for App Store review |
+| Build and test APK / App Bundle (RC) | **P10** | Formal RC build validating all above together |
+| Store listing assets (screenshots, description) | **P11** | Both stores — do after app is finalized |
+| Long-press context menu on currency rows | **P12** | Nice-to-have UX polish; no `onLongPress` handler yet |
 
 ### Next Best Step
 
 With all core slices implemented, the remaining Phase 1 work is:
 
 1. **Dark mode system-follow** — fix the toggle to respect `ThemeMode.system` instead of manual-only
-2. **Store release blockers** — keystore signing, CoinPaprika replacement, privacy policy, branded app names
-3. **Real AdMob SDK** — replace placeholder banners with live `google_mobile_ads`
-4. **Long-press context menu** — nice UX polish for currency rows
-5. **Slice 10 doc alignment** — ensure `DEFINITIONS.md` and `PLAN.md` reflect final BTC/ETH scope
+2. **Localization wiring** — connect MaterialApp to AppLocalizations + migrate hardcoded strings to keys
+3. **ARB translations** — add DE, ES, IT, FR translation content across all user-facing screens
+4. **Real AdMob SDK** — replace placeholder banners with live `google_mobile_ads`
+5. **Release infrastructure** — CoinPaprika provider swap, keystore signing, branded app name, privacy policy URL, iOS deployment target bump
+6. **RC build validation** — formal APK/App Bundle build confirming everything works together
+7. **Store listing assets** — screenshots, descriptions, keywords for both stores
+8. **Long-press context menu** — optional UX polish for currency rate rows
