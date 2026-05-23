@@ -385,9 +385,9 @@ lib/
 
 ### Remaining Phase 1 work (priority order)
 
-- [ ] **P1 — Dark mode**: make toggle follow `ThemeMode.system` instead of manual boolean only
-- [ ] **P2 — Localization Step 1** (system wiring): connect `MaterialApp` to `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales`; migrate meaningful user-facing labels/messages to localization keys (`AppLocalizations.of(context)`)
-- [ ] **P3 — Localization Step 2** (language content): add and validate ARB translations for EN, DE, ES, IT, FR across Convert, Charts, Settings, dialogs/sheets, empty/error states, and accessibility labels/tooltips where user-visible
+- [x] **P1 — Dark mode**: make toggle follow `ThemeMode.system` instead of manual boolean only
+- [x] **P2 — Localization Step 1** (system wiring): connect `MaterialApp` to `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales`; migrate meaningful user-facing labels/messages to localization keys (`AppLocalizations.of(context)`)
+- [x] **P3 — Localization Step 2** (language content): add and validate ARB translations for EN, DE, ES, IT, FR across Convert, Charts, Settings, dialogs/sheets, empty/error states, and accessibility labels/tooltips where user-visible
 - [ ] **P4 — Real AdMob SDK**: replace placeholder banners with live `google_mobile_ads`
 - [ ] **P5 — CoinPaprika replacement**: swap Coingecko out of the release-safe profile for a stable no-key provider
 - [ ] **P6 — Release keystore signing**: move from debug signing config to proper release keystore
