@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class CurrencyRowSwipeActions extends StatefulWidget {
@@ -94,6 +95,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     final baseProgress = _windowProgress(_reveal, start: 18, end: 138);
     final hideProgress = _windowProgress(_reveal, start: 86, end: 182);
     final revealProgress = _reveal / _maxReveal;
@@ -101,8 +103,8 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
       borderRadius: BorderRadius.circular(18),
       child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.card,
-          border: Border.all(color: AppTheme.border.withValues(alpha: .08)),
+          color: colors.card,
+          border: Border.all(color: colors.border.withValues(alpha: .08)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -112,7 +114,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
               icon: Icons.remove_circle_rounded,
               backgroundColor: const Color(0xFFF7E3DC),
               iconBadgeColor: const Color(0xFFEBC0B3),
-              color: AppTheme.coralInk,
+               color: colors.coralInk,
               label: 'Remove currency',
               shortLabel: 'Hide',
               progress: _motionProgress(hideProgress),
@@ -123,7 +125,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
               icon: Icons.currency_exchange_rounded,
               backgroundColor: const Color(0xFF2E6940),
               iconBadgeColor: const Color(0xFF447E55),
-              color: AppTheme.card,
+               color: colors.card,
               label: 'Set as base currency',
               shortLabel: 'Base',
               progress: _motionProgress(baseProgress),
@@ -198,11 +200,11 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
                   transform: Matrix4.translationValues(0, _isPressed ? -2 : 0, 0),
                   transformAlignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: AppTheme.bg,
+                    color: colors.bg,
                     borderRadius: BorderRadius.circular(18),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                        color: AppTheme.primary.withValues(
+                        color: colors.primary.withValues(
                           alpha: _isPressed ? 0.1 : 0.04 + (0.04 * revealProgress),
                         ),
                         blurRadius: _isPressed ? 16 : 8 + (4 * revealProgress),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import 'amount_input_sheet.dart';
 
@@ -17,9 +18,10 @@ class AmountEditingField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     final display = amountText.isEmpty ? '0.00' : amountText;
     final baseStyle = AppTheme.heroAmountFor(context).copyWith(
-      color: amountText.isEmpty ? AppTheme.muted : AppTheme.text,
+      color: amountText.isEmpty ? colors.muted : colors.text,
     );
 
     return Semantics(
@@ -80,11 +82,12 @@ class AmountEditingField extends StatelessWidget {
   }
 
   Future<void> _openAmountSheet(BuildContext context) async {
+    final colors = AppColors.of(context);
     final nextAmount = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: AppTheme.card,
+      backgroundColor: colors.card,
       barrierColor: Colors.black.withValues(alpha: .36),
       builder: (context) => AmountInputSheet(
         amountText: amountText,

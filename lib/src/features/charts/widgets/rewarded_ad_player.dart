@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/monetization/monetization_controller.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 enum _AdPhase { loading, playing, completed, failed }
@@ -88,7 +89,7 @@ class _RewardedAdPlayerState extends State<RewardedAdPlayer>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                _buildIcon(),
+                _buildIcon(context),
                 const SizedBox(height: 20),
                 Text(
                   _title,
@@ -115,15 +116,15 @@ class _RewardedAdPlayerState extends State<RewardedAdPlayer>
     );
   }
 
-  Widget _buildIcon() {
+  Widget _buildIcon(BuildContext context) {
     switch (_phase) {
       case _AdPhase.loading:
-        return const SizedBox(
+        return SizedBox(
           width: 48,
           height: 48,
           child: CircularProgressIndicator(
             strokeWidth: 3,
-            color: AppTheme.trendUp,
+            color: AppColors.of(context).trendUp,
           ),
         );
       case _AdPhase.playing:
@@ -144,10 +145,10 @@ class _RewardedAdPlayerState extends State<RewardedAdPlayer>
         return Icon(
           Icons.check_circle_rounded,
           size: 56,
-          color: AppTheme.trendUp,
+          color: AppColors.of(context).trendUp,
         );
       case _AdPhase.failed:
-        return Icon(Icons.error_outline, size: 56, color: AppTheme.trendDown);
+        return Icon(Icons.error_outline, size: 56, color: AppColors.of(context).trendDown);
     }
   }
 
@@ -214,7 +215,7 @@ class _ProgressBarState extends State<_ProgressBar>
           child: LinearProgressIndicator(
             value: _controller.value,
             backgroundColor: const Color(0xFFF6F8EF).withValues(alpha: .15),
-            valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.trendUp),
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.of(context).trendUp),
             minHeight: 4,
           ),
         );

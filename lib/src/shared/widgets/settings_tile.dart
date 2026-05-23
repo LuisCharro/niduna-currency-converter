@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 class SettingsTile extends StatelessWidget {
@@ -20,12 +21,13 @@ class SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(
         border: showDivider
             ? Border(
                 bottom: BorderSide(
-                  color: AppTheme.border.withValues(alpha: .14),
+                  color: colors.border.withValues(alpha: .14),
                 ),
               )
             : null,
@@ -48,7 +50,7 @@ class SettingsTile extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         subtitle!,
-                        style: AppTheme.caption.copyWith(color: AppTheme.muted),
+                        style: AppTheme.caption.copyWith(color: colors.muted),
                       ),
                     ],
                   ],

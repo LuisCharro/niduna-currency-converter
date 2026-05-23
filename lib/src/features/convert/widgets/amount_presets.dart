@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 
 class AmountPresets extends StatelessWidget {
   const AmountPresets({
@@ -47,18 +47,19 @@ class _PresetChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return OutlinedButton(
       onPressed: () => onSelected(value),
       style: OutlinedButton.styleFrom(
         minimumSize: const Size(0, 44),
-        foregroundColor: isSelected ? AppTheme.card : AppTheme.primary,
+        foregroundColor: isSelected ? colors.card : colors.primary,
         backgroundColor: isSelected
-            ? AppTheme.primary
-            : AppTheme.container.withValues(alpha: .45),
+            ? colors.primary
+            : colors.container.withValues(alpha: .45),
         side: BorderSide(
           color: isSelected
-              ? AppTheme.primary
-              : AppTheme.border.withValues(alpha: .16),
+              ? colors.primary
+              : colors.border.withValues(alpha: .16),
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         textStyle: const TextStyle(fontWeight: FontWeight.w800),

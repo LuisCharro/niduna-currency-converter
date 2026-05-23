@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/monetization/models/temporary_unlock.dart';
 import '../../../core/monetization/monetization_controller.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import 'chart_currency_picker_sheet.dart';
 import 'chart_pair_pill.dart';
@@ -53,12 +54,12 @@ class ChartPairStrip extends StatelessWidget {
               height: 44,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppTheme.container,
-                border: Border.all(color: AppTheme.instrumentBorder()),
+                color: AppColors.of(context).container,
+                border: Border.all(color: AppColors.of(context).border.withValues(alpha: .15)),
               ),
               child: Icon(
                 Icons.swap_vert_rounded,
-                color: AppTheme.text,
+                color: AppColors.of(context).text,
                 size: 20,
               ),
             ),
@@ -105,7 +106,7 @@ class ChartPairStrip extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      backgroundColor: AppTheme.card,
+      backgroundColor: AppColors.of(context).card,
       builder: (_) => ChartCurrencyPickerSheet(
         title: selectingBase ? 'Select base currency' : 'Select quote currency',
         selectedCode: selectingBase ? base : quote,

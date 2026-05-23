@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/rates/provider_usage_info.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class ProviderMatrix extends StatelessWidget {
@@ -14,7 +15,7 @@ class ProviderMatrix extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppTheme.container.withValues(alpha: .5),
+        color: AppColors.of(context).container.withValues(alpha: .5),
         borderRadius: BorderRadius.circular(AppTheme.radius),
       ),
       child: Column(
@@ -56,7 +57,7 @@ class _ProviderRow extends StatelessWidget {
           flex: 4,
           child: Text(
             row.role,
-            style: const TextStyle(fontSize: 12, color: AppTheme.muted),
+            style: TextStyle(fontSize: 12, color: AppColors.of(context).muted),
           ),
         ),
         _StatusPill(status: row.status),
@@ -77,15 +78,15 @@ class _StatusPill extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
         color: isPrimary
-            ? AppTheme.trendUp.withValues(alpha: .12)
-            : AppTheme.container,
+            ? AppColors.of(context).trendUp.withValues(alpha: .12)
+            : AppColors.of(context).container,
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
         status,
         style: TextStyle(
           fontSize: 10,
-          color: isPrimary ? AppTheme.trendUp : AppTheme.muted,
+          color: isPrimary ? AppColors.of(context).trendUp : AppColors.of(context).muted,
           fontWeight: FontWeight.w700,
         ),
       ),

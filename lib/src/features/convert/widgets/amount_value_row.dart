@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import 'amount_base_button.dart';
 import 'amount_editing_field.dart';
@@ -21,8 +22,9 @@ class AmountValueRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final display = amountText.isEmpty ? '0.00' : amountText;
+    final colors = AppColors.of(context);
     final baseStyle = AppTheme.heroAmountFor(context).copyWith(
-      color: amountText.isEmpty ? AppTheme.muted : AppTheme.text,
+      color: amountText.isEmpty ? colors.muted : colors.text,
     );
 
     return LayoutBuilder(
@@ -46,7 +48,7 @@ class AmountValueRow extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'AMOUNT',
-                  style: AppTheme.sectionLabel.copyWith(color: AppTheme.muted),
+                  style: AppTheme.sectionLabel.copyWith(color: colors.muted),
                 ),
                 if (!showsInlineSelector) ...<Widget>[
                   const Spacer(),

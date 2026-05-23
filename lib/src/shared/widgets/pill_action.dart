@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 class PillAction extends StatelessWidget {
@@ -18,10 +19,11 @@ class PillAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Material(
       color: emphasized
-          ? AppTheme.primary
-          : AppTheme.container.withValues(alpha: .72),
+          ? colors.primary
+          : colors.container.withValues(alpha: .72),
       borderRadius: BorderRadius.circular(AppTheme.pillRadius),
       child: InkWell(
         onTap: onTap,
@@ -35,7 +37,7 @@ class PillAction extends StatelessWidget {
                 Icon(
                   icon,
                   size: 15,
-                  color: emphasized ? Colors.white : AppTheme.primary,
+                  color: emphasized ? Colors.white : colors.primary,
                 ),
                 const SizedBox(width: 6),
               ],
@@ -44,7 +46,7 @@ class PillAction extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w800,
-                  color: emphasized ? Colors.white : AppTheme.primary,
+                  color: emphasized ? Colors.white : colors.primary,
                 ),
               ),
             ],

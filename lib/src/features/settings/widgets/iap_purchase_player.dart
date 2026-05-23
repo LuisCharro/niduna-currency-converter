@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/monetization/purchase_service.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 
 enum _IapPhase { loading, processing, completed, failed }
 
@@ -136,7 +136,7 @@ class _IapPurchasePlayerState extends State<IapPurchasePlayer>
           height: 48,
           child: CircularProgressIndicator(
             strokeWidth: 3,
-            color: AppTheme.primary,
+            color: AppColors.of(context).primary,
           ),
         );
       case _IapPhase.processing:
@@ -145,7 +145,7 @@ class _IapPurchasePlayerState extends State<IapPurchasePlayer>
           height: 48,
           child: CircularProgressIndicator(
             strokeWidth: 3,
-            color: AppTheme.primary,
+            color: AppColors.of(context).primary,
           ),
         );
       case _IapPhase.completed:
@@ -244,7 +244,7 @@ class _ProgressBarState extends State<_ProgressBar>
           child: LinearProgressIndicator(
             value: _controller.value,
             backgroundColor: Colors.white.withValues(alpha: .15),
-            valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.of(context).primary),
             minHeight: 4,
           ),
         );

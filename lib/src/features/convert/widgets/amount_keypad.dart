@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 
 class AmountKeypad extends StatelessWidget {
   const AmountKeypad({
@@ -59,33 +59,34 @@ class _Key extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Material(
-      color: AppTheme.container.withValues(alpha: .9),
+      color: colors.container.withValues(alpha: .9),
       borderRadius: BorderRadius.circular(18),
-      shadowColor: AppTheme.primary.withValues(alpha: .08),
+      shadowColor: colors.primary.withValues(alpha: .08),
       elevation: 1,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(18),
-        overlayColor: WidgetStatePropertyAll(
-          AppTheme.primary.withValues(alpha: .06),
-        ),
+          overlayColor: WidgetStatePropertyAll(
+            colors.primary.withValues(alpha: .06),
+          ),
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: AppTheme.border.withValues(alpha: .08)),
+            border: Border.all(color: colors.border.withValues(alpha: .08)),
           ),
           child: Center(
             child: icon == null
                 ? Text(
                     label!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w800,
-                      color: AppTheme.text,
+                      color: colors.text,
                     ),
                   )
-                : Icon(icon, color: AppTheme.text, size: 22),
+                : Icon(icon, color: colors.text, size: 22),
           ),
         ),
       ),

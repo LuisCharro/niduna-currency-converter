@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/currency_picker_chrome.dart';
 import 'currency_picker_tile.dart';
 
@@ -75,7 +75,7 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
                     padding: const EdgeInsets.only(left: 52),
                     child: Divider(
                       height: 1,
-                      color: AppTheme.border.withValues(alpha: .15),
+                      color: AppColors.of(context).border.withValues(alpha: .15),
                     ),
                   ),
                   itemCount: currencies.length,

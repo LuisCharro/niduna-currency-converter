@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 
@@ -22,6 +23,7 @@ class AmountBaseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     final currency = currencyByCode(base);
     final minHeight = compact ? 44.0 : 48.0;
     final minWidth = compact ? 72.0 : 76.0;
@@ -35,7 +37,7 @@ class AmountBaseButton extends StatelessWidget {
       button: true,
       label: 'Change base currency, currently $base',
       child: Material(
-        color: AppTheme.card.withValues(alpha: .9),
+        color: colors.card.withValues(alpha: .9),
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
         child: InkWell(
           key: const Key('open_base_currency_picker'),
@@ -54,7 +56,7 @@ class AmountBaseButton extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-                border: Border.all(color: AppTheme.instrumentBorder(.16)),
+                border: Border.all(color: colors.border.withValues(alpha: .16)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -76,7 +78,7 @@ class AmountBaseButton extends StatelessWidget {
                   Icon(
                     Icons.keyboard_arrow_down_rounded,
                     size: iconSize,
-                    color: AppTheme.muted,
+                    color: colors.muted,
                   ),
                 ],
               ),

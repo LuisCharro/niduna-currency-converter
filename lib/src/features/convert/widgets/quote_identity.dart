@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 import '../models/currency_quote.dart';
@@ -13,6 +14,7 @@ class QuoteIdentity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Row(
       children: <Widget>[
         Container(
@@ -21,7 +23,7 @@ class QuoteIdentity extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: AppTheme.border.withValues(alpha: .2),
+              color: colors.border.withValues(alpha: .2),
               width: 1,
             ),
           ),
@@ -51,10 +53,10 @@ class QuoteIdentity extends StatelessWidget {
               ),
                 Text(
                   quote.code,
-                style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.muted,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: colors.muted,
                     letterSpacing: 0.3,
                   ),
                 ),

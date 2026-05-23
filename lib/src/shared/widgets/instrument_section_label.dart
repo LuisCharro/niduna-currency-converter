@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 class InstrumentSectionLabel extends StatelessWidget {
@@ -16,6 +17,7 @@ class InstrumentSectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -26,7 +28,7 @@ class InstrumentSectionLabel extends StatelessWidget {
               Text(
                 title,
                 style: AppTheme.caption.copyWith(
-                  color: AppTheme.text,
+                  color: colors.text,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -34,7 +36,7 @@ class InstrumentSectionLabel extends StatelessWidget {
                 const SizedBox(height: 1),
                 Text(
                   subtitle,
-                  style: AppTheme.caption.copyWith(color: AppTheme.muted),
+                  style: AppTheme.caption.copyWith(color: colors.muted),
                 ),
               ],
             ],

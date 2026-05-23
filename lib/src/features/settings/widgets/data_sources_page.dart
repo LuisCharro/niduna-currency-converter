@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/rates/provider_usage_info.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class DataSourcesPage extends StatelessWidget {
@@ -20,10 +21,10 @@ class DataSourcesPage extends StatelessWidget {
         : 'Crypto charts are disabled in this build to keep the release profile safe for store publication.';
 
     return Scaffold(
-      backgroundColor: AppTheme.bg,
+      backgroundColor: AppColors.of(context).bg,
       appBar: AppBar(
-        backgroundColor: AppTheme.bg,
-        foregroundColor: AppTheme.text,
+        backgroundColor: AppColors.of(context).bg,
+        foregroundColor: AppColors.of(context).text,
         elevation: 0,
         title: const Text('Data sources'),
       ),
@@ -85,20 +86,20 @@ class _SourceBlock extends StatelessWidget {
         Text(
           provider,
           style: AppTheme.caption.copyWith(
-            color: AppTheme.primary,
+             color: AppColors.of(context).primary,
             fontWeight: FontWeight.w800,
           ),
         ),
         const SizedBox(height: AppTheme.space2),
         Text(
           detail,
-          style: AppTheme.body.copyWith(color: AppTheme.muted, height: 1.45),
+          style: AppTheme.body.copyWith(color: AppColors.of(context).muted, height: 1.45),
         ),
         if (showDivider)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: AppTheme.space4),
             child: Divider(
-              color: AppTheme.border.withValues(alpha: .14),
+              color: AppColors.of(context).border.withValues(alpha: .14),
               height: .5,
             ),
           ),

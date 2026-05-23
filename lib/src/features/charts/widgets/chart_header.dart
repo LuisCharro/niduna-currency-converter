@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import 'chart_value_formatter.dart';
 
@@ -27,7 +28,7 @@ class ChartHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final baseCurrency = currencyByCode(base);
     final isPositive = (changePercent ?? 0) >= 0;
-    final trendColor = isPositive ? AppTheme.trendUp : AppTheme.trendDown;
+    final trendColor = isPositive ? AppColors.of(context).trendUp : AppColors.of(context).trendDown;
     final arrow = isPositive ? '↑' : '↓';
     final freshnessText = _freshnessLabel(lastUpdated);
 
@@ -45,13 +46,13 @@ class ChartHeader extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'CHARTS',
-                  style: AppTheme.sectionLabel.copyWith(
-                    color: AppTheme.trendUp,
+                  style: AppTheme.sectionLabelStyle(context).copyWith(
+                    color: AppColors.of(context).trendUp,
                     letterSpacing: 1.1,
                   ),
                 ),
                 const SizedBox(height: AppTheme.space1),
-                Text('$base / $quote', style: AppTheme.pairTitleFraunces),
+                Text('$base / $quote', style: AppTheme.pairTitleStyle(context)),
                 const SizedBox(height: AppTheme.space2),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -60,7 +61,7 @@ class ChartHeader extends StatelessWidget {
                     if (rate != null)
                       Text(
                         '${baseCurrency.symbol} ${formatChartValue(rate!)}',
-                        style: AppTheme.metricValue,
+                        style: AppTheme.metricValueStyle(context),
                       ),
                     if (changePercent != null) ...<Widget>[
                       const SizedBox(width: AppTheme.space3),
@@ -86,7 +87,7 @@ class ChartHeader extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
                       freshnessText,
-                      style: AppTheme.caption.copyWith(color: AppTheme.muted),
+                      style: AppTheme.caption.copyWith(color: AppColors.of(context).muted),
                     ),
                   ),
               ],
@@ -99,12 +100,12 @@ class ChartHeader extends StatelessWidget {
               height: 44,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppTheme.card.withValues(alpha: .88),
-                border: Border.all(color: AppTheme.instrumentBorder(.2)),
+                color: AppColors.of(context).card.withValues(alpha: .88),
+                border: Border.all(color: AppColors.of(context).border.withValues(alpha: .2)),
               ),
               child: Icon(
                 Icons.swap_vert_rounded,
-                color: AppTheme.text,
+                color: AppColors.of(context).text,
                 size: 22,
               ),
             ),

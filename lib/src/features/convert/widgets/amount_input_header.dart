@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 
@@ -20,6 +21,7 @@ class AmountInputHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -27,13 +29,13 @@ class AmountInputHeader extends StatelessWidget {
           children: <Widget>[
             Text(
               'Edit amount',
-              style: AppTheme.caption.copyWith(color: AppTheme.muted),
+              style: AppTheme.caption.copyWith(color: colors.muted),
             ),
             const Spacer(),
             TextButton(
               onPressed: onCancel,
               style: TextButton.styleFrom(
-                foregroundColor: AppTheme.muted,
+                foregroundColor: colors.muted,
                 textStyle: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
@@ -47,7 +49,7 @@ class AmountInputHeader extends StatelessWidget {
         LayoutBuilder(
           builder: (context, constraints) {
             final display = '${currency.symbol} ${amount.isEmpty ? '0' : amount}';
-            final style = _adaptiveStyleForWidth(display, constraints.maxWidth);
+            final style = _adaptiveStyleForWidth(display, constraints.maxWidth, context);
             return AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 150),
               curve: Curves.easeOut,
@@ -64,11 +66,11 @@ class AmountInputHeader extends StatelessWidget {
         const SizedBox(height: 10),
         _CurrencyChip(currency: currency, base: base),
         const SizedBox(height: 14),
-        Divider(color: AppTheme.border.withValues(alpha: .12), height: 1),
+        Divider(color: colors.border.withValues(alpha: .12), height: 1),
         const SizedBox(height: 14),
         Text(
           'Quick amounts',
-          style: AppTheme.caption.copyWith(color: AppTheme.muted),
+          style: AppTheme.caption.copyWith(color: colors.muted),
         ),
       ],
     );
@@ -76,13 +78,14 @@ class AmountInputHeader extends StatelessWidget {
 
   static const List<double> _sheetAmountSizes = [34.0, 30.0, 26.0, 22.0];
 
-  TextStyle _adaptiveStyleForWidth(String text, double maxWidth) {
-    const baseStyle = TextStyle(
+  TextStyle _adaptiveStyleForWidth(String text, double maxWidth, BuildContext context) {
+    final colors = AppColors.of(context);
+    final baseStyle = TextStyle(
       fontSize: 34,
       fontWeight: FontWeight.w800,
       letterSpacing: -0.4,
       height: 1.1,
-      color: AppTheme.text,
+      color: colors.text,
     );
     for (final fontSize in _sheetAmountSizes) {
       if (fontSize > baseStyle.fontSize!) break;
@@ -107,10 +110,11 @@ class AmountSheetHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Center(
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppTheme.border.withValues(alpha: .18),
+          color: colors.border.withValues(alpha: .18),
           borderRadius: BorderRadius.circular(999),
         ),
         child: const SizedBox(width: 44, height: 4),
@@ -127,12 +131,13 @@ class _CurrencyChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
       decoration: BoxDecoration(
-        color: AppTheme.card,
+        color: colors.card,
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-        border: Border.all(color: AppTheme.border.withValues(alpha: .14)),
+        border: Border.all(color: colors.border.withValues(alpha: .14)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

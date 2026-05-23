@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class AmountUtilityPill extends StatelessWidget {
@@ -14,11 +15,12 @@ class AmountUtilityPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppTheme.card.withValues(alpha: .62),
+        color: colors.card.withValues(alpha: .62),
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-        border: Border.all(color: AppTheme.border.withValues(alpha: .12)),
+        border: Border.all(color: colors.border.withValues(alpha: .12)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -34,7 +36,7 @@ class AmountUtilityPill extends StatelessWidget {
             child: VerticalDivider(
               width: 1,
               thickness: 1,
-              color: AppTheme.border.withValues(alpha: .1),
+              color: colors.border.withValues(alpha: .1),
             ),
           ),
           _UtilityIconButton(
@@ -62,12 +64,13 @@ class _UtilityIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return IconButton(
       tooltip: tooltip,
       onPressed: onPressed,
       icon: Icon(icon, size: 19),
       style: IconButton.styleFrom(
-        foregroundColor: AppTheme.primary,
+        foregroundColor: colors.primary,
         fixedSize: const Size(44, 44),
         minimumSize: const Size(44, 44),
         padding: EdgeInsets.zero,

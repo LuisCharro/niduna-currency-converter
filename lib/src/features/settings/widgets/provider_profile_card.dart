@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/rates/provider_usage_info.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class ProviderProfileCard extends StatelessWidget {
@@ -13,7 +14,7 @@ class ProviderProfileCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppTheme.container.withValues(alpha: .5),
+        color: AppColors.of(context).container.withValues(alpha: .5),
         borderRadius: BorderRadius.circular(AppTheme.radius),
       ),
       child: Column(
@@ -33,7 +34,7 @@ class ProviderProfileCard extends StatelessWidget {
             info.isReleaseSafe
                 ? 'Store-safe profile. CoinPaprika is not active in release mode.'
                 : 'Developer profile. CoinPaprika can be used in dev flows.',
-            style: const TextStyle(fontSize: 12, color: AppTheme.muted),
+            style: TextStyle(fontSize: 12, color: AppColors.of(context).muted),
           ),
           const SizedBox(height: 8),
           Wrap(
@@ -66,11 +67,11 @@ class _ChipLabel extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: AppTheme.border.withValues(alpha: .4)),
+        border: Border.all(color: AppColors.of(context).border.withValues(alpha: .4)),
       ),
       child: Text(
         label,
-        style: const TextStyle(fontSize: 11, color: AppTheme.muted),
+        style: TextStyle(fontSize: 11, color: AppColors.of(context).muted),
       ),
     );
   }

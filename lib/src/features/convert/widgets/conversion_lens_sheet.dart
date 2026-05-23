@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../models/currency_quote.dart';
@@ -120,6 +121,7 @@ class _LensCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     final quickBase = _baseValues(amount);
     final reverseTargets = _reverseTargets();
     final amountLabel = _formatHeroBase(amount, base);
@@ -132,7 +134,7 @@ class _LensCard extends StatelessWidget {
         key: const Key('conversion_lens'),
         padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
         decoration: BoxDecoration(
-          color: AppTheme.card,
+          color: colors.card,
           borderRadius: BorderRadius.circular(26),
           boxShadow: const <BoxShadow>[
             BoxShadow(color: Color(0x1A171D14), blurRadius: 26, offset: Offset(0, 14)),
@@ -167,7 +169,7 @@ class _LensCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppTheme.container,
+                color: colors.container,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -182,21 +184,21 @@ class _LensCard extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               '$amountLabel $base = $convertedLabel ${quote.code}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w800,
                                 height: 1.15,
                                 letterSpacing: -0.3,
-                                color: AppTheme.text,
+                                color: colors.text,
                               ),
                             ),
                             const SizedBox(height: 6),
                             Text(
                               '1 $base = ${_formatRaw(quote.rate, quote.code)} ${quote.code}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12.5,
                                 fontWeight: FontWeight.w700,
-                                color: AppTheme.muted,
+                                color: colors.muted,
                               ),
                             ),
                           ],
@@ -347,6 +349,7 @@ class _LensSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -354,7 +357,7 @@ class _LensSection extends StatelessWidget {
         const SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
-            color: AppTheme.bg,
+            color: colors.bg,
             borderRadius: BorderRadius.circular(18),
           ),
           child: Column(children: children),

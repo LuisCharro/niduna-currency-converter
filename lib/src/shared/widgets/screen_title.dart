@@ -12,7 +12,7 @@ class ScreenTitle extends StatelessWidget {
     return Text(
       title,
       key: const Key('screen_title'),
-      style: AppTheme.screenTitleFraunces,
+      style: AppTheme.screenTitleStyle(context),
     );
   }
 }

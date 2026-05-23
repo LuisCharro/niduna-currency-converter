@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../models/currency_quote.dart';
 import 'quote_identity.dart';
@@ -15,6 +16,7 @@ class CurrencyRateRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Material(
       color: Colors.transparent,
       child: ConstrainedBox(
@@ -27,7 +29,7 @@ class CurrencyRateRow extends StatelessWidget {
                 width: 3,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: AppTheme.border.withValues(alpha: .16),
+                  color: colors.border.withValues(alpha: .16),
                   borderRadius: BorderRadius.circular(999),
                 ),
               ),

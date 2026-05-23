@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 
 class CurrencyPickerTile extends StatelessWidget {
@@ -22,6 +22,7 @@ class CurrencyPickerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return InkWell(
       onTap: selectBaseMode || !isBase ? onTap : null,
       child: Padding(
@@ -48,8 +49,8 @@ class CurrencyPickerTile extends StatelessWidget {
                   const SizedBox(height: 1),
                   Text(
                     _subtitle,
-                    style: const TextStyle(
-                      color: AppTheme.muted,
+                    style: TextStyle(
+                      color: colors.muted,
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       letterSpacing: .3,
@@ -58,7 +59,7 @@ class CurrencyPickerTile extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(_icon, color: _color, size: 24),
+            Icon(_icon, color: _color(context), size: 24),
           ],
         ),
       ),
@@ -72,8 +73,9 @@ class CurrencyPickerTile extends StatelessWidget {
     return isSelected ? Icons.check_circle : Icons.circle_outlined;
   }
 
-  Color get _color {
-    return isBase || isSelected ? AppTheme.primary : AppTheme.subtle;
+  Color _color(BuildContext context) {
+    final colors = AppColors.of(context);
+    return isBase || isSelected ? colors.primary : colors.subtle;
   }
 
   String get _subtitle {

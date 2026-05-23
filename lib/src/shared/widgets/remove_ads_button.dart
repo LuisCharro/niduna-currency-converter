@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 /// Coral Remove Ads link aligned under the banner (M2-2).
@@ -10,6 +11,7 @@ class RemoveAdsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         AppTheme.space5,
@@ -22,8 +24,8 @@ class RemoveAdsButton extends StatelessWidget {
         child: TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(
-            foregroundColor: AppTheme.coralInk,
-            backgroundColor: AppTheme.coralSurface.withValues(alpha: .85),
+            foregroundColor: colors.coralInk,
+            backgroundColor: colors.coralSurface.withValues(alpha: .85),
             padding: const EdgeInsets.symmetric(
               horizontal: AppTheme.space4,
               vertical: AppTheme.space2,

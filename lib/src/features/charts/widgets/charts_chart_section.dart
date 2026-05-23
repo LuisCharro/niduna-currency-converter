@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../domain/chart_range.dart';
 import '../presentation/charts_controller.dart';
@@ -38,16 +39,16 @@ class ChartsChartSection extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: AppTheme.instrumentBorder(.1)),
+            top: BorderSide(color: AppColors.of(context).border.withValues(alpha: .1)),
           ),
         ),
         child: Column(
           children: <Widget>[
             DecoratedBox(
               decoration: BoxDecoration(
-                color: AppTheme.container,
+                color: AppColors.of(context).container,
                 border: Border(
-                  bottom: BorderSide(color: AppTheme.instrumentBorder(.1)),
+                  bottom: BorderSide(color: AppColors.of(context).border.withValues(alpha: .1)),
                 ),
               ),
               child: Padding(
@@ -64,7 +65,7 @@ class ChartsChartSection extends StatelessWidget {
               LinearProgressIndicator(
                 minHeight: 2,
                 backgroundColor: Colors.transparent,
-                color: AppTheme.trendUp.withValues(alpha: .7),
+                color: AppColors.of(context).trendUp.withValues(alpha: .7),
               ),
             Expanded(child: _buildPlot(context)),
           ],

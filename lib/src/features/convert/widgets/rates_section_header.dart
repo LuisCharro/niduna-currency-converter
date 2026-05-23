@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 /// Rates ledger header with light Edit affordance (D2-CON-5).
@@ -10,6 +11,7 @@ class RatesSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         AppTheme.pagePadding,
@@ -21,16 +23,16 @@ class RatesSectionHeader extends StatelessWidget {
         children: <Widget>[
           Text(
             'RATES',
-            style: AppTheme.sectionLabel.copyWith(color: AppTheme.muted),
+            style: AppTheme.sectionLabel.copyWith(color: colors.muted),
           ),
           const Spacer(),
           OutlinedButton.icon(
             key: const Key('open_currency_picker'),
             onPressed: onEdit,
             style: OutlinedButton.styleFrom(
-              foregroundColor: AppTheme.primary,
-              backgroundColor: AppTheme.container.withValues(alpha: .55),
-              side: BorderSide(color: AppTheme.border.withValues(alpha: .14)),
+              foregroundColor: colors.primary,
+              backgroundColor: colors.container.withValues(alpha: .55),
+              side: BorderSide(color: colors.border.withValues(alpha: .14)),
               padding: const EdgeInsets.symmetric(
                 horizontal: AppTheme.space3,
                 vertical: 8,

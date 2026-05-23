@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/preferences/app_preferences.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../settings_controller.dart';
 import '../../../shared/widgets/settings_tile.dart';
 
@@ -27,10 +27,10 @@ class DecimalPlacesTile extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: selected ? AppTheme.primary : AppTheme.container,
+                  color: selected ? AppColors.of(context).primary : AppColors.of(context).container,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: selected ? AppTheme.primary : AppTheme.border,
+                    color: selected ? AppColors.of(context).primary : AppColors.of(context).border,
                   ),
                 ),
                 alignment: Alignment.center,
@@ -39,7 +39,7 @@ class DecimalPlacesTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
-                    color: selected ? Colors.white : AppTheme.text,
+                    color: selected ? Colors.white : AppColors.of(context).text,
                   ),
                 ),
               ),

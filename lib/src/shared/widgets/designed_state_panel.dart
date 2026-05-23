@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 /// Branded empty/error panel with forest icon treatment (G2-7, D2-CON-7).
@@ -27,6 +28,7 @@ class DesignedStatePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     final topPad = compact ? AppTheme.space2 : AppTheme.space7;
     return Padding(
       key: const Key('designed_state_panel'),
@@ -49,7 +51,7 @@ class DesignedStatePanel extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: AppTheme.body.copyWith(
-              color: AppTheme.text,
+              color: colors.text,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -58,7 +60,7 @@ class DesignedStatePanel extends StatelessWidget {
             Text(
               subtitle!,
               textAlign: TextAlign.center,
-              style: AppTheme.caption.copyWith(color: AppTheme.muted),
+              style: AppTheme.caption.copyWith(color: colors.muted),
             ),
           ],
           if (actionLabel != null && onAction != null) ...<Widget>[
@@ -66,7 +68,7 @@ class DesignedStatePanel extends StatelessWidget {
             TextButton(
               key: actionKey,
               onPressed: onAction,
-              style: TextButton.styleFrom(foregroundColor: AppTheme.primary),
+              style: TextButton.styleFrom(foregroundColor: colors.primary),
               child: Text(
                 actionLabel!,
                 style: const TextStyle(fontWeight: FontWeight.w800),

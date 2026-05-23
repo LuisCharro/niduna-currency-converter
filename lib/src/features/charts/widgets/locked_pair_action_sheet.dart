@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 
 class LockedPairActionSheet extends StatelessWidget {
   const LockedPairActionSheet({
@@ -22,14 +22,14 @@ class LockedPairActionSheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(Icons.lock_outline, size: 40, color: AppTheme.muted),
+            Icon(Icons.lock_outline, size: 40, color: AppColors.of(context).muted),
             const SizedBox(height: 12),
             Text(
               'This pair is locked',
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w700,
-                color: AppTheme.text,
+                color: AppColors.of(context).text,
               ),
             ),
             const SizedBox(height: 4),
@@ -37,7 +37,7 @@ class LockedPairActionSheet extends StatelessWidget {
               canWatchAd
                   ? 'Choose how to unlock it'
                   : 'Rewarded ads are unavailable after Remove Ads',
-              style: TextStyle(fontSize: 13, color: AppTheme.muted),
+              style: TextStyle(fontSize: 13, color: AppColors.of(context).muted),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
@@ -87,7 +87,7 @@ class LockedPairActionSheet extends StatelessWidget {
             const SizedBox(height: 12),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel', style: TextStyle(color: AppTheme.subtle)),
+              child: Text('Cancel', style: TextStyle(color: AppColors.of(context).subtle)),
             ),
           ],
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/remove_ads_button.dart';
 import 'ad_banner_placeholder.dart';
 
@@ -15,11 +15,12 @@ class AdSupportShelf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppTheme.container,
+        color: colors.container,
         border: Border(
-          top: BorderSide(color: AppTheme.instrumentBorder(.14)),
+          top: BorderSide(color: colors.border.withValues(alpha: .14)),
         ),
       ),
       child: Column(

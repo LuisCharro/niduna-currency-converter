@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 
@@ -37,7 +38,7 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
               ),
               const Spacer(),
               IconButton(
-                icon: Icon(Icons.close, size: 18, color: AppTheme.muted),
+                icon: Icon(Icons.close, size: 18, color: AppColors.of(context).muted),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ],
@@ -52,10 +53,10 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
               prefixIcon: const Icon(Icons.search, size: 20),
               isDense: true,
               filled: true,
-              fillColor: AppTheme.container.withValues(alpha: .55),
+              fillColor: AppColors.of(context).container.withValues(alpha: .55),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppTheme.radius),
-                borderSide: BorderSide(color: AppTheme.border),
+                borderSide: BorderSide(color: AppColors.of(context).border),
               ),
             ),
           ),
@@ -66,7 +67,7 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
             shrinkWrap: true,
             itemCount: currencies.length,
             separatorBuilder: (context, index) =>
-                Divider(height: 1, color: AppTheme.border),
+                Divider(height: 1, color: AppColors.of(context).border),
             itemBuilder: (context, i) {
               final c = currencies[i];
               final selected = c.code == widget.currentBase;
@@ -83,12 +84,12 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
                   c.code,
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: selected ? AppTheme.muted : AppTheme.text,
+                    color: selected ? AppColors.of(context).muted : AppColors.of(context).text,
                   ),
                 ),
                 subtitle: Text(c.name),
                 trailing: selected
-                    ? Icon(Icons.check_circle, color: AppTheme.primary)
+                    ? Icon(Icons.check_circle, color: AppColors.of(context).primary)
                     : null,
               );
             },

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_theme.dart';
+import '../../core/theme/app_colors.dart';
 
 /// Warm paper canvas with a subtle bottom-weighted gradient (G2-5).
 class CanvasBackground extends StatelessWidget {
@@ -10,17 +10,18 @@ class CanvasBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return DecoratedBox(
-      decoration: const BoxDecoration(
-        color: AppTheme.bg,
+      decoration: BoxDecoration(
+        color: colors.bg,
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          stops: <double>[0, 0.65, 1],
+          stops: const <double>[0, 0.65, 1],
           colors: <Color>[
-            AppTheme.bg,
-            Color(0xFFFAFBF4),
-            Color(0xFFFFF9EC),
+            colors.bg,
+            colors.bg.withValues(alpha: .96),
+            colors.container,
           ],
         ),
       ),

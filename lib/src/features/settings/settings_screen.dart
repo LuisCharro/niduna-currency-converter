@@ -58,7 +58,7 @@ class SettingsScreen extends StatelessWidget {
                 DecimalPlacesTile(controller: controller),
                 SwitchTile(
                   title: 'Dark mode',
-                  subtitle: 'Follow system default',
+                  subtitle: preferences.isDarkMode ? 'On' : 'Follows system',
                   value: preferences.isDarkMode,
                   onChanged: controller.toggleDarkMode,
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/rates/provider_usage_info.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class ProviderFlowCards extends StatelessWidget {
@@ -34,9 +35,9 @@ class _ProviderFlowCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppTheme.card,
+        color: AppColors.of(context).card,
         borderRadius: BorderRadius.circular(AppTheme.radius),
-        border: Border.all(color: AppTheme.border),
+        border: Border.all(color: AppColors.of(context).border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,13 +49,13 @@ class _ProviderFlowCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             role.provider,
-            style: const TextStyle(fontSize: 12, color: AppTheme.primary),
+            style: TextStyle(fontSize: 12, color: AppColors.of(context).primary),
           ),
           const SizedBox(height: 8),
           for (final detail in role.details) ...<Widget>[
             Text(
               detail,
-              style: const TextStyle(fontSize: 12, color: AppTheme.muted),
+              style: TextStyle(fontSize: 12, color: AppColors.of(context).muted),
             ),
             const SizedBox(height: 4),
           ],

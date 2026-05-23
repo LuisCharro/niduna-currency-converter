@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class ConvertInfoBar extends StatelessWidget {
@@ -18,6 +19,7 @@ class ConvertInfoBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     final details = message == null
         ? '$statusLabel · $count currencies'
         : '$statusLabel · $message · $count currencies';
@@ -26,20 +28,20 @@ class ConvertInfoBar extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(12, 6, 8, 6),
         decoration: BoxDecoration(
-          color: AppTheme.container.withValues(alpha: .55),
+          color: colors.container.withValues(alpha: .55),
           borderRadius: BorderRadius.circular(AppTheme.radius),
         ),
         child: Row(
           children: <Widget>[
-            const Icon(Icons.circle, size: 7, color: AppTheme.primary),
+            Icon(Icons.circle, size: 7, color: colors.primary),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 details,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppTheme.muted,
+                style: TextStyle(
+                  color: colors.muted,
                   fontSize: 12,
                   fontWeight: FontWeight.w800,
                 ),

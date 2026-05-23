@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_theme.dart';
+import '../../core/theme/app_colors.dart';
 
 class FloatingPillNavItem extends StatelessWidget {
   const FloatingPillNavItem({
@@ -18,7 +18,8 @@ class FloatingPillNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? AppTheme.primary : AppTheme.muted;
+    final colors = AppColors.of(context);
+    final color = isSelected ? colors.primary : colors.muted;
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(5),
@@ -30,7 +31,7 @@ class FloatingPillNavItem extends StatelessWidget {
             curve: Curves.easeOut,
             decoration: BoxDecoration(
               color: isSelected
-                  ? AppTheme.primary.withValues(alpha: .1)
+                  ? colors.primary.withValues(alpha: .1)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(27),
             ),

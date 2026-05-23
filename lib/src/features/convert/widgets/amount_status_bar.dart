@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../domain/convert_state.dart';
 import 'daily_rates_info_sheet.dart';
@@ -21,7 +22,8 @@ class AmountStatusBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accent = _accentColor;
+    final colors = AppColors.of(context);
+    final accent = _accentColor(context);
     return Tooltip(
       message: 'Rates update once per day. Tap for details.',
       child: InkWell(
@@ -39,7 +41,7 @@ class AmountStatusBar extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTheme.caption.copyWith(
-                    color: AppTheme.muted,
+                    color: colors.muted,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -47,7 +49,7 @@ class AmountStatusBar extends StatelessWidget {
               Icon(
                 Icons.info_outline_rounded,
                 size: 15,
-                color: AppTheme.muted.withValues(alpha: .7),
+                color: colors.muted.withValues(alpha: .7),
               ),
             ],
           ),
@@ -56,12 +58,13 @@ class AmountStatusBar extends StatelessWidget {
     );
   }
 
-  Color get _accentColor {
+  Color _accentColor(BuildContext context) {
+    final colors = AppColors.of(context);
     return switch (status) {
       ConvertStatus.stale => const Color(0xFFB8860B),
-      ConvertStatus.noCache => AppTheme.trendDown,
-      ConvertStatus.loading || ConvertStatus.refreshing => AppTheme.primary,
-      ConvertStatus.cached || ConvertStatus.fresh => AppTheme.trendUp,
+      ConvertStatus.noCache => colors.trendDown,
+      ConvertStatus.loading || ConvertStatus.refreshing => colors.primary,
+      ConvertStatus.cached || ConvertStatus.fresh => colors.trendUp,
     };
   }
 
@@ -96,12 +99,13 @@ class _StatusDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
       width: 7,
       height: 7,
       decoration: BoxDecoration(
-        color: active ? AppTheme.primary : color,
+        color: active ? colors.primary : color,
         shape: BoxShape.circle,
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
@@ -21,7 +22,7 @@ class PremiumSection extends StatelessWidget {
           trailing: Text(
             'Soon',
             style: AppTheme.caption.copyWith(
-              color: AppTheme.muted,
+              color: AppColors.of(context).muted,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -31,7 +32,7 @@ class PremiumSection extends StatelessWidget {
           subtitle: 'Re-check local store purchases on this device',
           trailing: Icon(
             Icons.chevron_right_rounded,
-            color: AppTheme.subtle,
+            color: AppColors.of(context).subtle,
           ),
           showDivider: false,
           onTap: () => controller.restorePurchases(context),

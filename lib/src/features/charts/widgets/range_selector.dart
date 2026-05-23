@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../domain/chart_range.dart';
 
@@ -60,23 +61,23 @@ class RangeSelector extends StatelessWidget {
                 constraints: const BoxConstraints(minHeight: 36, minWidth: 44),
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.card : Colors.transparent,
+                  color: isSelected ? AppColors.of(context).card : Colors.transparent,
                   border: Border.all(
                     color: isSelected
-                        ? AppTheme.instrumentBorder(.14)
+                        ? AppColors.of(context).border.withValues(alpha: .14)
                         : Colors.transparent,
                   ),
                   borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-                  boxShadow: isSelected ? AppTheme.subtleShadow : null,
+                  boxShadow: isSelected ? AppTheme.subtleShadowFor(context) : null,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (isLocked) ...[
-                      Icon(Icons.lock_outline, size: 12, color: AppTheme.muted),
+                      Icon(Icons.lock_outline, size: 12, color: AppColors.of(context).muted),
                       const SizedBox(width: 4),
                     ] else if (isCryptoUnavailable) ...[
-                      Icon(Icons.block, size: 12, color: AppTheme.muted),
+                      Icon(Icons.block, size: 12, color: AppColors.of(context).muted),
                       const SizedBox(width: 4),
                     ],
                     Text(
@@ -85,10 +86,10 @@ class RangeSelector extends StatelessWidget {
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
                         color: isLocked || isCryptoUnavailable
-                            ? AppTheme.muted
+                            ? AppColors.of(context).muted
                             : isSelected
-                            ? AppTheme.text
-                            : AppTheme.subtle,
+                            ? AppColors.of(context).text
+                            : AppColors.of(context).subtle,
                       ),
                     ),
                   ],

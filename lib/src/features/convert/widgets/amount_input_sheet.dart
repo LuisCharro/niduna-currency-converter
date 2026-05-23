@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/currency/supported_currencies.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import 'amount_input_header.dart';
 import 'amount_keypad.dart';
 import 'amount_presets.dart';
@@ -62,6 +62,7 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
   @override
   Widget build(BuildContext context) {
     final currency = currencyByCode(widget.base);
+    final colors = AppColors.of(context);
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
     return SingleChildScrollView(
       child: Padding(
@@ -98,9 +99,9 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
                 backgroundColor: _isDirty
-                    ? AppTheme.primary
-                    : AppTheme.primary.withValues(alpha: .82),
-                foregroundColor: AppTheme.card.withValues(
+                    ? colors.primary
+                    : colors.primary.withValues(alpha: .82),
+                foregroundColor: colors.card.withValues(
                   alpha: _isDirty ? 1 : .94,
                 ),
                 textStyle: const TextStyle(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
 import 'clear_cache_tile.dart';
@@ -29,7 +29,7 @@ class SettingsDataSection extends StatelessWidget {
           onTap: () => controller.openDataDetails(context),
           trailing: Icon(
             Icons.chevron_right_rounded,
-            color: AppTheme.subtle,
+            color: AppColors.of(context).subtle,
           ),
         ),
         ClearCacheTile(controller: controller),

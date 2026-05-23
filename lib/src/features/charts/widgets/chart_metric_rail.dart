@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import 'chart_value_formatter.dart';
 
@@ -19,7 +20,7 @@ class ChartMetricRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPositive = (changePercent ?? 0) >= 0;
-    final changeColor = isPositive ? AppTheme.trendUp : AppTheme.trendDown;
+    final changeColor = isPositive ? AppColors.of(context).trendUp : AppColors.of(context).trendDown;
     final changeText = changePercent != null
         ? '${isPositive ? '+' : ''}${changePercent!.toStringAsFixed(2)}%'
         : '—';
@@ -27,7 +28,7 @@ class ChartMetricRail extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: AppTheme.instrumentBorder(.12)),
+          top: BorderSide(color: AppColors.of(context).border.withValues(alpha: .12)),
         ),
       ),
       child: Padding(
@@ -40,14 +41,14 @@ class ChartMetricRail extends StatelessWidget {
                 value: high != null ? formatChartValue(high!) : '—',
               ),
             ),
-            _railDivider,
+            _railDivider(context),
             Expanded(
               child: _MetricCell(
                 label: 'Low',
                 value: low != null ? formatChartValue(low!) : '—',
               ),
             ),
-            _railDivider,
+            _railDivider(context),
             Expanded(
               child: _MetricCell(
                 label: 'Change',
@@ -61,10 +62,10 @@ class ChartMetricRail extends StatelessWidget {
     );
   }
 
-  Widget get _railDivider => Container(
+  Widget _railDivider(BuildContext context) => Container(
     width: 1,
     height: 32,
-    color: AppTheme.border.withValues(alpha: .12),
+    color: AppColors.of(context).border.withValues(alpha: .12),
   );
 }
 
@@ -87,7 +88,7 @@ class _MetricCell extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(label, style: AppTheme.sectionLabel),
+          Text(label, style: AppTheme.sectionLabelStyle(context)),
           const SizedBox(height: 2),
           Text(
             value,
@@ -96,7 +97,7 @@ class _MetricCell extends StatelessWidget {
             style: AppTheme.caption.copyWith(
               fontSize: 15,
               fontWeight: FontWeight.w700,
-              color: valueColor ?? AppTheme.text,
+              color: valueColor ?? AppColors.of(context).text,
             ),
           ),
         ],

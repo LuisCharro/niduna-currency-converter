@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/rates/provider_usage_info.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class DataDetailsPage extends StatelessWidget {
@@ -20,10 +21,10 @@ class DataDetailsPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: AppTheme.bg,
+      backgroundColor: AppColors.of(context).bg,
       appBar: AppBar(
-        backgroundColor: AppTheme.bg,
-        foregroundColor: AppTheme.text,
+        backgroundColor: AppColors.of(context).bg,
+        foregroundColor: AppColors.of(context).text,
         elevation: 0,
         title: const Text('Data details'),
       ),
@@ -96,7 +97,7 @@ class _DetailBlock extends StatelessWidget {
         Text(
           title,
           style: AppTheme.sectionLabel.copyWith(
-            color: AppTheme.primary,
+            color: AppColors.of(context).primary,
             letterSpacing: 0.6,
           ),
         ),
@@ -104,7 +105,7 @@ class _DetailBlock extends StatelessWidget {
         for (final line in lines) ...<Widget>[
           Text(
             line,
-            style: AppTheme.body.copyWith(color: AppTheme.muted, height: 1.45),
+            style: AppTheme.body.copyWith(color: AppColors.of(context).muted, height: 1.45),
           ),
           const SizedBox(height: AppTheme.space2),
         ],
@@ -112,7 +113,7 @@ class _DetailBlock extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: AppTheme.space4),
             child: Divider(
-              color: AppTheme.border.withValues(alpha: .14),
+              color: AppColors.of(context).border.withValues(alpha: .14),
               height: .5,
             ),
           ),

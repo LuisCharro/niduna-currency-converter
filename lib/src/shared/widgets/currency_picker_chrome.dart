@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 class CurrencyPickerHeader extends StatelessWidget {
@@ -10,6 +11,7 @@ class CurrencyPickerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Row(
       children: <Widget>[
         const SizedBox(width: 48),
@@ -31,7 +33,7 @@ class CurrencyPickerHeader extends StatelessWidget {
                 Text(
                   subtitle!,
                   textAlign: TextAlign.center,
-                  style: AppTheme.caption.copyWith(color: AppTheme.muted),
+                  style: AppTheme.caption.copyWith(color: colors.muted),
                 ),
               ],
             ],
@@ -53,13 +55,14 @@ class CurrencyPickerSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return TextField(
       onChanged: onChanged,
       decoration: InputDecoration(
         hintText: 'Currency, country, or code',
         prefixIcon: const Icon(Icons.search_rounded),
         filled: true,
-        fillColor: AppTheme.container.withValues(alpha: .72),
+        fillColor: colors.container.withValues(alpha: .72),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppTheme.pillRadius),
           borderSide: BorderSide.none,

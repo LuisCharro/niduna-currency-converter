@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../models/currency_quote.dart';
 
 class QuoteValue extends StatelessWidget {
@@ -10,6 +10,7 @@ class QuoteValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -19,7 +20,7 @@ class QuoteValue extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w800,
-            color: AppTheme.text,
+            color: colors.text,
             fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
             letterSpacing: -0.2,
           ),
@@ -32,7 +33,7 @@ class QuoteValue extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11.5,
                 fontWeight: FontWeight.w600,
-                color: AppTheme.muted.withValues(alpha: .88),
+                color: colors.muted.withValues(alpha: .88),
                 letterSpacing: 0.2,
               ),
             ),

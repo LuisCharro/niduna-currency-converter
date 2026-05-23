@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/monetization/purchase_service.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
@@ -35,7 +36,7 @@ class UpgradeShelf extends StatelessWidget {
           hasPremium
               ? 'Paid unlocks stay on this device.'
               : 'One-time purchases — no account required.',
-          style: AppTheme.caption.copyWith(color: AppTheme.muted, height: 1.35),
+          style: AppTheme.caption.copyWith(color: AppColors.of(context).muted, height: 1.35),
         ),
         const SizedBox(height: AppTheme.space3),
         if (!m.hasRemoveAdsLifetime)
@@ -82,7 +83,7 @@ class _BuyChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: AppTheme.primary,
+        color: AppColors.of(context).primary,
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
       ),
       child: Text(
@@ -104,13 +105,13 @@ class _OwnedBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: AppTheme.trendUp.withValues(alpha: .14),
+        color: AppColors.of(context).trendUp.withValues(alpha: .14),
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
       ),
       child: Text(
         'Owned',
         style: AppTheme.caption.copyWith(
-          color: AppTheme.trendUp,
+          color: AppColors.of(context).trendUp,
           fontWeight: FontWeight.w800,
         ),
       ),

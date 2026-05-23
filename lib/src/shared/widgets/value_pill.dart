@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 class ValuePill extends StatelessWidget {
@@ -16,8 +17,9 @@ class ValuePill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final background = active ? AppTheme.trendUp : AppTheme.greenBadge;
-    final foreground = active ? Colors.white : AppTheme.greenBadgeText;
+    final colors = AppColors.of(context);
+    final background = active ? colors.trendUp : colors.greenBadge;
+    final foreground = active ? Colors.white : colors.greenBadgeText;
 
     return DecoratedBox(
       decoration: BoxDecoration(

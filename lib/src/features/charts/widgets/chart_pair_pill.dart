@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 
@@ -24,7 +25,7 @@ class ChartPairPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final currency = currencyByCode(code);
     return Material(
-      color: AppTheme.container.withValues(alpha: .72),
+      color: AppColors.of(context).container.withValues(alpha: .72),
       borderRadius: BorderRadius.circular(AppTheme.pillRadius),
       child: InkWell(
         onTap: onTap,
@@ -37,7 +38,7 @@ class ChartPairPill extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-            border: Border.all(color: AppTheme.instrumentBorder(.14)),
+            border: Border.all(color: AppColors.of(context).border.withValues(alpha: .14)),
           ),
           child: Stack(
             alignment: Alignment.center,
@@ -61,14 +62,14 @@ class ChartPairPill extends StatelessWidget {
                   ),
                   if (locked) ...<Widget>[
                     const SizedBox(width: 4),
-                    Icon(Icons.lock_outline, size: 14, color: AppTheme.muted),
+                    Icon(Icons.lock_outline, size: 14, color: AppColors.of(context).muted),
                   ],
                   if (!tempBadge) ...<Widget>[
                     const SizedBox(width: 2),
                     Icon(
                       Icons.keyboard_arrow_down_rounded,
                       size: 17,
-                      color: AppTheme.subtle,
+                      color: AppColors.of(context).subtle,
                     ),
                   ],
                 ],
@@ -90,13 +91,13 @@ class _TempBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       decoration: BoxDecoration(
-        color: AppTheme.trendUp.withValues(alpha: .14),
+        color: AppColors.of(context).trendUp.withValues(alpha: .14),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
         '24h',
         style: AppTheme.micro.copyWith(
-          color: AppTheme.trendUp,
+          color: AppColors.of(context).trendUp,
           fontSize: 9,
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/designed_state_panel.dart';
 import '../models/currency_quote.dart';
@@ -40,6 +41,7 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     if (widget.quotes.isEmpty) {
       return SingleChildScrollView(
         padding: AppTheme.pageInsets,
@@ -96,7 +98,7 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
       separatorBuilder: (context, index) => Padding(
         padding: const EdgeInsets.only(left: 58),
         child: Divider(
-          color: AppTheme.border.withValues(alpha: .15),
+          color: colors.border.withValues(alpha: .15),
           height: .5,
         ),
       ),
@@ -106,8 +108,8 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
     if (widget.onRefresh != null) {
       return RefreshIndicator(
         onRefresh: widget.onRefresh!,
-        color: AppTheme.trendUp,
-        backgroundColor: AppTheme.card,
+        color: colors.trendUp,
+        backgroundColor: colors.card,
         edgeOffset: 20,
         child: list,
       );

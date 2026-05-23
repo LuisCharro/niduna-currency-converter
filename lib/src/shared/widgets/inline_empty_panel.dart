@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 class InlineEmptyPanel extends StatelessWidget {
@@ -24,6 +25,7 @@ class InlineEmptyPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     final topPad = compact ? 8.0 : 28.0;
     final iconSize = compact ? 36.0 : 44.0;
     return Padding(
@@ -32,19 +34,19 @@ class InlineEmptyPanel extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Icon(icon, size: iconSize, color: AppTheme.subtle),
+          Icon(icon, size: iconSize, color: colors.subtle),
           const SizedBox(height: 12),
           Text(
             title,
             textAlign: TextAlign.center,
-            style: AppTheme.body.copyWith(color: AppTheme.text),
+            style: AppTheme.body.copyWith(color: colors.text),
           ),
           if (subtitle != null) ...<Widget>[
             const SizedBox(height: 4),
             Text(
               subtitle!,
               textAlign: TextAlign.center,
-              style: AppTheme.caption.copyWith(color: AppTheme.muted),
+              style: AppTheme.caption.copyWith(color: colors.muted),
             ),
           ],
           if (actionLabel != null && onAction != null) ...<Widget>[
