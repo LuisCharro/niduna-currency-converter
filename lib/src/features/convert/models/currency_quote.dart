@@ -5,6 +5,7 @@ class CurrencyQuote {
     this.name,
     this.amount,
     this.rateLine, {
+    required this.rate,
     this.favorite = false,
   });
 
@@ -13,5 +14,6 @@ class CurrencyQuote {
   final String name;
   final String amount;
   final String rateLine;
+  final double rate;
   final bool favorite;
 }

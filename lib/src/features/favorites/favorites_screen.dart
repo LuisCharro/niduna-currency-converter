@@ -1,5 +1,7 @@
+// Favorites tab hidden in v1 shell (see app.dart). Restyle when Phase 2 re-enables.
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../shared/widgets/divider_list_row.dart';
 import '../../shared/widgets/pill_action.dart';
@@ -23,7 +25,7 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppTheme.bg,
+      color: AppColors.of(context).bg,
       child: SafeArea(
         child: ListenableBuilder(
           listenable: favoritesStore,
@@ -101,7 +103,7 @@ class _Header extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 'Saved pairs · $count',
-                style: AppTheme.caption.copyWith(color: AppTheme.muted),
+                style: AppTheme.caption.copyWith(color: AppColors.of(context).muted),
               ),
             ],
           ),
@@ -128,14 +130,14 @@ class _EmptyState extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
           decoration: BoxDecoration(
-            color: AppTheme.container.withValues(alpha: .5),
+            color: AppColors.of(context).container.withValues(alpha: .5),
             borderRadius: BorderRadius.circular(AppTheme.cardRadius),
-            border: Border.all(color: AppTheme.border.withValues(alpha: .12)),
+            border: Border.all(color: AppColors.of(context).border.withValues(alpha: .12)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(Icons.star_outline_rounded, size: 52, color: AppTheme.muted),
+              Icon(Icons.star_outline_rounded, size: 52, color: AppColors.of(context).muted),
               const SizedBox(height: 14),
               Text(
                 'No saved pairs yet',
@@ -144,8 +146,8 @@ class _EmptyState extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 'Star a row in Convert and it will stay here like a pinned instrument.',
-                style: AppTheme.body.copyWith(
-                  color: AppTheme.muted,
+                  style: AppTheme.body.copyWith(
+                    color: AppColors.of(context).muted,
                   fontSize: 14,
                 ),
                 textAlign: TextAlign.center,
@@ -215,10 +217,10 @@ class _FavoritesList extends StatelessWidget {
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.only(right: 12),
             decoration: BoxDecoration(
-              color: AppTheme.trendDown.withValues(alpha: .1),
+              color: AppColors.of(context).trendDown.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(Icons.delete_outline, color: AppTheme.trendDown),
+            child: Icon(Icons.delete_outline, color: AppColors.of(context).trendDown),
           ),
           child: _FavoriteRow(
             pair: pair,
@@ -253,7 +255,7 @@ class _FavoriteRow extends StatelessWidget {
     return DividerListRow(
       onTap: onTap,
       showDivider: showDivider,
-      leadingAccent: AppTheme.primary.withValues(alpha: .18),
+      leadingAccent: AppColors.of(context).primary.withValues(alpha: .18),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -262,11 +264,11 @@ class _FavoriteRow extends StatelessWidget {
             icon: Icon(
               Icons.remove_circle_outline,
               size: 20,
-              color: AppTheme.subtle,
+              color: AppColors.of(context).subtle,
             ),
             tooltip: 'Remove ${pair.base}→${pair.quote}',
           ),
-          Icon(Icons.chevron_right_rounded, color: AppTheme.subtle),
+          Icon(Icons.chevron_right_rounded, color: AppColors.of(context).subtle),
         ],
       ),
       child: Row(
@@ -278,17 +280,17 @@ class _FavoriteRow extends StatelessWidget {
                 Text(
                   '${pair.base} → ${pair.quote}',
                   style: AppTheme.caption.copyWith(
-                    color: AppTheme.muted,
+                    color: AppColors.of(context).muted,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   rate != null ? rate!.toStringAsFixed(4) : '—',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
-                    color: AppTheme.text,
+                    color: AppColors.of(context).text,
                     fontFeatures: <FontFeature>[
                       FontFeature.tabularFigures(),
                     ],
@@ -310,12 +312,12 @@ class _MaxFavoritesNote extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Icon(Icons.lock_outline, size: 16, color: AppTheme.primary),
+        Icon(Icons.lock_outline, size: 16, color: AppColors.of(context).primary),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             'Phase 1 keeps favorites capped at 3 pairs.',
-            style: AppTheme.caption.copyWith(color: AppTheme.muted),
+            style: AppTheme.caption.copyWith(color: AppColors.of(context).muted),
           ),
         ),
       ],

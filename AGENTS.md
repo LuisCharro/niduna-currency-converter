@@ -91,27 +91,27 @@ Then read only the relevant shared skill and repo-local guide for the task.
 - `problem-shaping.SKILL.md` — problem framing before implementation
 
 **Mobile/Flutter:**
-- `flutter-verification.SKILL.md` — Flutter verification workflow
-- `flutter-feature-architecture-bootstrap.SKILL.md` — feature structure
-- `flutter-architecture-boundaries.SKILL.md` — architecture boundaries
-- `flutter-small-screen-ui.SKILL.md` — small screen layout
-- `flutter-android-emulator-startup-playbook.SKILL.md` — Android emulator setup
-- `flutter-integration-test-ui-automation.SKILL.md` — integration test automation
+- `flutter/flutter-verification.SKILL.md` — Flutter verification workflow
+- `flutter/flutter-feature-architecture-bootstrap.SKILL.md` — feature structure
+- `flutter/flutter-architecture-boundaries.SKILL.md` — architecture boundaries
+- `flutter/flutter-small-screen-ui.SKILL.md` — small screen layout
+- `flutter/flutter-android-emulator-startup-playbook.SKILL.md` — Android emulator setup
+- `flutter/flutter-integration-test-ui-automation.SKILL.md` — integration test automation
 
 **Mobile (general):**
-- `mobile-ui-review.SKILL.md` — mobile UI layout review
-- `mobile-qa-handoff.SKILL.md` — QA handoff
-- `mobile-architecture-boundaries.SKILL.md` — mobile architecture
-- `chart-ux-review.SKILL.md` — chart UX review
+- `mobile/mobile-ui-review.SKILL.md` — mobile UI layout review
+- `mobile/mobile-qa-handoff.SKILL.md` — QA handoff
+- `mobile/mobile-architecture-boundaries.SKILL.md` — mobile architecture
+- `mobile/chart-ux-review.SKILL.md` — chart UX review
 
 **Frontend:**
-- `frontend-design-layer.SKILL.md` — entry point for visual/UI work
-- `frontend-design-direction.SKILL.md` — design direction
-- `design-system-consistency.SKILL.md` — design token consistency
-- `frontend-implementation-baseline.SKILL.md` — frontend standards
+- `frontend/frontend-design-layer.SKILL.md` — entry point for visual/UI work
+- `frontend/frontend-design-direction.SKILL.md` — design direction
+- `frontend/design-system-consistency.SKILL.md` — design token consistency
+- `frontend/frontend-implementation-baseline.SKILL.md` — frontend standards
 
 **Frontend (Stitch Design):**
-- `publish/google-stitch-workflow/SKILL.md` — Stitch-assisted UI design
+- `publish/google-stitch-workflow/google-stitch-workflow.SKILL.md` — Stitch-assisted UI design
 
 **Release:**
 - `store-release-check.SKILL.md` — store release checklist

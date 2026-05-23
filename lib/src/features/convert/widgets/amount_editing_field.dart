@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import 'amount_input_sheet.dart';
 
@@ -8,7 +9,7 @@ class AmountEditingField extends StatelessWidget {
     required this.amountText,
     required this.base,
     required this.onAmountChanged,
-    super.key,
+    super.key = const Key('convert_amount_field'),
   });
 
   final String amountText;
@@ -17,32 +18,40 @@ class AmountEditingField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
+    final display = amountText.isEmpty ? '0.00' : amountText;
+    final baseStyle = AppTheme.heroAmountFor(context).copyWith(
+      color: amountText.isEmpty ? colors.muted : colors.text,
+    );
+
     return Semantics(
       button: true,
       label: 'Edit amount, currently ${amountText.isEmpty ? '0' : amountText}',
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
         child: InkWell(
           onTap: () => _openAmountSheet(context),
-          borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+          borderRadius: BorderRadius.circular(AppTheme.radius),
           child: Container(
-            constraints: const BoxConstraints(minHeight: 58),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppTheme.cardRadius),
-            ),
+            constraints: const BoxConstraints(minHeight: 56),
             alignment: Alignment.centerLeft,
-            child: Text(
-              amountText.isEmpty ? '0.00' : amountText,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: amountText.isEmpty ? AppTheme.muted : AppTheme.text,
-                fontSize: 42,
-                fontWeight: FontWeight.w800,
-                height: 1.05,
-              ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final style = _adaptiveStyleForWidth(
+                  display, baseStyle, constraints.maxWidth,
+                );
+                return AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 150),
+                  curve: Curves.easeOut,
+                  style: style,
+                  child: Text(
+                    display,
+                    key: ValueKey<String>(display),
+                    maxLines: 1,
+                    overflow: TextOverflow.visible,
+                  ),
+                );
+              },
             ),
           ),
         ),
@@ -50,17 +59,43 @@ class AmountEditingField extends StatelessWidget {
     );
   }
 
-  void _openAmountSheet(BuildContext context) {
-    showModalBottomSheet<void>(
+  TextStyle _adaptiveStyleForWidth(
+    String text,
+    TextStyle baseStyle,
+    double maxWidth,
+  ) {
+    for (final fontSize in AppTheme.heroAmountSizes) {
+      if (fontSize < baseStyle.fontSize!) break;
+      final candidate = baseStyle.copyWith(fontSize: fontSize);
+      final painter = TextPainter(
+        text: TextSpan(text: text, style: candidate),
+        textDirection: TextDirection.ltr,
+        maxLines: 1,
+      )..layout(maxWidth: maxWidth);
+      if (painter.didExceedMaxLines == false) {
+        painter.dispose();
+        return candidate;
+      }
+      painter.dispose();
+    }
+    return baseStyle.copyWith(fontSize: AppTheme.heroAmountSizes.last);
+  }
+
+  Future<void> _openAmountSheet(BuildContext context) async {
+    final colors = AppColors.of(context);
+    final nextAmount = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: AppTheme.card,
+      backgroundColor: colors.card,
+      barrierColor: Colors.black.withValues(alpha: .36),
       builder: (context) => AmountInputSheet(
         amountText: amountText,
         base: base,
-        onAmountChanged: onAmountChanged,
       ),
     );
+    if (nextAmount != null) {
+      onAmountChanged(nextAmount);
+    }
   }
 }

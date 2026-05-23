@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_theme.dart';
+import '../../core/theme/app_colors.dart';
 
 class DividerListRow extends StatelessWidget {
   const DividerListRow({
@@ -22,6 +22,7 @@ class DividerListRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     final row = Padding(
       padding: padding,
       child: Row(
@@ -49,7 +50,7 @@ class DividerListRow extends StatelessWidget {
         border: showDivider
             ? Border(
                 bottom: BorderSide(
-                  color: AppTheme.border.withValues(alpha: .14),
+                  color: colors.border.withValues(alpha: .14),
                   width: .7,
                 ),
               )

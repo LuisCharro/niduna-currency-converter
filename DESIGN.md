@@ -5,11 +5,11 @@ description: Privacy-first fiat currency converter for mobile. Warm, editorial, 
 colors:
   bg: "#F6F8EF"
   text: "#171D14"
-  muted: "#707B68"
-  subtle: "#88987A"
+  muted: "#5F6A58"
+  subtle: "#66745B"
   card: "#FFFFFF"
   container: "#FFF9EC"
-  containerHigh: "#F5EDE"
+  containerHigh: "#F5EDEE"
   border: "rgba(40,95,59,0.14)"
   primary: "#285F3B"
   trendUp: "#6F8C49"
@@ -21,7 +21,7 @@ typography:
     fontSize: 32px
     fontWeight: 800
     lineHeight: 1.2
-    letterSpacing: -0.5em
+    letterSpacing: -0.5px
   heading:
     fontSize: 22px
     fontWeight: 700
@@ -38,7 +38,7 @@ typography:
     fontSize: 10px
     fontWeight: 600
     lineHeight: 1.2
-    letterSpacing: 0.5em
+    letterSpacing: 0.5px
   serif:
     fontFamily: "Fraunces"
     fallback: ["Georgia", "serif"]
@@ -53,6 +53,16 @@ spacing:
   md: "16px"
   lg: "24px"
   xl: "32px"
+  hero: "40px"
+typography_v2:
+  heroAmount: "50px / 800 Manrope (40px compact at text scale ≥1.3×)"
+  pairTitleFraunces: "30px / 800 Fraunces"
+  metricValue: "20px / 700 Manrope"
+  sectionLabel: "11px / 700 Manrope uppercase rails"
+surfaces_v2:
+  instrumentPanel: "containerHigh fill + 1px instrumentBorder"
+  canvasGradient: "bg → #FAFBF4 → #FFF9EC (bottom-weighted)"
+  coralCta: "#FDF0EC / #B54E48 Remove Ads"
 components:
   pill-button:
     backgroundColor: "{colors.primary}"
@@ -127,10 +137,10 @@ The palette is rooted in the **Niduna brand** (from niduna-site) with warm, orga
 
 - **Background (#F6F8EF):** Warm paper canvas. Not pure white — reduces eye strain, adds premium feel. Slightly warmer at bottom via gradient.
 - **Text (#171D14):** Dark forest ink. Softer than pure #000 for reduced eye strain. Reads as near-black but warmer.
-- **Muted (#707B68):** Sage olive. Secondary text, timestamps, metadata. Warmer than iOS gray.
-- **Subtle (#88987A):** Tertiary text, placeholders, disabled states. Harmonious with warm palette.
+- **Muted (#5F6A58):** Sage olive. Secondary text, timestamps, metadata. Warmer than iOS gray.
+- **Subtle (#66745B):** Tertiary text, placeholders, disabled states. Harmonious with warm palette.
 - **Container (#FFF9EC):** Paper-warm. Used for nav bar, section backgrounds, floating nav. Cozy, not cold.
-- **ContainerHigh (#F5EDE):** Secondary containers, filled inputs, active states.
+- **ContainerHigh (#F5EDEE):** Secondary containers, filled inputs, active states.
 - **Border (rgba(40,95,59,0.14)):** Green-tinted separator. Blends into warm canvas naturally.
 - **Primary (#285F3B):** Forest leaf green. Used for active nav items, links, primary buttons, active states. The signature Niduna color — replaces iOS blue.
 - **Trend Up (#6F8C49):** Moss green. Positive changes, success states, value badges. Warmer and more organic than iOS green.
@@ -160,7 +170,7 @@ Single font fallback chain: `["Fraunces", "Georgia", "serif"]`
 
 **Single-column mobile layout** with generous safe area padding on warm paper canvas:
 
-- Standard horizontal padding: **16px**
+- Standard horizontal padding: **20px** (`AppTheme.pagePadding`)
 - Section spacing: **24px** vertical between major groups
 - Row height: **52-56px** for tappable rate rows
 - Bottom chrome uses shared metrics instead of per-screen guesses:

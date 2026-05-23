@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import 'floating_pill_nav_item.dart';
 
@@ -17,6 +18,7 @@ class FloatingPillNav extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottom =
         AppTheme.floatingNavBottomOffset + MediaQuery.paddingOf(context).bottom;
+    final colors = AppColors.of(context);
     return Padding(
       padding: EdgeInsets.fromLTRB(20, 0, 20, bottom),
       child: Center(
@@ -24,10 +26,10 @@ class FloatingPillNav extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 330),
           height: AppTheme.floatingNavHeight,
           decoration: BoxDecoration(
-            color: AppTheme.container,
-            borderRadius: BorderRadius.circular(32),
-            border: Border.all(color: AppTheme.border.withValues(alpha: .22)),
-            boxShadow: AppTheme.floatingShadow,
+            color: colors.container,
+            borderRadius: BorderRadius.circular(AppTheme.navOuterRadius),
+            border: Border.all(color: colors.border.withValues(alpha: .22)),
+            boxShadow: AppTheme.floatingShadowFor(context),
           ),
           child: Row(
             children: <Widget>[

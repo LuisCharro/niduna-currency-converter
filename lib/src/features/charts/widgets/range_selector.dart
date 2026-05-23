@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../domain/chart_range.dart';
 
@@ -8,7 +10,7 @@ class RangeSelector extends StatelessWidget {
     required this.onChanged,
     required this.canUseLockedRanges,
     required this.includesCrypto,
-    super.key,
+    super.key = const Key('charts_range_selector'),
   });
 
   final ChartRange selected;
@@ -18,21 +20,17 @@ class RangeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppTheme.containerHigh.withValues(alpha: .36),
-        borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-      ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.all(4),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: ChartRange.values.map((range) {
-            final isSelected = range == selected;
-            final isLocked = range.locked && !canUseLockedRanges;
-            final isCryptoUnavailable = includesCrypto && !range.supportsCrypto;
-            return GestureDetector(
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: AppTheme.space2),
+      child: Row(
+        children: ChartRange.values.map((range) {
+          final isSelected = range == selected;
+          final isLocked = range.locked && !canUseLockedRanges;
+          final isCryptoUnavailable = includesCrypto && !range.supportsCrypto;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: GestureDetector(
               onTap: () {
                 if (isLocked) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -59,27 +57,27 @@ class RangeSelector extends StatelessWidget {
                 onChanged(range);
               },
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 160),
-                constraints: const BoxConstraints(minHeight: 36),
-                padding: const EdgeInsets.symmetric(horizontal: 13),
+                duration: const Duration(milliseconds: 180),
+                constraints: const BoxConstraints(minHeight: 36, minWidth: 44),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.card : Colors.transparent,
+                  color: isSelected ? AppColors.of(context).card : Colors.transparent,
                   border: Border.all(
                     color: isSelected
-                        ? AppTheme.border.withValues(alpha: .12)
+                        ? AppColors.of(context).border.withValues(alpha: .14)
                         : Colors.transparent,
                   ),
                   borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-                  boxShadow: isSelected ? AppTheme.subtleShadow : null,
+                  boxShadow: isSelected ? AppTheme.subtleShadowFor(context) : null,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (isLocked) ...[
-                      Icon(Icons.lock_outline, size: 12, color: AppTheme.muted),
+                      Icon(Icons.lock_outline, size: 12, color: AppColors.of(context).muted),
                       const SizedBox(width: 4),
                     ] else if (isCryptoUnavailable) ...[
-                      Icon(Icons.block, size: 12, color: AppTheme.muted),
+                      Icon(Icons.block, size: 12, color: AppColors.of(context).muted),
                       const SizedBox(width: 4),
                     ],
                     Text(
@@ -88,18 +86,18 @@ class RangeSelector extends StatelessWidget {
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
                         color: isLocked || isCryptoUnavailable
-                            ? AppTheme.muted
+                            ? AppColors.of(context).muted
                             : isSelected
-                            ? AppTheme.text
-                            : AppTheme.subtle,
+                            ? AppColors.of(context).text
+                            : AppColors.of(context).subtle,
                       ),
                     ),
                   ],
                 ),
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

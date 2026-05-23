@@ -38,6 +38,7 @@ class ConvertController extends ChangeNotifier {
   double _amount = 100;
   String _amountText = '100.00';
   List<String> _selectedCodes = <String>['EUR', 'GBP', 'JPY'];
+  Set<String> _hiddenCryptoCodes = <String>{};
   LatestRatesSnapshot? _snapshot;
   int _decimalPlaces = 2;
 
@@ -117,6 +118,7 @@ class ConvertController extends ChangeNotifier {
             amount: _amount,
             decimalPlaces: _decimalPlaces,
             quoteCodes: _selectedCodes,
+            excludeCodes: _hiddenCryptoCodes,
           ).map((q) {
             final isFav = favQuotes.contains(q.code);
             return CurrencyQuote(
@@ -125,6 +127,7 @@ class ConvertController extends ChangeNotifier {
               q.name,
               q.amount,
               q.rateLine,
+              rate: q.rate,
               favorite: isFav,
             );
           }).toList(),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
@@ -90,7 +91,7 @@ class _VersionTileState extends State<VersionTile> {
         title: 'Version',
         trailing: Text(
           '$_appVersion${devModeEnabled ? ' · DEV' : ''}',
-          style: AppTheme.caption.copyWith(color: AppTheme.muted),
+          style: AppTheme.caption.copyWith(color: AppColors.of(context).muted),
         ),
       ),
     );

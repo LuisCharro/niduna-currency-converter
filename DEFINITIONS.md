@@ -2,7 +2,7 @@
 
 > **Status:** DEFINITIONS finalized after Phase roadmap pass
 > **Created:** 2026-05-06
-> **Last updated:** 2026-05-07 (post-review verification pass)
+> **Last updated:** 2026-05-22 (feature audit + doc alignment)
 
 ---
 
@@ -25,7 +25,7 @@
 - Charts: fiat charts remain available up to 2 years; crypto-involved charts are limited to 1 year on the no-key path.
 - Phase 1 = MVP (free, ads, no backend); Phase 1.x = no-key BTC/ETH latest + daily charts; Phase 2 = Backend + Subscriptions; Phase 3 = Metals + Extensions
 - CoinGecko API key required — do not embed it in the mobile app. Current BTC/ETH support uses no-key providers instead.
-- i18n: Phase 1 ships with **English only** — add DE, FR, IT, ES, PT in Phase 1.x updates
+- i18n: MVP must ship with **EN, DE, ES, IT, FR** for user-facing app text
 - Rate alerts are deferred out of Phase 1. Phase 2 owns push alerts; optional in-app-only alerts can be reconsidered after the MVP ships.
 - Monetization access policy (approved): active subscription unlocks all premium features and hides ads; without subscription, users can still buy one-time unlocks.
 
@@ -44,7 +44,7 @@ first or defer the idea.
 - Phase 1 has zero tracking, zero analytics, and zero data collection.
 - Phase 1 monetization is banner ads, one-time Remove Ads (1.99 CHF), one-time Charts Pro (2.99 CHF), and optional subscription (Coming Soon — pricing TBD).
 - Phase 1 has four tabs only: `Convert`, `Favorites`, `Charts`, `Settings`. (Favorites tab hidden in v1 UI; code retained for Phase 2 re-enablement)
-- Phase 1 is English only.
+- Phase 1 includes EN, DE, ES, IT, FR localization for meaningful user-facing text.
 - RUB is not supported.
 - Dark mode is free and available in v1 (follows system default; toggle in Settings).
 - Data freshness: Frankfurter/ECB fiat rates update once daily (~16:00 CET). Crypto latest and crypto charts also refresh on a daily app policy. App must communicate app-level freshness clearly.
@@ -89,7 +89,7 @@ first or defer the idea.
 | Fiat latest rates | Frankfurter v2 | Keep last successful payload locally | Show cached stale/offline state if refresh fails |
 | Fiat historical rates | Frankfurter historical endpoints | Cache by pair and range | Show cached chart data if available |
 | Crypto latest rates (BTC, ETH) | Build-time provider profile. Release-safe default: fawazahmed0. Dev profile may use CoinPaprika primary + fawazahmed0 fallback | Keep normalized USD source cache plus final latest snapshot cache | Preserve cached crypto if fresh enough and provider refresh fails |
-| Crypto historical rates (BTC, ETH) | Build-time provider profile. Release-safe default: disabled. Dev profile may use CoinPaprika historical ticks | Cache source USD history by asset and final chart snapshots by pair | Show cached chart data if available |
+| Crypto historical rates (BTC, ETH) | Build-time provider profile. Release-safe default: Coingecko (no API key). Dev profile may use CoinPaprika historical ticks | Cache source USD history by asset and final chart snapshots by pair | Show cached chart data if available |
 | Favorites | Local storage | Persistent until user deletes | Never requires network |
 | Settings preferences | Local storage (SharedPreferences) | Persistent until user changes | Never requires network |
 | Temp pair unlocks | Local storage (SharedPreferences) | 24h TTL, auto-expire | Never requires network |
@@ -131,6 +131,7 @@ large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 | **Dark mode** | Free in 2026 — do NOT charge for this |
 | **Ads** | Banner only (AdMob or similar) |
 | **Data source** | Frankfurter v2 (`api.frankfurter.dev`), no API key, no monthly quota, anti-abuse rate limiting |
+| **Localization** | App UI text localized in EN, DE, ES, IT, FR (currency codes/tickers remain standard) |
 
 ### ❌ Phase 1 OUT
 
@@ -297,7 +298,7 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 ### Crypto API (No-Key Phase 1.x)
 
 - BTC and ETH latest rates follow a build-time provider profile. Release-safe builds use fawazahmed0. Dev builds may use CoinPaprika as primary and fawazahmed0 as fallback.
-- BTC and ETH daily historical charts are disabled in the release-safe profile. Dev builds may use CoinPaprika historical ticks.
+- BTC and ETH daily historical charts use Coingecko in the release-safe profile (no API key). Dev builds may use CoinPaprika historical ticks.
 - No API key is embedded in the mobile app.
 - No backend/proxy is required for this limited BTC/ETH scope.
 - Crypto-involved chart ranges are limited to 1 year on the no-key path.
@@ -320,7 +321,7 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 | Single or dual Remove Ads option at launch? | ⚠️ | Recommend launching with **one option only** (1.99 CHF forever); add rental in Phase 2 if data shows demand |
 | Currency app chart limit | ⚠️ | **Unverified from public sources** — Luis observed 1-chart free, but App Store listing does NOT specify this. Must verify directly in the app before publishing |
 | RUB compliance | ⚠️ | Swiss law / export regulations on showing RUB rates via an alternative source — consult a lawyer if RUB is important |
-| i18n languages | ✅ Decided | Phase 1: English only. Phase 1.x: add DE, FR, IT, ES, PT |
+| i18n languages | ✅ Decided | MVP includes EN, DE, ES, IT, FR; user-facing text should be localized across core screens |
 
 ---
 
@@ -366,7 +367,7 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 5. Banner ads only
 6. One-time **Remove Ads** at **1.99 CHF** (+ optional 30-day rental at 0.50 CHF — consider omitting at launch)
 7. No backend, no account, no API keys at launch
-8. Phase 1.x may include BTC/ETH latest rates and daily charts up to 1 year via no-key providers
+8. Phase 1.x **includes** BTC/ETH latest rates and daily charts up to 1 year via no-key providers (implemented)
 9. Self-host Frankfurter only if/when DAU exceeds ~10,000
 
 ---
@@ -385,6 +386,7 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 | 2026-05-07 | Frankfurter **no `/convert` endpoint** confirmed from official docs | frankfurter.dev |
 | 2026-05-07 | Currency app chart limit: App Store listing does **NOT** specify a chart limit | App Store listing fetch |
 | 2026-05-07 | Currency app has both **subscription (Currency+)** AND **one-time (Currency Pro $19.99)** IAP options | App Store listing |
+| 2026-05-22 | Feature audit: all Phase 1 slices (0-9, 11) confirmed implemented. BTC/ETH charts, dark mode, data freshness indicator, pull-to-refresh, modal picker — all DONE. Remaining: dark mode system-follow, real AdMob SDK, release signing, privacy policy, store listing assets. | Code audit |
 
 ---
 

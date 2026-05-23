@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/monetization/monetization_controller.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class DevEntitlementsPanel extends StatelessWidget {
@@ -55,9 +56,9 @@ class _EntitlementSwitch extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 10, 8, 10),
       decoration: BoxDecoration(
-        color: AppTheme.card,
+        color: AppColors.of(context).card,
         borderRadius: BorderRadius.circular(AppTheme.radius),
-        border: Border.all(color: AppTheme.border),
+        border: Border.all(color: AppColors.of(context).border),
       ),
       child: Row(
         children: <Widget>[
@@ -72,7 +73,7 @@ class _EntitlementSwitch extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   description,
-                  style: const TextStyle(fontSize: 12, color: AppTheme.muted),
+                  style: TextStyle(fontSize: 12, color: AppColors.of(context).muted),
                 ),
               ],
             ),
@@ -80,7 +81,7 @@ class _EntitlementSwitch extends StatelessWidget {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeTrackColor: AppTheme.primary,
+            activeTrackColor: AppColors.of(context).primary,
           ),
         ],
       ),

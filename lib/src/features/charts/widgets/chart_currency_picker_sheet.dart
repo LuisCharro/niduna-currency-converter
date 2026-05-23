@@ -4,7 +4,7 @@ import '../../../core/currency/supported_currencies.dart';
 import '../../../core/monetization/models/temporary_unlock.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/monetization/purchase_service.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/currency_picker_chrome.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 import '../../convert/widgets/ad_banner_placeholder.dart';
@@ -82,7 +82,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      backgroundColor: AppTheme.card,
+        backgroundColor: AppColors.of(context).card,
       builder: (_) => SafeArea(
         top: false,
         child: LockedPairActionSheet(
@@ -190,7 +190,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
       controller: scrollController,
       itemCount: currencies.length,
       separatorBuilder: (context, index) =>
-          Divider(height: 1, color: AppTheme.border.withValues(alpha: .15)),
+          Divider(height: 1, color: AppColors.of(context).border.withValues(alpha: .15)),
       itemBuilder: (context, index) {
         final currency = currencies[index];
         final isSelected = currency.code == widget.selectedCode;
@@ -260,7 +260,7 @@ class _CurrencyTile extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: locked ? AppTheme.muted : AppTheme.text,
+                      color: locked ? AppColors.of(context).muted : AppColors.of(context).text,
                     ),
                   ),
                   Text(
@@ -274,12 +274,12 @@ class _CurrencyTile extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       color: tempUnlocked
-                          ? AppTheme.primary.withValues(alpha: .7)
+                          ? AppColors.of(context).primary.withValues(alpha: .7)
                           : locked
-                          ? AppTheme.muted
+                          ? AppColors.of(context).muted
                           : isFixed
-                          ? AppTheme.primary.withValues(alpha: .5)
-                          : AppTheme.subtle,
+                          ? AppColors.of(context).primary.withValues(alpha: .5)
+                          : AppColors.of(context).subtle,
                     ),
                   ),
                 ],
@@ -289,10 +289,10 @@ class _CurrencyTile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: AppTheme.primary.withValues(alpha: .06),
+                  color: AppColors.of(context).primary.withValues(alpha: .06),
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                    color: AppTheme.primary.withValues(alpha: .15),
+                    color: AppColors.of(context).primary.withValues(alpha: .15),
                   ),
                 ),
                 child: Text(
@@ -300,7 +300,7 @@ class _CurrencyTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: AppTheme.primary.withValues(alpha: .5),
+                    color: AppColors.of(context).primary.withValues(alpha: .5),
                   ),
                 ),
               )
@@ -308,23 +308,23 @@ class _CurrencyTile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: AppTheme.primary.withValues(alpha: .1),
+                  color: AppColors.of(context).primary.withValues(alpha: .1),
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                    color: AppTheme.primary.withValues(alpha: .3),
+                    color: AppColors.of(context).primary.withValues(alpha: .3),
                   ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Icons.schedule, size: 13, color: AppTheme.primary),
+                    Icon(Icons.schedule, size: 13, color: AppColors.of(context).primary),
                     const SizedBox(width: 3),
                     Text(
                       '24h',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: AppTheme.primary,
+                        color: AppColors.of(context).primary,
                       ),
                     ),
                     if (isSelected) ...[
@@ -332,37 +332,37 @@ class _CurrencyTile extends StatelessWidget {
                       Icon(
                         Icons.check_circle,
                         size: 13,
-                        color: AppTheme.primary,
+                        color: AppColors.of(context).primary,
                       ),
                     ],
                   ],
                 ),
               )
             else if (isSelected)
-              Icon(Icons.check_circle, color: AppTheme.primary)
+              Icon(Icons.check_circle, color: AppColors.of(context).primary)
             else if (unlocked)
-              Icon(Icons.chevron_right, color: AppTheme.subtle)
+              Icon(Icons.chevron_right, color: AppColors.of(context).subtle)
             else
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: AppTheme.container,
+                  color: AppColors.of(context).container,
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                    color: AppTheme.border.withValues(alpha: .4),
+                    color: AppColors.of(context).border.withValues(alpha: .4),
                   ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Icons.lock_outline, size: 13, color: AppTheme.muted),
+                    Icon(Icons.lock_outline, size: 13, color: AppColors.of(context).muted),
                     const SizedBox(width: 3),
                     Text(
                       'Locked',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
-                        color: AppTheme.muted,
+                        color: AppColors.of(context).muted,
                       ),
                     ),
                   ],

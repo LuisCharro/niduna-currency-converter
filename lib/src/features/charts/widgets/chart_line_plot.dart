@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 
 class ChartLinePlot extends StatelessWidget {
   const ChartLinePlot({
@@ -37,7 +37,7 @@ class ChartLinePlot extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: <Color>[
-                  AppTheme.card.withValues(alpha: .18),
+                  AppColors.of(context).card.withValues(alpha: .18),
                   Colors.transparent,
                 ],
               ),
@@ -61,20 +61,42 @@ class ChartLinePlot extends StatelessWidget {
                 getTooltipItems: (_) => [],
               ),
               touchCallback: onTouch,
-              getTouchedSpotIndicator: _spotIndicators,
+              getTouchedSpotIndicator: (barData, spotIndexes) {
+                final cardColor = AppColors.of(context).card;
+                return spotIndexes.map((index) {
+                  return TouchedSpotIndicatorData(
+                    FlLine(
+                      color: lineColor.withValues(alpha: .72),
+                      strokeWidth: 2.4,
+                      dashArray: [5, 4],
+                    ),
+                    FlDotData(
+                      show: true,
+                      getDotPainter: (spot, percent, barData, index) {
+                        return FlDotCirclePainter(
+                          radius: 5.5,
+                          color: cardColor,
+                          strokeWidth: 3.2,
+                          strokeColor: lineColor,
+                        );
+                      },
+                    ),
+                  );
+                }).toList();
+              },
             ),
             gridData: FlGridData(
               show: true,
               drawVerticalLine: false,
               horizontalInterval: (maxY - minY) / 2,
               getDrawingHorizontalLine: (_) => FlLine(
-                color: AppTheme.border.withValues(alpha: .1),
+                color: AppColors.of(context).border.withValues(alpha: .1),
                 strokeWidth: .5,
                 dashArray: [5, 5],
               ),
             ),
             extraLinesData: const ExtraLinesData(),
-            titlesData: _titlesData(),
+            titlesData: _titlesData(context),
             borderData: FlBorderData(show: false),
             lineBarsData: <LineChartBarData>[
               LineChartBarData(
@@ -117,33 +139,7 @@ class ChartLinePlot extends StatelessWidget {
     );
   }
 
-  List<TouchedSpotIndicatorData?> _spotIndicators(
-    LineChartBarData barData,
-    List<int> spotIndexes,
-  ) {
-    return spotIndexes.map((index) {
-      return TouchedSpotIndicatorData(
-        FlLine(
-          color: lineColor.withValues(alpha: .72),
-          strokeWidth: 2.4,
-          dashArray: [5, 4],
-        ),
-        FlDotData(
-          show: true,
-          getDotPainter: (spot, percent, barData, index) {
-            return FlDotCirclePainter(
-              radius: 5.5,
-              color: AppTheme.card,
-              strokeWidth: 3.2,
-              strokeColor: lineColor,
-            );
-          },
-        ),
-      );
-    }).toList();
-  }
-
-  FlTitlesData _titlesData() {
+  FlTitlesData _titlesData(BuildContext context) {
     return FlTitlesData(
       leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
       rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -166,7 +162,7 @@ class ChartLinePlot extends StatelessWidget {
                 DateFormat('d MMM').format(dates[index]),
                 style: TextStyle(
                   fontSize: 11.5,
-                  color: AppTheme.muted,
+                  color: AppColors.of(context).muted,
                   fontWeight: FontWeight.w700,
                 ),
               ),

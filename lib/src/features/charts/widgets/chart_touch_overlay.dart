@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
+import 'chart_theme_text.dart';
 import 'chart_value_formatter.dart';
 
 class ChartTouchOverlay extends StatelessWidget {
@@ -27,18 +28,18 @@ class ChartTouchOverlay extends StatelessWidget {
         : 0.0;
     final absoluteChange = value - baseValue;
     final isPositiveChange = changePercent >= 0;
-    final trendColor = isPositiveChange ? AppTheme.trendUp : AppTheme.trendDown;
+    final trendColor = isPositiveChange ? AppColors.of(context).trendUp : AppColors.of(context).trendDown;
     final arrow = isPositiveChange ? '\u2191' : '\u2193';
     final sign = isPositiveChange ? '+' : '';
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppTheme.card.withValues(alpha: .96),
+        color: AppColors.of(context).card.withValues(alpha: .96),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: lineColor.withValues(alpha: .14)),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: AppTheme.border.withValues(alpha: .12),
+            color: AppColors.of(context).border.withValues(alpha: .12),
             blurRadius: 16,
             offset: const Offset(0, 8),
           ),
@@ -52,23 +53,12 @@ class ChartTouchOverlay extends StatelessWidget {
           children: <Widget>[
             Text(
               DateFormat('EEE d MMM').format(date).toUpperCase(),
-              style: TextStyle(
-                fontSize: 10.5,
-                fontWeight: FontWeight.w800,
-                color: lineColor,
-                letterSpacing: 0.7,
-              ),
+              style: ChartThemeText.micro(context, color: lineColor),
             ),
             const SizedBox(height: 3),
             Text(
               '$currencySymbol ${formatChartValue(value)}',
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w800,
-                color: AppTheme.text,
-                fontFamily: 'Fraunces',
-                letterSpacing: -0.35,
-              ),
+              style: ChartThemeText.frauncesValue(context),
             ),
             const SizedBox(height: 1),
             Row(
@@ -76,20 +66,15 @@ class ChartTouchOverlay extends StatelessWidget {
               children: <Widget>[
                 Text(
                   '$arrow ${changePercent.abs().toStringAsFixed(2)}%',
-                  style: TextStyle(
+                  style: ChartThemeText.caption(context, color: trendColor).copyWith(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w800,
-                    color: trendColor,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Text(
                   '$currencySymbol $sign${formatChartValue(absoluteChange.abs())}',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.muted,
-                  ),
+                  style: ChartThemeText.caption(context),
                 ),
               ],
             ),

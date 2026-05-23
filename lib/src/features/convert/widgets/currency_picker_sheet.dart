@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/currency_picker_chrome.dart';
 import 'currency_picker_tile.dart';
 
@@ -75,7 +75,7 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
                     padding: const EdgeInsets.only(left: 52),
                     child: Divider(
                       height: 1,
-                      color: AppTheme.border.withValues(alpha: .15),
+                      color: AppColors.of(context).border.withValues(alpha: .15),
                     ),
                   ),
                   itemCount: currencies.length,
@@ -96,16 +96,14 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
   }
 
   List<SupportedCurrency> _visibleCurrencies() {
-    final currencies = (widget.selectBaseMode
-            ? supportedFiatCurrencies
-            : allSupportedCurrencies)
-        .where(_matchesQuery)
-        .toList();
-    if (widget.selectBaseMode) return currencies;
+    final currencies = allSupportedCurrencies.where(_matchesQuery).toList();
     currencies.sort((a, b) {
-      final aRank = _rank(a.code);
-      final bRank = _rank(b.code);
+      final aRank = widget.selectBaseMode ? _baseRank(a.code) : _rank(a.code);
+      final bRank = widget.selectBaseMode ? _baseRank(b.code) : _rank(b.code);
       if (aRank != bRank) return aRank.compareTo(bRank);
+      final aTypeRank = _typeRank(a.code);
+      final bTypeRank = _typeRank(b.code);
+      if (aTypeRank != bTypeRank) return aTypeRank.compareTo(bTypeRank);
       return a.code.compareTo(b.code);
     });
     return currencies;
@@ -117,8 +115,20 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
     return 2;
   }
 
+  int _baseRank(String code) {
+    if (code == widget.base) return 0;
+    if (_selectedCodes.contains(code)) return 1;
+    return 2;
+  }
+
+  int _typeRank(String code) {
+    return isFiatCurrency(code) ? 0 : 1;
+  }
+
   String get _subtitle {
-    if (widget.selectBaseMode) return 'Current base ${widget.base}';
+    if (widget.selectBaseMode) {
+      return 'Current base ${widget.base} · fiat and crypto';
+    }
     return '${_selectedCodes.length} shown · ${widget.base} base';
   }
 

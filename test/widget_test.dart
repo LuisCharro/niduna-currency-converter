@@ -80,9 +80,9 @@ void main() {
     expect(find.text('Chart'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Favorites'), findsNothing);
-    expect(find.textContaining('Updated'), findsOneWidget);
-    expect(find.textContaining('Next'), findsOneWidget);
-    expect(find.text('Add'), findsOneWidget);
+    expect(find.textContaining('Fresh'), findsOneWidget);
+    expect(find.byKey(const Key('open_currency_picker')), findsOneWidget);
+    expect(find.text('Add currencies'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
   });
 
@@ -98,11 +98,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Amount'), findsOneWidget);
-    expect(find.textContaining('Updated May 8'), findsOneWidget);
-    expect(find.textContaining('Next'), findsOneWidget);
-    expect(find.text('3 currencies visible'), findsOneWidget);
-    expect(find.text('Add'), findsOneWidget);
+    expect(find.text('AMOUNT'), findsOneWidget);
+    expect(find.textContaining('Fresh'), findsOneWidget);
+    expect(find.byKey(const Key('open_currency_picker')), findsOneWidget);
+    expect(find.text('Add currencies'), findsOneWidget);
+    expect(find.textContaining('currencies visible'), findsNothing);
     expect(find.text('USD'), findsOneWidget);
     expect(find.text('EUR'), findsOneWidget);
     expect(find.text('CHF'), findsNothing);
@@ -132,36 +132,40 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Done'), findsOneWidget);
+    expect(find.text('Cancel'), findsOneWidget);
+    expect(find.text('Quick amounts'), findsOneWidget);
     expect(find.text('1K'), findsOneWidget);
     expect(find.byIcon(Icons.backspace_outlined), findsOneWidget);
 
     await tester.tap(find.text('5'));
     await tester.pumpAndSettle();
 
-    expect(controller.state.amountText, '5');
-    expect(controller.state.quotes.first.amount, '4.60');
+    expect(controller.state.amountText, '100.00');
+    expect(controller.state.quotes.first.amount, '92.00');
 
     await tester.tap(find.text('.'));
     await tester.tap(find.text('2'));
     await tester.pumpAndSettle();
 
-    expect(controller.state.amountText, '5.2');
+    expect(controller.state.amountText, '100.00');
 
     await tester.tap(find.byIcon(Icons.backspace_outlined));
     await tester.pumpAndSettle();
 
-    expect(controller.state.amountText, '5.');
+    expect(controller.state.amountText, '100.00');
 
     await tester.tap(find.text('1K'));
     await tester.pumpAndSettle();
 
-    expect(controller.state.amountText, '1000');
-    expect(controller.state.quotes.first.amount, '920.00');
+    expect(controller.state.amountText, '100.00');
+    expect(controller.state.quotes.first.amount, '92.00');
 
     await tester.tap(find.text('Done'));
     await tester.pumpAndSettle();
 
     expect(find.text('Done'), findsNothing);
+    expect(controller.state.amountText, '1000');
+    expect(controller.state.quotes.first.amount, '920.00');
   });
 
   testWidgets('Convert daily rates info opens from compact status', (
@@ -178,7 +182,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.textContaining('Updated May 8'));
+    await tester.tap(find.textContaining('Fresh'));
     await tester.pumpAndSettle();
 
     expect(find.text('Daily exchange rates'), findsOneWidget);
@@ -209,7 +213,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Add'));
+    await tester.tap(find.byKey(const Key('open_currency_picker')));
     await tester.pumpAndSettle();
 
     expect(find.text('Visible currencies'), findsOneWidget);
@@ -220,7 +224,36 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Convert row tap selects, then second tap sets base', (
+  testWidgets('Convert base picker includes crypto currencies', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('open_base_currency_picker')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Base currency'), findsOneWidget);
+    expect(find.text('Current base USD · fiat and crypto'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('Bitcoin'),
+      300,
+      scrollable: find.byType(Scrollable).last,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Bitcoin'), findsOneWidget);
+    expect(find.text('Ethereum'), findsOneWidget);
+  });
+
+  testWidgets('Convert row swipe actions remove the tap-again flow and swap base', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
@@ -237,23 +270,21 @@ void main() {
     final euroFinder = find.text('Euro');
     expect(euroFinder, findsWidgets);
 
-    await tester.tap(euroFinder.first);
+    await tester.drag(euroFinder.first, const Offset(-160, 0));
     await tester.pumpAndSettle();
 
-    expect(find.text('Euro'), findsWidgets);
-    expect(find.text('Set as base'), findsOneWidget);
-    expect(find.text('1 USD = 0.92 EUR'), findsOneWidget);
-    expect(find.byIcon(Icons.swap_horiz_rounded), findsNothing);
+    expect(find.text('Set as base'), findsNothing);
+    expect(find.byKey(const Key('swap_EUR')), findsOneWidget);
     expect(controller.state.base, 'USD');
 
-    await tester.tap(euroFinder.first);
+    await tester.tap(find.byKey(const Key('swap_EUR')));
     await tester.pumpAndSettle();
 
     expect(controller.state.base, 'EUR');
-    expect(find.text('Set as base'), findsNothing);
+    expect(find.byKey(const Key('swap_EUR')), findsNothing);
   });
 
-  testWidgets('Convert crypto row can be set as base', (
+  testWidgets('Convert crypto row can be swapped into base from swipe action', (
     WidgetTester tester,
   ) async {
     final cryptoRepository = _FakeRatesRepository(
@@ -280,13 +311,13 @@ void main() {
     final bitcoinFinder = find.text('Bitcoin');
     expect(bitcoinFinder, findsWidgets);
 
-    await tester.tap(bitcoinFinder.first);
+    await tester.drag(bitcoinFinder.first, const Offset(-160, 0));
     await tester.pumpAndSettle();
 
-    expect(find.text('Set as base'), findsOneWidget);
+    expect(find.byKey(const Key('swap_BTC')), findsOneWidget);
     expect(cryptoController.state.base, 'USD');
 
-    await tester.tap(bitcoinFinder.first);
+    await tester.tap(find.byKey(const Key('swap_BTC')));
     await tester.pumpAndSettle();
 
     expect(cryptoController.state.base, 'BTC');
@@ -295,6 +326,142 @@ void main() {
     expect(find.text('Euro'), findsWidgets);
 
     cryptoController.dispose();
+  });
+
+  testWidgets('Convert row swipe action removes currency from visible list', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final euroFinder = find.text('Euro');
+    expect(euroFinder, findsWidgets);
+
+    await tester.drag(euroFinder.first, const Offset(-160, 0));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('remove_EUR')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('remove_EUR')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Euro'), findsNothing);
+  });
+
+  testWidgets('Convert crypto row swipe hide removes crypto from visible list', (
+    WidgetTester tester,
+  ) async {
+    final cryptoRepository = _FakeRatesRepository(
+      fresh: _snapshot(<String, double>{
+        'EUR': .92,
+        'BTC': .00001342,
+      }),
+    );
+    final cryptoController = ConvertController(repository: cryptoRepository)
+      ..configure(base: 'USD', amount: 100, selectedCodes: <String>['EUR']);
+    await cryptoController.load();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: cryptoController,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final bitcoinFinder = find.text('Bitcoin');
+    expect(bitcoinFinder, findsWidgets);
+
+    await tester.drag(bitcoinFinder.first, const Offset(-160, 0));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('remove_BTC')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('remove_BTC')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Bitcoin'), findsNothing);
+    expect(cryptoController.state.quotes.any((q) => q.code == 'BTC'), isFalse);
+
+    cryptoController.dispose();
+  });
+
+  testWidgets('Convert row long-press opens conversion lens with quick values', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.press(find.text('Euro').first);
+    await tester.pump(const Duration(milliseconds: 850));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('conversion_lens')), findsOneWidget);
+    final lensRect = tester.getRect(find.byKey(const Key('conversion_lens')));
+    expect(lensRect.height, greaterThan(500));
+    expect(lensRect.bottom, lessThanOrEqualTo(792));
+    expect(find.byKey(const Key('conversion_lens_copy_button')), findsOneWidget);
+    expect(find.text('Copy'), findsNothing);
+    expect(find.text('CONVERSION LENS'), findsOneWidget);
+    expect(find.text('Quick base amounts'), findsOneWidget);
+    expect(find.text('Reverse targets'), findsOneWidget);
+    expect(find.text('Use'), findsNWidgets(3));
+  });
+
+  testWidgets('Conversion lens reverse target can update main amount', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ConvertScreen(
+          controller: controller,
+          monetization: monetization,
+          onNavigateToSettings: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.press(find.text('Euro').first);
+    await tester.pump(const Duration(milliseconds: 850));
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('Use').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Use').first);
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('conversion_lens')), findsNothing);
+    expect(controller.state.amountText, '10.87');
   });
 
   testWidgets('Favorites screen shows placeholder', (
@@ -344,7 +511,7 @@ void main() {
     expect(find.text('Premium'), findsOneWidget);
     expect(find.text('Default base currency'), findsWidgets);
     expect(find.text('Dark mode'), findsWidgets);
-    expect(find.text('Data details'), findsOneWidget);
+    expect(find.text('Data & sources'), findsOneWidget);
   });
 
   testWidgets('Charts screen reuses shared remove ads button', (

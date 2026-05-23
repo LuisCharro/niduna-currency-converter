@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
 import 'section_header.dart';
@@ -22,7 +22,7 @@ class SettingsAboutSection extends StatelessWidget {
           onTap: () => controller.openDataSources(context),
           trailing: Icon(
             Icons.chevron_right_rounded,
-            color: AppTheme.subtle,
+            color: AppColors.of(context).subtle,
           ),
         ),
         VersionTile(controller: controller),

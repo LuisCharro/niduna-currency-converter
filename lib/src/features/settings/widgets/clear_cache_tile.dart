@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../settings_controller.dart';
 import '../../../shared/widgets/settings_tile.dart';
 
@@ -20,16 +20,16 @@ class ClearCacheTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: AppTheme.container,
+            color: AppColors.of(context).container,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppTheme.border),
+            border: Border.all(color: AppColors.of(context).border),
           ),
           child: Text(
             'Clear',
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: AppTheme.text,
+              color: AppColors.of(context).text,
             ),
           ),
         ),

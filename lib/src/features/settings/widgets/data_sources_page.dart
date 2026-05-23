@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/rates/provider_usage_info.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class DataSourcesPage extends StatelessWidget {
@@ -20,35 +21,38 @@ class DataSourcesPage extends StatelessWidget {
         : 'Crypto charts are disabled in this build to keep the release profile safe for store publication.';
 
     return Scaffold(
-      backgroundColor: AppTheme.bg,
+      backgroundColor: AppColors.of(context).bg,
       appBar: AppBar(
-        backgroundColor: AppTheme.bg,
-        foregroundColor: AppTheme.text,
+        backgroundColor: AppColors.of(context).bg,
+        foregroundColor: AppColors.of(context).text,
         elevation: 0,
         title: const Text('Data sources'),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+        padding: const EdgeInsets.fromLTRB(
+          AppTheme.pagePadding,
+          AppTheme.space2,
+          AppTheme.pagePadding,
+          AppTheme.space7,
+        ),
         children: <Widget>[
-          const _SourceCard(
+          _SourceBlock(
             title: 'Fiat latest and fiat charts',
             provider: 'Frankfurter / ECB',
             detail:
                 'Frankfurter provides the fiat latest and historical exchange rates used by the app. Fiat charts support daily ranges up to 2 years.',
           ),
-          const SizedBox(height: 16),
-          _SourceCard(
+          _SourceBlock(
             title: 'Crypto latest',
             provider: cryptoLatestProvider,
             detail:
                 'BTC and ETH latest prices use the active crypto provider chain for this build. Developer profile details are shown only inside the Dev Sandbox.',
           ),
-          const SizedBox(height: 16),
-          _SourceCard(
+          _SourceBlock(
             title: 'Crypto charts',
             provider: cryptoChartsProvider,
-            detail:
-                cryptoChartsDetail,
+            detail: cryptoChartsDetail,
+            showDivider: false,
           ),
         ],
       ),
@@ -56,53 +60,50 @@ class DataSourcesPage extends StatelessWidget {
   }
 }
 
-class _SourceCard extends StatelessWidget {
-  const _SourceCard({
+class _SourceBlock extends StatelessWidget {
+  const _SourceBlock({
     required this.title,
     required this.provider,
     required this.detail,
+    this.showDivider = true,
   });
 
   final String title;
   final String provider;
   final String detail;
+  final bool showDivider;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppTheme.card.withValues(alpha: .9),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppTheme.border.withValues(alpha: .2)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              provider,
-              style: AppTheme.caption.copyWith(
-                color: AppTheme.primary,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              detail,
-              style: AppTheme.body.copyWith(
-                color: AppTheme.muted,
-                height: 1.45,
-              ),
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
         ),
-      ),
+        const SizedBox(height: AppTheme.space1),
+        Text(
+          provider,
+          style: AppTheme.caption.copyWith(
+             color: AppColors.of(context).primary,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: AppTheme.space2),
+        Text(
+          detail,
+          style: AppTheme.body.copyWith(color: AppColors.of(context).muted, height: 1.45),
+        ),
+        if (showDivider)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: AppTheme.space4),
+            child: Divider(
+              color: AppColors.of(context).border.withValues(alpha: .14),
+              height: .5,
+            ),
+          ),
+      ],
     );
   }
 }

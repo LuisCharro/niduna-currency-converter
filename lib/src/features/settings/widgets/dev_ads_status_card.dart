@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 class DevAdsStatusCard extends StatelessWidget {
@@ -13,7 +14,7 @@ class DevAdsStatusCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppTheme.container.withValues(alpha: .5),
+        color: AppColors.of(context).container.withValues(alpha: .5),
         borderRadius: BorderRadius.circular(AppTheme.radius),
       ),
       child: Row(
@@ -21,12 +22,12 @@ class DevAdsStatusCard extends StatelessWidget {
           Icon(
             adsEnabled ? Icons.visibility : Icons.visibility_off,
             size: 16,
-            color: AppTheme.muted,
+            color: AppColors.of(context).muted,
           ),
           const SizedBox(width: 8),
           Text(
             adsEnabled ? 'Ads: visible' : 'Ads: hidden',
-            style: const TextStyle(fontSize: 13, color: AppTheme.muted),
+            style: TextStyle(fontSize: 13, color: AppColors.of(context).muted),
           ),
         ],
       ),
