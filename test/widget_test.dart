@@ -23,11 +23,11 @@ import 'package:currency_converter/src/features/favorites/data/favorites_store.d
 import 'package:currency_converter/src/features/favorites/favorites_screen.dart';
 import 'package:currency_converter/src/features/convert/convert_screen.dart';
 import 'package:currency_converter/src/features/convert/widgets/ad_support_shelf.dart';
+import 'package:currency_converter/src/features/convert/widgets/ad_banner_placeholder.dart';
 import 'package:currency_converter/src/features/charts/widgets/rate_chart.dart';
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
 import 'package:currency_converter/src/shared/widgets/bottom_tab_frame.dart';
 import 'package:currency_converter/src/shared/widgets/floating_pill_nav.dart';
-import 'package:currency_converter/src/shared/widgets/remove_ads_button.dart';
 
 void main() {
   final repository = _FakeRatesRepository(
@@ -112,7 +112,7 @@ void main() {
     expect(find.text('ETH'), findsNothing);
     expect(find.byType(BottomTabFrame), findsOneWidget);
     expect(find.byType(AdSupportShelf), findsOneWidget);
-    expect(find.byType(RemoveAdsButton), findsOneWidget);
+    expect(find.byType(AdBannerPlaceholder), findsOneWidget);
   });
 
   testWidgets('Convert amount input uses sheet keypad and presets', (
@@ -626,7 +626,7 @@ void main() {
     expect(settingsTitle.style?.fontWeight, convertTitle.style?.fontWeight);
   });
 
-  testWidgets('Charts screen reuses shared remove ads button', (
+  testWidgets('Charts screen reuses shared ad support shelf', (
     WidgetTester tester,
   ) async {
     final chartsController = ChartsController(
@@ -650,7 +650,7 @@ void main() {
 
     expect(find.byType(BottomTabFrame), findsOneWidget);
     expect(find.byType(AdSupportShelf), findsOneWidget);
-    expect(find.byType(RemoveAdsButton), findsOneWidget);
+    expect(find.byType(AdBannerPlaceholder), findsOneWidget);
   });
 
   testWidgets('Rate chart uses a stronger touched indicator', (
