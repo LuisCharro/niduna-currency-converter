@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
-Route<T> buildSettingsDetailRoute<T>({required WidgetBuilder builder}) {
+Route<T> buildSettingsDetailRoute<T>({
+  required WidgetBuilder builder,
+  required ThemeData theme,
+}) {
   return PageRouteBuilder<T>(
-    pageBuilder: (context, animation, secondaryAnimation) => builder(context),
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        Theme(data: theme, child: builder(context)),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       final offset = Tween<Offset>(
         begin: const Offset(1, 0),

@@ -26,7 +26,7 @@ class SettingsDataSection extends StatelessWidget {
           onChanged: controller.toggleRefreshOnOpen,
         ),
         SettingsTile(
-          title: loc.labelDataSources,
+          title: loc.dataDetailsTitle,
           subtitle: loc.dataSourcesSubtitle,
           onTap: () => controller.openDataDetails(context),
           trailing: Icon(

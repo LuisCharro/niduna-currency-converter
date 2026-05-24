@@ -130,7 +130,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Récupérer les nouveaux taux au démarrage de l\'app';
 
   @override
-  String get labelDataSources => 'Données et sources';
+  String get labelDataSources => 'Sources de données';
 
   @override
   String get labelClearAllData => 'Effacer toutes les données';

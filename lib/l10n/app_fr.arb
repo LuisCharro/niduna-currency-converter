@@ -40,7 +40,7 @@
   "labelDecimalPlaces": "Décimales",
   "labelRefreshOnOpen": "Actualiser à l'ouverture",
   "labelRefreshOnOpenSubtitle": "Récupérer les nouveaux taux au démarrage de l'app",
-  "labelDataSources": "Données et sources",
+  "labelDataSources": "Sources de données",
   "labelClearAllData": "Effacer toutes les données",
   "labelClearAllDataSubtitle": "Taux fiat, taux crypto, historique des graphiques et déverrouillages temporaires",
   "labelSubscription": "Abonnement",

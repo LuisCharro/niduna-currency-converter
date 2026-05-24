@@ -130,7 +130,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Neue Kurse beim Start der App abrufen';
 
   @override
-  String get labelDataSources => 'Daten und Quellen';
+  String get labelDataSources => 'Datenquellen';
 
   @override
   String get labelClearAllData => 'Alle Daten löschen';

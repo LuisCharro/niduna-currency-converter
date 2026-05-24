@@ -558,7 +558,7 @@ void main() {
     expect(find.text('Premium'), findsOneWidget);
     expect(find.text('Default base currency'), findsWidgets);
     expect(find.text('Dark mode'), findsWidgets);
-    expect(find.text('Data & sources'), findsOneWidget);
+    expect(find.text('Data details'), findsOneWidget);
   });
 
   testWidgets('Settings hierarchy uses calmer shared typography', (

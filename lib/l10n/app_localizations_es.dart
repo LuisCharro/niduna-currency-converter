@@ -130,7 +130,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Obtener nuevos tipos cuando se inicia la app';
 
   @override
-  String get labelDataSources => 'Datos y fuentes';
+  String get labelDataSources => 'Fuentes de datos';
 
   @override
   String get labelClearAllData => 'Borrar todos los datos';

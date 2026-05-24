@@ -38,19 +38,25 @@ class ConversionLensSheet extends StatelessWidget {
     const topMargin = 20.0;
     const bottomMargin = 52.0;
     final width = math.min(media.size.width - (horizontalMargin * 2), 380.0);
-    final safeHeight = media.size.height - media.padding.top - media.padding.bottom;
-    final availableHeight = math.max(320.0, safeHeight - topMargin - bottomMargin);
+    final safeHeight =
+        media.size.height - media.padding.top - media.padding.bottom;
+    final availableHeight = math.max(
+      320.0,
+      safeHeight - topMargin - bottomMargin,
+    );
     final height = math.min(
       availableHeight,
       math.min(560.0, math.max(360.0, availableHeight * .74)),
     );
     final left = (media.size.width - width) / 2;
-    final top = media.size.height - media.padding.bottom - bottomMargin - height;
+    final top =
+        media.size.height - media.padding.bottom - bottomMargin - height;
     final alignment = Alignment(
       ((anchor.dx - left) / width).clamp(0.1, 0.9) * 2 - 1,
       ((anchor.dy - top) / height).clamp(0.1, 0.9) * 2 - 1,
     );
 
+    final theme = Theme.of(context);
     return showGeneralDialog<void>(
       context: context,
       barrierLabel: 'Dismiss conversion lens',
@@ -58,30 +64,36 @@ class ConversionLensSheet extends StatelessWidget {
       barrierColor: Colors.black.withValues(alpha: .16),
       transitionDuration: const Duration(milliseconds: 240),
       pageBuilder: (context, animation, secondaryAnimation) {
-        return Padding(
-          padding: EdgeInsets.fromLTRB(
-            horizontalMargin,
-            media.padding.top + topMargin,
-            horizontalMargin,
-            media.padding.bottom + bottomMargin,
-          ),
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              width: width,
-              height: height,
-              child: _LensCard(
-                quote: quote,
-                base: base,
-                amount: amount,
-                onAmountChanged: onAmountChanged,
+        return Theme(
+          data: theme,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              horizontalMargin,
+              media.padding.top + topMargin,
+              horizontalMargin,
+              media.padding.bottom + bottomMargin,
+            ),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: width,
+                height: height,
+                child: _LensCard(
+                  quote: quote,
+                  base: base,
+                  amount: amount,
+                  onAmountChanged: onAmountChanged,
+                ),
               ),
             ),
           ),
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final fade = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+        final fade = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+        );
         final scale = Tween<double>(begin: .9, end: 1).animate(
           CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
         );
@@ -128,7 +140,10 @@ class _LensCard extends StatelessWidget {
     final quickBase = _baseValues(amount);
     final reverseTargets = _reverseTargets();
     final amountLabel = _formatHeroBase(amount, base);
-    final convertedLabel = _formatHeroConverted(amount * quote.rate, quote.code);
+    final convertedLabel = _formatHeroConverted(
+      amount * quote.rate,
+      quote.code,
+    );
     final copyLabel = '$amountLabel $base = $convertedLabel ${quote.code}';
 
     return Material(
@@ -139,8 +154,12 @@ class _LensCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: colors.card,
           borderRadius: BorderRadius.circular(26),
-          boxShadow: const <BoxShadow>[
-            BoxShadow(color: Color(0x1A171D14), blurRadius: 26, offset: Offset(0, 14)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.black.withValues(alpha: .08),
+              blurRadius: 26,
+              offset: Offset(0, 14),
+            ),
           ],
         ),
         child: Column(
@@ -152,11 +171,18 @@ class _LensCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(l10n?.conversionLensTitle ?? "Conversion Lens", style: AppTheme.sectionLabel),
+                      Text(
+                        l10n?.conversionLensTitle ?? "Conversion Lens",
+                        style: AppTheme.sectionLabelStyle(context),
+                      ),
                       const SizedBox(height: 6),
                       Text(
                         '${quote.name} · ${quote.code}',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: colors.text,
+                        ),
                       ),
                     ],
                   ),
@@ -210,7 +236,9 @@ class _LensCard extends StatelessWidget {
                       IconButton(
                         key: const Key('conversion_lens_copy_button'),
                         onPressed: () async {
-                          await Clipboard.setData(ClipboardData(text: copyLabel));
+                          await Clipboard.setData(
+                            ClipboardData(text: copyLabel),
+                          );
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -241,13 +269,14 @@ class _LensCard extends StatelessWidget {
                           .map(
                             (value) => _LensRow(
                               leading: _formatValue(value, base),
-                              trailing: '${_formatValue(value * quote.rate, quote.code)} ${quote.code}',
+                              trailing:
+                                  '${_formatValue(value * quote.rate, quote.code)} ${quote.code}',
                             ),
                           )
                           .toList(),
                     ),
                     const SizedBox(height: 12),
- _LensSection(
+                    _LensSection(
                       title: reverseTargetsLabel(context),
                       children: reverseTargets
                           .map(
@@ -258,7 +287,9 @@ class _LensCard extends StatelessWidget {
                               actionLabel: useActionLabel(context),
                               onAction: () {
                                 HapticFeedback.selectionClick();
-                                onAmountChanged(_formatInput(target / quote.rate));
+                                onAmountChanged(
+                                  _formatInput(target / quote.rate),
+                                );
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -330,7 +361,11 @@ class _LensCard extends StatelessWidget {
   }
 
   String _formatRaw(double value, String code) {
-    final digits = code == 'BTC' ? 8 : code == 'ETH' ? 6 : 4;
+    final digits = code == 'BTC'
+        ? 8
+        : code == 'ETH'
+        ? 6
+        : 4;
     return NumberFormat('0.${'0' * digits}', 'en').format(value);
   }
 
@@ -360,7 +395,7 @@ class _LensSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(title, style: AppTheme.sectionLabel),
+        Text(title, style: AppTheme.sectionLabelStyle(context)),
         const SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
@@ -389,6 +424,7 @@ class _LensRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       child: Row(
@@ -396,14 +432,22 @@ class _LensRow extends StatelessWidget {
           Expanded(
             child: Text(
               leading,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: colors.text,
+              ),
             ),
           ),
           Expanded(
             child: Text(
               trailing,
               textAlign: TextAlign.right,
-              style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800),
+              style: TextStyle(
+                fontSize: 13.5,
+                fontWeight: FontWeight.w800,
+                color: colors.text,
+              ),
             ),
           ),
           if (actionLabel != null) ...<Widget>[

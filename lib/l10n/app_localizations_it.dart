@@ -130,7 +130,7 @@ class AppLocalizationsIt extends AppLocalizations {
       'Scarica nuovi tassi all\'avvio dell\'app';
 
   @override
-  String get labelDataSources => 'Dati e fonti';
+  String get labelDataSources => 'Fonti dati';
 
   @override
   String get labelClearAllData => 'Cancella tutti i dati';

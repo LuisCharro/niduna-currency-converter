@@ -40,7 +40,7 @@
   "labelDecimalPlaces": "Decimali",
   "labelRefreshOnOpen": "Aggiorna all'apertura",
   "labelRefreshOnOpenSubtitle": "Scarica nuovi tassi all'avvio dell'app",
-  "labelDataSources": "Dati e fonti",
+  "labelDataSources": "Fonti dati",
   "labelClearAllData": "Cancella tutti i dati",
   "labelClearAllDataSubtitle": "Tassi fiat, tassi crypto, cronologia grafici e sblocchi temporanei",
   "labelSubscription": "Abbonamento",

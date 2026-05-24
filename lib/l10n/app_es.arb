@@ -40,7 +40,7 @@
   "labelDecimalPlaces": "Decimales",
   "labelRefreshOnOpen": "Actualizar al abrir",
   "labelRefreshOnOpenSubtitle": "Obtener nuevos tipos cuando se inicia la app",
-  "labelDataSources": "Datos y fuentes",
+  "labelDataSources": "Fuentes de datos",
   "labelClearAllData": "Borrar todos los datos",
   "labelClearAllDataSubtitle": "Tipos fiat, tipos cripto, historial de gráficos y desbloqueos temporales",
   "labelSubscription": "Suscripción",

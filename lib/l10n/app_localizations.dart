@@ -347,7 +347,7 @@ abstract class AppLocalizations {
   /// Data sources setting title
   ///
   /// In en, this message translates to:
-  /// **'Data & sources'**
+  /// **'Data sources'**
   String get labelDataSources;
 
   /// Clear data setting title

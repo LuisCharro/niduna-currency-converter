@@ -33,12 +33,15 @@ class DataDetailsPage extends StatelessWidget {
         children: <Widget>[
           Text(
             loc.dataPolicyTitle,
-            style: AppTheme.heading.copyWith(fontFamily: 'Fraunces'),
+            style: AppTheme.heading.copyWith(
+              fontFamily: 'Fraunces',
+              color: AppColors.of(context).text,
+            ),
           ),
           const SizedBox(height: AppTheme.space4),
           Text(
             loc.dataPrivacyLine,
-            style: AppTheme.body,
+            style: AppTheme.body.copyWith(color: AppColors.of(context).text),
           ),
           const SizedBox(height: AppTheme.space5),
           _DetailBlock(
@@ -91,16 +94,18 @@ class _DetailBlock extends StatelessWidget {
       children: <Widget>[
         Text(
           title,
-          style: AppTheme.sectionLabel.copyWith(
-            color: AppColors.of(context).primary,
-            letterSpacing: 0.6,
-          ),
+          style: AppTheme.sectionLabelStyle(
+            context,
+          ).copyWith(color: AppColors.of(context).primary, letterSpacing: 0.6),
         ),
         const SizedBox(height: AppTheme.space2),
         for (final line in lines) ...<Widget>[
           Text(
             line,
-            style: AppTheme.body.copyWith(color: AppColors.of(context).muted, height: 1.45),
+            style: AppTheme.body.copyWith(
+              color: AppColors.of(context).muted,
+              height: 1.45,
+            ),
           ),
           const SizedBox(height: AppTheme.space2),
         ],

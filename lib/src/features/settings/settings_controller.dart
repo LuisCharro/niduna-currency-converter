@@ -30,14 +30,22 @@ class SettingsController extends ChangeNotifier {
   void toggleDarkMode(bool value) => preferences.setDarkMode(value);
 
   void openDataDetails(BuildContext context) {
+    final theme = Theme.of(context);
     Navigator.of(context).push(
-      buildSettingsDetailRoute<void>(builder: (_) => const DataDetailsPage()),
+      buildSettingsDetailRoute<void>(
+        theme: theme,
+        builder: (_) => const DataDetailsPage(),
+      ),
     );
   }
 
   void openDataSources(BuildContext context) {
+    final theme = Theme.of(context);
     Navigator.of(context).push(
-      buildSettingsDetailRoute<void>(builder: (_) => const DataSourcesPage()),
+      buildSettingsDetailRoute<void>(
+        theme: theme,
+        builder: (_) => const DataSourcesPage(),
+      ),
     );
   }
 

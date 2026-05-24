@@ -83,20 +83,27 @@ class _SourceBlock extends StatelessWidget {
       children: <Widget>[
         Text(
           title,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
+            color: AppColors.of(context).text,
+          ),
         ),
         const SizedBox(height: AppTheme.space1),
         Text(
           provider,
           style: AppTheme.caption.copyWith(
-             color: AppColors.of(context).primary,
+            color: AppColors.of(context).primary,
             fontWeight: FontWeight.w800,
           ),
         ),
         const SizedBox(height: AppTheme.space2),
         Text(
           detail,
-          style: AppTheme.body.copyWith(color: AppColors.of(context).muted, height: 1.45),
+          style: AppTheme.body.copyWith(
+            color: AppColors.of(context).muted,
+            height: 1.45,
+          ),
         ),
         if (showDivider)
           Padding(

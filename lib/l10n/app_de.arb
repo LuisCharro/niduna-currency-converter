@@ -40,7 +40,7 @@
   "labelDecimalPlaces": "Dezimalstellen",
   "labelRefreshOnOpen": "Beim Öffnen aktualisieren",
   "labelRefreshOnOpenSubtitle": "Neue Kurse beim Start der App abrufen",
-  "labelDataSources": "Daten und Quellen",
+  "labelDataSources": "Datenquellen",
   "labelClearAllData": "Alle Daten löschen",
   "labelClearAllDataSubtitle": "Fiat-Kurse, Krypto-Kurse, Chartverlauf und temporäre Freischaltungen",
   "labelSubscription": "Abonnement",

@@ -130,7 +130,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Fetch new rates when the app starts';
 
   @override
-  String get labelDataSources => 'Data & sources';
+  String get labelDataSources => 'Data sources';
 
   @override
   String get labelClearAllData => 'Clear all data';
