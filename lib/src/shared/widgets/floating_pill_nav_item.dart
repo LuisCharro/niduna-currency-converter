@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_theme.dart';
+import 'press_scale.dart';
 
 class FloatingPillNavItem extends StatelessWidget {
   const FloatingPillNavItem({
@@ -20,33 +22,32 @@ class FloatingPillNavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
     final color = isSelected ? colors.primary : colors.muted;
+    final labelStyle = TextStyle(
+      fontSize: 11.5,
+      fontWeight: FontWeight.w800,
+      color: color,
+    );
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(5),
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
+        child: PressScale(
           onTap: onTap,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 160),
-            curve: Curves.easeOut,
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? colors.primary.withValues(alpha: .1)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(27),
-            ),
+          child: SizedBox.expand(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(icon, size: 23, color: color),
+                AnimatedScale(
+                  scale: isSelected ? 1 : .94,
+                  duration: AppTheme.motionMedium,
+                  curve: AppTheme.curveStandard,
+                  child: Icon(icon, size: 23, color: color),
+                ),
                 const SizedBox(height: 3),
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w800,
-                    color: color,
-                  ),
+                AnimatedDefaultTextStyle(
+                  duration: AppTheme.motionMedium,
+                  curve: AppTheme.curveStandard,
+                  style: labelStyle,
+                  child: Text(label),
                 ),
               ],
             ),

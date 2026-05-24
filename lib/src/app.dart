@@ -25,6 +25,7 @@ import 'features/charts/charts_screen.dart';
 import 'features/charts/presentation/charts_controller.dart';
 import 'features/settings/settings_screen.dart';
 import '../../l10n/app_localizations.dart';
+import 'shared/widgets/fade_slide_switcher.dart';
 import 'shared/widgets/floating_pill_nav.dart';
 
 class CurrencyConverterApp extends StatelessWidget {
@@ -186,14 +187,23 @@ class _AppState extends State<AppShell> {
     ];
 
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
-    final isDark = _preferences?.isDarkMode == true ||
+    final isDark =
+        _preferences?.isDarkMode == true ||
         platformBrightness == Brightness.dark;
     return Theme(
       data: isDark ? AppTheme.dark : AppTheme.light,
       child: Scaffold(
         body: Stack(
           children: <Widget>[
-            Positioned.fill(child: screens[_currentIndex]),
+            Positioned.fill(
+              child: FadeSlideSwitcher(
+                switcherKey: const Key('shell_tab_transition'),
+                child: KeyedSubtree(
+                  key: ValueKey<int>(_currentIndex),
+                  child: screens[_currentIndex],
+                ),
+              ),
+            ),
             Positioned(
               left: 0,
               right: 0,

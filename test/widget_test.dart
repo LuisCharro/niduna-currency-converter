@@ -11,6 +11,7 @@ import 'package:currency_converter/src/core/rates/models/rates_snapshot.dart';
 import 'package:currency_converter/src/core/rates/rates_cache.dart';
 import 'package:currency_converter/src/core/rates/rates_client.dart';
 import 'package:currency_converter/src/core/rates/rates_service.dart';
+import 'package:currency_converter/src/core/theme/app_theme.dart';
 import 'package:currency_converter/l10n/app_localizations.dart';
 import 'package:currency_converter/src/features/charts/charts_screen.dart';
 import 'package:currency_converter/src/features/charts/widgets/chart_currency_picker_sheet.dart';
@@ -27,7 +28,9 @@ import 'package:currency_converter/src/features/convert/widgets/ad_banner_placeh
 import 'package:currency_converter/src/features/charts/widgets/rate_chart.dart';
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
 import 'package:currency_converter/src/shared/widgets/bottom_tab_frame.dart';
+import 'package:currency_converter/src/shared/widgets/fade_slide_switcher.dart';
 import 'package:currency_converter/src/shared/widgets/floating_pill_nav.dart';
+import 'package:currency_converter/src/shared/widgets/press_scale.dart';
 
 void main() {
   final repository = _FakeRatesRepository(
@@ -85,6 +88,46 @@ void main() {
     expect(find.byKey(const Key('open_currency_picker')), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
+    expect(find.byKey(const Key('shell_tab_transition')), findsOneWidget);
+    expect(find.byKey(const Key('nav_active_pill')), findsOneWidget);
+    expect(find.byType(PressScale), findsNWidgets(3));
+    expect(find.byType(FadeSlideSwitcher), findsOneWidget);
+  });
+
+  testWidgets('tab shell transitions to charts with shared motion', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(430, 932);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      CurrencyConverterApp(
+        convertRepository: repository,
+        favoritesStore: favoritesStore,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Chart'));
+    await tester.pump(const Duration(milliseconds: 60));
+
+    final switchers = tester.widgetList<AnimatedSwitcher>(
+      find.descendant(
+        of: find.byKey(const Key('shell_tab_transition')),
+        matching: find.byType(AnimatedSwitcher),
+      ),
+    );
+
+    expect(
+      switchers.any((switcher) => switcher.duration == AppTheme.motionMedium),
+      isTrue,
+    );
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Charts'), findsOneWidget);
   });
 
   testWidgets('Convert screen shows clean layout', (WidgetTester tester) async {

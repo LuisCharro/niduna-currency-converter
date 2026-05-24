@@ -103,6 +103,12 @@ class AppTheme {
   static const double floatingNavHeight = 64;
   static const double floatingNavBottomOffset = 0;
   static const double bottomDockGap = 8;
+  static const Duration motionFast = Duration(milliseconds: 120);
+  static const Duration motionMedium = Duration(milliseconds: 180);
+  static const Duration motionSlow = Duration(milliseconds: 240);
+  static const Curve curveEnter = Curves.easeOutCubic;
+  static const Curve curveExit = Curves.easeInCubic;
+  static const Curve curveStandard = Curves.easeInOutCubic;
 
   static List<BoxShadow> subtleShadowFor(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;

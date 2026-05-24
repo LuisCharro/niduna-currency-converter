@@ -18,6 +18,15 @@ void main() {
     expect(AppTheme.heroAmount.fontSize, 50);
     expect(AppTheme.heroAmountCompact.fontSize, 40);
     expect(AppTheme.pairTitleFraunces.fontFamily, 'Fraunces');
+    expect(AppTheme.motionFast, const Duration(milliseconds: 120));
+    expect(AppTheme.motionMedium, const Duration(milliseconds: 180));
+    expect(AppTheme.motionSlow, const Duration(milliseconds: 240));
+  });
+
+  test('motion tokens use the planned shell curves', () {
+    expect(AppTheme.curveEnter, Curves.easeOutCubic);
+    expect(AppTheme.curveExit, Curves.easeInCubic);
+    expect(AppTheme.curveStandard, Curves.easeInOutCubic);
   });
 
   test('settings typography is subordinate to chart hero type', () {

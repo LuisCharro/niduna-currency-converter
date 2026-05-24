@@ -24,36 +24,68 @@ class FloatingPillNav extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(20, 0, 20, bottom),
       child: Center(
-        child: Container(
+        child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 330),
-          height: AppTheme.floatingNavHeight,
-          decoration: BoxDecoration(
-            color: colors.container,
-            borderRadius: BorderRadius.circular(AppTheme.navOuterRadius),
-            border: Border.all(color: colors.border.withValues(alpha: .22)),
-            boxShadow: AppTheme.floatingShadowFor(context),
-          ),
-          child: Row(
-            children: <Widget>[
-              FloatingPillNavItem(
-                icon: Icons.swap_horiz_rounded,
-                label: l10n?.tabConvert ?? "Convert",
-                isSelected: selectedIndex == 0,
-                onTap: () => onTap(0),
-              ),
-              FloatingPillNavItem(
-                icon: Icons.show_chart_rounded,
-                label: l10n?.tabCharts ?? "Chart",
-                isSelected: selectedIndex == 1,
-                onTap: () => onTap(1),
-              ),
-              FloatingPillNavItem(
-                icon: Icons.settings_rounded,
-                label: l10n?.tabSettings ?? "Settings",
-                isSelected: selectedIndex == 2,
-                onTap: () => onTap(2),
-              ),
-            ],
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              const itemCount = 3;
+              const inset = 5.0;
+              final pillWidth =
+                  (constraints.maxWidth - (inset * 2)) / itemCount;
+              final pillLeft = inset + (pillWidth * selectedIndex);
+              return Container(
+                height: AppTheme.floatingNavHeight,
+                decoration: BoxDecoration(
+                  color: colors.container,
+                  borderRadius: BorderRadius.circular(AppTheme.navOuterRadius),
+                  border: Border.all(
+                    color: colors.border.withValues(alpha: .22),
+                  ),
+                  boxShadow: AppTheme.floatingShadowFor(context),
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    AnimatedPositioned(
+                      key: const Key('nav_active_pill'),
+                      duration: AppTheme.motionMedium,
+                      curve: AppTheme.curveStandard,
+                      left: pillLeft,
+                      top: inset,
+                      width: pillWidth,
+                      height: AppTheme.floatingNavHeight - (inset * 2),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: colors.primary.withValues(alpha: .1),
+                          borderRadius: BorderRadius.circular(27),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        FloatingPillNavItem(
+                          icon: Icons.swap_horiz_rounded,
+                          label: l10n?.tabConvert ?? "Convert",
+                          isSelected: selectedIndex == 0,
+                          onTap: () => onTap(0),
+                        ),
+                        FloatingPillNavItem(
+                          icon: Icons.show_chart_rounded,
+                          label: l10n?.tabCharts ?? "Chart",
+                          isSelected: selectedIndex == 1,
+                          onTap: () => onTap(1),
+                        ),
+                        FloatingPillNavItem(
+                          icon: Icons.settings_rounded,
+                          label: l10n?.tabSettings ?? "Settings",
+                          isSelected: selectedIndex == 2,
+                          onTap: () => onTap(2),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
