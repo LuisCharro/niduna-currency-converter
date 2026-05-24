@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/localization/ui_copy.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/screen_title.dart';
 import 'amount_utility_pill.dart';
 
 /// Micro rail: CONVERT label + refresh/settings actions (D2-CON-2).
@@ -19,13 +19,7 @@ class AmountHeaderRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Text(
-          convertHeaderLabel(context),
-          style: AppTheme.sectionLabel.copyWith(
-            color: AppTheme.trendUp,
-            letterSpacing: 1.2,
-          ),
-        ),
+        ScreenTitle(convertHeaderLabel(context)),
         const Spacer(),
         AmountUtilityPill(onRefresh: onRefresh, onMore: onMore),
       ],

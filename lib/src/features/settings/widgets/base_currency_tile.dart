@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations_safe.dart';
 import '../settings_controller.dart';
 import 'base_currency_picker.dart';
@@ -23,14 +24,16 @@ class BaseCurrencyTile extends StatelessWidget {
         children: <Widget>[
           Text(
             '${currency.symbol} ${currency.code}',
-            style: TextStyle(
-              fontSize: 14,
-              color: AppColors.of(context).primary,
-              fontWeight: FontWeight.w700,
-            ),
+            style: AppTheme.settingsTileTitleStyle(
+              context,
+            ).copyWith(color: AppColors.of(context).primary),
           ),
           const SizedBox(width: 4),
-          Icon(Icons.chevron_right, color: AppColors.of(context).subtle, size: 20),
+          Icon(
+            Icons.chevron_right,
+            color: AppColors.of(context).subtle,
+            size: 20,
+          ),
         ],
       ),
       onTap: () async {

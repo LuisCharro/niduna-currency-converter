@@ -26,9 +26,7 @@ class SettingsTile extends StatelessWidget {
       decoration: BoxDecoration(
         border: showDivider
             ? Border(
-                bottom: BorderSide(
-                  color: colors.border.withValues(alpha: .14),
-                ),
+                bottom: BorderSide(color: colors.border.withValues(alpha: .14)),
               )
             : null,
       ),
@@ -44,13 +42,13 @@ class SettingsTile extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       title,
-                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                      style: AppTheme.settingsTileTitleStyle(context),
                     ),
                     if (subtitle != null) ...[
                       const SizedBox(height: 2),
                       Text(
                         subtitle!,
-                        style: AppTheme.caption.copyWith(color: colors.muted),
+                        style: AppTheme.supportingTextStyle(context),
                       ),
                     ],
                   ],

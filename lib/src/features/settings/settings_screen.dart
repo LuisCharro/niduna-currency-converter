@@ -41,45 +41,47 @@ class SettingsScreen extends StatelessWidget {
       color: Colors.transparent,
       child: CanvasBackground(
         child: SafeArea(
-        child: ListenableBuilder(
-          listenable: Listenable.merge([monetization, preferences]),
-          builder: (context, _) => Scaffold(
-            backgroundColor: Colors.transparent,
-            body: ListView(
-              padding: EdgeInsets.fromLTRB(
-                AppTheme.pagePadding,
-                AppTheme.space7,
-                AppTheme.pagePadding,
-                AppTheme.tabScrollBottomPadding(context),
-              ),
-              children: <Widget>[
-                ScreenTitle(loc.tabSettings),
-                const SizedBox(height: AppTheme.space6),
-                SectionHeader(title: loc.labelConversion),
-                BaseCurrencyTile(controller: controller),
-                DecimalPlacesTile(controller: controller),
-                SwitchTile(
-                  title: loc.labelDarkMode,
-                  subtitle: preferences.isDarkMode ? loc.labelDarkModeOn : loc.labelDarkModeFollowsSystem,
-                  value: preferences.isDarkMode,
-                  onChanged: controller.toggleDarkMode,
+          child: ListenableBuilder(
+            listenable: Listenable.merge([monetization, preferences]),
+            builder: (context, _) => Scaffold(
+              backgroundColor: Colors.transparent,
+              body: ListView(
+                padding: EdgeInsets.fromLTRB(
+                  AppTheme.pagePadding,
+                  AppTheme.space6,
+                  AppTheme.pagePadding,
+                  AppTheme.tabScrollBottomPadding(context),
                 ),
-                const SizedBox(height: AppTheme.sectionGap),
-                SettingsDataSection(controller: controller),
-                const SizedBox(height: AppTheme.sectionGap),
-                SectionHeader(title: loc.labelPremium),
-                PremiumSection(controller: controller),
-                const SizedBox(height: AppTheme.sectionGap),
-                if (preferences.devMode) ...[
-                  const SectionHeader(title: 'Dev Sandbox'),
-                  DevSandboxSection(monetization: monetization),
+                children: <Widget>[
+                  ScreenTitle(loc.tabSettings),
+                  const SizedBox(height: AppTheme.space5),
+                  SectionHeader(title: loc.labelConversion),
+                  BaseCurrencyTile(controller: controller),
+                  DecimalPlacesTile(controller: controller),
+                  SwitchTile(
+                    title: loc.labelDarkMode,
+                    subtitle: preferences.isDarkMode
+                        ? loc.labelDarkModeOn
+                        : loc.labelDarkModeFollowsSystem,
+                    value: preferences.isDarkMode,
+                    onChanged: controller.toggleDarkMode,
+                  ),
                   const SizedBox(height: AppTheme.sectionGap),
+                  SettingsDataSection(controller: controller),
+                  const SizedBox(height: AppTheme.sectionGap),
+                  SectionHeader(title: loc.labelPremium),
+                  PremiumSection(controller: controller),
+                  const SizedBox(height: AppTheme.sectionGap),
+                  if (preferences.devMode) ...[
+                    const SectionHeader(title: 'Dev Sandbox'),
+                    DevSandboxSection(monetization: monetization),
+                    const SizedBox(height: AppTheme.sectionGap),
+                  ],
+                  SettingsAboutSection(controller: controller),
                 ],
-                SettingsAboutSection(controller: controller),
-              ],
+              ),
             ),
           ),
-        ),
         ),
       ),
     );

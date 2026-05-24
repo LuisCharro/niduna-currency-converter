@@ -17,7 +17,8 @@ class UpgradeShelf extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = l10n(context);
     final m = controller.monetization;
-    final hasPremium = m.hasActiveSubscription ||
+    final hasPremium =
+        m.hasActiveSubscription ||
         m.hasChartsProLifetime ||
         m.hasRemoveAdsLifetime;
 
@@ -25,26 +26,26 @@ class UpgradeShelf extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(2, AppTheme.space2, 2, AppTheme.space2),
+          padding: const EdgeInsets.fromLTRB(
+            2,
+            AppTheme.space2,
+            2,
+            AppTheme.space2,
+          ),
           child: Text(
             hasPremium ? loc.premiumActive : loc.premiumUnlocks,
-            style: AppTheme.heading.copyWith(
-              fontFamily: 'Fraunces',
-              fontSize: 20,
-            ),
+            style: AppTheme.settingsGroupTitleStyle(context),
           ),
         ),
         Text(
-          hasPremium
-              ? loc.paidUnlocksStay
-              : loc.oneTimePurchaseNote,
-          style: AppTheme.caption.copyWith(color: AppColors.of(context).muted, height: 1.35),
+          hasPremium ? loc.paidUnlocksStay : loc.oneTimePurchaseNote,
+          style: AppTheme.supportingTextStyle(context),
         ),
         const SizedBox(height: AppTheme.space3),
         if (!m.hasRemoveAdsLifetime)
           SettingsTile(
             title: loc.labelRemoveAds,
-            subtitle: '1.99 CHF · lifetime on this device',
+            subtitle: _removeAdsSubtitle(context),
             trailing: _BuyChip(label: loc.btnBuy),
             onTap: () =>
                 controller.purchaseProduct(context, ProductType.removeAds),
@@ -58,7 +59,7 @@ class UpgradeShelf extends StatelessWidget {
         if (!m.hasChartsProLifetime)
           SettingsTile(
             title: loc.chartsProTitle,
-            subtitle: '2.99 CHF · unlock all pairs forever',
+            subtitle: _chartsProSubtitle(context),
             trailing: _BuyChip(label: loc.btnBuy),
             onTap: () =>
                 controller.purchaseProduct(context, ProductType.chartsPro),
@@ -72,6 +73,26 @@ class UpgradeShelf extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  String _removeAdsSubtitle(BuildContext context) {
+    return switch (Localizations.localeOf(context).languageCode) {
+      'de' => '1.99 CHF · dauerhaft auf diesem Gerät',
+      'es' => '1.99 CHF · para siempre en este dispositivo',
+      'fr' => '1.99 CHF · à vie sur cet appareil',
+      'it' => '1.99 CHF · per sempre su questo dispositivo',
+      _ => '1.99 CHF · lifetime on this device',
+    };
+  }
+
+  String _chartsProSubtitle(BuildContext context) {
+    return switch (Localizations.localeOf(context).languageCode) {
+      'de' => '2.99 CHF · alle Paare dauerhaft freischalten',
+      'es' => '2.99 CHF · desbloquea todos los pares para siempre',
+      'fr' => '2.99 CHF · débloque toutes les paires à vie',
+      'it' => '2.99 CHF · sblocca tutte le coppie per sempre',
+      _ => '2.99 CHF · unlock all pairs forever',
+    };
   }
 }
 

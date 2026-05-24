@@ -20,6 +20,14 @@ void main() {
     expect(AppTheme.pairTitleFraunces.fontFamily, 'Fraunces');
   });
 
+  test('settings typography is subordinate to chart hero type', () {
+    expect(AppTheme.screenTitleFraunces.fontSize, 24);
+    expect(AppTheme.settingsGroupTitle.fontFamily, isNot('Fraunces'));
+    expect(AppTheme.settingsGroupTitle.fontSize, lessThan(20));
+    expect(AppTheme.settingsTileTitle.fontSize, 15);
+    expect(AppTheme.supportingText.fontSize, 13);
+  });
+
   testWidgets('heroAmountFor uses compact style at text scale 1.3', (
     WidgetTester tester,
   ) async {

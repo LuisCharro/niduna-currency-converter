@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/preferences/app_preferences.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations_safe.dart';
 import '../settings_controller.dart';
 import '../../../shared/widgets/settings_tile.dart';
@@ -29,18 +30,20 @@ class DecimalPlacesTile extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: selected ? AppColors.of(context).primary : AppColors.of(context).container,
+                  color: selected
+                      ? AppColors.of(context).primary
+                      : AppColors.of(context).container,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: selected ? AppColors.of(context).primary : AppColors.of(context).border,
+                    color: selected
+                        ? AppColors.of(context).primary
+                        : AppColors.of(context).border,
                   ),
                 ),
                 alignment: Alignment.center,
                 child: Text(
                   '$v',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                  style: AppTheme.settingsTileTitleStyle(context).copyWith(
                     color: selected ? Colors.white : AppColors.of(context).text,
                   ),
                 ),

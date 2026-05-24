@@ -4,6 +4,7 @@ import '../../../core/currency/supported_currencies.dart';
 import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/screen_title.dart';
 import 'chart_value_formatter.dart';
 
 /// Compact chart masthead (D2-CHT-1).
@@ -29,7 +30,9 @@ class ChartHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final baseCurrency = currencyByCode(base);
     final isPositive = (changePercent ?? 0) >= 0;
-    final trendColor = isPositive ? AppColors.of(context).trendUp : AppColors.of(context).trendDown;
+    final trendColor = isPositive
+        ? AppColors.of(context).trendUp
+        : AppColors.of(context).trendDown;
     final arrow = isPositive ? '↑' : '↓';
     final freshnessText = _freshnessLabel(context, lastUpdated);
 
@@ -45,13 +48,7 @@ class ChartHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  chartsHeaderLabel(context),
-                  style: AppTheme.sectionLabelStyle(context).copyWith(
-                    color: AppColors.of(context).trendUp,
-                    letterSpacing: 1.1,
-                  ),
-                ),
+                ScreenTitle(chartsHeaderLabel(context)),
                 const SizedBox(height: AppTheme.space1),
                 Text('$base / $quote', style: AppTheme.pairTitleStyle(context)),
                 const SizedBox(height: AppTheme.space2),
@@ -77,7 +74,9 @@ class ChartHeader extends StatelessWidget {
                         ),
                         child: Text(
                           '$arrow ${changePercent!.abs().toStringAsFixed(2)}%',
-                          style: AppTheme.metricDelta.copyWith(color: trendColor),
+                          style: AppTheme.metricDelta.copyWith(
+                            color: trendColor,
+                          ),
                         ),
                       ),
                     ],
@@ -88,7 +87,7 @@ class ChartHeader extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
                       freshnessText,
-                      style: AppTheme.caption.copyWith(color: AppColors.of(context).muted),
+                      style: AppTheme.supportingTextStyle(context),
                     ),
                   ),
               ],
@@ -102,7 +101,9 @@ class ChartHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColors.of(context).card.withValues(alpha: .88),
-                border: Border.all(color: AppColors.of(context).border.withValues(alpha: .2)),
+                border: Border.all(
+                  color: AppColors.of(context).border.withValues(alpha: .2),
+                ),
               ),
               child: Icon(
                 Icons.swap_vert_rounded,

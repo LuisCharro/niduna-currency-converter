@@ -1,22 +1,56 @@
 # UI Typography Consistency Plan
 
+> Status: implemented on 2026-05-24.
+> Scope: shared typography roles, Settings hierarchy tuning, Convert/Charts
+> kicker alignment, supporting text normalization, and localized premium
+> subtitles found during Spanish Android verification.
+
 ## Goal
 
-Align the visible typography hierarchy across `Convert`, `Charts`, and `Settings`
-so the app feels like one coherent product on both iOS and Android, including
-Spanish-localized Android builds.
+Keep the visible typography hierarchy across `Convert`, `Charts`, and
+`Settings` feeling like one coherent Niduna product on iOS and Android,
+including localized Spanish Android builds.
 
-## Trigger
+The app has changed since this plan was first written. `Convert` and `Charts`
+now use a more intentional hero/micro-label pattern, while `Settings` still
+uses the heavier conventional screen-title pattern. The plan below replaces the
+older "all screens need a new shared title" assumption with a narrower current
+review.
 
-Manual emulator review found the same pattern on both platforms:
+## Review Method
 
-- `Convert` top-left header reads like metadata instead of a real screen title
-- `Charts` top-left header is too small relative to the chart card content
-- `Settings` feels larger and more conventionally structured than the other tabs
-- secondary utility text is often near the lower limit of comfortable readability
-- Spanish strings make the small-text problem more obvious on Android
+- Read `AGENTS.md`, `DESIGN.md`, `DEFINITIONS.md`, `ROADMAP.md`, `PLAN.md`,
+  and `agent/README.md`.
+- Followed repo guidance to use local scripts and simulator tooling.
+- Avoided `.devtools/capture_tabs.sh` and `.devtools/sim_tap.sh` for this
+  review because they use `cliclick`, which moves the real laptop pointer.
+- Captured iOS screenshots through the Flutter integration-test screenshot
+  driver:
+  - command shape:
+    `IOS_SIMULATOR_ID=AD6518C3-252E-4951-AE25-AF6732817FB1 SCREEN_OUTPUT_DIR=.tmp/screens/typography-review-ios CAPTURE_TARGET_PATH=integration_test/typography_review_capture_test.dart ./.devtools/capture_ios_screens.sh`
+  - simulator: `iPhone 17 Pro`
+  - result: all integration screenshot tests passed
 
-Reference screenshots captured during review:
+Current review screenshots:
+
+- Convert: `.tmp/screens/typography-review-ios/01-convert.png`
+- Charts: `.tmp/screens/typography-review-ios/02-charts.png`
+- Settings: `.tmp/screens/typography-review-ios/03-settings.png`
+
+Implementation verification screenshots:
+
+- iOS Convert: `.tmp/screens/typography-implementation-ios/01-convert.png`
+- iOS Charts: `.tmp/screens/typography-implementation-ios/02-charts.png`
+- iOS Settings: `.tmp/screens/typography-implementation-ios/03-settings.png`
+- Android ES Convert:
+  `.tmp/screens/typography-implementation-android-es/01-convert.png`
+- Android ES Charts:
+  `.tmp/screens/typography-implementation-android-es/02-charts.png`
+- Android ES Settings:
+  `.tmp/screens/typography-implementation-android-es/03-settings.png`
+
+Older reference screenshots from the first review are now historical context
+only:
 
 - iOS: `.tmp/screens/ios/01-convert-221232.png`
 - iOS: `.tmp/screens/ios/02-charts-221234.png`
@@ -25,88 +59,163 @@ Reference screenshots captured during review:
 - Android: `.tmp/screens/android/charts-review.png`
 - Android: `.tmp/screens/android/settings-review.png`
 
-## Desired Outcome
+## Current Findings
 
-- all three tabs use the same title pattern and visual rhythm
-- freshness and update text remains visible but is clearly secondary
-- small supporting text is readable without zooming or effort
-- chart labels remain legible on smaller phones
-- localized strings fit without making the layout feel cramped
+### Convert
 
-## Implementation Plan
+- The original issue, "Convert top-left header reads like metadata instead of a
+  real screen title", is partly obsolete.
+- Current `Convert` uses a compact green kicker label, an action pill, and a
+  dominant amount instrument panel. It reads as a product surface, not as a
+  normal list page.
+- The hierarchy is strong: amount first, base currency second, freshness third,
+  rates list fourth.
+- The tiny kicker is acceptable if this remains the intended instrument-style
+  design, but it should be treated as a deliberate pattern shared with `Charts`,
+  not as a standalone one-off.
+- Non-typography note: the current screenshot shows placeholder-looking green
+  currency circles in the Convert list while Charts shows flag artwork. Verify
+  separately before treating this as a real asset bug, because it may be a
+  screenshot-driver or test-data artifact.
 
-### 1. Normalize page headers
+### Charts
 
-- introduce one shared tab-header pattern for `Convert`, `Charts`, and `Settings`
-- give each screen a real title instead of relying on metadata-style copy
-- move freshness/update text into a subtitle or status row below the title
-- keep the top-right actions aligned with the shared header structure
+- The original issue, "Charts top-left header is too small relative to the chart
+  card content", is also mostly obsolete.
+- Current `Charts` has a clear hierarchy: green kicker, large Fraunces pair
+  title, metric row, freshness copy, range rail, chart, pair selector, metrics.
+- The header now feels closer to the Niduna editorial direction than the older
+  screenshots.
+- The chart range labels and metric rail are readable on the captured iPhone
+  17 Pro screen. Smaller phones still need verification.
 
-### 2. Define a tighter type scale
+### Settings
 
-- set one primary title size and weight for all tab screens
-- set one secondary metadata size for freshness and status copy
-- set one section-label style for rows like `Amount`, `3 shown currencies`, and
-  settings section headings
-- set one small-body style for exchange-rate helper text and chart support text
+- `Settings` is now the main remaining typography drift.
+- It uses `ScreenTitle` (`AppTheme.screenTitleStyle`) with a large Fraunces title
+  and conventional list rows. This is readable, but it feels heavier and more
+  separate from the Convert/Charts instrument language.
+- The `Premium unlocks` subsection also uses a large Fraunces title, creating a
+  second strong display moment inside a settings list.
+- Row typography is clear, but some rows use local `TextStyle` values instead of
+  shared typography tokens, so future consistency changes may be uneven.
 
-Suggested starting point for review, not a hard contract:
+### Shared Footer
 
-- page title: `20-24`
-- subtitle / metadata: `13-14`
-- section label: `12-14` with stronger contrast than today
-- helper text / exchange-rate detail: increase by one visual step from current
+- `Convert` and `Charts` now both use `BottomTabFrame` plus `AdSupportShelf`.
+- The current captures show the banner, Remove Ads button, and floating nav
+  using the same vertical system in both tabs.
+- If overlap or spacing regressions return, fix them in the shared footer frame
+  or shelf instead of making per-tab spacing guesses.
 
-### 3. Reduce cross-screen visual drift
+## Updated Desired Outcome
 
-- make `Settings` follow the same title and spacing rules as the other tabs
-- preserve section grouping in `Settings`, but keep typography tokens shared
-- ensure buttons and chips do not visually overpower informational labels
+- `Convert` and `Charts` keep their high-density instrument feel.
+- `Convert` and `Charts` share the same small green kicker style and top rhythm.
+- `Settings` keeps list clarity but no longer feels like a separate typography
+  system.
+- Section labels, helper text, row subtitles, and CTA labels use shared tokens
+  instead of scattered local font sizes.
+- Localized strings fit without cramped wraps, especially Spanish Android.
 
-### 4. Check small-screen and localization fit
+## Updated Implementation Plan
 
-- verify the updated hierarchy on a small iPhone simulator
-- verify the updated hierarchy on the Android emulator in Spanish
-- confirm longer labels still fit in headers, rows, and chart summaries
-- watch for truncation, crowded wraps, or tighter-than-intended spacing
+### 1. Formalize the two allowed top patterns
 
-### 5. Re-capture and compare
+Do not force every tab into the same literal title layout. The app currently
+has two legitimate screen types:
 
-- rebuild the running iOS simulator app after the changes
-- rebuild the running Android emulator app after the changes
-- capture fresh screenshots for `Convert`, `Charts`, and `Settings`
-- compare old vs new images for hierarchy, readability, and consistency
+- instrument tabs: `Convert` and `Charts`
+- list/settings tabs: `Settings`
 
-## Verification
+Create or document shared tokens/widgets for:
 
-Before calling the work complete:
+- green kicker label used by `Convert` and `Charts`
+- editorial hero title used by `Charts`
+- settings/list title used by `Settings`
+- metadata/freshness text below hero content
+
+Likely code touchpoints:
+
+- `lib/src/features/convert/widgets/amount_header_row.dart`
+- `lib/src/features/charts/widgets/chart_header.dart`
+- `lib/src/shared/widgets/screen_title.dart`
+- `lib/src/core/theme/app_theme.dart`
+
+### 2. Tune Settings to match the current app
+
+- Reduce the visual jump between the `Settings` title and the Convert/Charts
+  kicker/hero rhythm.
+- Consider making `ScreenTitle` slightly less dominant or reducing the top
+  spacing on `Settings`.
+- Audit large inner Fraunces headings like `Premium unlocks`; they should not
+  compete with the page title.
+- Keep row labels readable, but route local row typography through shared tokens
+  where practical.
+
+Likely code touchpoints:
+
+- `lib/src/features/settings/settings_screen.dart`
+- `lib/src/features/settings/widgets/premium_section.dart`
+- `lib/src/shared/widgets/settings_tile.dart`
+- `lib/src/core/theme/app_theme.dart`
+
+### 3. Normalize supporting text
+
+- Keep metadata/freshness text clearly secondary, but not tiny.
+- Use one readable helper style for exchange-rate detail, settings subtitles,
+  and chart support text where the visual role is the same.
+- Keep tab labels and CTA text stable when text scaling is enabled.
+
+### 4. Preserve the shared footer system
+
+- Keep `BottomTabFrame` and `AdSupportShelf` as the shared bottom ad/CTA/nav
+  layout contract for `Convert` and `Charts`.
+- Do not tune Convert and Charts footer spacing independently unless the shared
+  component cannot express the needed layout.
+
+### 5. Re-verify platform and localization fit
+
+- Re-capture iOS screenshots for all visible tabs.
+- Re-capture Android screenshots in Spanish for all visible tabs.
+- Check a smaller iPhone simulator, not only iPhone 17 Pro.
+- Compare the current review screenshots against the post-change screenshots.
+
+## Verification Checklist
+
+Before calling implementation complete:
 
 1. run `./scripts/check.sh`
-2. hot restart or reinstall the app on both emulators
-3. capture fresh screenshots for all visible tabs
-4. compare iOS and Android outputs side by side
-5. confirm the top-left header no longer looks undersized on `Convert` and `Charts`
-6. confirm `Settings` no longer feels like a separate typography system
+2. rebuild or reinstall the app on the target simulator/emulator
+3. capture fresh screenshots for `Convert`, `Charts`, and `Settings`
+4. verify `Convert` and `Charts` still share the same kicker/top rhythm
+5. verify `Settings` no longer feels visually heavier than the other tabs
+6. verify Spanish Android strings fit in headers, rows, and chart summaries
+7. verify ad shelf and Remove Ads spacing remains shared between `Convert` and
+   `Charts`
 
 ## Out Of Scope
 
 - new navigation structure
 - new monetization flows
 - chart feature changes
-- content rewrites outside of clarity adjustments needed by the new header pattern
+- changing tab count or restoring Favorites navigation
+- fixing flag/icon assets unless the placeholder-looking Convert capture is
+  reproduced outside the typography review
 
 ## Risks
 
-- larger text can crowd the top area and reduce content density
-- chart labels may require separate tuning from general app text
-- localized strings may wrap differently across iOS and Android
+- reducing Settings title weight too much may make Settings feel less polished
+- larger helper text can crowd rows and chart metrics
+- localized strings may need per-widget layout tuning after token changes
 - shared typography changes can expose spacing problems in unrelated widgets
 
 ## Recommended Execution Order
 
-1. update shared typography tokens or shared header widget
-2. apply the new header pattern to `Convert`
-3. apply the same pattern to `Charts`
-4. align `Settings` to the same title scale and spacing rules
-5. tune the smallest helper text only after the main hierarchy is stable
-6. verify on both emulators and re-capture screenshots
+1. keep the current iOS screenshots as the "before" set
+2. define the shared top-pattern and text-role tokens
+3. tune `Settings` first, because it is the clearest remaining drift
+4. extract/align the Convert and Charts kicker styles only if duplication blocks
+   consistent tuning
+5. normalize helper/subtitle text where screenshots show readability problems
+6. run checks and re-capture iOS plus Android Spanish screenshots

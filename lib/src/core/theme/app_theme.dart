@@ -47,21 +47,54 @@ class AppTheme {
     final colors = AppColors.of(context);
     return const TextStyle(
       fontFamily: 'Fraunces',
-      fontSize: 28,
+      fontSize: 24,
       fontWeight: FontWeight.w800,
-      height: 1.05,
-      letterSpacing: -0.5,
+      height: 1.08,
+      letterSpacing: -0.25,
     ).copyWith(color: colors.text);
   }
 
   static const TextStyle screenTitleFraunces = TextStyle(
     fontFamily: 'Fraunces',
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: FontWeight.w800,
-    height: 1.05,
-    letterSpacing: -0.5,
+    height: 1.08,
+    letterSpacing: -0.25,
     color: text,
   );
+
+  static const TextStyle settingsGroupTitle = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w800,
+    height: 1.2,
+    color: text,
+  );
+
+  static TextStyle settingsGroupTitleStyle(BuildContext context) {
+    return settingsGroupTitle.copyWith(color: AppColors.of(context).text);
+  }
+
+  static const TextStyle settingsTileTitle = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
+    height: 1.25,
+    color: text,
+  );
+
+  static TextStyle settingsTileTitleStyle(BuildContext context) {
+    return settingsTileTitle.copyWith(color: AppColors.of(context).text);
+  }
+
+  static const TextStyle supportingText = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w600,
+    height: 1.32,
+    color: muted,
+  );
+
+  static TextStyle supportingTextStyle(BuildContext context) {
+    return supportingText.copyWith(color: AppColors.of(context).muted);
+  }
 
   static const double radius = 12;
   static const double cardRadius = 16;

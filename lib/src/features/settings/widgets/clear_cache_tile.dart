@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations_safe.dart';
 import '../settings_controller.dart';
 import '../../../shared/widgets/settings_tile.dart';
@@ -28,9 +29,8 @@ class ClearCacheTile extends StatelessWidget {
           ),
           child: Text(
             loc.btnClear,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
+            style: AppTheme.supportingTextStyle(context).copyWith(
+              fontWeight: FontWeight.w800,
               color: AppColors.of(context).text,
             ),
           ),

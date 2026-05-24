@@ -23,7 +23,7 @@ class PremiumSection extends StatelessWidget {
           subtitle: loc.labelSubscriptionSubtitle,
           trailing: Text(
             loc.labelSoon,
-            style: AppTheme.caption.copyWith(
+            style: AppTheme.supportingTextStyle(context).copyWith(
               color: AppColors.of(context).muted,
               fontWeight: FontWeight.w800,
             ),
