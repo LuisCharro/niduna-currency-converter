@@ -4,6 +4,8 @@ set -euo pipefail
 
 source "$(dirname "$0")/common.sh"
 
+require_android_release_admob_config
+
 flutter_args=()
 while IFS= read -r arg; do
   flutter_args+=("${arg}")

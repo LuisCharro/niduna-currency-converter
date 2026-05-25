@@ -97,6 +97,39 @@ flutter_app_define_args() {
   fi
 }
 
+require_android_release_admob_config() {
+  local use_test_ads="${ADMOB_USE_TEST_ADS:-true}"
+
+  case "${use_test_ads}" in
+    false|FALSE|False|0|no|NO|No)
+      ;;
+    *)
+      return
+      ;;
+  esac
+
+  local missing=()
+
+  if [[ -z "${ADMOB_ANDROID_APP_ID:-}" ]]; then
+    missing+=("ADMOB_ANDROID_APP_ID")
+  fi
+
+  if [[ -z "${ADMOB_ANDROID_BANNER_AD_UNIT_ID:-}" ]]; then
+    missing+=("ADMOB_ANDROID_BANNER_AD_UNIT_ID")
+  fi
+
+  if [[ -z "${ADMOB_ANDROID_REWARDED_AD_UNIT_ID:-}" ]]; then
+    missing+=("ADMOB_ANDROID_REWARDED_AD_UNIT_ID")
+  fi
+
+  if (( ${#missing[@]} > 0 )); then
+    echo "Release AdMob config is incomplete while ADMOB_USE_TEST_ADS=false." >&2
+    echo "Missing required env vars: ${missing[*]}" >&2
+    echo "Either set these vars or keep ADMOB_USE_TEST_ADS=true." >&2
+    exit 1
+  fi
+}
+
 resolve_firebase_bin() {
   if [[ -n "${FIREBASE_BIN:-}" ]]; then
     if [[ ! -x "${FIREBASE_BIN}" ]]; then
