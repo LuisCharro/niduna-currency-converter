@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+
+import '../../../../l10n/app_localizations_safe.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/screen_title.dart';
+import '../../convert/domain/latest_rates_snapshot.dart';
+import '../domain/favorite_pair.dart';
+import 'favorites_empty_state.dart';
+import 'favorites_list.dart';
+
+class FavoritesTabBody extends StatelessWidget {
+  const FavoritesTabBody({
+    required this.pairs,
+    required this.isFull,
+    required this.snapshot,
+    required this.onOpen,
+    required this.onRemove,
+    required this.onAdd,
+    super.key,
+  });
+
+  final List<FavoritePair> pairs;
+  final bool isFull;
+  final LatestRatesSnapshot? snapshot;
+  final ValueChanged<FavoritePair> onOpen;
+  final ValueChanged<FavoritePair> onRemove;
+  final VoidCallback onAdd;
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = l10n(context);
+    return ListView(
+      padding: AppTheme.pageInsets.copyWith(
+        top: AppTheme.space6,
+        bottom: AppTheme.space4,
+      ),
+      children: <Widget>[
+        ScreenTitle(loc.tabFavorites),
+        const SizedBox(height: AppTheme.space2),
+        Text(
+          loc.favoritesLocalSubtitle,
+          style: AppTheme.supportingTextStyle(context),
+        ),
+        const SizedBox(height: AppTheme.space6),
+        if (pairs.isEmpty)
+          FavoritesEmptyState(onAdd: onAdd)
+        else
+          FavoritesList(
+            pairs: pairs,
+            isFull: isFull,
+            snapshot: snapshot,
+            onOpen: onOpen,
+            onRemove: onRemove,
+            onAdd: onAdd,
+          ),
+      ],
+    );
+  }
+}

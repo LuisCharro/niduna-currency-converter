@@ -72,6 +72,39 @@ class AppLocalizationsFr extends AppLocalizations {
   String get labelAddFavorite => 'Ajouter un favori';
 
   @override
+  String get favoritesLocalSubtitle =>
+      'Paires locales enregistrées sur cet appareil';
+
+  @override
+  String get favoritesEmptyBody =>
+      'Balayez une ligne de devise vers la gauche dans Convertir, puis touchez Épingler.';
+
+  @override
+  String get favoritesOpenConvert => 'Ouvrir Convertir';
+
+  @override
+  String get favoritesLimitMessage =>
+      'Vous pouvez épingler jusqu\'à 3 paires dans cette version.';
+
+  @override
+  String get favoritesCachedRate => 'Taux quotidien enregistré';
+
+  @override
+  String get favoritesRateUnavailable => '--';
+
+  @override
+  String get removeFavoriteTooltip => 'Retirer le favori';
+
+  @override
+  String get openFavoriteTooltip => 'Ouvrir la paire dans Convertir';
+
+  @override
+  String get favoriteActionPin => 'Épingler';
+
+  @override
+  String get favoriteActionSaved => 'Épinglé';
+
+  @override
   String get labelRemoveAds => 'Supprimer les publicités';
 
   @override

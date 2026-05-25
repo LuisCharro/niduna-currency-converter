@@ -83,14 +83,14 @@ void main() {
     expect(find.text('Convert'), findsWidgets);
     expect(find.text('Chart'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
-    expect(find.text('Favorites'), findsNothing);
+    expect(find.text('Favorites'), findsOneWidget);
     expect(find.textContaining('Fresh'), findsOneWidget);
     expect(find.byKey(const Key('open_currency_picker')), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
     expect(find.byKey(const Key('shell_tab_transition')), findsOneWidget);
     expect(find.byKey(const Key('nav_active_pill')), findsOneWidget);
-    expect(find.byType(PressScale), findsNWidgets(3));
+    expect(find.byType(PressScale), findsNWidgets(4));
     expect(find.byType(FadeSlideSwitcher), findsOneWidget);
   });
 

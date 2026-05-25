@@ -35,7 +35,7 @@ class ConvertScreen extends StatelessWidget {
                 onAmountChanged: controller.setAmountText,
                 onSelectBase: controller.setBase,
                 onToggleCode: controller.toggleCode,
-                onToggleFavorite: controller.toggleFavorite,
+                onToggleFavorite: controller.tryToggleFavorite,
                 onMore: onNavigateToSettings,
                 maxFavoritesReached: controller.maxFavoritesReached,
               ),

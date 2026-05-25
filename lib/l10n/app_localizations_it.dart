@@ -72,6 +72,39 @@ class AppLocalizationsIt extends AppLocalizations {
   String get labelAddFavorite => 'Aggiungi preferito';
 
   @override
+  String get favoritesLocalSubtitle =>
+      'Coppie locali salvate su questo dispositivo';
+
+  @override
+  String get favoritesEmptyBody =>
+      'Scorri a sinistra su una riga valuta in Converti, poi tocca Fissa.';
+
+  @override
+  String get favoritesOpenConvert => 'Apri Converti';
+
+  @override
+  String get favoritesLimitMessage =>
+      'Puoi fissare fino a 3 coppie in questa versione.';
+
+  @override
+  String get favoritesCachedRate => 'Tasso giornaliero salvato';
+
+  @override
+  String get favoritesRateUnavailable => '--';
+
+  @override
+  String get removeFavoriteTooltip => 'Rimuovi preferito';
+
+  @override
+  String get openFavoriteTooltip => 'Apri coppia in Converti';
+
+  @override
+  String get favoriteActionPin => 'Fissa';
+
+  @override
+  String get favoriteActionSaved => 'Fissata';
+
+  @override
   String get labelRemoveAds => 'Rimuovi annunci';
 
   @override

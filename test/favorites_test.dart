@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:currency_converter/src/features/favorites/data/favorites_store.dart';
 import 'package:currency_converter/src/features/favorites/domain/favorite_pair.dart';
+import 'package:currency_converter/src/features/favorites/domain/favorite_pair_rate.dart';
+import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
 
 void main() {
   group('FavoritePair', () {
@@ -152,4 +154,78 @@ void main() {
       store = FavoritesStore(prefs);
     });
   });
+
+  group('rateForFavoritePair', () {
+    test('returns direct rate from snapshot base', () {
+      final rate = rateForFavoritePair(
+        pair: const FavoritePair(base: 'USD', quote: 'EUR'),
+        snapshot: _snapshot(
+          base: 'USD',
+          rates: const <String, double>{'EUR': .92},
+        ),
+      );
+
+      expect(rate, .92);
+    });
+
+    test('returns inverse rate from snapshot quote', () {
+      final rate = rateForFavoritePair(
+        pair: const FavoritePair(base: 'EUR', quote: 'USD'),
+        snapshot: _snapshot(
+          base: 'USD',
+          rates: const <String, double>{'EUR': .8},
+        ),
+      );
+
+      expect(rate, 1.25);
+    });
+
+    test('returns cross rate from third snapshot base', () {
+      final rate = rateForFavoritePair(
+        pair: const FavoritePair(base: 'EUR', quote: 'GBP'),
+        snapshot: _snapshot(
+          base: 'USD',
+          rates: const <String, double>{'EUR': .8, 'GBP': .7},
+        ),
+      );
+
+      expect(rate, closeTo(.875, 0.000000001));
+    });
+
+    test('returns null when a rate is missing', () {
+      final rate = rateForFavoritePair(
+        pair: const FavoritePair(base: 'EUR', quote: 'GBP'),
+        snapshot: _snapshot(
+          base: 'USD',
+          rates: const <String, double>{'EUR': .8},
+        ),
+      );
+
+      expect(rate, isNull);
+    });
+
+    test('returns null for zero denominator', () {
+      final rate = rateForFavoritePair(
+        pair: const FavoritePair(base: 'EUR', quote: 'GBP'),
+        snapshot: _snapshot(
+          base: 'USD',
+          rates: const <String, double>{'EUR': 0, 'GBP': .7},
+        ),
+      );
+
+      expect(rate, isNull);
+    });
+  });
+}
+
+LatestRatesSnapshot _snapshot({
+  required String base,
+  required Map<String, double> rates,
+}) {
+  return LatestRatesSnapshot(
+    base: base,
+    date: DateTime(2026, 5, 8),
+    savedAt: DateTime(2026, 5, 8, 9),
+    rates: rates,
+  );
 }

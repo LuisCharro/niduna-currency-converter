@@ -21,6 +21,7 @@ import 'features/convert/data/multi_provider_latest_rates_repository.dart';
 import 'features/convert/convert_screen.dart';
 import 'features/convert/presentation/convert_controller.dart';
 import 'features/favorites/data/favorites_store.dart';
+import 'features/favorites/favorites_screen.dart';
 import 'features/charts/charts_screen.dart';
 import 'features/charts/presentation/charts_controller.dart';
 import 'features/settings/settings_screen.dart';
@@ -173,7 +174,12 @@ class _AppState extends State<AppShell> {
       ConvertScreen(
         controller: _controller!,
         monetization: _monetization!,
-        onNavigateToSettings: () => setState(() => _currentIndex = 2),
+        onNavigateToSettings: () => setState(() => _currentIndex = 3),
+      ),
+      FavoritesScreen(
+        favoritesStore: _favoritesStore,
+        controller: _controller!,
+        onNavigateToConvert: (_, _) => setState(() => _currentIndex = 0),
       ),
       ChartsScreen(
         controller: _chartsController!,

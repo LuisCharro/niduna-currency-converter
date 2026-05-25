@@ -15,6 +15,8 @@ class CurrencyRowSwipeActions extends StatefulWidget {
     required this.onOpenChanged,
     required this.onRemove,
     required this.onSwap,
+    required this.onToggleFavorite,
+    required this.isFavorite,
     required this.onPressed,
     super.key,
   });
@@ -25,16 +27,19 @@ class CurrencyRowSwipeActions extends StatefulWidget {
   final ValueChanged<bool> onOpenChanged;
   final VoidCallback onRemove;
   final VoidCallback onSwap;
+  final VoidCallback onToggleFavorite;
+  final bool isFavorite;
   final ValueChanged<Offset> onPressed;
 
   @override
-  State<CurrencyRowSwipeActions> createState() => _CurrencyRowSwipeActionsState();
+  State<CurrencyRowSwipeActions> createState() =>
+      _CurrencyRowSwipeActionsState();
 }
 
 class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
     with TickerProviderStateMixin {
   static const double _actionWidth = 60;
-  static const double _maxReveal = 184;
+  static const double _maxReveal = 244;
   static const Duration _duration = Duration(milliseconds: 220);
   static const Duration _pressDuration = Duration(milliseconds: 160);
   static const Duration _chargeDuration = Duration(milliseconds: 800);
@@ -53,11 +58,10 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
   void initState() {
     super.initState();
     _reveal = widget.isOpen ? _maxReveal : 0;
-    _chargeController = AnimationController(
-      vsync: this,
-      duration: _chargeDuration,
-    )..addStatusListener(_onChargeStatusChanged)
-     ..addListener(_onChargeProgress);
+    _chargeController =
+        AnimationController(vsync: this, duration: _chargeDuration)
+          ..addStatusListener(_onChargeStatusChanged)
+          ..addListener(_onChargeProgress);
   }
 
   @override
@@ -116,18 +120,35 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
               icon: Icons.remove_circle_rounded,
               backgroundColor: const Color(0xFFF7E3DC),
               iconBadgeColor: const Color(0xFFEBC0B3),
-               color: colors.coralInk,
+              color: colors.coralInk,
               label: 'Remove currency',
               shortLabel: l10n?.btnRemove ?? 'Hide',
               progress: _motionProgress(hideProgress),
               onTap: _handleRemove,
             ),
             _ActionButton(
+              actionKey: Key('favorite_${widget.code}'),
+              icon: widget.isFavorite
+                  ? Icons.star_rounded
+                  : Icons.star_outline_rounded,
+              backgroundColor: colors.containerHigh,
+              iconBadgeColor: colors.greenBadge,
+              color: colors.primary,
+              label: widget.isFavorite
+                  ? l10n?.removeFavoriteTooltip ?? 'Remove favorite'
+                  : l10n?.labelAddFavorite ?? 'Add favorite',
+              shortLabel: widget.isFavorite
+                  ? l10n?.favoriteActionSaved ?? 'Saved'
+                  : l10n?.favoriteActionPin ?? 'Pin',
+              progress: _motionProgress(baseProgress),
+              onTap: _handleFavorite,
+            ),
+            _ActionButton(
               actionKey: Key('swap_${widget.code}'),
               icon: Icons.currency_exchange_rounded,
               backgroundColor: const Color(0xFF2E6940),
               iconBadgeColor: const Color(0xFF447E55),
-               color: colors.card,
+              color: colors.card,
               label: 'Set as base currency',
               shortLabel: 'Base',
               progress: _motionProgress(baseProgress),
@@ -185,10 +206,9 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
                 });
               },
               onHorizontalDragEnd: (details) {
-                final shouldOpen =
-                    details.primaryVelocity == null
-                        ? _reveal > 64
-                        : details.primaryVelocity! < -180 || _reveal > 64;
+                final shouldOpen = details.primaryVelocity == null
+                    ? _reveal > 64
+                    : details.primaryVelocity! < -180 || _reveal > 64;
                 _finishDrag(shouldOpen);
               },
               onHorizontalDragCancel: () => _finishDrag(widget.isOpen),
@@ -199,7 +219,11 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
                 child: AnimatedContainer(
                   duration: _pressDuration,
                   curve: Curves.easeOutCubic,
-                  transform: Matrix4.translationValues(0, _isPressed ? -2 : 0, 0),
+                  transform: Matrix4.translationValues(
+                    0,
+                    _isPressed ? -2 : 0,
+                    0,
+                  ),
                   transformAlignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: colors.bg,
@@ -207,7 +231,9 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
                     boxShadow: <BoxShadow>[
                       BoxShadow(
                         color: colors.primary.withValues(
-                          alpha: _isPressed ? 0.1 : 0.04 + (0.04 * revealProgress),
+                          alpha: _isPressed
+                              ? 0.1
+                              : 0.04 + (0.04 * revealProgress),
                         ),
                         blurRadius: _isPressed ? 16 : 8 + (4 * revealProgress),
                         offset: Offset(0, _isPressed ? 6 : 2),
@@ -269,7 +295,10 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
     _isHolding = false;
     _chargeController.stop();
     if (_chargeController.value > 0) {
-      _chargeController.animateTo(0, duration: const Duration(milliseconds: 120));
+      _chargeController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 120),
+      );
     }
   }
 
@@ -283,6 +312,12 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
     HapticFeedback.selectionClick();
     widget.onOpenChanged(false);
     widget.onSwap();
+  }
+
+  void _handleFavorite() {
+    HapticFeedback.selectionClick();
+    widget.onOpenChanged(false);
+    widget.onToggleFavorite();
   }
 
   double _motionProgress(double progress) {
@@ -303,10 +338,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions>
 }
 
 class _RadialFillPainter extends CustomPainter {
-  const _RadialFillPainter({
-    required this.progress,
-    required this.center,
-  });
+  const _RadialFillPainter({required this.progress, required this.center});
 
   final double progress;
   final Offset center;
@@ -314,22 +346,15 @@ class _RadialFillPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (progress <= 0) return;
-    final maxRadius = math.sqrt(
-      size.width * size.width + size.height * size.height,
-    ) * 0.6;
+    final maxRadius =
+        math.sqrt(size.width * size.width + size.height * size.height) * 0.6;
     final easedProgress = Curves.easeOut.transform(progress.clamp(0.0, 1.0));
     final radius = maxRadius * easedProgress;
     final opacity = Curves.easeIn.transform(progress.clamp(0.0, 1.0));
     canvas.drawCircle(
       center,
       radius,
-      Paint()
-        ..color = Color.fromRGBO(
-          45,
-          106,
-          70,
-          opacity * 0.15,
-        ),
+      Paint()..color = Color.fromRGBO(45, 106, 70, opacity * 0.15),
     );
   }
 

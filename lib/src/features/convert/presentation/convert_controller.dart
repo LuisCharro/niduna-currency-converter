@@ -4,6 +4,7 @@ import '../../../core/currency/supported_currencies.dart';
 import '../../../core/preferences/app_preferences.dart';
 import '../../../core/rates/rate_refresh_policy.dart';
 import '../../favorites/data/favorites_store.dart';
+import '../../favorites/domain/favorite_pair.dart';
 import '../data/latest_rates_repository.dart';
 import '../domain/convert_quote_builder.dart';
 import '../domain/convert_state.dart';
@@ -44,6 +45,8 @@ class ConvertController extends ChangeNotifier {
 
   ConvertState state = ConvertState.loading();
   LatestRatesSnapshot? get snapshot => _snapshot;
+  List<FavoritePair> get favoritePairs =>
+      _favoritesStore?.pairs ?? const <FavoritePair>[];
   bool get maxFavoritesReached => _favoritesStore?.isFull ?? false;
   bool _disposed = false;
 
@@ -87,6 +90,37 @@ class ConvertController extends ChangeNotifier {
 
   Future<void> toggleFavorite(String quote) async {
     await _favoritesStore?.toggle(_base, quote);
+  }
+
+  Future<bool> tryToggleFavorite(String quote) async {
+    final store = _favoritesStore;
+    if (store == null) return true;
+    if (!store.canAdd(_base, quote)) return false;
+    await store.toggle(_base, quote);
+    return true;
+  }
+
+  Future<void> removeFavoritePair(FavoritePair pair) async {
+    await _favoritesStore?.remove(pair.base, pair.quote);
+  }
+
+  Future<void> openFavoritePair(FavoritePair pair) async {
+    if (pair.base != _base) {
+      await setBase(pair.base);
+    }
+    if (!_selectedCodes.contains(pair.quote)) {
+      _selectedCodes = <String>[
+        pair.quote,
+        ..._selectedCodes.where(
+          (code) => code != pair.base && code != pair.quote,
+        ),
+      ];
+      _preferences?.setSelectedCodes(_selectedCodes);
+      state = _snapshot == null
+          ? state.copyWith(selectedCodes: _selectedCodes)
+          : _stateFromSnapshot(_snapshot!, state.status);
+      _safeNotify();
+    }
   }
 
   void _onFavoritesChanged() {

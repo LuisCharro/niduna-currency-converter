@@ -65,7 +65,7 @@ void main() {
               onAmountChanged: controller.setAmountText,
               onSelectBase: controller.setBase,
               onToggleCode: controller.toggleCode,
-              onToggleFavorite: controller.toggleFavorite,
+              onToggleFavorite: controller.tryToggleFavorite,
               onMore: () {},
             ),
           ),
@@ -246,8 +246,7 @@ class _EmptyRatesCache implements RatesCache {
   Future<HistoricalSnapshot?> readHistorical({
     required String base,
     required String quote,
-  }) async =>
-      null;
+  }) async => null;
 
   @override
   Future<RatesSnapshot?> readLatest(String base) async => null;

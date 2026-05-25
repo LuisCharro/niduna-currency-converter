@@ -72,6 +72,38 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelAddFavorite => 'Favorit hinzufügen';
 
   @override
+  String get favoritesLocalSubtitle => 'Lokale Paare auf diesem Gerät';
+
+  @override
+  String get favoritesEmptyBody =>
+      'Wische eine Währungszeile in Umrechnen nach links und tippe auf Fixieren.';
+
+  @override
+  String get favoritesOpenConvert => 'Umrechnen öffnen';
+
+  @override
+  String get favoritesLimitMessage =>
+      'Du kannst in dieser Version bis zu 3 Paare anheften.';
+
+  @override
+  String get favoritesCachedRate => 'Gespeicherter Tageskurs';
+
+  @override
+  String get favoritesRateUnavailable => '--';
+
+  @override
+  String get removeFavoriteTooltip => 'Favorit entfernen';
+
+  @override
+  String get openFavoriteTooltip => 'Paar in Umrechnen öffnen';
+
+  @override
+  String get favoriteActionPin => 'Fixieren';
+
+  @override
+  String get favoriteActionSaved => 'Fixiert';
+
+  @override
   String get labelRemoveAds => 'Werbung entfernen';
 
   @override

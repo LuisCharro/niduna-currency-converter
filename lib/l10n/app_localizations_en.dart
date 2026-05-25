@@ -72,6 +72,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelAddFavorite => 'Add favorite';
 
   @override
+  String get favoritesLocalSubtitle => 'Local pairs saved on this device';
+
+  @override
+  String get favoritesEmptyBody =>
+      'Swipe left on a currency row in Convert, then tap Pin.';
+
+  @override
+  String get favoritesOpenConvert => 'Open Convert';
+
+  @override
+  String get favoritesLimitMessage =>
+      'You can pin up to 3 pairs in this version.';
+
+  @override
+  String get favoritesCachedRate => 'Saved daily rate';
+
+  @override
+  String get favoritesRateUnavailable => '--';
+
+  @override
+  String get removeFavoriteTooltip => 'Remove favorite';
+
+  @override
+  String get openFavoriteTooltip => 'Open pair in Convert';
+
+  @override
+  String get favoriteActionPin => 'Pin';
+
+  @override
+  String get favoriteActionSaved => 'Saved';
+
+  @override
   String get labelRemoveAds => 'Remove ads';
 
   @override

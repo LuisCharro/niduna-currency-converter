@@ -25,7 +25,7 @@ class ConvertContent extends StatefulWidget {
   final ValueChanged<String> onAmountChanged;
   final ValueChanged<String> onSelectBase;
   final ValueChanged<String> onToggleCode;
-  final ValueChanged<String> onToggleFavorite;
+  final Future<bool> Function(String code) onToggleFavorite;
   final VoidCallback onMore;
   final bool maxFavoritesReached;
 
@@ -78,7 +78,9 @@ class _ConvertContentState extends State<ConvertContent> {
       showDragHandle: true,
       useSafeArea: true,
       builder: (context) => CurrencyPickerSheet(
-        title: selectBaseMode ? l10n?.selectBaseCurrency ?? 'Select base currency' : l10n?.addCurrenciesTitle ?? 'Visible currencies',
+        title: selectBaseMode
+            ? l10n?.selectBaseCurrency ?? 'Select base currency'
+            : l10n?.addCurrenciesTitle ?? 'Visible currencies',
         base: widget.state.base,
         selectedCodes: widget.state.selectedCodes,
         selectBaseMode: selectBaseMode,

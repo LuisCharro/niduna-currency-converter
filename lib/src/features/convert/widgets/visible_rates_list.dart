@@ -29,7 +29,7 @@ class VisibleRatesList extends StatefulWidget {
   final ValueChanged<String> onAmountChanged;
   final ValueChanged<String> onSetBase;
   final ValueChanged<String> onRemove;
-  final ValueChanged<String> onToggleFavorite;
+  final Future<bool> Function(String code) onToggleFavorite;
   final bool maxFavoritesReached;
   final Future<void> Function()? onRefresh;
 
@@ -50,7 +50,9 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
         child: DesignedStatePanel(
           icon: Icons.currency_exchange_rounded,
           title: l10n?.noRatesTitle ?? 'No rates on the ledger yet',
-          subtitle: l10n?.noRatesSubtitle ?? 'Pull to refresh or tap sync when you are back online',
+          subtitle:
+              l10n?.noRatesSubtitle ??
+              'Pull to refresh or tap sync when you are back online',
           actionLabel: l10n?.btnRefresh ?? 'Refresh',
           onAction: widget.onRefresh != null ? () => widget.onRefresh!() : null,
         ),
@@ -73,13 +75,19 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
           isOpen: _openCode == quote.code,
           onOpenChanged: (open) {
             setState(() {
-              _openCode = open ? quote.code : _openCode == quote.code ? null : _openCode;
+              _openCode = open
+                  ? quote.code
+                  : _openCode == quote.code
+                  ? null
+                  : _openCode;
             });
           },
           onRemove: () {
             setState(() => _openCode = null);
             widget.onRemove(quote.code);
           },
+          onToggleFavorite: () => _toggleFavorite(context, quote.code),
+          isFavorite: quote.favorite,
           onSwap: () {
             setState(() => _openCode = null);
             widget.onSetBase(quote.code);
@@ -99,10 +107,7 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
       },
       separatorBuilder: (context, index) => Padding(
         padding: const EdgeInsets.only(left: 58),
-        child: Divider(
-          color: colors.border.withValues(alpha: .15),
-          height: .5,
-        ),
+        child: Divider(color: colors.border.withValues(alpha: .15), height: .5),
       ),
       itemCount: widget.quotes.length,
     );
@@ -117,5 +122,21 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
       );
     }
     return list;
+  }
+
+  Future<void> _toggleFavorite(BuildContext context, String code) async {
+    setState(() => _openCode = null);
+    final added = await widget.onToggleFavorite(code);
+    if (!added && context.mounted) {
+      final l10n = AppLocalizations.of(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n?.favoritesLimitMessage ??
+                'You can pin up to 3 pairs in this version.',
+          ),
+        ),
+      );
+    }
   }
 }

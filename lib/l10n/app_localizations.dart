@@ -230,6 +230,66 @@ abstract class AppLocalizations {
   /// **'Add favorite'**
   String get labelAddFavorite;
 
+  /// No description provided for @favoritesLocalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Local pairs saved on this device'**
+  String get favoritesLocalSubtitle;
+
+  /// No description provided for @favoritesEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe left on a currency row in Convert, then tap Pin.'**
+  String get favoritesEmptyBody;
+
+  /// No description provided for @favoritesOpenConvert.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Convert'**
+  String get favoritesOpenConvert;
+
+  /// No description provided for @favoritesLimitMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You can pin up to 3 pairs in this version.'**
+  String get favoritesLimitMessage;
+
+  /// No description provided for @favoritesCachedRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved daily rate'**
+  String get favoritesCachedRate;
+
+  /// No description provided for @favoritesRateUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'--'**
+  String get favoritesRateUnavailable;
+
+  /// No description provided for @removeFavoriteTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove favorite'**
+  String get removeFavoriteTooltip;
+
+  /// No description provided for @openFavoriteTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Open pair in Convert'**
+  String get openFavoriteTooltip;
+
+  /// No description provided for @favoriteActionPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin'**
+  String get favoriteActionPin;
+
+  /// No description provided for @favoriteActionSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get favoriteActionSaved;
+
   /// Remove ads in-app purchase label
   ///
   /// In en, this message translates to:

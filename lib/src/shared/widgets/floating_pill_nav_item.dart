@@ -47,7 +47,11 @@ class FloatingPillNavItem extends StatelessWidget {
                   duration: AppTheme.motionMedium,
                   curve: AppTheme.curveStandard,
                   style: labelStyle,
-                  child: Text(label),
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
