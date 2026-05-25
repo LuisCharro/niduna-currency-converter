@@ -341,6 +341,12 @@ SEED_DAYS=90 ./.devtools/seed_ios_simulator_sample_data.sh
 
 For build/reinstall workflows after code changes, prefer `sim_reinstall_build.sh` instead of long `xcrun simctl terminate/uninstall/install/launch` chains.
 
+For Android device/emulator discovery before install:
+
+```bash
+./.devtools/list_android_emulators.sh
+```
+
 ## Devtools Scripts Inventory
 
 ### Simulator Interaction
@@ -355,6 +361,7 @@ For build/reinstall workflows after code changes, prefer `sim_reinstall_build.sh
 | `sim_wait_ready.sh` | Poll app ready state | `IOS_SIMULATOR_ID` |
 | `sim_reinstall_build.sh` | Build + reinstall + launch updated app | `IOS_SIMULATOR_ID`, `BUNDLE_ID`, `IOS_APP_PATH`, `BUILD_FIRST` |
 | `android_reinstall_build.sh` | Build + reinstall + launch updated app on Android | `ANDROID_SERIAL` (or auto-detect), `ANDROID_PACKAGE_NAME`, `ANDROID_APK_PATH`, `BUILD_FIRST` |
+| `list_android_emulators.sh` | List connected devices + available AVDs | (none) |
 | `sim_uninstall.sh` | Uninstall from simulator | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `sim_fresh_install.sh` | Uninstall + fresh run | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `capture_tabs.sh` | Auto-capture all tabs | `IOS_SIMULATOR_ID` |
