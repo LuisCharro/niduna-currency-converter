@@ -33,6 +33,35 @@ class DevEntitlementsPanel extends StatelessWidget {
           value: monetization.hasChartsProLifetime,
           onChanged: monetization.setChartsProLifetime,
         ),
+        const SizedBox(height: 8),
+        _EntitlementSwitch(
+          label: 'Favorites Pro lifetime',
+          description: 'Save up to 16 favorite pairs',
+          value: monetization.hasFavoritesProLifetime,
+          onChanged: monetization.setFavoritesProLifetime,
+        ),
+        const SizedBox(height: 8),
+        _EntitlementSwitch(
+          label: 'Favorites boost (24h)',
+          description: 'Simulate rewarded ad — toggle off to expire immediately',
+          value: monetization.hasFavoritesBoostActive,
+          onChanged: (v) {
+            if (v) {
+              monetization.grantFavoritesBoost();
+            } else {
+              monetization.clearFavoritesBoost();
+            }
+          },
+        ),
+        const SizedBox(height: 8),
+        _EntitlementSwitch(
+          label: 'Chart temp unlocks',
+          description: 'Toggle off to clear all 24h pair unlocks',
+          value: monetization.tempUnlockedCodes.isNotEmpty,
+          onChanged: (v) {
+            if (!v) monetization.clearChartTempUnlocks();
+          },
+        ),
       ],
     );
   }

@@ -24,9 +24,11 @@ class ConvertController extends ChangeNotifier {
     double amount = 100,
     List<String>? selectedCodes,
     int decimalPlaces = 2,
+    int Function()? favoritesLimitProvider,
   }) : _repository = repository,
        _favoritesStore = favoritesStore,
-       _preferences = preferences {
+       _preferences = preferences,
+       _favoritesLimitProvider = favoritesLimitProvider {
     _decimalPlaces = decimalPlaces;
     configure(base: defaultBase, amount: amount, selectedCodes: selectedCodes);
     _favoritesStore?.addListener(_onFavoritesChanged);
@@ -35,6 +37,7 @@ class ConvertController extends ChangeNotifier {
   final ConvertRatesRepository _repository;
   final FavoritesStore? _favoritesStore;
   final AppPreferences? _preferences;
+  final int Function()? _favoritesLimitProvider;
   String _base = 'USD';
   double _amount = 100;
   String _amountText = '100.00';
@@ -47,7 +50,12 @@ class ConvertController extends ChangeNotifier {
   LatestRatesSnapshot? get snapshot => _snapshot;
   List<FavoritePair> get favoritePairs =>
       _favoritesStore?.pairs ?? const <FavoritePair>[];
-  bool get maxFavoritesReached => _favoritesStore?.isFull ?? false;
+  bool get maxFavoritesReached {
+    final store = _favoritesStore;
+    if (store == null) return false;
+    final limit = _favoritesLimitProvider?.call() ?? 3;
+    return store.pairs.length >= limit;
+  }
   bool _disposed = false;
 
   void configure({
@@ -95,7 +103,8 @@ class ConvertController extends ChangeNotifier {
   Future<bool> tryToggleFavorite(String quote) async {
     final store = _favoritesStore;
     if (store == null) return true;
-    if (!store.canAdd(_base, quote)) return false;
+    final limit = _favoritesLimitProvider?.call() ?? 3;
+    if (!store.canAdd(_base, quote, limit)) return false;
     await store.toggle(_base, quote);
     return true;
   }

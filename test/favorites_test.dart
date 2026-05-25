@@ -73,21 +73,29 @@ void main() {
       expect(store.pairs.length, 1);
     });
 
-    test('max 3 enforcement', () async {
+    test('store does not enforce a hard cap', () async {
       await store.add('USD', 'EUR');
       await store.add('USD', 'GBP');
       await store.add('USD', 'JPY');
       await store.add('USD', 'CHF');
-      expect(store.pairs.length, 3);
-      expect(store.isFavorite('USD', 'CHF'), isFalse);
+      expect(store.pairs.length, 4);
     });
 
-    test('isFull returns true at max', () async {
+    test('canAdd with limit parameter', () {
+      expect(store.canAdd('USD', 'EUR', 3), isTrue);
+    });
+
+    test('canAdd with limit returns true when already favorite', () async {
+      await store.add('USD', 'EUR');
+      expect(store.canAdd('USD', 'EUR', 1), isTrue);
+    });
+
+    test('canAdd with limit returns false when at limit and not favorite',
+        () async {
       await store.add('USD', 'EUR');
       await store.add('USD', 'GBP');
-      expect(store.isFull, isFalse);
       await store.add('USD', 'JPY');
-      expect(store.isFull, isTrue);
+      expect(store.canAdd('USD', 'CHF', 3), isFalse);
     });
 
     test('remove pair', () async {
@@ -107,19 +115,19 @@ void main() {
     });
 
     test('canAdd returns true when not full', () {
-      expect(store.canAdd('USD', 'EUR'), isTrue);
+      expect(store.canAdd('USD', 'EUR', 3), isTrue);
     });
 
     test('canAdd returns true when already favorite', () async {
       await store.add('USD', 'EUR');
-      expect(store.canAdd('USD', 'EUR'), isTrue);
+      expect(store.canAdd('USD', 'EUR', 3), isTrue);
     });
 
     test('canAdd returns false when full and not favorite', () async {
       await store.add('USD', 'EUR');
       await store.add('USD', 'GBP');
       await store.add('USD', 'JPY');
-      expect(store.canAdd('USD', 'CHF'), isFalse);
+      expect(store.canAdd('USD', 'CHF', 3), isFalse);
     });
 
     test('isFavorite returns false for different base', () async {

@@ -350,4 +350,39 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get clearDataLine3 =>
       'It does not remove your theme or normal app settings.';
+
+  @override
+  String get favoritesProTitle => 'Favorites Pro';
+
+  @override
+  String get favoritesLimitMessageUpgrade =>
+      'Pin up to 3 pairs. Watch an ad or upgrade to add more.';
+
+  @override
+  String favoritesPairsHidden(Object count) {
+    return '$count pairs hidden';
+  }
+
+  @override
+  String get favoritesWatchAdToShow => 'Watch ad to see all';
+
+  @override
+  String get favoritesUnlockForever => 'Unlock 16 pairs forever';
+
+  @override
+  String get favoritesLimitReached => 'Favorites limit reached';
+
+  @override
+  String favoritesLimitActionSubtitle(Object freeLimit, Object storedCount) {
+    return 'You\'ve pinned $storedCount of $freeLimit free pairs';
+  }
+
+  @override
+  String get watchAdToAddMore => 'Watch ad to add 3 more';
+
+  @override
+  String get unlockingFavoritesPro => 'Unlocking Favorites Pro';
+
+  @override
+  String get favoritesProUnlocked => 'Up to 16 favorite pairs unlocked';
 }

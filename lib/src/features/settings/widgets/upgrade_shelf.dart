@@ -20,7 +20,8 @@ class UpgradeShelf extends StatelessWidget {
     final hasPremium =
         m.hasActiveSubscription ||
         m.hasChartsProLifetime ||
-        m.hasRemoveAdsLifetime;
+        m.hasRemoveAdsLifetime ||
+        m.hasFavoritesProLifetime;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,6 +70,20 @@ class UpgradeShelf extends StatelessWidget {
             title: 'Charts Pro',
             subtitle: loc.ownedOnDevice,
             trailing: _OwnedBadge(),
+          ),
+        if (!m.hasFavoritesProLifetime)
+          SettingsTile(
+            title: loc.favoritesProTitle,
+            subtitle: _favoritesProSubtitle(context),
+            trailing: _BuyChip(label: loc.btnBuy),
+            onTap: () =>
+                controller.purchaseProduct(context, ProductType.favoritesPro),
+          )
+        else
+          SettingsTile(
+            title: 'Favorites Pro',
+            subtitle: loc.ownedOnDevice,
+            trailing: _OwnedBadge(),
             showDivider: false,
           ),
       ],
@@ -92,6 +107,16 @@ class UpgradeShelf extends StatelessWidget {
       'fr' => '2.99 CHF · débloque toutes les paires à vie',
       'it' => '2.99 CHF · sblocca tutte le coppie per sempre',
       _ => '2.99 CHF · unlock all pairs forever',
+    };
+  }
+
+  String _favoritesProSubtitle(BuildContext context) {
+    return switch (Localizations.localeOf(context).languageCode) {
+      'de' => '0.99 CHF · bis zu 16 Paare speichern',
+      'es' => '0.99 CHF · guarda hasta 16 pares',
+      'fr' => '0.99 CHF · sauvegarder jusqu\'à 16 paires',
+      'it' => '0.99 CHF · salva fino a 16 coppie',
+      _ => '0.99 CHF · save up to 16 pairs forever',
     };
   }
 }

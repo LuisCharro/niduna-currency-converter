@@ -11,20 +11,30 @@ import 'favorites_list.dart';
 class FavoritesTabBody extends StatelessWidget {
   const FavoritesTabBody({
     required this.pairs,
-    required this.isFull,
+    required this.effectiveLimit,
+    required this.visibleLimit,
+    required this.hasFavoritesPro,
+    required this.canOfferBoost,
     required this.snapshot,
     required this.onOpen,
     required this.onRemove,
     required this.onAdd,
+    required this.onWatchAd,
+    required this.onBuyPro,
     super.key,
   });
 
   final List<FavoritePair> pairs;
-  final bool isFull;
+  final int effectiveLimit;
+  final int visibleLimit;
+  final bool hasFavoritesPro;
+  final bool canOfferBoost;
   final LatestRatesSnapshot? snapshot;
   final ValueChanged<FavoritePair> onOpen;
   final ValueChanged<FavoritePair> onRemove;
   final VoidCallback onAdd;
+  final VoidCallback onWatchAd;
+  final VoidCallback onBuyPro;
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +57,16 @@ class FavoritesTabBody extends StatelessWidget {
         else
           FavoritesList(
             pairs: pairs,
-            isFull: isFull,
+            effectiveLimit: effectiveLimit,
+            visibleLimit: visibleLimit,
+            hasFavoritesPro: hasFavoritesPro,
+            canOfferBoost: canOfferBoost,
             snapshot: snapshot,
             onOpen: onOpen,
             onRemove: onRemove,
             onAdd: onAdd,
+            onWatchAd: onWatchAd,
+            onBuyPro: onBuyPro,
           ),
       ],
     );

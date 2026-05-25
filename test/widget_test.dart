@@ -519,6 +519,7 @@ void main() {
         home: FavoritesScreen(
           favoritesStore: favoritesStore,
           controller: controller,
+          monetization: monetization,
           onNavigateToConvert: (a, b) {},
         ),
       ),
@@ -535,6 +536,7 @@ void main() {
         home: FavoritesScreen(
           favoritesStore: favoritesStore,
           controller: controller,
+          monetization: monetization,
           onNavigateToConvert: (a, b) {},
         ),
       ),

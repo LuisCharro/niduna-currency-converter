@@ -132,8 +132,8 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            l10n?.favoritesLimitMessage ??
-                'You can pin up to 3 pairs in this version.',
+            l10n?.favoritesLimitMessageUpgrade ??
+                'Pin up to 3 pairs. Watch an ad or upgrade to add more.',
           ),
         ),
       );

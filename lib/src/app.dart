@@ -123,6 +123,8 @@ class _AppState extends State<AppShell> {
       defaultBase: _preferences!.defaultBaseCurrency,
       decimalPlaces: _preferences!.decimalPlaces,
       selectedCodes: _preferences!.selectedCodes,
+      favoritesLimitProvider:
+          () => _monetization?.favoritesEffectiveLimit ?? 3,
     );
     _controller!.load();
 
@@ -179,6 +181,7 @@ class _AppState extends State<AppShell> {
       FavoritesScreen(
         favoritesStore: _favoritesStore,
         controller: _controller!,
+        monetization: _monetization!,
         onNavigateToConvert: (_, _) => setState(() => _currentIndex = 0),
       ),
       ChartsScreen(

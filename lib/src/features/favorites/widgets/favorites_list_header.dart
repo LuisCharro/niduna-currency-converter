@@ -3,18 +3,21 @@ import 'package:flutter/material.dart';
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/pill_action.dart';
-import '../data/favorites_store.dart';
 
 class FavoritesListHeader extends StatelessWidget {
   const FavoritesListHeader({
     required this.count,
-    required this.isFull,
+    required this.maxLimit,
+    required this.visibleCount,
+    required this.isAtLimit,
     required this.onAdd,
     super.key,
   });
 
   final int count;
-  final bool isFull;
+  final int maxLimit;
+  final int visibleCount;
+  final bool isAtLimit;
   final VoidCallback onAdd;
 
   @override
@@ -23,11 +26,11 @@ class FavoritesListHeader extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Text(
-            '$count/${FavoritesStore.maxFavorites}',
+            '$visibleCount/$maxLimit',
             style: AppTheme.sectionLabelStyle(context),
           ),
         ),
-        if (!isFull)
+        if (!isAtLimit)
           PillAction(
             label: l10n(context).favoritesOpenConvert,
             icon: Icons.add_rounded,

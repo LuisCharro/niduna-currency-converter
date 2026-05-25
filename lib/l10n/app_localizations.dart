@@ -757,6 +757,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'It does not remove your theme or normal app settings.'**
   String get clearDataLine3;
+
+  /// No description provided for @favoritesProTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites Pro'**
+  String get favoritesProTitle;
+
+  /// No description provided for @favoritesLimitMessageUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin up to 3 pairs. Watch an ad or upgrade to add more.'**
+  String get favoritesLimitMessageUpgrade;
+
+  /// No description provided for @favoritesPairsHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pairs hidden'**
+  String favoritesPairsHidden(Object count);
+
+  /// No description provided for @favoritesWatchAdToShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch ad to see all'**
+  String get favoritesWatchAdToShow;
+
+  /// No description provided for @favoritesUnlockForever.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock 16 pairs forever'**
+  String get favoritesUnlockForever;
+
+  /// No description provided for @favoritesLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites limit reached'**
+  String get favoritesLimitReached;
+
+  /// No description provided for @favoritesLimitActionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve pinned {storedCount} of {freeLimit} free pairs'**
+  String favoritesLimitActionSubtitle(Object freeLimit, Object storedCount);
+
+  /// No description provided for @watchAdToAddMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch ad to add 3 more'**
+  String get watchAdToAddMore;
+
+  /// No description provided for @unlockingFavoritesPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocking Favorites Pro'**
+  String get unlockingFavoritesPro;
+
+  /// No description provided for @favoritesProUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 16 favorite pairs unlocked'**
+  String get favoritesProUnlocked;
 }
 
 class _AppLocalizationsDelegate
