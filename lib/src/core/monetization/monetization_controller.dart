@@ -40,8 +40,7 @@ class MonetizationController extends ChangeNotifier {
   bool get hasChartsProLifetime => _hasChartsProLifetime;
   bool get hasFavoritesProLifetime => _hasFavoritesProLifetime;
 
-  bool get adsEnabled =>
-      !_hasActiveSubscription && !_hasRemoveAdsLifetime;
+  bool get adsEnabled => !_hasActiveSubscription && !_hasRemoveAdsLifetime;
 
   bool get canSelectAnyChartPair =>
       _hasActiveSubscription || _hasChartsProLifetime;
@@ -80,9 +79,7 @@ class MonetizationController extends ChangeNotifier {
     final ms = _favoritesBoostGrantedAtMs;
     if (ms == null) return false;
     final grantedAt = DateTime.fromMillisecondsSinceEpoch(ms);
-    return !DateTime.now().isAfter(
-      grantedAt.add(const Duration(hours: 24)),
-    );
+    return !DateTime.now().isAfter(grantedAt.add(const Duration(hours: 24)));
   }
 
   int favoritesHiddenCount(int storedCount) {
@@ -105,23 +102,17 @@ class MonetizationController extends ChangeNotifier {
     if (_isFreeDefaultPair(base, quote)) return true;
     if (_hasActiveSubscription) return true;
     if (_hasChartsProLifetime) return true;
-    final unlock =
-        _tempUnlocks[TemporaryUnlock.canonicalKey(base, quote)];
+    final unlock = _tempUnlocks[TemporaryUnlock.canonicalKey(base, quote)];
     if (unlock != null && !unlock.isExpired) return true;
     return false;
   }
 
   void _load() {
-    _hasActiveSubscription =
-        _preferences.getBool(_subscriptionKey) ?? false;
-    _hasRemoveAdsLifetime =
-        _preferences.getBool(_removeAdsKey) ?? false;
-    _hasChartsProLifetime =
-        _preferences.getBool(_chartsProKey) ?? false;
-    _hasFavoritesProLifetime =
-        _preferences.getBool(_favoritesProKey) ?? false;
-    _favoritesBoostGrantedAtMs =
-        _preferences.getInt(_favoritesBoostKey);
+    _hasActiveSubscription = _preferences.getBool(_subscriptionKey) ?? false;
+    _hasRemoveAdsLifetime = _preferences.getBool(_removeAdsKey) ?? false;
+    _hasChartsProLifetime = _preferences.getBool(_chartsProKey) ?? false;
+    _hasFavoritesProLifetime = _preferences.getBool(_favoritesProKey) ?? false;
+    _favoritesBoostGrantedAtMs = _preferences.getInt(_favoritesBoostKey);
   }
 
   Future<void> loadTempUnlocks() async {
@@ -164,7 +155,9 @@ class MonetizationController extends ChangeNotifier {
           final vs = source.indexOf(':', i);
           if (vs == -1 || vs >= source.length) break;
           i = vs + 1;
-          while (i < source.length && source[i] == ' ') i++;
+          while (i < source.length && source[i] == ' ') {
+            i++;
+          }
           if (i >= source.length) break;
           final commaIdx = source.indexOf(',', i);
           final braceIdx = source.indexOf('}', i);
@@ -205,10 +198,7 @@ class MonetizationController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> requestRewardedChartUnlock(
-    String base,
-    String quote,
-  ) async {
+  Future<bool> requestRewardedChartUnlock(String base, String quote) async {
     if (!canOfferRewardedChartUnlock) return false;
 
     final success = await _adService.showRewardedAd(
@@ -238,12 +228,8 @@ class MonetizationController extends ChangeNotifier {
     );
     if (!success) return false;
 
-    _favoritesBoostGrantedAtMs =
-        DateTime.now().millisecondsSinceEpoch;
-    await _preferences.setInt(
-      _favoritesBoostKey,
-      _favoritesBoostGrantedAtMs!,
-    );
+    _favoritesBoostGrantedAtMs = DateTime.now().millisecondsSinceEpoch;
+    await _preferences.setInt(_favoritesBoostKey, _favoritesBoostGrantedAtMs!);
     notifyListeners();
     return true;
   }
@@ -255,12 +241,8 @@ class MonetizationController extends ChangeNotifier {
   }
 
   Future<void> grantFavoritesBoost() async {
-    _favoritesBoostGrantedAtMs =
-        DateTime.now().millisecondsSinceEpoch;
-    await _preferences.setInt(
-      _favoritesBoostKey,
-      _favoritesBoostGrantedAtMs!,
-    );
+    _favoritesBoostGrantedAtMs = DateTime.now().millisecondsSinceEpoch;
+    await _preferences.setInt(_favoritesBoostKey, _favoritesBoostGrantedAtMs!);
     notifyListeners();
   }
 
@@ -281,24 +263,21 @@ class MonetizationController extends ChangeNotifier {
   }
 
   Future<bool> purchaseChartsPro() async {
-    final success =
-        await _purchaseService.purchase(ProductType.chartsPro);
+    final success = await _purchaseService.purchase(ProductType.chartsPro);
     if (!success) return false;
     await setChartsProLifetime(true);
     return true;
   }
 
   Future<bool> purchaseRemoveAds() async {
-    final success =
-        await _purchaseService.purchase(ProductType.removeAds);
+    final success = await _purchaseService.purchase(ProductType.removeAds);
     if (!success) return false;
     await setRemoveAdsLifetime(true);
     return true;
   }
 
   Future<bool> purchaseFavoritesPro() async {
-    final success =
-        await _purchaseService.purchase(ProductType.favoritesPro);
+    final success = await _purchaseService.purchase(ProductType.favoritesPro);
     if (!success) return false;
     await setFavoritesProLifetime(true);
     return true;

@@ -19,6 +19,7 @@ class ChartsChartSection extends StatelessWidget {
     required this.swapVersion,
     required this.lastPairKey,
     required this.onSwapSettled,
+    this.compact = false,
     super.key,
   });
 
@@ -29,17 +30,20 @@ class ChartsChartSection extends StatelessWidget {
   final int swapVersion;
   final String lastPairKey;
   final ValueChanged<String> onSwapSettled;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final loading = state.status == ChartStatus.loading && state.data.isEmpty;
 
     return Padding(
-      padding: AppTheme.pageInsets.copyWith(top: AppTheme.space1),
+      padding: AppTheme.pageInsets.copyWith(top: compact ? 0 : AppTheme.space1),
       child: DecoratedBox(
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: AppColors.of(context).border.withValues(alpha: .1)),
+            top: BorderSide(
+              color: AppColors.of(context).border.withValues(alpha: .1),
+            ),
           ),
         ),
         child: Column(
@@ -48,11 +52,18 @@ class ChartsChartSection extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.of(context).container,
                 border: Border(
-                  bottom: BorderSide(color: AppColors.of(context).border.withValues(alpha: .1)),
+                  bottom: BorderSide(
+                    color: AppColors.of(context).border.withValues(alpha: .1),
+                  ),
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 6, 0, 6),
+                padding: EdgeInsets.fromLTRB(
+                  0,
+                  compact ? 4 : 6,
+                  0,
+                  compact ? 4 : 6,
+                ),
                 child: RangeSelector(
                   selected: state.range,
                   onChanged: onRangeChanged,
@@ -113,19 +124,18 @@ class ChartsChartSection extends StatelessWidget {
             child: FadeTransition(opacity: animation, child: child),
           );
         }
-        return FadeTransition(
-          opacity: animation,
-          child: child,
-        );
+        return FadeTransition(opacity: animation, child: child);
       },
       child: Padding(
         key: ValueKey<String>(
           '$currentPairKey-${state.range.label}-$swapVersion',
         ),
-        padding: const EdgeInsets.only(top: 2, bottom: 4),
-        child: RateChart(
-          data: state.data,
-          currencySymbol: currencyByCode(state.base).symbol,
+        padding: EdgeInsets.only(top: compact ? 0 : 2, bottom: compact ? 0 : 4),
+        child: SizedBox.expand(
+          child: RateChart(
+            data: state.data,
+            currencySymbol: currencyByCode(state.base).symbol,
+          ),
         ),
       ),
     );

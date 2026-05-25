@@ -17,6 +17,7 @@ class ChartPairStrip extends StatelessWidget {
     required this.onPairChanged,
     required this.onSwap,
     required this.controller,
+    this.compact = false,
     super.key,
   });
 
@@ -26,6 +27,7 @@ class ChartPairStrip extends StatelessWidget {
   final void Function(String base, String quote) onPairChanged;
   final VoidCallback onSwap;
   final MonetizationController controller;
+  final bool compact;
 
   static const _freeDefaults = {'USD', 'EUR'};
 
@@ -33,8 +35,8 @@ class ChartPairStrip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: AppTheme.pageInsets.copyWith(
-        top: AppTheme.space3,
-        bottom: AppTheme.space2,
+        top: compact ? AppTheme.space2 : AppTheme.space3,
+        bottom: compact ? AppTheme.space1 : AppTheme.space2,
       ),
       child: Row(
         children: <Widget>[
@@ -56,7 +58,9 @@ class ChartPairStrip extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColors.of(context).container,
-                border: Border.all(color: AppColors.of(context).border.withValues(alpha: .15)),
+                border: Border.all(
+                  color: AppColors.of(context).border.withValues(alpha: .15),
+                ),
               ),
               child: Icon(
                 Icons.swap_vert_rounded,

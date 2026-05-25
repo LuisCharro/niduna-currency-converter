@@ -39,44 +39,54 @@ class _ChartsTabBodyState extends State<ChartsTabBody> {
   @override
   Widget build(BuildContext context) {
     final state = widget.controller.state;
-    return Column(
-      children: <Widget>[
-        ChartHeader(
-          base: state.base,
-          quote: state.quote,
-          rate: state.currentRate,
-          changePercent: state.changePercent,
-          onSwap: _handleSwap,
-          lastUpdated: state.lastUpdated,
-        ),
-        Expanded(
-          child: ChartsChartSection(
-            state: state,
-            onRangeChanged: widget.controller.setRange,
-            canUseLockedRanges: widget.monetization.canUseIntradayRanges,
-            onRetry: widget.controller.load,
-            swapVersion: _swapVersion,
-            lastPairKey: _lastPairKey,
-            onSwapSettled: (key) => setState(() => _lastPairKey = key),
-          ),
-        ),
-        ChartPairStrip(
-          base: state.base,
-          quote: state.quote,
-          allowCryptoCharts: ProviderConfig.cryptoChartsEnabled,
-          onPairChanged: widget.controller.setPair,
-          onSwap: _handleSwap,
-          controller: widget.monetization,
-        ),
-        Padding(
-          padding: AppTheme.pageInsets.copyWith(bottom: AppTheme.space2),
-          child: ChartMetricRail(
-            high: state.high,
-            low: state.low,
-            changePercent: state.changePercent,
-          ),
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxHeight < 720;
+        return Column(
+          children: <Widget>[
+            ChartHeader(
+              base: state.base,
+              quote: state.quote,
+              rate: state.currentRate,
+              changePercent: state.changePercent,
+              onSwap: _handleSwap,
+              lastUpdated: state.lastUpdated,
+            ),
+            Expanded(
+              child: ChartsChartSection(
+                state: state,
+                onRangeChanged: widget.controller.setRange,
+                canUseLockedRanges: widget.monetization.canUseIntradayRanges,
+                onRetry: widget.controller.load,
+                swapVersion: _swapVersion,
+                lastPairKey: _lastPairKey,
+                onSwapSettled: (key) => setState(() => _lastPairKey = key),
+                compact: compact,
+              ),
+            ),
+            ChartPairStrip(
+              base: state.base,
+              quote: state.quote,
+              allowCryptoCharts: ProviderConfig.cryptoChartsEnabled,
+              onPairChanged: widget.controller.setPair,
+              onSwap: _handleSwap,
+              controller: widget.monetization,
+              compact: compact,
+            ),
+            Padding(
+              padding: AppTheme.pageInsets.copyWith(
+                bottom: compact ? AppTheme.space1 : AppTheme.space2,
+              ),
+              child: ChartMetricRail(
+                high: state.high,
+                low: state.low,
+                changePercent: state.changePercent,
+                compact: compact,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

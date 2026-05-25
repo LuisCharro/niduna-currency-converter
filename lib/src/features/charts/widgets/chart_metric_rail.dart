@@ -11,17 +11,21 @@ class ChartMetricRail extends StatelessWidget {
     required this.high,
     required this.low,
     required this.changePercent,
+    this.compact = false,
     super.key,
   });
 
   final double? high;
   final double? low;
   final double? changePercent;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final isPositive = (changePercent ?? 0) >= 0;
-    final changeColor = isPositive ? AppColors.of(context).trendUp : AppColors.of(context).trendDown;
+    final changeColor = isPositive
+        ? AppColors.of(context).trendUp
+        : AppColors.of(context).trendDown;
     final changeText = changePercent != null
         ? '${isPositive ? '+' : ''}${changePercent!.toStringAsFixed(2)}%'
         : '—';
@@ -29,11 +33,15 @@ class ChartMetricRail extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: AppColors.of(context).border.withValues(alpha: .12)),
+          top: BorderSide(
+            color: AppColors.of(context).border.withValues(alpha: .12),
+          ),
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppTheme.space3),
+        padding: EdgeInsets.symmetric(
+          vertical: compact ? AppTheme.space2 : AppTheme.space3,
+        ),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -65,7 +73,7 @@ class ChartMetricRail extends StatelessWidget {
 
   Widget _railDivider(BuildContext context) => Container(
     width: 1,
-    height: 32,
+    height: compact ? 28 : 32,
     color: AppColors.of(context).border.withValues(alpha: .12),
   );
 }
