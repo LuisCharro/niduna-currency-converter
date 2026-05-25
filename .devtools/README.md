@@ -195,6 +195,20 @@ reported by `adb devices`. If no emulator is running, it falls back to the
 first connected Android device. If neither exists, it prints connected devices
 plus available AVD names to help you pick a target.
 
+## Android emulator / device listing
+
+```bash
+./.devtools/list_android_emulators.sh
+```
+
+What it does:
+
+- lists all connected Android devices and emulators (with serial, model, screen size)
+- lists all available AVDs from `emulator -list-avds` (including stopped ones)
+- prints a tip showing how to start an AVD and install to it
+
+Use this when you need to discover or pick a target before running `android_reinstall_build.sh`.
+
 ## Environment variables
 
 | Variable | Purpose | Default |
