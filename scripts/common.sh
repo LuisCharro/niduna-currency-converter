@@ -73,9 +73,28 @@ run_adb() {
 flutter_app_define_args() {
   local provider_profile="${PROVIDER_PROFILE:-release_safe}"
   local app_dev_mode="${APP_DEV_MODE:-false}"
+  local admob_use_test_ads="${ADMOB_USE_TEST_ADS:-true}"
+  local admob_android_banner_id="${ADMOB_ANDROID_BANNER_AD_UNIT_ID:-}"
+  local admob_ios_banner_id="${ADMOB_IOS_BANNER_AD_UNIT_ID:-}"
+  local admob_android_rewarded_id="${ADMOB_ANDROID_REWARDED_AD_UNIT_ID:-}"
+  local admob_ios_rewarded_id="${ADMOB_IOS_REWARDED_AD_UNIT_ID:-}"
 
   printf '%s\n' "--dart-define=PROVIDER_PROFILE=${provider_profile}"
   printf '%s\n' "--dart-define=APP_DEV_MODE=${app_dev_mode}"
+  printf '%s\n' "--dart-define=ADMOB_USE_TEST_ADS=${admob_use_test_ads}"
+
+  if [[ -n "${admob_android_banner_id}" ]]; then
+    printf '%s\n' "--dart-define=ADMOB_ANDROID_BANNER_AD_UNIT_ID=${admob_android_banner_id}"
+  fi
+  if [[ -n "${admob_ios_banner_id}" ]]; then
+    printf '%s\n' "--dart-define=ADMOB_IOS_BANNER_AD_UNIT_ID=${admob_ios_banner_id}"
+  fi
+  if [[ -n "${admob_android_rewarded_id}" ]]; then
+    printf '%s\n' "--dart-define=ADMOB_ANDROID_REWARDED_AD_UNIT_ID=${admob_android_rewarded_id}"
+  fi
+  if [[ -n "${admob_ios_rewarded_id}" ]]; then
+    printf '%s\n' "--dart-define=ADMOB_IOS_REWARDED_AD_UNIT_ID=${admob_ios_rewarded_id}"
+  fi
 }
 
 resolve_firebase_bin() {

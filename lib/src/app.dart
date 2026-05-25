@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/ads/admob_rewarded_ad_service.dart';
 import 'core/monetization/monetization_controller.dart';
-import 'core/monetization/rewarded_ad_service_stub.dart';
 import 'core/preferences/app_preferences.dart';
 import 'core/rates/provider_config.dart';
 import 'core/rates/provider_factory.dart';
@@ -123,13 +123,12 @@ class _AppState extends State<AppShell> {
       defaultBase: _preferences!.defaultBaseCurrency,
       decimalPlaces: _preferences!.decimalPlaces,
       selectedCodes: _preferences!.selectedCodes,
-      favoritesLimitProvider:
-          () => _monetization?.favoritesEffectiveLimit ?? 3,
+      favoritesLimitProvider: () => _monetization?.favoritesEffectiveLimit ?? 3,
     );
     _controller!.load();
 
     final ratesCache = SharedPreferencesRatesCache(prefs);
-    final adService = RewardedAdServiceStub();
+    final adService = AdMobRewardedAdService();
     _monetization = MonetizationController(prefs, adService: adService);
     await _monetization!.loadTempUnlocks();
     final ratesService = RatesService(

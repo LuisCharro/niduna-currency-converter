@@ -24,7 +24,7 @@ import 'package:currency_converter/src/features/favorites/data/favorites_store.d
 import 'package:currency_converter/src/features/favorites/favorites_screen.dart';
 import 'package:currency_converter/src/features/convert/convert_screen.dart';
 import 'package:currency_converter/src/features/convert/widgets/ad_support_shelf.dart';
-import 'package:currency_converter/src/features/convert/widgets/ad_banner_placeholder.dart';
+import 'package:currency_converter/src/core/ads/ad_banner_widget.dart';
 import 'package:currency_converter/src/features/charts/widgets/rate_chart.dart';
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
 import 'package:currency_converter/src/shared/widgets/bottom_tab_frame.dart';
@@ -155,7 +155,7 @@ void main() {
     expect(find.text('ETH'), findsNothing);
     expect(find.byType(BottomTabFrame), findsOneWidget);
     expect(find.byType(AdSupportShelf), findsOneWidget);
-    expect(find.byType(AdBannerPlaceholder), findsOneWidget);
+    expect(find.byType(AdBannerWidget), findsOneWidget);
   });
 
   testWidgets('Convert amount input uses sheet keypad and presets', (
@@ -695,7 +695,7 @@ void main() {
 
     expect(find.byType(BottomTabFrame), findsOneWidget);
     expect(find.byType(AdSupportShelf), findsOneWidget);
-    expect(find.byType(AdBannerPlaceholder), findsOneWidget);
+    expect(find.byType(AdBannerWidget), findsOneWidget);
   });
 
   testWidgets('Rate chart uses a stronger touched indicator', (

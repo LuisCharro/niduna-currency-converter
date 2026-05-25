@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/localization/ui_copy.dart';
+import '../../../core/ads/ad_banner_widget.dart';
 import '../../../core/monetization/models/temporary_unlock.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/currency_picker_chrome.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
-import '../../convert/widgets/ad_banner_placeholder.dart';
 import '../../settings/widgets/iap_purchase_player.dart';
 import 'locked_pair_action_sheet.dart';
 import 'rewarded_ad_player.dart';
@@ -83,7 +83,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-        backgroundColor: AppColors.of(context).card,
+      backgroundColor: AppColors.of(context).card,
       builder: (_) => SafeArea(
         top: false,
         child: LockedPairActionSheet(
@@ -163,7 +163,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
               ),
               const SizedBox(height: 12),
               if (widget.controller.adsEnabled) ...[
-                const AdBannerPlaceholder(),
+                const AdBannerWidget(),
                 const SizedBox(height: 8),
               ],
               Expanded(
@@ -194,8 +194,10 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
     return ListView.separated(
       controller: scrollController,
       itemCount: currencies.length,
-      separatorBuilder: (context, index) =>
-          Divider(height: 1, color: AppColors.of(context).border.withValues(alpha: .15)),
+      separatorBuilder: (context, index) => Divider(
+        height: 1,
+        color: AppColors.of(context).border.withValues(alpha: .15),
+      ),
       itemBuilder: (context, index) {
         final currency = currencies[index];
         final isSelected = currency.code == widget.selectedCode;
@@ -265,7 +267,9 @@ class _CurrencyTile extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: locked ? AppColors.of(context).muted : AppColors.of(context).text,
+                      color: locked
+                          ? AppColors.of(context).muted
+                          : AppColors.of(context).text,
                     ),
                   ),
                   Text(
@@ -300,9 +304,9 @@ class _CurrencyTile extends StatelessWidget {
                     color: AppColors.of(context).primary.withValues(alpha: .15),
                   ),
                 ),
-                  child: Text(
+                child: Text(
                   currentBadgeLabel(context),
-                   style: TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: AppColors.of(context).primary.withValues(alpha: .5),
@@ -322,7 +326,11 @@ class _CurrencyTile extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Icons.schedule, size: 13, color: AppColors.of(context).primary),
+                    Icon(
+                      Icons.schedule,
+                      size: 13,
+                      color: AppColors.of(context).primary,
+                    ),
                     const SizedBox(width: 3),
                     Text(
                       '24h',
@@ -360,7 +368,11 @@ class _CurrencyTile extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Icons.lock_outline, size: 13, color: AppColors.of(context).muted),
+                    Icon(
+                      Icons.lock_outline,
+                      size: 13,
+                      color: AppColors.of(context).muted,
+                    ),
                     const SizedBox(width: 3),
                     Text(
                       lockedBadgeLabel(context),
