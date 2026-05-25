@@ -15,6 +15,7 @@ class AdBannerWidget extends StatefulWidget {
 
 class _AdBannerWidgetState extends State<AdBannerWidget> {
   static const double _minSlotHeight = 50;
+  static final Map<int, double> _slotHeightByWidth = <int, double>{};
 
   BannerAd? _bannerAd;
   bool _hasLoadError = false;
@@ -38,6 +39,11 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
         }
         return;
       }
+
+      _slotHeightByWidth[width] = size.height.toDouble().clamp(
+        _minSlotHeight,
+        120,
+      );
 
       final ad = BannerAd(
         adUnitId: AdHelper.bannerAdUnitId,
@@ -106,8 +112,11 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
         if (width > 0) _queueLoad(width);
 
         final ad = _bannerAd;
-        final slotHeight = (ad?.size.height.toDouble() ?? 50)
-            .clamp(50, 120)
+        final reservedHeight = width > 0
+            ? (_slotHeightByWidth[width] ?? _estimatedSlotHeight(width))
+            : _minSlotHeight;
+        final slotHeight = (ad?.size.height.toDouble() ?? reservedHeight)
+            .clamp(_minSlotHeight, 120)
             .toDouble();
         final frameHeight = slotHeight > _minSlotHeight
             ? slotHeight
@@ -130,5 +139,13 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
         );
       },
     );
+  }
+
+  double _estimatedSlotHeight(int width) {
+    if (width >= 700) return 110;
+    if (width >= 520) return 100;
+    if (width >= 420) return 90;
+    if (width >= 360) return 82;
+    return 72;
   }
 }
