@@ -389,7 +389,7 @@ lib/
 - [x] **P2 — Localization Step 1** (system wiring): connect `MaterialApp` to `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales`; migrate meaningful user-facing labels/messages to localization keys (`AppLocalizations.of(context)`)
 - [x] **P3 — Localization Step 2** (language content): add and validate ARB translations for EN, DE, ES, IT, FR across Convert, Charts, Settings, dialogs/sheets, empty/error states, and accessibility labels/tooltips where user-visible
 - [x] **P4 — Real AdMob SDK**: replace placeholder banners with live `google_mobile_ads` (DONE — live BannerAd + RewardedAd integrated, placeholder only shows on load failure or test mode; see `ad_banner_widget.dart`, `admob_rewarded_ad_service.dart`, `ad_helper.dart`)
-- [ ] **P5 — Replace CoinGecko in release_safe crypto history** (see detailed spec below)
+- [x] **P5 — Replace CoinGecko in release_safe crypto history** (DONE — fawazahmed0 per-date CDN snapshots, CC0-1.0, batched 10-concurrent)
 
 #### P5 Detailed Specification
 
@@ -442,12 +442,18 @@ Response contains `usd.btc` and `usd.eth` per date.
 
 Same clean-swap pattern used when CoinGecko replaced dead CoinCap. Zero changes to UI/charts/controller/cache layers.
 - [ ] **P6 — Release keystore signing**: move from debug signing config to proper release keystore
-- [ ] **P7 — Branded app name**: set `CFBundleDisplayName` (iOS) and `android:label` (Android)
+- [ ] **P7 — Branded app name**: set `android:label` on Android + align `CFBundleName` on iOS
+  - Android: change `android/app/src/main/AndroidManifest.xml` `android:label` from `"currency_converter"` → `"Currency Converter"`; create `res/values/strings.xml` with `@string/app_name`
+  - iOS: change `ios/Runner/Info.plist` `CFBundleName` from `"currency_converter"` → `"Currency Converter"` (`CFBundleDisplayName` already correct)
+  - Leave `pubspec.yaml` `name` as-is (internal Dart package name)
 - [ ] **P8 — Privacy policy URL**: required by both stores before submission
-- [ ] **P9 — iOS deployment target update**: currently 13.0, too old for App Store review
+- [ ] **P9 — iOS deployment target update**: bump from 13.0 → 15.0 in 3 places
+  - `ios/Runner.xcodeproj/project.pbxproj`: change all 3 `IPHONEOS_DEPLOYMENT_TARGET = 13.0` → `15.0` (Debug/Release/Profile)
+  - `ios/Podfile`: uncomment and set `platform :ios, '15.0'`
+  - Run `flutter pub get` then verify with `flutter build ios --no-codesign`
 - [ ] **P10 — Build and test APK / App Bundle**: formal RC build validating all above together
 - [ ] **P11 — Store listing assets**: screenshots, descriptions, keywords for both stores (do after app is finalized)
-- [ ] **P12 — Long-press context menu** on currency rows (nice-to-have UX polish)
+- [x] **P12 — Long-press context menu** ~~on currency rows~~ — **deferred**: swipe-left already covers Pin/Swap/Hide actions; only new action would be "View Chart" which is low-priority vs store blockers
 
 ---
 
