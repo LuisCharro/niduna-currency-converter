@@ -442,16 +442,14 @@ Response contains `usd.btc` and `usd.eth` per date.
 
 Same clean-swap pattern used when CoinGecko replaced dead CoinCap. Zero changes to UI/charts/controller/cache layers.
 - [ ] **P6 — Release keystore signing**: move from debug signing config to proper release keystore
-- [ ] **P7 — Branded app name**: set `android:label` on Android + align `CFBundleName` on iOS
-  - Android: change `android/app/src/main/AndroidManifest.xml` `android:label` from `"currency_converter"` → `"Currency Converter"`; create `res/values/strings.xml` with `@string/app_name`
-  - iOS: change `ios/Runner/Info.plist` `CFBundleName` from `"currency_converter"` → `"Currency Converter"` (`CFBundleDisplayName` already correct)
-  - Leave `pubspec.yaml` `name` as-is (internal Dart package name)
+- [x] **P7 — Branded app name** ✅ committed `bade57e`
+  - Android: `android:label` → `@string/app_name`; new `res/values/strings.xml` with "Currency Converter"
+  - iOS: `CFBundleName` → "Currency Converter" (`CFBundleDisplayName` already correct)
 - [ ] **P8 — Privacy policy URL**: required by both stores before submission
-- [ ] **P9 — iOS deployment target update**: bump from 13.0 → 15.0 in 3 places
-  - `ios/Runner.xcodeproj/project.pbxproj`: change all 3 `IPHONEOS_DEPLOYMENT_TARGET = 13.0` → `15.0` (Debug/Release/Profile)
-  - `ios/Podfile`: uncomment and set `platform :ios, '15.0'`
-  - Run `flutter pub get` then verify with `flutter build ios --no-codesign`
-- [ ] **P10 — Build and test APK / App Bundle**: formal RC build validating all above together
+- [x] **P9 — iOS deployment target update** ✅ committed `bade57e`
+  - All 3 `IPHONEOS_DEPLOYMENT_TARGET` → 15.0; Podfile → `platform :ios, '15.0'`; iOS build verified (28.9MB)
+- [x] **P10 — Release APK + App Bundle** ✅ verified
+  - `app-release.apk` (59.3MB) + `app-release.aab` (51.4MB) — release pipeline confirmed working
 - [ ] **P11 — Store listing assets**: screenshots, descriptions, keywords for both stores (do after app is finalized)
 - [x] **P12 — Long-press context menu** ~~on currency rows~~ — **deferred**: swipe-left already covers Pin/Swap/Hide actions; only new action would be "View Chart" which is low-priority vs store blockers
 
