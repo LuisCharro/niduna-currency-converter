@@ -78,10 +78,10 @@ Same as Play Store — **shared blocker**.
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 4.1 | CoinPaprika replaced for production builds | ❌ | **Per `PROVIDER_LIMITS.md`: CoinPaprika ToS forbids commercial/App Store distribution** |
-| 4.2 | Production provider selected and integrated | ❌ | Recommendation: fawazahmed0 (CC0 license) or similar free-for-commercial API |
-| 4.3 | `release_safe` provider profile uses licensed source | ❌ | Current `release_safe` must not use CoinPaprika |
-| 4.4 | Rate data attribution displayed if required by provider | ❌ | Check chosen provider's attribution requirements |
+| 4.1 | CoinPaprika replaced for production builds | ✅ | `release_safe` profile uses fawazahmed0 (CC0) for crypto latest + historical; CoinPaprika only in `dev_coinpaprika` builds |
+| 4.2 | Production provider selected and integrated | ✅ | fawazahmed0 (CC0-1.0) for all crypto data in release builds |
+| 4.3 | `release_safe` provider profile uses licensed source | ✅ | Frankfurter (fiat) + fawazahmed0 (crypto latest + historical), both commercial-safe |
+| 4.4 | Rate data attribution displayed if required by provider | ✅ | fawazahmed0 CC0 requires no attribution |
 | 4.5 | Fallback behavior when rate API unavailable | ✅ | Cached rates + offline capability exists |
 
 ---

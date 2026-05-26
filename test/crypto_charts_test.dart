@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:currency_converter/src/core/rates/clients/frankfurter_client.dart';
 import 'package:currency_converter/src/core/rates/crypto/coinpaprika_crypto_usd_history_client.dart';
 import 'package:currency_converter/src/core/rates/crypto/crypto_usd_history_cache.dart';
 import 'package:currency_converter/src/core/rates/crypto/crypto_usd_history_client.dart';
 import 'package:currency_converter/src/core/rates/crypto/crypto_usd_history_snapshot.dart';
+import 'package:currency_converter/src/core/rates/crypto/fawazahmed_crypto_usd_history_client.dart';
 import 'package:currency_converter/src/core/rates/models/rates_snapshot.dart';
 import 'package:currency_converter/src/core/rates/multi_provider_rates_client.dart';
+import 'package:currency_converter/src/core/rates/provider_config.dart';
+import 'package:currency_converter/src/core/rates/provider_factory.dart';
 import 'package:currency_converter/src/core/rates/rates_cache.dart';
 import 'package:currency_converter/src/core/rates/rates_client.dart';
 import 'package:currency_converter/src/core/rates/rates_service.dart';
@@ -200,6 +205,68 @@ void main() {
 
     expect(result.snapshot?.data[DateTime(2026, 5, 18)], 38);
   });
+
+  test('fawazahmed0 history client parses and inverts BTC/ETH from CDN', () async {
+    final client = FawazahmedCryptoUsdHistoryClient(
+      client: _StaticHttpClient(
+        '{"date":"2024-03-06","usd":{"btc":0.000015192,"eth":0.0002658303}}',
+      ),
+    );
+
+    final snapshot = await client.fetchUsdHistory(
+      code: 'BTC',
+      from: DateTime(2024, 3, 6),
+      to: DateTime(2024, 3, 6),
+    );
+
+    expect(snapshot.code, 'BTC');
+    expect(snapshot.pricesUsd[DateTime(2024, 3, 6)], closeTo(65824.12, 50));
+  });
+
+  test('fawazahmed0 history client tolerates mixed success/failure per date', () async {
+    final client = FawazahmedCryptoUsdHistoryClient(
+      client: _MixedSuccessHttpClient(),
+    );
+
+    final snapshot = await client.fetchUsdHistory(
+      code: 'BTC',
+      from: DateTime(2024, 3, 5),
+      to: DateTime(2024, 3, 7),
+    );
+
+    expect(snapshot.code, 'BTC');
+    expect(snapshot.pricesUsd.length, greaterThanOrEqualTo(1));
+    expect(snapshot.pricesUsd[DateTime(2024, 3, 6)], closeTo(65824.12, 50));
+  });
+
+  test('fawazahmed0 history client skips 404 days gracefully', () async {
+    final client = FawazahmedCryptoUsdHistoryClient(
+      client: _StatusCodeHttpClient(404),
+    );
+
+    try {
+      await client.fetchUsdHistory(
+        code: 'BTC',
+        from: DateTime(2024, 3, 6),
+        to: DateTime(2024, 3, 6),
+      );
+      fail('Should have thrown');
+    } on CryptoUsdHistoryException catch (e) {
+      expect(e.message, contains('no data'));
+    }
+  });
+
+  test('release_safe profile uses fawazahmed0 for crypto history', () {
+    expect(
+      ProviderConfig.cryptoHistoryProvider,
+      CryptoHistoryProvider.fawazahmed0,
+    );
+  });
+
+  test('factory creates fawazahmed0 history client for release_safe', () {
+    final client = ProviderFactory.createCryptoHistoryClient();
+    expect(client, isA<FawazahmedCryptoUsdHistoryClient>());
+  });
 }
 
 CryptoUsdHistorySnapshot _cryptoHistory(
@@ -358,4 +425,42 @@ class _MemoryRatesCache implements RatesCache {
 
   @override
   Future<void> writeLatest(RatesSnapshot snapshot) async {}
+}
+
+class _StatusCodeHttpClient extends http.BaseClient {
+  _StatusCodeHttpClient(this.statusCode);
+
+  final int statusCode;
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    return http.StreamedResponse(
+      const Stream.empty(),
+      statusCode,
+      request: request,
+    );
+  }
+}
+
+class _MixedSuccessHttpClient extends http.BaseClient {
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    final url = request.url.toString();
+    if (url.contains('2024-03-06')) {
+      return http.StreamedResponse(
+        Stream.fromIterable([
+          utf8.encode(
+            '{"date":"2024-03-06","usd":{"btc":0.000015192}}',
+          ),
+        ]),
+        200,
+        request: request,
+      );
+    }
+    return http.StreamedResponse(
+      const Stream.empty(),
+      404,
+      request: request,
+    );
+  }
 }

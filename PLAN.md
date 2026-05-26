@@ -388,8 +388,59 @@ lib/
 - [x] **P1 — Dark mode**: make toggle follow `ThemeMode.system` instead of manual boolean only
 - [x] **P2 — Localization Step 1** (system wiring): connect `MaterialApp` to `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales`; migrate meaningful user-facing labels/messages to localization keys (`AppLocalizations.of(context)`)
 - [x] **P3 — Localization Step 2** (language content): add and validate ARB translations for EN, DE, ES, IT, FR across Convert, Charts, Settings, dialogs/sheets, empty/error states, and accessibility labels/tooltips where user-visible
-- [ ] **P4 — Real AdMob SDK**: replace placeholder banners with live `google_mobile_ads`
-- [ ] **P5 — CoinPaprika replacement**: swap Coingecko out of the release-safe profile for a stable no-key provider
+- [x] **P4 — Real AdMob SDK**: replace placeholder banners with live `google_mobile_ads` (DONE — live BannerAd + RewardedAd integrated, placeholder only shows on load failure or test mode; see `ad_banner_widget.dart`, `admob_rewarded_ad_service.dart`, `ad_helper.dart`)
+- [ ] **P5 — Replace CoinGecko in release_safe crypto history** (see detailed spec below)
+
+#### P5 Detailed Specification
+
+**Status: NEXT ACTIONABLE ITEM (P4 is done)**
+
+##### Context: Provider profile split
+
+Build-time `PROVIDER_PROFILE` env var (compiled via `--dart-define`, not user-toggleable):
+
+| Profile | Used by | Crypto Latest | Crypto History |
+|---|---|---|---|
+| `dev_coinpaprika` | Emulator/debug builds (`.devtools/*.sh`) | CoinPaprika → fawazahmed0 fallback | **CoinPaprika** |
+| `release_safe` | Release APK/App Bundle, Firebase hosting (`scripts/build_*.sh`) | **fawazahmed0 only** | **CoinGecko** ← replace this |
+
+Emulator builds already use CoinPaprika for crypto charts and work well. CoinPaprika cannot ship in production (commercial license restriction). Release builds use CoinGecko — which is the replacement target.
+
+##### What CoinGecko does in release_safe
+
+Single endpoint: `GET https://api.coingecko.com/api/v3/coins/{id}/market_chart?vs_currency=usd&days={N}` for `bitcoin`/`ethereum`, up to ~365 days. No API key, no fallback. Persistent cache is the only safety net.
+
+##### Why replace (3 risks)
+
+1. **Variable rate limit**: 5-15/min public tier (undocumented, fluctuates)
+2. **License ambiguity**: "Non-commercial use only" + attribution required; app with AdMob+IAP may qualify as commercial ($29-129/mo paid plan)
+3. **Precedent**: CoinCap was free → deprecated → died; same pattern
+
+##### Recommended fix: expand fawazahmed0 for historical data
+
+fawazahmed0 already serves release_safe crypto **latest rates** with ideal properties:
+- License: **CC0-1.0** (public domain)
+- **No rate limit** (jsdelivr CDN static files)
+- Already integrated and battle-tested
+- Has Cloudflare Pages mirror as built-in fallback
+
+Challenge: no native range endpoint. New client fetches daily snapshot JSON files and composes time series:
+
+```
+https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/{date}/usd.json
+```
+
+Response contains `usd.btc` and `usd.eth` per date.
+
+##### Implementation (~5 files)
+
+1. Create `fawazahmed_crypto_usd_history_client.dart` implementing `CryptoUsdHistoryClient`
+2. Add `CryptoHistoryProvider.fawazahmed0` enum in `provider_config.dart`; change release_safe default from `coingecko`
+3. Add factory case in `provider_factory.dart`
+4. (Optional) Demote CoinGecko client to dev-only
+5. Update `PROVIDER_LIMITS.md` + publish checklists
+
+Same clean-swap pattern used when CoinGecko replaced dead CoinCap. Zero changes to UI/charts/controller/cache layers.
 - [ ] **P6 — Release keystore signing**: move from debug signing config to proper release keystore
 - [ ] **P7 — Branded app name**: set `CFBundleDisplayName` (iOS) and `android:label` (Android)
 - [ ] **P8 — Privacy policy URL**: required by both stores before submission

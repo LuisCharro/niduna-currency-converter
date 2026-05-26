@@ -1,7 +1,8 @@
 import 'crypto/coinpaprika_crypto_usd_history_client.dart';
 import 'crypto/coingecko_crypto_usd_history_client.dart';
-import 'crypto/coinpaprika_crypto_usd_price_client.dart';
 import 'crypto/crypto_usd_history_client.dart';
+import 'crypto/fawazahmed_crypto_usd_history_client.dart';
+import 'crypto/coinpaprika_crypto_usd_price_client.dart';
 import 'crypto/crypto_usd_price_client.dart';
 import 'crypto/fallback_crypto_usd_price_client.dart';
 import 'crypto/fawazahmed_crypto_usd_price_client.dart';
@@ -27,6 +28,8 @@ class ProviderFactory {
     switch (ProviderConfig.cryptoHistoryProvider) {
       case CryptoHistoryProvider.coinPaprika:
         return CoinPaprikaCryptoUsdHistoryClient();
+      case CryptoHistoryProvider.fawazahmed0:
+        return FawazahmedCryptoUsdHistoryClient();
       case CryptoHistoryProvider.coingecko:
         return CoingeckoCryptoUsdHistoryClient();
       case CryptoHistoryProvider.none:

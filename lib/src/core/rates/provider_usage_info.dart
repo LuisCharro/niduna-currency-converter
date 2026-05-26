@@ -63,22 +63,13 @@ class ProviderUsageInfo {
       ),
       ProviderMatrixRow(
         provider: 'fawazahmed0/exchange-api',
-        role: 'Crypto latest',
+        role: 'Crypto latest + history',
         status: latestStatus,
       ),
       ProviderMatrixRow(
         provider: 'CoinPaprika',
         role: 'Crypto latest + history',
         status: ProviderConfig.isPlayStoreSafe ? 'Not used' : 'Primary',
-      ),
-      ProviderMatrixRow(
-        provider: 'CoinGecko',
-        role: 'Crypto history',
-        status: ProviderConfig.cryptoChartsEnabled
-            ? (ProviderConfig.chartsProviderLabel.contains('CoinGecko')
-                  ? 'Primary'
-                  : 'Not used')
-            : 'Disabled',
       ),
     ];
 

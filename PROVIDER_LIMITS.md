@@ -1,6 +1,6 @@
 # Provider Rate Limits, Licensing, and Call Budget
 
-> Last updated: 2026-05-19
+> Last updated: 2026-05-26
 > Purpose: document free provider limits, licensing status for commercial
 > publication, how the app makes calls, and replacement strategies.
 
@@ -13,8 +13,8 @@
 | Provider | Use in App | License | Commercial Use | Play Store Safe? | Action Needed |
 |----------|-----------|---------|----------------|-----------------|---------------|
 | **Frankfurter** | Fiat latest + historical | Unlicense (open source) | **Yes — explicitly** stated on their site: *"Is the API free for commercial use? Yes, absolutely."* | **YES** | None |
-| **fawazahmed0** | BTC/ETH latest fallback | **CC0-1.0** (public domain) | **Yes** — CC0 allows commercial use, modification, distribution with no restrictions | **YES** | None |
-| **CoinPaprika** | BTC/ETH latest + charts | Proprietary ToS | **NO** — free plan forbids commercial use; paid plans ($99–$1,499/mo) are **internal tools only**; user-facing apps require custom Enterprise contract | **NO** | **Must replace before Play Store release** |
+| **fawazahmed0** | BTC/ETH latest + historical (release_safe) | **CC0-1.0** (public domain) | **Yes** — CC0 allows commercial use, modification, distribution with no restrictions | **YES** | None |
+| **CoinPaprika** | BTC/ETH latest + charts (dev only) | Proprietary ToS | **NO** — free plan forbids commercial use; paid plans ($99–$1,499/mo) are **internal tools only**; user-facing apps require custom Enterprise contract | **NO** | Dev-only; not shipped in release builds |
 
 ### Detailed License Analysis
 

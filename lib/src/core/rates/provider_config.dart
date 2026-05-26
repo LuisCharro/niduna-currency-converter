@@ -4,7 +4,13 @@ enum ProviderProfile { releaseSafe, devCoinPaprika }
 
 enum CryptoLatestProvider { coinPaprika, fawazahmed0 }
 
-enum CryptoHistoryProvider { none, coinPaprika, coingecko }
+enum CryptoHistoryProvider {
+  none,
+  coinPaprika,
+  fawazahmed0,
+  @Deprecated('Use fawazahmed0 for release_safe')
+  coingecko,
+}
 
 class ProviderInfo {
   const ProviderInfo({
@@ -55,7 +61,7 @@ class ProviderConfig {
       case ProviderProfile.devCoinPaprika:
         return CryptoHistoryProvider.coinPaprika;
       case ProviderProfile.releaseSafe:
-        return CryptoHistoryProvider.coingecko;
+        return CryptoHistoryProvider.fawazahmed0;
     }
   }
 
@@ -76,6 +82,8 @@ class ProviderConfig {
     switch (cryptoHistoryProvider) {
       case CryptoHistoryProvider.coinPaprika:
         return 'CoinPaprika historical ticks';
+      case CryptoHistoryProvider.fawazahmed0:
+        return 'fawazahmed0/exchange-api daily snapshots';
       case CryptoHistoryProvider.coingecko:
         return 'CoinGecko historical data';
       case CryptoHistoryProvider.none:
@@ -91,18 +99,13 @@ class ProviderConfig {
         ),
         ProviderInfo(
           name: 'fawazahmed0',
-          type: 'Crypto latest',
+          type: 'Crypto latest + history',
           active: isPlayStoreSafe,
         ),
         ProviderInfo(
           name: 'CoinPaprika',
           type: 'Crypto latest + history',
           active: !isPlayStoreSafe,
-        ),
-        ProviderInfo(
-          name: 'CoinGecko',
-          type: 'Crypto history',
-          active: cryptoHistoryProvider == CryptoHistoryProvider.coingecko,
         ),
       ];
 
