@@ -36,13 +36,13 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color coralInk;
 
   static const light = AppColors(
-    bg: Color(0xFFF6F8EF),
-    text: Color(0xFF171D14),
-    muted: Color(0xFF5F6A58),
-    subtle: Color(0xFF66745B),
+    bg: Color(0xFFF5F4F0),
+    text: Color(0xFF1C1F18),
+    muted: Color(0xFF6B7560),
+    subtle: Color(0xFF8A9178),
     card: Color(0xFFFFFFFF),
-    container: Color(0xFFFFF9EC),
-    containerHigh: Color(0xFFF5EDEE),
+    container: Color(0xFFFFFFFF),
+    containerHigh: Color(0xFFF0EDE9),
     border: Color(0xFF3B5D24),
     primary: Color(0xFF285F3B),
     trendUp: Color(0xFF6F8C49),

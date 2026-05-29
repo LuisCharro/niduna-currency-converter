@@ -5,13 +5,13 @@ import 'app_colors.dart';
 class AppTheme {
   AppTheme._();
 
-  static const Color bg = Color(0xFFF6F8EF);
-  static const text = Color(0xFF171D14);
-  static const muted = Color(0xFF5F6A58);
-  static const subtle = Color(0xFF66745B);
+  static const Color bg = Color(0xFFF5F4F0);
+  static const text = Color(0xFF1C1F18);
+  static const muted = Color(0xFF6B7560);
+  static const subtle = Color(0xFF8A9178);
   static const card = Color(0xFFFFFFFF);
-  static const container = Color(0xFFFFF9EC);
-  static const containerHigh = Color(0xFFF5EDEE);
+  static const container = Color(0xFFFFFFFF);
+  static const containerHigh = Color(0xFFF0EDE9);
   static const border = Color(0xFF3B5D24);
   static const primary = Color(0xFF285F3B);
   static const trendUp = Color(0xFF6F8C49);
@@ -114,8 +114,10 @@ class AppTheme {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return <BoxShadow>[
       BoxShadow(
-        color: isDark ? const Color(0x30FFFFFF) : const Color(0x0F285F3B),
-        blurRadius: 8,
+        color: isDark
+            ? const Color(0x30FFFFFF)
+            : const Color(0x1A285F3B),
+        blurRadius: isDark ? 8 : 6,
         offset: const Offset(0, 2),
       ),
     ];
@@ -129,8 +131,10 @@ class AppTheme {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return <BoxShadow>[
       BoxShadow(
-        color: isDark ? const Color(0x40FFFFFF) : const Color(0x18285F3B),
-        blurRadius: 22,
+        color: isDark
+            ? const Color(0x40FFFFFF)
+            : const Color(0x22285F3B),
+        blurRadius: isDark ? 22 : 16,
         offset: const Offset(0, 10),
       ),
     ];

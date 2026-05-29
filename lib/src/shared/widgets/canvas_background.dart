@@ -11,19 +11,22 @@ class CanvasBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colors.bg,
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          stops: const <double>[0, 0.65, 1],
-          colors: <Color>[
-            colors.bg,
-            colors.bg.withValues(alpha: .96),
-            colors.container,
-          ],
-        ),
+        gradient: isDark
+            ? null
+            : LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const <double>[0, 0.7, 1],
+                colors: <Color>[
+                  colors.bg,
+                  colors.bg.withValues(alpha: .98),
+                  const Color(0xFFFAF9F6),
+                ],
+              ),
       ),
       child: child,
     );
