@@ -49,6 +49,7 @@ class FavoritesList extends StatelessWidget {
           maxLimit: effectiveLimit,
           visibleCount: visiblePairs.length,
           isAtLimit: isAtLimit && hiddenCount == 0,
+          snapshot: snapshot,
           onAdd: onAdd,
         ),
         const SizedBox(height: AppTheme.space3),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart' as intl;
 
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
@@ -31,54 +32,112 @@ class FavoritePairRow extends StatelessWidget {
     final colors = AppColors.of(context);
     final loc = l10n(context);
     final rate = rateForFavoritePair(pair: pair, snapshot: snapshot);
-    return Column(
-      children: <Widget>[
-        Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {
-              HapticFeedback.selectionClick();
-              onOpen();
-            },
-            borderRadius: BorderRadius.circular(AppTheme.radius),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: AppTheme.rowMinHeight),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(child: FavoritePairIdentity(pair: pair)),
-                    const SizedBox(width: 8),
-                    FavoriteRateText(rate: rate),
-                    const SizedBox(width: 8),
-                    Semantics(
-                      button: true,
-                      label: loc.removeFavoriteTooltip,
-                      child: InkWell(
-                        onTap: () => HapticFeedback.selectionClick(),
-                        borderRadius: BorderRadius.circular(16),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Icon(
+    final pairLabel = '${pair.base} → ${pair.quote}';
+    final directRateLine = _directRateLine(rate);
+    return Padding(
+      padding: EdgeInsets.only(bottom: showDivider ? AppTheme.space3 : 0),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            HapticFeedback.selectionClick();
+            onOpen();
+          },
+          borderRadius: BorderRadius.circular(AppTheme.radius),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: colors.container,
+              borderRadius: BorderRadius.circular(AppTheme.radius),
+              border: Border.all(color: colors.border.withValues(alpha: .18)),
+              boxShadow: AppTheme.subtleShadowFor(context),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      FavoritePairIdentity(pair: pair),
+                      const Spacer(),
+                      Semantics(
+                        button: true,
+                        label: loc.removeFavoriteTooltip,
+                        child: IconButton(
+                          onPressed: () {
+                            HapticFeedback.selectionClick();
+                            onRemove();
+                          },
+                          icon: Icon(
                             Icons.close_rounded,
                             size: 18,
                             color: colors.subtle,
                           ),
+                          tooltip: loc.removeFavoriteTooltip,
+                          visualDensity: VisualDensity.compact,
+                          constraints: const BoxConstraints(
+                            minWidth: 40,
+                            minHeight: 40,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          pairLabel,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTheme.settingsTileTitleStyle(context).copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      FavoriteRateText(rate: rate),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          directRateLine,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTheme.supportingTextStyle(context).copyWith(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
         ),
-        if (showDivider)
-          Divider(
-            color: colors.border.withValues(alpha: .20),
-            indent: 0,
-          ),
-      ],
+      ),
     );
+  }
+
+  String _directRateLine(double? rate) {
+    if (rate == null) return '1 ${pair.base} = — ${pair.quote}';
+    return '1 ${pair.base} = ${_formatRate(rate)} ${pair.quote}';
+  }
+
+  String _formatRate(double value) {
+    final abs = value.abs();
+    final decimals = abs >= 100
+        ? 2
+        : abs >= .1
+        ? 4
+        : 6;
+    return intl.NumberFormat.decimalPatternDigits(
+      decimalDigits: decimals,
+    ).format(value);
   }
 }
