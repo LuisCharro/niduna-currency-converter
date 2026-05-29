@@ -8,6 +8,8 @@ import '../models/currency_quote.dart';
 import 'conversion_lens_sheet.dart';
 import 'currency_row_swipe_actions.dart';
 import 'currency_rate_row.dart';
+import '../../../shared/widgets/niduna_refresh_indicator.dart';
+import '../../../shared/widgets/shimmer_loading.dart';
 
 class VisibleRatesList extends StatefulWidget {
   const VisibleRatesList({
@@ -20,6 +22,7 @@ class VisibleRatesList extends StatefulWidget {
     required this.onToggleFavorite,
     this.maxFavoritesReached = false,
     this.onRefresh,
+    this.isLoading = false,
     super.key,
   });
 
@@ -32,6 +35,7 @@ class VisibleRatesList extends StatefulWidget {
   final Future<bool> Function(String code) onToggleFavorite;
   final bool maxFavoritesReached;
   final Future<void> Function()? onRefresh;
+  final bool isLoading;
 
   @override
   State<VisibleRatesList> createState() => _VisibleRatesListState();
@@ -44,6 +48,16 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
     final l10n = AppLocalizations.of(context);
+
+    if (widget.isLoading && widget.quotes.isEmpty) {
+      return ListView.separated(
+        padding: AppTheme.pageInsets.copyWith(bottom: AppTheme.space2),
+        itemCount: 5,
+        separatorBuilder: (_, __) => const SizedBox(height: 4),
+        itemBuilder: (_, __) => ShimmerLoading(child: const RateRowSkeleton()),
+      );
+    }
+
     if (widget.quotes.isEmpty) {
       return SingleChildScrollView(
         padding: AppTheme.pageInsets,
@@ -106,18 +120,15 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
         );
       },
       separatorBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(left: 58),
-        child: Divider(color: colors.border.withValues(alpha: .15), height: .5),
+        padding: const EdgeInsets.only(left: 62),
+        child: Divider(color: colors.border.withValues(alpha: .20), height: .5),
       ),
       itemCount: widget.quotes.length,
     );
 
     if (widget.onRefresh != null) {
-      return RefreshIndicator(
+      return NidunaRefreshIndicator(
         onRefresh: widget.onRefresh!,
-        color: colors.trendUp,
-        backgroundColor: colors.card,
-        edgeOffset: 20,
         child: list,
       );
     }

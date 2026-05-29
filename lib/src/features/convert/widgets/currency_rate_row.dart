@@ -16,28 +16,35 @@ class CurrencyRateRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = AppColors.of(context);
     return Material(
       color: Colors.transparent,
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: AppTheme.rowMinHeight),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
           child: Row(
             children: <Widget>[
               Container(
-                width: 3,
-                height: 44,
+                width: 38,
+                height: 38,
                 decoration: BoxDecoration(
-                  color: colors.border.withValues(alpha: .16),
-                  borderRadius: BorderRadius.circular(999),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.of(context).border.withValues(alpha: .32),
+                    width: 1.0,
+                  ),
+                ),
+                child: Center(
+                  child: CurrencyFlagIcon(
+                    code: quote.code,
+                    symbol: quote.symbol,
+                    radius: 18,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
-              Expanded(
-                child: QuoteIdentity(quote: quote),
-              ),
-              const SizedBox(width: 10),
+              Expanded(child: QuoteIdentity(quote: quote)),
+              const SizedBox(width: 12),
               QuoteValue(quote: quote),
             ],
           ),

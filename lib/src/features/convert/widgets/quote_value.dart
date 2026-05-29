@@ -18,11 +18,11 @@ class QuoteValue extends StatelessWidget {
         Text(
           '${quote.symbol} ${quote.amount}',
           style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w800,
+            fontSize: 19,
+            fontWeight: FontWeight.w900,
             color: colors.text,
             fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
-            letterSpacing: -0.2,
+            letterSpacing: -0.4,
           ),
         ),
         if (quote.rateLine.isNotEmpty)
@@ -32,8 +32,8 @@ class QuoteValue extends StatelessWidget {
               quote.rateLine,
               style: TextStyle(
                 fontSize: 11.5,
-                fontWeight: FontWeight.w600,
-                color: colors.muted.withValues(alpha: .88),
+                fontWeight: FontWeight.w500,
+                color: colors.muted.withValues(alpha: .82),
                 letterSpacing: 0.2,
               ),
             ),

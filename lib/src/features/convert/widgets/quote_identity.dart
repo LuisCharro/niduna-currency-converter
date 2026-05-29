@@ -10,7 +10,7 @@ class QuoteIdentity extends StatelessWidget {
 
   final CurrencyQuote quote;
 
-  static const double _flagSize = 36;
+  static const double _flagSize = 38;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class QuoteIdentity extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: colors.border.withValues(alpha: .2),
+              color: colors.border.withValues(alpha: .32),
               width: 1,
             ),
           ),
@@ -48,16 +48,17 @@ class QuoteIdentity extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 15.5,
                   fontWeight: FontWeight.w700,
-                  height: 1.2,
+                  height: 1.25,
+                  letterSpacing: -0.15,
                 ),
               ),
                 Text(
                   quote.code,
                   style: TextStyle(
                     fontSize: 13,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                     color: colors.muted,
-                    letterSpacing: 0.3,
+                    letterSpacing: 0.5,
                   ),
                 ),
               ],
