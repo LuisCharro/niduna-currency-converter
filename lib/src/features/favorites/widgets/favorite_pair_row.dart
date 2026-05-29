@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../shared/widgets/divider_list_row.dart';
+import '../../../shared/widgets/currency_flag_icon.dart';
+import '../../../shared/widgets/currency_flags.dart';
 import '../../convert/domain/latest_rates_snapshot.dart';
 import '../domain/favorite_pair.dart';
 import '../domain/favorite_pair_rate.dart';
@@ -31,26 +33,73 @@ class FavoritePairRow extends StatelessWidget {
     final colors = AppColors.of(context);
     final loc = l10n(context);
     final rate = rateForFavoritePair(pair: pair, snapshot: snapshot);
-    return DividerListRow(
-      onTap: onOpen,
-      showDivider: showDivider,
-      leadingAccent: colors.primary.withValues(alpha: .18),
-      trailing: IconButton(
-        onPressed: onRemove,
-        tooltip: loc.removeFavoriteTooltip,
-        icon: Icon(Icons.close_rounded, size: 21, color: colors.subtle),
-      ),
-      child: Semantics(
-        button: true,
-        label: loc.openFavoriteTooltip,
-        child: Row(
-          children: <Widget>[
-            Expanded(child: FavoritePairIdentity(pair: pair)),
-            const SizedBox(width: AppTheme.space3),
-            FavoriteRateText(rate: rate),
-          ],
+    return Column(
+      children: <Widget>[
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              HapticFeedback.selectionClick();
+              onOpen();
+            },
+            borderRadius: BorderRadius.circular(AppTheme.radius),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: AppTheme.rowMinHeight),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: colors.border.withValues(alpha: .32),
+                          width: 1,
+                        ),
+                      ),
+                      child: Center(
+                        child: CurrencyFlagIcon(
+                          code: pair.base,
+                          symbol: CurrencyFlags.forCode(pair.base),
+                          radius: 18,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(child: FavoritePairIdentity(pair: pair)),
+                    const SizedBox(width: 12),
+                    FavoriteRateText(rate: rate),
+                    const SizedBox(width: 12),
+                    Semantics(
+                      button: true,
+                      label: loc.removeFavoriteTooltip,
+                      child: InkWell(
+                        onTap: () => HapticFeedback.selectionClick(),
+                        borderRadius: BorderRadius.circular(16),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Icon(
+                            Icons.close_rounded,
+                            size: 18,
+                            color: colors.subtle,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
-      ),
+        if (showDivider)
+          Divider(
+            color: colors.border.withValues(alpha: .20),
+            indent: 62,
+          ),
+      ],
     );
   }
 }

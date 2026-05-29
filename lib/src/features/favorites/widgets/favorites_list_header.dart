@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_theme.dart';
@@ -26,15 +27,27 @@ class FavoritesListHeader extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Text(
-            '$visibleCount/$maxLimit',
+            '$visibleCount PAIRS',
             style: AppTheme.sectionLabelStyle(context),
           ),
         ),
         if (!isAtLimit)
-          PillAction(
+          Semantics(
+            button: true,
             label: l10n(context).favoritesOpenConvert,
-            icon: Icons.add_rounded,
-            onTap: onAdd,
+            child: InkWell(
+              onTap: () {
+                HapticFeedback.selectionClick();
+                onAdd();
+              },
+              borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+              child: PillAction(
+                label: l10n(context).favoritesOpenConvert,
+                icon: Icons.add_rounded,
+                onTap: onAdd,
+                emphasized: true,
+              ),
+            ),
           ),
       ],
     );

@@ -17,16 +17,20 @@ class FavoritesEmptyState extends StatelessWidget {
     final loc = l10n(context);
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border.symmetric(
-          horizontal: BorderSide(color: colors.border.withValues(alpha: .12)),
-        ),
+        color: colors.containerHigh.withValues(alpha: .5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colors.border.withValues(alpha: .12)),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppTheme.space7),
+        padding: const EdgeInsets.symmetric(vertical: AppTheme.space8),
         child: Column(
           children: <Widget>[
-            Icon(Icons.star_outline_rounded, size: 36, color: colors.primary),
-            const SizedBox(height: AppTheme.space4),
+            Icon(
+              Icons.star_outline_rounded,
+              size: 40,
+              color: colors.primary.withValues(alpha: .5),
+            ),
+            const SizedBox(height: AppTheme.space8),
             Text(
               loc.labelNoFavorites,
               style: AppTheme.settingsGroupTitleStyle(context),
@@ -38,14 +42,20 @@ class FavoritesEmptyState extends StatelessWidget {
               style: AppTheme.supportingTextStyle(context),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppTheme.space5),
+            const SizedBox(height: AppTheme.space7),
             const FavoritesSwipeHint(),
-            const SizedBox(height: AppTheme.space5),
-            PillAction(
-              label: loc.favoritesOpenConvert,
-              icon: Icons.arrow_forward_rounded,
-              onTap: onAdd,
-              emphasized: true,
+            const SizedBox(height: AppTheme.space8),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                boxShadow: AppTheme.subtleShadowFor(context),
+                borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+              ),
+              child: PillAction(
+                label: loc.favoritesOpenConvert,
+                icon: Icons.arrow_forward_rounded,
+                onTap: onAdd,
+                emphasized: true,
+              ),
             ),
           ],
         ),

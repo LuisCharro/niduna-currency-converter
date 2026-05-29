@@ -38,20 +38,14 @@ class FavoritesTabBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loc = l10n(context);
     return ListView(
       padding: AppTheme.pageInsets.copyWith(
         top: AppTheme.space6,
         bottom: AppTheme.space4,
       ),
       children: <Widget>[
-        ScreenTitle(loc.tabFavorites),
-        const SizedBox(height: AppTheme.space2),
-        Text(
-          loc.favoritesLocalSubtitle,
-          style: AppTheme.supportingTextStyle(context),
-        ),
-        const SizedBox(height: AppTheme.space6),
+        ScreenTitle(l10n(context).tabFavorites),
+        const SizedBox(height: AppTheme.space4),
         if (pairs.isEmpty)
           FavoritesEmptyState(onAdd: onAdd)
         else

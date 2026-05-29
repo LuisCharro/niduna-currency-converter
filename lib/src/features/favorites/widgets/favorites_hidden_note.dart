@@ -25,12 +25,12 @@ class FavoritesHiddenNote extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppTheme.space3,
-        vertical: AppTheme.space2,
+        vertical: AppTheme.space3,
       ),
       decoration: BoxDecoration(
-        color: colors.container,
-        borderRadius: BorderRadius.circular(AppTheme.radius),
-        border: Border.all(color: colors.border.withValues(alpha: .14)),
+        color: colors.containerHigh.withValues(alpha: .5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colors.border.withValues(alpha: .12)),
       ),
       child: Column(
         children: <Widget>[
@@ -46,8 +46,8 @@ class FavoritesHiddenNote extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppTheme.space3),
           if (canOfferBoost) ...<Widget>[
+            const SizedBox(height: AppTheme.space3),
             SizedBox(
               width: double.infinity,
               height: 40,
@@ -68,8 +68,8 @@ class FavoritesHiddenNote extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: AppTheme.space2),
           ],
+          const SizedBox(height: AppTheme.space3),
           SizedBox(
             width: double.infinity,
             height: 40,

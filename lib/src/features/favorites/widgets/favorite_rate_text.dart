@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../../l10n/app_localizations_safe.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../shared/widgets/value_pill.dart';
 
 class FavoriteRateText extends StatelessWidget {
   const FavoriteRateText({required this.rate, super.key});
@@ -11,17 +10,8 @@ class FavoriteRateText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = AppColors.of(context);
-    return Text(
-      rate == null
-          ? l10n(context).favoritesRateUnavailable
-          : _formatRate(rate!),
-      style: TextStyle(
-        color: colors.text,
-        fontSize: 18,
-        fontWeight: FontWeight.w800,
-        fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
-      ),
+    return ValuePill(
+      text: rate == null ? '\u2014' : _formatRate(rate!),
     );
   }
 
