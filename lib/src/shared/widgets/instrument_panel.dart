@@ -19,11 +19,19 @@ class InstrumentPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colors.containerHigh.withValues(alpha: .62),
-        borderRadius: BorderRadius.circular(AppTheme.radius),
-        border: Border.all(color: colors.border.withValues(alpha: .15)),
+        color: isDark
+            ? colors.containerHigh.withValues(alpha: .62)
+            : colors.card,
+        borderRadius: BorderRadius.circular(AppTheme.cardRadius),
+        border: Border.all(
+          color: colors.border.withValues(alpha: isDark ? .15 : .20),
+        ),
+        boxShadow: isDark
+            ? null
+            : AppTheme.subtleShadowFor(context),
       ),
       child: Padding(
         padding: padding ?? const EdgeInsets.all(AppTheme.space4),

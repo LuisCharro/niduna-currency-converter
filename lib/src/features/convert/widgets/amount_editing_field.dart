@@ -44,11 +44,21 @@ class AmountEditingField extends StatelessWidget {
                   duration: const Duration(milliseconds: 150),
                   curve: Curves.easeOut,
                   style: style,
-                  child: Text(
-                    display,
-                    key: ValueKey<String>(display),
-                    maxLines: 1,
-                    overflow: TextOverflow.visible,
+                  child: ShaderMask(
+                    shaderCallback: (bounds) => LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: <Color>[
+                        colors.text,
+                        colors.text.withValues(alpha: .85),
+                      ],
+                    ).createShader(bounds),
+                    child: Text(
+                      display,
+                      key: ValueKey<String>(display),
+                      maxLines: 1,
+                      overflow: TextOverflow.visible,
+                    ),
                   ),
                 );
               },

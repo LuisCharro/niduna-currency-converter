@@ -45,11 +45,11 @@ class AmountPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           AmountHeaderRow(onRefresh: () => onRefresh(), onMore: onMore),
-          const SizedBox(height: AppTheme.space4),
+          const SizedBox(height: AppTheme.space3),
           InstrumentPanel(
             padding: const EdgeInsets.fromLTRB(
               AppTheme.space4,
-              AppTheme.space4,
+              AppTheme.space5,
               AppTheme.space4,
               AppTheme.space3,
             ),

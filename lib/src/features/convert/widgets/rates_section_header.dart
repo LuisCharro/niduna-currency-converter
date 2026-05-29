@@ -34,13 +34,13 @@ class RatesSectionHeader extends StatelessWidget {
             onPressed: onEdit,
             style: OutlinedButton.styleFrom(
               foregroundColor: colors.primary,
-              backgroundColor: colors.container.withValues(alpha: .55),
-              side: BorderSide(color: colors.border.withValues(alpha: .14)),
+              backgroundColor: colors.card,
+              side: BorderSide(color: colors.border.withValues(alpha: .22)),
               padding: const EdgeInsets.symmetric(
                 horizontal: AppTheme.space3,
                 vertical: 8,
               ),
-              minimumSize: const Size(48, 40),
+              minimumSize: const Size(48, 38),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppTheme.pillRadius),
