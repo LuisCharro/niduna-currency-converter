@@ -28,8 +28,8 @@ class ValuePill extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: compact ? 10 : 13,
-          vertical: compact ? 6 : 8,
+          horizontal: compact ? 11 : 14,
+          vertical: compact ? 7 : 9,
         ),
         child: Text(
           text,

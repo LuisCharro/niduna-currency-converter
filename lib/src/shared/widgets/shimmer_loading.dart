@@ -40,17 +40,20 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
       animation: _controller,
       builder: (context, _) => ShaderMask(
         blendMode: BlendMode.srcATop,
-        shaderCallback: (bounds) => LinearGradient(
-          begin: Alignment(-1.5, 0),
-          end: Alignment(1.5, 0),
-          colors: <Color>[
-            Colors.transparent,
-            Colors.white.withValues(alpha: .15),
-            Colors.white.withValues(alpha: .15),
-            Colors.transparent,
-          ],
-          stops: const <double>[0, .35, .65, 1],
-        ).animate(_controller).value.evaluate(bounds),
+        shaderCallback: (bounds) {
+          final double offset = _controller.value;
+          return LinearGradient(
+            begin: Alignment(-1.5 + offset * 3, 0),
+            end: Alignment(1.5 - offset * 3, 0),
+            colors: <Color>[
+              Colors.transparent,
+              Colors.white.withValues(alpha: .15),
+              Colors.white.withValues(alpha: .15),
+              Colors.transparent,
+            ],
+            stops: const <double>[0, .35, .65, 1],
+          ).createShader(bounds);
+        },
         child: widget.child,
       ),
     );

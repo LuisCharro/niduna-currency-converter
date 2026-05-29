@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
@@ -30,8 +31,11 @@ class FloatingPillNavItem extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(5),
-        child: PressScale(
-          onTap: onTap,
+        child:           PressScale(
+          onTap: () {
+            HapticFeedback.selectionClick();
+            onTap();
+          },
           child: SizedBox.expand(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

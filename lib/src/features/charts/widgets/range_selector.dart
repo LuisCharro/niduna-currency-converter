@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
@@ -33,6 +34,7 @@ class RangeSelector extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 2),
             child: GestureDetector(
               onTap: () {
+                HapticFeedback.selectionClick();
                 if (isLocked) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -61,11 +63,12 @@ class RangeSelector extends StatelessWidget {
                   color: isSelected ? AppColors.of(context).card : Colors.transparent,
                   border: Border.all(
                     color: isSelected
-                        ? AppColors.of(context).border.withValues(alpha: .14)
+                        ? AppColors.of(context).border.withValues(alpha: .22)
                         : Colors.transparent,
                   ),
                   borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-                  boxShadow: isSelected ? AppTheme.subtleShadowFor(context) : null,
+                  boxShadow: isSelected && Theme.of(context).brightness != Brightness.dark
+                      ? AppTheme.subtleShadowFor(context) : null,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

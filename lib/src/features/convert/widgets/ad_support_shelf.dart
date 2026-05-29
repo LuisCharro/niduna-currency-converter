@@ -22,16 +22,33 @@ class AdSupportShelf extends StatelessWidget {
     final bottomPadding = navInset + (compact ? 4.0 : 8.0);
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colors.container,
+        color: colors.containerHigh.withValues(alpha: .3),
         border: Border(
-          top: BorderSide(color: colors.border.withValues(alpha: .14)),
+          top: BorderSide(color: colors.border.withValues(alpha: .08)),
         ),
       ),
       child: Padding(
         padding: EdgeInsets.fromLTRB(20, topPadding, 20, bottomPadding),
-        child: const Align(
-          alignment: Alignment.topCenter,
-          child: AdBannerWidget(),
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              left: 0,
+              top: 0,
+              child: Text(
+                'AD',
+                style: TextStyle(
+                  fontSize: 9,
+                  color: colors.muted,
+                  letterSpacing: 1.2,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            const Align(
+              alignment: Alignment.topCenter,
+              child: AdBannerWidget(),
+            ),
+          ],
         ),
       ),
     );

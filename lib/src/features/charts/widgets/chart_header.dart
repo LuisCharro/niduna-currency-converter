@@ -38,7 +38,7 @@ class ChartHeader extends StatelessWidget {
 
     return Padding(
       padding: AppTheme.pageInsets.copyWith(
-        top: AppTheme.space2,
+        top: AppTheme.space1,
         bottom: AppTheme.space2,
       ),
       child: Row(
@@ -100,9 +100,11 @@ class ChartHeader extends StatelessWidget {
               height: 44,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.of(context).card.withValues(alpha: .88),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.of(context).card.withValues(alpha: .88)
+                    : AppColors.of(context).card,
                 border: Border.all(
-                  color: AppColors.of(context).border.withValues(alpha: .2),
+                  color: AppColors.of(context).border.withValues(alpha: .28),
                 ),
               ),
               child: Icon(

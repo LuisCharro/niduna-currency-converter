@@ -29,7 +29,10 @@ class FloatingPillNavBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: colors.container,
             borderRadius: BorderRadius.circular(AppTheme.navOuterRadius),
-            border: Border.all(color: colors.border.withValues(alpha: .22)),
+            border: Border.all(
+              color: colors.border.withValues(alpha:
+                Theme.of(context).brightness == Brightness.dark ? .22 : .30),
+            ),
             boxShadow: AppTheme.floatingShadowFor(context),
           ),
           child: Stack(

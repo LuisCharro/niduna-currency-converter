@@ -25,7 +25,8 @@ class FloatingPillActivePill extends StatelessWidget {
       height: AppTheme.floatingNavHeight - 10,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppColors.of(context).primary.withValues(alpha: .1),
+          color: AppColors.of(context).primary.withValues(alpha:
+            Theme.of(context).brightness == Brightness.dark ? .10 : .14),
           borderRadius: BorderRadius.circular(27),
         ),
       ),
