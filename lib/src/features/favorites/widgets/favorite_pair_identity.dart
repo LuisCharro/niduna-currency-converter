@@ -14,72 +14,71 @@ class FavoritePairIdentity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
       children: <Widget>[
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: colors.border.withValues(alpha: .32),
-                  width: 1,
-                ),
-              ),
-              child: Center(
-                child: CurrencyFlagIcon(
-                  code: pair.base,
-                  symbol: CurrencyFlags.forCode(pair.base),
-                  radius: 13,
-                ),
-              ),
+        Container(
+          width: 26,
+          height: 26,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: colors.border.withValues(alpha: .28),
+              width: 1,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: Icon(
-                Icons.arrow_forward_rounded,
-                size: 14,
-                color: colors.muted,
-              ),
+          ),
+          child: Center(
+            child: CurrencyFlagIcon(
+              code: pair.base,
+              symbol: CurrencyFlags.forCode(pair.base),
+              radius: 11,
             ),
-            Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: colors.border.withValues(alpha: .32),
-                  width: 1,
-                ),
-              ),
-              child: Center(
-                child: CurrencyFlagIcon(
-                  code: pair.quote,
-                  symbol: CurrencyFlags.forCode(pair.quote),
-                  radius: 13,
-                ),
-              ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Icon(
+            Icons.arrow_forward_rounded,
+            size: 12,
+            color: colors.subtle,
+          ),
+        ),
+        Container(
+          width: 26,
+          height: 26,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: colors.border.withValues(alpha: .28),
+              width: 1,
             ),
-            const SizedBox(width: 10),
-            Flexible(
-              child: Text(
+          ),
+          child: Center(
+            child: CurrencyFlagIcon(
+              code: pair.quote,
+              symbol: CurrencyFlags.forCode(pair.quote),
+              radius: 11,
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
                 '${pair.base} → ${pair.quote}',
                 style: AppTheme.settingsTileTitleStyle(context),
                 overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppTheme.space1),
-        Text(
-          '${pair.base}/${pair.quote}',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: AppTheme.supportingTextStyle(context),
+              Text(
+                '${pair.base}/${pair.quote}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTheme.supportingTextStyle(context),
+              ),
+            ],
+          ),
         ),
       ],
     );

@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../shared/widgets/currency_flag_icon.dart';
-import '../../../shared/widgets/currency_flags.dart';
 import '../../convert/domain/latest_rates_snapshot.dart';
 import '../domain/favorite_pair.dart';
 import '../domain/favorite_pair_rate.dart';
@@ -49,29 +47,10 @@ class FavoritePairRow extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                 child: Row(
                   children: <Widget>[
-                    Container(
-                      width: 38,
-                      height: 38,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: colors.border.withValues(alpha: .32),
-                          width: 1,
-                        ),
-                      ),
-                      child: Center(
-                        child: CurrencyFlagIcon(
-                          code: pair.base,
-                          symbol: CurrencyFlags.forCode(pair.base),
-                          radius: 18,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
                     Expanded(child: FavoritePairIdentity(pair: pair)),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 8),
                     FavoriteRateText(rate: rate),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 8),
                     Semantics(
                       button: true,
                       label: loc.removeFavoriteTooltip,
@@ -97,7 +76,7 @@ class FavoritePairRow extends StatelessWidget {
         if (showDivider)
           Divider(
             color: colors.border.withValues(alpha: .20),
-            indent: 62,
+            indent: 0,
           ),
       ],
     );
