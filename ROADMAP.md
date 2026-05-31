@@ -640,3 +640,56 @@ All code features are complete. The path to store is operational:
 keystore → real AdMob IDs → privacy policy → screenshots → metadata → submit.
 
 See [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) for the full ordered checklist with effort estimates.
+
+---
+
+## Post-Release Phase 1.x — Local-Only Feature Candidates
+
+> **Scope rule:** Everything in this section works fully offline / locally.
+> No backend, no cloud user data, no server-side state.
+> Features requiring a VPS or user database are deferred to Phase 2.
+
+These features are ranked by **value-to-effort ratio** based on competitor research
+and real user feedback (Reddit, App Store reviews, feature comparison).
+
+### Tier A — High value, feasible soon after release
+
+| Feature | Value | Effort | Why it matters |
+|---------|-------|--------|----------------|
+| **Home screen widget** (Android + iOS) | VERY HIGH | Medium | #1 passive engagement driver. Users see rates without opening the app. CoinCalc lists widget as a key feature. Drives daily impressions. |
+| **Built-in calculator** (+-*/ on amount field) | HIGH | Low | Travelers adding tax/tip while converting. Reddit users specifically mention this. Minor code change, major UX improvement. |
+| **Auto-sort favorites by usage frequency** | HIGH | Low | CoinCalc users specifically praise this. Small effort, outsized impact on reducing friction for repeat use. |
+| **Rate trend arrows** on Convert rows (up/down/flat vs yesterday) | HIGH | Low | Quick glance signal. Already have cached historical data. Users trust apps that show rate movement. |
+
+### Tier B — Good value, moderate effort
+
+| Feature | Value | Effort | Why it matters |
+|---------|-------|--------|----------------|
+| **Calculator widget** (widget that lets you convert without opening app) | MEDIUM-HIGH | Medium | Natural evolution of home screen widget. CoinCalc Pro differentiator. |
+| **Re-enable Favorites tab** in nav (currently hidden) | MEDIUM | Low | Code exists, just needs nav slot restored. Favorites + auto-sort = strong retention for travelers. |
+| **Custom currency list size** (free: 5 visible, premium: all 51) | MEDIUM | Low | CoinCalc's entire Pro upgrade is justified by "see more currencies at once". Natural IAP upsell. |
+| **Share rate screenshot** (export current Convert screen as image) | MEDIUM | Low | Word-of-mouth driver. Users share with friends "look how much X costs in Y". Free marketing. |
+| **Onboarding tutorial** (first-launch walkthrough) | MEDIUM | Medium | Reduces confusion on first use. Standard for finance apps. Can be a simple 3-step overlay. |
+| **App icon badge for rate changes** | LOW-MEDIUM | Medium | Minor but visible. Shows users the app is "alive" even when not opened. |
+
+### Tier C — Nice-to-have, lower priority
+
+| Feature | Value | Effort | Why it matters |
+|---------|-------|--------|----------------|
+| **Search/filter in Favorites** | LOW | Low | Nice when favorites grow beyond 5-10 pairs. |
+| **Custom themes / accent colors** | LOW | Medium | CoinCalc Pro feature. Fun but not a driver. |
+| **Haptic feedback refinement** (different haptics for different actions) | LOW | Low | Polish item. Already have basic haptics. |
+| **Currency comparison table** (compare 1 USD across 5 currencies side by side) | LOW | Medium | Power user feature. Niche appeal. |
+
+### Explicitly excluded from Phase 1.x
+
+| Feature | Why excluded |
+|---------|-------------|
+| Rate alerts (push notifications) | Requires backend + user data on server |
+| Hourly rate refresh | Requires VPS pulling + serving |
+| Intraday chart ranges (1H, 6H, 1D) | Requires faster-than-daily data source |
+| Location-based currency detection | Privacy conflict (location access) |
+| Portfolio tracking | Scope creep into finance app territory |
+| Multi-pair chart comparison | Complex, niche, better suited for Phase 2 |
+| User accounts / cloud sync | Requires backend |
+| Apple Watch app | Requires significant additional dev; Phase 2-3 |

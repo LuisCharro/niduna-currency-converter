@@ -79,7 +79,7 @@ first or defer the idea.
 |--------|------|--------------|
 | `Convert` | amount input, base currency, multi-currency results, 11 crypto quote rows, favorite toggles, freshness/offline status, banner ad area | charts, settings, accounts, transfers |
 | `Favorites` | local favorite pairs, max-3 rule, edit/delete, jump back to Convert context | unlimited favorites, cloud sync |
-| `Charts` | fiat historical charts up to 2 years, BTC/ETH and mixed fiat/crypto charts up to 1 year, range selector, high/low/change | crypto history beyond 1 year, metals, export, multi-pair compare |
+| `Charts` | fiat historical charts up to 2 years, 11 crypto and mixed fiat/crypto charts up to 1 year, range selector, high/low/change | crypto history beyond 1 year, metals, export, multi-pair compare |
 | `Settings` | local preferences (default base, decimal places, refresh-on-open), cache controls, Remove Ads entry, privacy/about/version | account settings, backend sync, subscriptions before Phase 2 |
 
 ### Data and cache rules
@@ -137,7 +137,6 @@ large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 
 | Feature | Why |
 |---------|-----|
-| **Crypto beyond BTC/ETH, intraday crypto, or crypto history beyond 1 year** | Deferred. Current no-key scope is limited to BTC/ETH latest + daily charts up to 1 year |
 | **Metals (XAU, XAG)** | Deferred to Phase 3 — no good free API |
 | **Charts beyond 2 years** | Phase 1 scope |
 | **Rate alerts (push)** | Requires backend for push notifications; one-time payment can't sustain hosting costs |
@@ -147,6 +146,24 @@ large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 | **Chart export** | Phase 2 |
 | **Multi-pair chart comparison** | Phase 2 |
 | **Apple Watch** | Phase 2 or 3 |
+
+### 🔧 Phase 1.x — Post-Release Local Features (no backend, no cloud data)
+
+These features work fully offline / locally and are candidates for the first few
+updates after store launch. Ranked by value-to-effort ratio from competitor research.
+
+| Feature | Value | Effort | Driver |
+|---------|-------|--------|--------|
+| Home screen widget (Android + iOS) | VERY HIGH | Medium | #1 passive engagement driver across all competitor apps |
+| Built-in calculator (+-*/) | HIGH | Low | Travelers adding tax/tip; Reddit users mention this |
+| Auto-sort favorites by usage | HIGH | Low | CoinCalc users praise this; small effort, outsized impact |
+| Rate trend arrows on Convert rows | HIGH | Low | Quick glance signal; trust builder |
+| Re-enable Favorites tab in nav | MEDIUM | Low | Code exists; just needs nav slot + auto-sort |
+| Custom currency list size (free: 5, premium: all 51) | MEDIUM | Low | CoinCat's entire Pro upgrade is "see more at once" |
+| Share rate screenshot | MEDIUM | Low | Word-of-mouth; free marketing |
+
+**Scope rule for Phase 1.x:** Everything must work without a backend or cloud user data.
+No VPS, no user database, no server-side state. Features needing those are Phase 2+.
 
 ---
 
@@ -297,12 +314,12 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 
 ### Crypto API (No-Key Phase 1.x)
 
-- BTC and ETH latest rates follow a build-time provider profile. Release-safe builds use fawazahmed0. Dev builds may use CoinPaprika as primary and fawazahmed0 as fallback.
-- BTC and ETH daily historical charts use Coingecko in the release-safe profile (no API key). Dev builds may use CoinPaprika historical ticks.
+- 11 crypto currencies (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC) latest rates follow a build-time provider profile. Release-safe builds use fawazahmed0. Dev builds may use CoinPaprika as primary and fawazahmed0 as fallback.
+- Crypto daily historical charts use fawazahmed0 in the release-safe profile (no API key). Dev builds may use CoinPaprika historical ticks.
 - No API key is embedded in the mobile app.
-- No backend/proxy is required for this limited BTC/ETH scope.
+- No backend/proxy is required for this limited scope.
 - Crypto-involved chart ranges are limited to 1 year on the no-key path.
-- Revisit broader crypto coverage, intraday crypto, and crypto beyond 1 year when there is a backend/proxy, a paid API plan, or an explicit public-key decision.
+- Revisit intraday crypto and crypto beyond 1 year when there is a backend/proxy, a paid API plan, or an explicit public-key decision.
 
 ### When to switch to paid API
 
@@ -387,6 +404,8 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 | 2026-05-07 | Currency app chart limit: App Store listing does **NOT** specify a chart limit | App Store listing fetch |
 | 2026-05-07 | Currency app has both **subscription (Currency+)** AND **one-time (Currency Pro $19.99)** IAP options | App Store listing |
 | 2026-05-22 | Feature audit: all Phase 1 slices (0-9, 11) confirmed implemented. BTC/ETH charts, dark mode, data freshness indicator, pull-to-refresh, modal picker — all DONE. Remaining: dark mode system-follow, real AdMob SDK, release signing, privacy policy, store listing assets. | Code audit |
+| 2026-05-31 | Currency expansion: 16 fiat → 40 fiat, 2 crypto → 11 crypto (51 total). Sectioned region-based picker. Chart 24h badge fix. All provider docs and product docs updated. | Code audit |
+| 2026-05-31 | Post-release Phase 1.x defined: local-only features (no backend/cloud). Priority: home screen widget, calculator, auto-sort favorites, rate trend arrows. Competitor research informs prioritization. | Product decision |
 
 ---
 
@@ -394,10 +413,10 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 
 | Decision | Phase 1 | Phase 2 | Phase 3 |
 |----------|---------|---------|----------|
-| **Data source** | Frankfurter free + CoinPaprika no-key for BTC/ETH | ExchangeRate-API Pro + Frankfurter + optional broader crypto provider via backend | + expanded crypto/metals providers |
+| **Data source** | Frankfurter free + fawazahmed0 CC0 for 11 crypto | ExchangeRate-API Pro + Frankfurter + optional broader crypto provider via backend | + expanded crypto/metals providers |
 | **Backend** | None | ASP.NET Core + PostgreSQL on Hostinger | Same |
 | **Currencies** | 40 fiat currencies + 11 crypto (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC) | All 200 from Frankfurter + broader crypto if approved | + Metals (XAU/XAG) |
-| **Charts** | fiat daily up to 2Y; BTC/ETH daily up to 1Y | + Multi-pair comparison | + Metals overlays + extended crypto |
+| **Charts** | fiat daily up to 2Y; crypto daily up to 1Y | + Multi-pair comparison | + Metals overlays + extended crypto |
 | **Rate alerts** | No | Push via backend (subscription) | + Crypto price alerts |
 | **Monetization** | Ads + Remove Ads one-time | + Subscriptions (Basic: 12 CHF/año) | + Crypto/Metals add-on |
 | **Ads** | Banner only | Banner for free tier | Banner for free tier |
