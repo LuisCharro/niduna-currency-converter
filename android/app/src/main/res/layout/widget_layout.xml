@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/widget_background">
+
+    <TextView
+        android:id="@+id/widget_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100 USD"
+        android:textSize="18sp"
+        android:textColor="#1C1917"
+        android:fontFamily="sans-serif-medium" />
+
+    <TextView
+        android:id="@+id/widget_converted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="= 92.50 EUR"
+        android:textSize="24sp"
+        android:textColor="#1C1917"
+        android:fontFamily="sans-serif-bold"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/widget_updated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Updated May 31"
+        android:textSize="12sp"
+        android:textColor="#78716C"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

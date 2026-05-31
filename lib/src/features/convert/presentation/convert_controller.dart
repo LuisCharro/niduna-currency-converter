@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/widget/home_widget_provider.dart';
+import '../../../core/widget/widget_data.dart';
 import '../../../core/preferences/app_preferences.dart';
 import '../../../core/rates/rate_refresh_policy.dart';
 import '../../favorites/data/favorites_store.dart';
@@ -153,33 +157,48 @@ class ConvertController extends ChangeNotifier {
   ) {
     _snapshot = snapshot;
     final favQuotes = _favoriteQuotes();
+    final quotes = buildQuotes(
+      snapshot: snapshot,
+      amount: _amount,
+      decimalPlaces: _decimalPlaces,
+      quoteCodes: _selectedCodes,
+      excludeCodes: _hiddenCryptoCodes,
+    ).map((q) {
+      final isFav = favQuotes.contains(q.code);
+      return CurrencyQuote(
+        q.symbol,
+        q.code,
+        q.name,
+        q.amount,
+        q.rateLine,
+        rate: q.rate,
+        favorite: isFav,
+      );
+    }).toList();
+    _pushHomeWidgetData(quotes);
     return ConvertState(
       status: status,
-      quotes:
-          buildQuotes(
-            snapshot: snapshot,
-            amount: _amount,
-            decimalPlaces: _decimalPlaces,
-            quoteCodes: _selectedCodes,
-            excludeCodes: _hiddenCryptoCodes,
-          ).map((q) {
-            final isFav = favQuotes.contains(q.code);
-            return CurrencyQuote(
-              q.symbol,
-              q.code,
-              q.name,
-              q.amount,
-              q.rateLine,
-              rate: q.rate,
-              favorite: isFav,
-            );
-          }).toList(),
+      quotes: quotes,
       lastUpdatedLabel: _formatUpdated(snapshot),
       nextUpdateLabel: RateFreshness.nextUpdateLabel(),
       base: _base,
       amountText: _amountText,
       selectedCodes: List<String>.unmodifiable(_selectedCodes),
     );
+  }
+
+  void _pushHomeWidgetData(List<CurrencyQuote> quotes) {
+    if (_snapshot == null || quotes.isEmpty) return;
+    final topQuote = quotes.first;
+    final widgetData = HomeWidgetData(
+      baseCode: _base,
+      quoteCode: topQuote.code,
+      rate: topQuote.rate,
+      amount: _amount,
+      convertedAmount: topQuote.amount,
+      updatedAt: _snapshot?.date?.toString().substring(0, 10) ?? '',
+    );
+    unawaited(HomeWidgetProvider().pushData(widgetData));
   }
 
   String _formatUpdated(LatestRatesSnapshot snapshot) {
