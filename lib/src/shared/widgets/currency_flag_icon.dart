@@ -49,6 +49,16 @@ class CurrencyFlagIcon extends StatelessWidget {
     'ETH': 'assets/icons/currencies/eth.png',
     'COP': 'assets/icons/currencies/cop.png',
     'ARS': 'assets/icons/currencies/ars.png',
+    'AED': 'assets/icons/currencies/aed.png',
+    'SOL': 'assets/icons/currencies/sol.png',
+    'XRP': 'assets/icons/currencies/xrp.png',
+    'ADA': 'assets/icons/currencies/ada.png',
+    'DOGE': 'assets/icons/currencies/doge.png',
+    'AVAX': 'assets/icons/currencies/avax.png',
+    'USDT': 'assets/icons/currencies/usdt.png',
+    'USDC': 'assets/icons/currencies/usdc.png',
+    'BNB': 'assets/icons/currencies/bnb.png',
+    'MATIC': 'assets/icons/currencies/matic.png',
   };
 
   @override

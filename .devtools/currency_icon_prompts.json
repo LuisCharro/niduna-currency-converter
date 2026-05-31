@@ -394,5 +394,115 @@
     "contrast_layer": true,
     "subject_ref": "never",
     "notes": "Explicitly forbid glossy ring, 3D border, and bubble frame around the edge."
+  },
+  {
+    "code": "AED",
+    "name": "UAE Dirham",
+    "symbol": "د.إ",
+    "text_color": "white",
+    "flag_desc": "solid green circle with a vertical red stripe on the left side and subtle white text hint",
+    "flag_colors": "#00732F #FF0000 white",
+    "contrast_layer": true,
+    "subject_ref": "auto",
+    "notes": "Render a clean dirham symbol centered. Keep flag treatment minimal."
+  },
+  {
+    "code": "SOL",
+    "name": "Solana",
+    "symbol": "SOL",
+    "text_color": "white",
+    "flag_desc": "gradient from deep violet purple on left to bright mint green on right, smooth horizontal blend",
+    "flag_colors": "#9945FF #14F195",
+    "contrast_layer": false,
+    "subject_ref": "never",
+    "notes": "Use the exact SOL text bold and centered. Gradient as a flat circle badge."
+  },
+  {
+    "code": "XRP",
+    "name": "Ripple",
+    "symbol": "XRP",
+    "text_color": "white",
+    "flag_desc": "solid dark charcoal grey circle",
+    "flag_colors": "#23292F white",
+    "contrast_layer": false,
+    "subject_ref": "never",
+    "notes": "Use the exact XRP text bold and centered. Minimalist dark theme."
+  },
+  {
+    "code": "ADA",
+    "name": "Cardano",
+    "symbol": "ADA",
+    "text_color": "white",
+    "flag_desc": "solid deep navy blue circle",
+    "flag_colors": "#0033AD #0056FF",
+    "contrast_layer": false,
+    "subject_ref": "never",
+    "notes": "Use the exact ADA text bold and centered. Clean deep blue background."
+  },
+  {
+    "code": "DOGE",
+    "name": "Dogecoin",
+    "symbol": "Ð",
+    "text_color": "white",
+    "flag_desc": "solid golden yellow circle with a subtle doge face silhouette in the background layer",
+    "flag_colors": "#C2A633 #BFA129",
+    "contrast_layer": true,
+    "subject_ref": "never",
+    "notes": "Use the Dogecoin Ð symbol (not plain D). Doge face very faint."
+  },
+  {
+    "code": "AVAX",
+    "name": "Avalanche",
+    "symbol": "AVAX",
+    "text_color": "white",
+    "flag_desc": "solid avalanche red circle with a subtle angular chevron shape motif",
+    "flag_colors": "#E84142 white",
+    "contrast_layer": false,
+    "subject_ref": "never",
+    "notes": "Use the exact AVAX text bold and centered on red background."
+  },
+  {
+    "code": "USDT",
+    "name": "Tether USD",
+    "symbol": "₮",
+    "text_color": "white",
+    "flag_desc": "solid teal-green circle with a subtle T-shaped lock ring motif",
+    "flag_colors": "#26A17B white",
+    "contrast_layer": false,
+    "subject_ref": "never",
+    "notes": "Use the Tether ₮ symbol bold and centered."
+  },
+  {
+    "code": "USDC",
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "text_color": "white",
+    "flag_desc": "solid royal blue circle with a subtle circular lock outline motif",
+    "flag_colors": "#2775CA white",
+    "contrast_layer": false,
+    "subject_ref": "never",
+    "notes": "Use USDC text bold and centered. Visually pairs with USDT but blue."
+  },
+  {
+    "code": "BNB",
+    "name": "BNB",
+    "symbol": "BNB",
+    "text_color": "black",
+    "flag_desc": "solid bright yellow circle with a subtle geometric diamond shape in background",
+    "flag_colors": "#F3BA2F black",
+    "contrast_layer": false,
+    "subject_ref": "never",
+    "notes": "Use BNB text bold and centered. Yellow background needs black text."
+  },
+  {
+    "code": "MATIC",
+    "name": "Polygon",
+    "symbol": "MATIC",
+    "text_color": "white",
+    "flag_desc": "solid vivid purple circle with a subtle hexagonal polygon edge pattern",
+    "flag_colors": "#8247E5 #9D4EFF",
+    "contrast_layer": false,
+    "subject_ref": "never",
+    "notes": "Use MATIC text bold and centered. Hexagon motif very subtle."
   }
 ]
