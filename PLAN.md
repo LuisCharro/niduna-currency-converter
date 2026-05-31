@@ -116,7 +116,7 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 ├─────────────────────────────┤
 │  🇪🇺 EUR   0.9132      91.32│
 │  🇬🇧 GBP   0.7945      79.45│  ← Scrollable list
-│  🇯🇵 JPY   149.50   14950.00│     (40 fiat)
+│  🇯🇵 JPY   149.50   14950.00│     (34 fiat + 11 crypto)
 │  🇨🇦 CAD   1.36      136.00 │
 │  ...                        │
 │                        ⭐   │  ← Tap star to favorite
@@ -134,7 +134,7 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 - "Last updated: [date]" footer
 
 **API Calls (optimized):**
-- 1 call to Frankfurter: `GET /v2/latest?from={base}` → all 40 fiat rates
+- 1 call to Frankfurter: `GET /v2/latest?from={base}` → all 34 fiat rates
 - Total: **1 API call per refresh**
 - Cross-rate calculation done client-side: `amount × rate`
 
@@ -252,7 +252,7 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 
 ### Multi-Currency View (Clarification)
 
-**Phase 1 already includes multi-currency view in Tab 1.** User types one amount, sees all 40 fiat conversions at once. This is the Currency app UX.
+**Phase 1 already includes multi-currency view in Tab 1.** User types one amount, sees all 34 fiat + 11 crypto conversions at once. This is the Currency app UX.
 
 **API cost:** Only 1 call per refresh. Frankfurter returns all rates in one response, so adding more fiat currencies later costs nothing extra.
 
@@ -327,7 +327,7 @@ lib/
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| 40 fiat currencies | DONE | USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF |
+| 34 fiat currencies (11 crypto) | DONE | USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF + BTC/ETH etc. |
 | Conversion | DONE | Client-side `amount × rate` |
 | Historical charts | DONE | Fiat daily rates, up to 2 years |
 | BTC/ETH latest in Convert | DONE | No-key providers, quote-only in first slice |
@@ -347,6 +347,12 @@ lib/
 | Branded splash screens | DONE | Native Android + iOS launch screens |
 | Android adaptive icons | DONE | Foreground seal + warm paper background layer |
 | Store publishing checklists | DONE | Play Store + App Store checklists in `.plan/` |
+| Pull-to-refresh on Favorites & Charts | DONE | RefreshIndicator wrapping tab content |
+| Trend arrows (previous day comparison) | DONE | Yesterday rates fetch via Frankfurter historical endpoint |
+| Sectioned currency picker (geographic groups) | DONE | Europe/Americas/AsiaPacific/MiddleEastAfrica/Crypto |
+| Home widget data push on cached load | DONE | Widget data pushed immediately when cached state loads |
+| Calculator expression evaluator tests | DONE | 12 test cases covering arithmetic and edge cases |
+| 172 total tests passing | DONE | Up from 122 before Phase A-D improvements |
 
 ### Data Sources
 
@@ -362,7 +368,7 @@ lib/
 | Decision | Choice | Reason |
 |----------|--------|--------|
 | Framework | Flutter | Cross-platform (Android first) |
-| State management | Riverpod | Flutter-recommended state management
+| State management | ChangeNotifier (Flutter built-in observer pattern) | Lightweight, no external dependency |
 | Local storage | SharedPreferences | Simple key-value for favorites + cache |
 | HTTP client | dio | Better caching than http package |
 | Charts | fl_chart | Free, well-maintained |
@@ -572,20 +578,8 @@ Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, serve
 
 ## File Structure
 
-```
-currency-converter/
-├── lib/
-│   ├── main.dart
-│   └── src/
-│       ├── app.dart
-│       ├── core/
-│       ├── data/
-│       ├── domain/
-│       ├── presentation/
-│       └── services/
-├── integration_test/
-├── test_driver/
-├── scripts/
-├── .devtools/
-└── pubspec.yaml
-```
+> See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the layered architecture overview
+> and data flow diagrams.
+>
+> See [`AGENTS.md`](AGENTS.md) for the complete import structure,
+> modularity rules, and shared widget inventory.

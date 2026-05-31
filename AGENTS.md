@@ -179,21 +179,106 @@ Split a file **immediately** when any of these is true:
 lib/
 ├── main.dart                    # Entry point (5 lines)
 ├── src/
-│   ├── app.dart                 # MaterialApp + AppShell navigation (80 lines)
+│   ├── app.dart                 # MaterialApp config + entry point (~48 lines)
+│   ├── app_shell.dart           # AppShell navigation + async init (~204 lines)
 │   ├── core/
-│   │   └── theme/
-│   │       └── app_theme.dart    # Colors, tokens (40 lines)
+│   │   ├── localization/
+│   │   │   ├── ui_copy.dart     # UiCopy class facade (part files below)
+│   │   │   ├── ui_copy_general.dart    # General labels (part)
+│   │   │   ├── ui_copy_convert.dart    # Convert strings (part)
+│   │   │   ├── ui_copy_charts.dart     # Charts strings (part)
+│   │   │   ├── ui_copy_locked_pairs.dart # Locked pair strings (part)
+│   │   │   └── ui_copy_settings.dart   # Settings strings (part)
+│   │   ├── monetization/
+│   │   │   ├── monetization_controller.dart # Main controller (~177 lines)
+│   │   │   └── monetization_entitlements.dart # Entitlement logic (~132 lines)
+│   │   ├── rates/
+│   │   │   ├── rates_service.dart         # Cache+network orchestrator (~144 lines)
+│   │   │   └── rates_service_helpers.dart # Validation/helpers (~219 lines)
+│   │   ├── theme/
+│   │   │   ├── app_theme.dart       # ThemeData construction (~192 lines)
+│   │   │   ├── app_text_styles.dart # All text styles (~200 lines)
+│   │   │   └── app_decorations.dart # Shadows/padding helpers (~51 lines)
+│   │   └── widget/
+│   │       └── home_widget_provider.dart # Home widget data push
 │   ├── features/
 │   │   ├── convert/
-│   │   │   └── convert_screen.dart   # Convert tab content
+│   │   │   ├── presentation/
+│   │   │   │   ├── convert_controller.dart      # Main controller (~176 lines)
+│   │   │   │   ├── convert_controller_loading.dart # Load/refresh logic
+│   │   │   │   └── convert_state_helpers.dart   # State transforms (~72 lines)
+│   │   │   ├── data/
+│   │   │   │   ├── frankfurter_latest_rates_client.dart (+yesterday fetch)
+│   │   │   │   ├── latest_rates_client.dart (abstract, +fetchYesterdayRates)
+│   │   │   │   ├── latest_rates_repository.dart (+fetchYesterdayRates)
+│   │   │   │   └── multi_provider_latest_rates_repository.dart
+│   │   │   ├── domain/
+│   │   │   │   ├── latest_rates_snapshot.dart (has previousRates field)
+│   │   │   │   └── rate_freshness.dart (~168 lines)
+│   │   │   └── widgets/
+│   │   │       ├── amount_keypad.dart          # Keypad shell (~48 lines)
+│   │   │       ├── amount_input_header.dart    # Header orchestrator (~67 lines)
+│   │   │       ├── amount_input_sheet.dart     # Bottom sheet (~122 lines)
+│   │   │       ├── conversion_lens_sheet.dart  # Lens dialog (~166 lines)
+│   │   │       ├── currency_picker_sheet.dart  # Convert picker (~94 lines)
+│   │   │       ├── currency_row_swipe_actions.dart # Swipe actions (~114 lines)
+│   │   │       ├── quote_identity.dart         # Currency identity row
+│   │   │       ├── quote_value.dart            # Converted value display (~50 lines)
+│   │   │       ├── visible_rates_list.dart     # Scrollable rates list
+│   │   │       ├── amount_display_text.dart    # Adaptive text (~61 lines)
+│   │   │       ├── amount_done_button.dart     # Done button (~30 lines)
+│   │   │       ├── amount_expression_state.dart# Expression mixin (~35 lines)
+│   │   │       ├── amount_key.dart             # Digit key widget (~47 lines)
+│   │   │       ├── amount_op_key.dart          # Operator key (~60 lines)
+│   │   │       ├── digit_grid.dart             # 3x4 grid (~42 lines)
+│   │   │       ├── trend_badge.dart            # Arrow+% badge (~53 lines)
+│   │   │       ├── currency_chip.dart          # Currency pill (~37 lines)
+│   │   │       ├── amount_sheet_handle.dart    # Drag handle (~21 lines)
+│   │   │       ├── conversion_lens_positioner.dart # Position math (~162 lines)
+│   │   │       ├── conversion_lens_quick_values.dart # Preset amounts (~122 lines)
+│   │   │       ├── conversion_lens_reverse_target.dart # Reverse target (~71 lines)
+│   │   │       ├── swipe_action_widgets.dart   # Action rail (~196 lines)
+│   │   │       └── swipe_draggable_card.dart   # Drag card (~236 lines)
 │   │   ├── favorites/
-│   │   │   └── favorites_screen.dart # Favorites tab content
+│   │   │   ├── favorites_screen.dart
+│   │   │   ├── data/
+│   │   │   │   ├── favorites_store.dart        # Store logic (~80 lines)
+│   │   │   │   └── favorite_usage_tracker.dart # Usage tracking mixin (~38 lines)
+│   │   │   └── widgets/
+│   │   │       ├── favorites_tab_body.dart     # Tab content with pull-to-refresh
+│   │   │       └── favorites_rewarded_ad_player.dart (~187 lines)
 │   │   ├── charts/
-│   │   │   └── charts_screen.dart     # Charts tab content
+│   │   │   ├── presentation/
+│   │   │   │   ├── charts_controller.dart      # Controller (~174 lines)
+│   │   │   │   └── chart_state.dart            # Chart state (~77 lines)
+│   │   │   ├── data/
+│   │   │   │   └── rates_service_chart_repository.dart # Chart repo adapter
+│   │   │   ├── domain/
+│   │   │   │   └── chart_repository.dart       # Abstract interface
+│   │   │   └── widgets/
+│   │   │       ├── charts_screen.dart / charts_tab_body.dart
+│   │   │       ├── chart_currency_picker_sheet.dart (~176 lines)
+│   │   │       ├── chart_currency_tile.dart    # Tile widget (~184 lines)
+│   │   │       ├── chart_pair_pill.dart        # Pair selector pill
+│   │   │       ├── chart_temp_badge.dart       # 24h temp badge (~37 lines)
+│   │   │       ├── rewarded_ad_player.dart     # Ad player (~186 lines)
+│   │   │       ├── rate_chart.dart             # Chart widget (~193 lines)
+│   │   │       └── chart_line_plot.dart        # Plot rendering (~190 lines)
 │   │   └── settings/
-│   │       └── settings_screen.dart  # Settings tab content
+│   │       ├── settings_screen.dart
+│   │       └── widgets/
+│   │           ├── iap_purchase_player.dart    # Purchase UI (~193 lines)
+│   │           └── upgrade_shelf.dart          # Upgrade CTA (~168 lines)
 │   └── shared/
-│       └── widgets/               # Reusable widgets (each < 60 lines)
+│       └── widgets/
+│           ├── floating_pill_nav.dart          # 4-tab nav
+│           ├── settings_tile.dart              # SettingsTile etc.
+│           ├── currency_flag_icon.dart         # Flag icon
+│           ├── currency_flags.dart             # Flag map
+│           ├── currency_colors.dart            # Color utils
+│           ├── currency_section_header.dart    # Section header (moved from convert)
+│           ├── sectioned_currency_picker.dart  # Sectioned picker (shared, ~149 lines)
+│           └── animated_progress_bar.dart     # Progress bar (shared, reused by 3 players)
 ```
 
 ### Anti-patterns to avoid
@@ -212,7 +297,7 @@ lib/
 
 1. Create a new file under `src/features/<feature_name>/`
 2. Keep the screen under 80 lines — if it grows, extract sub-widgets
-3. Add imports to `app.dart` only for the new screen
+3. Add imports to `app_shell.dart` only for the new screen
 4. Run `flutter analyze` — if it passes, the structure is good
 
 ## Verification rule
@@ -402,6 +487,9 @@ Ready-to-use shared widgets:
 - `lib/src/shared/widgets/currency_flag_icon.dart` — Currency flag icon widget
 - `lib/src/shared/widgets/currency_flags.dart` — Flag icon map
 - `lib/src/shared/widgets/currency_colors.dart` — Currency color utilities
+- `lib/src/shared/widgets/currency_section_header.dart` — Section header for grouped lists (moved from convert)
+- `lib/src/shared/widgets/sectioned_currency_picker.dart` — Sectioned picker with geographic groups (Europe/Americas/AsiaPacific/MiddleEastAfrica/Crypto), used by both Convert and Charts pickers
+- `lib/src/shared/widgets/animated_progress_bar.dart` — Animated progress bar, reused by iap_purchase_player, favorites_rewarded_ad_player, and rewarded_ad_player
 
 ## Google Stitch (design exploration)
 

@@ -11,12 +11,26 @@ Architecture principle: **business logic lives outside the UI layer**.
 
 ```
 lib/src/
+├── app.dart
+├── app_shell.dart              # AppShell navigation + async init
 ├── core/
-│   └── rates/                    ← Pure logic (no Flutter widgets)
-│       ├── models/
-│       ├── clients/
-│       ├── cache/
-│       └── rates_service.dart
+│   ├── rates/                    ← Pure logic (no Flutter widgets)
+│   │   ├── models/
+│   │   ├── clients/
+│   │   ├── cache/
+│   │   ├── rates_service.dart
+│   │   └── rates_service_helpers.dart
+│   ├── theme/
+│   │   ├── app_theme.dart
+│   │   ├── app_text_styles.dart
+│   │   └── app_decorations.dart
+│   ├── localization/
+│   │   └── ui_copy*.dart       # Part files (general/convert/charts/settings/locked)
+│   ├── monetization/
+│   │   ├── monetization_controller.dart
+│   │   └── monetization_entitlements.dart
+│   └── widget/
+│       └── home_widget_provider.dart
 ├── features/
 │   ├── convert/
 │   │   ├── presentation/         ← Controller (ChangeNotifier)
@@ -25,8 +39,13 @@ lib/src/
 │   │   └── widgets/             ← View (Stateless/StatefulWidget)
 │   ├── favorites/
 │   ├── charts/
+│   │   └── domain/
+│   │       └── chart_repository.dart  # Abstract interface
 │   └── settings/
-└── app.dart
+└── shared/widgets/
+    ├── sectioned_currency_picker.dart
+    ├── animated_progress_bar.dart
+    └── currency_section_header.dart
 ```
 
 **Rule:** Widgets never call repositories or clients directly. Controllers connect
@@ -56,9 +75,12 @@ App open
                                                    ↓ 1 call, returns all 15 rates
                                                    ↓ saved to cache
             └─ _stateFromSnapshot(snapshot)
-                 └─ state = ConvertState(quotes, status, lastUpdated, ...)
-                      └─ notifyListeners()
-                           └─ ListenableBuilder → UI rebuilds
+                 ├─ state = ConvertState(quotes, status, lastUpdated, ...)
+                 ├─ notifyListeners()
+                 ├─ _pushHomeWidgetData()     ← also fires on cached load
+                 └─ unawaited(_enrichWithYesterdayRates())  ← NEW: background yesterday fetch
+                      └─ on success: snapshot.previousRates populated → trend badges show
+                          └─ ListenableBuilder → UI rebuilds
 ```
 
 **API calls by screen:**
@@ -77,9 +99,10 @@ Today:
 
 ```
 lib/src/features/convert/data/
-├── frankfurter_latest_rates_client.dart   ← tied to Convert
+├── frankfurter_latest_rates_client.dart   ← tied to Convert (+fetchYesterdayRates)
 ├── latest_rates_cache.dart                ← tied to Convert
-└── latest_rates_repository.dart           ← tied to Convert
+├── latest_rates_repository.dart           ← tied to Convert (+fetchYesterdayRates)
+└── multi_provider_latest_rates_repository.dart
 ```
 
 If Charts or Favorites need rates, they must either:
@@ -238,18 +261,16 @@ RatesService
 | **Strategy** | `RatesClient` (planned) | Multiple implementations, one interface |
 | **Facade** | `RatesService` (planned) | Single entry point for cache + network |
 | **State** | `ConvertStatus` enum | Clear, exhaustive state machine |
+| **Adapter** | `RatesServiceChartRepository` | Adapts RatesService to ChartRepository interface |
 
 ---
 
-## Planned Refactor (Phase 1.x)
+## Planned Refactor (Phase A-D — Partially Done)
 
 The `features/convert/data/` layer will eventually be replaced by `core/rates/`:
 
-- `FrankfurterLatestRatesClient` → `core/rates/clients/frankfurter_client.dart`
-- `LatestRatesCache` → `core/rates/cache/shared_preferences_rates_cache.dart`
-- `ConvertRatesRepository` → `RatesService`
-- `ConvertController._repository` → injected `RatesService`
-
-This refactor is **not done yet**. The current data layer in `features/convert/` is
-working and will be migrated incrementally. The `core/rates/` skeleton is built now
-so Charts and Favorites can use it when they are implemented.
+- ✅ `FrankfurterLatestRatesClient.fetchYesterdayRates()` added
+- ✅ `ChartRepository` abstract interface created (`features/charts/domain/chart_repository.dart`)
+- ✅ `RatesServiceChartRepository` adapter created (`features/charts/data/rates_service_chart_repository.dart`)
+- ✅ `ChartsController` accepts repository instead of raw service
+- ⬜ Full migration of `ConvertController._repository` → injected `RatesService` (still pending)
