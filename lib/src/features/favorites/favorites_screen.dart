@@ -35,7 +35,7 @@ class FavoritesScreen extends StatelessWidget {
           listenable: Listenable.merge([favoritesStore, controller, monetization]),
           builder: (context, _) => BottomTabFrame(
             body: FavoritesTabBody(
-              pairs: favoritesStore.pairs,
+              pairs: favoritesStore.sortedPairs,
               effectiveLimit: monetization.favoritesEffectiveLimit,
               visibleLimit: monetization.favoritesVisibleLimit,
               hasFavoritesPro: monetization.hasFavoritesProLifetime,
@@ -56,6 +56,7 @@ class FavoritesScreen extends StatelessWidget {
 
   Future<void> _openPair(FavoritePair pair) async {
     await controller.openFavoritePair(pair);
+    favoritesStore.recordUsage(pair.base, pair.quote);
     onNavigateToConvert(pair.base, pair.quote);
   }
 
