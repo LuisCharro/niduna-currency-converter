@@ -14,26 +14,49 @@ void main() {
   test('supported currencies match Phase 1 fiat scope', () {
     final codes = supportedCurrencies.map((currency) => currency.code).toSet();
 
-    expect(codes, hasLength(16));
+    expect(codes, hasLength(40));
     expect(
       codes,
       containsAll(<String>[
+        // Major
         'USD',
         'EUR',
         'GBP',
         'JPY',
+        'CNY',
+        // Europe
+        'CHF',
+        'SEK',
+        'NOK',
+        'DKK',
+        'PLN',
+        'CZK',
+        'HUF',
+        'RON',
+        // Americas
         'CAD',
         'AUD',
-        'CNY',
-        'INR',
         'MXN',
         'BRL',
-        'TRY',
-        'KRW',
+        'ARS',
+        'CLP',
+        'COP',
+        // Asia Pacific
+        'INR',
         'SGD',
         'HKD',
+        'KRW',
+        'THB',
+        'PHP',
+        'IDR',
+        'MYR',
+        'TWD',
         'NZD',
-        'CHF',
+        // Middle East & Africa
+        'TRY',
+        'AED',
+        'ILS',
+        'ZAR',
       ]),
     );
     expect(codes, isNot(contains(anyOf('RUB', 'BTC', 'ETH', 'XAU', 'XAG'))));
