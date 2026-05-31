@@ -380,7 +380,7 @@ Recommended shape:
 
 ```dart
 const List<SupportedCurrency> supportedFiatCurrencies = <SupportedCurrency>[
-  // current 16 fiat currencies
+  // current 40 fiat currencies
 ];
 
 const List<SupportedCurrency> supportedCryptoCurrencies = <SupportedCurrency>[

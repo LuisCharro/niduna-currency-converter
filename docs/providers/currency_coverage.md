@@ -10,11 +10,11 @@
 
 | | Fiat currencies | Crypto currencies |
 |---|---|---|
-| **App uses (Convert tab)** | **16** | **2** (BTC, ETH as quote rows) |
-| **App uses (Charts — fiat pairs)** | Any of the 16 as base or quote | N/A |
-| **App uses (Charts — crypto pairs)** | N/A | **2** (BTC, ETH) |
+| **App uses (Convert tab)** | **40** | **11** (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC) |
+| **App uses (Charts — fiat pairs)** | Any of the 40 as base or quote | N/A |
+| **App uses (Charts — crypto pairs)** | N/A | **11** (same as Convert) |
 | **Frankfurter offers** | **~200** (ECB + 55 central banks) | None |
-| **fawazahmed0 offers** | **200+** | **200+** (incl. BTC, ETH, and many more) |
+| **fawazahmed0 offers** | **200+** | **200+** (incl. all 11 supported cryptos) |
 | **CoinPaprika offers (dev only)** | None | **2,500+** |
 
 ---
@@ -28,10 +28,10 @@ The Convert tab shows one row per supported currency:
 ```
 User types: 100 USD
 ↓ app fetches: GET /v2/rates?base=USD&quotes=EUR,GBP,JPY,...
-↓ shows 16 fiat result rows + 2 optional crypto quote rows
+↓ shows 40 fiat result rows + 11 optional crypto quote rows
 ```
 
-**16 Fiat Currencies (always shown):**
+**40 Fiat Currencies (always shown):**
 
 | Code | Name | Symbol | From Frankfurter? |
 |------|------|--------|-------------------|
@@ -39,25 +39,52 @@ User types: 100 USD
 | EUR | Euro | € | YES |
 | GBP | British Pound | £ | YES |
 | JPY | Japanese Yen | ¥ | YES |
+| CHF | Swiss Franc | Fr. | YES |
+| SEK | Swedish Krona | kr | YES |
+| NOK | Norwegian Krone | kr | YES |
+| DKK | Danish Krone | kr | YES |
+| PLN | Polish Złoty | zł | YES |
+| CZK | Czech Koruna | Kč | YES |
+| HUF | Hungarian Forint | Ft | YES |
+| RON | Romanian Leu | lei | YES |
 | CAD | Canadian Dollar | CA$ | YES |
 | AUD | Australian Dollar | AU$ | YES |
-| CNY | Chinese Yuan | ¥ | YES |
-| INR | Indian Rupee | ₹ | YES |
 | MXN | Mexican Peso | MX$ | YES |
 | BRL | Brazilian Real | R$ | YES |
-| TRY | Turkish Lira | ₺ | YES |
-| KRW | South Korean Won | ₩ | YES |
+| ARS | Argentine Peso | AR$ | YES |
+| CLP | Chilean Peso | CLP$ | YES |
+| COP | Colombian Peso | COP$ | YES |
+| INR | Indian Rupee | ₹ | YES |
 | SGD | Singapore Dollar | S$ | YES |
 | HKD | Hong Kong Dollar | HK$ | YES |
+| KRW | South Korean Won | ₩ | YES |
+| THB | Thai Baht | ฿ | YES |
+| PHP | Philippine Peso | ₱ | YES |
+| IDR | Indonesian Rupiah | Rp | YES |
+| MYR | Malaysian Ringgit | RM | YES |
+| TWD | Taiwan Dollar | NT$ | YES |
 | NZD | New Zealand Dollar | NZ$ | YES |
-| CHF | Swiss Franc | Fr. | YES |
+| CNY | Chinese Yuan | ¥ | YES |
+| TRY | Turkish Lira | ₺ | YES |
+| AED | UAE Dirham | AED | YES |
+| ILS | Israeli Shekel | ₪ | YES |
+| ZAR | South African Rand | R | YES |
 
-**2 Crypto Currencies (quote-only rows in Convert):**
+**11 Crypto Currencies (quote-only rows in Convert):**
 
 | Code | Name | Source (release_safe) | Source (dev) |
 |------|------|---------------------|---------------|
 | BTC | Bitcoin | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
 | ETH | Ethereum | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
+| SOL | Solana | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
+| XRP | Ripple | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
+| ADA | Cardano | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
+| DOGE | Dogecoin | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
+| AVAX | Avalanche | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
+| USDT | Tether USD | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
+| USDC | USD Coin | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
+| BNB | BNB | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
+| MATIC | Polygon | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
 
 Crypto rows show converted amount only (e.g., "₿ 0.00421" for 100 USD → BTC).
 They are **not selectable as base currency** in Phase 1.
@@ -66,15 +93,15 @@ They are **not selectable as base currency** in Phase 1.
 
 | Pair type | Base options | Quote options | Max range |
 |-----------|-------------|---------------|----------|
-| **Fiat/Fiat** | Any of the 16 fiat | Any of the 16 fiat (excluding base) | **2 years** |
-| **Crypto/Crypto** | BTC, ETH | BTC, ETH | **1 year** |
-| **Fiat/Crypto** | Any of the 16 fiat | BTC, ETH | **1 year** |
-| **Crypto/Fiat** | BTC, ETH | Any of the 16 fiat | **1 year** |
+| **Fiat/Fiat** | Any of the 40 fiat | Any of the 40 fiat (excluding base) | **2 years** |
+| **Crypto/Crypto** | Any of 11 crypto | Any of 11 crypto | **1 year** |
+| **Fiat/Crypto** | Any of the 40 fiat | Any of 11 crypto | **1 year** |
+| **Crypto/Fiat** | Any of 11 crypto | Any of the 40 fiat | **1 year** |
 
 ### Favorites Tab
 
 - User can save up to **3 pairs** (free), **16** with IAP/ads.
-- Any combination of the above 18 currencies (16 fiat + 2 crypto).
+- Any combination of the above 51 currencies (40 fiat + 11 crypto).
 
 ---
 
@@ -91,7 +118,7 @@ plus 55 central banks worldwide.
 ### Full Currency Inventory (~200 currencies)
 
 Frankfurter exposes all currencies published by ECB and its partner central banks.
-The app requests only 16, but **many more are available**. Notable ones we don't use yet:
+The app requests only 40, but **many more are available**. Notable ones we don't use yet:
 
 #### Major currencies NOT in our MVP list (available from Frankfurter):
 
@@ -247,28 +274,37 @@ Notable cryptos available from fawazahmed0 that this app does **NOT** yet use:
 | Privacy coins | XMR, ZEC, DASH, ... |
 | DeFi bluechips | AAVE, UNI, COMP, MKR, YFI, LDO, CRV, CVX, FXS, ... |
 
-**Total available: 200+ cryptocurrencies. This app uses 2 (BTC, ETH).**
+**Total available: 200+ cryptocurrencies. This app uses 11 (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC).**
 
 ### How the app picks which cryptos to show
 
-The `crypto_asset.dart` enum controls which cryptos have chart/history support:
+The `crypto_asset.dart` list controls which cryptos have chart/history support:
 
 ```dart
-enum CryptoAsset {
-  btc('Bitcoin', 'btc-bitcoin', 'BTC'),
-  eth('Ethereum', 'eth-ethereum', 'ETH'),
-}
+const List<CryptoAsset> supportedCryptoAssets = <CryptoAsset>[
+  CryptoAsset(code: 'BTC', coinPaprikaId: 'btc-bitcoin', coinCapId: 'bitcoin'),
+  CryptoAsset(code: 'ETH', coinPaprikaId: 'eth-ethereum', coinCapId: 'ethereum'),
+  CryptoAsset(code: 'SOL', coinPaprikaId: 'sol-solana', coinCapId: 'solana'),
+  CryptoAsset(code: 'XRP', coinPaprikaId: 'xrp-xrp', coinCapId: 'ripple'),
+  CryptoAsset(code: 'ADA', coinPaprikaId: 'ada-cardano', coinCapId: 'cardano'),
+  CryptoAsset(code: 'DOGE', coinPaprikaId: 'doge-dogecoin', coinCapId: 'dogecoin'),
+  CryptoAsset(code: 'AVAX', coinPaprikaId: 'avax-avalanche', coinCapId: 'avalanche-2'),
+  CryptoAsset(code: 'USDT', coinPaprikaId: 'usdt-tether', coinCapId: 'tether'),
+  CryptoAsset(code: 'USDC', coinPaprikaId: 'usdc-usd-coin', coinCapId: 'usd-coin'),
+  CryptoAsset(code: 'BNB', coinPaprikaId: 'bnb-binance-coin', coinCapId: 'binancecoin'),
+  CryptoAsset(code: 'MATIC', coinPaprikaId: 'matic-polygon-networks', coinCapId: 'polygon-pos'),
+];
 ```
 
-Only these two are wired into:
+Only these 11 are wired into:
 - Convert tab quote rows
 - Charts tab pair selector
 - Historical chart fetching
 - Price validation (sanity range checks)
 
-**Cost of adding another crypto (e.g., SOL):**
-1. Add enum value to `CryptoAsset` in `crypto_asset.dart`
-2. Add to `cryptoAssets` list in same file
+**Cost of adding another crypto (e.g., DOT):**
+1. Add entry to `supportedCryptoAssets` list in `crypto_asset.dart`
+2. Add to `supportedCryptoCurrencies` list in `supported_currencies.dart`
 3. It appears in Charts pair picker automatically
 4. Latest price: already included in fawazahmed0's `usd.json` (no new endpoint needed!)
 5. History: fawazahmed0 date-file client already works for any currency in the JSON
@@ -307,7 +343,7 @@ Dev builds (`PROVIDER_PROFILE=dev_coinpaprika`) route through CoinPaprika for:
 - **Latest prices:** `/v1/tickers/{id}?quotes=USD` (per coin)
 - **Historical charts:** `/v1/tickers/{id}/historical?start={}&end={}&interval=1d&quote=usd`
 
-This app requests only **BTC + ETH** even in dev mode. The other 2,498 coins are available but unused.
+This app requests only **11 cryptos** even in dev mode. The other 2,489+ coins are available but unused.
 
 ### Why we can't ship it
 
@@ -322,8 +358,8 @@ user-facing apps need Enterprise contract ($500+/mo).
 | | Frankfurter | fawazahmed0 | CoinPaprika (dev) |
 |---|------------|-------------|-------------------|
 | **Build profile** | All builds | release_safe + dev (fallback) | dev_coinpaprika only |
-| **Fiat currencies** | ~200 (we use 16) | ~200 (we use 0 directly) | 0 |
-| **Crypto currencies** | 0 | ~200+ (we use 2) | ~2,500+ (we use 2) |
+| **Fiat currencies** | ~200 (we use 40) | ~200 (we use 0 directly) | 0 |
+| **Crypto currencies** | 0 | ~200+ (we use 11) | ~2,500+ (we use 11) |
 | **Historical data** | Daily, ~1999–present, fiat only | Daily snapshots, unlimited history | Daily/hourly/OHLC, up to 1Y+ |
 | **Rate limit** | Soft ~10/min | **None** (static CDN) | 20K/mo free |
 | **License** | Unlicense (public domain) | **CC0-1.0** (public domain) | Proprietary (commercial ❌) |
@@ -338,17 +374,16 @@ user-facing apps need Enterprise contract ($500+/mo).
 
 | Addition | Effort | Where |
 |----------|-------|-------|
-| Add PLN, SEK, NOK, etc. to fiat list | ~2 min | `supported_currencies.dart` |
-| Add SOL as 3rd crypto | ~15 min | `crypto_asset.dart` + UI |
-| Add stablecoins row group (USDT, USDC) | ~30 min | New widget section |
-| Show more crypto in Convert (top 10) | ~1 hr | Expand `supportedCryptoCurrencies` |
+| Add more fiat (PLN already included, others available) | ~2 min | `supported_currencies.dart` |
+| Add 12th crypto | ~15 min | `crypto_asset.dart` + UI |
+| Show more crypto in Convert (top 20) | ~1 hr | Expand `supportedCryptoCurrencies` |
 
 ### Medium effort (new provider or backend)
 
 | Addition | Effort | Where |
 |----------|-------|-------|
 | All 200 fiat currencies from Frankfurter | ~30 min | Expand list + UI density solution |
-| More crypto (top 20) | ~2 hrs | Enum + validation + charts |
+| More crypto (top 50) | ~2 hrs | List + validation + charts |
 | Intraday/hourly crypto charts | Backend needed | New provider or proxy |
 | Metals (XAU/XAG) | New provider | Phase 3 |
 

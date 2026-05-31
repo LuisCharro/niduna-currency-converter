@@ -6,7 +6,7 @@ Privacy-first Flutter currency converter for the Niduna portfolio.
 
 ## What's in Phase 1
 
-- 16 fiat currencies (USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF)
+- 40 fiat currencies + 11 crypto (USD, EUR, GBP, JPY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR, TWD, NZD, CNY, TRY, AED, ILS, ZAR + BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC)
 - Multi-currency conversion view (type one amount, see all conversions)
 - Historical charts (up to 2 years, unlimited free)
 - Favorites (save up to 3 currency pairs locally)

@@ -77,7 +77,7 @@ first or defer the idea.
 
 | Screen | Owns | Does not own |
 |--------|------|--------------|
-| `Convert` | amount input, base currency, multi-currency results, BTC/ETH quote rows, favorite toggles, freshness/offline status, banner ad area | charts, settings, accounts, transfers |
+| `Convert` | amount input, base currency, multi-currency results, 11 crypto quote rows, favorite toggles, freshness/offline status, banner ad area | charts, settings, accounts, transfers |
 | `Favorites` | local favorite pairs, max-3 rule, edit/delete, jump back to Convert context | unlimited favorites, cloud sync |
 | `Charts` | fiat historical charts up to 2 years, BTC/ETH and mixed fiat/crypto charts up to 1 year, range selector, high/low/change | crypto history beyond 1 year, metals, export, multi-pair compare |
 | `Settings` | local preferences (default base, decimal places, refresh-on-open), cache controls, Remove Ads entry, privacy/about/version | account settings, backend sync, subscriptions before Phase 2 |
@@ -88,8 +88,8 @@ first or defer the idea.
 |------|----------------|------------|------------------|
 | Fiat latest rates | Frankfurter v2 | Keep last successful payload locally | Show cached stale/offline state if refresh fails |
 | Fiat historical rates | Frankfurter historical endpoints | Cache by pair and range | Show cached chart data if available |
-| Crypto latest rates (BTC, ETH) | Build-time provider profile. Release-safe default: fawazahmed0. Dev profile may use CoinPaprika primary + fawazahmed0 fallback | Keep normalized USD source cache plus final latest snapshot cache | Preserve cached crypto if fresh enough and provider refresh fails |
-| Crypto historical rates (BTC, ETH) | Build-time provider profile. Release-safe default: Coingecko (no API key). Dev profile may use CoinPaprika historical ticks | Cache source USD history by asset and final chart snapshots by pair | Show cached chart data if available |
+| Crypto latest rates (11 cryptos) | Build-time provider profile. Release-safe default: fawazahmed0. Dev profile may use CoinPaprika primary + fawazahmed0 fallback | Keep normalized USD source cache plus final latest snapshot cache | Preserve cached crypto if fresh enough and provider refresh fails |
+| Crypto historical rates (11 cryptos) | Build-time provider profile. Release-safe default: Coingecko (no API key). Dev profile may use CoinPaprika historical ticks | Cache source USD history by asset and final chart snapshots by pair | Show cached chart data if available |
 | Favorites | Local storage | Persistent until user deletes | Never requires network |
 | Settings preferences | Local storage (SharedPreferences) | Persistent until user changes | Never requires network |
 | Temp pair unlocks | Local storage (SharedPreferences) | 24h TTL, auto-expire | Never requires network |
@@ -123,7 +123,7 @@ large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 
 | Feature | Detail |
 |---------|--------|
-| **Currencies (fiat)** | 16 MVP currencies: USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, **TRY** (Turkish Lira ⚠️ replaced RUB), KRW, SGD, HKD, NZD, CHF |
+| **Currencies (fiat)** | 40 fiat currencies: USD, EUR, GBP, JPY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR, TWD, NZD, CNY, TRY, AED, ILS, ZAR |
 | **Conversion** | Client-side `amount × rate`; Frankfurter has **no `/convert` endpoint** |
 | **Historical charts** | Daily rates, up to 2 years, unlimited free in Phase 1 |
 | **Favorite pairs** | Save up to 3 locally (no account) |
@@ -362,7 +362,7 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 
 1. Flutter app
 2. Frankfurter v2 primary data source
-3. 16 MVP currencies including CHF (RUB → TRY)
+3. 40 fiat currencies + 11 crypto (51 total) including CHF (RUB → TRY)
 4. Daily rates + 2-year charts + offline cache
 5. Banner ads only
 6. One-time **Remove Ads** at **1.99 CHF** (+ optional 30-day rental at 0.50 CHF — consider omitting at launch)
@@ -396,7 +396,7 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 |----------|---------|---------|----------|
 | **Data source** | Frankfurter free + CoinPaprika no-key for BTC/ETH | ExchangeRate-API Pro + Frankfurter + optional broader crypto provider via backend | + expanded crypto/metals providers |
 | **Backend** | None | ASP.NET Core + PostgreSQL on Hostinger | Same |
-| **Currencies** | 16 fiat currencies + BTC/ETH quote support | All 200 from Frankfurter + broader crypto if approved | + Metals (XAU/XAG) |
+| **Currencies** | 40 fiat currencies + 11 crypto (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC) | All 200 from Frankfurter + broader crypto if approved | + Metals (XAU/XAG) |
 | **Charts** | fiat daily up to 2Y; BTC/ETH daily up to 1Y | + Multi-pair comparison | + Metals overlays + extended crypto |
 | **Rate alerts** | No | Push via backend (subscription) | + Crypto price alerts |
 | **Monetization** | Ads + Remove Ads one-time | + Subscriptions (Basic: 12 CHF/año) | + Crypto/Metals add-on |
@@ -411,7 +411,7 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 4 practical buckets: Phase 1 MVP, Phase 1.x no-key BTC/ETH extension, Phase 2 (backend + subscriptions and optional broader crypto API strategy), Phase 3 (metals + extended crypto + extensions).
 
 **Q: What's in the current launch scope?**
-16 fiat currencies + BTC/ETH latest in Convert + fiat charts up to 2 years + BTC/ETH and mixed fiat/crypto charts up to 1 year + offline cache + banner ads + Remove Ads (one-time 1.99 CHF). No backend, no metals, no alerts.
+40 fiat currencies + 11 crypto latest in Convert + fiat charts up to 2 years + crypto charts up to 1 year + offline cache + banner ads + Remove Ads (one-time 1.99 CHF). No backend, no metals, no alerts.
 
 **Q: How to monetize not just cover costs?**
 Phase 1: ads + one-time Remove Ads accumulates cash reserve. Phase 2: subscriptions for alerts/hourly create recurring revenue. Don't use one-time purchases to fund ongoing backend — that's the fundamental mistake.

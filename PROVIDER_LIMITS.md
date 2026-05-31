@@ -285,7 +285,7 @@ Triggered when: app opens, user pulls to refresh, or daily cache expires.
 
 | Step | Provider | Calls | When |
 |------|----------|-------|------|
-| 1. Fetch fiat latest | Frankfurter | **1** | `GET /v2/rates?base=USD&quotes=...` (all 16 fiat in 1 call) |
+| 1. Fetch fiat latest | Frankfurter | **1** | `GET /v2/rates?base=USD&quotes=...` (all 40 fiat in 1 call) |
 | 2. Fetch crypto USD prices | CoinPaprika | **2** | `GET /v1/tickers/btc-bitcoin?quotes=USD` + `GET /v1/tickers/eth-ethereum?quotes=USD` |
 | 3. Fallback (if CoinPaprika fails) | fawazahmed0 | **1** | Single static JSON download (contains all currencies) |
 | **Total per refresh** | | **1-3** | At most 3 calls per Convert refresh |

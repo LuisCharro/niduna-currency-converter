@@ -30,7 +30,7 @@ canonical free source for daily fiat currency reference rates.
 
 | Data type | Coverage | Granularity | Max history |
 |-----------|---------|-------------|-------------|
-| Latest rates | 200 currencies (all 16 MVP currencies included) | Daily snapshot | N/A (current only) |
+| Latest rates | 200 currencies (all 40 fiat currencies included) | Daily snapshot | N/A (current only) |
 | Historical time series | 200 currencies | **Daily** points | Back to 1999 (ECB data start) |
 
 ### Supported MVP Currencies (all 16)
@@ -46,7 +46,7 @@ USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF
 ```
 GET https://api.frankfurter.dev/v2/rates?base={BASE}&quotes={QUOTE_CODES}
 ```
-Returns latest rates for all 16 fiat currencies in **one call**.
+Returns latest rates for all 40 fiat currencies in **one call**.
 
 ```
 GET https://api.frankfurter.dev/v1/{FROM_DATE}..{TO_DATE}?base={BASE}&symbols={QUOTE}

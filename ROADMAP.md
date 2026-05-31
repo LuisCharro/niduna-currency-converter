@@ -589,7 +589,7 @@ UI redesign iteration 2 is on branch `turbo/ui-redesign` (not yet merged).
 
 | Feature | Evidence |
 |---------|----------|
-| 16 fiat currencies + BTC/ETH latest | `supported_currencies.dart`, `multi_provider_latest_rates_repository.dart` |
+| 40 fiat currencies + 11 crypto latest | `supported_currencies.dart`, `multi_provider_latest_rates_repository.dart` |
 | Client-side conversion | `amount × rate` in Convert |
 | Historical charts (fiat up to 2Y, crypto up to 1Y) | `multi_provider_rates_client.dart` handles all pair types |
 | BTC/ETH + mixed fiat/crypto charts | `charts_controller.dart` clamps crypto to 1Y; picker includes BTC/ETH |

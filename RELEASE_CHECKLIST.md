@@ -80,7 +80,7 @@ See `docs/providers/*.md` for full per-provider details.
 
 | Item | Evidence |
 |------|----------|
-| All 16 fiat currencies + BTC/ETH | `supported_currencies.dart`, multi-provider repo |
+| All 40 fiat currencies + 11 crypto | `supported_currencies.dart`, multi-provider repo |
 | Client-side conversion (`amount × rate`) | Convert controller |
 | Historical charts (fiat 2Y, crypto 1Y) | Charts controller + fawazahmed0 date-file client |
 | Favorites (max 3, local storage) | FavoritesStore wired |

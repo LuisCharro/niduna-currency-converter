@@ -116,7 +116,7 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 ├─────────────────────────────┤
 │  🇪🇺 EUR   0.9132      91.32│
 │  🇬🇧 GBP   0.7945      79.45│  ← Scrollable list
-│  🇯🇵 JPY   149.50   14950.00│     (16 fiat)
+│  🇯🇵 JPY   149.50   14950.00│     (40 fiat)
 │  🇨🇦 CAD   1.36      136.00 │
 │  ...                        │
 │                        ⭐   │  ← Tap star to favorite
@@ -134,11 +134,11 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 - "Last updated: [date]" footer
 
 **API Calls (optimized):**
-- 1 call to Frankfurter: `GET /v2/latest?from={base}` → all 16 fiat rates
+- 1 call to Frankfurter: `GET /v2/latest?from={base}` → all 40 fiat rates
 - Total: **1 API call per refresh**
 - Cross-rate calculation done client-side: `amount × rate`
 
-**Clarification:** This IS the multi-currency view. User types 100 USD, sees the 16 fiat conversions at once. No need to select "from/to" pairs separately. This matches the Currency app UX.
+**Clarification:** This IS the multi-currency view. User types 100 USD, sees the 40 fiat conversions at once. No need to select "from/to" pairs separately. This matches the Currency app UX.
 
 ---
 
@@ -252,7 +252,7 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 
 ### Multi-Currency View (Clarification)
 
-**Phase 1 already includes multi-currency view in Tab 1.** User types one amount, sees all 16 fiat conversions at once. This is the Currency app UX.
+**Phase 1 already includes multi-currency view in Tab 1.** User types one amount, sees all 40 fiat conversions at once. This is the Currency app UX.
 
 **API cost:** Only 1 call per refresh. Frankfurter returns all rates in one response, so adding more fiat currencies later costs nothing extra.
 
@@ -327,7 +327,7 @@ lib/
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| 16 fiat currencies | DONE | USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF |
+| 40 fiat currencies | DONE | USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF |
 | Conversion | DONE | Client-side `amount × rate` |
 | Historical charts | DONE | Fiat daily rates, up to 2 years |
 | BTC/ETH latest in Convert | DONE | No-key providers, quote-only in first slice |
