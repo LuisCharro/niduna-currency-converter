@@ -60,6 +60,44 @@ class FrankfurterLatestRatesClient implements LatestRatesClient {
       rates: rates,
     );
   }
+
+  @override
+  Future<Map<String, double>?> fetchYesterdayRates(String base) async {
+    try {
+      final yesterday = DateTime.now().subtract(const Duration(days: 1));
+      final dateStr =
+          '${yesterday.year}-'
+          '${yesterday.month.toString().padLeft(2, '0')}-'
+          '${yesterday.day.toString().padLeft(2, '0')}';
+      final quotes = supportedFiatCurrencies
+          .where((currency) => currency.code != base)
+          .map((currency) => currency.code)
+          .join(',');
+      final uri = Uri.https(_host, '/v2/$dateStr', <String, String>{
+        'base': base,
+        'quotes': quotes,
+      });
+      final response = await _client.get(uri);
+      if (response.statusCode != 200) return null;
+
+      final json = jsonDecode(response.body);
+      if (json is! List<dynamic>) return null;
+
+      final rates = <String, double>{};
+      for (final row in json) {
+        if (row is Map<String, dynamic>) {
+          final quote = row['quote'];
+          final rate = row['rate'];
+          if (quote is String && rate is num) {
+            rates[quote] = rate.toDouble();
+          }
+        }
+      }
+      return rates.isEmpty ? null : rates;
+    } catch (_) {
+      return null;
+    }
+  }
 }
 
 class LatestRatesException implements Exception {

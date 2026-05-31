@@ -13,6 +13,7 @@ import 'package:currency_converter/src/core/rates/provider_factory.dart';
 import 'package:currency_converter/src/core/rates/rates_cache.dart';
 import 'package:currency_converter/src/core/rates/rates_client.dart';
 import 'package:currency_converter/src/core/rates/rates_service.dart';
+import 'package:currency_converter/src/features/charts/data/rates_service_chart_repository.dart';
 import 'package:currency_converter/src/features/charts/domain/chart_range.dart';
 import 'package:currency_converter/src/features/charts/presentation/charts_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -161,10 +162,10 @@ void main() {
   test('charts controller downgrades 2Y to 1Y for crypto pair', () {
     final controller = ChartsController(
       allowCryptoCharts: true,
-      ratesService: RatesService(
+      repository: RatesServiceChartRepository(RatesService(
         client: _FakeRatesClient(),
         cache: _MemoryRatesCache(),
-      ),
+      )),
       range: ChartRange.twoYears,
     );
 

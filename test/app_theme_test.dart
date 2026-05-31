@@ -9,9 +9,9 @@ void main() {
     expect(AppTheme.sectionGap, 24);
     expect(AppTheme.rowMinHeight, 64);
     expect(AppTheme.pageInsets, const EdgeInsets.symmetric(horizontal: 20));
-    expect(AppTheme.muted, const Color(0xFF5F6A58));
-    expect(AppTheme.subtle, const Color(0xFF66745B));
-    expect(AppTheme.containerHigh, const Color(0xFFF5EDEE));
+    expect(AppTheme.muted, const Color(0xFF6B7560));
+    expect(AppTheme.subtle, const Color(0xFF8A9178));
+    expect(AppTheme.containerHigh, const Color(0xFFF0EDE9));
     expect(AppTheme.coralSurface, const Color(0xFFFDF0EC));
     expect(AppTheme.coralInk, const Color(0xFFB54E48));
     expect(AppTheme.space5, AppTheme.pagePadding);

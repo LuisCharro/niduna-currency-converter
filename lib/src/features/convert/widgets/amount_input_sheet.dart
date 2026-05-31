@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../core/calculator/simple_expression_eval.dart';
 import '../../../core/currency/supported_currencies.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../../l10n/app_localizations.dart';
+import 'amount_done_button.dart';
+import 'amount_expression_state.dart';
 import 'amount_input_header.dart';
+import 'amount_sheet_handle.dart';
 import 'amount_keypad.dart';
 import 'amount_presets.dart';
 
@@ -23,13 +23,12 @@ class AmountInputSheet extends StatefulWidget {
   State<AmountInputSheet> createState() => _AmountInputSheetState();
 }
 
-class _AmountInputSheetState extends State<AmountInputSheet> {
+class _AmountInputSheetState extends State<AmountInputSheet>
+    with AmountExpressionState {
   late String _amount = widget.amountText;
   bool _shouldReplace = true;
-  List<String> _expressionParts = [];
-  bool _isExpression = false;
 
-  bool get _isDirty => _amount != widget.amountText || _isExpression;
+  bool get _isDirty => _amount != widget.amountText || isExpression;
 
   void _setAmount(String value, {bool replaceNext = false}) {
     final next = value == '0' ? '' : value;
@@ -57,6 +56,7 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
   void _handleBackspace() {
     HapticFeedback.selectionClick();
     if (_amount.isEmpty || _shouldReplace) {
+      resetExpression();
       _setAmount('');
       return;
     }
@@ -64,36 +64,23 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
   }
 
   void _handleOperator(String op) {
-    HapticFeedback.selectionClick();
-    if (_amount.isEmpty) return;
-    _expressionParts.add(_amount);
-    _expressionParts.add(op);
-    setState(() {
-      _isExpression = true;
+    handleOperator(_amount, () => setState(() {
       _amount = '';
       _shouldReplace = true;
-    });
+    }));
   }
 
   void _handleEquals() {
-    HapticFeedback.mediumImpact();
-    _expressionParts.add(_amount);
-    final expr = _expressionParts.join('');
-    final result = evaluateExpression(expr);
-    final newAmount = result != null ? result.toStringAsFixed(2) : 'Error';
+    final result = handleEquals(_amount);
     setState(() {
-      _amount = newAmount;
-      _expressionParts = [];
-      _isExpression = false;
+      _amount = result ?? 'Error';
       _shouldReplace = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
     final currency = currencyByCode(widget.base);
-    final colors = AppColors.of(context);
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
     return SingleChildScrollView(
       child: Padding(
@@ -127,23 +114,7 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
               onEquals: _handleEquals,
             ),
             const SizedBox(height: 14),
-            FilledButton(
-              onPressed: () => Navigator.of(context).pop(_amount),
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
-                backgroundColor: _isDirty
-                    ? colors.primary
-                    : colors.primary.withValues(alpha: .82),
-                foregroundColor: colors.card.withValues(
-                  alpha: _isDirty ? 1 : .94,
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              child: Text(l10n?.btnDone ?? "Done"),
-            ),
+            AmountDoneButton(isDirty: _isDirty, onTap: () => Navigator.of(context).pop(_amount)),
           ],
         ),
       ),

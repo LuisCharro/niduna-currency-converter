@@ -48,6 +48,8 @@ extension ConvertControllerLoading on ConvertController {
     try {
       final fresh = await _repository.fetchLatest(_base);
       state = _stateFromSnapshot(fresh, ConvertStatus.fresh);
+      _safeNotify();
+      unawaited(_enrichWithYesterdayRates(fresh));
     } catch (_) {
       state = state.hasQuotes || hasCached
           ? state.copyWith(
@@ -63,5 +65,22 @@ extension ConvertControllerLoading on ConvertController {
             );
     }
     _safeNotify();
+  }
+
+  Future<void> _enrichWithYesterdayRates(LatestRatesSnapshot today) async {
+    try {
+      final previousRates = await _repository.fetchYesterdayRates(today.base);
+      if (previousRates == null || _disposed) return;
+      if (_snapshot != today) return;
+      final enriched = LatestRatesSnapshot(
+        base: today.base,
+        date: today.date,
+        savedAt: today.savedAt,
+        rates: today.rates,
+        previousRates: previousRates,
+      );
+      state = _stateFromSnapshot(enriched, state.status);
+      _safeNotify();
+    } catch (_) {}
   }
 }

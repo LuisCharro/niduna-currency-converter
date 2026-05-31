@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../core/monetization/monetization_controller.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations_safe.dart';
@@ -18,31 +17,24 @@ import 'widgets/switch_tile.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({
-    required this.monetization,
+    required this.controller,
     required this.preferences,
-    required this.onClearCache,
     super.key,
   });
 
-  final MonetizationController monetization;
+  final SettingsController controller;
   final AppPreferences preferences;
-  final VoidCallback onClearCache;
 
   @override
   Widget build(BuildContext context) {
     final loc = l10n(context);
-    final controller = SettingsController(
-      preferences: preferences,
-      monetization: monetization,
-      onClearCache: onClearCache,
-    );
 
     return Material(
       color: Colors.transparent,
       child: CanvasBackground(
         child: SafeArea(
           child: ListenableBuilder(
-            listenable: Listenable.merge([monetization, preferences]),
+            listenable: Listenable.merge([controller.monetization, preferences]),
             builder: (context, _) => Scaffold(
               backgroundColor: Colors.transparent,
               body: ListView(
@@ -74,7 +66,7 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(height: AppTheme.sectionGap),
                   if (preferences.devMode) ...[
                     const SectionHeader(title: 'Dev Sandbox'),
-                    DevSandboxSection(monetization: monetization),
+                    DevSandboxSection(monetization: controller.monetization),
                     const SizedBox(height: AppTheme.sectionGap),
                   ],
                   SettingsAboutSection(controller: controller),

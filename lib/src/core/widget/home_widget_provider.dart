@@ -1,15 +1,23 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:home_widget/home_widget.dart';
 import 'widget_data.dart';
 
-class HomeWidgetProvider extends ChangeNotifier {
+class HomeWidgetProvider {
   static const _widgetDataKey = 'niduna_home_widget_data';
 
   Future<void> pushData(HomeWidgetData data) async {
-    await HomeWidget.saveWidgetData(_widgetDataKey, data.toJson());
+    try {
+      await HomeWidget.saveWidgetData(_widgetDataKey, data.toJson());
+    } on MissingPluginException catch (_) {
+      // No-op in test / non-widget environments
+    }
   }
 
   Future<void> clearData() async {
-    await HomeWidget.saveWidgetData(_widgetDataKey, <String, dynamic>{});
+    try {
+      await HomeWidget.saveWidgetData(_widgetDataKey, <String, dynamic>{});
+    } on MissingPluginException catch (_) {
+      // No-op in test / non-widget environments
+    }
   }
 }

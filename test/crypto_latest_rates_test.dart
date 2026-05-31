@@ -242,6 +242,9 @@ class _FakeLatestRatesClient implements LatestRatesClient {
 
   @override
   Future<LatestRatesSnapshot> fetchLatest(String base) async => snapshot;
+
+  @override
+  Future<Map<String, double>?> fetchYesterdayRates(String base) async => null;
 }
 
 class _FakeCryptoUsdPriceClient implements CryptoUsdPriceClient {
@@ -274,4 +277,7 @@ class _CountingRatesRepository implements ConvertRatesRepository {
     fetchCalls += 1;
     throw StateError('should not fetch');
   }
+
+  @override
+  Future<Map<String, double>?> fetchYesterdayRates(String base) async => null;
 }

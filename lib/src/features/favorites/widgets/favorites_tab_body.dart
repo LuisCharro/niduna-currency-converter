@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/niduna_refresh_indicator.dart';
 import '../../../shared/widgets/screen_title.dart';
 import '../../convert/domain/latest_rates_snapshot.dart';
 import '../domain/favorite_pair.dart';
@@ -21,6 +22,7 @@ class FavoritesTabBody extends StatelessWidget {
     required this.onAdd,
     required this.onWatchAd,
     required this.onBuyPro,
+    this.onRefresh,
     super.key,
   });
 
@@ -35,10 +37,11 @@ class FavoritesTabBody extends StatelessWidget {
   final VoidCallback onAdd;
   final VoidCallback onWatchAd;
   final VoidCallback onBuyPro;
+  final RefreshCallback? onRefresh;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    final list = ListView(
       padding: AppTheme.pageInsets.copyWith(
         top: AppTheme.space6,
         bottom: AppTheme.space4,
@@ -64,5 +67,8 @@ class FavoritesTabBody extends StatelessWidget {
           ),
       ],
     );
+
+    if (onRefresh == null) return list;
+    return NidunaRefreshIndicator(onRefresh: onRefresh!, child: list);
   }
 }

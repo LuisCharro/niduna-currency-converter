@@ -14,7 +14,7 @@ void main() {
   test('supported currencies match Phase 1 fiat scope', () {
     final codes = supportedCurrencies.map((currency) => currency.code).toSet();
 
-    expect(codes, hasLength(40));
+    expect(codes, hasLength(34));
     expect(
       codes,
       containsAll(<String>[
@@ -264,4 +264,7 @@ class _FakeRatesRepository implements ConvertRatesRepository {
     }
     return fresh!;
   }
+
+  @override
+  Future<Map<String, double>?> fetchYesterdayRates(String base) async => null;
 }

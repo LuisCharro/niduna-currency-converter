@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
-import '../../../core/currency/currency_groups.dart';
 import '../../../core/localization/ui_copy.dart';
 import '../../../core/ads/ad_banner_widget.dart';
 import '../../../core/monetization/models/temporary_unlock.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../shared/widgets/currency_picker_chrome.dart';
-import '../../../shared/widgets/currency_flag_icon.dart';
+import '../../../shared/widgets/sectioned_currency_picker.dart';
 import '../../settings/widgets/iap_purchase_player.dart';
+import 'chart_currency_tile.dart';
 import 'locked_pair_action_sheet.dart';
 import 'rewarded_ad_player.dart';
-import '../../convert/widgets/currency_section_header.dart';
 
 class ChartCurrencyPickerSheet extends StatefulWidget {
   const ChartCurrencyPickerSheet({
@@ -41,15 +39,11 @@ class ChartCurrencyPickerSheet extends StatefulWidget {
 }
 
 class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
-  String _query = '';
-  final Set<CurrencySection> _expandedSections = <CurrencySection>{CurrencySection.crypto};
-
-  /// The other side of the pair — what stays fixed while user picks.
   String get _fixedSide =>
       widget.selectingBase ? widget.quoteCurrency : widget.baseCurrency;
 
   bool _isUnlocked(String code) {
-    if (code == _fixedSide) return true; // the fixed side is always valid
+    if (code == _fixedSide) return true;
     if (_isFreeDefaultCurrency(code)) return true;
     final candidateBase = widget.selectingBase ? code : widget.baseCurrency;
     final candidateQuote = widget.selectingBase ? widget.quoteCurrency : code;
@@ -57,7 +51,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
   }
 
   bool _isTempUnlocked(String code) {
-    if (code == _fixedSide) return false; // fixed side never shows temp badge
+    if (code == _fixedSide) return false;
     if (_isFreeDefaultCurrency(code)) return false;
     final candidateBase = widget.selectingBase ? code : widget.baseCurrency;
     final candidateQuote = widget.selectingBase ? widget.quoteCurrency : code;
@@ -65,7 +59,6 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
       candidateBase,
       candidateQuote,
     );
-    // Free-default pairs are permanently unlocked, not "temp"
     if (_isFreeDefaultPair(candidateBase, candidateQuote)) return false;
     return widget.controller.tempUnlockedCodes.contains(canonical);
   }
@@ -141,307 +134,43 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      expand: false,
-      initialChildSize: .84,
-      minChildSize: .42,
-      maxChildSize: .92,
-      builder: (context, scrollController) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
-          child: Column(
-            children: <Widget>[
-              CurrencyPickerHeader(
-                title: widget.title,
-                subtitle: chartPairSubtitle(
-                  context,
-                  widget.baseCurrency,
-                  widget.quoteCurrency,
-                ),
-              ),
-              const SizedBox(height: 12),
-              CurrencyPickerSearchField(
-                onChanged: (value) =>
-                    setState(() => _query = value.trim().toUpperCase()),
-              ),
-              const SizedBox(height: 12),
-              if (widget.controller.adsEnabled) ...[
-                const AdBannerWidget(),
-                const SizedBox(height: 8),
-              ],
-              Expanded(
-                child: _buildCurrencyList(scrollController: scrollController),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  bool _matches(SupportedCurrency currency) {
-    if (_query.isEmpty) return true;
-    final code = currency.code.toUpperCase();
-    final name = currency.name.toUpperCase();
-    return code.contains(_query) || name.contains(_query);
-  }
-
-  Widget _buildCurrencyList({required ScrollController scrollController}) {
     final currencies = allSupportedCurrencies
         .where(
-          (currency) =>
-              widget.allowCryptoCharts || !isCryptoCurrency(currency.code),
+          (c) => widget.allowCryptoCharts || !isCryptoCurrency(c.code),
         )
-        .where(_matches)
         .toList();
 
-    final groups = buildCurrencyGroups(currencies: currencies);
-
-    if (groups.isEmpty) {
-      return Center(
-        child: Text(
-          'No currencies found',
-          style: TextStyle(color: AppColors.of(context).muted, fontSize: 14),
-        ),
-      );
-    }
-
-    return ListView.builder(
-      controller: scrollController,
-      itemCount: groups.length * 2,
-      itemBuilder: (context, index) {
-        final groupIndex = index ~/ 2;
-        final isHeader = index.isOdd == false;
-        if (groupIndex >= groups.length) {
-          return const SizedBox.shrink();
-        }
-        final group = groups[groupIndex];
-        if (isHeader) {
-          return CurrencySectionHeader(
-            group: group,
-            isExpanded: _expandedSections.contains(group.section),
-            onToggle: () => setState(() {
-              if (_expandedSections.contains(group.section)) {
-                _expandedSections.remove(group.section);
-              } else {
-                _expandedSections.add(group.section);
-              }
-            }),
-          );
-        }
-        if (!_expandedSections.contains(group.section)) {
-          return const SizedBox.shrink();
-        }
-        return _buildGroupItems(group);
-      },
-    );
-  }
-
-  Widget _buildGroupItems(CurrencyGroup group) {
-    final items = group.currencies;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: items.map((currency) {
+    return SectionedCurrencyPicker(
+      title: widget.title,
+      subtitle: chartPairSubtitle(
+        context,
+        widget.baseCurrency,
+        widget.quoteCurrency,
+      ),
+      currencies: currencies,
+      headerWidget: widget.controller.adsEnabled
+          ? const AdBannerWidget()
+          : null,
+      tileBuilder: (context, currency) {
         final isSelected = currency.code == widget.selectedCode;
         final isFixed = _isSameAsFixed(currency.code);
         final unlocked = _isUnlocked(currency.code);
         final tempUnlocked = _isTempUnlocked(currency.code);
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _CurrencyTile(
-              symbol: currency.symbol,
-              code: currency.code,
-              name: currency.name,
-              isSelected: isSelected,
-              isFixed: isFixed,
-              unlocked: unlocked,
-              tempUnlocked: tempUnlocked,
-              onTap: isFixed
-                  ? null
-                  : unlocked
+        return ChartCurrencyTile(
+          symbol: currency.symbol,
+          code: currency.code,
+          name: currency.name,
+          isSelected: isSelected,
+          isFixed: isFixed,
+          unlocked: unlocked,
+          tempUnlocked: tempUnlocked,
+          onTap: isFixed
+              ? null
+              : unlocked
                   ? () => Navigator.of(context).pop(currency.code)
                   : () => _showLockedAction(context, currency.code),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 52),
-              child: Divider(
-                height: 1,
-                color: AppColors.of(context).border.withValues(alpha: .15),
-              ),
-            ),
-          ],
         );
-      }).toList(),
-    );
-  }
-}
-
-class _CurrencyTile extends StatelessWidget {
-  const _CurrencyTile({
-    required this.symbol,
-    required this.code,
-    required this.name,
-    required this.isSelected,
-    required this.isFixed,
-    required this.unlocked,
-    required this.tempUnlocked,
-    required this.onTap,
-  });
-
-  final String symbol;
-  final String code;
-  final String name;
-  final bool isSelected;
-  final bool isFixed;
-  final bool unlocked;
-  final bool tempUnlocked;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final locked = !unlocked && !isFixed;
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Row(
-          children: <Widget>[
-            Opacity(
-              opacity: locked ? .45 : 1,
-              child: CurrencyFlagIcon(code: code, symbol: symbol, radius: 16),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    code,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: locked
-                          ? AppColors.of(context).muted
-                          : AppColors.of(context).text,
-                    ),
-                  ),
-                  Text(
-                    locked
-                        ? tapToUnlockLabel(context)
-                        : tempUnlocked
-                        ? unlockedFor24hLabel(context)
-                        : isFixed
-                        ? currentCurrencyLabel(context, code)
-                        : name,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: tempUnlocked
-                          ? AppColors.of(context).primary.withValues(alpha: .7)
-                          : locked
-                          ? AppColors.of(context).muted
-                          : isFixed
-                          ? AppColors.of(context).primary.withValues(alpha: .5)
-                          : AppColors.of(context).subtle,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (isFixed)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: AppColors.of(context).primary.withValues(alpha: .06),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(
-                    color: AppColors.of(context).primary.withValues(alpha: .15),
-                  ),
-                ),
-                child: Text(
-                  currentBadgeLabel(context),
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.of(context).primary.withValues(alpha: .5),
-                  ),
-                ),
-              )
-            else if (tempUnlocked)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: AppColors.of(context).primary.withValues(alpha: .1),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(
-                    color: AppColors.of(context).primary.withValues(alpha: .3),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(
-                      Icons.schedule,
-                      size: 13,
-                      color: AppColors.of(context).primary,
-                    ),
-                    const SizedBox(width: 3),
-                    Text(
-                      '24h',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.of(context).primary,
-                      ),
-                    ),
-                    if (isSelected) ...[
-                      const SizedBox(width: 4),
-                      Icon(
-                        Icons.check_circle,
-                        size: 13,
-                        color: AppColors.of(context).primary,
-                      ),
-                    ],
-                  ],
-                ),
-              )
-            else if (isSelected)
-              Icon(Icons.check_circle, color: AppColors.of(context).primary)
-            else if (unlocked)
-              Icon(Icons.chevron_right, color: AppColors.of(context).subtle)
-            else
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: AppColors.of(context).container,
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(
-                    color: AppColors.of(context).border.withValues(alpha: .4),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(
-                      Icons.lock_outline,
-                      size: 13,
-                      color: AppColors.of(context).muted,
-                    ),
-                    const SizedBox(width: 3),
-                    Text(
-                      lockedBadgeLabel(context),
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.of(context).muted,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-          ],
-        ),
-      ),
+      },
     );
   }
 }

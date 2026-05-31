@@ -1,71 +1,19 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../core/currency/supported_currencies.dart';
-import '../../../core/rates/rates_service.dart';
 import '../../../core/rates/models/rates_result.dart';
 import '../domain/chart_range.dart';
-
-enum ChartStatus { initial, loading, loaded, error }
-
-class ChartState {
-  const ChartState({
-    this.status = ChartStatus.initial,
-    this.base = 'USD',
-    this.quote = 'EUR',
-    this.range = ChartRange.oneMonth,
-    this.data = const {},
-    this.lastUpdated,
-    this.message,
-  });
-
-  final ChartStatus status;
-  final String base;
-  final String quote;
-  final ChartRange range;
-  final Map<DateTime, double> data;
-  final DateTime? lastUpdated;
-  final String? message;
-
-  double? get high {
-    if (data.isEmpty) return null;
-    return data.values.reduce((a, b) => a > b ? a : b);
-  }
-
-  double? get low {
-    if (data.isEmpty) return null;
-    return data.values.reduce((a, b) => a < b ? a : b);
-  }
-
-  double? get changePercent {
-    final sorted = data.entries.toList()
-      ..sort((a, b) => a.key.compareTo(b.key));
-    if (sorted.length < 2) return null;
-    final first = sorted.first.value;
-    final last = sorted.last.value;
-    if (first == 0) return null;
-    return ((last - first) / first) * 100;
-  }
-
-  double? get currentRate {
-    if (data.isEmpty) return null;
-    final sorted = data.entries.toList()
-      ..sort((a, b) => b.key.compareTo(a.key));
-    return sorted.first.value;
-  }
-
-  String get pairLabel => '$base → $quote';
-
-  bool get includesCrypto => isCryptoCurrency(base) || isCryptoCurrency(quote);
-}
+import '../domain/chart_repository.dart';
+import 'chart_state.dart';
 
 class ChartsController extends ChangeNotifier {
   ChartsController({
-    required RatesService ratesService,
+    required ChartRepository repository,
     required bool allowCryptoCharts,
     String defaultBase = 'USD',
     String defaultQuote = 'EUR',
     ChartRange range = ChartRange.oneMonth,
-  }) : _ratesService = ratesService,
+  }) : _repository = repository,
        _allowCryptoCharts = allowCryptoCharts,
        _state = ChartState(
          base: _normalizeCode(defaultBase, allowCryptoCharts),
@@ -77,7 +25,7 @@ class ChartsController extends ChangeNotifier {
          range: range,
        );
 
-  final RatesService _ratesService;
+  final ChartRepository _repository;
   final bool _allowCryptoCharts;
   ChartState _state;
   bool _disposed = false;
@@ -145,6 +93,12 @@ class ChartsController extends ChangeNotifier {
     _load();
   }
 
+  Future<void> refresh() async {
+    if (_state.status == ChartStatus.loading) return;
+    _setState(_state.copyWith(status: ChartStatus.loading));
+    await _load();
+  }
+
   Future<void> _load() async {
     final requestVersion = ++_requestVersion;
     if (_state.includesCrypto && !_allowCryptoCharts) {
@@ -168,7 +122,7 @@ class ChartsController extends ChangeNotifier {
     }
     final to = DateTime.now();
 
-    final result = await _ratesService.getHistoricalRates(
+    final result = await _repository.getHistoricalRates(
       base: _state.base,
       quote: _state.quote,
       from: from,
@@ -216,27 +170,5 @@ class ChartsController extends ChangeNotifier {
       return fallback;
     }
     return code;
-  }
-}
-
-extension ChartStateCopyWith on ChartState {
-  ChartState copyWith({
-    ChartStatus? status,
-    String? base,
-    String? quote,
-    ChartRange? range,
-    Map<DateTime, double>? data,
-    DateTime? lastUpdated,
-    String? message,
-  }) {
-    return ChartState(
-      status: status ?? this.status,
-      base: base ?? this.base,
-      quote: quote ?? this.quote,
-      range: range ?? this.range,
-      data: data ?? this.data,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
-      message: message,
-    );
   }
 }

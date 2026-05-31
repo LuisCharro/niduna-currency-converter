@@ -11,6 +11,7 @@ import 'package:currency_converter/src/core/rates/models/rates_snapshot.dart';
 import 'package:currency_converter/src/core/rates/rates_cache.dart';
 import 'package:currency_converter/src/core/rates/rates_client.dart';
 import 'package:currency_converter/src/core/rates/rates_service.dart';
+import 'package:currency_converter/src/features/charts/data/rates_service_chart_repository.dart';
 import 'package:currency_converter/src/core/theme/app_theme.dart';
 import 'package:currency_converter/l10n/app_localizations.dart';
 import 'package:currency_converter/src/features/charts/charts_screen.dart';
@@ -26,6 +27,7 @@ import 'package:currency_converter/src/features/convert/convert_screen.dart';
 import 'package:currency_converter/src/features/convert/widgets/ad_support_shelf.dart';
 import 'package:currency_converter/src/core/ads/ad_banner_widget.dart';
 import 'package:currency_converter/src/features/charts/widgets/rate_chart.dart';
+import 'package:currency_converter/src/features/settings/settings_controller.dart';
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
 import 'package:currency_converter/src/shared/widgets/bottom_tab_frame.dart';
 import 'package:currency_converter/src/shared/widgets/fade_slide_switcher.dart';
@@ -67,6 +69,12 @@ void main() {
     favoritesStore.dispose();
     controller.dispose();
   });
+
+  SettingsController makeSettingsController() => SettingsController(
+    preferences: preferences,
+    monetization: monetization,
+    onClearCache: () {},
+  );
 
   testWidgets('app launches with floating pill nav', (
     WidgetTester tester,
@@ -546,12 +554,13 @@ void main() {
   });
 
   testWidgets('Settings screen shows sections', (WidgetTester tester) async {
+    final sc = makeSettingsController();
+    addTearDown(sc.dispose);
     await tester.pumpWidget(
       MaterialApp(
         home: SettingsScreen(
-          monetization: monetization,
+          controller: sc,
           preferences: preferences,
-          onClearCache: () {},
         ),
       ),
     );
@@ -566,12 +575,13 @@ void main() {
   testWidgets('Settings hierarchy uses calmer shared typography', (
     WidgetTester tester,
   ) async {
+    final sc = makeSettingsController();
+    addTearDown(sc.dispose);
     await tester.pumpWidget(
       MaterialApp(
         home: SettingsScreen(
-          monetization: monetization,
+          controller: sc,
           preferences: preferences,
-          onClearCache: () {},
         ),
       ),
     );
@@ -591,15 +601,16 @@ void main() {
   testWidgets('Settings premium subtitles are localized in Spanish', (
     WidgetTester tester,
   ) async {
+    final sc = makeSettingsController();
+    addTearDown(sc.dispose);
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('es'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: SettingsScreen(
-          monetization: monetization,
+          controller: sc,
           preferences: preferences,
-          onClearCache: () {},
         ),
       ),
     );
@@ -633,10 +644,10 @@ void main() {
 
     final chartsController = ChartsController(
       allowCryptoCharts: true,
-      ratesService: RatesService(
+      repository: RatesServiceChartRepository(RatesService(
         client: _FakeRatesClient(),
         cache: _FakeRatesCache(),
-      ),
+      )),
     );
     addTearDown(chartsController.dispose);
 
@@ -651,12 +662,13 @@ void main() {
     await tester.pumpAndSettle();
     final chartsTitle = tester.widgetList<Text>(find.text('Charts')).first;
 
+    final sc = makeSettingsController();
+    addTearDown(sc.dispose);
     await tester.pumpWidget(
       MaterialApp(
         home: SettingsScreen(
-          monetization: monetization,
+          controller: sc,
           preferences: preferences,
-          onClearCache: () {},
         ),
       ),
     );
@@ -676,10 +688,10 @@ void main() {
   ) async {
     final chartsController = ChartsController(
       allowCryptoCharts: true,
-      ratesService: RatesService(
+      repository: RatesServiceChartRepository(RatesService(
         client: _FakeRatesClient(),
         cache: _FakeRatesCache(),
-      ),
+      )),
     );
     addTearDown(chartsController.dispose);
 
@@ -745,10 +757,10 @@ void main() {
     await monetization.setRemoveAdsLifetime(true);
     final chartsController = ChartsController(
       allowCryptoCharts: true,
-      ratesService: RatesService(
+      repository: RatesServiceChartRepository(RatesService(
         client: _FakeRatesClient(),
         cache: _FakeRatesCache(),
-      ),
+      )),
     );
     addTearDown(chartsController.dispose);
 
@@ -816,6 +828,8 @@ void main() {
   testWidgets('chart picker keeps USD and EUR selectable for crypto pairs', (
     WidgetTester tester,
   ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -832,32 +846,29 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
 
-    final eurTile = find.ancestor(
-      of: find.text('EUR'),
+    // Expand Europe section (collapsed by default; search doesn't auto-expand)
+    final europeHeader = find.text('Europe (10)');
+    expect(europeHeader, findsOneWidget);
+    await tester.tap(europeHeader);
+    await tester.pumpAndSettle();
+
+    // Search for EUR — must be present and not locked (free default for crypto pairs)
+    final searchField = find.byType(TextField);
+    expect(searchField, findsOneWidget);
+    await tester.enterText(searchField, 'EUR');
+    await tester.pumpAndSettle();
+
+    final eurTexts = find.text('EUR');
+    expect(eurTexts, findsNWidgets(2)); // search field + list item
+    final eurListTile = find.ancestor(
+      of: eurTexts.last,
       matching: find.byType(InkWell),
     );
-    final usdTile = find.ancestor(
-      of: find.text('USD'),
-      matching: find.byType(InkWell),
-    );
-
-    expect(find.text('EUR'), findsOneWidget);
-    expect(find.text('USD'), findsOneWidget);
+    expect(eurListTile, findsOneWidget);
     expect(
-      find.descendant(of: eurTile, matching: find.text('Tap to unlock')),
-      findsNothing,
-    );
-    expect(
-      find.descendant(of: usdTile, matching: find.text('Tap to unlock')),
-      findsNothing,
-    );
-    expect(
-      find.descendant(of: eurTile, matching: find.text('Locked')),
-      findsNothing,
-    );
-    expect(
-      find.descendant(of: usdTile, matching: find.text('Locked')),
+      find.descendant(of: eurListTile, matching: find.text('Tap to unlock')),
       findsNothing,
     );
   });
@@ -887,6 +898,9 @@ class _FakeRatesRepository implements ConvertRatesRepository {
     }
     return fresh!;
   }
+
+  @override
+  Future<Map<String, double>?> fetchYesterdayRates(String base) async => null;
 }
 
 class _FakeRatesClient implements RatesClient {

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/monetization/purchase_service.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../shared/widgets/animated_progress_bar.dart';
 import '../../../../l10n/app_localizations.dart';
+import 'iap_purchase_copy.dart';
 
 enum _IapPhase { loading, processing, completed, failed }
 
@@ -118,11 +120,11 @@ class _IapPurchasePlayerState extends State<IapPurchasePlayer>
                 ),
                 if (_phase == _IapPhase.loading) ...[
                   const SizedBox(height: 24),
-                  const _ProgressBar(duration: Duration(milliseconds: 800)),
+                  AnimatedProgressBar(duration: Duration(milliseconds: 800)),
                 ],
                 if (_phase == _IapPhase.processing) ...[
                   const SizedBox(height: 24),
-                  const _ProgressBar(duration: Duration(milliseconds: 1200)),
+                  AnimatedProgressBar(duration: Duration(milliseconds: 1200)),
                 ],
               ],
             ),
@@ -179,85 +181,13 @@ class _IapPurchasePlayerState extends State<IapPurchasePlayer>
   String _subtitle(AppLocalizations? l10n) {
     switch (_phase) {
       case _IapPhase.loading:
-        return _productName(l10n);
+        return iapProductName(l10n, widget.product);
       case _IapPhase.processing:
         return l10n?.pleaseWait ?? "Please wait";
       case _IapPhase.completed:
-        return _successMessage(l10n);
+        return iapSuccessMessage(l10n, widget.product);
       case _IapPhase.failed:
         return l10n?.tryAgainLater ?? "Try again later";
     }
-  }
-
-  String _productName(AppLocalizations? l10n) {
-    switch (widget.product) {
-      case ProductType.removeAds:
-        return l10n?.removingAds ?? "Removing Ads";
-      case ProductType.chartsPro:
-        return l10n?.unlockingPairs ?? "Unlocking all pairs";
-      case ProductType.favoritesPro:
-        return l10n?.unlockingFavoritesPro ?? 'Unlocking Favorites Pro';
-      case ProductType.subscription:
-        return l10n?.startingSubscription ?? "Starting subscription";
-    }
-  }
-
-  String _successMessage(AppLocalizations? l10n) {
-    switch (widget.product) {
-      case ProductType.removeAds:
-        return l10n?.adsRemovedForever ?? 'All ads removed forever';
-      case ProductType.chartsPro:
-        return l10n?.allPairsUnlocked ?? 'All chart pairs unlocked';
-      case ProductType.favoritesPro:
-        return l10n?.favoritesProUnlocked ??
-            'Up to 16 favorite pairs unlocked';
-      case ProductType.subscription:
-        return l10n?.subscriptionActive ?? 'Subscription active';
-    }
-  }
-}
-
-class _ProgressBar extends StatefulWidget {
-  const _ProgressBar({required this.duration});
-
-  final Duration duration;
-
-  @override
-  State<_ProgressBar> createState() => _ProgressBarState();
-}
-
-class _ProgressBarState extends State<_ProgressBar>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this, duration: widget.duration)
-      ..forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, _) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: LinearProgressIndicator(
-            value: _controller.value,
-            backgroundColor: Colors.white.withValues(alpha: .15),
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors.of(context).primary),
-            minHeight: 4,
-          ),
-        );
-      },
-    );
   }
 }

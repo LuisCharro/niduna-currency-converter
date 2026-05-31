@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
+import 'app_decorations.dart';
+import 'app_text_styles.dart';
+
+export 'app_decorations.dart';
+export 'app_text_styles.dart';
 
 class AppTheme {
   AppTheme._();
@@ -21,87 +26,19 @@ class AppTheme {
   static const Color coralSurface = Color(0xFFFDF0EC);
   static const Color coralInk = Color(0xFFB54E48);
 
-  static const double space1 = 4;
-  static const double space2 = 8;
-  static const double space3 = 12;
-  static const double space4 = 16;
-  static const double space5 = 20;
-  static const double space6 = 24;
-  static const double space7 = 32;
-  static const double space8 = 40;
-
+  static const double space1 = 4, space2 = 8, space3 = 12, space4 = 16;
+  static const double space5 = 20, space6 = 24, space7 = 32, space8 = 40;
   static Color instrumentFill([double alpha = 0.62]) =>
       containerHigh.withValues(alpha: alpha);
-
   static Color instrumentBorder([double alpha = 0.15]) =>
       border.withValues(alpha: alpha);
-
   static const double pagePadding = 20;
   static const EdgeInsets pageInsets = EdgeInsets.symmetric(
     horizontal: pagePadding,
   );
-  static const double sectionGap = 24;
-  static const double navOuterRadius = 32;
-
-  static TextStyle screenTitleStyle(BuildContext context) {
-    final colors = AppColors.of(context);
-    return const TextStyle(
-      fontFamily: 'Fraunces',
-      fontSize: 24,
-      fontWeight: FontWeight.w800,
-      height: 1.08,
-      letterSpacing: -0.25,
-    ).copyWith(color: colors.text);
-  }
-
-  static const TextStyle screenTitleFraunces = TextStyle(
-    fontFamily: 'Fraunces',
-    fontSize: 24,
-    fontWeight: FontWeight.w800,
-    height: 1.08,
-    letterSpacing: -0.25,
-    color: text,
-  );
-
-  static const TextStyle settingsGroupTitle = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w800,
-    height: 1.2,
-    color: text,
-  );
-
-  static TextStyle settingsGroupTitleStyle(BuildContext context) {
-    return settingsGroupTitle.copyWith(color: AppColors.of(context).text);
-  }
-
-  static const TextStyle settingsTileTitle = TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w700,
-    height: 1.25,
-    color: text,
-  );
-
-  static TextStyle settingsTileTitleStyle(BuildContext context) {
-    return settingsTileTitle.copyWith(color: AppColors.of(context).text);
-  }
-
-  static const TextStyle supportingText = TextStyle(
-    fontSize: 13,
-    fontWeight: FontWeight.w600,
-    height: 1.32,
-    color: muted,
-  );
-
-  static TextStyle supportingTextStyle(BuildContext context) {
-    return supportingText.copyWith(color: AppColors.of(context).muted);
-  }
-
-  static const double radius = 12;
-  static const double cardRadius = 16;
-  static const double pillRadius = 20;
-  static const double rowMinHeight = 64;
-  static const double floatingNavHeight = 64;
-  static const double floatingNavBottomOffset = 0;
+  static const double sectionGap = 24, navOuterRadius = 32, radius = 12;
+  static const double cardRadius = 16, pillRadius = 20, rowMinHeight = 64;
+  static const double floatingNavHeight = 64, floatingNavBottomOffset = 0;
   static const double bottomDockGap = 8;
   static const Duration motionFast = Duration(milliseconds: 120);
   static const Duration motionMedium = Duration(milliseconds: 180);
@@ -110,184 +47,55 @@ class AppTheme {
   static const Curve curveExit = Curves.easeInCubic;
   static const Curve curveStandard = Curves.easeInOutCubic;
 
-  static List<BoxShadow> subtleShadowFor(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return <BoxShadow>[
-      BoxShadow(
-        color: isDark
-            ? const Color(0x30FFFFFF)
-            : const Color(0x1A285F3B),
-        blurRadius: isDark ? 8 : 6,
-        offset: const Offset(0, 2),
-      ),
-    ];
-  }
+  static const TextStyle display = AppTextStyles.display;
+  static const TextStyle heading = AppTextStyles.heading;
+  static const TextStyle body = AppTextStyles.body;
+  static const TextStyle caption = AppTextStyles.caption;
+  static const TextStyle micro = AppTextStyles.micro;
+  static TextStyle screenTitleStyle(BuildContext context) =>
+      AppTextStyles.screenTitleStyle(context);
+  static const TextStyle screenTitleFraunces =
+      AppTextStyles.screenTitleFraunces;
+  static const TextStyle settingsGroupTitle =
+      AppTextStyles.settingsGroupTitle;
+  static TextStyle settingsGroupTitleStyle(BuildContext context) =>
+      AppTextStyles.settingsGroupTitleStyle(context);
+  static const TextStyle settingsTileTitle =
+      AppTextStyles.settingsTileTitle;
+  static TextStyle settingsTileTitleStyle(BuildContext context) =>
+      AppTextStyles.settingsTileTitleStyle(context);
+  static const TextStyle supportingText = AppTextStyles.supportingText;
+  static TextStyle supportingTextStyle(BuildContext context) =>
+      AppTextStyles.supportingTextStyle(context);
+  static TextStyle heroAmountStyle(BuildContext context) =>
+      AppTextStyles.heroAmountStyle(context);
+  static const TextStyle heroAmount = AppTextStyles.heroAmount;
+  static TextStyle heroAmountCompactStyle(BuildContext context) =>
+      AppTextStyles.heroAmountCompactStyle(context);
+  static const TextStyle heroAmountCompact = AppTextStyles.heroAmountCompact;
+  static const List<double> heroAmountSizes = AppTextStyles.heroAmountSizes;
+  static TextStyle pairTitleStyle(BuildContext context) =>
+      AppTextStyles.pairTitleStyle(context);
+  static const TextStyle pairTitleFraunces =
+      AppTextStyles.pairTitleFraunces;
+  static TextStyle metricValueStyle(BuildContext context) =>
+      AppTextStyles.metricValueStyle(context);
+  static const TextStyle metricValue = AppTextStyles.metricValue;
+  static const TextStyle metricDelta = AppTextStyles.metricDelta;
+  static TextStyle sectionLabelStyle(BuildContext context) =>
+      AppTextStyles.sectionLabelStyle(context);
+  static const TextStyle sectionLabel = AppTextStyles.sectionLabel;
+  static TextStyle heroAmountFor(BuildContext context) =>
+      AppTextStyles.heroAmountFor(context);
 
-  static const List<BoxShadow> subtleShadow = <BoxShadow>[
-    BoxShadow(color: Color(0x0F285F3B), blurRadius: 8, offset: Offset(0, 2)),
-  ];
-
-  static List<BoxShadow> floatingShadowFor(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return <BoxShadow>[
-      BoxShadow(
-        color: isDark
-            ? const Color(0x40FFFFFF)
-            : const Color(0x22285F3B),
-        blurRadius: isDark ? 22 : 16,
-        offset: const Offset(0, 10),
-      ),
-    ];
-  }
-
-  static const List<BoxShadow> floatingShadow = <BoxShadow>[
-    BoxShadow(color: Color(0x18285F3B), blurRadius: 22, offset: Offset(0, 10)),
-  ];
-
-  static double tabScrollBottomPadding(BuildContext context) {
-    return MediaQuery.paddingOf(context).bottom +
-        floatingNavHeight +
-        floatingNavBottomOffset +
-        bottomDockGap +
-        12;
-  }
-
-  static const TextStyle display = TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.w800,
-    height: 1.2,
-    letterSpacing: -0.5,
-  );
-
-  static const TextStyle heading = TextStyle(
-    fontSize: 22,
-    fontWeight: FontWeight.w700,
-    height: 1.25,
-  );
-
-  static const body = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    height: 1.4,
-  );
-
-  static const TextStyle caption = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w600,
-    height: 1.3,
-  );
-
-  static const TextStyle micro = TextStyle(
-    fontSize: 11,
-    fontWeight: FontWeight.w700,
-    height: 1.2,
-    letterSpacing: 0.5,
-  );
-
-  static TextStyle heroAmountStyle(BuildContext context) {
-    final colors = AppColors.of(context);
-    return const TextStyle(
-      fontSize: 50,
-      fontWeight: FontWeight.w800,
-      height: 1.05,
-      letterSpacing: -1,
-    ).copyWith(color: colors.text);
-  }
-
-  static const TextStyle heroAmount = TextStyle(
-    fontSize: 50,
-    fontWeight: FontWeight.w800,
-    height: 1.05,
-    letterSpacing: -1,
-    color: text,
-  );
-
-  static TextStyle heroAmountCompactStyle(BuildContext context) {
-    final colors = AppColors.of(context);
-    return const TextStyle(
-      fontSize: 40,
-      fontWeight: FontWeight.w800,
-      height: 1.05,
-      letterSpacing: -0.6,
-    ).copyWith(color: colors.text);
-  }
-
-  static const TextStyle heroAmountCompact = TextStyle(
-    fontSize: 40,
-    fontWeight: FontWeight.w800,
-    height: 1.05,
-    letterSpacing: -0.6,
-    color: text,
-  );
-
-  static const List<double> heroAmountSizes = [50.0, 44.0, 38.0, 32.0];
-
-  static TextStyle pairTitleStyle(BuildContext context) {
-    final colors = AppColors.of(context);
-    return const TextStyle(
-      fontFamily: 'Fraunces',
-      fontSize: 30,
-      fontWeight: FontWeight.w800,
-      letterSpacing: -0.6,
-      height: 1.05,
-    ).copyWith(color: colors.text);
-  }
-
-  static const TextStyle pairTitleFraunces = TextStyle(
-    fontFamily: 'Fraunces',
-    fontSize: 30,
-    fontWeight: FontWeight.w800,
-    letterSpacing: -0.6,
-    height: 1.05,
-    color: text,
-  );
-
-  static TextStyle metricValueStyle(BuildContext context) {
-    final colors = AppColors.of(context);
-    return const TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.w700,
-      height: 1.2,
-    ).copyWith(color: colors.text);
-  }
-
-  static const TextStyle metricValue = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.w700,
-    height: 1.2,
-    color: text,
-  );
-
-  static const TextStyle metricDelta = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w800,
-    height: 1.2,
-  );
-
-  static TextStyle sectionLabelStyle(BuildContext context) {
-    final colors = AppColors.of(context);
-    return const TextStyle(
-      fontSize: 11,
-      fontWeight: FontWeight.w700,
-      letterSpacing: 0.9,
-      height: 1.2,
-    ).copyWith(color: colors.muted);
-  }
-
-  static const TextStyle sectionLabel = TextStyle(
-    fontSize: 11,
-    fontWeight: FontWeight.w700,
-    letterSpacing: 0.9,
-    height: 1.2,
-    color: muted,
-  );
-
-  static TextStyle heroAmountFor(BuildContext context) {
-    final scale = MediaQuery.textScalerOf(context).scale(1);
-    return scale >= 1.3
-        ? heroAmountCompactStyle(context)
-        : heroAmountStyle(context);
-  }
+  static List<BoxShadow> subtleShadowFor(BuildContext context) =>
+      AppDecorations.subtleShadowFor(context);
+  static const List<BoxShadow> subtleShadow = AppDecorations.subtleShadow;
+  static List<BoxShadow> floatingShadowFor(BuildContext context) =>
+      AppDecorations.floatingShadowFor(context);
+  static const List<BoxShadow> floatingShadow = AppDecorations.floatingShadow;
+  static double tabScrollBottomPadding(BuildContext context) =>
+      AppDecorations.tabScrollBottomPadding(context);
 
   static final ThemeData light = ThemeData(
     useMaterial3: true,
@@ -298,7 +106,7 @@ class AppTheme {
       seedColor: primary,
       brightness: Brightness.light,
     ),
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       elevation: 0,
       backgroundColor: Colors.transparent,
       foregroundColor: text,

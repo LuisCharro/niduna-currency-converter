@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_colors.dart';
-import '../../../core/currency/currency_groups.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/currency/currency_groups.dart';
 
 class CurrencySectionHeader extends StatelessWidget {
   const CurrencySectionHeader({
@@ -31,13 +31,16 @@ class CurrencySectionHeader extends StatelessWidget {
               color: colors.muted,
             ),
             const SizedBox(width: 2),
-            Text(
-              '${group.section.label} (${group.length})',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                color: colors.muted,
-                letterSpacing: 0.5,
+            Expanded(
+              child: Text(
+                '${group.section.label} (${group.length})',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: colors.muted,
+                  letterSpacing: 0.5,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

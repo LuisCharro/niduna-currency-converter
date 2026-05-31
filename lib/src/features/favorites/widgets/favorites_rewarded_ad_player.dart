@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/animated_progress_bar.dart';
 import '../../../../l10n/app_localizations.dart';
 
 enum _FavoritesAdPhase { loading, playing, completed, failed }
@@ -104,7 +105,10 @@ class _FavoritesRewardedAdPlayerState extends State<FavoritesRewardedAdPlayer>
                 ),
                 if (_phase == _FavoritesAdPhase.playing) ...<Widget>[
                   const SizedBox(height: 24),
-                  const _ProgressBar(),
+                  AnimatedProgressBar(
+                    duration: const Duration(seconds: 4),
+                    accentColor: AppColors.of(context).trendUp,
+                  ),
                 ],
               ],
             ),
@@ -179,53 +183,5 @@ class _FavoritesRewardedAdPlayerState extends State<FavoritesRewardedAdPlayer>
       case _FavoritesAdPhase.failed:
         return l10n?.tryAgainLater ?? 'Try again later or unlock forever';
     }
-  }
-}
-
-class _ProgressBar extends StatefulWidget {
-  const _ProgressBar();
-
-  @override
-  State<_ProgressBar> createState() => _ProgressBarState();
-}
-
-class _ProgressBarState extends State<_ProgressBar>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 4),
-    )..forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, _) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: LinearProgressIndicator(
-            value: _controller.value,
-            backgroundColor: const Color(0xFFF6F8EF)
-                .withValues(alpha: .15),
-            valueColor: AlwaysStoppedAnimation<Color>(
-              AppColors.of(context).trendUp,
-            ),
-            minHeight: 4,
-          ),
-        );
-      },
-    );
   }
 }

@@ -8,6 +8,7 @@ import 'package:currency_converter/src/core/rates/models/rates_snapshot.dart';
 import 'package:currency_converter/src/core/rates/rates_cache.dart';
 import 'package:currency_converter/src/core/rates/rates_client.dart';
 import 'package:currency_converter/src/core/rates/rates_service.dart';
+import 'package:currency_converter/src/features/charts/data/rates_service_chart_repository.dart';
 import 'package:currency_converter/src/features/charts/charts_screen.dart';
 import 'package:currency_converter/src/features/charts/domain/chart_range.dart';
 import 'package:currency_converter/src/features/charts/presentation/charts_controller.dart';
@@ -173,10 +174,10 @@ void main() {
   ) async {
     final chartsController = ChartsController(
       allowCryptoCharts: true,
-      ratesService: RatesService(
+      repository: RatesServiceChartRepository(RatesService(
         client: _FailingRatesClient(),
         cache: _EmptyRatesCache(),
-      ),
+      )),
     );
     addTearDown(chartsController.dispose);
 
@@ -210,6 +211,9 @@ class _FakeRatesRepository implements ConvertRatesRepository {
 
   @override
   Future<LatestRatesSnapshot> fetchLatest(String base) async => fresh;
+
+  @override
+  Future<Map<String, double>?> fetchYesterdayRates(String base) async => null;
 }
 
 class _FailingRatesClient implements RatesClient {

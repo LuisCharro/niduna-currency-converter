@@ -1,18 +1,19 @@
 import 'dart:async';
 
-import '../currency/supported_currencies.dart';
-import 'models/rates_snapshot.dart';
 import 'models/rates_result.dart';
 import 'rates_cache.dart';
 import 'rates_client.dart';
+import 'rates_service_helpers.dart' as helpers;
 
 class RatesService {
   RatesService({required RatesClient client, required RatesCache cache})
     : _client = client,
-      _cache = cache;
+      _cache = cache,
+      _historicalFetcher = helpers.HistoricalFetcher(client: client, cache: cache);
 
   final RatesClient _client;
   final RatesCache _cache;
+  final helpers.HistoricalFetcher _historicalFetcher;
   final Map<String, Future<RatesResult>> _latestRequests = {};
   final Map<String, Future<HistoricalResult>> _historicalRequests = {};
 
@@ -97,27 +98,27 @@ class RatesService {
       );
     }
 
-    final fromDate = _toDateOnly(from);
-    final toDate = _toDateOnly(to);
+    final fromDate = helpers.toDateOnly(from);
+    final toDate = helpers.toDateOnly(to);
 
     final cached = await _cache.readHistorical(base: base, quote: quote);
     if (cached != null) {
-      final coversRange = _coversRange(cached, fromDate, toDate);
+      final coversRange = helpers.coversRange(cached, fromDate, toDate);
       if (coversRange && !forceRefresh && !cached.isStale()) {
         return HistoricalResult(
           status: HistoricalStatus.cached,
-          snapshot: _filterSnapshot(cached, fromDate, toDate),
+          snapshot: helpers.filterSnapshot(cached, fromDate, toDate),
         );
       }
     }
 
-    final key = _historicalKey(base, quote, fromDate, toDate);
+    final key = helpers.historicalKey(base, quote, fromDate, toDate);
     final existing = _historicalRequests[key];
     if (existing != null) {
       return existing;
     }
 
-    final request = _fetchAndCacheHistoricalSmart(
+    final request = _historicalFetcher.fetchSmart(
       base: base,
       quote: quote,
       from: fromDate,
@@ -133,216 +134,11 @@ class RatesService {
     }
   }
 
-  Future<HistoricalResult> _fetchAndCacheHistorical({
-    required String base,
-    required String quote,
-    required DateTime from,
-    required DateTime to,
-    HistoricalSnapshot? fallback,
-  }) async {
-    try {
-      final snapshot = await _client.fetchHistorical(
-        base: base,
-        quote: quote,
-        from: from,
-        to: to,
-      );
-      await _cache.writeHistorical(snapshot);
-      return HistoricalResult(
-        status: HistoricalStatus.fresh,
-        snapshot: snapshot,
-      );
-    } catch (e) {
-      if (fallback != null) {
-        return HistoricalResult(
-          status: HistoricalStatus.cached,
-          snapshot: fallback,
-          message: 'Failed to refresh historical data. Showing cached data.',
-        );
-      }
-      return HistoricalResult(
-        status: HistoricalStatus.error,
-        message: 'Failed to load historical data: ${e.toString()}',
-      );
-    }
-  }
-
-  Future<HistoricalResult> _fetchAndCacheHistoricalSmart({
-    required String base,
-    required String quote,
-    required DateTime from,
-    required DateTime to,
-    required bool forceRefresh,
-    HistoricalSnapshot? fallback,
-  }) async {
-    final cached = fallback;
-    if (cached == null) {
-      return _fetchAndCacheHistorical(
-        base: base,
-        quote: quote,
-        from: from,
-        to: to,
-      );
-    }
-
-    var merged = cached;
-    var fetchedFresh = false;
-
-    if (!_coversRange(merged, from, to)) {
-      if (merged.coveredFrom.isAfter(from)) {
-        final olderTo = _toDateOnly(
-          merged.coveredFrom.subtract(const Duration(days: 1)),
-        );
-        if (!olderTo.isBefore(from)) {
-          final olderResult = await _fetchAndCacheHistorical(
-            base: base,
-            quote: quote,
-            from: from,
-            to: olderTo,
-            fallback: merged,
-          );
-          final olderSnapshot = olderResult.snapshot;
-          if (olderSnapshot != null) {
-            merged = merged.mergedWith(olderSnapshot);
-            fetchedFresh =
-                fetchedFresh || olderResult.status == HistoricalStatus.fresh;
-          }
-        }
-      }
-
-      if (merged.coveredTo.isBefore(to) &&
-          _shouldFetchNewerGap(merged.coveredTo, to, base, quote)) {
-        final newerFrom = _toDateOnly(
-          merged.coveredTo.add(const Duration(days: 1)),
-        );
-        if (!newerFrom.isAfter(to)) {
-          final newerResult = await _fetchAndCacheHistorical(
-            base: base,
-            quote: quote,
-            from: newerFrom,
-            to: to,
-            fallback: merged,
-          );
-          final newerSnapshot = newerResult.snapshot;
-          if (newerSnapshot != null) {
-            merged = merged.mergedWith(newerSnapshot);
-            fetchedFresh =
-                fetchedFresh || newerResult.status == HistoricalStatus.fresh;
-          }
-        }
-      }
-    }
-
-    if (forceRefresh || merged.isStale()) {
-      final refreshFrom = _toDateOnly(merged.coveredTo);
-      final refreshResult = await _fetchAndCacheHistorical(
-        base: base,
-        quote: quote,
-        from: refreshFrom,
-        to: to,
-        fallback: merged,
-      );
-      if (refreshResult.snapshot != null) {
-        merged = merged.mergedWith(refreshResult.snapshot!);
-        fetchedFresh =
-            fetchedFresh || refreshResult.status == HistoricalStatus.fresh;
-      }
-    }
-
-    final status = fetchedFresh
-        ? HistoricalStatus.fresh
-        : HistoricalStatus.cached;
-    return HistoricalResult(
-      status: status,
-      snapshot: _filterSnapshot(merged, from, to),
-    );
-  }
-
   Future<void> invalidateCache(String base) async {
     await _cache.invalidateLatest(base);
   }
 
   Future<void> clearCache() async {
     await _cache.clear();
-  }
-
-  String _historicalKey(
-    String base,
-    String quote,
-    DateTime from,
-    DateTime to,
-  ) => '$base|$quote|${from.toIso8601String()}|${to.toIso8601String()}';
-
-  DateTime _toDateOnly(DateTime date) {
-    return DateTime(date.year, date.month, date.day);
-  }
-
-  bool _coversRange(HistoricalSnapshot snapshot, DateTime from, DateTime to) {
-    return !snapshot.coveredFrom.isAfter(from) &&
-        !snapshot.coveredTo.isBefore(to);
-  }
-
-  bool _shouldFetchNewerGap(
-    DateTime coveredTo,
-    DateTime requestedTo,
-    String base,
-    String quote,
-  ) {
-    final to = _toDateOnly(requestedTo);
-    final lastCovered = _toDateOnly(coveredTo);
-    if (!lastCovered.isBefore(to)) {
-      return false;
-    }
-
-    if (isCryptoCurrency(base) || isCryptoCurrency(quote)) {
-      return true;
-    }
-
-    if (!_isWeekend(to)) {
-      return true;
-    }
-
-    final weekendSpan = to.difference(lastCovered).inDays;
-    return weekendSpan > 2;
-  }
-
-  bool _isWeekend(DateTime date) {
-    return date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
-  }
-
-  HistoricalSnapshot _filterSnapshot(
-    HistoricalSnapshot snapshot,
-    DateTime from,
-    DateTime to,
-  ) {
-    final filtered = <DateTime, double>{};
-    for (final entry in snapshot.data.entries) {
-      final date = _toDateOnly(entry.key);
-      if (!date.isBefore(from) && !date.isAfter(to)) {
-        filtered[date] = entry.value;
-      }
-    }
-
-    if (filtered.isEmpty) {
-      return HistoricalSnapshot(
-        base: snapshot.base,
-        quote: snapshot.quote,
-        coveredFrom: from,
-        coveredTo: to,
-        data: const {},
-        savedAt: snapshot.savedAt,
-      );
-    }
-
-    final minDate = filtered.keys.reduce((a, b) => a.isBefore(b) ? a : b);
-    final maxDate = filtered.keys.reduce((a, b) => a.isAfter(b) ? a : b);
-    return HistoricalSnapshot(
-      base: snapshot.base,
-      quote: snapshot.quote,
-      coveredFrom: minDate,
-      coveredTo: maxDate,
-      data: filtered,
-      savedAt: snapshot.savedAt,
-    );
   }
 }

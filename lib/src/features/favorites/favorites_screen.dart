@@ -46,6 +46,7 @@ class FavoritesScreen extends StatelessWidget {
               onAdd: () => onNavigateToConvert('', ''),
               onWatchAd: () => _showRewardedAd(context),
               onBuyPro: () => _purchasePro(context),
+              onRefresh: controller.refresh,
             ),
             footer: monetization.adsEnabled ? const AdSupportShelf() : null,
           ),

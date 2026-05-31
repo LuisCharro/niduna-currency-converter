@@ -4,7 +4,7 @@ import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../domain/chart_range.dart';
-import '../presentation/charts_controller.dart';
+import '../presentation/chart_state.dart';
 import 'charts_empty_state.dart';
 import 'charts_error_state.dart';
 import 'range_selector.dart';
