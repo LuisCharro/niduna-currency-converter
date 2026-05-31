@@ -306,7 +306,8 @@ IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} SCREEN_OUTPUT_DIR=.tmp/screens/ios \
 # Manual screenshot (any time)
 ./.devtools/sim_screenshot.sh [name]
 
-# Tap simulator at coordinates
+# Tap simulator at coordinates (UNRELIABLE — uses real mouse, misses target)
+# For UI interaction verification, use integration tests (capture_ios_screens.sh, run_ios_minimal_smoke.sh) instead
 ./.devtools/sim_tap.sh <x> <y> [delay]
 
 # Wait for app to be ready on simulator
@@ -357,7 +358,7 @@ For Android device/emulator discovery before install:
 | `run_ios_minimal_smoke.sh` | Run smoke test | `IOS_SIMULATOR_ID` |
 | `capture_ios_screens.sh` | Integration-test screenshots | `IOS_SIMULATOR_ID`, `SCREEN_OUTPUT_DIR`, `IOS_BUNDLE_ID` |
 | `sim_screenshot.sh` | Manual screenshot | `IOS_SIMULATOR_ID` |
-| `sim_tap.sh` | Tap coordinates | `IOS_SIMULATOR_ID` |
+| `sim_tap.sh` | Tap coordinates (UNRELIABLE — uses real mouse) | `IOS_SIMULATOR_ID` |
 | `sim_wait_ready.sh` | Poll app ready state | `IOS_SIMULATOR_ID` |
 | `sim_reinstall_build.sh` | Build + reinstall + launch updated app | `IOS_SIMULATOR_ID`, `BUNDLE_ID`, `IOS_APP_PATH`, `BUILD_FIRST` |
 | `android_reinstall_build.sh` | Build + reinstall + launch updated app on Android | `ANDROID_SERIAL` (or auto-detect), `ANDROID_PACKAGE_NAME`, `ANDROID_APK_PATH`, `BUILD_FIRST` |

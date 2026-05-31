@@ -24,6 +24,8 @@ class ChartPairPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currency = currencyByCode(code);
+    final narrow = MediaQuery.sizeOf(context).width < 380;
+    final badgeReservedWidth = narrow ? 36.0 : 42.0;
     return Material(
       color: AppColors.of(context).container.withValues(alpha: .72),
       borderRadius: BorderRadius.circular(AppTheme.pillRadius),
@@ -43,38 +45,46 @@ class ChartPairPill extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CurrencyFlagIcon(
-                    code: code,
-                    symbol: currency.symbol,
-                    radius: chartPairFlagRadius,
-                  ),
-                  const SizedBox(width: AppTheme.space2),
-                  Text(
-                    code,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.4,
+              Padding(
+                padding: EdgeInsets.only(right: tempBadge ? badgeReservedWidth : 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    CurrencyFlagIcon(
+                      code: code,
+                      symbol: currency.symbol,
+                      radius: chartPairFlagRadius,
                     ),
-                  ),
-                  if (locked) ...<Widget>[
-                    const SizedBox(width: 4),
-                    Icon(Icons.lock_outline, size: 14, color: AppColors.of(context).muted),
-                  ],
-                  if (!tempBadge) ...<Widget>[
-                    const SizedBox(width: 2),
-                    Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      size: 17,
-                      color: AppColors.of(context).subtle,
+                    const SizedBox(width: AppTheme.space2),
+                    Text(
+                      code,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.4,
+                      ),
                     ),
+                    if (locked) ...<Widget>[
+                      const SizedBox(width: 4),
+                      Icon(Icons.lock_outline, size: 14, color: AppColors.of(context).muted),
+                    ],
+                    if (!tempBadge) ...<Widget>[
+                      const SizedBox(width: 2),
+                      Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 17,
+                        color: AppColors.of(context).subtle,
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
-              if (tempBadge) const Positioned(right: 0, top: 0, child: _TempBadge()),
+              if (tempBadge)
+                Positioned(
+                  right: 0,
+                  child: _TempBadge(compact: narrow),
+                ),
             ],
           ),
         ),
@@ -84,22 +94,44 @@ class ChartPairPill extends StatelessWidget {
 }
 
 class _TempBadge extends StatelessWidget {
-  const _TempBadge();
+  const _TempBadge({required this.compact});
+
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      decoration: BoxDecoration(
-        color: AppColors.of(context).trendUp.withValues(alpha: .14),
-        borderRadius: BorderRadius.circular(6),
+      padding: EdgeInsets.symmetric(
+        horizontal: compact ? 5 : 6,
+        vertical: compact ? 2 : 3,
       ),
-      child: Text(
-        '24h',
-        style: AppTheme.micro.copyWith(
-          color: AppColors.of(context).trendUp,
-          fontSize: 9,
+      decoration: BoxDecoration(
+        color: AppColors.of(context).primary.withValues(alpha: .1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: AppColors.of(context).primary.withValues(alpha: .25),
+          width: 0.5,
         ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.schedule,
+            size: compact ? 9 : 10,
+            color: AppColors.of(context).primary,
+          ),
+          const SizedBox(width: 2),
+          Text(
+            '24h',
+            style: TextStyle(
+              fontSize: compact ? 9 : 10,
+              fontWeight: FontWeight.w700,
+              color: AppColors.of(context).primary,
+              letterSpacing: 0.2,
+            ),
+          ),
+        ],
       ),
     );
   }

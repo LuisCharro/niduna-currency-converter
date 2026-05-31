@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/currency/currency_groups.dart';
 import '../../../core/localization/ui_copy.dart';
 import '../../../core/ads/ad_banner_widget.dart';
 import '../../../core/monetization/models/temporary_unlock.dart';
@@ -12,6 +13,7 @@ import '../../../shared/widgets/currency_flag_icon.dart';
 import '../../settings/widgets/iap_purchase_player.dart';
 import 'locked_pair_action_sheet.dart';
 import 'rewarded_ad_player.dart';
+import '../../convert/widgets/currency_section_header.dart';
 
 class ChartCurrencyPickerSheet extends StatefulWidget {
   const ChartCurrencyPickerSheet({
@@ -40,6 +42,7 @@ class ChartCurrencyPickerSheet extends StatefulWidget {
 
 class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
   String _query = '';
+  final Set<CurrencySection> _expandedSections = <CurrencySection>{CurrencySection.crypto};
 
   /// The other side of the pair — what stays fixed while user picks.
   String get _fixedSide =>
@@ -191,34 +194,85 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
         )
         .where(_matches)
         .toList();
-    return ListView.separated(
+
+    final groups = buildCurrencyGroups(currencies: currencies);
+
+    if (groups.isEmpty) {
+      return Center(
+        child: Text(
+          'No currencies found',
+          style: TextStyle(color: AppColors.of(context).muted, fontSize: 14),
+        ),
+      );
+    }
+
+    return ListView.builder(
       controller: scrollController,
-      itemCount: currencies.length,
-      separatorBuilder: (context, index) => Divider(
-        height: 1,
-        color: AppColors.of(context).border.withValues(alpha: .15),
-      ),
+      itemCount: groups.length * 2,
       itemBuilder: (context, index) {
-        final currency = currencies[index];
+        final groupIndex = index ~/ 2;
+        final isHeader = index.isOdd == false;
+        if (groupIndex >= groups.length) {
+          return const SizedBox.shrink();
+        }
+        final group = groups[groupIndex];
+        if (isHeader) {
+          return CurrencySectionHeader(
+            group: group,
+            isExpanded: _expandedSections.contains(group.section),
+            onToggle: () => setState(() {
+              if (_expandedSections.contains(group.section)) {
+                _expandedSections.remove(group.section);
+              } else {
+                _expandedSections.add(group.section);
+              }
+            }),
+          );
+        }
+        if (!_expandedSections.contains(group.section)) {
+          return const SizedBox.shrink();
+        }
+        return _buildGroupItems(group);
+      },
+    );
+  }
+
+  Widget _buildGroupItems(CurrencyGroup group) {
+    final items = group.currencies;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: items.map((currency) {
         final isSelected = currency.code == widget.selectedCode;
         final isFixed = _isSameAsFixed(currency.code);
         final unlocked = _isUnlocked(currency.code);
         final tempUnlocked = _isTempUnlocked(currency.code);
-        return _CurrencyTile(
-          symbol: currency.symbol,
-          code: currency.code,
-          name: currency.name,
-          isSelected: isSelected,
-          isFixed: isFixed,
-          unlocked: unlocked,
-          tempUnlocked: tempUnlocked,
-          onTap: isFixed
-              ? null
-              : unlocked
-              ? () => Navigator.of(context).pop(currency.code)
-              : () => _showLockedAction(context, currency.code),
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _CurrencyTile(
+              symbol: currency.symbol,
+              code: currency.code,
+              name: currency.name,
+              isSelected: isSelected,
+              isFixed: isFixed,
+              unlocked: unlocked,
+              tempUnlocked: tempUnlocked,
+              onTap: isFixed
+                  ? null
+                  : unlocked
+                  ? () => Navigator.of(context).pop(currency.code)
+                  : () => _showLockedAction(context, currency.code),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 52),
+              child: Divider(
+                height: 1,
+                color: AppColors.of(context).border.withValues(alpha: .15),
+              ),
+            ),
+          ],
         );
-      },
+      }).toList(),
     );
   }
 }

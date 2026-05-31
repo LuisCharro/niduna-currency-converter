@@ -45,7 +45,7 @@ class ChartPairStrip extends StatelessWidget {
               key: const Key('charts_pair_base'),
               code: base,
               locked: false,
-              tempBadge: false,
+              tempBadge: _isPairTempUnlocked(),
               onTap: () => _openPicker(context, selectingBase: true),
             ),
           ),
@@ -95,6 +95,12 @@ class ChartPairStrip extends StatelessWidget {
     if (_freeDefaults.contains(code)) return false;
     final canonical = TemporaryUnlock.canonicalKey(base, quote);
     if (_isFreeDefaultPair(base, quote)) return false;
+    return controller.tempUnlockedCodes.contains(canonical);
+  }
+
+  bool _isPairTempUnlocked() {
+    if (_isFreeDefaultPair(base, quote)) return false;
+    final canonical = TemporaryUnlock.canonicalKey(base, quote);
     return controller.tempUnlockedCodes.contains(canonical);
   }
 
