@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/calculator/simple_expression_eval.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -25,8 +26,10 @@ class AmountInputSheet extends StatefulWidget {
 class _AmountInputSheetState extends State<AmountInputSheet> {
   late String _amount = widget.amountText;
   bool _shouldReplace = true;
+  List<String> _expressionParts = [];
+  bool _isExpression = false;
 
-  bool get _isDirty => _amount != widget.amountText;
+  bool get _isDirty => _amount != widget.amountText || _isExpression;
 
   void _setAmount(String value, {bool replaceNext = false}) {
     final next = value == '0' ? '' : value;
@@ -58,6 +61,32 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
       return;
     }
     _setAmount(_amount.substring(0, _amount.length - 1));
+  }
+
+  void _handleOperator(String op) {
+    HapticFeedback.selectionClick();
+    if (_amount.isEmpty) return;
+    _expressionParts.add(_amount);
+    _expressionParts.add(op);
+    setState(() {
+      _isExpression = true;
+      _amount = '';
+      _shouldReplace = true;
+    });
+  }
+
+  void _handleEquals() {
+    HapticFeedback.mediumImpact();
+    _expressionParts.add(_amount);
+    final expr = _expressionParts.join('');
+    final result = evaluateExpression(expr);
+    final newAmount = result != null ? result.toStringAsFixed(2) : 'Error';
+    setState(() {
+      _amount = newAmount;
+      _expressionParts = [];
+      _isExpression = false;
+      _shouldReplace = true;
+    });
   }
 
   @override
@@ -94,6 +123,8 @@ class _AmountInputSheetState extends State<AmountInputSheet> {
               onDigit: _handleDigit,
               onDecimal: _handleDecimal,
               onBackspace: _handleBackspace,
+              onOperator: _handleOperator,
+              onEquals: _handleEquals,
             ),
             const SizedBox(height: 14),
             FilledButton(
