@@ -55,6 +55,15 @@ const List<SupportedCurrency> supportedFiatCurrencies = <SupportedCurrency>[
 const List<SupportedCurrency> supportedCryptoCurrencies = <SupportedCurrency>[
   SupportedCurrency(code: 'BTC', name: 'Bitcoin', symbol: 'BTC'),
   SupportedCurrency(code: 'ETH', name: 'Ethereum', symbol: 'ETH'),
+  SupportedCurrency(code: 'SOL', name: 'Solana', symbol: 'SOL'),
+  SupportedCurrency(code: 'XRP', name: 'Ripple', symbol: 'XRP'),
+  SupportedCurrency(code: 'ADA', name: 'Cardano', symbol: 'ADA'),
+  SupportedCurrency(code: 'DOGE', name: 'Dogecoin', symbol: 'DOGE'),
+  SupportedCurrency(code: 'AVAX', name: 'Avalanche', symbol: 'AVAX'),
+  SupportedCurrency(code: 'USDT', name: 'Tether USD', symbol: '₮'),
+  SupportedCurrency(code: 'USDC', name: 'USD Coin', symbol: 'USDC'),
+  SupportedCurrency(code: 'BNB', name: 'BNB', symbol: 'BNB'),
+  SupportedCurrency(code: 'MATIC', name: 'Polygon', symbol: 'MATIC'),
 ];
 
 const List<SupportedCurrency> supportedCurrencies = supportedFiatCurrencies;

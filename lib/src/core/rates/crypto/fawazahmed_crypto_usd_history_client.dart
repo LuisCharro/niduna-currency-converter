@@ -96,8 +96,9 @@ class FawazahmedCryptoUsdHistoryClient implements CryptoUsdHistoryClient {
         'fawazahmed0 returned no data for $code',
       );
     }
-    final min = code == 'BTC' ? 1000.0 : 50.0;
-    final max = code == 'BTC' ? 1000000.0 : 100000.0;
+    final isBtc = code == 'BTC';
+    final min = isBtc ? 1000.0 : 0.001;
+    final max = isBtc ? 1000000.0 : 100000.0;
     for (final price in pricesUsd.values) {
       if (price.isNaN || price <= 0 || price < min || price > max) {
         throw CryptoUsdHistoryException(

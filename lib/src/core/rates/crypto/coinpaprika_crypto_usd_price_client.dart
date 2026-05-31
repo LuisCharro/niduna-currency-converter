@@ -74,17 +74,19 @@ class CoinPaprikaCryptoUsdPriceClient implements CryptoUsdPriceClient {
   }
 
   void _validate(Map<String, double> pricesUsd) {
-    final btc = pricesUsd['BTC'];
-    final eth = pricesUsd['ETH'];
-    if (btc == null || eth == null) {
-      throw const CryptoUsdPriceException('CoinPaprika missing BTC/ETH prices');
+    if (!pricesUsd.containsKey('BTC')) {
+      throw const CryptoUsdPriceException('CoinPaprika missing BTC price');
     }
-    if (btc < 1000 || btc > 1000000 || eth < 50 || eth > 100000) {
-      throw const CryptoUsdPriceException('CoinPaprika returned implausible prices');
+    final btc = pricesUsd['BTC']!;
+    if (btc < 1000 || btc > 1000000) {
+      throw const CryptoUsdPriceException('CoinPaprika returned implausible BTC price');
     }
-    final ratio = btc / eth;
-    if (ratio < 1 || ratio > 200) {
-      throw const CryptoUsdPriceException('CoinPaprika returned implausible BTC/ETH ratio');
+    for (final entry in pricesUsd.entries) {
+      if (entry.value.isNaN || entry.value <= 0) {
+        throw CryptoUsdPriceException(
+          'CoinPaprika returned invalid price for ${entry.key}',
+        );
+      }
     }
   }
 }

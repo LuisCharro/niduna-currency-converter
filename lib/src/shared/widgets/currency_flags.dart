@@ -36,6 +36,16 @@ class CurrencyFlags {
     'CNY': '🇨🇳',
     'COP': '🇨🇴',
     'ARS': '🇦🇷',
+    'AED': '🇦🇪',
+    'SOL': '◎',
+    'XRP': '✕',
+    'ADA': '◆',
+    'DOGE': '🐕',
+    'AVAX': '▲',
+    'USDT': '₮',
+    'USDC': '◉',
+    'BNB': '●',
+    'MATIC': '⬡',
   };
 
   static String forCode(String code) => _map[code.toUpperCase()] ?? '🏳️';

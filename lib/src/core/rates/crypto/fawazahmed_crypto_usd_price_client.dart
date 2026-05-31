@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import 'crypto_asset.dart';
 import 'crypto_usd_price_client.dart';
 import 'crypto_usd_price_snapshot.dart';
 
@@ -41,16 +42,16 @@ class FawazahmedCryptoUsdPriceClient implements CryptoUsdPriceClient {
           throw const CryptoUsdPriceException('fawazahmed0 missing usd rates');
         }
 
-        final btc = usd['btc'];
-        final eth = usd['eth'];
-        if (btc is! num || eth is! num || btc <= 0 || eth <= 0) {
-          throw const CryptoUsdPriceException('fawazahmed0 missing BTC/ETH rates');
+        final pricesUsd = <String, double>{};
+        for (final asset in supportedCryptoAssets) {
+          final rawRate = usd[asset.code.toLowerCase()];
+          if (rawRate is! num || rawRate <= 0) continue;
+          pricesUsd[asset.code] = 1 / rawRate.toDouble();
         }
 
-        final pricesUsd = <String, double>{
-          'BTC': 1 / btc.toDouble(),
-          'ETH': 1 / eth.toDouble(),
-        };
+        if (pricesUsd.length < 2) {
+          throw const CryptoUsdPriceException('fawazahmed0 returned too few crypto rates');
+        }
         _validate(pricesUsd);
 
         return CryptoUsdPriceSnapshot(
@@ -69,17 +70,19 @@ class FawazahmedCryptoUsdPriceClient implements CryptoUsdPriceClient {
   }
 
   void _validate(Map<String, double> pricesUsd) {
-    final btc = pricesUsd['BTC'];
-    final eth = pricesUsd['ETH'];
-    if (btc == null || eth == null) {
-      throw const CryptoUsdPriceException('fawazahmed0 missing BTC/ETH prices');
+    if (!pricesUsd.containsKey('BTC')) {
+      throw const CryptoUsdPriceException('fawazahmed0 missing BTC prices');
     }
-    if (btc < 1000 || btc > 1000000 || eth < 50 || eth > 100000) {
-      throw const CryptoUsdPriceException('fawazahmed0 returned implausible prices');
+    final btc = pricesUsd['BTC']!;
+    if (btc < 1000 || btc > 1000000) {
+      throw const CryptoUsdPriceException('fawazahmed0 returned implausible BTC price');
     }
-    final ratio = btc / eth;
-    if (ratio < 1 || ratio > 200) {
-      throw const CryptoUsdPriceException('fawazahmed0 returned implausible BTC/ETH ratio');
+    for (final entry in pricesUsd.entries) {
+      if (entry.value.isNaN || entry.value <= 0) {
+        throw CryptoUsdPriceException(
+          'fawazahmed0 returned invalid price for ${entry.key}',
+        );
+      }
     }
   }
 }

@@ -313,17 +313,26 @@ class _LensCard extends StatelessWidget {
     return sorted;
   }
 
+  static int _cryptoDigits(String code) {
+    if (code == 'BTC') return 8;
+    if (code == 'USDT' || code == 'USDC') return 2;
+    if (code == 'DOGE') return 4;
+    return 6;
+  }
+
   List<double> _reverseTargets() {
     if (quote.code == 'BTC') return <double>[0.001, 0.01, 0.1];
-    if (quote.code == 'ETH') return <double>[0.01, 0.1, 1];
+    if (quote.code == 'USDT' || quote.code == 'USDC' || quote.code == 'DOGE') {
+      return <double>[10, 50, 100];
+    }
+    if (isCryptoCurrency(quote.code)) return <double>[0.01, 0.1, 1];
     return <double>[10, 50, 100];
   }
 
   String _formatHeroBase(double value, String code) {
     if (isCryptoCurrency(code)) {
-      final digits = code == 'BTC' ? 8 : 6;
       return _stripTrailingZeros(
-        NumberFormat('#,##0.${'0' * digits}', 'en').format(value),
+        NumberFormat('#,##0.${'0' * _cryptoDigits(code)}', 'en').format(value),
       );
     }
     return _stripTrailingZeros(
@@ -333,9 +342,8 @@ class _LensCard extends StatelessWidget {
 
   String _formatHeroConverted(double value, String code) {
     if (isCryptoCurrency(code)) {
-      final digits = code == 'BTC' ? 8 : 6;
       return _stripTrailingZeros(
-        NumberFormat('#,##0.${'0' * digits}', 'en').format(value),
+        NumberFormat('#,##0.${'0' * _cryptoDigits(code)}', 'en').format(value),
       );
     }
     if (value >= 100) {
@@ -348,25 +356,18 @@ class _LensCard extends StatelessWidget {
   }
 
   String _formatValue(double value, String code) {
-    final digits = code == 'BTC'
-        ? 8
-        : code == 'ETH'
-        ? 6
-        : value >= 100
-        ? 0
-        : value >= 10
-        ? 2
-        : 3;
+    if (isCryptoCurrency(code)) {
+      return NumberFormat('#,##0.${'0' * _cryptoDigits(code)}', 'en').format(value);
+    }
+    final digits = value >= 100 ? 0 : value >= 10 ? 2 : 3;
     return NumberFormat('#,##0.${'0' * digits}', 'en').format(value);
   }
 
   String _formatRaw(double value, String code) {
-    final digits = code == 'BTC'
-        ? 8
-        : code == 'ETH'
-        ? 6
-        : 4;
-    return NumberFormat('0.${'0' * digits}', 'en').format(value);
+    if (isCryptoCurrency(code)) {
+      return NumberFormat('0.${'0' * _cryptoDigits(code)}', 'en').format(value);
+    }
+    return NumberFormat('0.0000', 'en').format(value);
   }
 
   String _formatInput(double value) {

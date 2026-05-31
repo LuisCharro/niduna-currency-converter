@@ -61,12 +61,15 @@ List<CurrencyQuote> buildQuotes({
       .toList(growable: false);
 }
 
+int _cryptoDigits(String code) {
+  if (code == 'BTC') return 8;
+  if (code == 'USDT' || code == 'USDC') return 2;
+  if (code == 'DOGE') return 4;
+  return 6;
+}
+
 String _formatAmount(double value, String code, int decimalPlaces) {
-  final digits = switch (code) {
-    'BTC' => 8,
-    'ETH' => 6,
-    _ => decimalPlaces,
-  };
+  final digits = isCryptoCurrency(code) ? _cryptoDigits(code) : decimalPlaces;
   return NumberFormat('#,##0.${'0' * digits}', 'en').format(value);
 }
 
@@ -76,11 +79,7 @@ String _formatRateLine({
   required double rate,
   required int decimalPlaces,
 }) {
-  final digits = switch (quote) {
-    'BTC' => 8,
-    'ETH' => 6,
-    _ => decimalPlaces,
-  };
+  final digits = isCryptoCurrency(quote) ? _cryptoDigits(quote) : decimalPlaces;
   final format = NumberFormat('0.${'0' * digits}', 'en');
   return '1 $base = ${format.format(rate)} $quote';
 }

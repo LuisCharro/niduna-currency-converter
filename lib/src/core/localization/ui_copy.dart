@@ -187,11 +187,11 @@ String dataSourceCryptoLatestTitle(BuildContext context) => switch (_lang(contex
 };
 
 String dataSourceCryptoLatestDetail(BuildContext context) => switch (_lang(context)) {
-  'es' => 'Los últimos precios de BTC y ETH usan la cadena activa de proveedor cripto de esta compilación. Los detalles del perfil de desarrollador solo se muestran dentro del Dev Sandbox.',
-  'de' => 'Die neuesten BTC- und ETH-Preise verwenden die aktive Krypto-Anbieterkette dieses Builds. Details zum Entwicklerprofil werden nur in der Dev Sandbox angezeigt.',
-  'it' => 'I prezzi più recenti di BTC e ETH usano la catena di provider crypto attiva per questa build. I dettagli del profilo sviluppatore sono mostrati solo nel Dev Sandbox.',
-  'fr' => 'Les derniers prix BTC et ETH utilisent la chaîne de fournisseurs crypto active pour cette build. Les détails du profil développeur ne sont affichés que dans le Dev Sandbox.',
-  _ => 'BTC and ETH latest prices use the active crypto provider chain for this build. Developer profile details are shown only inside the Dev Sandbox.',
+  'es' => 'Los últimos precios de cripto usan la cadena activa de proveedor cripto de esta compilación. Los detalles del perfil de desarrollador solo se muestran dentro del Dev Sandbox.',
+  'de' => 'Die neuesten Krypto-Preise verwenden die aktive Krypto-Anbieterkette dieses Builds. Details zum Entwicklerprofil werden nur in der Dev Sandbox angezeigt.',
+  'it' => 'I prezzi più recenti delle crypto usano la catena di provider crypto attiva per questa build. I dettagli del profilo sviluppatore sono mostrati solo nel Dev Sandbox.',
+  'fr' => 'Les derniers prix crypto utilisent la chaîne de fournisseurs crypto active pour cette build. Les détails du profil développeur ne sont affichés que dans le Dev Sandbox.',
+  _ => 'Crypto latest prices use the active crypto provider chain for this build. Developer profile details are shown only inside the Dev Sandbox.',
 };
 
 String dataSourceCryptoChartsTitle(BuildContext context) => switch (_lang(context)) {
@@ -465,7 +465,7 @@ String convertPickerTapToAddSubtitle(BuildContext context, String code) => switc
 List<String> cryptoDataLines(BuildContext context, bool enabled) {
   return switch (_lang(context)) {
     'es' => <String>[
-        'Los tipos de BTC y ETH siguen el mismo calendario diario de actualización que las divisas fiat.',
+        'Los tipos de cripto siguen el mismo calendario diario de actualización que las divisas fiat.',
         enabled
             ? 'Los gráficos cripto muestran historial diario de hasta 1 año.'
             : 'Los gráficos cripto no están disponibles en esta compilación.',
@@ -473,7 +473,7 @@ List<String> cryptoDataLines(BuildContext context, bool enabled) {
           'En gráficos mixtos fiat/cripto, los valores fiat se mantienen en el último cierre disponible del mercado durante fines de semana y festivos.',
       ],
     'de' => <String>[
-        'BTC- und ETH-Kurse folgen demselben täglichen Aktualisierungsplan wie Fiat-Kurse.',
+        'Krypto-Kurse folgen demselben täglichen Aktualisierungsplan wie Fiat-Kurse.',
         enabled
             ? 'Krypto-Charts zeigen tägliche Historie für bis zu 1 Jahr.'
             : 'Krypto-Charts sind in diesem Build nicht verfügbar.',
@@ -481,7 +481,7 @@ List<String> cryptoDataLines(BuildContext context, bool enabled) {
           'Bei gemischten Fiat-/Krypto-Charts bleiben Fiat-Werte an Wochenenden und Feiertagen auf dem letzten verfügbaren Marktschluss.',
       ],
     'it' => <String>[
-        'I tassi di BTC e ETH seguono lo stesso programma giornaliero di aggiornamento dei tassi fiat.',
+        'I tassi delle crypto seguono lo stesso programma giornaliero di aggiornamento dei tassi fiat.',
         enabled
             ? 'I grafici crypto mostrano storico giornaliero fino a 1 anno.'
             : 'I grafici crypto non sono disponibili in questa build.',
@@ -489,7 +489,7 @@ List<String> cryptoDataLines(BuildContext context, bool enabled) {
           'Nei grafici misti fiat/crypto, i valori fiat restano sull’ultima chiusura di mercato disponibile durante fine settimana e festivi.',
       ],
     'fr' => <String>[
-        'Les taux BTC et ETH suivent le même calendrier quotidien de mise à jour que les taux fiat.',
+        'Les taux crypto suivent le même calendrier quotidien de mise à jour que les taux fiat.',
         enabled
             ? 'Les graphiques crypto affichent un historique quotidien jusqu’à 1 an.'
             : 'Les graphiques crypto ne sont pas disponibles dans cette build.',
@@ -497,7 +497,7 @@ List<String> cryptoDataLines(BuildContext context, bool enabled) {
           'Pour les graphiques mixtes fiat/crypto, les valeurs fiat restent sur la dernière clôture de marché disponible pendant les week-ends et jours fériés.',
       ],
     _ => <String>[
-        'BTC and ETH rates follow the same daily update schedule as fiat rates.',
+        'Crypto rates follow the same daily update schedule as fiat rates.',
         enabled
             ? 'Crypto charts show daily history for up to 1 year.'
             : 'Crypto charts are not available in this build.',
