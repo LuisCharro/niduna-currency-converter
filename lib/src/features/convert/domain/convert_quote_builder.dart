@@ -36,6 +36,7 @@ List<CurrencyQuote> buildQuotes({
       .where((currency) => snapshot.rates.containsKey(currency.code))
       .map((currency) {
         final rate = snapshot.rates[currency.code]!;
+        final previousRate = snapshot.previousRates?[currency.code];
         final quoteAmount = _formatAmount(
           amount * rate,
           currency.code,
@@ -56,6 +57,7 @@ List<CurrencyQuote> buildQuotes({
               ? rateLine
               : '1 ${snapshot.base} = ${rateFormat.format(rate)} ${currency.code}',
           rate: rate,
+          previousRate: previousRate,
         );
       })
       .toList(growable: false);
