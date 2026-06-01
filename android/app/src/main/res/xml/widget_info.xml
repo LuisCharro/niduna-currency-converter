@@ -10,6 +10,5 @@
     android:targetCellWidth="180"
     android:targetCellHeight="120"
     android:updatePeriodMillis="14400000"
-    android:widgetCategory="home_screen|keyguard"
-    android:initialKey="niduna_widget">
+    android:widgetCategory="home_screen|keyguard">
 </appwidget-provider>
