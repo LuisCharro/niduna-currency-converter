@@ -60,10 +60,12 @@ class RangeSelector extends StatelessWidget {
                 constraints: const BoxConstraints(minHeight: 36, minWidth: 44),
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.of(context).card : Colors.transparent,
+                  color: isSelected
+                      ? AppColors.of(context).primary.withValues(alpha: .10)
+                      : Colors.transparent,
                   border: Border.all(
                     color: isSelected
-                        ? AppColors.of(context).border.withValues(alpha: .22)
+                        ? AppColors.of(context).primary.withValues(alpha: .35)
                         : Colors.transparent,
                   ),
                   borderRadius: BorderRadius.circular(AppTheme.pillRadius),
@@ -74,8 +76,8 @@ class RangeSelector extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (isLocked) ...[
-                      Icon(Icons.lock_outline, size: 12, color: AppColors.of(context).muted),
-                      const SizedBox(width: 4),
+                      Icon(Icons.lock, size: 13, color: AppColors.of(context).primary.withValues(alpha: .75)),
+                      const SizedBox(width: 5),
                     ] else if (isCryptoUnavailable) ...[
                       Icon(Icons.block, size: 12, color: AppColors.of(context).muted),
                       const SizedBox(width: 4),
