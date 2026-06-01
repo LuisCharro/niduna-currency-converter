@@ -268,6 +268,144 @@ void main() {
     final client = ProviderFactory.createCryptoHistoryClient();
     expect(client, isA<FawazahmedCryptoUsdHistoryClient>());
   });
+
+  // ---------- Phase 1.x coverage: multi-day series + controller pair/range ----------
+
+  test('multi-provider client composes BTC to ETH over a 5-day range', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final prefs = await SharedPreferences.getInstance();
+    final client = MultiProviderRatesClient(
+      fiatClient: _FakeFrankfurterClient(),
+      cryptoHistoryClient: _FakeCryptoUsdHistoryClient(
+        snapshots: <String, CryptoUsdHistorySnapshot>{
+          'BTC': _cryptoHistory('BTC', <DateTime, double>{
+            DateTime(2026, 5, 12): 80000,
+            DateTime(2026, 5, 13): 81000,
+            DateTime(2026, 5, 14): 79500,
+            DateTime(2026, 5, 15): 82000,
+            DateTime(2026, 5, 16): 83000,
+          }),
+          'ETH': _cryptoHistory('ETH', <DateTime, double>{
+            DateTime(2026, 5, 12): 2000,
+            DateTime(2026, 5, 13): 2010,
+            DateTime(2026, 5, 14): 1990,
+            DateTime(2026, 5, 15): 2050,
+            DateTime(2026, 5, 16): 2070,
+          }),
+        },
+      ),
+      cryptoHistoryCache: CryptoUsdHistoryCache(prefs),
+    );
+
+    final result = await client.fetchHistorical(
+      base: 'BTC',
+      quote: 'ETH',
+      from: DateTime(2026, 5, 12),
+      to: DateTime(2026, 5, 16),
+    );
+
+    // Spot-check 3 of 5 days: each = btcUsd / ethUsd.
+    expect(result.data[DateTime(2026, 5, 12)], closeTo(40, 0.001));
+    expect(result.data[DateTime(2026, 5, 14)], closeTo(79500 / 1990, 0.001));
+    expect(result.data[DateTime(2026, 5, 16)], closeTo(83000 / 2070, 0.001));
+  });
+
+  test(
+    'multi-provider client carries forward fiat close across multi-day EUR to BTC',
+    () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      final prefs = await SharedPreferences.getInstance();
+      final client = MultiProviderRatesClient(
+        fiatClient: _FakeFrankfurterClient(
+          historical: HistoricalSnapshot(
+            base: 'EUR',
+            quote: 'USD',
+            coveredFrom: DateTime(2026, 5, 15),
+            coveredTo: DateTime(2026, 5, 17),
+            data: <DateTime, double>{
+              DateTime(2026, 5, 15): 1.20,
+              DateTime(2026, 5, 16): 1.20,
+              DateTime(2026, 5, 17): 1.20,
+            },
+            savedAt: DateTime.now(),
+          ),
+        ),
+        cryptoHistoryClient: _FakeCryptoUsdHistoryClient(
+          snapshots: <String, CryptoUsdHistorySnapshot>{
+            'BTC': _cryptoHistory('BTC', <DateTime, double>{
+              DateTime(2026, 5, 16): 60000,
+              DateTime(2026, 5, 17): 61000,
+            }),
+          },
+        ),
+        cryptoHistoryCache: CryptoUsdHistoryCache(prefs),
+      );
+
+      final result = await client.fetchHistorical(
+        base: 'EUR',
+        quote: 'BTC',
+        from: DateTime(2026, 5, 16),
+        to: DateTime(2026, 5, 17),
+      );
+
+      // Carry-forward: EUR→USD at the available date, then ÷ BTC/USD.
+      // 1.20 / 60000 = 0.00002, 1.20 / 61000 ≈ 0.0000196721
+      expect(result.data[DateTime(2026, 5, 16)], closeTo(0.00002, 0.000000001));
+      expect(result.data[DateTime(2026, 5, 17)], closeTo(1.20 / 61000, 0.0000001));
+    },
+  );
+
+  test(
+    'ChartsController.swapPair keeps 1Y range for crypto-involved pair',
+    () {
+      // USD/BTC is crypto. Controller starts at 1Y. After swap, BTC/USD is
+      // also crypto, so 1Y must persist (no upgrade to 2Y, no downgrade).
+      final controller = ChartsController(
+        allowCryptoCharts: true,
+        repository: RatesServiceChartRepository(RatesService(
+          client: _FakeRatesClient(),
+          cache: _MemoryRatesCache(),
+        )),
+        range: ChartRange.oneYear,
+      );
+      controller.setPair('USD', 'BTC');
+      expect(controller.state.range, ChartRange.oneYear);
+      expect(controller.state.base, 'USD');
+      expect(controller.state.quote, 'BTC');
+
+      controller.swapPair();
+      expect(controller.state.base, 'BTC');
+      expect(controller.state.quote, 'USD');
+      // Still crypto-involved → 1Y must stay, not upgrade to 2Y.
+      expect(controller.state.range, ChartRange.oneYear);
+    },
+  );
+
+  test(
+    'ChartsController.setRange downgrades 2Y to 1Y for crypto pair',
+    () {
+      // Start with fiat pair at 2Y (fine for fiat), then setPair to crypto.
+      // The 2Y must auto-downgrade to 1Y.
+      final controller = ChartsController(
+        allowCryptoCharts: true,
+        repository: RatesServiceChartRepository(RatesService(
+          client: _FakeRatesClient(),
+          cache: _MemoryRatesCache(),
+        )),
+        range: ChartRange.twoYears,
+      );
+      expect(controller.state.range, ChartRange.twoYears);
+
+      controller.setPair('USD', 'BTC');
+      expect(controller.state.range, ChartRange.oneYear);
+
+      // Switching back to fiat at 1Y, then bumping to 2Y must work.
+      controller.setPair('USD', 'EUR');
+      expect(controller.state.range, ChartRange.oneYear);
+      controller.setRange(ChartRange.twoYears);
+      expect(controller.state.range, ChartRange.twoYears);
+    },
+  );
 }
 
 CryptoUsdHistorySnapshot _cryptoHistory(
