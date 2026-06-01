@@ -11,6 +11,10 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
 void main() {
+  setUp(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+  });
+
   test('supported currencies match Phase 1 fiat scope', () {
     final codes = supportedCurrencies.map((currency) => currency.code).toSet();
 
