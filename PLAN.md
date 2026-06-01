@@ -515,7 +515,7 @@ Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, serve
 - [x] Add BTC/ETH latest with no-key providers
 - [x] Add BTC/ETH and mixed fiat/crypto chart routing
 - [x] Disable `2Y` for crypto-involved pairs
-- [ ] Add chart tests for crypto/crypto and fiat/crypto formulas
+- [x] Add chart tests for crypto/crypto and fiat/crypto formulas
 
 ---
 
