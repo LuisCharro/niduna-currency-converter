@@ -4,6 +4,30 @@
 > **App version:** 0.1.0+1 (pre-MVP)
 > **Branch:** main
 > **Status:** Ready for final prep work (~1-2 days focused)
+> **2026-06-01 update:** Backend work deferred until post-publish. Code-only path: see "Code-Only Pre-Flight" below. Full detail in `docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`.
+
+---
+
+## Code-Only Pre-Flight (Agent — Branch `release-prep`)
+
+This section is the agent's agreed order. The rest of this file is the human-paced release flow (external steps + content steps + final upload).
+
+| # | Item | Sub-item | Status |
+|---|---|---|---|
+| 1 | Fix 10 pre-existing test failures | — | TODO |
+| 2 | Visual verify Phase A-D | — | TODO |
+| 3 | Dark mode audit | — | TODO |
+| 4 | Release keystore trio | B1: generate keystore | TODO |
+| 4 | Release keystore trio | B2: `android/key.properties` | TODO |
+| 4 | Release keystore trio | B3: `build.gradle.kts` release signing | TODO |
+| 5 | Phase 1.x chart tests | crypto/crypto + fiat/crypto formulas | TODO |
+| 6 | Privacy link in Settings | B5: new row in Settings widget | TODO |
+| 7 | Build signed AAB | B6: `./scripts/build_appbundle.sh` smoke | TODO |
+| 8 | UI Polish cycle (Phase 6) | open | TODO |
+
+**Total agent time:** ~5h focused. After this, release is blocked only on external work (E1–E5) and content (C1–C11).
+
+**Branch:** All this work lives on `release-prep` (created 2026-06-01 from the doc-reorder commit on `main`).
 
 ---
 

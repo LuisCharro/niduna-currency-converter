@@ -394,6 +394,8 @@ lib/
 > **CONSOLIDATED:** See [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) for the authoritative
 > release checklist with effort estimates, execution order, and status tracking.
 > Per-provider licensing details: [`docs/providers/`](docs/providers/).
+>
+> **2026-06-01 update:** Backend (Phase 2/3) deferred until post-publish, only resumes if there are users. The code-only execution order lives in [`docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`](docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md) — work happens on branch `release-prep`.
 
 - [x] **P1 — Dark mode**: make toggle follow `ThemeMode.system` instead of manual boolean only
 - [x] **P2 — Localization Step 1** (system wiring): connect `MaterialApp` to `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales`; migrate meaningful user-facing labels/messages to localization keys (`AppLocalizations.of(context)`)

@@ -26,7 +26,22 @@
 
 ---
 
-## Recommended Next Steps (Priority Order)
+## Recommended Next Steps (Agreed Execution Order — 2026-06-01)
+
+> **Decision:** Backend work (Phase 2/3) is deferred until post-publish and only resumes if there are users. Work below is code-only. Branch: `release-prep` (created from this commit).
+
+| # | Item | Effort | Notes |
+|---|---|---|---|
+| 1 | Fix 10 pre-existing test failures | ~30m | `Binding has not yet been initialized` → add `TestWidgetsFlutterBinding.ensureInitialized()` in `setUp()` |
+| 2 | Visual verify Phase A-D | ~1.5h | Capture all 4 tabs in light + dark mode, check trend arrows / sectioned picker / lens / pull-to-refresh |
+| 3 | Dark mode audit | ~45m | Verify new widget splits use `Theme.of(context)` / `AppColors.dark` tokens |
+| 4 | B1–B3: release keystore trio | ~25m | `keytool` to create `.jks`, write `key.properties` (gitignored), update `build.gradle.kts` signingConfigs.release |
+| 5 | Phase 1.x chart tests | ~1.5h | Cross-provider formula tests (Frankfurter × fawazahmed0) for crypto/crypto + fiat/crypto charts |
+| 6 | B5: privacy policy link in Settings | ~30m | New row in Settings widget that opens hosted URL (needs C1 hosted first — placeholder OK) |
+| 7 | B6: build signed AAB | ~5m | `./scripts/build_appbundle.sh` smoke test with real keystore |
+| 8 | UI Polish cycle (Phase 6) | open | Screenshot review + iterative refinement; never modify `AppColors.dark` |
+
+The body sections below give the detailed "how" for each item. Items 5 and 8 are new and have their own sub-sections at the end of this file.
 
 ### Step 1: Visual Verification — Capture & Review Screenshots
 
@@ -128,6 +143,42 @@ These are the remaining items before App Store / Play Store submission.
 **Estimated effort:** 45 min
 
 ---
+
+### Step 5 (new): Phase 1.x — Chart tests for crypto/crypto and fiat/crypto formulas
+
+**Why:** The only remaining Phase 1.x item. Multi-provider chart routing shipped in Phase A-D, but no test coverage for the cross-provider math.
+
+**Where:** Add under `test/` in the charts feature. Likely `test/features/charts/data/multi_provider_chart_formula_test.dart` (verify exact path with `find test -name '*chart*' -name '*test*'`).
+
+**Cases to cover:**
+- BTC → ETH via USD bridge (fawazahmed0 only)
+- BTC → USD direct (fawazahmed0)
+- EUR → BTC via USD (Frankfurter × fawazahmed0)
+- BTC → JPY via USD (Frankfurter × fawazahmed0)
+- Edge: same-source vs cross-source
+- Edge: stale cache + missing series
+
+**Approach:** TDD — write failing tests, watch them fail (cross-provider math isn't tested today), implement minimum helper if needed, watch pass, refactor. Use the `_shared/test-driven-development.SKILL.md` in `.agent-local/skills/`.
+
+**Estimated effort:** ~1.5h
+
+### Step 6 (new): UI Polish cycle (Phase 6 of UI Redesign)
+
+**Why:** Phases 1–5 of the UI redesign are done on `turbo/ui-redesign`. Phase 6 is the iterative polish loop: capture screens, compare to design intent, fix gaps, repeat.
+
+**Per project rules (AGENTS.md):**
+- Never modify `AppColors.dark` — use existing tokens
+- Respect file-size caps (screen ≤ 80, widget ≤ 60, theme ≤ 50, app shell ≤ 80, controller ≤ 100)
+- Use `Theme.of(context)` for theme-aware colors
+- Run `./scripts/check.sh` after changes
+
+**Loop:**
+1. Capture screens with `.devtools/capture_ios_screens.sh` (light + dark, all 4 tabs)
+2. Diff against design intent (`DESIGN.md` tokens, `.agent/DESIGN_GUIDELINES.md`)
+3. File small targeted fix issues
+4. Repeat
+
+**Estimated effort:** open-ended. Do after steps 1–7 complete and external release work is unblocked. Can run in parallel with B6 / C1–C11 work.
 
 ## Quick-Start Commands for Next Session
 
