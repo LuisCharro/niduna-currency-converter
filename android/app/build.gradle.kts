@@ -71,3 +71,10 @@ android {
 flutter {
     source = "../.."
 }
+
+// No Glance / Compose-runtime dep is needed for the home-screen widget.
+// We use the legacy AppWidgetProvider + RemoteViews pattern (see
+// NidunaAppWidgetProvider.kt) because the Glance-based path trips a
+// Kotlin 2.2.20 inliner bug on `currentState<T>()` / `LocalState.current`.
+// If we ever move back to Glance, add:
+//     implementation("androidx.glance:glance-appwidget:1.1.1")
