@@ -45,6 +45,9 @@ app.*.map.json
 /android/local.properties
 /android/.kotlin/
 
+# Flutter-generated Android plugin registrant
+/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+
 # Workspace-only files
 .tmp/
 .firebase/

@@ -79,7 +79,133 @@ IOS_SIMULATOR_ID=<UUID> \
 
 **Slow:** takes 1-3 minutes for the full capture.
 
-### Tap a coordinate (manual interaction)
+### Tap a coordinate via `idb` (iOS-native, recommended)
+
+```bash
+IDB=/tmp/idb-venv/bin/idb
+COMPANION=/Applications/idb-companion.app/bin/idb_companion
+export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+$IDB --companion-path "$COMPANION" ui tap --udid <UUID> <x> <y>
+```
+
+| Param | Required | Purpose |
+|---|---|---|
+| `x`, `y` | yes | **Logical points** (1/3 of device native pixels on iPhone 17 Pro = 402×874 logical, 1206×2622 native) |
+| `--udid` | yes | Simulator UUID |
+| `--companion-path` | yes | Path to the `idb_companion` binary (installed under `.app` bundle) |
+
+**Prereqs:** `idb` CLI + `idb-companion` (see "Install idb" below).
+
+**Why preferred over `sim_tap.sh`:** idb sends the tap to the iOS simulator as a real touch event — no host mouse involvement. Works while the user is using the laptop for other things. The `cliclick`-based `sim_tap.sh` script moves the real mouse cursor and steals focus from whatever else the user is doing.
+
+**Finding coordinates without guessing:** run `$IDB ui describe-all --udid <UUID> > /tmp/ui.json` to get every on-screen element's `AXLabel`, `type`, and `frame` (x, y, width, height in logical points). Then compute the center of the element you want and tap that.
+
+**Gotcha — coordinate scale:** the device's *native* pixel resolution is 3× the logical point size. If you measure a tap on a screenshot, divide by 3 (or by the screenshot's compression ratio × 3) to get the logical point. A tap in physical device pixels will land far off-screen.
+
+### Install idb (one-time, per machine)
+
+The `idb` Python CLI talks to a native `idb_companion` helper that bridges to the iOS simulator. Both must be installed and the right env var set.
+
+```bash
+# 1. Python venv (idb 1.1.7 breaks on Python 3.14; 1.0.13 has a protobuf issue — use 3.11)
+python3.11 -m venv /tmp/idb-venv
+/tmp/idb-venv/bin/pip install fb-idb
+
+# 2. Companion binary (macOS .app bundle, not a single binary)
+# Download v1.1.8 from https://github.com/facebook/idb/releases
+# Unzip and move to /Applications/idb-companion.app
+
+# 3. Verify it works
+export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+IDB=/tmp/idb-venv/bin/idb
+COMPANION=/Applications/idb-companion.app/bin/idb_companion
+$IDB --companion-path "$COMPANION" list-targets
+# Should print: iPhone 17 Pro | <UUID> | Booted | simulator | iOS <version> | ...
+```
+
+**Why the env var:** on Python 3.11, idb's protobuf layer needs the pure-Python implementation (the C++ one is missing some symbols in the venv). Setting `PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python` is mandatory — without it, idb crashes on the first command.
+
+**Why `/tmp`:** venv is throwaway. Re-run the install block to recreate it. The companion `.app` is a normal install; only the venv is ephemeral.
+
+**Don't add the env var to your shell rc.** It's only needed when running idb commands, and global exports confuse other tools.
+
+### Smoke test workflow: 8 UI polish screenshots (4 tabs × light/dark)
+
+End-to-end script for capturing the release-prep UI polish set without
+cliclick. Uses idb for taps, `xcrun simctl ui` for theme, and the project's
+`sim_screenshot.sh` for capture. Adapted from the May/June 2026 release-prep run.
+
+```bash
+WORKDIR=/Users/luis/Niduna/apps/currency-converter
+cd "$WORKDIR"
+
+UDID=87FB7A6A-58E4-4F45-A44E-EC071B06BC04  # iPhone 17 Pro
+BUNDLE=com.niduna.currencyConverter
+export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+IDB=/tmp/idb-venv/bin/idb
+COMPANION=/Applications/idb-companion.app/bin/idb_companion
+
+# Tab nav centers in logical points (iPhone 17 Pro = 402×874)
+TAB_CONVERT_X=66; TAB_FAVORITES_X=156; TAB_CHART_X=246; TAB_SETTINGS_X=336; NAV_Y=808
+# Decimal places "2" button center (in Settings)
+DEC2_X=202; DEC2_Y=227
+
+mkdir -p .tmp/screens/ios/ui-polish
+mavis-trash .tmp/screens/ios/ui-polish/*.png 2>/dev/null || true
+
+tap()  { $IDB --companion-path "$COMPANION" ui tap --udid $UDID "$1" "$2" >/dev/null; sleep 1.2; }
+shot() {
+  ./.devtools/sim_screenshot.sh "$1" >/dev/null
+  local f=$(ls -t .tmp/screens/ios/${1}-*.png 2>/dev/null | head -1)
+  [ -n "$f" ] && mv "$f" ".tmp/screens/ios/ui-polish/${1}.png"
+}
+
+# --- LIGHT (4 tabs) ---
+xcrun simctl ui $UDID appearance light
+xcrun simctl terminate $UDID $BUNDLE; sleep 1
+xcrun simctl launch $UDID $BUNDLE; sleep 4
+
+# Reset decimal places to 2 (persisted state from previous runs may differ)
+tap $TAB_SETTINGS_X $NAV_Y; sleep 1
+tap $DEC2_X $DEC2_Y; sleep 1
+
+shot 01-light-settings
+tap $TAB_CONVERT_X   $NAV_Y; shot 02-light-convert
+tap $TAB_FAVORITES_X $NAV_Y; shot 03-light-favorites
+tap $TAB_CHART_X     $NAV_Y; shot 04-light-chart
+
+# --- DARK (4 tabs) ---
+xcrun simctl ui $UDID appearance dark
+xcrun simctl terminate $UDID $BUNDLE; sleep 1
+xcrun simctl launch $UDID $BUNDLE; sleep 4
+# After relaunch, app starts on Convert
+
+shot 05-dark-convert
+tap $TAB_FAVORITES_X $NAV_Y; shot 06-dark-favorites
+tap $TAB_CHART_X     $NAV_Y; shot 07-dark-chart
+tap $TAB_SETTINGS_X  $NAV_Y; shot 08-dark-settings
+```
+
+**Why set iOS system theme instead of toggling in-app:** the app's `Dark mode`
+switch uses a Cupertino-style `SwitchTile` with val=0 meaning "follows system"
+and val=1 meaning "always on". Tapping it via idb works but is fragile (hitbox
+is small, the value AX reports doesn't always match what the app actually
+renders). `xcrun simctl ui <UDID> appearance dark|light` is a one-shot global
+state change that's deterministic.
+
+**Why relaunch the app after appearance change:** the running app caches the
+theme at launch. Without `terminate` + `launch`, dark mode shows the previous
+theme's colors.
+
+**Gotcha — shell glob trap:** the `shot()` function's `ls` glob
+(`.tmp/screens/ios/${1}-*.png`) must NOT be inside double quotes or the `*`
+won't expand. If you copy-paste, keep that line unquoted.
+
+**Gotcha — `mavis-trash` vs `rm`:** use `mavis-trash` (recoverable). The
+trash tool needs at least one path; an empty dir is fine because of the
+`2>/dev/null || true` fallback.
+
+### Tap a coordinate via `cliclick` (FALLBACK — only if idb is broken)
 
 ```bash
 ./.devtools/sim_tap.sh <x> <y> [delay]
@@ -93,7 +219,11 @@ IOS_SIMULATOR_ID=<UUID> \
 
 **Prereqs:** `cliclick` installed (`brew install cliclick`).
 
-**⚠️ Reliability warning (from AGENTS.md):** *"UNRELIABLE — uses real mouse, misses target."* Coordinates are fragile and depend on the simulator window position. Prefer integration tests for reliable UI interaction.
+**⚠️ Reliability warning (from AGENTS.md):** *"UNRELIABLE — uses real mouse, misses target."* Two issues:
+1. Coordinates are fragile and depend on the simulator window position. If you move the sim window, the script taps the wrong place.
+2. It moves the real mouse cursor, so it interferes with whatever else the user is doing on their laptop.
+
+**Prefer `idb ui tap`** — see section above. Use `sim_tap.sh` only when idb is broken and you need a one-off tap.
 
 **Common errors:** if `cliclick` isn't installed, the script exits with `cliclick: command not found`.
 
@@ -318,5 +448,7 @@ git commit -m "docs(plan): reorder post-phase-ad plan to agreed code-only releas
 - **C1-C11 (Play Store listing):** needs Play Console account ($25) + content creation (descriptions, screenshots, etc.) — Luis creates manually
 - **E1-E5 (Play Console + AdMob accounts):** external sign-up, no code work
 - **Apple Developer Program ($99/yr):** external sign-up
-- **Android home widget re-enable:** needs `home_widget` upgraded to >=0.8 OR a non-Glance rewrite
-- **Crypto controller logic bug (1 remaining test failure):** real investigation in `ConvertController.load()`
+- **Android home widget re-enable:** original source moved to `docs/release-prep/NidunaGlanceWidget.kt.disabled`; needs `home_widget` upgraded to >=0.8 OR a non-Glance rewrite
+- **Keystore password rotation:** the keystore shipped with a TEMP password stored in `android/key.properties` and `/tmp/niduna_temp_keystore_pwd.txt`. Must be rotated via `keytool -storepasswd` + `keytool -keypasswd` before publishing (and the temp file deleted).
+- **iOS appearance reset:** the smoke test script flips iOS sim to `dark`. After running, set it back to `light` with `xcrun simctl ui <UDID> appearance light` so the sim doesn't open dark for future work.
+
