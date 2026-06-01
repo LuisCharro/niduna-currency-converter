@@ -31,8 +31,13 @@ extension ConvertControllerLoading on ConvertController {
 
   bool _isIncompleteCryptoSnapshot(LatestRatesSnapshot? snapshot) {
     if (snapshot == null) return false;
-    for (final currency in supportedCryptoCurrencies) {
-      if (!snapshot.rates.containsKey(currency.code)) {
+    // Only flag as "incomplete" if a SELECTED crypto code is missing from
+    // the cache. Checking against all 11 supportedCryptoCurrencies would
+    // trigger an unnecessary network fetch whenever the cache has e.g.
+    // BTC+ETH but not the other 9 cryptos the user hasn't selected —
+    // producing visible network calls on every cold start.
+    for (final code in _selectedCodes) {
+      if (isCryptoCurrency(code) && !snapshot.rates.containsKey(code)) {
         return true;
       }
     }
