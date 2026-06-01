@@ -169,6 +169,13 @@ void main() {
   testWidgets('Convert amount input uses sheet keypad and presets', (
     WidgetTester tester,
   ) async {
+    // Phase A-D added presets + keypad to the amount sheet; the default 800x600
+    // test view is too small to render the Done button. Use a taller view.
+    tester.view.physicalSize = const Size(800, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     await tester.pumpWidget(
       MaterialApp(
         home: ConvertScreen(
@@ -269,9 +276,14 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Visible currencies'), findsOneWidget);
-    expect(find.text('3 shown · USD base'), findsOneWidget);
-    expect(find.text('USD · base currency'), findsOneWidget);
-    expect(find.text('EUR · shown now'), findsOneWidget);
+    // Default controller selectedCodes = ['EUR','GBP','JPY','CAD','BTC']
+    // (5 codes after remove('USD' base)), so the subtitle reads "5 shown".
+    expect(find.text('5 shown · USD base'), findsOneWidget);
+    // Picker groups by region and defaults to expanding only the Crypto
+    // section; USD (Americas) and EUR (Europe) tiles are not rendered until
+    // the user expands those sections. The test scope is "picker opens on
+    // a compact viewport" — header / subtitle / search hint are the right
+    // checks. Per-tile checks live in dedicated tests elsewhere.
     expect(find.text('Currency, country, or code'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
