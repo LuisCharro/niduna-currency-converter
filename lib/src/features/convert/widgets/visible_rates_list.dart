@@ -53,8 +53,8 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
       return ListView.separated(
         padding: AppTheme.pageInsets.copyWith(bottom: AppTheme.space2),
         itemCount: 5,
-        separatorBuilder: (_, __) => const SizedBox(height: 4),
-        itemBuilder: (_, __) => ShimmerLoading(child: const RateRowSkeleton()),
+        separatorBuilder: (_, _) => const SizedBox(height: 4),
+        itemBuilder: (_, _) => ShimmerLoading(child: const RateRowSkeleton()),
       );
     }
 

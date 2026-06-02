@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		1B825518D4A64179A32E69EC /* NidunaWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBEA7FCECEF122978F401D7 /* NidunaWidget.swift */; };
 		1C9FF587DC4C771D74964B5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3684030CE511859CCE3C4D19 /* Assets.xcassets */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
@@ -20,9 +21,7 @@
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		B0A0F62441B2BE0D8BB78F96 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C1EA7F0032D3303095EBD5 /* Pods_RunnerTests.framework */; };
 		B3A6F9C8966DECEFB9CDD7C3 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A28FC1EBC6251065EE5EAC28 /* SwiftUI.framework */; };
-		CBA76F064FEB9D111ADCB6C5 /* NidunaWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1C66238140FAA2E8D01B30BF /* NidunaWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D047C3FCD583F28331178F7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 750E9B991F03AC43C71DE1B7 /* Foundation.framework */; };
-		DE59FE7B81832CB04F217269 /* NidunaWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9690A7DB7FDBE200E7B888C2 /* NidunaWidget.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,17 +45,6 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ABBEE0E273ECF1BEF6A90D8D /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				CBA76F064FEB9D111ADCB6C5 /* NidunaWidget.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +60,7 @@
 		3E8DBE4E0F8861BC6A60A9DB /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		5F574C3633B98C2D7ECD820C /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 		63F96EBAD1E44E29A47F0E98 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		6CBEA7FCECEF122978F401D7 /* NidunaWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NidunaWidget.swift; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74D28422DC150128659EAF67 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -139,6 +128,7 @@
 				74D28422DC150128659EAF67 /* Info.plist */,
 				763371D06C09D7579DA75D29 /* NidunaWidget.entitlements */,
 				3684030CE511859CCE3C4D19 /* Assets.xcassets */,
+				6CBEA7FCECEF122978F401D7 /* NidunaWidget.swift */,
 			);
 			name = NidunaWidget;
 			path = Widgets/NidunaWidget;
@@ -285,7 +275,6 @@
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
-				ABBEE0E273ECF1BEF6A90D8D /* Embed App Extensions */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				B4A516DB24A73FF71CBF6B03 /* [CP] Embed Pods Frameworks */,
@@ -504,7 +493,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE59FE7B81832CB04F217269 /* NidunaWidget.swift in Sources */,
+				1B825518D4A64179A32E69EC /* NidunaWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

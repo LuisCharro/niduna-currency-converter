@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:home_widget/home_widget.dart';
@@ -23,7 +22,8 @@ void main() {
       // method channel may be missing.
       'group.com.niduna.currencyConverter',
     ).catchError((Object e, StackTrace st) {
-      debugPrint('HomeWidget.setAppGroupId failed: $e');
+      // ignore: avoid_print
+      print('HomeWidget.setAppGroupId failed: $e');
       return false;
     }),
   );
