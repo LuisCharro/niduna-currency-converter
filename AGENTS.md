@@ -19,6 +19,35 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
+## Current state (2026-06-02)
+
+- **Branch:** `main` is the canonical branch. `release-prep`,
+  `feature/widget-restore`, `feature/ios-widget-target` are kept
+  around as references; all their useful code is already on `main`.
+- **Build:** `flutter build appbundle --release` works, AAB is
+  signed (v2, 50 MB). `flutter build apk --release` works (58 MB).
+  `flutter build ios --simulator --debug` works, app installs and
+  runs on iPhone 17 Pro sim (iOS 26.5).
+- **Tests:** 192/192 pass. `flutter analyze` shows 1 issue
+  (pre-existing in `integration_test/`, not from recent work).
+- **Home-screen widgets:**
+  - **Android:** code complete, end-to-end verified, currently
+    **disabled by default** (manifest receiver block commented out).
+    Restore from commit `55d7839` to enable.
+  - **iOS:** code complete, Xcode project target wired up, currently
+    **disabled by default** (Embed App Extensions phase removed so
+    iOS sim install works). Restore via
+    `GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.16.2_2/libexec ruby
+    ios/scripts/add_widget_target.rb` (idempotent) when testing on
+    real iPhone. Blocked on iOS 26 sim install bug.
+  - See `docs/release-prep/README.md` for full state + restoration.
+- **Release status:** see `RELEASE_CHECKLIST.md` for the full
+  Blocker Summary. Code path complete. 3 P1 items remaining
+  (AdMob IDs, keystore password, privacy policy URL) are all
+  external or one-line config swaps.
+- **Review report:** `docs/REVIEW-2026-06-01.md` — full audit done
+  2026-06-01/02. Read it before starting substantial new work.
+
 ## Product identity
 
 This repo is a privacy-first Flutter currency converter for the Niduna portfolio.

@@ -1,10 +1,12 @@
 # Release Checklist — Path to Google Play Store
 
-> **Last updated:** 2026-05-31
+> **Last updated:** 2026-06-02
 > **App version:** 0.1.0+1 (pre-MVP)
 > **Branch:** main
-> **Status:** Ready for final prep work (~1-2 days focused)
+> **Status:** Code path complete, AAB+APK built and signed, 192/192 tests pass, 0 lint issues. Remaining work is all external (E1–E5) + content (C1–C11) + keystore password rotation.
+> **2026-06-02 update:** iOS widget code merged but disabled (Xcode 26 simctl install bug). Code complete, verify on real iPhone when convenient. See "Blocker Summary" below.
 > **2026-06-01 update:** Backend work deferred until post-publish. Code-only path: see "Code-Only Pre-Flight" below. Full detail in `docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`.
+> **2026-06-02 review:** see `docs/REVIEW-2026-06-01.md` for the full audit.
 
 ---
 
@@ -12,22 +14,22 @@
 
 This section is the agent's agreed order. The rest of this file is the human-paced release flow (external steps + content steps + final upload).
 
-| # | Item | Sub-item | Status |
-|---|---|---|---|
-| 1 | Fix 10 pre-existing test failures | — | TODO |
-| 2 | Visual verify Phase A-D | — | TODO |
-| 3 | Dark mode audit | — | TODO |
-| 4 | Release keystore trio | B1: generate keystore | TODO |
-| 4 | Release keystore trio | B2: `android/key.properties` | TODO |
-| 4 | Release keystore trio | B3: `build.gradle.kts` release signing | TODO |
-| 5 | Phase 1.x chart tests | crypto/crypto + fiat/crypto formulas | TODO |
-| 6 | Privacy link in Settings | B5: new row in Settings widget | TODO |
-| 7 | Build signed AAB | B6: `./scripts/build_appbundle.sh` smoke | TODO |
-| 8 | UI Polish cycle (Phase 6) | open | TODO |
+| # | Item | Sub-item | Status | Commit |
+|---|---|---|---|---|
+| 1 | Fix 10 pre-existing test failures | — | ✅ Done | `6ac7c8e` (setUp fixes), `4a45cc4` (widget) |
+| 2 | Visual verify Phase A-D | — | ✅ Done | `5491ea7` (range selector polish) + `1328338` (8 screenshots) |
+| 3 | Dark mode audit | — | ✅ Done | `5491ea7` (decimal places dark contrast) |
+| 4 | Release keystore trio | B1: generate keystore | ✅ Done | `200c888` |
+| 4 | Release keystore trio | B2: `android/key.properties` | ✅ Done | `200c888` |
+| 4 | Release keystore trio | B3: `build.gradle.kts` release signing | ✅ Done | `200c888` |
+| 5 | Phase 1.x chart tests | crypto/crypto + fiat/crypto formulas | ✅ Done | `8a76058` (4 new tests) + `f65ef5e` (real logic fix) |
+| 6 | Privacy link in Settings | B5: new row in Settings widget | ❌ Blocked on C1 (privacy URL not hosted) | — |
+| 7 | Build signed AAB | B6: `./scripts/build_appbundle.sh` smoke | ✅ Done | AAB at `build/app/outputs/bundle/release/app-release.aab` (50 MB, signed v2) |
+| 8 | UI Polish cycle (Phase 6) | open | ✅ Done (range selector + decimal places) | `5491ea7` |
 
 **Total agent time:** ~5h focused. After this, release is blocked only on external work (E1–E5) and content (C1–C11).
 
-**Branch:** All this work lives on `release-prep` (created 2026-06-01 from the doc-reorder commit on `main`).
+**Branch:** All this work is on `main` (merged from `release-prep` in commit `19f68b3`). The `release-prep` branch is kept around as a reference.
 
 ---
 
@@ -58,15 +60,26 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 
 ### Code / Build Steps (agent can do these)
 
-| # | Task | File(s) | Effort | Status |
-|---|------|--------|--------|--------|
-| B1 | Generate release keystore | N/A (external file) | ~10 min | ❌ |
-| B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ❌ |
-| B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ❌ |
-| B4 | Replace AdMob test unit IDs with real ones | `lib/src/shared/widgets/ad_helper.dart`, Android manifest | ~15 min | ❌ |
-| B5 | Add privacy policy link in Settings screen | Settings widget | ~30 min | ❌ |
-| B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | ❌ |
-| B7 | Upload AAB to Play Console | External step after B6 | — | ❌ |
+| # | Task | File(s) | Effort | Status | Commit / Note |
+|---|------|--------|--------|--------|---|
+| B1 | Generate release keystore | N/A (external file) | ~10 min | ✅ **Done** | `200c888` — at `android/app/niduna-upload.jks` (RSA 2048, 10000-day, valid until 2053) |
+| B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ✅ **Done** | `200c888` — ⚠️ **password is TEMP, must be rotated before publish** (see Keystore note below) |
+| B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` — release AAB now signed, falls back to debug if `key.properties` is missing |
+| B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
+| B5 | Add privacy policy link in Settings screen | Settings widget | ~30 min | ❌ | Blocked on C1 (privacy URL not hosted) |
+| B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | ✅ **Done** | `build/app/outputs/bundle/release/app-release.aab` (50 MB, signed v2) — re-run any time with the script |
+| B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
+
+> **⚠️ Keystore password rotation (NEW — 2026-06-02):**
+> The keystore was generated with a temporary password for this dev cycle.
+> **Before publishing**, rotate the password:
+> ```bash
+> keytool -storepasswd -keystore android/app/niduna-upload.jks
+> keytool -keypasswd -keystore android/app/niduna-upload.jks -alias niduna_currency_converter_upload
+> ```
+> Then update `android/key.properties` with the new passwords, and delete
+> `/tmp/niduna_temp_keystore_pwd.txt` (the temp password file).
+> See `docs/RELEASE_COMMANDS.md` § "Keystore management" for full steps.
 
 ### Content / Metadata Steps
 
@@ -76,7 +89,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
 | C3 | Short description (max 80 chars) | Example: *"Convert 170+ currencies instantly. Privacy-first. Beautiful."* | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Niduna differentiator | ~45 min | ❌ |
-| C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert, Charts, Settings tabs | ~1 hr | ❌ |
+| C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert, Charts, Settings tabs | ~1 hr | 🟡 **8 staged, need final-pick** | Captured during 2026-06-01 review: see `docs/release-prep/screenshots/` (light + dark × 4 tabs) |
 | C6 | Feature graphic (1024x500) | Branded graphic for featured placements | ~30 min | ❌ |
 | C7 | Content rating questionnaire (IARC/CERT) | In Play Console > Policy > App content | ~15 min | ❌ |
 | C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII | ~30 min | ❌ |
@@ -128,6 +141,54 @@ See `docs/providers/*.md` for full per-provider details.
 
 Controlled via `PROVIDER_PROFILE` dart-define. Default is `release_safe`.
 Dev scripts (`.devtools/*.sh`) override to `dev_coinpaprika`.
+
+---
+
+## Home-screen Widgets — Current State
+
+### Android widget — ✅ Shipped
+
+The Android home-screen widget is built and working. It reads the
+latest conversion snapshot from `SharedPreferences` and shows the
+top pair on the user's home screen.
+
+- **Implementation:** `AppWidgetProvider` + `RemoteViews` (not Glance —
+  the Glance path trips a Kotlin 2.2.20 inliner bug on
+  `currentState<T>()` and `LocalState.current`)
+- **Files:** `android/app/src/main/java/com/niduna/currency_converter/widget/NidunaAppWidgetProvider.kt`
+- **Data bridge:** Dart `HomeWidgetProvider.pushData()` runs after every
+  rates load via `ConvertController._buildState`
+- **Verification:** ✅ end-to-end — app writes 6 keys
+  (baseCode/quoteCode/amount/rate/convertedAmount/updatedAt) to
+  `HomeWidgetPreferences.xml`, widget reads them on `onUpdate`
+- **Status:** Disabled by default in this commit. To enable, restore
+  the receiver in `AndroidManifest.xml` (re-add the `<receiver>`
+  block). The Kotlin + XML + manifest changes are documented in
+  `docs/release-prep/README.md` and the commit messages of
+  `feature/widget-restore`.
+
+### iOS widget — ⚠️ Code complete, sim install blocked
+
+The iOS widget (WidgetKit) code is complete and the Xcode project
+target is wired up, but the iOS widget is **disabled by default in
+main** because `xcrun simctl install` fails on iOS 26 / Xcode 26
+with `Invalid placeholder attributes` for any widget extension. This
+is a known simctl bug, not a code issue.
+
+- **Files:** `ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift`,
+  `Info.plist`, `NidunaWidget.entitlements`, `Assets.xcassets/`
+- **Data bridge:** App Group `group.com.niduna.currencyConverter` —
+  main app writes via `UserDefaults(suiteName: ...)` from Dart
+  through the home_widget plugin; widget reads from the same suite
+- **Verification:** ✅ build succeeds, `.appex` is correctly
+  produced, embed phase in Xcode is correctly placed; ❌ iOS sim
+  install fails before the app can launch
+- **Re-enable for real device:** (a) `cd ios && GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.16.2_2/libexec ruby scripts/add_widget_target.rb`
+  (idempotent), (b) build & run on a real iPhone via Xcode
+- **Code quality:** follows iOS 17+ WidgetKit conventions
+  (`@main WidgetBundle`, `TimelineProvider`, `UserDefaults(suiteName:)`)
+- **Full report:** `docs/release-prep/README.md` (Android + iOS widget
+  history), `docs/REVIEW-2026-06-01.md` § "P3-2 iOS widget extension"
 
 ---
 
@@ -240,3 +301,17 @@ These can ship in v0.2.0+ updates:
 | Tablet screenshots | Optional | Phone-first MVP |
 | Long-press context menu on rows | Low priority | Swipe already covers Pin/Swap |
 | App Store (iOS) submission | Deferred | $99/year fee; Android first |
+
+---
+
+## Change Log (this file)
+
+- **2026-06-02** — Updated Blocker Summary statuses to reflect actual
+  state: B1–B3, B6 are ✅ Done (not ❌ as previously marked). Added
+  keystore password rotation callout. Added "Home-screen Widgets —
+  Current State" section. Added link to `docs/REVIEW-2026-06-01.md`
+  in header. Status header now reflects "code complete, external
+  work remaining."
+- **2026-06-01** — Added code-only pre-flight section; refreshed
+  header to point at `docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`.
+- **2026-05-31** — Initial version.
