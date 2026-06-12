@@ -52,6 +52,8 @@ void _trustDevProxyCa() {
     '/data/data/com.niduna.currency_converter/files/dev_trusted_ca.pem',
     '/sdcard/Android/data/com.niduna.currency_converter/files/'
         'dev_trusted_ca.pem',
+    // Survives app reinstalls (integration test runs wipe app data).
+    '/data/local/tmp/dev_trusted_ca.pem',
   ];
   for (final path in pemPaths) {
     try {
