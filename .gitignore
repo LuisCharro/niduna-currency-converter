@@ -63,3 +63,10 @@ app.*.map.json
 !.env.example
 agent/.shared-skills-source
 .stitch/added
+
+# Dev-machine proxy CA certificates (see _trustDevProxyCa in lib/main.dart)
+# Must never be committed; they are machine-local and pushed to the
+# device via adb.
+dev_trusted_ca.pem
+*.cer
+zscaler*
