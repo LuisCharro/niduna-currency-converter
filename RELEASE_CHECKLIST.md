@@ -1,9 +1,16 @@
 # Release Checklist — Path to Google Play Store
 
-> **Last updated:** 2026-06-02
+> **Last updated:** 2026-06-12
 > **App version:** 0.1.0+1 (pre-MVP)
-> **Branch:** main
-> **Status:** Code path complete, AAB+APK built and signed, 192/192 tests pass, 0 lint issues. Remaining work is all external (E1–E5) + content (C1–C11) + keystore password rotation.
+> **Branch:** `feature/store-readiness` (pending merge to main)
+> **Status:** Code path complete, AAB+APK built and signed, 192/192 tests pass, 0 lint issues. Remaining work is all external (E1–E5) + Play Console content forms + keystore password rotation + Play Billing wiring (Phase 6).
+> **2026-06-12 update (branch `feature/store-readiness`):** new launcher icon + splash
+> (SVG-sourced, generated for all platforms), screenshot-audit visual polish
+> (ad-slot collapse, dark contrast, range fade), diagnostics in silent catches,
+> privacy policy written + Settings link wired (GitHub Pages enable pending at
+> merge), full store listing in 5 languages, feature graphic, 6 framed store
+> screenshots with reproducible pipeline. Done from the Windows laptop; see
+> `store/README.md` and DESIGN.md "Brand Assets".
 > **2026-06-02 update:** iOS widget code merged but disabled (Xcode 26 simctl install bug). Code complete, verify on real iPhone when convenient. See "Blocker Summary" below.
 > **2026-06-01 update:** Backend work deferred until post-publish. Code-only path: see "Code-Only Pre-Flight" below. Full detail in `docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`.
 > **2026-06-02 review:** see `docs/REVIEW-2026-06-01.md` for the full audit.
@@ -66,7 +73,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ✅ **Done** | `200c888` — ⚠️ **password is TEMP, must be rotated before publish** (see Keystore note below) |
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` — release AAB now signed, falls back to debug if `key.properties` is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
-| B5 | Add privacy policy link in Settings screen | Settings widget | ~30 min | ❌ | Blocked on C1 (privacy URL not hosted) |
+| B5 | Add privacy policy link in Settings screen | Settings widget | ~30 min | ✅ **Done 2026-06-12** | `64bcf96` — tile in About section, localized, opens `https://luischarro.github.io/niduna-currency-converter/privacy-policy.html` (enable GitHub Pages serving `/docs` from main at merge time) |
 | B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | ✅ **Done** | `build/app/outputs/bundle/release/app-release.aab` (50 MB, signed v2) — re-run any time with the script |
 | B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
 
@@ -85,17 +92,17 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 
 | # | Task | Specs | Effort | Status |
 |---|------|-------|--------|--------|
-| C1 | Write & host privacy policy page | GitHub Pages or similar; public URL required | ~1 hr | ❌ |
-| C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
-| C3 | Short description (max 80 chars) | Example: *"Convert 170+ currencies instantly. Privacy-first. Beautiful."* | ~15 min | ❌ |
-| C4 | Full description (max 4000 chars) | Features, privacy notes, Niduna differentiator | ~45 min | ❌ |
-| C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert, Charts, Settings tabs | ~1 hr | 🟡 **8 staged, need final-pick** | Captured during 2026-06-01 review: see `docs/release-prep/screenshots/` (light + dark × 4 tabs) |
-| C6 | Feature graphic (1024x500) | Branded graphic for featured placements | ~30 min | ❌ |
+| C1 | Write & host privacy policy page | GitHub Pages or similar; public URL required | ~1 hr | 🟡 **Written 2026-06-12** (`docs/privacy-policy.html`); enable GitHub Pages (`/docs` from main) at merge to go live |
+| C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ✅ **Done 2026-06-12** — `store/listing/*.md` |
+| C3 | Short description (max 80 chars) | See `store/listing/*.md` | ~15 min | ✅ **Done 2026-06-12** |
+| C4 | Full description (max 4000 chars) | Features, privacy notes, Niduna differentiator | ~45 min | ✅ **Done 2026-06-12** |
+| C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert, Charts, Settings tabs | ~1 hr | ✅ **Done 2026-06-12** — 6 framed captioned shots in `store/screenshots/`, ad-free, regenerable (`store/README.md`) |
+| C6 | Feature graphic (1024x500) | Branded graphic for featured placements | ~30 min | ✅ **Done 2026-06-12** — `store/graphics/feature_graphic.png` |
 | C7 | Content rating questionnaire (IARC/CERT) | In Play Console > Policy > App content | ~15 min | ❌ |
 | C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII | ~30 min | ❌ |
 | C9 | Category selection | Likely: Finance > Finance tools or Productivity | ~2 min | ❌ |
 | C10 | Contact email + website + privacy URL | Required fields in Console listing | ~10 min | ❌ |
-| C11 | Localized listings (EN, DE, ES, IT, FR) | At minimum: translated short description | ~1 hr | ❌ |
+| C11 | Localized listings (EN, DE, ES, IT, FR) | At minimum: translated short description | ~1 hr | ✅ **Done 2026-06-12** — full listings in all 5 languages in `store/listing/` |
 
 ---
 
