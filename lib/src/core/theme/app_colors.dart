@@ -56,8 +56,8 @@ class AppColors extends ThemeExtension<AppColors> {
   static const dark = AppColors(
     bg: Color(0xFF141A11),
     text: Color(0xFFE8ECE2),
-    muted: Color(0xFF8A9A7E),
-    subtle: Color(0xFF7A8B70),
+    muted: Color(0xFF9CAC90),
+    subtle: Color(0xFF8C9D81),
     card: Color(0xFF1E2D18),
     container: Color(0xFF243520),
     containerHigh: Color(0xFF2A3D24),
@@ -65,8 +65,8 @@ class AppColors extends ThemeExtension<AppColors> {
     primary: Color(0xFF6F8C49),
     trendUp: Color(0xFF8AAE62),
     trendDown: Color(0xFFE87A5A),
-    greenBadge: Color(0xFF2A4024),
-    greenBadgeText: Color(0xFF8CC47A),
+    greenBadge: Color(0xFF31492A),
+    greenBadgeText: Color(0xFFA8DD93),
     coralSurface: Color(0xFF3A2520),
     coralInk: Color(0xFFE07A6E),
   );

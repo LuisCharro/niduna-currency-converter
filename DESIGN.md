@@ -16,6 +16,22 @@ colors:
   trendDown: "#DC6543"
   greenBadge: "#EDF5EB"
   greenBadgeText: "#3D6E2C"
+colorsDark:
+  # Dark palette (lib/src/core/theme/app_colors.dart). muted/subtle and the
+  # green badge were lightened in the 2026-06 polish pass for contrast:
+  # secondary "1 USD = ..." lines and the trend badge were too dim on dark.
+  bg: "#141A11"
+  text: "#E8ECE2"
+  muted: "#9CAC90"
+  subtle: "#8C9D81"
+  card: "#1E2D18"
+  container: "#243520"
+  containerHigh: "#2A3D24"
+  primary: "#6F8C49"
+  trendUp: "#8AAE62"
+  trendDown: "#E87A5A"
+  greenBadge: "#31492A"
+  greenBadgeText: "#A8DD93"
 typography:
   display:
     fontSize: 32px
@@ -225,6 +241,8 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 - Selected chip: **white bg** + subtle green-tinted shadow
 - Unselected: transparent on warm bg
 - Locked ranges: lock icon + muted text, tap shows SnackBar explanation
+- Right edge fades out (ShaderMask) so a partially visible chip reads as
+  scrollable, not clipped
 
 ### Pair Selector (Charts)
 - Large pill buttons (radius 24) with flag + currency code
@@ -243,6 +261,9 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 - All screens should clear the floating nav through shared constants, not local magic numbers
 - `BottomTabFrame` owns the bottom inset for all tab screens
 - Screens with ad banner + remove-ads CTA reuse the same `AdSupportShelf` component
+- The ad slot reserves full height only while an ad is actually showing:
+  minimal 50px strip while loading, collapses to zero on no-fill (debug
+  builds show a "Sponsored placement" pill instead). No empty ad voids.
 - The bottom frame computes clearance from nav height + safe area + shared gap, so tab screens do not carry their own bottom math
 - If the nav is moved, update these metrics together in code and in this document
 
@@ -273,3 +294,15 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 - DON'T wrap charts or lists in card containers — full-bleed content only
 - DON'T mix Fraunces into body text or captions — headings only
 - DON'T add branding chrome (logos, taglines) to content screens
+
+## Brand Assets (2026-06)
+
+- App icon: "exchange coin" — cream coin (#F5F4F0) with two-tone exchange
+  arrows (forest #285F3B / moss #6F8C49) on a forest rounded square.
+- Sources are hand-written SVGs in `assets/brand/` (icon, adaptive
+  foreground, splash mark); proposals kept in `assets/brand/proposals/`.
+- All platform icons and splash screens are GENERATED — never edit
+  `mipmap-*`, `web/icons`, or iOS appiconset by hand. Regenerate with:
+  `dart run flutter_launcher_icons` and `dart run flutter_native_splash:create`
+  after rendering SVG changes to PNG (ImageMagick, see assets/brand/).
+- Splash: coin mark centered on `#F6F8EF` (light) / `#141A11` (dark).

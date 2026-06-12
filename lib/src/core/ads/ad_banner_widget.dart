@@ -15,7 +15,6 @@ class AdBannerWidget extends StatefulWidget {
 
 class _AdBannerWidgetState extends State<AdBannerWidget> {
   static const double _minSlotHeight = 50;
-  static final Map<int, double> _slotHeightByWidth = <int, double>{};
 
   BannerAd? _bannerAd;
   bool _hasLoadError = false;
@@ -39,11 +38,6 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
         }
         return;
       }
-
-      _slotHeightByWidth[width] = size.height.toDouble().clamp(
-        _minSlotHeight,
-        120,
-      );
 
       final ad = BannerAd(
         adUnitId: AdHelper.bannerAdUnitId,
@@ -112,40 +106,40 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
         if (width > 0) _queueLoad(width);
 
         final ad = _bannerAd;
-        final reservedHeight = width > 0
-            ? (_slotHeightByWidth[width] ?? _estimatedSlotHeight(width))
-            : _minSlotHeight;
-        final slotHeight = (ad?.size.height.toDouble() ?? reservedHeight)
-            .clamp(_minSlotHeight, 120)
-            .toDouble();
-        final frameHeight = slotHeight > _minSlotHeight
-            ? slotHeight
-            : _minSlotHeight;
         Widget content = const SizedBox.shrink();
+        // Reserve the full slot only once an ad is actually showing.
+        // While loading keep a minimal strip, and collapse entirely on
+        // failure (unless the debug placeholder is enabled) so screens
+        // don't show a large empty void when no ad fills.
+        double frameHeight = _minSlotHeight;
 
         if (_isLoaded && ad != null) {
+          frameHeight = ad.size.height
+              .toDouble()
+              .clamp(_minSlotHeight, 120)
+              .toDouble();
           content = SizedBox(
             width: ad.size.width.toDouble(),
             height: ad.size.height.toDouble(),
             child: AdWidget(ad: ad),
           );
-        } else if (_hasLoadError && AdHelper.showPlaceholderOnFailure) {
-          content = AdBannerPlaceholder(maxWidth: width.toDouble());
+        } else if (_hasLoadError) {
+          if (AdHelper.showPlaceholderOnFailure) {
+            content = AdBannerPlaceholder(maxWidth: width.toDouble());
+          } else {
+            frameHeight = 0;
+          }
         }
 
-        return SizedBox(
-          height: frameHeight,
-          child: Center(child: content),
+        return AnimatedSize(
+          duration: const Duration(milliseconds: 180),
+          curve: Curves.easeOut,
+          child: SizedBox(
+            height: frameHeight,
+            child: Center(child: content),
+          ),
         );
       },
     );
-  }
-
-  double _estimatedSlotHeight(int width) {
-    if (width >= 700) return 110;
-    if (width >= 520) return 100;
-    if (width >= 420) return 90;
-    if (width >= 360) return 82;
-    return 72;
   }
 }

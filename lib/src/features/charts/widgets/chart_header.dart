@@ -30,9 +30,11 @@ class ChartHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final baseCurrency = currencyByCode(base);
     final isPositive = (changePercent ?? 0) >= 0;
-    final trendColor = isPositive
-        ? AppColors.of(context).trendUp
-        : AppColors.of(context).trendDown;
+    final colors = AppColors.of(context);
+    // Use the dedicated badge colors (green-badge component in DESIGN.md):
+    // a trend color at low alpha is too dim on the dark background.
+    final badgeColor = isPositive ? colors.greenBadge : colors.coralSurface;
+    final badgeTextColor = isPositive ? colors.greenBadgeText : colors.coralInk;
     final arrow = isPositive ? '↑' : '↓';
     final freshnessText = _freshnessLabel(context, lastUpdated);
 
@@ -69,13 +71,13 @@ class ChartHeader extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: trendColor.withValues(alpha: .12),
+                          color: badgeColor,
                           borderRadius: BorderRadius.circular(999),
                         ),
                         child: Text(
                           '$arrow ${changePercent!.abs().toStringAsFixed(2)}%',
                           style: AppTheme.metricDelta.copyWith(
-                            color: trendColor,
+                            color: badgeTextColor,
                           ),
                         ),
                       ),
