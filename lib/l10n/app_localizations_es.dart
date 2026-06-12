@@ -126,6 +126,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get labelPrivacy => 'Privacidad';
 
   @override
+  String get privacyPolicyTitle => 'Política de privacidad';
+
+  @override
   String get labelNoAccount => 'Sin cuenta';
 
   @override

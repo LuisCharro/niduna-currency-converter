@@ -332,6 +332,12 @@ abstract class AppLocalizations {
   /// **'Privacy'**
   String get labelPrivacy;
 
+  /// Privacy policy link title
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get privacyPolicyTitle;
+
   /// No account label
   ///
   /// In en, this message translates to:
