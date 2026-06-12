@@ -1,0 +1,16 @@
+# Normalize all text files to LF in the repository so Windows and macOS
+# checkouts stay consistent. Git decides text vs binary automatically.
+* text=auto eol=lf
+
+# Shell and batch scripts need their native line endings to execute
+*.sh text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.ttf binary
+*.otf binary
+*.jar binary
+*.keystore binary
