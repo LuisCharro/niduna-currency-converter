@@ -5,9 +5,10 @@
   "targets": {
     "currency-converter-by-niduna": {
       "hosting": {
-        "openclaw": ["currency-converter-openclaw"],
-        "luis": ["currency-converter-luis"],
-        "alina": ["currency-converter-alina"]
+        "openclaw": ["currency-converter-openclaw-d207c"],
+        "luis": ["currency-converter-luis-8aaa7"],
+        "alina": ["currency-converter-alina"],
+        "jose": ["currency-converter-jose"]
       }
     }
   }

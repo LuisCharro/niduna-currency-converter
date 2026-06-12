@@ -27,7 +27,8 @@ run_firebase deploy \
 echo ""
 echo "=== Preview URL ==="
 case "${TARGET}" in
-  openclaw) echo "https://currency-converter-openclaw.web.app?v=${APP_VERSION}" ;;
-  luis)     echo "https://currency-converter-luis.web.app?v=${APP_VERSION}" ;;
+  openclaw) echo "https://currency-converter-openclaw-d207c.web.app?v=${APP_VERSION}" ;;
+  luis)     echo "https://currency-converter-luis-8aaa7.web.app?v=${APP_VERSION}" ;;
   alina)    echo "https://currency-converter-alina.web.app" ;;
+  jose)     echo "https://currency-converter-jose.web.app" ;;
 esac

@@ -22,4 +22,4 @@ run_firebase deploy \
 
 echo ""
 echo "=== Live URL ==="
-echo "https://currency-converter-luis.web.app?v=${APP_VERSION}"
+echo "https://currency-converter-luis-8aaa7.web.app?v=${APP_VERSION}"

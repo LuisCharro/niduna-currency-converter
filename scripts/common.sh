@@ -191,7 +191,7 @@ project_targets = (
     .get("hosting", {})
 )
 
-required = {"luis", "alina", "openclaw"}
+required = {"luis", "alina", "openclaw", "jose"}
 present = {target for target in targets if target}
 mapped = set(project_targets.keys())
 
