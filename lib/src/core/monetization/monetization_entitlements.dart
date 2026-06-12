@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/temporary_unlock.dart';
@@ -66,15 +67,20 @@ class MonetizationEntitlements {
           if (!u.isExpired) {
             tempUnlocks[TemporaryUnlock.canonicalKey(u.base, u.quote)] = u;
           }
-        } catch (_) {}
+        } catch (e) {
+          debugPrint('Skipping corrupt temp unlock "${entry.key}": $e');
+        }
       }
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Failed to load temp unlocks registry: $e');
+    }
   }
 
   Map<String, dynamic> _decodeJsonMap(String source) {
     try {
       return jsonDecode(source) as Map<String, dynamic>;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Corrupt entitlements JSON, resetting: $e');
       return {};
     }
   }

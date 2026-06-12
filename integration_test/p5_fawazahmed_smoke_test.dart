@@ -1,4 +1,4 @@
-import 'dart:io' show Platform, sleep;
+import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

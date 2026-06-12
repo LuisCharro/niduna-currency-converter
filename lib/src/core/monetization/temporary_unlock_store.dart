@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/temporary_unlock.dart';
@@ -55,7 +56,9 @@ class TemporaryUnlockStore {
       try {
         final unlock = TemporaryUnlock.fromJson(raw);
         if (unlock.isExpired) expired.add(entry.key);
-      } catch (_) {}
+      } catch (e) {
+        debugPrint('Skipping unparsable temp unlock "${entry.key}": $e');
+      }
     }
     for (final key in expired) {
       registry.remove(key);
@@ -81,7 +84,9 @@ class TemporaryUnlockStore {
   Map<String, dynamic> _decodeMap(String raw) {
     try {
       return _parseJson(raw);
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Corrupt temp unlock registry, resetting: $e');
+    }
     return {};
   }
 

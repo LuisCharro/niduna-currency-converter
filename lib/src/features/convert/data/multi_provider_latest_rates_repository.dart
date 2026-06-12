@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/rates/crypto/crypto_usd_price_cache.dart';
 import '../../../core/rates/crypto/crypto_usd_price_client.dart';
@@ -132,7 +134,8 @@ class MultiProviderLatestRatesRepository implements ConvertRatesRepository {
       );
       await _cryptoCache.write(snapshot);
       return snapshot;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Crypto price fetch/cache failed: $e');
       return null;
     }
   }

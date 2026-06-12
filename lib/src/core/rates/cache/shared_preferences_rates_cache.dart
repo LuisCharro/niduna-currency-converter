@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/rates_snapshot.dart';
@@ -159,7 +161,9 @@ class SharedPreferencesRatesCache implements RatesCache {
       if (decoded is List) {
         return decoded.whereType<String>().toList();
       }
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Corrupt tracked cache keys, resetting: $e');
+    }
     return <String>[];
   }
 
@@ -177,7 +181,8 @@ class SharedPreferencesRatesCache implements RatesCache {
     try {
       final decoded = jsonDecode(raw);
       return decoded is Map<String, dynamic> ? decoded : null;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Corrupt rates cache entry dropped: $e');
       return null;
     }
   }

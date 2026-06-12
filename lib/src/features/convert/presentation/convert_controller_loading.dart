@@ -86,6 +86,8 @@ extension ConvertControllerLoading on ConvertController {
       );
       state = _stateFromSnapshot(enriched, state.status);
       _safeNotify();
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Yesterday-rates enrichment failed (trends hidden): $e');
+    }
   }
 }

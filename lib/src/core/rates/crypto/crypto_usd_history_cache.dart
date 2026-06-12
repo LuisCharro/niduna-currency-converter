@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'crypto_usd_history_snapshot.dart';
@@ -49,7 +51,8 @@ class CryptoUsdHistoryCache {
         savedAt: savedAt,
         pricesUsd: pricesUsd,
       );
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Corrupt crypto history cache for $code dropped: $e');
       return null;
     }
   }
