@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Proposal C: Rising rate - chart line on light coin field -->
+  <rect x="0" y="0" width="1024" height="1024" rx="220" fill="#F5F4F0"/>
+  <polyline points="312,690 470,540 590,628 788,388"
+            fill="none" stroke="#285F3B" stroke-width="76"
+            stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- north-east arrowhead, connected to line end -->
+  <path d="M 856 318 L 856 478 L 700 318 Z" fill="#285F3B"/>
+  <!-- coral origin marker on top of the line start -->
+  <circle cx="312" cy="690" r="58" fill="#DC6543"/>
+</svg>

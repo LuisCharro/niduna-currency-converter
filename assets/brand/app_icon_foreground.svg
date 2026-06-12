@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Adaptive icon foreground: coin mark only, transparent background,
+       scaled into the Android adaptive safe zone (center ~66%). -->
+  <g transform="translate(512 512) scale(0.95) translate(-512 -512)">
+    <circle cx="512" cy="512" r="330" fill="#F5F4F0"/>
+    <rect x="300" y="408" width="280" height="68" rx="34" fill="#285F3B"/>
+    <path d="M 570 372 L 570 512 L 708 442 Z" fill="#285F3B"/>
+    <rect x="444" y="548" width="280" height="68" rx="34" fill="#6F8C49"/>
+    <path d="M 454 512 L 454 652 L 316 582 Z" fill="#6F8C49"/>
+  </g>
+</svg>

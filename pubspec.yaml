@@ -51,6 +51,38 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.6
+
+# Launcher icons are generated from the SVG-sourced renders in assets/brand/.
+# Regenerate after changing the source: dart run flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/brand/app_icon.png"
+  adaptive_icon_background: "#285F3B"
+  adaptive_icon_foreground: "assets/brand/app_icon_foreground.png"
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/brand/app_icon.png"
+    background_color: "#285F3B"
+    theme_color: "#285F3B"
+  windows:
+    generate: true
+    image_path: "assets/brand/app_icon.png"
+    icon_size: 256
+
+# Splash screens are generated from assets/brand/splash_mark.png.
+# Regenerate: dart run flutter_native_splash:create
+flutter_native_splash:
+  color: "#F6F8EF"
+  color_dark: "#141A11"
+  image: "assets/brand/splash_mark.png"
+  android_12:
+    color: "#F6F8EF"
+    color_dark: "#141A11"
+    image: "assets/brand/splash_mark.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

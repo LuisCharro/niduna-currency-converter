@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Proposal A: Exchange coin - flat rework of the current motif -->
+  <rect x="0" y="0" width="1024" height="1024" rx="220" fill="#285F3B"/>
+  <circle cx="512" cy="512" r="330" fill="#F5F4F0"/>
+  <!-- top arrow, pointing right -->
+  <rect x="300" y="408" width="280" height="68" rx="34" fill="#285F3B"/>
+  <path d="M 570 372 L 570 512 L 708 442 Z" fill="#285F3B"/>
+  <!-- bottom arrow, pointing left -->
+  <rect x="444" y="548" width="280" height="68" rx="34" fill="#6F8C49"/>
+  <path d="M 454 512 L 454 652 L 316 582 Z" fill="#6F8C49"/>
+</svg>
