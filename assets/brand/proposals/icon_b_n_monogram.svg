@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Proposal B: Niduna "N" monogram with trend badge -->
+  <rect x="0" y="0" width="1024" height="1024" rx="220" fill="#285F3B"/>
+  <!-- N: two stems + diagonal -->
+  <rect x="296" y="312" width="116" height="400" rx="26" fill="#F5F4F0"/>
+  <rect x="612" y="312" width="116" height="400" rx="26" fill="#F5F4F0"/>
+  <path d="M 312 338 L 412 312 L 712 686 L 612 712 Z" fill="#F5F4F0"/>
+  <!-- coral trend badge, top-right -->
+  <circle cx="728" cy="312" r="96" fill="#DC6543"/>
+  <path d="M 728 252 L 786 326 L 670 326 Z" fill="#F5F4F0"/>
+  <rect x="706" y="326" width="44" height="46" rx="8" fill="#F5F4F0"/>
+</svg>
