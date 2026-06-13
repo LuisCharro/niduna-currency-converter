@@ -35,45 +35,51 @@ class NidunaAppWidgetProvider : AppWidgetProvider() {
         val trendUpColor = Color.parseColor("#6F8C49")
         val trendDownColor = Color.parseColor("#DC6543")
 
+        val symbolIds = intArrayOf(
+            R.id.pair_0_symbol, R.id.pair_1_symbol, R.id.pair_2_symbol,
+        )
+        val codeIds = intArrayOf(
+            R.id.pair_0_code, R.id.pair_1_code, R.id.pair_2_code,
+        )
+        val valueIds = intArrayOf(
+            R.id.pair_0_value, R.id.pair_1_value, R.id.pair_2_value,
+        )
+        val trendIds = intArrayOf(
+            R.id.pair_0_trend, R.id.pair_1_trend, R.id.pair_2_trend,
+        )
+
         for (i in 0..2) {
             val prefix = "pair_${i}_"
-            val visible = prefs.getBoolean("${prefix}visible", false)
+            val code = prefs.getString("${prefix}code", "") ?: ""
+            val value = prefs.getString("${prefix}value", "") ?: ""
 
-            val symbolId = context.resources.getIdentifier("pair_${i}_symbol", "id", context.packageName)
-            val codeId = context.resources.getIdentifier("pair_${i}_code", "id", context.packageName)
-            val valueId = context.resources.getIdentifier("pair_${i}_value", "id", context.packageName)
-            val trendId = context.resources.getIdentifier("pair_${i}_trend", "id", context.packageName)
-
-            if (visible && codeId != 0) {
+            if (code.isNotEmpty()) {
                 val symbol = prefs.getString("${prefix}symbol", "$") ?: "$"
-                val code = prefs.getString("${prefix}code", "") ?: ""
-                val value = prefs.getString("${prefix}value", "") ?: ""
                 val trend = prefs.getString("${prefix}trend", "none") ?: "none"
                 val change = prefs.getString("${prefix}change", "") ?: ""
 
-                if (symbolId != 0) views.setTextViewText(symbolId, symbol)
-                views.setTextViewText(codeId, code)
-                if (valueId != 0) views.setTextViewText(valueId, value)
+                views.setTextViewText(symbolIds[i], symbol)
+                views.setTextViewText(codeIds[i], code)
+                views.setTextViewText(valueIds[i], value)
 
-                if (trendId != 0) {
-                    if (trend == "none" || change.isEmpty()) {
-                        views.setViewVisibility(trendId, View.GONE)
-                    } else {
-                        views.setViewVisibility(trendId, View.VISIBLE)
-                        val arrow = when (trend) {
-                            "up" -> "↑"
-                            "down" -> "↓"
-                            else -> "→"
-                        }
-                        val color = if (trend == "down") trendDownColor else trendUpColor
-                        views.setTextViewText(trendId, "$arrow $change")
-                        views.setInt(trendId, "setTextColor", color)
+                if (trend == "none" || change.isEmpty()) {
+                    views.setViewVisibility(trendIds[i], View.GONE)
+                } else {
+                    views.setViewVisibility(trendIds[i], View.VISIBLE)
+                    val arrow = when (trend) {
+                        "up" -> "\u2191"
+                        "down" -> "\u2193"
+                        else -> "\u2192"
                     }
+                    val color = if (trend == "down") trendDownColor else trendUpColor
+                    views.setTextViewText(trendIds[i], "$arrow $change")
+                    views.setInt(trendIds[i], "setTextColor", color)
                 }
             } else {
-                listOf(symbolId, codeId, valueId, trendId).forEach { id ->
-                    if (id != 0) views.setViewVisibility(id, View.INVISIBLE)
-                }
+                views.setTextViewText(symbolIds[i], "\u2013")
+                views.setTextViewText(codeIds[i], "\u2013")
+                views.setTextViewText(valueIds[i], "\u2013")
+                views.setViewVisibility(trendIds[i], View.GONE)
             }
         }
 
