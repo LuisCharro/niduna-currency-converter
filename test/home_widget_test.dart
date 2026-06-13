@@ -7,58 +7,65 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('WidgetData', () {
-    test('serializes to JSON and back', () {
-      const original = HomeWidgetData(
+    test('constructs with all fields', () {
+      const data = HomeWidgetData(
         baseCode: 'GBP',
-        quoteCode: 'JPY',
-        rate: 188.5,
-        amount: 50.0,
-        convertedAmount: '9425.00',
-        updatedAt: '2026-05-31T12:00:00Z',
+        amountLabel: '50 GBP',
+        updatedLabel: 'updated just now',
+        pairs: [
+          WidgetPair(
+            code: 'JPY',
+            symbol: '¥',
+            value: '9425.00',
+            trend: 'up',
+            changePercent: '0.42%',
+          ),
+        ],
       );
 
-      final json = original.toJson();
-      final roundTripped = HomeWidgetData.fromJson(json);
-
-      expect(roundTripped.baseCode, original.baseCode);
-      expect(roundTripped.quoteCode, original.quoteCode);
-      expect(roundTripped.rate, original.rate);
-      expect(roundTripped.amount, original.amount);
-      expect(roundTripped.convertedAmount, original.convertedAmount);
-      expect(roundTripped.updatedAt, original.updatedAt);
+      expect(data.baseCode, 'GBP');
+      expect(data.amountLabel, '50 GBP');
+      expect(data.updatedLabel, 'updated just now');
+      expect(data.pairs.length, 1);
+      expect(data.pairs.first.code, 'JPY');
+      expect(data.pairs.first.symbol, '¥');
+      expect(data.pairs.first.value, '9425.00');
+      expect(data.pairs.first.trend, 'up');
+      expect(data.pairs.first.changePercent, '0.42%');
     });
 
-    test('all fields present after round-trip', () {
-      final json = <String, dynamic>{
-        'baseCode': 'USD',
-        'quoteCode': 'EUR',
-        'rate': 0.92,
-        'amount': 100.0,
-        'convertedAmount': '92.00',
-        'updatedAt': '2026-05-30',
-      };
-
-      final data = HomeWidgetData.fromJson(json);
-      final outputJson = data.toJson();
-
-      expect(outputJson.length, 6);
-      expect(outputJson['baseCode'], 'USD');
-      expect(outputJson['quoteCode'], 'EUR');
-      expect(outputJson['rate'], 0.92);
-      expect(outputJson['amount'], 100.0);
-      expect(outputJson['convertedAmount'], '92.00');
-      expect(outputJson['updatedAt'], '2026-05-30');
-    });
-
-    test('fromJson uses defaults for missing fields', () {
-      final data = HomeWidgetData.fromJson({});
+    test('uses default values when omitted', () {
+      const data = HomeWidgetData();
 
       expect(data.baseCode, 'USD');
-      expect(data.quoteCode, 'EUR');
-      expect(data.rate, 0.0);
-      expect(data.amount, 100.0);
-      expect(data.convertedAmount, '');
-      expect(data.updatedAt, '');
+      expect(data.amountLabel, '100 USD');
+      expect(data.updatedLabel, '');
+      expect(data.pairs, isEmpty);
+    });
+
+    test('holds up to 3 pairs', () {
+      const data = HomeWidgetData(
+        baseCode: 'USD',
+        amountLabel: '100 USD',
+        updatedLabel: 'now',
+        pairs: [
+          WidgetPair(code: 'EUR', symbol: '€', value: '92.00'),
+          WidgetPair(code: 'GBP', symbol: '£', value: '79.00'),
+          WidgetPair(code: 'BTC', symbol: '₿', value: '0.0015'),
+        ],
+      );
+
+      expect(data.pairs.length, 3);
+      expect(data.pairs[0].code, 'EUR');
+      expect(data.pairs[1].code, 'GBP');
+      expect(data.pairs[2].code, 'BTC');
+    });
+
+    test('WidgetPair uses default trend and changePercent', () {
+      const pair = WidgetPair(code: 'EUR', symbol: '€', value: '92.00');
+
+      expect(pair.trend, 'none');
+      expect(pair.changePercent, '');
     });
   });
 
@@ -69,6 +76,25 @@ void main() {
 
       await expectLater(provider.pushData(data), completes);
     });
+
+    test(
+      'pushData handles 3 pairs without throwing on missing plugin',
+      () async {
+        final provider = HomeWidgetProvider();
+        const data = HomeWidgetData(
+          baseCode: 'USD',
+          amountLabel: '100 USD',
+          updatedLabel: 'now',
+          pairs: [
+            WidgetPair(code: 'EUR', symbol: '€', value: '92.00'),
+            WidgetPair(code: 'GBP', symbol: '£', value: '79.00'),
+            WidgetPair(code: 'BTC', symbol: '₿', value: '0.0015'),
+          ],
+        );
+
+        await expectLater(provider.pushData(data), completes);
+      },
+    );
 
     test('clearData does not throw on missing plugin', () async {
       final provider = HomeWidgetProvider();

@@ -58,6 +58,7 @@ class ConvertController extends ChangeNotifier {
     final limit = _favoritesLimitProvider?.call() ?? 3;
     return store.pairs.length >= limit;
   }
+
   bool _disposed = false;
 
   void configure({
@@ -140,7 +141,8 @@ class ConvertController extends ChangeNotifier {
     _safeNotify();
   }
 
-  Set<String> _favoriteQuotes() => favoriteQuotesForBase(_favoritesStore, _base);
+  Set<String> _favoriteQuotes() =>
+      favoriteQuotesForBase(_favoritesStore, _base);
 
   ConvertState _stateFromSnapshot(
     LatestRatesSnapshot snapshot,
@@ -156,7 +158,7 @@ class ConvertController extends ChangeNotifier {
       hiddenCryptoCodes: _hiddenCryptoCodes,
       favQuotes: favQuotes,
     );
-    pushHomeWidgetData(_base, _amount, quotes, _snapshot);
+    pushHomeWidgetData(_base, _amount, quotes, _snapshot, _favoritesStore);
     return ConvertState(
       status: status,
       quotes: quotes,
