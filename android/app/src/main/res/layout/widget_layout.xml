@@ -6,32 +6,210 @@
     android:padding="16dp"
     android:background="@drawable/widget_background">
 
-    <TextView
-        android:id="@+id/widget_amount"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="100 USD"
-        android:textSize="18sp"
-        android:textColor="#1C1917"
-        android:fontFamily="sans-serif-medium" />
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
-    <TextView
-        android:id="@+id/widget_converted"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="= 92.50 EUR"
-        android:textSize="24sp"
-        android:textColor="#1C1917"
-        android:fontFamily="sans-serif-bold"
-        android:layout_marginTop="4dp" />
+        <TextView
+            android:id="@+id/widget_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="100 USD"
+            android:textSize="18sp"
+            android:textColor="#171D14"
+            android:fontFamily="sans-serif-medium"
+            android:singleLine="true"
+            android:ellipsize="end" />
 
-    <TextView
-        android:id="@+id/widget_updated"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/widget_updated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Updated"
+            android:textSize="11sp"
+            android:textColor="#5F6A58"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#285F3B"
+        android:alpha="0.14"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Updated May 31"
-        android:textSize="12sp"
-        android:textColor="#78716C"
-        android:layout_marginTop="4dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/pair_0_symbol"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/widget_icon_circle"
+            android:text="$"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/pair_0_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EUR"
+            android:textSize="14sp"
+            android:textColor="#171D14"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginStart="8dp" />
+
+        <TextView
+            android:id="@+id/pair_0_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="92.50"
+            android:textSize="22sp"
+            android:textColor="#171D14"
+            android:fontFamily="sans-serif-bold"
+            android:gravity="end"
+            android:singleLine="true"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/pair_0_trend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="↑ 0.4%"
+            android:textSize="11sp"
+            android:textColor="#6F8C49"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#285F3B"
+        android:alpha="0.14"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/pair_1_symbol"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/widget_icon_circle"
+            android:text="£"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/pair_1_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GBP"
+            android:textSize="14sp"
+            android:textColor="#171D14"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginStart="8dp" />
+
+        <TextView
+            android:id="@+id/pair_1_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="78.20"
+            android:textSize="22sp"
+            android:textColor="#171D14"
+            android:fontFamily="sans-serif-bold"
+            android:gravity="end"
+            android:singleLine="true"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/pair_1_trend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="↓ 0.2%"
+            android:textSize="11sp"
+            android:textColor="#DC6543"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#285F3B"
+        android:alpha="0.14"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/pair_2_symbol"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/widget_icon_circle"
+            android:text="¥"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/pair_2_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="JPY"
+            android:textSize="14sp"
+            android:textColor="#171D14"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginStart="8dp" />
+
+        <TextView
+            android:id="@+id/pair_2_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="15,234"
+            android:textSize="22sp"
+            android:textColor="#171D14"
+            android:fontFamily="sans-serif-bold"
+            android:gravity="end"
+            android:singleLine="true"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/pair_2_trend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="↑ 1.1%"
+            android:textSize="11sp"
+            android:textColor="#6F8C49"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
 
 </LinearLayout>
