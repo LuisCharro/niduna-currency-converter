@@ -37,6 +37,7 @@ List<CurrencyQuote> buildCurrencyQuotes({
       q.amount,
       q.rateLine,
       rate: q.rate,
+      previousRate: q.previousRate,
       favorite: isFav,
     );
   }).toList();

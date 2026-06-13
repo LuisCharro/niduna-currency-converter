@@ -73,7 +73,7 @@ class FrankfurterLatestRatesClient implements LatestRatesClient {
           .where((currency) => currency.code != base)
           .map((currency) => currency.code)
           .join(',');
-      final uri = Uri.https(_host, '/v2/$dateStr', <String, String>{
+      final uri = Uri.https(_host, '/v2/rates/$dateStr', <String, String>{
         'base': base,
         'quotes': quotes,
       });
