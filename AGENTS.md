@@ -19,7 +19,7 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (2026-06-02)
+## Current state (2026-06-13)
 
 - **Branch:** `main` is the canonical branch. `release-prep`,
   `feature/widget-restore`, `feature/ios-widget-target` are kept
@@ -28,12 +28,11 @@ skills without changing this repo again.
   signed (v2, 50 MB). `flutter build apk --release` works (58 MB).
   `flutter build ios --simulator --debug` works, app installs and
   runs on iPhone 17 Pro sim (iOS 26.5).
-- **Tests:** 192/192 pass. `flutter analyze` shows 1 issue
-  (pre-existing in `integration_test/`, not from recent work).
+- **Tests:** 192/192 pass. `flutter analyze` is clean.
 - **Home-screen widgets:**
-  - **Android:** code complete, end-to-end verified, currently
-    **disabled by default** (manifest receiver block commented out).
-    Restore from commit `55d7839` to enable.
+  - **Android:** code complete, receiver enabled on `main`, and the
+    Dart bridge already pushes widget data after rates load. Remaining
+    work is launcher/runtime verification, not manifest wiring.
   - **iOS:** code complete, Xcode project target wired up, currently
     **disabled by default** (Embed App Extensions phase removed so
     iOS sim install works). Restore via
@@ -66,6 +65,10 @@ Primary app shell order:
 - `Favorites` — saved currency pairs
 - `Charts` — historical exchange rate charts
 - `Settings` — app config, Remove Ads IAP
+
+For the current truth on Favorites nav visibility, widgets, trend arrows,
+and chart-comparison status, see
+`docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`.
 
 ## Versioning policy (pre-MVP)
 

@@ -334,7 +334,7 @@ lib/
 | BTC/ETH and mixed crypto charts | DONE | Daily charts up to 1 year; `multi_provider_rates_client.dart` handles all pair types |
 | Favorite pairs | DONE | Save up to 3 locally (SharedPreferences) |
 | Offline mode | DONE | Cache last known rates |
-| Dark mode | DONE | `AppTheme.dark` + Settings toggle; caveat: manual toggle only, does NOT follow system |
+| Dark mode | DONE | Follows system by default with a Settings entry point |
 | Banner ads | DONE (placeholders) | `AdBannerPlaceholder` in Convert, Charts, Chart Picker; no live AdMob SDK yet |
 | Remove Ads IAP | DONE | 1.99 CHF one-time (stub) |
 | Charts Pro IAP | DONE | Unlock all pairs forever (stub) |
@@ -351,8 +351,10 @@ lib/
 | Trend arrows (previous day comparison) | DONE | Yesterday rates fetch via Frankfurter historical endpoint |
 | Sectioned currency picker (geographic groups) | DONE | Europe/Americas/AsiaPacific/MiddleEastAfrica/Crypto |
 | Home widget data push on cached load | DONE | Widget data pushed immediately when cached state loads |
+| Android home-screen widget | DONE | Receiver enabled on main; runtime verification from launcher still recommended |
+| iOS home-screen widget code | DONE (disabled by default) | Target and Swift code wired; embed phase removed on main for iOS 26 sim install stability |
 | Calculator expression evaluator tests | DONE | 12 test cases covering arithmetic and edge cases |
-| 172 total tests passing | DONE | Up from 122 before Phase A-D improvements |
+| 192 total tests passing | DONE | Current baseline after screenshot/release-prep work |
 
 ### Data Sources
 
@@ -384,7 +386,7 @@ lib/
 - [x] Slice 5: implement Settings preferences, cache controls, and chart banner ad
 - [x] Slice 6: integrate monetization entitlements and ad runtime (banner ads, Remove Ads, Charts Pro, Subscription, optional rewarded unlock)
 - [x] Slice 8: IAP paywall — PurchaseService stub, IapPurchasePlayer, Settings Premium section, Remove Ads + Charts Pro + Subscription (Coming Soon) buttons, banner CTA, intraday "coming soon" toast
-- [x] Slice 9: hide Favorites tab, data freshness indicator, dark mode, intraday toast copy fix, subscription v1 copy
+- [x] Slice 9: data freshness indicator, dark mode, intraday toast copy fix, subscription v1 copy
 - [x] Slice 10: update root docs for the no-key BTC/ETH scope (aligned in commits 764340f + ad8caab)
 - [x] Slice 11: add BTC/ETH and mixed fiat/crypto charts up to 1 year
 - [x] Write/update smoke tests as each slice becomes user-visible
@@ -574,7 +576,7 @@ Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, serve
 
 - RUB (Russian Ruble) — not supported by Frankfurter (ECB suspended 2022-03-01)
 - Intraday/hourly refresh — Frankfurter provides daily rates only
-- Android Launcher Widgets — consider in future
+- Android Launcher Widgets — implemented on main; see `RELEASE_CHECKLIST.md` and `docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`
 
 ---
 

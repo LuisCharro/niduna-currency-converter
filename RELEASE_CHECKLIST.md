@@ -161,11 +161,9 @@ top pair on the user's home screen.
 - **Verification:** ✅ end-to-end — app writes 6 keys
   (baseCode/quoteCode/amount/rate/convertedAmount/updatedAt) to
   `HomeWidgetPreferences.xml`, widget reads them on `onUpdate`
-- **Status:** Disabled by default in this commit. To enable, restore
-  the receiver in `AndroidManifest.xml` (re-add the `<receiver>`
-  block). The Kotlin + XML + manifest changes are documented in
-  `docs/release-prep/README.md` and the commit messages of
-  `feature/widget-restore`.
+- **Status:** Enabled on `main`. Remaining work is launcher/runtime
+  verification, not manifest wiring. See
+  `docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`.
 
 ### iOS widget — ⚠️ Code complete, sim install blocked
 
@@ -189,6 +187,10 @@ is a known simctl bug, not a code issue.
   (`@main WidgetBundle`, `TimelineProvider`, `UserDefaults(suiteName:)`)
 - **Full report:** `docs/release-prep/README.md` (Android + iOS widget
   history), `docs/REVIEW-2026-06-01.md` § "P3-2 iOS widget extension"
+
+For the short current-truth summary covering Favorites nav visibility,
+widgets, trend arrows, and chart-comparison deferral, see
+`docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`.
 
 ---
 

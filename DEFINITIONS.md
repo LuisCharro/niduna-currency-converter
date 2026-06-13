@@ -154,16 +154,19 @@ updates after store launch. Ranked by value-to-effort ratio from competitor rese
 
 | Feature | Value | Effort | Driver |
 |---------|-------|--------|--------|
-| Home screen widget (Android + iOS) | VERY HIGH | Medium | #1 passive engagement driver across all competitor apps |
+| Home screen widget (Android + iOS) | VERY HIGH | Medium | Android implementation is already on main; iOS code is complete but still needs a real-device verification path |
 | Built-in calculator (+-*/) | HIGH | Low | Travelers adding tax/tip; Reddit users mention this |
 | Auto-sort favorites by usage | HIGH | Low | CoinCalc users praise this; small effort, outsized impact |
-| Rate trend arrows on Convert rows | HIGH | Low | Quick glance signal; trust builder |
-| Re-enable Favorites tab in nav | MEDIUM | Low | Code exists; just needs nav slot + auto-sort |
+| Rate trend arrows on Convert rows | HIGH | Low | Already implemented on main; verify UX prominence before redesigning |
+| Re-enable Favorites tab in nav | MEDIUM | Low | Already live on main; keep as historical note only |
 | Custom currency list size (free: 5, premium: all 51) | MEDIUM | Low | CoinCat's entire Pro upgrade is "see more at once" |
 | Share rate screenshot | MEDIUM | Low | Word-of-mouth; free marketing |
 
 **Scope rule for Phase 1.x:** Everything must work without a backend or cloud user data.
 No VPS, no user database, no server-side state. Features needing those are Phase 2+.
+
+Use `docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`
+as the short source of truth for widget/trend/comparison status.
 
 ---
 

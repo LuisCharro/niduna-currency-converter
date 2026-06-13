@@ -14,21 +14,24 @@ Use it together with:
 The app has all Phase 1 slices implemented (slices 0-9, 11) and a UI redesign
 iteration 2 on branch `turbo/ui-redesign`. Feature audit completed 2026-05-22.
 
-- a Flutter app with three visible tabs: `Convert`, `Charts`, `Settings`
-  (Favorites code retained but hidden from nav for Phase 2)
+- a Flutter app with four visible tabs: `Convert`, `Favorites`, `Charts`,
+  `Settings`
 - real fiat rates from Frankfurter v2 + BTC/ETH latest from no-key providers
 - historical charts: fiat up to 2Y, crypto up to 1Y
 - full monetization stubs: banner ad placeholders, Remove Ads, Charts Pro,
   rewarded ad chart-pair unlock, subscription "Coming Soon" card
-- dark mode, data freshness indicator, pull-to-refresh, modal currency picker
+- dark mode, data freshness indicator, pull-to-refresh, modal currency picker,
+  and previous-day trend arrows on Convert rows
 - branded splash screens + adaptive icons (Android)
+- Android home-screen widget implementation on main; iOS widget code present
+  but disabled by default on main due the iOS 26 simulator install bug
 - store publishing checklists for Play Store and App Store
 - product docs covering privacy, monetization, APIs, and phase boundaries
 - repo-local agent docs and skills
 - scripts for analysis, tests, and builds
 
-Remaining Phase 1 work: dark mode system-follow, real AdMob SDK, release
-signing, privacy policy, store listing assets, branded app names.
+Remaining Phase 1 work: release signing, privacy policy, store listing
+metadata, and final store submission steps.
 
 ## Product Contract First
 
