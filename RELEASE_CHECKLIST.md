@@ -1,9 +1,9 @@
 # Release Checklist — Path to Google Play Store
 
-> **Last updated:** 2026-06-02
+> **Last updated:** 2026-06-13
 > **App version:** 0.1.0+1 (pre-MVP)
 > **Branch:** main
-> **Status:** Code path complete, AAB+APK built and signed, 192/192 tests pass, 0 lint issues. Remaining work is all external (E1–E5) + content (C1–C11) + keystore password rotation.
+> **Status:** Code path complete, AAB+APK built and signed, 192/192 tests pass, 0 lint issues. Screenshots (C5) and feature graphic (C6) done. Remaining work is external (E1–E5) + content (C1–C4, C7–C11) + keystore password rotation.
 > **2026-06-02 update:** iOS widget code merged but disabled (Xcode 26 simctl install bug). Code complete, verify on real iPhone when convenient. See "Blocker Summary" below.
 > **2026-06-01 update:** Backend work deferred until post-publish. Code-only path: see "Code-Only Pre-Flight" below. Full detail in `docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`.
 > **2026-06-02 review:** see `docs/REVIEW-2026-06-01.md` for the full audit.
@@ -89,8 +89,8 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
 | C3 | Short description (max 80 chars) | Example: *"Convert 170+ currencies instantly. Privacy-first. Beautiful."* | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Niduna differentiator | ~45 min | ❌ |
-| C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert, Charts, Settings tabs | ~1 hr | 🟡 **8 staged, need final-pick** | Captured during 2026-06-01 review: see `docs/release-prep/screenshots/` (light + dark × 4 tabs) |
-| C6 | Feature graphic (1024x500) | Branded graphic for featured placements | ~30 min | ❌ |
+| C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert, Charts, Settings tabs | ~1 hr | ✅ **Done** | 6 final screenshots at 1080×2400 in `docs/release-prep/screenshots/` (light + dark × Convert/Chart/Favorites). English, paid-user state (no ads), real currency icons. Captured on `Pixel7_EN` AVD (1080×2400 @ 420dpi). Capture infra: `integration_test/screenshot_gallery_test.dart` + `.devtools/{sample_seed_data,generate_sample_prefs}.dart`. Requires swiftshader GPU (`-gpu swiftshader_indirect`) for icon rendering. The older 8-tab set from 2026-06-01 is kept alongside as reference. |
+| C6 | Feature graphic (1024x500) | Branded graphic for featured placements | ~30 min | ✅ **Done** | `docs/release-prep/feature-graphic.png` (1024×500, botanical gradient + app name + phone mockup + tagline) |
 | C7 | Content rating questionnaire (IARC/CERT) | In Play Console > Policy > App content | ~15 min | ❌ |
 | C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII | ~30 min | ❌ |
 | C9 | Category selection | Likely: Finance > Finance tools or Productivity | ~2 min | ❌ |
@@ -203,7 +203,7 @@ Step 5:  Code — Privacy policy page + in-app link                     [B5]
 Step 6:  Code — Build release AAB with real keystore                 [B6]
 Step 7:  External — Upload AAB to Play Console                      [B7]
 Step 8:  Content — Privacy policy hosted publicly                  [C1]
-Step 9:  Content — Screenshots + feature graphic                  [C5-C6]
+Step 9:  Content — Screenshots + feature graphic                  [C5-C6] ✅ Done
 Step 10: Content — App metadata (title, descriptions, category)      [C2-C4, C9-C11]
 Step 11: Content — Content rating + Data Safety forms               [C7-C8]
 Step 12: Review — Pre-launch report from Play Console               [auto after upload]
@@ -306,6 +306,17 @@ These can ship in v0.2.0+ updates:
 
 ## Change Log (this file)
 
+- **2026-06-13** — Marked C5 (screenshots) and C6 (feature graphic) as ✅
+  Done. 6 final store screenshots at 1080×2400 captured on the new
+  `Pixel7_EN` AVD (Convert / Chart with data point tooltip / Favorites
+  × light + dark), all in `docs/release-prep/screenshots/`. Feature
+  graphic at `docs/release-prep/feature-graphic.png` (1024×500).
+  Capture infra added: `integration_test/screenshot_gallery_test.dart`,
+  `.devtools/sample_seed_data.dart` (rewritten for real SharedPreferences
+  keys), `.devtools/generate_sample_prefs.dart` (`--free-user` /
+  `--no-favorites` flags). Note: swiftshader GPU required for icon
+  rendering on emulator. OG social image refreshed on Vercel site
+  (1200×630).
 - **2026-06-02** — Updated Blocker Summary statuses to reflect actual
   state: B1–B3, B6 are ✅ Done (not ❌ as previously marked). Added
   keystore password rotation callout. Added "Home-screen Widgets —
