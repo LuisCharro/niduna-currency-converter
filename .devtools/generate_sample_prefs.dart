@@ -3,24 +3,55 @@ import 'sample_seed_data.dart';
 void main(List<String> args) {
   final options = _parseArgs(args);
 
+  final seedOptions = SampleSeedOptions(
+    includeEntitlements: !options.freeUser,
+    includeFavorites: !options.noFavorites,
+  );
+
   switch (options.format) {
     case _OutputFormat.androidSharedPrefs:
       print(
-        generateAndroidSharedPrefsXml(days: options.days, today: options.today),
+        generateAndroidSharedPrefsXml(
+          days: options.days,
+          today: options.today,
+          options: seedOptions,
+        ),
       );
     case _OutputFormat.iosPlist:
-      print(generateIosPrefsPlist(days: options.days, today: options.today));
+      print(
+        generateIosPrefsPlist(
+          days: options.days,
+          today: options.today,
+          options: seedOptions,
+        ),
+      );
   }
 }
 
 enum _OutputFormat { androidSharedPrefs, iosPlist }
 
-({int days, DateTime today, _OutputFormat format}) _parseArgs(
-  List<String> args,
-) {
+class _ParsedArgs {
+  const _ParsedArgs({
+    required this.days,
+    required this.today,
+    required this.format,
+    required this.freeUser,
+    required this.noFavorites,
+  });
+
+  final int days;
+  final DateTime today;
+  final _OutputFormat format;
+  final bool freeUser;
+  final bool noFavorites;
+}
+
+_ParsedArgs _parseArgs(List<String> args) {
   var days = 30;
   var today = DateTime.now();
   var format = _OutputFormat.androidSharedPrefs;
+  var freeUser = false;
+  var noFavorites = false;
 
   for (var i = 0; i < args.length; i += 1) {
     final arg = args[i];
@@ -49,6 +80,15 @@ enum _OutputFormat { androidSharedPrefs, iosPlist }
     }
     if (arg.startsWith('--format=')) {
       format = _parseFormat(arg.split('=').last) ?? format;
+      continue;
+    }
+    if (arg == '--free-user') {
+      freeUser = true;
+      continue;
+    }
+    if (arg == '--no-favorites') {
+      noFavorites = true;
+      continue;
     }
   }
 
@@ -58,7 +98,13 @@ enum _OutputFormat { androidSharedPrefs, iosPlist }
 
   today = DateTime(today.year, today.month, today.day);
 
-  return (days: days, today: today, format: format);
+  return _ParsedArgs(
+    days: days,
+    today: today,
+    format: format,
+    freeUser: freeUser,
+    noFavorites: noFavorites,
+  );
 }
 
 _OutputFormat? _parseFormat(String raw) {
