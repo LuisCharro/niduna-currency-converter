@@ -1,4 +1,4 @@
-import 'dart:io' show Platform, sleep;
+import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -66,8 +66,9 @@ void main() {
       }
     });
 
-    testWidgets('Charts tab — select USD/BTC pair and verify chart loads',
-        (tester) async {
+    testWidgets('Charts tab — select USD/BTC pair and verify chart loads', (
+      tester,
+    ) async {
       if (Platform.isAndroid) {
         await binding.convertFlutterSurfaceToImage();
       }
@@ -112,8 +113,9 @@ void main() {
       );
     });
 
-    testWidgets('full tab cycle: Convert → Chart → Settings → Convert',
-        (tester) async {
+    testWidgets('full tab cycle: Convert → Chart → Settings → Convert', (
+      tester,
+    ) async {
       if (Platform.isAndroid) {
         await binding.convertFlutterSurfaceToImage();
       }
