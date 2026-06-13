@@ -67,6 +67,7 @@ class _AppState extends State<AppShell> {
     if (widget.favoritesStore == null) {
       _localStore = FavoritesStore(prefs);
     }
+    await _favoritesStore.seedStarterIfEmpty();
 
     final repo =
         widget.convertRepository ??

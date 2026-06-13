@@ -18,10 +18,14 @@ class FavoritesStore extends ChangeNotifier with FavoriteUsageTracker {
 
   List<FavoritePair> get pairs => List.unmodifiable(_pairs);
   List<FavoritePair> get sortedPairs {
-    final withUsage = _pairs.map((p) => p.copyWith(
-      useCount: usageCount(p.base, p.quote),
-      lastUsedAt: lastUsedAt(p.toKey()),
-    )).toList();
+    final withUsage = _pairs
+        .map(
+          (p) => p.copyWith(
+            useCount: usageCount(p.base, p.quote),
+            lastUsedAt: lastUsedAt(p.toKey()),
+          ),
+        )
+        .toList();
     withUsage.sort((a, b) {
       final countCmp = b.useCount.compareTo(a.useCount);
       if (countCmp != 0) return countCmp;
@@ -43,8 +47,8 @@ class FavoritesStore extends ChangeNotifier with FavoriteUsageTracker {
 
   Future<void> toggle(String base, String quote) async =>
       isFavorite(base, quote)
-          ? await remove(base, quote)
-          : await add(base, quote);
+      ? await remove(base, quote)
+      : await add(base, quote);
 
   Future<void> add(String base, String quote) async {
     if (isFavorite(base, quote)) return;
@@ -68,13 +72,32 @@ class FavoritesStore extends ChangeNotifier with FavoriteUsageTracker {
   void _load() {
     final keys = _prefs.getStringList(_key);
     if (keys == null) return;
-    _pairs = keys
-        .map((k) => tryParse(k))
-        .whereType<FavoritePair>()
-        .toList();
+    _pairs = keys.map((k) => tryParse(k)).whereType<FavoritePair>().toList();
   }
 
   static FavoritePair? tryParse(String key) {
-    try { return FavoritePair.fromKey(key); } catch (_) { return null; }
+    try {
+      return FavoritePair.fromKey(key);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> seedStarterIfEmpty() async {
+    if (_pairs.isNotEmpty) return;
+    final alreadySeeded = _prefs.getBool('starter_favorites_seeded') ?? false;
+    if (alreadySeeded) return;
+
+    _pairs.add(FavoritePair(base: 'USD', quote: 'EUR'));
+    _pairs.add(FavoritePair(base: 'USD', quote: 'GBP'));
+    _pairs.add(FavoritePair(base: 'USD', quote: 'BTC'));
+
+    await _persist();
+    await _prefs.setBool('starter_favorites_seeded', true);
+    notifyListeners();
+  }
+
+  Future<void> _persist() async {
+    await _prefs.setStringList(_key, _pairs.map((p) => p.toKey()).toList());
   }
 }
