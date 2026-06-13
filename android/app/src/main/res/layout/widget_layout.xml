@@ -35,11 +35,10 @@
 
     </LinearLayout>
 
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#285F3B"
-        android:alpha="0.14"
+        android:background="#24285F3B"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="8dp" />
 
@@ -94,11 +93,10 @@
 
     </LinearLayout>
 
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#285F3B"
-        android:alpha="0.14"
+        android:background="#24285F3B"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp" />
 
@@ -153,11 +151,10 @@
 
     </LinearLayout>
 
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#285F3B"
-        android:alpha="0.14"
+        android:background="#24285F3B"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp" />
 
