@@ -26,6 +26,14 @@ class NidunaAppWidgetProvider : AppWidgetProvider() {
         val prefs = HomeWidgetPlugin.getData(context)
         val views = RemoteViews(context.packageName, R.layout.widget_layout)
 
+        val firstCode = prefs.getString("pair_0_code", "") ?: ""
+
+        if (firstCode.isEmpty()) {
+            views.setTextViewText(R.id.widget_amount, "Niduna")
+            views.setTextViewText(R.id.widget_updated, "Open to load")
+            return views
+        }
+
         val amountLabel = prefs.getString("amountLabel", "100 USD") ?: "100 USD"
         val updatedLabel = prefs.getString("updatedLabel", "") ?: ""
 
