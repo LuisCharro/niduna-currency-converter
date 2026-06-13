@@ -11,7 +11,7 @@
 | Area | Status | Notes |
 |------|--------|-------|
 | Favorites tab in nav | **Live on main** | `lib/src/shared/widgets/floating_pill_nav.dart` includes the Favorites tab. Any doc saying it is hidden is outdated. |
-| Android home-screen widget | **Enabled on main** | `AndroidManifest.xml` includes the `NidunaAppWidgetProvider` receiver. Dart pushes data through `HomeWidgetProvider.pushData()` after rates load. Runtime verification from the launcher is still recommended. |
+| Android home-screen widget | **Redesigned and verified on main** | Completely redesigned from single-pair placeholder to 3-pair icon-led widget. Warm paper background, currency symbols in circles, thin dividers, trend arrows. Favorites-driven with fallback pairs. Starter favorites seeded on first run. Shows "Niduna · Open to load" placeholder when no data. Runtime-verified on Pixel 7 emulator. See `docs/superpowers/specs/2026-06-13-widget-redesign-design.md`. |
 | iOS home-screen widget | **Code complete, disabled by default on main** | WidgetKit target exists and Swift code is wired, but the Embed App Extensions phase was removed to keep iOS 26 simulator installs working. Real-device verification still requires re-adding the embed phase. |
 | Rate trend arrows on Convert rows | **Implemented on main** | Yesterday rates are fetched in `ConvertController`, passed into `LatestRatesSnapshot.previousRates`, converted into `CurrencyQuote.previousRate`, and rendered through `TrendBadge` when present. Remaining work is UX verification, not feature implementation. |
 | Multi-pair chart comparison | **Deferred** | Still out of Phase 1.x. It requires a new chart information architecture and a dedicated UI redesign pass before coding. |

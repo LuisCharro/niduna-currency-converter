@@ -146,24 +146,26 @@ Dev scripts (`.devtools/*.sh`) override to `dev_coinpaprika`.
 
 ## Home-screen Widgets — Current State
 
-### Android widget — ✅ Shipped
+### Android widget — ✅ Redesigned and verified
 
-The Android home-screen widget is built and working. It reads the
-latest conversion snapshot from `SharedPreferences` and shows the
-top pair on the user's home screen.
+The Android home-screen widget has been completely redesigned from a
+single-pair placeholder to a 3-pair icon-led medium widget.
 
-- **Implementation:** `AppWidgetProvider` + `RemoteViews` (not Glance —
-  the Glance path trips a Kotlin 2.2.20 inliner bug on
-  `currentState<T>()` and `LocalState.current`)
-- **Files:** `android/app/src/main/java/com/niduna/currency_converter/widget/NidunaAppWidgetProvider.kt`
-- **Data bridge:** Dart `HomeWidgetProvider.pushData()` runs after every
-  rates load via `ConvertController._buildState`
-- **Verification:** ✅ end-to-end — app writes 6 keys
-  (baseCode/quoteCode/amount/rate/convertedAmount/updatedAt) to
-  `HomeWidgetPreferences.xml`, widget reads them on `onUpdate`
-- **Status:** Enabled on `main`. Remaining work is launcher/runtime
-  verification, not manifest wiring. See
-  `docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`.
+- **Layout:** header (amount + freshness) + 3 rows (currency symbol
+  in circle + code + value + trend), thin dividers, warm paper surface
+- **Implementation:** `AppWidgetProvider` + `RemoteViews` (not Glance)
+- **Files:** `NidunaAppWidgetProvider.kt`, `widget_layout.xml`,
+  `widget_background.xml`, `widget_icon_circle.xml`
+- **Data bridge:** Dart `HomeWidgetProvider.pushData()` pushes 3 pairs
+  (code, symbol, value, trend, changePercent per row) after rates load
+- **Favorites-driven:** shows top 3 favorites; fallback to
+  EUR/GBP/BTC when favorites are empty
+- **Starter favorites:** seeds USD-EUR, USD-GBP, USD-BTC on first run
+- **Placeholder state:** shows "Niduna · Open to load" when no data
+  pushed yet (widget added before app first opened)
+- **Design spec:** `docs/superpowers/specs/2026-06-13-widget-redesign-design.md`
+- **Verification:** ✅ runtime-verified on Pixel 7 emulator — 3 pairs
+  render correctly, tap opens Convert, placeholder shows when no data
 
 ### iOS widget — ⚠️ Code complete, sim install blocked
 

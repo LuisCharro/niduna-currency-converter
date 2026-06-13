@@ -351,10 +351,11 @@ lib/
 | Trend arrows (previous day comparison) | DONE | Yesterday rates fetch via Frankfurter historical endpoint |
 | Sectioned currency picker (geographic groups) | DONE | Europe/Americas/AsiaPacific/MiddleEastAfrica/Crypto |
 | Home widget data push on cached load | DONE | Widget data pushed immediately when cached state loads |
-| Android home-screen widget | DONE | Receiver enabled on main; runtime verification from launcher still recommended |
+| Android home-screen widget | DONE | Redesigned to 3-pair icon-led widget — warm paper, currency circles, dividers, trend arrows. Favorites-driven with fallback. Runtime-verified on emulator. |
+| Starter favorites seeding | DONE | Seeds USD-EUR, USD-GBP, USD-BTC on first run so widget is useful immediately |
 | iOS home-screen widget code | DONE (disabled by default) | Target and Swift code wired; embed phase removed on main for iOS 26 sim install stability |
 | Calculator expression evaluator tests | DONE | 12 test cases covering arithmetic and edge cases |
-| 192 total tests passing | DONE | Current baseline after screenshot/release-prep work |
+| 194 total tests passing | DONE | Current baseline after widget redesign work |
 
 ### Data Sources
 

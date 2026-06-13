@@ -28,18 +28,21 @@ skills without changing this repo again.
   signed (v2, 50 MB). `flutter build apk --release` works (58 MB).
   `flutter build ios --simulator --debug` works, app installs and
   runs on iPhone 17 Pro sim (iOS 26.5).
-- **Tests:** 192/192 pass. `flutter analyze` is clean.
+- **Tests:** 194/194 pass. `flutter analyze` is clean.
 - **Home-screen widgets:**
-  - **Android:** code complete, receiver enabled on `main`, and the
-    Dart bridge already pushes widget data after rates load. Remaining
-    work is launcher/runtime verification, not manifest wiring.
+  - **Android:** fully redesigned — 3-pair icon-led widget with warm
+    paper background, currency symbols in circles, thin dividers.
+    Driven by app favorites with fallback pairs. Starter favorites
+    seeded on first run. Shows "Niduna · Open to load" placeholder
+    when no data yet. Runtime-verified on Pixel 7 emulator.
   - **iOS:** code complete, Xcode project target wired up, currently
     **disabled by default** (Embed App Extensions phase removed so
     iOS sim install works). Restore via
     `GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.16.2_2/libexec ruby
     ios/scripts/add_widget_target.rb` (idempotent) when testing on
     real iPhone. Blocked on iOS 26 sim install bug.
-  - See `docs/release-prep/README.md` for full state + restoration.
+  - See `docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`
+    and `docs/superpowers/specs/2026-06-13-widget-redesign-design.md`.
 - **Release status:** see `RELEASE_CHECKLIST.md` for the full
   Blocker Summary. Code path complete. 3 P1 items remaining
   (AdMob IDs, keystore password, privacy policy URL) are all
