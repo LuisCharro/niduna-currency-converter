@@ -20,6 +20,7 @@ class VisibleRatesList extends StatefulWidget {
     required this.onSetBase,
     required this.onRemove,
     required this.onToggleFavorite,
+    this.onPairOpened,
     this.maxFavoritesReached = false,
     this.onRefresh,
     this.isLoading = false,
@@ -33,6 +34,7 @@ class VisibleRatesList extends StatefulWidget {
   final ValueChanged<String> onSetBase;
   final ValueChanged<String> onRemove;
   final Future<bool> Function(String code) onToggleFavorite;
+  final ValueChanged<String>? onPairOpened;
   final bool maxFavoritesReached;
   final Future<void> Function()? onRefresh;
   final bool isLoading;
@@ -107,6 +109,7 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
             widget.onSetBase(quote.code);
           },
           onPressed: (position) {
+            widget.onPairOpened?.call(quote.code);
             ConversionLensSheet.show(
               context: context,
               anchor: position,

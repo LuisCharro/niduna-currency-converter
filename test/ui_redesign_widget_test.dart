@@ -67,6 +67,7 @@ void main() {
               onSelectBase: controller.setBase,
               onToggleCode: controller.toggleCode,
               onToggleFavorite: controller.tryToggleFavorite,
+              onPairOpened: controller.recordPairUsage,
               onMore: () {},
             ),
           ),

@@ -163,6 +163,61 @@ void main() {
     });
   });
 
+  group('sortedPairs (auto-sort by usage)', () {
+    late SharedPreferences prefs;
+    late FavoritesStore store;
+
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      store = FavoritesStore(prefs);
+    });
+
+    tearDown(() => store.dispose());
+
+    test('orders by use count, most-used first', () async {
+      await store.add('USD', 'EUR');
+      await store.add('USD', 'GBP');
+      await store.add('USD', 'JPY');
+      await store.recordUsage('USD', 'GBP');
+      await store.recordUsage('USD', 'GBP');
+      await store.recordUsage('USD', 'JPY');
+
+      final order = store.sortedPairs.map((p) => p.quote).toList();
+      expect(order, <String>['GBP', 'JPY', 'EUR']);
+    });
+
+    test('annotates useCount on the returned pairs', () async {
+      await store.add('USD', 'EUR');
+      await store.recordUsage('USD', 'EUR');
+      await store.recordUsage('USD', 'EUR');
+
+      expect(store.sortedPairs.single.useCount, 2);
+    });
+
+    test('breaks ties by most recently used', () async {
+      await store.add('USD', 'EUR');
+      await store.add('USD', 'GBP');
+      await store.recordUsage('USD', 'EUR');
+      await store.recordUsage('USD', 'GBP'); // same count, used later
+
+      final order = store.sortedPairs.map((p) => p.quote).toList();
+      expect(order, <String>['GBP', 'EUR']);
+    });
+
+    test('does not mutate insertion order of pairs getter', () async {
+      await store.add('USD', 'EUR');
+      await store.add('USD', 'GBP');
+      await store.recordUsage('USD', 'GBP');
+
+      expect(store.pairs.map((p) => p.quote).toList(),
+          <String>['EUR', 'GBP']); // pairs stays insertion order
+      expect(store.sortedPairs.map((p) => p.quote).toList(),
+          <String>['GBP', 'EUR']); // sortedPairs reflects usage
+    });
+  });
+
   group('rateForFavoritePair', () {
     test('returns direct rate from snapshot base', () {
       final rate = rateForFavoritePair(

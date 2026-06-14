@@ -6,9 +6,11 @@ import 'package:currency_converter/src/features/convert/domain/convert_state.dar
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
 import 'package:currency_converter/src/features/convert/domain/rate_freshness.dart';
 import 'package:currency_converter/src/features/convert/presentation/convert_controller.dart';
+import 'package:currency_converter/src/features/favorites/data/favorites_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   setUp(() {
@@ -219,6 +221,34 @@ void main() {
 
     expect(controller.state.status, ConvertStatus.noCache);
     expect(controller.state.quotes, isEmpty);
+  });
+
+  test('recordPairUsage tracks favorites and ignores non-favorites', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final prefs = await SharedPreferences.getInstance();
+    final favorites = FavoritesStore(prefs);
+    await favorites.add('USD', 'EUR');
+
+    final controller = ConvertController(
+      repository: _FakeRatesRepository(
+        fresh: _snapshot(<String, double>{'EUR': .92, 'GBP': .79}),
+      ),
+      favoritesStore: favorites,
+      selectedCodes: <String>['EUR', 'GBP'],
+    );
+    await controller.load();
+
+    // A non-favorite pair is not tracked.
+    await controller.recordPairUsage('GBP');
+    expect(favorites.usageCount('USD', 'GBP'), 0);
+
+    // A favorite pair is tracked and ranks via sortedPairs.
+    await controller.recordPairUsage('EUR');
+    await controller.recordPairUsage('EUR');
+    expect(favorites.usageCount('USD', 'EUR'), 2);
+
+    controller.dispose();
+    favorites.dispose();
   });
 
   test('Frankfurter client parses v2 rates list payload', () async {
