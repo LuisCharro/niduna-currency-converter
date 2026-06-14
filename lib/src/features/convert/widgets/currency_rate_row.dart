@@ -26,7 +26,7 @@ class CurrencyRateRow extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: AppTheme.rowMinHeight),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
             child: Row(
               children: <Widget>[
                 Container(

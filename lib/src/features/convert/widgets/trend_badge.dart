@@ -34,16 +34,17 @@ class TrendBadge extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Icon(icon, size: 12, color: color),
+        Icon(icon, size: 15, color: color),
         if (label != null)
           Padding(
-            padding: const EdgeInsets.only(left: 2),
+            padding: const EdgeInsets.only(left: 1),
             child: Text(
               label,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 11.5,
                 fontWeight: FontWeight.bold,
                 color: color,
+                letterSpacing: -0.1,
               ),
             ),
           ),
