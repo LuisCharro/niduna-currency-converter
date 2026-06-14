@@ -34,7 +34,7 @@ class AmountKeypad extends StatelessWidget {
               AmountOpKey(label: '×', onTap: () => onOperator!('*')),
               AmountOpKey(label: '÷', onTap: () => onOperator!('/')),
               const Spacer(),
-              AmountOpKey(icon: Icons.drag_handle, onTap: onEquals!, bgColor: true),
+              AmountOpKey(label: '=', onTap: onEquals!, bgColor: true),
             ],
           ),
         ),

@@ -64,13 +64,18 @@ class _AmountInputSheetState extends State<AmountInputSheet>
   }
 
   void _handleOperator(String op) {
-    handleOperator(_amount, () => setState(() {
-      _amount = '';
-      _shouldReplace = true;
-    }));
+    handleOperator(
+      _amount,
+      op,
+      () => setState(() {
+        _amount = '';
+        _shouldReplace = true;
+      }),
+    );
   }
 
   void _handleEquals() {
+    if (!isExpression) return;
     final result = handleEquals(_amount);
     setState(() {
       _amount = result ?? 'Error';
@@ -93,6 +98,7 @@ class _AmountInputSheetState extends State<AmountInputSheet>
             const SizedBox(height: 12),
             AmountInputHeader(
               amount: _amount,
+              expression: expressionPreview(_amount),
               currency: currency,
               base: widget.base,
               onCancel: () => Navigator.of(context).pop(),

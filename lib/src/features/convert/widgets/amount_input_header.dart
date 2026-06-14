@@ -13,6 +13,7 @@ class AmountInputHeader extends StatelessWidget {
     required this.currency,
     required this.base,
     required this.onCancel,
+    this.expression = '',
     super.key,
   });
 
@@ -20,6 +21,9 @@ class AmountInputHeader extends StatelessWidget {
   final SupportedCurrency currency;
   final String base;
   final VoidCallback onCancel;
+
+  /// Running calculator expression (e.g. "100 + 50"); empty when none.
+  final String expression;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +53,20 @@ class AmountInputHeader extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 2),
+        SizedBox(
+          height: 16,
+          child: expression.isEmpty
+              ? null
+              : Text(
+                  expression,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTheme.caption.copyWith(
+                    color: colors.muted,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+        ),
         AdaptiveAmountText(
           display: '${currency.symbol} ${amount.isEmpty ? '0' : amount}',
         ),
