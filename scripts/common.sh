@@ -70,6 +70,26 @@ run_adb() {
   run_in_repo "${adb_bin}" "$@"
 }
 
+# Resolve a concrete Android serial. Honors ANDROID_SERIAL when set to a real
+# id; "booted" (the default) auto-detects, preferring an emulator. Prints the
+# resolved serial, or nothing if no device is connected.
+resolve_android_serial() {
+  local requested="${ANDROID_SERIAL:-booted}"
+  if [[ "${requested}" != "booted" ]]; then
+    printf '%s\n' "${requested}"
+    return
+  fi
+
+  local detected
+  detected="$({ run_adb devices | awk '$2 == "device" && $1 ~ /^emulator-/ { print $1; exit }'; } || true)"
+  if [[ -n "${detected}" ]]; then
+    printf '%s\n' "${detected}"
+    return
+  fi
+
+  run_adb devices | awk '$2 == "device" { print $1; exit }' || true
+}
+
 flutter_app_define_args() {
   local provider_profile="${PROVIDER_PROFILE:-release_safe}"
   local app_dev_mode="${APP_DEV_MODE:-false}"

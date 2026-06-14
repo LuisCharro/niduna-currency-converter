@@ -407,6 +407,10 @@ ANDROID_SERIAL=${ANDROID_SERIAL:-booted} \
   ANDROID_PACKAGE_NAME=com.niduna.currency_converter \
   ./.devtools/android_reinstall_build.sh
 
+# Relaunch installed Android app (no rebuild) + manual screenshot
+./.devtools/android_launch.sh
+./.devtools/android_screenshot.sh [name]
+
 # Override emulator to safe release-style providers if needed
 IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} \
   PROVIDER_PROFILE=release_safe \
@@ -482,6 +486,8 @@ For Android device/emulator discovery before install:
 | `sim_wait_ready.sh` | Poll app ready state | `IOS_SIMULATOR_ID` |
 | `sim_reinstall_build.sh` | Build + reinstall + launch updated app | `IOS_SIMULATOR_ID`, `BUNDLE_ID`, `IOS_APP_PATH`, `BUILD_FIRST` |
 | `android_reinstall_build.sh` | Build + reinstall + launch updated app on Android | `ANDROID_SERIAL` (or auto-detect), `ANDROID_PACKAGE_NAME`, `ANDROID_APK_PATH`, `BUILD_FIRST` |
+| `android_launch.sh` | Launch/relaunch installed app (reliable; resolves launcher activity) | `ANDROID_SERIAL`, `ANDROID_PACKAGE_NAME` |
+| `android_screenshot.sh` | Manual screenshot → `.tmp/screens/android/` | `ANDROID_SERIAL` |
 | `list_android_emulators.sh` | List connected devices + available AVDs | (none) |
 | `sim_uninstall.sh` | Uninstall from simulator | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `sim_fresh_install.sh` | Uninstall + fresh run | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
