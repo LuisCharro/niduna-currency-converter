@@ -27,4 +27,15 @@ fi
 
 outfile="${out_dir}/${name}-${timestamp}.png"
 xcrun simctl io "${resolved}" screenshot "${outfile}"
+
+# MAX_DIM=N downscales the long side (a device screenshot can exceed some
+# image-viewer limits). Mirrors android_screenshot.sh. Requires sips (macOS).
+if [[ -n "${MAX_DIM:-}" ]]; then
+  if command -v sips >/dev/null 2>&1; then
+    sips -Z "${MAX_DIM}" "${outfile}" >/dev/null 2>&1
+  else
+    echo "MAX_DIM set but sips not found; leaving full size" >&2
+  fi
+fi
+
 echo "${outfile}"

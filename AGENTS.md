@@ -481,7 +481,7 @@ For Android device/emulator discovery before install:
 | `run_ios_simulator_app.sh` | Launch app non-blocking | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `run_ios_minimal_smoke.sh` | Run smoke test | `IOS_SIMULATOR_ID` |
 | `capture_ios_screens.sh` | Integration-test screenshots | `IOS_SIMULATOR_ID`, `SCREEN_OUTPUT_DIR`, `IOS_BUNDLE_ID` |
-| `sim_screenshot.sh` | Manual screenshot | `IOS_SIMULATOR_ID` |
+| `sim_screenshot.sh` | Manual screenshot; `MAX_DIM=N` downscales the long side for readability | `IOS_SIMULATOR_ID`, `MAX_DIM` |
 | `sim_tap.sh` | Tap coordinates (UNRELIABLE — uses real mouse) | `IOS_SIMULATOR_ID` |
 | `sim_wait_ready.sh` | Poll app ready state | `IOS_SIMULATOR_ID` |
 | `sim_reinstall_build.sh` | Build + reinstall + launch updated app | `IOS_SIMULATOR_ID`, `BUNDLE_ID`, `IOS_APP_PATH`, `BUILD_FIRST` |
