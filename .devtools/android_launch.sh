@@ -30,5 +30,21 @@ if [[ -z "${activity}" || "${activity}" != *"/"* ]]; then
   exit 1
 fi
 
-run_adb -s "${serial}" shell am start -n "${activity}" >/dev/null
-echo "Launched ${activity} on ${serial}"
+is_foreground() {
+  run_adb -s "${serial}" shell dumpsys activity activities 2>/dev/null \
+    | grep -m1 -E 'mResumedActivity|ResumedActivity' \
+    | grep -q "${package_name}"
+}
+
+# Launch, then retry a couple of times — right after a reinstall the Play
+# Protect "Checking info…" overlay can swallow the first launch.
+for attempt in 1 2 3; do
+  run_adb -s "${serial}" shell am start -n "${activity}" >/dev/null 2>&1
+  sleep 2
+  if is_foreground; then
+    echo "Launched ${activity} on ${serial} (attempt ${attempt})"
+    exit 0
+  fi
+done
+
+echo "Launched ${activity} on ${serial} (not confirmed foreground)" >&2

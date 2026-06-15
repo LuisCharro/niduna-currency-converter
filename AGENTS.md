@@ -486,8 +486,8 @@ For Android device/emulator discovery before install:
 | `sim_wait_ready.sh` | Poll app ready state | `IOS_SIMULATOR_ID` |
 | `sim_reinstall_build.sh` | Build + reinstall + launch updated app | `IOS_SIMULATOR_ID`, `BUNDLE_ID`, `IOS_APP_PATH`, `BUILD_FIRST` |
 | `android_reinstall_build.sh` | Build + reinstall + launch updated app on Android | `ANDROID_SERIAL` (or auto-detect), `ANDROID_PACKAGE_NAME`, `ANDROID_APK_PATH`, `BUILD_FIRST` |
-| `android_launch.sh` | Launch/relaunch installed app (reliable; resolves launcher activity) | `ANDROID_SERIAL`, `ANDROID_PACKAGE_NAME` |
-| `android_screenshot.sh` | Manual screenshot → `.tmp/screens/android/` | `ANDROID_SERIAL` |
+| `android_launch.sh` | Launch/relaunch installed app; resolves launcher activity and retries until the app is foreground (survives the post-reinstall Play Protect overlay) | `ANDROID_SERIAL`, `ANDROID_PACKAGE_NAME` |
+| `android_screenshot.sh` | Manual screenshot → `.tmp/screens/android/`; `MAX_DIM=N` downscales the long side (a 1080x2400 capture exceeds some viewers — `MAX_DIM=1400` keeps it readable) | `ANDROID_SERIAL`, `MAX_DIM` |
 | `list_android_emulators.sh` | List connected devices + available AVDs | (none) |
 | `sim_uninstall.sh` | Uninstall from simulator | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `sim_fresh_install.sh` | Uninstall + fresh run | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |

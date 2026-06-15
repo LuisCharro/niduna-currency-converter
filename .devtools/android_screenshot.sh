@@ -6,6 +6,10 @@
 #
 # Usage:   ./.devtools/android_screenshot.sh [name]
 # Env:     ANDROID_SERIAL (default: booted -> auto-detect, prefers emulator)
+#          MAX_DIM        (optional) downscale so the longest side is <= this
+#                         many px (e.g. MAX_DIM=1400). A Pixel screenshot is
+#                         1080x2400; capping the long side keeps it under
+#                         image-viewer limits. Requires `sips` (macOS).
 
 set -euo pipefail
 
@@ -26,4 +30,13 @@ mkdir -p "${out_dir}"
 outfile="${out_dir}/${name}-${timestamp}.png"
 
 run_adb -s "${serial}" exec-out screencap -p > "${outfile}"
+
+if [[ -n "${MAX_DIM:-}" ]]; then
+  if command -v sips >/dev/null 2>&1; then
+    sips -Z "${MAX_DIM}" "${outfile}" >/dev/null 2>&1
+  else
+    echo "MAX_DIM set but sips not found; leaving full size" >&2
+  fi
+fi
+
 echo "${outfile}"
