@@ -1,3 +1,4 @@
+import 'trend.dart';
 import 'trend_direction.dart';
 
 class CurrencyQuote {
@@ -21,15 +22,7 @@ class CurrencyQuote {
   final bool favorite;
   final double? previousRate;
 
-  TrendDirection? get trend {
-    if (previousRate == null) return null;
-    if (rate > previousRate!) return TrendDirection.up;
-    if (rate < previousRate!) return TrendDirection.down;
-    return TrendDirection.flat;
-  }
+  TrendDirection? get trend => trendDirectionFor(rate, previousRate);
 
-  double? get changePercent {
-    if (previousRate == null || previousRate == 0) return null;
-    return ((rate - previousRate!) / previousRate!) * 100;
-  }
+  double? get changePercent => changePercentFor(rate, previousRate);
 }

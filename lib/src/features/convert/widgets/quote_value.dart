@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../models/currency_quote.dart';
-import '../models/trend_direction.dart';
+import '../models/trend.dart';
 import 'trend_badge.dart';
 
 class QuoteValue extends StatelessWidget {
@@ -16,10 +16,7 @@ class QuoteValue extends StatelessWidget {
     // Hide the badge when there is no meaningful move: a flat trend, or a
     // change that rounds to 0.00% (e.g. on weekends when ECB/Frankfurter
     // returns the same prior business day for both today and yesterday).
-    final pct = quote.changePercent;
-    final showTrend = quote.trend != null &&
-        quote.trend != TrendDirection.flat &&
-        (pct == null || pct.abs() >= 0.005);
+    final showTrend = shouldShowTrend(quote.trend, quote.changePercent);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,

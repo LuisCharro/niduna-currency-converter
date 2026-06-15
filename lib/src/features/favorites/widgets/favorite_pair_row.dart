@@ -6,6 +6,8 @@ import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../convert/domain/latest_rates_snapshot.dart';
+import '../../convert/models/trend.dart';
+import '../../convert/widgets/trend_badge.dart';
 import '../domain/favorite_pair.dart';
 import '../domain/favorite_pair_rate.dart';
 import 'favorite_pair_identity.dart';
@@ -32,6 +34,11 @@ class FavoritePairRow extends StatelessWidget {
     final colors = AppColors.of(context);
     final loc = l10n(context);
     final rate = rateForFavoritePair(pair: pair, snapshot: snapshot);
+    final previousRate =
+        previousRateForFavoritePair(pair: pair, snapshot: snapshot);
+    final trend = trendDirectionFor(rate, previousRate);
+    final changePercent = changePercentFor(rate, previousRate);
+    final showTrend = shouldShowTrend(trend, changePercent);
     final pairLabel = '${pair.base} → ${pair.quote}';
     final directRateLine = _directRateLine(rate);
     return Padding(
@@ -97,6 +104,10 @@ class FavoritePairRow extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
+                      if (showTrend) ...<Widget>[
+                        TrendBadge(trend: trend!, changePercent: changePercent),
+                        const SizedBox(width: 8),
+                      ],
                       FavoriteRateText(rate: rate),
                     ],
                   ),

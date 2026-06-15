@@ -5,6 +5,8 @@ import 'package:currency_converter/src/features/favorites/data/favorites_store.d
 import 'package:currency_converter/src/features/favorites/domain/favorite_pair.dart';
 import 'package:currency_converter/src/features/favorites/domain/favorite_pair_rate.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
+import 'package:currency_converter/src/features/convert/models/trend.dart';
+import 'package:currency_converter/src/features/convert/models/trend_direction.dart';
 
 void main() {
   group('FavoritePair', () {
@@ -279,16 +281,76 @@ void main() {
       expect(rate, isNull);
     });
   });
+
+  group('previousRateForFavoritePair + trend', () {
+    test('reads the previous rate with the same cross-rate math', () {
+      final prev = previousRateForFavoritePair(
+        pair: const FavoritePair(base: 'EUR', quote: 'USD'),
+        snapshot: _snapshot(
+          base: 'USD',
+          rates: const <String, double>{'EUR': .8},
+          previousRates: const <String, double>{'EUR': .8},
+        ),
+      );
+      // inverse of 0.8 == 1.25
+      expect(prev, 1.25);
+    });
+
+    test('returns null when no previous rates present', () {
+      final prev = previousRateForFavoritePair(
+        pair: const FavoritePair(base: 'USD', quote: 'EUR'),
+        snapshot: _snapshot(
+          base: 'USD',
+          rates: const <String, double>{'EUR': .92},
+        ),
+      );
+      expect(prev, isNull);
+    });
+
+    test('shows an up trend when the rate rose', () {
+      const pair = FavoritePair(base: 'USD', quote: 'EUR');
+      final snapshot = _snapshot(
+        base: 'USD',
+        rates: const <String, double>{'EUR': .92},
+        previousRates: const <String, double>{'EUR': .90},
+      );
+      final rate = rateForFavoritePair(pair: pair, snapshot: snapshot);
+      final prev = previousRateForFavoritePair(pair: pair, snapshot: snapshot);
+      final trend = trendDirectionFor(rate, prev);
+
+      expect(trend, TrendDirection.up);
+      expect(shouldShowTrend(trend, changePercentFor(rate, prev)), isTrue);
+    });
+
+    test('hides the trend when the change rounds to 0.00%', () {
+      const pair = FavoritePair(base: 'USD', quote: 'EUR');
+      final snapshot = _snapshot(
+        base: 'USD',
+        rates: const <String, double>{'EUR': .920001},
+        previousRates: const <String, double>{'EUR': .920000},
+      );
+      final rate = rateForFavoritePair(pair: pair, snapshot: snapshot);
+      final prev = previousRateForFavoritePair(pair: pair, snapshot: snapshot);
+
+      expect(
+        shouldShowTrend(trendDirectionFor(rate, prev),
+            changePercentFor(rate, prev)),
+        isFalse,
+      );
+    });
+  });
 }
 
 LatestRatesSnapshot _snapshot({
   required String base,
   required Map<String, double> rates,
+  Map<String, double>? previousRates,
 }) {
   return LatestRatesSnapshot(
     base: base,
     date: DateTime(2026, 5, 8),
     savedAt: DateTime(2026, 5, 8, 9),
     rates: rates,
+    previousRates: previousRates,
   );
 }
