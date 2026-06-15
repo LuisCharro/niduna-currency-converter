@@ -18,6 +18,7 @@ class FavoritesList extends StatelessWidget {
     required this.snapshot,
     required this.onOpen,
     required this.onRemove,
+    required this.onReorder,
     required this.onAdd,
     required this.onWatchAd,
     required this.onBuyPro,
@@ -32,6 +33,7 @@ class FavoritesList extends StatelessWidget {
   final LatestRatesSnapshot? snapshot;
   final ValueChanged<FavoritePair> onOpen;
   final ValueChanged<FavoritePair> onRemove;
+  final void Function(int oldIndex, int newIndex) onReorder;
   final VoidCallback onAdd;
   final VoidCallback onWatchAd;
   final VoidCallback onBuyPro;
@@ -53,14 +55,24 @@ class FavoritesList extends StatelessWidget {
           onAdd: onAdd,
         ),
         const SizedBox(height: AppTheme.space3),
-        for (var index = 0; index < visiblePairs.length; index++)
-          FavoritePairRow(
-            pair: visiblePairs[index],
-            snapshot: snapshot,
-            showDivider: index != visiblePairs.length - 1 || hiddenCount > 0,
-            onOpen: () => onOpen(visiblePairs[index]),
-            onRemove: () => onRemove(visiblePairs[index]),
-          ),
+        ReorderableListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          buildDefaultDragHandles: false,
+          onReorder: onReorder,
+          children: <Widget>[
+            for (var index = 0; index < visiblePairs.length; index++)
+              FavoritePairRow(
+                key: ValueKey<String>(visiblePairs[index].toKey()),
+                pair: visiblePairs[index],
+                index: index,
+                snapshot: snapshot,
+                showDivider: index != visiblePairs.length - 1 || hiddenCount > 0,
+                onOpen: () => onOpen(visiblePairs[index]),
+                onRemove: () => onRemove(visiblePairs[index]),
+              ),
+          ],
+        ),
         if (hiddenCount > 0) ...<Widget>[
           const SizedBox(height: AppTheme.space5),
           FavoritesHiddenNote(

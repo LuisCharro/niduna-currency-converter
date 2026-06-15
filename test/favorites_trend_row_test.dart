@@ -29,6 +29,7 @@ void main() {
         home: Scaffold(
           body: FavoritePairRow(
             pair: const FavoritePair(base: 'USD', quote: 'EUR'),
+            index: 0,
             snapshot: snap,
             showDivider: false,
             onOpen: () {},

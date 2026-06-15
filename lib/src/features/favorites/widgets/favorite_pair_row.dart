@@ -16,6 +16,7 @@ import 'favorite_rate_text.dart';
 class FavoritePairRow extends StatelessWidget {
   const FavoritePairRow({
     required this.pair,
+    required this.index,
     required this.snapshot,
     required this.showDivider,
     required this.onOpen,
@@ -24,6 +25,7 @@ class FavoritePairRow extends StatelessWidget {
   });
 
   final FavoritePair pair;
+  final int index;
   final LatestRatesSnapshot? snapshot;
   final bool showDivider;
   final VoidCallback onOpen;
@@ -84,6 +86,18 @@ class FavoritePairRow extends StatelessWidget {
                           constraints: const BoxConstraints(
                             minWidth: 40,
                             minHeight: 40,
+                          ),
+                        ),
+                      ),
+                      ReorderableDragStartListener(
+                        index: index,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: Icon(
+                            Icons.drag_handle,
+                            size: 22,
+                            color: colors.muted,
+                            semanticLabel: 'Reorder',
                           ),
                         ),
                       ),

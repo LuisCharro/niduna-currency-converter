@@ -19,6 +19,7 @@ class FavoritesTabBody extends StatelessWidget {
     required this.snapshot,
     required this.onOpen,
     required this.onRemove,
+    required this.onReorder,
     required this.onAdd,
     required this.onWatchAd,
     required this.onBuyPro,
@@ -34,6 +35,7 @@ class FavoritesTabBody extends StatelessWidget {
   final LatestRatesSnapshot? snapshot;
   final ValueChanged<FavoritePair> onOpen;
   final ValueChanged<FavoritePair> onRemove;
+  final void Function(int oldIndex, int newIndex) onReorder;
   final VoidCallback onAdd;
   final VoidCallback onWatchAd;
   final VoidCallback onBuyPro;
@@ -61,6 +63,7 @@ class FavoritesTabBody extends StatelessWidget {
             snapshot: snapshot,
             onOpen: onOpen,
             onRemove: onRemove,
+            onReorder: onReorder,
             onAdd: onAdd,
             onWatchAd: onWatchAd,
             onBuyPro: onBuyPro,
