@@ -5,6 +5,18 @@ import SwiftUI
 private enum AppGroup {
   static let id = "group.com.niduna.currencyConverter"
   static let store = UserDefaults(suiteName: id)
+
+  // Reads the shared defaults plist straight from the App Group container.
+  // UserDefaults(suiteName:) does not reliably surface another process's
+  // app-group writes on the iOS Simulator (cfprefsd serves a stale, empty
+  // cache), so the widget reads the backing plist file directly. This is the
+  // source of truth; `store` is only a fallback.
+  static func sharedDict() -> [String: Any] {
+    guard let url = FileManager.default
+      .containerURL(forSecurityApplicationGroupIdentifier: id) else { return [:] }
+    let plistURL = url.appendingPathComponent("Library/Preferences/\(id).plist")
+    return (NSDictionary(contentsOf: plistURL) as? [String: Any]) ?? [:]
+  }
 }
 
 // Niduna palette (see DESIGN.md).
@@ -51,33 +63,48 @@ struct NidunaProvider: TimelineProvider {
   }
 
   func getTimeline(in context: Context, completion: @escaping (Timeline<NidunaEntry>) -> Void) {
-    // The app pokes WidgetCenter on every data push; also self-refresh in 4h.
-    let next = Date().addingTimeInterval(4 * 60 * 60)
-    completion(Timeline(entries: [readEntry()], policy: .after(next)))
+    let entry = readEntry()
+    // The app pokes WidgetCenter on every data push. If we read no data yet
+    // (the app just wrote it and the shared file hasn't been flushed to disk),
+    // ask for a refresh soon so the widget self-heals; otherwise refresh in 4h.
+    let next = entry.pairs.isEmpty
+      ? Date().addingTimeInterval(60)
+      : Date().addingTimeInterval(4 * 60 * 60)
+    completion(Timeline(entries: [entry], policy: .after(next)))
   }
 
   private func readEntry() -> NidunaEntry {
+    let shared = AppGroup.sharedDict()
     let store = AppGroup.store
+
+    func str(_ key: String) -> String {
+      (shared[key] as? String) ?? store?.string(forKey: key) ?? ""
+    }
+    func flag(_ key: String) -> Bool {
+      if let b = shared[key] as? Bool { return b }
+      return store?.bool(forKey: key) ?? false
+    }
+
     var pairs: [NidunaPair] = []
     for i in 0..<3 {
       let prefix = "pair_\(i)_"
-      let visible = store?.bool(forKey: "\(prefix)visible") ?? false
-      let value = store?.string(forKey: "\(prefix)value") ?? ""
-      guard visible, !value.isEmpty else { continue }
+      let value = str("\(prefix)value")
+      guard flag("\(prefix)visible"), !value.isEmpty else { continue }
+      let trend = str("\(prefix)trend")
       pairs.append(
         NidunaPair(
-          code: store?.string(forKey: "\(prefix)code") ?? "",
-          symbol: store?.string(forKey: "\(prefix)symbol") ?? "",
+          code: str("\(prefix)code"),
+          symbol: str("\(prefix)symbol"),
           value: value,
-          trend: store?.string(forKey: "\(prefix)trend") ?? "none",
-          change: store?.string(forKey: "\(prefix)change") ?? ""
+          trend: trend.isEmpty ? "none" : trend,
+          change: str("\(prefix)change")
         )
       )
     }
     return NidunaEntry(
       date: Date(),
-      amountLabel: store?.string(forKey: "amountLabel") ?? "",
-      updatedLabel: store?.string(forKey: "updatedLabel") ?? "",
+      amountLabel: str("amountLabel"),
+      updatedLabel: str("updatedLabel"),
       pairs: pairs
     )
   }

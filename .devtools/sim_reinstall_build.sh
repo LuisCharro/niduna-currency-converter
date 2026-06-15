@@ -70,6 +70,10 @@ main() {
     exit 1
   fi
 
+  # Embed App Group entitlements into the unsigned simulator products so the
+  # widget extension can read the shared container (see sign_sim_widget.sh).
+  "${repo_root}/.devtools/sign_sim_widget.sh" "${repo_root}/${app_path}" || true
+
   echo "Reinstalling ${bundle_id} on ${resolved_simulator_id}..."
   xcrun simctl terminate "${resolved_simulator_id}" "${bundle_id}" >/dev/null 2>&1 || true
   xcrun simctl uninstall "${resolved_simulator_id}" "${bundle_id}" >/dev/null 2>&1 || true

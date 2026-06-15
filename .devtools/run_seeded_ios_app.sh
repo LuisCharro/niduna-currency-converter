@@ -55,6 +55,9 @@ main() {
   echo "Installing debug app on ${resolved_simulator_id}..."
   xcrun simctl terminate "${resolved_simulator_id}" "${bundle_id}" >/dev/null 2>&1 || true
   run_flutter build ios --simulator --debug --target lib/main.dart "${flutter_args[@]}"
+  # Embed App Group entitlements into the unsigned simulator products so the
+  # widget extension can read the shared container (see sign_sim_widget.sh).
+  "${repo_root}/.devtools/sign_sim_widget.sh"
   run_flutter install -d "${resolved_simulator_id}" --debug
 
   echo "Seeding ${seed_days}-day sample dataset..."
