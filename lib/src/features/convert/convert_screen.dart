@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../core/monetization/monetization_controller.dart';
+import '../../core/share/share_rate_card.dart';
 import '../../shared/widgets/bottom_tab_frame.dart';
 import '../../shared/widgets/canvas_background.dart';
 import 'presentation/convert_controller.dart';
+import 'presentation/rate_card_data_mapper.dart';
 import 'widgets/ad_support_shelf.dart';
 import 'widgets/convert_content.dart';
 
@@ -38,6 +40,13 @@ class ConvertScreen extends StatelessWidget {
                 onToggleFavorite: controller.tryToggleFavorite,
                 onPairOpened: controller.recordPairUsage,
                 onMore: onNavigateToSettings,
+                onShare: () {
+                  if (!controller.state.hasQuotes) return;
+                  shareRateCard(
+                    context,
+                    rateCardDataFromState(controller.state),
+                  );
+                },
                 maxFavoritesReached: controller.maxFavoritesReached,
               ),
             ),

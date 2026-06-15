@@ -69,6 +69,7 @@ void main() {
               onToggleFavorite: controller.tryToggleFavorite,
               onPairOpened: controller.recordPairUsage,
               onMore: () {},
+              onShare: () {},
             ),
           ),
         ),

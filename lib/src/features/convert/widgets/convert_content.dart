@@ -17,6 +17,7 @@ class ConvertContent extends StatefulWidget {
     required this.onToggleFavorite,
     required this.onPairOpened,
     required this.onMore,
+    required this.onShare,
     this.maxFavoritesReached = false,
     super.key,
   });
@@ -29,6 +30,7 @@ class ConvertContent extends StatefulWidget {
   final Future<bool> Function(String code) onToggleFavorite;
   final ValueChanged<String> onPairOpened;
   final VoidCallback onMore;
+  final VoidCallback onShare;
   final bool maxFavoritesReached;
 
   @override
@@ -48,6 +50,7 @@ class _ConvertContentState extends State<ConvertContent> {
           amountText: widget.state.amountText,
           base: widget.state.base,
           onRefresh: widget.onRefresh,
+          onShare: widget.onShare,
           onMore: widget.onMore,
           onAmountChanged: widget.onAmountChanged,
           onBaseTap: () => _openPicker(context, selectBaseMode: true),

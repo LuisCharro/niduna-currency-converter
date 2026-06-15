@@ -17,6 +17,7 @@ class AmountPanel extends StatelessWidget {
     required this.amountText,
     required this.base,
     required this.onRefresh,
+    required this.onShare,
     required this.onMore,
     required this.onAmountChanged,
     required this.onBaseTap,
@@ -30,6 +31,7 @@ class AmountPanel extends StatelessWidget {
   final String amountText;
   final String base;
   final Future<void> Function() onRefresh;
+  final VoidCallback onShare;
   final VoidCallback onMore;
   final ValueChanged<String> onAmountChanged;
   final VoidCallback onBaseTap;
@@ -44,7 +46,7 @@ class AmountPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          AmountHeaderRow(onRefresh: () => onRefresh(), onMore: onMore),
+          AmountHeaderRow(onRefresh: () => onRefresh(), onShare: onShare, onMore: onMore),
           const SizedBox(height: AppTheme.space3),
           InstrumentPanel(
             padding: const EdgeInsets.fromLTRB(

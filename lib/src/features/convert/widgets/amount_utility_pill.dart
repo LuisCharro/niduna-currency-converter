@@ -6,11 +6,13 @@ import '../../../core/theme/app_theme.dart';
 class AmountUtilityPill extends StatelessWidget {
   const AmountUtilityPill({
     required this.onRefresh,
+    required this.onShare,
     required this.onMore,
     super.key,
   });
 
   final VoidCallback onRefresh;
+  final VoidCallback onShare;
   final VoidCallback onMore;
 
   @override
@@ -30,6 +32,20 @@ class AmountUtilityPill extends StatelessWidget {
             tooltip: 'Refresh rates',
             icon: Icons.sync_rounded,
             onPressed: onRefresh,
+          ),
+          SizedBox(
+            height: 20,
+            child: VerticalDivider(
+              width: 1,
+              thickness: 1,
+              color: colors.border.withValues(alpha: .1),
+            ),
+          ),
+          _UtilityIconButton(
+            key: const Key('convert_share'),
+            tooltip: 'Share rates',
+            icon: Icons.ios_share_rounded,
+            onPressed: onShare,
           ),
           SizedBox(
             height: 20,

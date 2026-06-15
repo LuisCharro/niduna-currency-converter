@@ -8,11 +8,13 @@ import 'amount_utility_pill.dart';
 class AmountHeaderRow extends StatelessWidget {
   const AmountHeaderRow({
     required this.onRefresh,
+    required this.onShare,
     required this.onMore,
     super.key,
   });
 
   final VoidCallback onRefresh;
+  final VoidCallback onShare;
   final VoidCallback onMore;
 
   @override
@@ -21,7 +23,7 @@ class AmountHeaderRow extends StatelessWidget {
       children: <Widget>[
         ScreenTitle(convertHeaderLabel(context)),
         const Spacer(),
-        AmountUtilityPill(onRefresh: onRefresh, onMore: onMore),
+        AmountUtilityPill(onRefresh: onRefresh, onShare: onShare, onMore: onMore),
       ],
     );
   }
