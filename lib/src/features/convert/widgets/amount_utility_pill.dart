@@ -12,7 +12,7 @@ class AmountUtilityPill extends StatelessWidget {
   });
 
   final VoidCallback onRefresh;
-  final VoidCallback onShare;
+  final VoidCallback? onShare;
   final VoidCallback onMore;
 
   @override
@@ -76,7 +76,7 @@ class _UtilityIconButton extends StatelessWidget {
 
   final String tooltip;
   final IconData icon;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

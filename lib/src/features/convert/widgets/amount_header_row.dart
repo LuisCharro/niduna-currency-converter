@@ -14,7 +14,7 @@ class AmountHeaderRow extends StatelessWidget {
   });
 
   final VoidCallback onRefresh;
-  final VoidCallback onShare;
+  final VoidCallback? onShare;
   final VoidCallback onMore;
 
   @override

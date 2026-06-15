@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../core/monetization/monetization_controller.dart';
@@ -40,13 +42,14 @@ class ConvertScreen extends StatelessWidget {
                 onToggleFavorite: controller.tryToggleFavorite,
                 onPairOpened: controller.recordPairUsage,
                 onMore: onNavigateToSettings,
-                onShare: () {
-                  if (!controller.state.hasQuotes) return;
-                  shareRateCard(
-                    context,
-                    rateCardDataFromState(controller.state),
-                  );
-                },
+                onShare: controller.state.hasQuotes
+                    ? () => unawaited(
+                          shareRateCard(
+                            context,
+                            rateCardDataFromState(controller.state),
+                          ),
+                        )
+                    : null,
                 maxFavoritesReached: controller.maxFavoritesReached,
               ),
             ),

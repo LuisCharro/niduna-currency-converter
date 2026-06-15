@@ -31,7 +31,7 @@ class AmountPanel extends StatelessWidget {
   final String amountText;
   final String base;
   final Future<void> Function() onRefresh;
-  final VoidCallback onShare;
+  final VoidCallback? onShare;
   final VoidCallback onMore;
   final ValueChanged<String> onAmountChanged;
   final VoidCallback onBaseTap;

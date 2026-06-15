@@ -37,6 +37,7 @@ class RateCardRow extends StatelessWidget {
               fontSize: 15,
               fontWeight: FontWeight.w800,
               color: colors.text,
+              fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
             ),
           ),
         ],

@@ -30,7 +30,7 @@ class ConvertContent extends StatefulWidget {
   final Future<bool> Function(String code) onToggleFavorite;
   final ValueChanged<String> onPairOpened;
   final VoidCallback onMore;
-  final VoidCallback onShare;
+  final VoidCallback? onShare;
   final bool maxFavoritesReached;
 
   @override

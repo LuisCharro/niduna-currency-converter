@@ -37,7 +37,9 @@ Future<void> shareRateCard(BuildContext context, RateCardData data) async {
     }
 
     final dir = await getTemporaryDirectory();
-    final file = File('${dir.path}/niduna-rates.png');
+    final file = File(
+      '${dir.path}/niduna-rates-${DateTime.now().millisecondsSinceEpoch}.png',
+    );
     await file.writeAsBytes(bytes);
 
     await SharePlus.instance.share(
