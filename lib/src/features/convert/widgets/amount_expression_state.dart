@@ -27,9 +27,8 @@ mixin AmountExpressionState<T extends StatefulWidget> on State<T> {
 
   String _prettyToken(String token) => switch (token) {
         '*' => '×',
-        '/' => '÷',
         '-' => '−',
-        _ => token,
+        _ => token, // '/' and '+' display as-is
       };
 
   /// Append [op] after the current [amount]. [onCleared] should reset the

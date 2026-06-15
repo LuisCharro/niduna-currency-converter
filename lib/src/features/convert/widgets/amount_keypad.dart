@@ -30,10 +30,13 @@ class AmountKeypad extends StatelessWidget {
           child: Row(
             children: <Widget>[
               AmountOpKey(label: '+', onTap: () => onOperator!('+')),
+              const SizedBox(width: 10),
               AmountOpKey(label: '−', onTap: () => onOperator!('-')),
+              const SizedBox(width: 10),
               AmountOpKey(label: '×', onTap: () => onOperator!('*')),
-              AmountOpKey(label: '÷', onTap: () => onOperator!('/')),
-              const Spacer(),
+              const SizedBox(width: 10),
+              AmountOpKey(label: '/', onTap: () => onOperator!('/')),
+              const SizedBox(width: 10),
               AmountOpKey(label: '=', onTap: onEquals!, bgColor: true),
             ],
           ),
