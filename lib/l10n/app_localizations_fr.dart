@@ -96,6 +96,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get removeFavoriteTooltip => 'Retirer le favori';
 
   @override
+  String get reorderFavoriteTooltip => 'Réorganiser le favori';
+
+  @override
   String get openFavoriteTooltip => 'Ouvrir la paire dans Convertir';
 
   @override

@@ -91,13 +91,14 @@ class FavoritePairRow extends StatelessWidget {
                       ),
                       ReorderableDragStartListener(
                         index: index,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 2),
+                        child: SizedBox(
+                          width: 40,
+                          height: 40,
                           child: Icon(
                             Icons.drag_handle,
                             size: 22,
                             color: colors.muted,
-                            semanticLabel: 'Reorder',
+                            semanticLabel: loc.reorderFavoriteTooltip,
                           ),
                         ),
                       ),

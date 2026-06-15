@@ -272,6 +272,12 @@ abstract class AppLocalizations {
   /// **'Remove favorite'**
   String get removeFavoriteTooltip;
 
+  /// No description provided for @reorderFavoriteTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder favorite'**
+  String get reorderFavoriteTooltip;
+
   /// No description provided for @openFavoriteTooltip.
   ///
   /// In en, this message translates to:
