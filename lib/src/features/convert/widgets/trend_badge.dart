@@ -31,24 +31,34 @@ class TrendBadge extends StatelessWidget {
         ? '${changePercent!.abs().toStringAsFixed(2)}%'
         : null;
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Icon(icon, size: 15, color: color),
-        if (label != null)
-          Padding(
-            padding: const EdgeInsets.only(left: 1),
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 11.5,
-                fontWeight: FontWeight.bold,
-                color: color,
-                letterSpacing: -0.1,
+    // Render as a subtle tinted pill so the small arrow + percent read as one
+    // legible unit instead of a tiny stray glyph. Tint is derived from the
+    // trend colour, so it adapts to light/dark automatically.
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: label != null ? 7 : 5, vertical: 2.5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: .12),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Icon(icon, size: 14, color: color),
+          if (label != null)
+            Padding(
+              padding: const EdgeInsets.only(left: 2),
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                  letterSpacing: -0.1,
+                ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }

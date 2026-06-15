@@ -63,6 +63,7 @@ void pushHomeWidgetData(
 
   final pairs = <WidgetPair>[];
 
+  // Use the user's manual favorite order for the home widget rows.
   final favQuotes = favoritesStore != null
       ? favoritesStore.pairs
             .where((p) => p.base == base)

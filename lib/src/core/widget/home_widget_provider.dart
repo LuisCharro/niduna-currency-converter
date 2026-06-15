@@ -6,6 +6,11 @@ class HomeWidgetProvider {
   static const _androidWidgetName =
       'com.niduna.currency_converter.widget.NidunaAppWidgetProvider';
 
+  // Must equal the Swift `Widget.kind` in
+  // ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift so WidgetKit reloads
+  // the timeline when fresh data is pushed. Ignored on Android.
+  static const _iosWidgetName = 'NidunaCurrencyWidget';
+
   Future<void> pushData(HomeWidgetData data) async {
     try {
       final futures = <Future<bool?>>[
@@ -34,6 +39,7 @@ class HomeWidgetProvider {
       await HomeWidget.updateWidget(
         androidName: _androidWidgetName,
         qualifiedAndroidName: _androidWidgetName,
+        iOSName: _iosWidgetName,
       );
     } on MissingPluginException catch (_) {}
   }

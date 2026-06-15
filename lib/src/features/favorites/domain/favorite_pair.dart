@@ -2,14 +2,10 @@ class FavoritePair {
   const FavoritePair({
     required this.base,
     required this.quote,
-    this.useCount = 0,
-    this.lastUsedAt,
   });
 
   final String base;
   final String quote;
-  final int useCount;
-  final DateTime? lastUsedAt;
 
   factory FavoritePair.fromKey(String key) {
     final parts = key.split('-');
@@ -20,19 +16,6 @@ class FavoritePair {
   }
 
   String toKey() => '$base-$quote';
-
-  FavoritePair copyWith({
-    String? base,
-    String? quote,
-    int? useCount,
-    DateTime? lastUsedAt,
-  }) =>
-      FavoritePair(
-        base: base ?? this.base,
-        quote: quote ?? this.quote,
-        useCount: useCount ?? this.useCount,
-        lastUsedAt: lastUsedAt ?? this.lastUsedAt,
-      );
 
   @override
   bool operator ==(Object other) =>

@@ -116,16 +116,6 @@ class ConvertController extends ChangeNotifier {
     await _favoritesStore?.remove(pair.base, pair.quote);
   }
 
-  /// Records that the current base / [quote] pair was actively used (e.g. the
-  /// conversion lens was opened on its row). Only tracked when the pair is a
-  /// favorite, so the Favorites tab ranking reflects real conversions and the
-  /// usage store does not accumulate entries for non-favorite currencies.
-  Future<void> recordPairUsage(String quote) async {
-    final store = _favoritesStore;
-    if (store == null || !store.isFavorite(_base, quote)) return;
-    await store.recordUsage(_base, quote);
-  }
-
   Future<void> openFavoritePair(FavoritePair pair) async {
     if (pair.base != _base) {
       await setBase(pair.base);
