@@ -74,7 +74,10 @@ extension ConvertControllerLoading on ConvertController {
 
   Future<void> _enrichWithYesterdayRates(LatestRatesSnapshot today) async {
     try {
-      final previousRates = await _repository.fetchYesterdayRates(today.base);
+      final previousRates = await _repository.fetchPreviousRates(
+        today.base,
+        referenceDate: today.date,
+      );
       if (previousRates == null || _disposed) return;
       if (_snapshot != today) return;
       final enriched = LatestRatesSnapshot(

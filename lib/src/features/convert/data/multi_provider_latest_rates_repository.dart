@@ -138,8 +138,10 @@ class MultiProviderLatestRatesRepository implements ConvertRatesRepository {
   }
 
   @override
-  Future<Map<String, double>?> fetchYesterdayRates(String base) =>
-      _fiatClient.fetchYesterdayRates(base);
+  Future<Map<String, double>?> fetchPreviousRates(
+    String base, {
+    DateTime? referenceDate,
+  }) => _fiatClient.fetchPreviousRates(base, referenceDate: referenceDate);
 
   bool _hasAllCryptoRates(LatestRatesSnapshot snapshot) {
     for (final currency in supportedCryptoCurrencies) {

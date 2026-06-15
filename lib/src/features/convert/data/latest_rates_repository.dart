@@ -5,7 +5,10 @@ import 'latest_rates_cache.dart';
 abstract class ConvertRatesRepository {
   Future<LatestRatesSnapshot?> readCached(String base);
   Future<LatestRatesSnapshot> fetchLatest(String base);
-  Future<Map<String, double>?> fetchYesterdayRates(String base);
+  Future<Map<String, double>?> fetchPreviousRates(
+    String base, {
+    DateTime? referenceDate,
+  });
 }
 
 class LatestRatesRepository implements ConvertRatesRepository {
@@ -29,6 +32,8 @@ class LatestRatesRepository implements ConvertRatesRepository {
   }
 
   @override
-  Future<Map<String, double>?> fetchYesterdayRates(String base) =>
-      _client.fetchYesterdayRates(base);
+  Future<Map<String, double>?> fetchPreviousRates(
+    String base, {
+    DateTime? referenceDate,
+  }) => _client.fetchPreviousRates(base, referenceDate: referenceDate);
 }

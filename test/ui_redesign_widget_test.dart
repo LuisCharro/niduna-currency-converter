@@ -214,7 +214,7 @@ class _FakeRatesRepository implements ConvertRatesRepository {
   Future<LatestRatesSnapshot> fetchLatest(String base) async => fresh;
 
   @override
-  Future<Map<String, double>?> fetchYesterdayRates(String base) async => null;
+  Future<Map<String, double>?> fetchPreviousRates(String base, {DateTime? referenceDate}) async => null;
 }
 
 class _FailingRatesClient implements RatesClient {

@@ -270,6 +270,35 @@ void main() {
     expect(snapshot.date, DateTime(2026, 5, 8));
     expect(snapshot.rates['EUR'], .85025);
   });
+
+  test('fetchPreviousRates picks the latest day before the reference date',
+      () async {
+    late Uri captured;
+    final client = FrankfurterLatestRatesClient(
+      client: MockClient((request) async {
+        captured = request.url;
+        // v1 time-series payload: date -> {code: rate}.
+        return http.Response(
+          '{"amount":1.0,"base":"USD","start_date":"2026-06-05",'
+          '"end_date":"2026-06-15","rates":{'
+          '"2026-06-11":{"EUR":0.8668},'
+          '"2026-06-12":{"EUR":0.8645},'
+          '"2026-06-15":{"EUR":0.8634}}}',
+          200,
+        );
+      }),
+    );
+
+    // Latest published day is Monday 2026-06-15, so "previous" is Friday 06-12.
+    final rates = await client.fetchPreviousRates(
+      'USD',
+      referenceDate: DateTime(2026, 6, 15),
+    );
+
+    expect(captured.path, '/v1/2026-06-05..2026-06-15');
+    expect(captured.queryParameters['base'], 'USD');
+    expect(rates?['EUR'], 0.8645); // 06-12, not 06-15 (the reference itself)
+  });
 }
 
 LatestRatesSnapshot _snapshot(Map<String, double> rates) {
@@ -300,5 +329,5 @@ class _FakeRatesRepository implements ConvertRatesRepository {
   }
 
   @override
-  Future<Map<String, double>?> fetchYesterdayRates(String base) async => null;
+  Future<Map<String, double>?> fetchPreviousRates(String base, {DateTime? referenceDate}) async => null;
 }

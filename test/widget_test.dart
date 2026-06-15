@@ -912,7 +912,7 @@ class _FakeRatesRepository implements ConvertRatesRepository {
   }
 
   @override
-  Future<Map<String, double>?> fetchYesterdayRates(String base) async => null;
+  Future<Map<String, double>?> fetchPreviousRates(String base, {DateTime? referenceDate}) async => null;
 }
 
 class _FakeRatesClient implements RatesClient {
