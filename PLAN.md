@@ -333,6 +333,7 @@ lib/
 | BTC/ETH latest in Convert | DONE | No-key providers, quote-only in first slice |
 | BTC/ETH and mixed crypto charts | DONE | Daily charts up to 1 year; `multi_provider_rates_client.dart` handles all pair types |
 | Favorite pairs | DONE | Save up to 3 locally (SharedPreferences) |
+| Favorites manual reorder | DONE | Always-visible drag handle on each row; order persisted. Replaced the earlier usage-based auto-sort (`FavoriteUsageTracker`/`sortedPairs` removed). |
 | Offline mode | DONE | Cache last known rates |
 | Dark mode | DONE | Follows system by default with a Settings entry point |
 | Banner ads | DONE (placeholders) | `AdBannerPlaceholder` in Convert, Charts, Chart Picker; no live AdMob SDK yet |
