@@ -65,6 +65,24 @@ class FavoritesStore extends ChangeNotifier with FavoriteUsageTracker {
     notifyListeners();
   }
 
+  /// Moves the favorite at [oldIndex] to [newIndex] and persists the new order.
+  /// [newIndex] follows the ReorderableListView convention (it can be
+  /// `length`, meaning "after the last item").
+  Future<void> reorder(int oldIndex, int newIndex) async {
+    if (oldIndex < 0 || oldIndex >= _pairs.length) return;
+    var target = newIndex;
+    if (target > oldIndex) target -= 1;
+    if (target < 0) target = 0;
+    if (target > _pairs.length - 1) target = _pairs.length - 1;
+    if (target == oldIndex) return;
+    final next = <FavoritePair>[..._pairs];
+    final moved = next.removeAt(oldIndex);
+    next.insert(target, moved);
+    _pairs = next;
+    _save();
+    notifyListeners();
+  }
+
   void _save() {
     _prefs.setStringList(_key, _pairs.map((p) => p.toKey()).toList());
   }

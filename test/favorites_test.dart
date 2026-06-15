@@ -165,6 +165,63 @@ void main() {
     });
   });
 
+  group('reorder (manual order)', () {
+    late SharedPreferences prefs;
+    late FavoritesStore store;
+
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      store = FavoritesStore(prefs);
+    });
+
+    tearDown(() => store.dispose());
+
+    test('moves an item from first to last', () async {
+      await store.add('USD', 'EUR');
+      await store.add('USD', 'GBP');
+      await store.add('USD', 'JPY');
+
+      await store.reorder(0, 3); // ReorderableListView passes end+1
+
+      expect(store.pairs.map((p) => p.quote).toList(),
+          <String>['GBP', 'JPY', 'EUR']);
+    });
+
+    test('moves an item from last to first', () async {
+      await store.add('USD', 'EUR');
+      await store.add('USD', 'GBP');
+      await store.add('USD', 'JPY');
+
+      await store.reorder(2, 0);
+
+      expect(store.pairs.map((p) => p.quote).toList(),
+          <String>['JPY', 'EUR', 'GBP']);
+    });
+
+    test('persists the new order across a reload', () async {
+      await store.add('USD', 'EUR');
+      await store.add('USD', 'GBP');
+      await store.reorder(1, 0);
+
+      final reloaded = FavoritesStore(prefs);
+      expect(reloaded.pairs.map((p) => p.quote).toList(),
+          <String>['GBP', 'EUR']);
+      reloaded.dispose();
+    });
+
+    test('out-of-range oldIndex is a no-op', () async {
+      await store.add('USD', 'EUR');
+      await store.add('USD', 'GBP');
+
+      await store.reorder(5, 0);
+
+      expect(store.pairs.map((p) => p.quote).toList(),
+          <String>['EUR', 'GBP']);
+    });
+  });
+
   group('sortedPairs (auto-sort by usage)', () {
     late SharedPreferences prefs;
     late FavoritesStore store;
