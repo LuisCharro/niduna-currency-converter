@@ -161,12 +161,8 @@ class _AppState extends State<AppShell> {
       ),
     ];
 
-    final platformBrightness = MediaQuery.platformBrightnessOf(context);
-    final isDark =
-        _preferences?.isDarkMode == true ||
-        platformBrightness == Brightness.dark;
     return Theme(
-      data: isDark ? AppTheme.dark : AppTheme.light,
+      data: AppTheme.themeFor(_preferences?.isDarkMode ?? false),
       child: Scaffold(
         body: Stack(
           children: <Widget>[

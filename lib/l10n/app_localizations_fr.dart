@@ -392,4 +392,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get favoritesProUnlocked => 'Up to 16 favorite pairs unlocked';
+
+  @override
+  String get labelDarkModeOff => 'Désactivé';
 }

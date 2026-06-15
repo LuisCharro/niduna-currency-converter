@@ -817,6 +817,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Up to 16 favorite pairs unlocked'**
   String get favoritesProUnlocked;
+
+  /// No description provided for @labelDarkModeOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get labelDarkModeOff;
 }
 
 class _AppLocalizationsDelegate

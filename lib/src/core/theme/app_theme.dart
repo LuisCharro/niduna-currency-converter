@@ -189,4 +189,8 @@ class AppTheme {
       thickness: 0.5,
     ),
   );
+
+  /// Resolves the app theme from the user's Dark mode preference. The choice is
+  /// explicit (on = dark, off = light) and does not follow the system setting.
+  static ThemeData themeFor(bool isDarkMode) => isDarkMode ? dark : light;
 }

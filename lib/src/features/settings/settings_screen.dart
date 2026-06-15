@@ -54,7 +54,7 @@ class SettingsScreen extends StatelessWidget {
                     title: loc.labelDarkMode,
                     subtitle: preferences.isDarkMode
                         ? loc.labelDarkModeOn
-                        : loc.labelDarkModeFollowsSystem,
+                        : loc.labelDarkModeOff,
                     value: preferences.isDarkMode,
                     onChanged: controller.toggleDarkMode,
                   ),

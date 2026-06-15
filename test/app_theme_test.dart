@@ -4,6 +4,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:currency_converter/src/core/theme/app_theme.dart';
 
 void main() {
+  group('themeFor', () {
+    test('returns the light theme when dark mode is off', () {
+      expect(AppTheme.themeFor(false).brightness, Brightness.light);
+    });
+
+    test('returns the dark theme when dark mode is on', () {
+      expect(AppTheme.themeFor(true).brightness, Brightness.dark);
+    });
+  });
+
   test('canonical layout tokens match redesign spec', () {
     expect(AppTheme.pagePadding, 20);
     expect(AppTheme.sectionGap, 24);
