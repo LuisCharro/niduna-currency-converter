@@ -16,6 +16,17 @@ WIDGET_INFO_PLIST = 'ios/Runner/Widgets/NidunaWidget/Info.plist'
 WIDGET_ENTITLEMENTS = 'ios/Runner/Widgets/NidunaWidget/NidunaWidget.entitlements'
 APP_ENTITLEMENTS = 'ios/Runner/Runner.entitlements'
 
+# App version from pubspec (e.g. "0.1.0+1"). The widget extension MUST carry a
+# non-empty version that matches the host app, otherwise the iOS simulator
+# rejects the install with "Invalid placeholder attributes". The Flutter
+# $(FLUTTER_BUILD_NAME)/$(FLUTTER_BUILD_NUMBER) vars are only defined for the
+# Runner target, so we resolve the version here and pin it on the widget target
+# via MARKETING_VERSION / CURRENT_PROJECT_VERSION instead.
+pubspec = File.read(File.expand_path('../../pubspec.yaml', __dir__))
+version_line = pubspec[/^version:\s*(.+)$/, 1].to_s.strip
+MARKETING_VERSION = (version_line.split('+').first || '1.0').strip
+CURRENT_PROJECT_VERSION = (version_line.split('+')[1] || '1').strip
+
 project = Xcodeproj::Project.open(PROJECT_PATH)
 
 # 1. Skip if already there
@@ -40,6 +51,11 @@ widget_target.build_configurations.each do |config|
   config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = DEPLOYMENT_TARGET
   config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = WIDGET_BUNDLE_ID
   config.build_settings['PRODUCT_NAME'] = TARGET_NAME
+  # Pin a non-empty version matching the host app (Info.plist reads these via
+  # $(MARKETING_VERSION)/$(CURRENT_PROJECT_VERSION)). Empty/mismatched versions
+  # cause "Invalid placeholder attributes" at simulator install time.
+  config.build_settings['MARKETING_VERSION'] = MARKETING_VERSION
+  config.build_settings['CURRENT_PROJECT_VERSION'] = CURRENT_PROJECT_VERSION
   config.build_settings['CODE_SIGN_ENTITLEMENTS'] = 'Runner/Widgets/NidunaWidget/NidunaWidget.entitlements'
   config.build_settings['INFOPLIST_FILE'] = 'Runner/Widgets/NidunaWidget/Info.plist'
   config.build_settings['SKIP_INSTALL'] = 'YES'

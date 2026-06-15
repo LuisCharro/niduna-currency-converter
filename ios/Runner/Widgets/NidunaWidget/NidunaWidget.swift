@@ -1,32 +1,48 @@
 import WidgetKit
 import SwiftUI
 
-// Bridge to the App Group's shared UserDefaults. The main Flutter app
-// writes widget data to this group via HomeWidget.saveWidgetData; the
-// widget extension reads from the same suite.
+// Shared store written by the Flutter app via HomeWidget.saveWidgetData.
 private enum AppGroup {
   static let id = "group.com.niduna.currencyConverter"
   static let store = UserDefaults(suiteName: id)
 }
 
+// Niduna palette (see DESIGN.md).
+private enum Palette {
+  static let paper = Color(red: 0.96, green: 0.97, blue: 0.94)   // #F6F8EF
+  static let ink   = Color(red: 0.09, green: 0.11, blue: 0.08)   // #171D14
+  static let muted = Color(red: 0.37, green: 0.42, blue: 0.35)   // #5F6A58
+  static let up    = Color(red: 0.44, green: 0.55, blue: 0.29)   // #6F8C49
+  static let down  = Color(red: 0.86, green: 0.40, blue: 0.26)   // #DC6543
+  static let circle = Color(red: 1.0, green: 0.98, blue: 0.92)   // container
+}
+
+struct NidunaPair {
+  let code: String
+  let symbol: String
+  let value: String
+  let trend: String   // up | down | flat | none
+  let change: String  // e.g. "0.12%" (may be empty)
+}
+
 struct NidunaEntry: TimelineEntry {
   let date: Date
-  let baseCode: String
-  let quoteCode: String
-  let amountText: String
-  let convertedText: String
-  let updatedText: String
+  let amountLabel: String
+  let updatedLabel: String
+  let pairs: [NidunaPair]
 }
 
 struct NidunaProvider: TimelineProvider {
   func placeholder(in context: Context) -> NidunaEntry {
     NidunaEntry(
       date: Date(),
-      baseCode: "USD",
-      quoteCode: "EUR",
-      amountText: "100 USD",
-      convertedText: "= 92.50 EUR",
-      updatedText: "Updated today"
+      amountLabel: "100 USD",
+      updatedLabel: "Updated today",
+      pairs: [
+        NidunaPair(code: "EUR", symbol: "€", value: "86.34", trend: "down", change: "0.12%"),
+        NidunaPair(code: "GBP", symbol: "£", value: "74.57", trend: "up", change: "0.06%"),
+        NidunaPair(code: "BTC", symbol: "₿", value: "0.00155", trend: "none", change: ""),
+      ]
     )
   }
 
@@ -35,37 +51,76 @@ struct NidunaProvider: TimelineProvider {
   }
 
   func getTimeline(in context: Context, completion: @escaping (Timeline<NidunaEntry>) -> Void) {
-    let entry = readEntry()
-    // Refresh every 4 hours. The main app calls
-    // WidgetCenter.shared.reloadAllTimelines() whenever it pushes fresh
-    // data, so the system also gets a poke to refresh sooner.
+    // The app pokes WidgetCenter on every data push; also self-refresh in 4h.
     let next = Date().addingTimeInterval(4 * 60 * 60)
-    completion(Timeline(entries: [entry], policy: .after(next)))
+    completion(Timeline(entries: [readEntry()], policy: .after(next)))
   }
 
   private func readEntry() -> NidunaEntry {
-    let baseCode = AppGroup.store?.string(forKey: "baseCode") ?? "USD"
-    let quoteCode = AppGroup.store?.string(forKey: "quoteCode") ?? "EUR"
-    // amount + rate are sent as strings by the Dart side (see
-    // home_widget_provider.dart) because raw UserDefaults has no Double
-    // getter that's safe across types. We only need them as numbers
-    // for the local fallback when the app hasn't pre-formatted
-    // `convertedAmount`.
-    let amount = Double(AppGroup.store?.string(forKey: "amount") ?? "") ?? 100.0
-    let rate = Double(AppGroup.store?.string(forKey: "rate") ?? "") ?? 0.0
-    let convertedAmount = AppGroup.store?.string(forKey: "convertedAmount") ?? ""
-    let updatedAt = AppGroup.store?.string(forKey: "updatedAt") ?? ""
-
+    let store = AppGroup.store
+    var pairs: [NidunaPair] = []
+    for i in 0..<3 {
+      let prefix = "pair_\(i)_"
+      let visible = store?.bool(forKey: "\(prefix)visible") ?? false
+      let value = store?.string(forKey: "\(prefix)value") ?? ""
+      guard visible, !value.isEmpty else { continue }
+      pairs.append(
+        NidunaPair(
+          code: store?.string(forKey: "\(prefix)code") ?? "",
+          symbol: store?.string(forKey: "\(prefix)symbol") ?? "",
+          value: value,
+          trend: store?.string(forKey: "\(prefix)trend") ?? "none",
+          change: store?.string(forKey: "\(prefix)change") ?? ""
+        )
+      )
+    }
     return NidunaEntry(
       date: Date(),
-      baseCode: baseCode,
-      quoteCode: quoteCode,
-      amountText: String(format: "%.0f %@", amount, baseCode),
-      convertedText: convertedAmount.isEmpty
-        ? String(format: "= %.2f %@", amount * rate, quoteCode)
-        : "= \(convertedAmount)",
-      updatedText: updatedAt.isEmpty ? "" : "Updated \(updatedAt)"
+      amountLabel: store?.string(forKey: "amountLabel") ?? "",
+      updatedLabel: store?.string(forKey: "updatedLabel") ?? "",
+      pairs: pairs
     )
+  }
+}
+
+private struct PairRow: View {
+  let pair: NidunaPair
+
+  private var trendColor: Color {
+    switch pair.trend {
+    case "up": return Palette.up
+    case "down": return Palette.down
+    default: return Palette.muted
+    }
+  }
+
+  private var trendArrow: String {
+    switch pair.trend {
+    case "up": return "arrow.up"
+    case "down": return "arrow.down"
+    default: return ""
+    }
+  }
+
+  var body: some View {
+    HStack(spacing: 10) {
+      ZStack {
+        Circle().fill(Palette.circle)
+        Text(pair.symbol).font(.system(size: 13, weight: .bold)).foregroundColor(Palette.ink)
+      }
+      .frame(width: 28, height: 28)
+
+      Text(pair.code).font(.system(size: 13, weight: .semibold)).foregroundColor(Palette.muted)
+      Spacer()
+      if !trendArrow.isEmpty, !pair.change.isEmpty {
+        HStack(spacing: 1) {
+          Image(systemName: trendArrow).font(.system(size: 10, weight: .bold))
+          Text(pair.change).font(.system(size: 11, weight: .bold))
+        }
+        .foregroundColor(trendColor)
+      }
+      Text(pair.value).font(.system(size: 15, weight: .heavy)).foregroundColor(Palette.ink)
+    }
   }
 }
 
@@ -73,46 +128,55 @@ struct NidunaWidgetEntryView: View {
   var entry: NidunaEntry
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 4) {
-      Text(entry.amountText)
-        .font(.system(size: 18, weight: .medium))
-        .foregroundColor(Color(red: 0.11, green: 0.10, blue: 0.09))
-
-      Text(entry.convertedText)
-        .font(.system(size: 24, weight: .bold))
-        .foregroundColor(Color(red: 0.11, green: 0.10, blue: 0.09))
-
-      Text(entry.updatedText)
-        .font(.system(size: 12))
-        .foregroundColor(Color(red: 0.47, green: 0.44, blue: 0.42))
+    if entry.pairs.isEmpty {
+      VStack(alignment: .leading, spacing: 4) {
+        Text("Niduna").font(.system(size: 16, weight: .heavy)).foregroundColor(Palette.ink)
+        Text("Open to load").font(.system(size: 12)).foregroundColor(Palette.muted)
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+      .padding(16)
+      .background(Palette.paper)
+    } else {
+      VStack(alignment: .leading, spacing: 8) {
+        if !entry.amountLabel.isEmpty {
+          Text(entry.amountLabel).font(.system(size: 13, weight: .bold)).foregroundColor(Palette.ink)
+        }
+        ForEach(Array(entry.pairs.enumerated()), id: \.offset) { index, pair in
+          PairRow(pair: pair)
+          if index < entry.pairs.count - 1 {
+            Divider().background(Palette.muted.opacity(0.2))
+          }
+        }
+        Spacer(minLength: 0)
+        if !entry.updatedLabel.isEmpty {
+          Text(entry.updatedLabel).font(.system(size: 10)).foregroundColor(Palette.muted)
+        }
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+      .padding(14)
+      .background(Palette.paper)
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-    .padding(16)
-    .background(Color(red: 1.0, green: 0.98, blue: 0.92))
-    .cornerRadius(16)
   }
 }
 
 struct NidunaWidget: Widget {
-  let kind = "NidunaCurrencyWidget"
+  let kind = "NidunaCurrencyWidget" // MUST match iOSName in home_widget_provider.dart
 
   var body: some WidgetConfiguration {
     StaticConfiguration(kind: kind, provider: NidunaProvider()) { entry in
-      NidunaWidgetEntryView(entry: entry)
+      if #available(iOS 17.0, *) {
+        NidunaWidgetEntryView(entry: entry).containerBackground(Palette.paper, for: .widget)
+      } else {
+        NidunaWidgetEntryView(entry: entry)
+      }
     }
     .configurationDisplayName("Niduna Currency")
-    .description("Quick glance at your top currency conversion rate")
-    .supportedFamilies([.systemSmall, .systemMedium])
+    .description("Your top currency pairs at a glance")
+    .supportedFamilies([.systemMedium])
   }
 }
 
-// WidgetBundle wrapper. iOS 17+ WidgetKit requires a `@main`-annotated
-// WidgetBundle that exposes one or more Widgets — a bare `Widget` struct
-// in the extension's principal slot gets a "Invalid placeholder
-// attributes" error at install time.
 @main
 struct NidunaWidgetBundle: WidgetBundle {
-  var body: some Widget {
-    NidunaWidget()
-  }
+  var body: some Widget { NidunaWidget() }
 }
