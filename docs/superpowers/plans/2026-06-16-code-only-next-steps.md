@@ -23,7 +23,15 @@ needs a brainstorm/spec pass before implementation (except the small edge items)
 
 ---
 
-## 1. Pre-launch robustness & accessibility pass — **PRIORITY**
+## 1. Pre-launch robustness & accessibility pass — ✅ DONE (2026-06-16)
+
+> **Completed and merged to `main`.** Spec: `2026-06-16-prelaunch-accessibility-pass-design.md`;
+> plan: `2026-06-16-prelaunch-accessibility-pass.md`. Shipped: localized semantic
+> labels/roles across all tabs + shared widgets (16 new ARB keys × 5 locales),
+> decorative flags excluded, bottom-nav + switch tiles made AT-activatable,
+> `onTapHint` for content rows, Dynamic Type verified to 1.5×/XXXL on both
+> platforms, offline/empty states verified, dead `InlineEmptyPanel` removed.
+> 238 tests pass. **Remaining next items are #2 and #3 below.**
 
 **Goal:** Make the app feel launch-grade in the states real users hit, not just
 the happy path on a seeded emulator.
