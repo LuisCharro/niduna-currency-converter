@@ -829,6 +829,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Off'**
   String get labelDarkModeOff;
+
+  /// No description provided for @refreshRatesTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh rates'**
+  String get refreshRatesTooltip;
+
+  /// No description provided for @shareRatesTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Share rates'**
+  String get shareRatesTooltip;
+
+  /// No description provided for @openSettingsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get openSettingsTooltip;
+
+  /// No description provided for @closeTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get closeTooltip;
+
+  /// No description provided for @removeCurrencyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove currency'**
+  String get removeCurrencyLabel;
+
+  /// No description provided for @toggleFavoriteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Add or remove favorite'**
+  String get toggleFavoriteLabel;
+
+  /// No description provided for @setAsBaseLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Set as base currency'**
+  String get setAsBaseLabel;
+
+  /// No description provided for @swapCurrenciesTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap currencies'**
+  String get swapCurrenciesTooltip;
+
+  /// No description provided for @rateFreshnessInfoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate freshness info'**
+  String get rateFreshnessInfoLabel;
+
+  /// No description provided for @changeChartPairLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Change chart pair'**
+  String get changeChartPairLabel;
+
+  /// No description provided for @changeBaseCurrencyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Change base currency, currently {code}'**
+  String changeBaseCurrencyLabel(String code);
+
+  /// No description provided for @editAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit amount, currently {amount}'**
+  String editAmountLabel(String amount);
+
+  /// No description provided for @openPairLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Open {code} conversion'**
+  String openPairLabel(String code);
+
+  /// No description provided for @chartRangeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{range} range'**
+  String chartRangeLabel(String range);
 }
 
 class _AppLocalizationsDelegate

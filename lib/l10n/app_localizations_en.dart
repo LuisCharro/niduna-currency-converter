@@ -391,4 +391,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelDarkModeOff => 'Off';
+
+  @override
+  String get refreshRatesTooltip => 'Refresh rates';
+
+  @override
+  String get shareRatesTooltip => 'Share rates';
+
+  @override
+  String get openSettingsTooltip => 'Settings';
+
+  @override
+  String get closeTooltip => 'Close';
+
+  @override
+  String get removeCurrencyLabel => 'Remove currency';
+
+  @override
+  String get toggleFavoriteLabel => 'Add or remove favorite';
+
+  @override
+  String get setAsBaseLabel => 'Set as base currency';
+
+  @override
+  String get swapCurrenciesTooltip => 'Swap currencies';
+
+  @override
+  String get rateFreshnessInfoLabel => 'Rate freshness info';
+
+  @override
+  String get changeChartPairLabel => 'Change chart pair';
+
+  @override
+  String changeBaseCurrencyLabel(String code) {
+    return 'Change base currency, currently $code';
+  }
+
+  @override
+  String editAmountLabel(String amount) {
+    return 'Edit amount, currently $amount';
+  }
+
+  @override
+  String openPairLabel(String code) {
+    return 'Open $code conversion';
+  }
+
+  @override
+  String chartRangeLabel(String range) {
+    return '$range range';
+  }
 }

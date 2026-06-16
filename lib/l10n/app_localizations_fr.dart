@@ -398,4 +398,54 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get labelDarkModeOff => 'Désactivé';
+
+  @override
+  String get refreshRatesTooltip => 'Actualiser les taux';
+
+  @override
+  String get shareRatesTooltip => 'Partager les taux';
+
+  @override
+  String get openSettingsTooltip => 'Réglages';
+
+  @override
+  String get closeTooltip => 'Fermer';
+
+  @override
+  String get removeCurrencyLabel => 'Supprimer la devise';
+
+  @override
+  String get toggleFavoriteLabel => 'Ajouter ou retirer des favoris';
+
+  @override
+  String get setAsBaseLabel => 'Définir comme devise de base';
+
+  @override
+  String get swapCurrenciesTooltip => 'Échanger les devises';
+
+  @override
+  String get rateFreshnessInfoLabel => 'Infos sur la fraîcheur des taux';
+
+  @override
+  String get changeChartPairLabel => 'Changer la paire du graphique';
+
+  @override
+  String changeBaseCurrencyLabel(String code) {
+    return 'Changer la devise de base, actuellement $code';
+  }
+
+  @override
+  String editAmountLabel(String amount) {
+    return 'Modifier le montant, actuellement $amount';
+  }
+
+  @override
+  String openPairLabel(String code) {
+    return 'Ouvrir la conversion $code';
+  }
+
+  @override
+  String chartRangeLabel(String range) {
+    return 'Période $range';
+  }
 }
