@@ -19,14 +19,16 @@ private enum AppGroup {
   }
 }
 
-// Niduna palette (see DESIGN.md).
+// Niduna palette — mirrors the Android widget (android/.../widget_layout.xml,
+// widget_background.xml, widget_icon_circle.xml) so both platforms match.
 private enum Palette {
-  static let paper = Color(red: 0.96, green: 0.97, blue: 0.94)   // #F6F8EF
-  static let ink   = Color(red: 0.09, green: 0.11, blue: 0.08)   // #171D14
-  static let muted = Color(red: 0.37, green: 0.42, blue: 0.35)   // #5F6A58
-  static let up    = Color(red: 0.44, green: 0.55, blue: 0.29)   // #6F8C49
-  static let down  = Color(red: 0.86, green: 0.40, blue: 0.26)   // #DC6543
-  static let circle = Color(red: 1.0, green: 0.98, blue: 0.92)   // container
+  static let paper  = Color(red: 1.0,  green: 0.976, blue: 0.925) // #FFF9EC card
+  static let ink    = Color(red: 0.09, green: 0.11,  blue: 0.08)  // #171D14
+  static let muted  = Color(red: 0.37, green: 0.42,  blue: 0.35)  // #5F6A58
+  static let up     = Color(red: 0.44, green: 0.55,  blue: 0.29)  // #6F8C49
+  static let down   = Color(red: 0.86, green: 0.40,  blue: 0.26)  // #DC6543
+  static let circle = Color(red: 0.157, green: 0.373, blue: 0.231) // #285F3B dark green
+  static let divider = Color(red: 0.157, green: 0.373, blue: 0.231).opacity(0.14) // #24285F3B
 }
 
 struct NidunaPair {
@@ -110,6 +112,12 @@ struct NidunaProvider: TimelineProvider {
   }
 }
 
+private struct WidgetDivider: View {
+  var body: some View {
+    Rectangle().fill(Palette.divider).frame(height: 1)
+  }
+}
+
 private struct PairRow: View {
   let pair: NidunaPair
 
@@ -123,30 +131,44 @@ private struct PairRow: View {
 
   private var trendArrow: String {
     switch pair.trend {
-    case "up": return "arrow.up"
-    case "down": return "arrow.down"
+    case "up": return "↑"
+    case "down": return "↓"
     default: return ""
     }
   }
 
   var body: some View {
-    HStack(spacing: 10) {
+    HStack(spacing: 8) {
+      // Symbol in a solid dark-green circle (mirrors widget_icon_circle.xml).
       ZStack {
         Circle().fill(Palette.circle)
-        Text(pair.symbol).font(.system(size: 13, weight: .bold)).foregroundColor(Palette.ink)
+        Text(pair.symbol)
+          .font(.system(size: 12, weight: .medium))
+          .foregroundColor(.white)
+          .minimumScaleFactor(0.6)
+          .lineLimit(1)
+          .padding(.horizontal, 2)
       }
-      .frame(width: 28, height: 28)
+      .frame(width: 24, height: 24)
 
-      Text(pair.code).font(.system(size: 13, weight: .semibold)).foregroundColor(Palette.muted)
-      Spacer()
+      Text(pair.code)
+        .font(.system(size: 14, weight: .medium))
+        .foregroundColor(Palette.ink)
+
+      Spacer(minLength: 4)
+
+      Text(pair.value)
+        .font(.system(size: 22, weight: .bold))
+        .foregroundColor(Palette.ink)
+        .lineLimit(1)
+        .minimumScaleFactor(0.5)
+
       if !trendArrow.isEmpty, !pair.change.isEmpty {
-        HStack(spacing: 1) {
-          Image(systemName: trendArrow).font(.system(size: 10, weight: .bold))
-          Text(pair.change).font(.system(size: 11, weight: .bold))
-        }
-        .foregroundColor(trendColor)
+        Text("\(trendArrow) \(pair.change)")
+          .font(.system(size: 11, weight: .medium))
+          .foregroundColor(trendColor)
+          .fixedSize()
       }
-      Text(pair.value).font(.system(size: 15, weight: .heavy)).foregroundColor(Palette.ink)
     }
   }
 }
@@ -164,23 +186,34 @@ struct NidunaWidgetEntryView: View {
       .padding(16)
       .background(Palette.paper)
     } else {
-      VStack(alignment: .leading, spacing: 8) {
-        if !entry.amountLabel.isEmpty {
-          Text(entry.amountLabel).font(.system(size: 13, weight: .bold)).foregroundColor(Palette.ink)
+      VStack(alignment: .leading, spacing: 0) {
+        // Header: amount (left) + updated (right) — matches the Android layout.
+        HStack(alignment: .firstTextBaseline) {
+          Text(entry.amountLabel.isEmpty ? "Niduna" : entry.amountLabel)
+            .font(.system(size: 18, weight: .medium))
+            .foregroundColor(Palette.ink)
+            .lineLimit(1)
+          Spacer(minLength: 8)
+          if !entry.updatedLabel.isEmpty {
+            Text(entry.updatedLabel)
+              .font(.system(size: 11))
+              .foregroundColor(Palette.muted)
+              .lineLimit(1)
+          }
         }
+
+        WidgetDivider().padding(.top, 12).padding(.bottom, 8)
+
         ForEach(Array(entry.pairs.enumerated()), id: \.offset) { index, pair in
           PairRow(pair: pair)
           if index < entry.pairs.count - 1 {
-            Divider().background(Palette.muted.opacity(0.2))
+            WidgetDivider().padding(.vertical, 10)
           }
         }
         Spacer(minLength: 0)
-        if !entry.updatedLabel.isEmpty {
-          Text(entry.updatedLabel).font(.system(size: 10)).foregroundColor(Palette.muted)
-        }
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-      .padding(14)
+      .padding(16)
       .background(Palette.paper)
     }
   }
