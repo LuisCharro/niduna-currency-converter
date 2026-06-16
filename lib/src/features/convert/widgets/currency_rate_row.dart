@@ -20,8 +20,7 @@ class CurrencyRateRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      button: true,
-      label: l10n(context).openPairLabel(quote.code),
+      onTapHint: l10n(context).openPairLabel(quote.code),
       child: Material(
         color: Colors.transparent,
         child: InkWell(

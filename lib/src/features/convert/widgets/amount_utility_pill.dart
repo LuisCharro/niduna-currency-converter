@@ -29,15 +29,11 @@ class AmountUtilityPill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Semantics(
-            button: true,
-            label: loc.refreshRatesTooltip,
-            child: _UtilityIconButton(
-              key: const Key('convert_refresh'),
-              tooltip: loc.refreshRatesTooltip,
-              icon: Icons.sync_rounded,
-              onPressed: onRefresh,
-            ),
+          _UtilityIconButton(
+            key: const Key('convert_refresh'),
+            tooltip: loc.refreshRatesTooltip,
+            icon: Icons.sync_rounded,
+            onPressed: onRefresh,
           ),
           SizedBox(
             height: 20,
@@ -47,15 +43,11 @@ class AmountUtilityPill extends StatelessWidget {
               color: colors.border.withValues(alpha: .1),
             ),
           ),
-          Semantics(
-            button: true,
-            label: loc.shareRatesTooltip,
-            child: _UtilityIconButton(
-              key: const Key('convert_share'),
-              tooltip: loc.shareRatesTooltip,
-              icon: Icons.ios_share_rounded,
-              onPressed: onShare,
-            ),
+          _UtilityIconButton(
+            key: const Key('convert_share'),
+            tooltip: loc.shareRatesTooltip,
+            icon: Icons.ios_share_rounded,
+            onPressed: onShare,
           ),
           SizedBox(
             height: 20,
@@ -65,14 +57,10 @@ class AmountUtilityPill extends StatelessWidget {
               color: colors.border.withValues(alpha: .1),
             ),
           ),
-          Semantics(
-            button: true,
-            label: loc.openSettingsTooltip,
-            child: _UtilityIconButton(
-              tooltip: loc.openSettingsTooltip,
-              icon: Icons.tune_rounded,
-              onPressed: onMore,
-            ),
+          _UtilityIconButton(
+            tooltip: loc.openSettingsTooltip,
+            icon: Icons.tune_rounded,
+            onPressed: onMore,
           ),
         ],
       ),

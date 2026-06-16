@@ -28,8 +28,13 @@ void main() {
     ));
     await tester.pumpAndSettle();
     expect(
-      find.bySemanticsLabel(RegExp(r'Open EUR conversion')),
-      findsOneWidget,
+      tester.getSemantics(find.byType(CurrencyRateRow)),
+      matchesSemantics(
+        hasTapAction: true,
+        hasFocusAction: true,
+        isFocusable: true,
+        onTapHint: 'Open EUR conversion',
+      ),
     );
     handle.dispose();
   });

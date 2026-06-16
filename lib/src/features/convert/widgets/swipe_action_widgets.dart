@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../l10n/app_localizations.dart';
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
 
@@ -37,7 +36,6 @@ class SwipeActionsRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
-    final strings = AppLocalizations.of(context);
     final loc = l10n(context);
     final hideProgress = _windowProgress(reveal, start: 86, end: 182);
     final baseProgress = _windowProgress(reveal, start: 18, end: 138);
@@ -58,7 +56,7 @@ class SwipeActionsRail extends StatelessWidget {
               iconBadgeColor: const Color(0xFFEBC0B3),
               color: colors.coralInk,
               label: loc.removeCurrencyLabel,
-              shortLabel: strings?.btnRemove ?? 'Hide',
+              shortLabel: loc.btnRemove,
               progress: _motionProgress(hideProgress),
               onTap: onRemove,
             ),
@@ -72,8 +70,8 @@ class SwipeActionsRail extends StatelessWidget {
               color: colors.primary,
               label: loc.toggleFavoriteLabel,
               shortLabel: isFavorite
-                  ? strings?.favoriteActionSaved ?? 'Saved'
-                  : strings?.favoriteActionPin ?? 'Pin',
+                  ? loc.favoriteActionSaved
+                  : loc.favoriteActionPin,
               progress: _motionProgress(baseProgress),
               onTap: onFavorite,
             ),
@@ -171,6 +169,8 @@ class SwipeActionButton extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 shortLabel,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w800,
