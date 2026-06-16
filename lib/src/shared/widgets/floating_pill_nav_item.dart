@@ -31,33 +31,40 @@ class FloatingPillNavItem extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(5),
-        child:           PressScale(
-          onTap: () {
-            HapticFeedback.selectionClick();
-            onTap();
-          },
-          child: SizedBox.expand(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                AnimatedScale(
-                  scale: isSelected ? 1 : .94,
-                  duration: AppTheme.motionMedium,
-                  curve: AppTheme.curveStandard,
-                  child: Icon(icon, size: 23, color: color),
+        child: Semantics(
+          button: true,
+          selected: isSelected,
+          label: label,
+          child: ExcludeSemantics(
+            child: PressScale(
+              onTap: () {
+                HapticFeedback.selectionClick();
+                onTap();
+              },
+              child: SizedBox.expand(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    AnimatedScale(
+                      scale: isSelected ? 1 : .94,
+                      duration: AppTheme.motionMedium,
+                      curve: AppTheme.curveStandard,
+                      child: Icon(icon, size: 23, color: color),
+                    ),
+                    const SizedBox(height: 3),
+                    AnimatedDefaultTextStyle(
+                      duration: AppTheme.motionMedium,
+                      curve: AppTheme.curveStandard,
+                      style: labelStyle,
+                      child: Text(
+                        label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 3),
-                AnimatedDefaultTextStyle(
-                  duration: AppTheme.motionMedium,
-                  curve: AppTheme.curveStandard,
-                  style: labelStyle,
-                  child: Text(
-                    label,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),

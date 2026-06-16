@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../l10n/app_localizations_safe.dart';
 
 class CurrencyPickerHeader extends StatelessWidget {
   const CurrencyPickerHeader({required this.title, this.subtitle, super.key});
@@ -40,9 +41,14 @@ class CurrencyPickerHeader extends StatelessWidget {
             ],
           ),
         ),
-        IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.close_rounded, color: AppTheme.muted),
+        Semantics(
+          button: true,
+          label: l10n(context).closeTooltip,
+          child: IconButton(
+            onPressed: () => Navigator.pop(context),
+            tooltip: l10n(context).closeTooltip,
+            icon: const Icon(Icons.close_rounded, color: AppTheme.muted),
+          ),
         ),
       ],
     );

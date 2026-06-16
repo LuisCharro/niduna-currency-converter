@@ -65,16 +65,20 @@ class CurrencyFlagIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final assetPath = _assetMap[code.toUpperCase()];
     if (assetPath != null) {
-      return CircleAvatar(
-        radius: radius,
-        backgroundImage: AssetImage(assetPath),
+      return ExcludeSemantics(
+        child: CircleAvatar(
+          radius: radius,
+          backgroundImage: AssetImage(assetPath),
+        ),
       );
     }
-    return CircleAvatar(
-      radius: radius,
-      child: Text(
-        symbol,
-        style: TextStyle(fontWeight: FontWeight.w700, fontSize: radius * 0.75),
+    return ExcludeSemantics(
+      child: CircleAvatar(
+        radius: radius,
+        child: Text(
+          symbol,
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: radius * 0.75),
+        ),
       ),
     );
   }

@@ -39,9 +39,14 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
               ),
               const Spacer(),
-              IconButton(
-                icon: Icon(Icons.close, size: 18, color: AppColors.of(context).muted),
-                onPressed: () => Navigator.of(context).pop(),
+              Semantics(
+                button: true,
+                label: loc.closeTooltip,
+                child: IconButton(
+                  icon: Icon(Icons.close, size: 18, color: AppColors.of(context).muted),
+                  tooltip: loc.closeTooltip,
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
               ),
             ],
           ),
