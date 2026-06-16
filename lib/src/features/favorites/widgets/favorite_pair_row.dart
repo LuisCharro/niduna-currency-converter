@@ -47,101 +47,104 @@ class FavoritePairRow extends StatelessWidget {
       padding: EdgeInsets.only(bottom: showDivider ? AppTheme.space3 : 0),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: () {
-            HapticFeedback.selectionClick();
-            onOpen();
-          },
-          borderRadius: BorderRadius.circular(AppTheme.radius),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: colors.container,
-              borderRadius: BorderRadius.circular(AppTheme.radius),
-              border: Border.all(color: colors.border.withValues(alpha: .18)),
-              boxShadow: AppTheme.subtleShadowFor(context),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      FavoritePairIdentity(pair: pair),
-                      const Spacer(),
-                      Semantics(
-                        button: true,
-                        label: loc.removeFavoriteTooltip,
-                        child: IconButton(
-                          onPressed: () {
-                            HapticFeedback.selectionClick();
-                            onRemove();
-                          },
-                          icon: Icon(
-                            Icons.close_rounded,
-                            size: 18,
-                            color: colors.subtle,
-                          ),
-                          tooltip: loc.removeFavoriteTooltip,
-                          visualDensity: VisualDensity.compact,
-                          constraints: const BoxConstraints(
-                            minWidth: 40,
-                            minHeight: 40,
-                          ),
-                        ),
-                      ),
-                      ReorderableDragStartListener(
-                        index: index,
-                        child: SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: Icon(
-                            Icons.drag_handle,
-                            size: 22,
-                            color: colors.muted,
-                            semanticLabel: loc.reorderFavoriteTooltip,
+        child: Semantics(
+          onTapHint: loc.openFavoriteTooltip,
+          child: InkWell(
+            onTap: () {
+              HapticFeedback.selectionClick();
+              onOpen();
+            },
+            borderRadius: BorderRadius.circular(AppTheme.radius),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: colors.container,
+                borderRadius: BorderRadius.circular(AppTheme.radius),
+                border: Border.all(color: colors.border.withValues(alpha: .18)),
+                boxShadow: AppTheme.subtleShadowFor(context),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        FavoritePairIdentity(pair: pair),
+                        const Spacer(),
+                        Semantics(
+                          button: true,
+                          label: loc.removeFavoriteTooltip,
+                          child: IconButton(
+                            onPressed: () {
+                              HapticFeedback.selectionClick();
+                              onRemove();
+                            },
+                            icon: Icon(
+                              Icons.close_rounded,
+                              size: 18,
+                              color: colors.subtle,
+                            ),
+                            tooltip: loc.removeFavoriteTooltip,
+                            visualDensity: VisualDensity.compact,
+                            constraints: const BoxConstraints(
+                              minWidth: 40,
+                              minHeight: 40,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          pairLabel,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTheme.settingsTileTitleStyle(context).copyWith(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w800,
+                        ReorderableDragStartListener(
+                          index: index,
+                          child: SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: Icon(
+                              Icons.drag_handle,
+                              size: 22,
+                              color: colors.muted,
+                              semanticLabel: loc.reorderFavoriteTooltip,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      if (showTrend) ...<Widget>[
-                        TrendBadge(trend: trend!, changePercent: changePercent),
-                        const SizedBox(width: 8),
                       ],
-                      FavoriteRateText(rate: rate),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          directRateLine,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTheme.supportingTextStyle(context).copyWith(
-                            fontSize: 13,
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            pairLabel,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTheme.settingsTileTitleStyle(context).copyWith(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        const SizedBox(width: 8),
+                        if (showTrend) ...<Widget>[
+                          TrendBadge(trend: trend!, changePercent: changePercent),
+                          const SizedBox(width: 8),
+                        ],
+                        FavoriteRateText(rate: rate),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            directRateLine,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTheme.supportingTextStyle(context).copyWith(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

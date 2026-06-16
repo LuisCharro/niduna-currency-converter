@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
@@ -93,24 +94,31 @@ class ChartHeader extends StatelessWidget {
               ],
             ),
           ),
-          GestureDetector(
+          Semantics(
+            button: true,
+            label: l10n(context).swapCurrenciesTooltip,
             onTap: onSwap,
-            child: Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.of(context).card.withValues(alpha: .88)
-                    : AppColors.of(context).card,
-                border: Border.all(
-                  color: AppColors.of(context).border.withValues(alpha: .28),
+            child: ExcludeSemantics(
+              child: GestureDetector(
+                onTap: onSwap,
+                child: Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.of(context).card.withValues(alpha: .88)
+                        : AppColors.of(context).card,
+                    border: Border.all(
+                      color: AppColors.of(context).border.withValues(alpha: .28),
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.swap_vert_rounded,
+                    color: AppColors.of(context).text,
+                    size: 22,
+                  ),
                 ),
-              ),
-              child: Icon(
-                Icons.swap_vert_rounded,
-                color: AppColors.of(context).text,
-                size: 22,
               ),
             ),
           ),
