@@ -18,4 +18,19 @@ void main() {
     expect(find.bySemanticsLabel('€'), findsNothing);
     handle.dispose();
   });
+
+  testWidgets('CurrencyFlagIcon fallback (no asset) is excluded from semantics',
+      (tester) async {
+    final handle = tester.ensureSemantics();
+    await tester.pumpWidget(MaterialApp(
+      theme: AppTheme.light,
+      home: const Scaffold(
+        body: CurrencyFlagIcon(code: 'XXX', symbol: 'X', radius: 18),
+      ),
+    ));
+    // 'XXX' has no asset, so the widget renders Text(symbol); without
+    // ExcludeSemantics this label would be exposed to the AT tree.
+    expect(find.bySemanticsLabel('X'), findsNothing);
+    handle.dispose();
+  });
 }
