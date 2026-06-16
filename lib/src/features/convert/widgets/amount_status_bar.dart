@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
@@ -25,34 +26,38 @@ class AmountStatusBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
     final accent = _accentColor(context);
-    return Tooltip(
-      message: dailyRatesTooltip(context),
-      child: InkWell(
-        onTap: () => _showInfo(context),
-        borderRadius: BorderRadius.circular(AppTheme.radius),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2),
-          child: Row(
-            children: <Widget>[
-              _StatusDot(color: accent, active: isRefreshing),
-              const SizedBox(width: AppTheme.space2),
-              Expanded(
-                child: Text(
-                  _line(context),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTheme.caption.copyWith(
-                    color: colors.muted,
-                    fontWeight: FontWeight.w700,
+    return Semantics(
+      button: true,
+      label: l10n(context).rateFreshnessInfoLabel,
+      child: Tooltip(
+        message: dailyRatesTooltip(context),
+        child: InkWell(
+          onTap: () => _showInfo(context),
+          borderRadius: BorderRadius.circular(AppTheme.radius),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            child: Row(
+              children: <Widget>[
+                _StatusDot(color: accent, active: isRefreshing),
+                const SizedBox(width: AppTheme.space2),
+                Expanded(
+                  child: Text(
+                    _line(context),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTheme.caption.copyWith(
+                      color: colors.muted,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-              ),
-              Icon(
-                Icons.info_outline_rounded,
-                size: 15,
-                color: colors.muted.withValues(alpha: .7),
-              ),
-            ],
+                Icon(
+                  Icons.info_outline_rounded,
+                  size: 15,
+                  color: colors.muted.withValues(alpha: .7),
+                ),
+              ],
+            ),
           ),
         ),
       ),

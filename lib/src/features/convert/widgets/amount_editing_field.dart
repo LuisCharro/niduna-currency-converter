@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import 'amount_input_sheet.dart';
@@ -26,7 +27,7 @@ class AmountEditingField extends StatelessWidget {
 
     return Semantics(
       button: true,
-      label: 'Edit amount, currently ${amountText.isEmpty ? '0' : amountText}',
+      label: l10n(context).editAmountLabel(amountText.isEmpty ? '0' : amountText),
       child: Material(
         color: Colors.transparent,
         child: InkWell(

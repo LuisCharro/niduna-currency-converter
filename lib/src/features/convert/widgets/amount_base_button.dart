@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
@@ -35,7 +36,7 @@ class AmountBaseButton extends StatelessWidget {
     final iconSize = compact ? 16.0 : 17.0;
     return Semantics(
       button: true,
-      label: 'Change base currency, currently $base',
+      label: l10n(context).changeBaseCurrencyLabel(base),
       child: Material(
         color: colors.card.withValues(alpha: .9),
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),

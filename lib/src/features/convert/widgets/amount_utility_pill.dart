@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -18,6 +19,7 @@ class AmountUtilityPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final loc = l10n(context);
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colors.card.withValues(alpha: .62),
@@ -27,11 +29,15 @@ class AmountUtilityPill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          _UtilityIconButton(
-            key: const Key('convert_refresh'),
-            tooltip: 'Refresh rates',
-            icon: Icons.sync_rounded,
-            onPressed: onRefresh,
+          Semantics(
+            button: true,
+            label: loc.refreshRatesTooltip,
+            child: _UtilityIconButton(
+              key: const Key('convert_refresh'),
+              tooltip: loc.refreshRatesTooltip,
+              icon: Icons.sync_rounded,
+              onPressed: onRefresh,
+            ),
           ),
           SizedBox(
             height: 20,
@@ -41,11 +47,15 @@ class AmountUtilityPill extends StatelessWidget {
               color: colors.border.withValues(alpha: .1),
             ),
           ),
-          _UtilityIconButton(
-            key: const Key('convert_share'),
-            tooltip: 'Share rates',
-            icon: Icons.ios_share_rounded,
-            onPressed: onShare,
+          Semantics(
+            button: true,
+            label: loc.shareRatesTooltip,
+            child: _UtilityIconButton(
+              key: const Key('convert_share'),
+              tooltip: loc.shareRatesTooltip,
+              icon: Icons.ios_share_rounded,
+              onPressed: onShare,
+            ),
           ),
           SizedBox(
             height: 20,
@@ -55,10 +65,14 @@ class AmountUtilityPill extends StatelessWidget {
               color: colors.border.withValues(alpha: .1),
             ),
           ),
-          _UtilityIconButton(
-            tooltip: 'Settings',
-            icon: Icons.tune_rounded,
-            onPressed: onMore,
+          Semantics(
+            button: true,
+            label: loc.openSettingsTooltip,
+            child: _UtilityIconButton(
+              tooltip: loc.openSettingsTooltip,
+              icon: Icons.tune_rounded,
+              onPressed: onMore,
+            ),
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../l10n/app_localizations.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
 
 class SwipeActionsRail extends StatelessWidget {
@@ -36,7 +37,8 @@ class SwipeActionsRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
-    final l10n = AppLocalizations.of(context);
+    final strings = AppLocalizations.of(context);
+    final loc = l10n(context);
     final hideProgress = _windowProgress(reveal, start: 86, end: 182);
     final baseProgress = _windowProgress(reveal, start: 18, end: 138);
     return ClipRRect(
@@ -55,8 +57,8 @@ class SwipeActionsRail extends StatelessWidget {
               backgroundColor: const Color(0xFFF7E3DC),
               iconBadgeColor: const Color(0xFFEBC0B3),
               color: colors.coralInk,
-              label: 'Remove currency',
-              shortLabel: l10n?.btnRemove ?? 'Hide',
+              label: loc.removeCurrencyLabel,
+              shortLabel: strings?.btnRemove ?? 'Hide',
               progress: _motionProgress(hideProgress),
               onTap: onRemove,
             ),
@@ -68,12 +70,10 @@ class SwipeActionsRail extends StatelessWidget {
               backgroundColor: colors.containerHigh,
               iconBadgeColor: colors.greenBadge,
               color: colors.primary,
-              label: isFavorite
-                  ? l10n?.removeFavoriteTooltip ?? 'Remove favorite'
-                  : l10n?.labelAddFavorite ?? 'Add favorite',
+              label: loc.toggleFavoriteLabel,
               shortLabel: isFavorite
-                  ? l10n?.favoriteActionSaved ?? 'Saved'
-                  : l10n?.favoriteActionPin ?? 'Pin',
+                  ? strings?.favoriteActionSaved ?? 'Saved'
+                  : strings?.favoriteActionPin ?? 'Pin',
               progress: _motionProgress(baseProgress),
               onTap: onFavorite,
             ),
@@ -83,7 +83,7 @@ class SwipeActionsRail extends StatelessWidget {
               backgroundColor: const Color(0xFF2E6940),
               iconBadgeColor: const Color(0xFF447E55),
               color: colors.card,
-              label: 'Set as base currency',
+              label: loc.setAsBaseLabel,
               shortLabel: 'Base',
               progress: _motionProgress(baseProgress),
               onTap: onSwap,
