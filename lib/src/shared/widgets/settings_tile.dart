@@ -30,32 +30,35 @@ class SettingsTile extends StatelessWidget {
               )
             : null,
       ),
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(2, 12, 2, 12),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      title,
-                      style: AppTheme.settingsTileTitleStyle(context),
-                    ),
-                    if (subtitle != null) ...[
-                      const SizedBox(height: 2),
+      child: Semantics(
+        button: onTap != null,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(2, 12, 2, 12),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
                       Text(
-                        subtitle!,
-                        style: AppTheme.supportingTextStyle(context),
+                        title,
+                        style: AppTheme.settingsTileTitleStyle(context),
                       ),
+                      if (subtitle != null) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          subtitle!,
+                          style: AppTheme.supportingTextStyle(context),
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
-              ),
-              trailing,
-            ],
+                trailing,
+              ],
+            ),
           ),
         ),
       ),

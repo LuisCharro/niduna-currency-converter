@@ -19,13 +19,21 @@ class SwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SettingsTile(
-      title: title,
-      subtitle: subtitle,
-      trailing: Switch(
-        value: value,
-        onChanged: onChanged,
-        activeTrackColor: AppTheme.primary,
+    final label = subtitle != null ? '$title, $subtitle' : title;
+    return Semantics(
+      label: label,
+      toggled: value,
+      onTap: () => onChanged(!value),
+      child: ExcludeSemantics(
+        child: SettingsTile(
+          title: title,
+          subtitle: subtitle,
+          trailing: Switch(
+            value: value,
+            onChanged: onChanged,
+            activeTrackColor: AppTheme.primary,
+          ),
+        ),
       ),
     );
   }
