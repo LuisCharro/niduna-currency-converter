@@ -35,6 +35,10 @@ class FloatingPillNavItem extends StatelessWidget {
           button: true,
           selected: isSelected,
           label: label,
+          onTap: () {
+            HapticFeedback.selectionClick();
+            onTap();
+          },
           child: ExcludeSemantics(
             child: PressScale(
               onTap: () {
