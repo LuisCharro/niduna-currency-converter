@@ -3,12 +3,12 @@
 > **Last updated:** 2026-07-08
 > **App version:** 0.1.0+1 (pre-MVP)
 > **Branch:** main (in sync with origin/main)
-> **Status:** Code path complete, AAB+APK built and signed, 0 lint issues. Screenshots (C5) and feature graphic (C6) done. Accessibility pass done 2026-06-16 (238 tests passing at that point). **No code blockers remain except B4 (real AdMob IDs) and B5 (privacy link), both blocked on external steps.**
+> **Status:** Code path complete, AAB+APK built and signed, 0 lint issues. Screenshots (C5) and feature graphic (C6) done. Accessibility pass done 2026-06-16; polish pass + screenshot refresh done 2026-07-08 (239 tests). **Remaining code work: B4 (real AdMob IDs), B5 (privacy link), and B8 (UMP consent flow — found in the 2026-07-08 plan review); B4/B5 are blocked on external steps, B8 on the AdMob consent message (E5b).**
 >
 > **Remaining before submission (short list, in dependency order):**
 > 1. **Domain + email (niduna-site repo)** — buy `niduna.com` + attach to Vercel so `https://niduna.com/privacy/` is publicly reachable (the privacy *page* is already built; the Vercel project is SSO-gated until a domain is attached), and set up email so `support@niduna.com` receives mail (free forwarding is enough — provider comparison + "ask the friend" note in the site plan). Site-side steps: `niduna-site/RELEASE_PLAN.md` § S1. **Blocks C1, C10 and B5.**
 > 2. E1–E4 — Google Play Developer account ($25) + identity verification + payment profile + create app draft *(parallel with 1)*
-> 3. E5 — AdMob account + real ad unit IDs *(parallel with 1)* → then B4 (swap test IDs in code)
+> 3. E5 — AdMob account + real ad unit IDs + GDPR consent message (E5b) *(parallel with 1)* → then B4 (swap test IDs), B8 (UMP consent flow in code — **new 2026-07-08 review finding**), and `app-ads.txt` on the site (E5c)
 > 4. Rotate the TEMP keystore password (see callout below) *(anytime before 5)*
 > 5. B5 in-app privacy link (needs 1) → B6 rebuild signed AAB
 > 6. C2–C4, C7–C11 — Play Console listing content (title, descriptions, rating, Data Safety, category, contact + privacy/marketing URLs from 1, localized listings)
@@ -32,7 +32,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | 4 | Release keystore trio | B2: `android/key.properties` | ✅ Done | `200c888` |
 | 4 | Release keystore trio | B3: `build.gradle.kts` release signing | ✅ Done | `200c888` |
 | 5 | Phase 1.x chart tests | crypto/crypto + fiat/crypto formulas | ✅ Done | `8a76058` (4 new tests) + `f65ef5e` (real logic fix) |
-| 6 | Privacy link in Settings | B5: new row in Settings widget | ❌ Blocked on C1 (privacy URL not hosted) | — |
+| 6 | Privacy link in Settings | B5: new row in Settings widget | ❌ Blocked on C1 (domain not public — see `niduna-site/RELEASE_PLAN.md`) | — |
 | 7 | Build signed AAB | B6: `./scripts/build_appbundle.sh` smoke | ✅ Done | AAB at `build/app/outputs/bundle/release/app-release.aab` (50 MB, signed v2) |
 | 8 | UI Polish cycle (Phase 6) | open | ✅ Done (range selector + decimal places) | `5491ea7` |
 
@@ -66,6 +66,8 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | E3 | Set up payment profile (for IAP revenue later) | In Play Console > Setup > License | ❌ |
 | E4 | Create app in Play Console (draft mode) | In Play Console > All apps > Create app | ❌ |
 | E5 | Register AdMob account + create ad units | https://admob.google.com | ❌ |
+| E5b | AdMob → Privacy & messaging → create the GDPR consent message (required for EEA/UK/CH ads; pairs with code step B8) | In AdMob console, after E5 | ❌ |
+| E5c | Publish `app-ads.txt` on niduna.com with the AdMob publisher ID from E5 | Site-side step — `niduna-site/RELEASE_PLAN.md` § S1.5 | ❌ |
 
 ### Code / Build Steps (agent can do these)
 
@@ -76,8 +78,9 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` — release AAB now signed, falls back to debug if `key.properties` is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
 | B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Blocked on C1 (domain not public yet — see `niduna-site/RELEASE_PLAN.md` § S1). Target URL: `https://niduna.com/privacy/` |
-| B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | ✅ **Done** | `build/app/outputs/bundle/release/app-release.aab` (50 MB, signed v2) — re-run any time with the script |
+| B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Build verified working (June AAB, 50 MB, signed v2), but the FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + keystore rotation. Do not upload the existing artifact. |
 | B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
+| B8 | **UMP consent flow (GDPR/EEA)** — NEW 2026-07-08 review | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Google requires a certified CMP consent message for EEA/UK/CH ad traffic (mandatory since 2024). Nothing in the app requests consent today. Pair with the AdMob-console side (E5: Privacy & messaging → create GDPR message). **Also:** the site privacy page claims "non-personalised advertising" — either configure NPA in the ad requests or align the privacy copy when implementing this. |
 
 > **⚠️ Keystore password rotation (NEW — 2026-06-02):**
 > The keystore was generated with a temporary password for this dev cycle.
@@ -96,12 +99,12 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 |---|------|-------|--------|--------|
 | C1 | Write & host privacy policy page | Page is **built and deployed** at `niduna-site/privacy/` (brand-level + per-app sections, 2026-06-02). Remaining: make it publicly reachable — buy `niduna.com` + attach to Vercel (project is SSO-gated). See `niduna-site/RELEASE_PLAN.md` § S1. | domain purchase | 🟡 Blocked on domain |
 | C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
-| C3 | Short description (max 80 chars) | Example: *"Convert 170+ currencies instantly. Privacy-first. Beautiful."* | ~15 min | ❌ |
+| C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Niduna differentiator | ~45 min | ❌ |
-| C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert, Charts, Settings tabs | ~1 hr | ✅ **Done** | 6 final screenshots at 1080×2400 in `docs/release-prep/screenshots/` (light + dark × Convert/Chart/Favorites). English, paid-user state (no ads), real currency icons. Captured on `Pixel7_EN` AVD (1080×2400 @ 420dpi). Capture infra: `integration_test/screenshot_gallery_test.dart` + `.devtools/{sample_seed_data,generate_sample_prefs}.dart`. Requires swiftshader GPU (`-gpu swiftshader_indirect`) for icon rendering. The older 8-tab set from 2026-06-01 is kept alongside as reference. |
+| C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert / Chart / Favorites, light + dark | ~1 hr | ✅ **Done** (refreshed 2026-07-08) | 6 final screenshots at 1080×2400 in `docs/release-prep/screenshots/`, re-captured 2026-07-08 after the polish pass (flat Favorites cards, no nav clipping, visible dark chart fill). English, paid-user state (no ads), real currency icons. Captured on `Pixel7_EN` AVD; `SCREENSHOT_DARK=true ./.devtools/capture_android_screens.sh` for the dark set. Requires swiftshader GPU (`-gpu swiftshader_indirect`) for icon rendering. The older 8-tab set from 2026-06-01 is kept alongside as reference. |
 | C6 | Feature graphic (1024x500) | Branded graphic for featured placements | ~30 min | ✅ **Done** | `docs/release-prep/feature-graphic.png` (1024×500, botanical gradient + app name + phone mockup + tagline) |
 | C7 | Content rating questionnaire (IARC/CERT) | In Play Console > Policy > App content | ~15 min | ❌ |
-| C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII | ~30 min | ❌ |
+| C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII collected by us — **but the AdMob SDK must be declared** (device/advertising identifiers, ad interaction data; see the "Third-party SDKs" table below). Align answers with the consent setup from B8/E5b. | ~30 min | ❌ |
 | C9 | Category selection | Likely: Finance > Finance tools or Productivity | ~2 min | ❌ |
 | C10 | Contact email + website + privacy URL | Required fields in Console listing. `support@niduna.com` must actually receive mail first — email setup is `niduna-site/RELEASE_PLAN.md` § S1.4 | ~10 min | ❌ (blocked on domain + email) |
 | C11 | Localized listings (EN, DE, ES, IT, FR) | At minimum: translated short description | ~1 hr | ❌ |
@@ -217,6 +220,8 @@ everything after depends on them.
 Step 1:  Register Play Console account ($25) + identity + payments  [E1-E3]
 Step 2:  Create the app in Play Console (draft)                     [E4]
 Step 3:  Register AdMob, create real ad unit IDs                    [E5]
+Step 3b: AdMob console: create the GDPR consent message
+         (Privacy & messaging)                                      [E5b]
 
 ─ Phase 1 · Make niduna.com public (SITE — blocks C1/C10/B5) ──────────
 Step 4:  Buy niduna.com + attach to Vercel            [niduna-site S1.1]
@@ -231,6 +236,10 @@ Step 5b: Email on the domain — support@niduna.com must RECEIVE
 ─ Phase 2 · Finalize the app build (CODE — agent can do B4/B5/B6) ─────
 Step 6:  Rotate the TEMP keystore password (human, local)  [see callout]
 Step 7:  Swap AdMob test IDs for real ones (needs Step 3)  [B4]
+Step 7b: Implement UMP consent flow (needs Step 3b); align
+         the site's "non-personalised ads" claim            [B8]
+Step 7c: Publish app-ads.txt on niduna.com (needs Steps
+         3 + 4)                             [E5c / niduna-site S1.5]
 Step 8:  Add in-app privacy link → https://niduna.com/privacy/
          (needs Step 5)                                     [B5]
 Step 9:  ./scripts/check.sh + build signed AAB              [B6]
@@ -351,6 +360,16 @@ These can ship in v0.2.0+ updates:
 
 ## Change Log (this file)
 
+- **2026-07-08 (plan review)** — Full review of both release plans found
+  4 gaps, now fixed: (1) **B8 NEW** — no UMP/GDPR consent flow exists in
+  the app; required for EEA/UK/CH ad serving, pairs with new E5b (AdMob
+  consent message) — and the site privacy page's "non-personalised ads"
+  claim must be aligned when implementing it; (2) **E5c NEW** —
+  `app-ads.txt` on niduna.com (site plan S1.5); (3) B6 status corrected
+  from Done to "must re-run" — the final AAB needs real ad IDs, privacy
+  link, consent flow, and the rotated keystore; (4) C3's example claimed
+  "170+ currencies" — the app supports exactly 45. C8 now explicitly
+  requires declaring the AdMob SDK.
 - **2026-07-08 (later)** — Rewrote the Execution Order as a cross-repo
   master order (Phases 0-5) covering this repo + `niduna-site`
   (`niduna-site/RELEASE_PLAN.md` created the same day). Key correction:
