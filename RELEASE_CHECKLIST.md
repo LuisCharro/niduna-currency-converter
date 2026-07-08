@@ -6,7 +6,7 @@
 > **Status:** Code path complete, AAB+APK built and signed, 0 lint issues. Screenshots (C5) and feature graphic (C6) done. Accessibility pass done 2026-06-16 (238 tests passing at that point). **No code blockers remain except B4 (real AdMob IDs) and B5 (privacy link), both blocked on external steps.**
 >
 > **Remaining before submission (short list, in dependency order):**
-> 1. **Domain (niduna-site repo)** — buy `niduna.com` + attach to Vercel so `https://niduna.com/privacy/` is publicly reachable (the privacy *page* is already built; the Vercel project is SSO-gated until a domain is attached). Site-side steps: `niduna-site/RELEASE_PLAN.md` § S1. **Blocks C1, C10 and B5.**
+> 1. **Domain + email (niduna-site repo)** — buy `niduna.com` + attach to Vercel so `https://niduna.com/privacy/` is publicly reachable (the privacy *page* is already built; the Vercel project is SSO-gated until a domain is attached), and set up email so `support@niduna.com` receives mail (free forwarding is enough — provider comparison + "ask the friend" note in the site plan). Site-side steps: `niduna-site/RELEASE_PLAN.md` § S1. **Blocks C1, C10 and B5.**
 > 2. E1–E4 — Google Play Developer account ($25) + identity verification + payment profile + create app draft *(parallel with 1)*
 > 3. E5 — AdMob account + real ad unit IDs *(parallel with 1)* → then B4 (swap test IDs in code)
 > 4. Rotate the TEMP keystore password (see callout below) *(anytime before 5)*
@@ -103,7 +103,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | C7 | Content rating questionnaire (IARC/CERT) | In Play Console > Policy > App content | ~15 min | ❌ |
 | C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII | ~30 min | ❌ |
 | C9 | Category selection | Likely: Finance > Finance tools or Productivity | ~2 min | ❌ |
-| C10 | Contact email + website + privacy URL | Required fields in Console listing | ~10 min | ❌ |
+| C10 | Contact email + website + privacy URL | Required fields in Console listing. `support@niduna.com` must actually receive mail first — email setup is `niduna-site/RELEASE_PLAN.md` § S1.4 | ~10 min | ❌ (blocked on domain + email) |
 | C11 | Localized listings (EN, DE, ES, IT, FR) | At minimum: translated short description | ~1 hr | ❌ |
 
 ---
@@ -223,6 +223,10 @@ Step 4:  Buy niduna.com + attach to Vercel            [niduna-site S1.1]
 Step 5:  Verify /privacy/ + /currency-converter/ are publicly
          reachable (incognito, no SSO)                [niduna-site S1.2-S1.3]
          → C1 becomes ✅; privacy + marketing URLs are now final
+Step 5b: Email on the domain — support@niduna.com must RECEIVE
+         mail (free forwarding is enough; ask the friend which
+         provider he uses)                            [niduna-site S1.4]
+         → needed by C10 (Console contact email) + site mailto CTAs
 
 ─ Phase 2 · Finalize the app build (CODE — agent can do B4/B5/B6) ─────
 Step 6:  Rotate the TEMP keystore password (human, local)  [see callout]
@@ -233,7 +237,8 @@ Step 9:  ./scripts/check.sh + build signed AAB              [B6]
 
 ─ Phase 3 · Play Console listing (needs Phases 0-2) ───────────────────
 Step 10: Listing content: title, descriptions, category      [C2-C4, C9]
-Step 11: Contact email + website + privacy URL (from Step 5) [C10]
+Step 11: Contact email (working support@ from Step 5b) +
+         website + privacy URL (from Step 5)                 [C10]
 Step 12: Upload screenshots + feature graphic (✅ ready,
          refreshed 2026-07-08)                               [C5-C6]
 Step 13: Content rating questionnaire + Data Safety form     [C7-C8]
