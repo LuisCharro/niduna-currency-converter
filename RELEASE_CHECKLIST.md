@@ -111,6 +111,89 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 
 ---
 
+## Implementation Notes — exact clues per open step (2026-07-08)
+
+### B4 — Real AdMob IDs (mostly env vars, almost no code)
+The IDs flow through the build, not the source:
+- **Ad unit IDs** are read via `String.fromEnvironment` in
+  `lib/src/core/ads/ad_helper.dart` and injected as `--dart-define`s by
+  `flutter_app_define_args` in `scripts/common.sh:93`. Set env vars
+  `ADMOB_ANDROID_BANNER_AD_UNIT_ID` + `ADMOB_ANDROID_REWARDED_AD_UNIT_ID`
+  when running `./scripts/build_appbundle.sh`.
+- **`ADMOB_USE_TEST_ADS` defaults to `true`** (`scripts/common.sh:96`,
+  `ad_helper.dart:6-9`) — the release build command MUST set
+  `ADMOB_USE_TEST_ADS=false` or real IDs are ignored.
+- **Android app ID**: env var `ADMOB_ANDROID_APP_ID` →
+  `android/app/build.gradle.kts:43-45` (manifest placeholder; falls back
+  to Google's test app ID `~3347511713`).
+- **iOS app ID**: hardcoded test ID at `ios/Runner/Info.plist:28`
+  (`GADApplicationIdentifier`) — only matters for the deferred iOS release.
+- Suggested: keep the real values in a gitignored `.env.release` sourced
+  by the build scripts, and document the final command in
+  `docs/RELEASE_COMMANDS.md`.
+
+### B5 — In-app privacy link
+- **The app has NO `url_launcher`** — add `url_launcher: ^6.3.0` to
+  `pubspec.yaml` first; nothing in `lib/` can open a browser today.
+- Natural spot: a "Privacy policy" `SettingsTile` at the bottom of the
+  merged Data & privacy page
+  (`lib/src/features/settings/widgets/data_details_page.dart`), opening
+  `https://niduna.com/privacy/` with
+  `launchUrl(..., mode: LaunchMode.externalApplication)`.
+- New ARB key (e.g. `labelPrivacyPolicy`) in all 5 `lib/l10n/app_*.arb`
+  + `flutter gen-l10n`; extend the page test in `test/widget_test.dart`
+  ("Data & privacy page attributes sources in plain language").
+
+### B8 — UMP consent flow (after E5b creates the console message)
+- Entry point: `lib/main.dart:33` — today it fire-and-forgets
+  `MobileAds.instance.initialize()`. Wrap with the UMP sequence from the
+  same `google_mobile_ads` package: `ConsentInformation.instance
+  .requestConsentInfoUpdate(...)` → `ConsentForm
+  .loadAndShowConsentFormIfRequired(...)` → only initialize/show ads when
+  `canRequestAds` is true. Keep it non-blocking for app startup (ads are
+  already lazy).
+- **Decision to make here:** always-non-personalized (add `npa: '1'`
+  extras to `AdRequest` in `lib/src/core/ads/ad_banner_widget.dart` and
+  `admob_rewarded_ad_service.dart`; matches the site privacy page as
+  written) vs consent-based personalization (higher revenue; then update
+  the site privacy page's "non-personalised advertising" claim —
+  `niduna-site/privacy/index.html` line ~142).
+- Test with UMP debug geography = EEA on the emulator
+  (`ConsentDebugSettings(debugGeography: DebugGeography.debugGeographyEea,
+  testIdentifiers: [...])`) before trusting it.
+
+### Keystore rotation — commands are in the callout above; afterwards
+re-run `./scripts/build_appbundle.sh` (B6) and confirm the AAB signature
+with `jarsigner -verify` or `apksigner`.
+
+### C2-C4 + C11 — Listing copy
+- Draft everything in a new `docs/release-prep/store-listing.md` (EN
+  master + DE/ES/IT/FR short descriptions) so it's reviewable before
+  pasting into the Console. The app's own ARB files are the vocabulary
+  reference for translated feature names.
+- Facts to respect: **45 currencies (34 fiat + 11 crypto)** — count is
+  from `lib/src/core/currency/supported_currencies.dart`; rates update
+  once daily; free = full converter + charts, one-time IAPs remove
+  ads/unlock extras. Trust line from `docs/FEATURE_IDEAS.md`: "One
+  purchase, forever. No subscription. No account."
+
+### C7-C10 — Console forms (click-paths)
+- **C7 rating**: Console → Policy → App content → Content rating
+  questionnaire. Utility/finance answers: no violence, no UGC, no data
+  sharing between users → expect Everyone/3+.
+- **C8 Data Safety**: answers pre-written in this file § "Privacy
+  Policy — What To Disclose" + § "Data Refresh Cadence". Plus AdMob:
+  declare "Device or other IDs" (advertising ID), purpose Advertising,
+  collected-not-shared-by-us, per the consent setup chosen in B8.
+- **C9**: Category = Finance (no financial-features declaration needed —
+  see § "Financial Features Declaration").
+- **C10 values**: email `support@niduna.com` (must receive — site plan
+  S1.4), website `https://niduna.com`, privacy
+  `https://niduna.com/privacy/`, marketing URL
+  `https://niduna.com/currency-converter/`.
+
+---
+
 ## Already Done ✅ (no action needed)
 
 ### Provider Licensing — Clean for Publication
