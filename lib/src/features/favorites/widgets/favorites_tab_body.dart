@@ -43,35 +43,58 @@ class FavoritesTabBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final list = ListView(
-      padding: AppTheme.pageInsets.copyWith(
-        top: AppTheme.space6,
-        bottom: AppTheme.space4,
-      ),
-      children: <Widget>[
-        ScreenTitle(l10n(context).tabFavorites),
-        const SizedBox(height: AppTheme.space4),
-        if (pairs.isEmpty)
-          FavoritesEmptyState(onAdd: onAdd)
-        else
-          FavoritesList(
-            pairs: pairs,
-            effectiveLimit: effectiveLimit,
-            visibleLimit: visibleLimit,
-            hasFavoritesPro: hasFavoritesPro,
-            canOfferBoost: canOfferBoost,
-            snapshot: snapshot,
-            onOpen: onOpen,
-            onRemove: onRemove,
-            onReorder: onReorder,
-            onAdd: onAdd,
-            onWatchAd: onWatchAd,
-            onBuyPro: onBuyPro,
-          ),
-      ],
+    final insets = AppTheme.pageInsets.copyWith(
+      top: AppTheme.space6,
+      bottom: AppTheme.tabScrollBottomPadding(context),
     );
+    final list = pairs.isEmpty
+        ? _emptyBody(context, insets)
+        : ListView(
+            padding: insets,
+            children: <Widget>[
+              ScreenTitle(l10n(context).tabFavorites),
+              const SizedBox(height: AppTheme.space4),
+              FavoritesList(
+                pairs: pairs,
+                effectiveLimit: effectiveLimit,
+                visibleLimit: visibleLimit,
+                hasFavoritesPro: hasFavoritesPro,
+                canOfferBoost: canOfferBoost,
+                snapshot: snapshot,
+                onOpen: onOpen,
+                onRemove: onRemove,
+                onReorder: onReorder,
+                onAdd: onAdd,
+                onWatchAd: onWatchAd,
+                onBuyPro: onBuyPro,
+              ),
+            ],
+          );
 
     if (onRefresh == null) return list;
     return NidunaRefreshIndicator(onRefresh: onRefresh!, child: list);
+  }
+
+  /// Centers the empty state in the space left under the title instead of
+  /// leaving a dead paper gap above the nav.
+  Widget _emptyBody(BuildContext context, EdgeInsets insets) {
+    return CustomScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      slivers: <Widget>[
+        SliverPadding(
+          padding: insets.copyWith(bottom: 0),
+          sliver: SliverToBoxAdapter(
+            child: ScreenTitle(l10n(context).tabFavorites),
+          ),
+        ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(
+            padding: insets.copyWith(top: AppTheme.space4),
+            child: Center(child: FavoritesEmptyState(onAdd: onAdd)),
+          ),
+        ),
+      ],
+    );
   }
 }
