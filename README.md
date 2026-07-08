@@ -6,7 +6,7 @@ Privacy-first Flutter currency converter for the Niduna portfolio.
 
 ## What's in Phase 1
 
-- 40 fiat currencies + 11 crypto (USD, EUR, GBP, JPY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR, TWD, NZD, CNY, TRY, AED, ILS, ZAR + BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC)
+- 45 currencies total — 34 fiat + 11 crypto (USD, EUR, GBP, JPY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR, TWD, NZD, CNY, TRY, AED, ILS, ZAR + BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC); source of truth: `lib/src/core/currency/supported_currencies.dart`
 - Multi-currency conversion view (type one amount, see all conversions)
 - Historical charts (up to 2 years, unlimited free)
 - Favorites (save up to 3 currency pairs locally)
@@ -154,10 +154,11 @@ flutter pub get
 | `./scripts/pub_get.sh` | fetch dependencies |
 | `./scripts/clean-deep-files.sh` | deep clean build artifacts |
 
-## Current phase
+## Current phase (2026-07-08)
 
-- Screen-by-screen implementation
-- Stub screens exist (Convert, Favorites, Charts, Settings)
-- API client integration pending (Frankfurter)
-- AdMob integration pending
-- IAP integration pending
+- App is **code-complete for the Android release** (239 tests, all four
+  tabs live with real data, AdMob SDK integrated in test mode, IAP stubs)
+- Remaining launch work is external/config: see `RELEASE_CHECKLIST.md`
+  § "Execution Order" (accounts, domain via the sibling `niduna-site`
+  repo, real ad IDs + UMP consent flow, keystore rotation)
+- Post-launch feature backlog: `docs/FEATURE_IDEAS.md`

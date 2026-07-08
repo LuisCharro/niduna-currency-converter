@@ -19,7 +19,7 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (2026-06-13)
+## Current state (2026-07-08)
 
 - **Branch:** `main` is the canonical branch. `release-prep`,
   `feature/widget-restore`, `feature/ios-widget-target` are kept
@@ -28,7 +28,17 @@ skills without changing this repo again.
   signed (v2, 50 MB). `flutter build apk --release` works (58 MB).
   `flutter build ios --simulator --debug` works, app installs and
   runs on iPhone 17 Pro sim (iOS 26.5).
-- **Tests:** 194/194 pass. `flutter analyze` is clean.
+- **Tests:** 239/239 pass. `flutter analyze` is clean.
+- **2026-07-08 polish pass:** Settings data pages merged into one
+  "Data & privacy" page (no dev vocabulary in user copy), Favorites
+  clipping/shadow fixed, palette-token switches, dark chart fill,
+  store screenshots re-captured. Dark screenshot sets:
+  `SCREENSHOT_DARK=true ./.devtools/capture_android_screens.sh`;
+  verification captures: `CAPTURE_TARGET_PATH=integration_test/ui_polish_verify_test.dart`.
+- **Release:** cross-repo master order in `RELEASE_CHECKLIST.md`
+  § "Execution Order" + per-step "Implementation Notes"; site-side
+  steps in the sibling repo `../../niduna-site/RELEASE_PLAN.md`.
+  Post-launch feature backlog: `docs/FEATURE_IDEAS.md`.
 - **Home-screen widgets:**
   - **Android:** fully redesigned — 3-pair icon-led widget with warm
     paper background, currency symbols in circles, thin dividers.
