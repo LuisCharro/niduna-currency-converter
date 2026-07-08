@@ -103,6 +103,12 @@ flutter_app_define_args() {
   printf '%s\n' "--dart-define=APP_DEV_MODE=${app_dev_mode}"
   printf '%s\n' "--dart-define=ADMOB_USE_TEST_ADS=${admob_use_test_ads}"
 
+  # Screenshot capture only: seeds the dark-mode preference in the
+  # integration-test gallery so light and dark sets come from the same flow.
+  if [[ -n "${SCREENSHOT_DARK:-}" ]]; then
+    printf '%s\n' "--dart-define=SCREENSHOT_DARK=${SCREENSHOT_DARK}"
+  fi
+
   if [[ -n "${admob_android_banner_id}" ]]; then
     printf '%s\n' "--dart-define=ADMOB_ANDROID_BANNER_AD_UNIT_ID=${admob_android_banner_id}"
   fi

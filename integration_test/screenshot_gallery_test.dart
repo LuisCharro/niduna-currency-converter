@@ -11,6 +11,8 @@ import 'package:currency_converter/src/shared/widgets/floating_pill_nav.dart';
 
 Future<void> _seedPaidUserWithFavorites() async {
   final prefs = await SharedPreferences.getInstance();
+  const dark = bool.fromEnvironment('SCREENSHOT_DARK');
+  await prefs.setBool('pref_dark_mode', dark);
   await prefs.setBool('entitlement_remove_ads_lifetime', true);
   await prefs.setBool('entitlement_charts_pro_lifetime', true);
   await prefs.setBool('entitlement_favorites_pro_lifetime', true);
