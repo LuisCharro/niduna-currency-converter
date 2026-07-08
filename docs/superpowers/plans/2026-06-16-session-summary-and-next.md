@@ -20,7 +20,7 @@
 
 ## Current state / gotchas
 
-- **`main` is ~12 commits ahead of `origin/main` — NOT pushed.** Push when ready.
+- ~~**`main` is ~12 commits ahead of `origin/main` — NOT pushed.** Push when ready.~~ ✅ **Resolved 2026-07-08:** main is in sync with origin/main.
 - **Emulators in use:** iOS sim `87FB7A6A-58E4-4F45-A44E-EC071B06BC04` (iPhone 17 Pro, iOS 26.5); Android `Pixel7_EN` (`emulator-5554`). Both have the latest build.
 - **iOS widget App Group works on the SIMULATOR only**, because `.devtools/sign_sim_widget.sh` re-signs the unsigned sim build with the entitlement. A **physical device / App Store** build needs the App Group provisioned with an **Apple Developer team** (none configured yet). If you bump the app version, re-run `ios/scripts/add_widget_target.rb` before a device build.
 - **AdMob still uses Google TEST ad-unit IDs** (`lib/src/core/ads/ad_helper.dart`); **Android keystore password is TEMP** (`android/key.properties`) — both are launch chores (see `RELEASE_CHECKLIST.md`).

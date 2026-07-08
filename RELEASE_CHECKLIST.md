@@ -1,9 +1,17 @@
 # Release Checklist — Path to Google Play Store
 
-> **Last updated:** 2026-06-13
+> **Last updated:** 2026-07-08
 > **App version:** 0.1.0+1 (pre-MVP)
-> **Branch:** main
-> **Status:** Code path complete, AAB+APK built and signed, 192/192 tests pass, 0 lint issues. Screenshots (C5) and feature graphic (C6) done. Remaining work is external (E1–E5) + content (C1–C4, C7–C11) + keystore password rotation.
+> **Branch:** main (in sync with origin/main)
+> **Status:** Code path complete, AAB+APK built and signed, 0 lint issues. Screenshots (C5) and feature graphic (C6) done. Accessibility pass done 2026-06-16 (238 tests passing at that point). **No code blockers remain except B4 (real AdMob IDs) and B5 (privacy link), both blocked on external steps.**
+>
+> **Remaining before submission (short list):**
+> 1. E1–E4 — Google Play Developer account ($25) + identity verification + payment profile + create app draft
+> 2. E5 — AdMob account + real ad unit IDs → then B4 (swap test IDs in code)
+> 3. C1 — Write & host privacy policy → then B5 (in-app link in Settings)
+> 4. Rotate the TEMP keystore password (see callout below)
+> 5. C2–C4, C7–C11 — Play Console listing content (title, descriptions, rating, Data Safety, category, contact, localized listings)
+> 6. B6 rebuild AAB with rotated keystore → B7 upload → pre-launch report → submit
 > **2026-06-02 update:** iOS widget code merged but disabled (Xcode 26 simctl install bug). Code complete, verify on real iPhone when convenient. See "Blocker Summary" below.
 > **2026-06-01 update:** Backend work deferred until post-publish. Code-only path: see "Code-Only Pre-Flight" below. Full detail in `docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`.
 > **2026-06-02 review:** see `docs/REVIEW-2026-06-01.md` for the full audit.
@@ -310,6 +318,11 @@ These can ship in v0.2.0+ updates:
 
 ## Change Log (this file)
 
+- **2026-07-08** — Refreshed header with a consolidated "Remaining before
+  submission" short list (accounts → AdMob IDs → privacy policy → keystore
+  rotation → listing content → upload). Noted the 2026-06-16 accessibility
+  pass and that main is pushed/in sync with origin. No blocker statuses
+  changed — E1–E5, B4, B5, B7, C1–C4, C7–C11 all still open.
 - **2026-06-13** — Marked C5 (screenshots) and C6 (feature graphic) as ✅
   Done. 6 final store screenshots at 1080×2400 captured on the new
   `Pixel7_EN` AVD (Convert / Chart with data point tooltip / Favorites
