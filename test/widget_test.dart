@@ -29,6 +29,7 @@ import 'package:currency_converter/src/core/ads/ad_banner_widget.dart';
 import 'package:currency_converter/src/features/charts/widgets/rate_chart.dart';
 import 'package:currency_converter/src/features/settings/settings_controller.dart';
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
+import 'package:currency_converter/src/features/settings/widgets/data_details_page.dart';
 import 'package:currency_converter/src/shared/widgets/bottom_tab_frame.dart';
 import 'package:currency_converter/src/shared/widgets/fade_slide_switcher.dart';
 import 'package:currency_converter/src/shared/widgets/floating_pill_nav.dart';
@@ -583,7 +584,27 @@ void main() {
     expect(find.text('Premium'), findsOneWidget);
     expect(find.text('Default base currency'), findsWidgets);
     expect(find.text('Dark mode'), findsWidgets);
-    expect(find.text('Data details'), findsOneWidget);
+    expect(find.text('Data & privacy'), findsOneWidget);
+    // The old duplicate "Data sources" tile in About is gone (merged page).
+    expect(find.text('Data sources'), findsNothing);
+  });
+
+  testWidgets('Data & privacy page attributes sources in plain language', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const MaterialApp(home: DataDetailsPage()));
+    expect(
+      find.text('Fiat rates come from Frankfurter using ECB data.'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Crypto prices come from an open public dataset.'),
+      findsOneWidget,
+    );
+    // No developer/build vocabulary on the user-facing page.
+    expect(find.textContaining('Dev Sandbox'), findsNothing);
+    expect(find.textContaining('provider chain'), findsNothing);
+    expect(find.textContaining('fawazahmed0'), findsNothing);
   });
 
   testWidgets('Settings hierarchy uses calmer shared typography', (

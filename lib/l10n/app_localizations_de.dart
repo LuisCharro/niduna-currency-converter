@@ -165,9 +165,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Neue Kurse beim Start der App abrufen';
 
   @override
-  String get labelDataSources => 'Datenquellen';
-
-  @override
   String get labelClearAllData => 'Alle Daten löschen';
 
   @override
@@ -211,7 +208,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dataSourcesSubtitle =>
-      'Frankfurter, EZB, Kryptoquellen und Chartverfügbarkeit';
+      'Quellen, Aktualisierungsplan und gespeicherte Daten';
 
   @override
   String get versionTapHint =>
@@ -302,7 +299,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get subscriptionActive => 'Abonnement aktiv';
 
   @override
-  String get dataDetailsTitle => 'Datendetails';
+  String get dataDetailsTitle => 'Daten & Datenschutz';
 
   @override
   String get dataPolicyTitle => 'Tägliche Datenrichtlinie';
@@ -446,4 +443,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String chartRangeLabel(String range) {
     return 'Zeitraum $range';
   }
+
+  @override
+  String get cryptoDataSourceLine =>
+      'Krypto-Preise stammen aus einem offenen, öffentlichen Datensatz.';
+
+  @override
+  String get clearDataDialogTitle => 'Alle Daten löschen?';
+
+  @override
+  String get snackCacheCleared => 'Cache geleert';
+
+  @override
+  String get snackRestoreComingSoon =>
+      'Käufe wiederherstellen ist bald verfügbar';
 }

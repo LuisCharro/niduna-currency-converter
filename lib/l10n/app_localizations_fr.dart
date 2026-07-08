@@ -166,9 +166,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Récupérer les nouveaux taux au démarrage de l\'app';
 
   @override
-  String get labelDataSources => 'Sources de données';
-
-  @override
   String get labelClearAllData => 'Effacer toutes les données';
 
   @override
@@ -211,7 +208,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dataSourcesSubtitle =>
-      'Frankfurter, BCE, sources crypto et disponibilité des graphiques';
+      'Sources, calendrier de mise à jour et données stockées';
 
   @override
   String get versionTapHint =>
@@ -304,7 +301,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get subscriptionActive => 'Abonnement actif';
 
   @override
-  String get dataDetailsTitle => 'Détails des données';
+  String get dataDetailsTitle => 'Données et confidentialité';
 
   @override
   String get dataPolicyTitle => 'Politique quotidienne des données';
@@ -448,4 +445,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String chartRangeLabel(String range) {
     return 'Période $range';
   }
+
+  @override
+  String get cryptoDataSourceLine =>
+      'Les prix des cryptomonnaies proviennent d’un jeu de données public et ouvert.';
+
+  @override
+  String get clearDataDialogTitle => 'Effacer toutes les données ?';
+
+  @override
+  String get snackCacheCleared => 'Cache vidé';
+
+  @override
+  String get snackRestoreComingSoon =>
+      'La restauration des achats sera bientôt disponible';
 }

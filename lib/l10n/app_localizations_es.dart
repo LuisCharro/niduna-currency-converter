@@ -166,9 +166,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Obtener nuevos tipos cuando se inicia la app';
 
   @override
-  String get labelDataSources => 'Fuentes de datos';
-
-  @override
   String get labelClearAllData => 'Borrar todos los datos';
 
   @override
@@ -212,7 +209,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get dataSourcesSubtitle =>
-      'Frankfurter, BCE, fuentes cripto y disponibilidad de gráficos';
+      'Fuentes, calendario de actualización y qué se guarda';
 
   @override
   String get versionTapHint =>
@@ -302,7 +299,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get subscriptionActive => 'Suscripción activa';
 
   @override
-  String get dataDetailsTitle => 'Detalles de los datos';
+  String get dataDetailsTitle => 'Datos y privacidad';
 
   @override
   String get dataPolicyTitle => 'Política diaria de datos';
@@ -446,4 +443,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String chartRangeLabel(String range) {
     return 'Periodo $range';
   }
+
+  @override
+  String get cryptoDataSourceLine =>
+      'Los precios de las criptomonedas provienen de un conjunto de datos público y abierto.';
+
+  @override
+  String get clearDataDialogTitle => '¿Borrar todos los datos?';
+
+  @override
+  String get snackCacheCleared => 'Caché borrada';
+
+  @override
+  String get snackRestoreComingSoon =>
+      'Restaurar compras estará disponible pronto';
 }

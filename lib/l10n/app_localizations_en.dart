@@ -165,9 +165,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Fetch new rates when the app starts';
 
   @override
-  String get labelDataSources => 'Data sources';
-
-  @override
   String get labelClearAllData => 'Clear all data';
 
   @override
@@ -210,7 +207,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataSourcesSubtitle =>
-      'Frankfurter, ECB, crypto sources and chart availability';
+      'Sources, update schedule and what\'s stored';
 
   @override
   String get versionTapHint => 'Tap 7 times to unlock developer options';
@@ -299,7 +296,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionActive => 'Subscription active';
 
   @override
-  String get dataDetailsTitle => 'Data details';
+  String get dataDetailsTitle => 'Data & privacy';
 
   @override
   String get dataPolicyTitle => 'Daily data policy';
@@ -441,4 +438,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String chartRangeLabel(String range) {
     return '$range range';
   }
+
+  @override
+  String get cryptoDataSourceLine =>
+      'Crypto prices come from an open public dataset.';
+
+  @override
+  String get clearDataDialogTitle => 'Clear all data?';
+
+  @override
+  String get snackCacheCleared => 'Cache cleared';
+
+  @override
+  String get snackRestoreComingSoon => 'Restore purchases is coming soon';
 }

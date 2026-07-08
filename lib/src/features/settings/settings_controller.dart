@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
 import '../../core/preferences/app_preferences.dart';
+import '../../../l10n/app_localizations_safe.dart';
 import 'widgets/data_details_page.dart';
-import 'widgets/data_sources_page.dart';
 import 'widgets/iap_purchase_player.dart';
 import 'widgets/settings_detail_route.dart';
 
@@ -39,38 +39,30 @@ class SettingsController extends ChangeNotifier {
     );
   }
 
-  void openDataSources(BuildContext context) {
-    final theme = Theme.of(context);
-    Navigator.of(context).push(
-      buildSettingsDetailRoute<void>(
-        theme: theme,
-        builder: (_) => const DataSourcesPage(),
-      ),
-    );
-  }
-
   void requestClearCache(BuildContext context) {
+    final loc = l10n(context);
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Clear all data?'),
-        content: const Text(
-          'This will clear latest fiat rates, latest crypto rates, chart history, crypto chart history, and all temporary pair unlocks.',
-        ),
+        title: Text(loc.clearDataDialogTitle),
+        content: Text(loc.labelClearAllDataSubtitle),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel'),
+            child: Text(loc.btnCancel),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
               onClearCache();
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Cache cleared')));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(loc.snackCacheCleared)),
+              );
             },
-            child: Text('Clear', style: TextStyle(color: Colors.red.shade400)),
+            child: Text(
+              loc.btnClear,
+              style: TextStyle(color: Colors.red.shade400),
+            ),
           ),
         ],
       ),
@@ -104,7 +96,7 @@ class SettingsController extends ChangeNotifier {
 
   void restorePurchases(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Restore purchases coming soon!')),
+      SnackBar(content: Text(l10n(context).snackRestoreComingSoon)),
     );
   }
 }

@@ -13,7 +13,10 @@ class DataDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final usage = ProviderUsageInfo.fromBuildConfig();
     final loc = l10n(context);
-    final cryptoLines = cryptoDataLines(context, usage.cryptoChartsEnabled);
+    final cryptoLines = <String>[
+      loc.cryptoDataSourceLine,
+      ...cryptoDataLines(context, usage.cryptoChartsEnabled),
+    ];
 
     return Scaffold(
       backgroundColor: AppColors.of(context).bg,

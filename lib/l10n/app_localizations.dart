@@ -410,12 +410,6 @@ abstract class AppLocalizations {
   /// **'Fetch new rates when the app starts'**
   String get labelRefreshOnOpenSubtitle;
 
-  /// Data sources setting title
-  ///
-  /// In en, this message translates to:
-  /// **'Data sources'**
-  String get labelDataSources;
-
   /// Clear data setting title
   ///
   /// In en, this message translates to:
@@ -497,7 +491,7 @@ abstract class AppLocalizations {
   /// Data sources subtitle
   ///
   /// In en, this message translates to:
-  /// **'Frankfurter, ECB, crypto sources and chart availability'**
+  /// **'Sources, update schedule and what\'s stored'**
   String get dataSourcesSubtitle;
 
   /// Developer mode unlock hint
@@ -671,7 +665,7 @@ abstract class AppLocalizations {
   /// Data details page title
   ///
   /// In en, this message translates to:
-  /// **'Data details'**
+  /// **'Data & privacy'**
   String get dataDetailsTitle;
 
   /// Data policy section title
@@ -913,6 +907,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{range} range'**
   String chartRangeLabel(String range);
+
+  /// Crypto data source attribution line on the Data & privacy page
+  ///
+  /// In en, this message translates to:
+  /// **'Crypto prices come from an open public dataset.'**
+  String get cryptoDataSourceLine;
+
+  /// Title of the clear-all-data confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all data?'**
+  String get clearDataDialogTitle;
+
+  /// Snackbar shown after cache is cleared
+  ///
+  /// In en, this message translates to:
+  /// **'Cache cleared'**
+  String get snackCacheCleared;
+
+  /// Snackbar shown when restore purchases is not yet available
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchases is coming soon'**
+  String get snackRestoreComingSoon;
 }
 
 class _AppLocalizationsDelegate
