@@ -5,13 +5,14 @@
 > **Branch:** main (in sync with origin/main)
 > **Status:** Code path complete, AAB+APK built and signed, 0 lint issues. Screenshots (C5) and feature graphic (C6) done. Accessibility pass done 2026-06-16 (238 tests passing at that point). **No code blockers remain except B4 (real AdMob IDs) and B5 (privacy link), both blocked on external steps.**
 >
-> **Remaining before submission (short list):**
-> 1. E1–E4 — Google Play Developer account ($25) + identity verification + payment profile + create app draft
-> 2. E5 — AdMob account + real ad unit IDs → then B4 (swap test IDs in code)
-> 3. C1 — Write & host privacy policy → then B5 (in-app link in Settings)
-> 4. Rotate the TEMP keystore password (see callout below)
-> 5. C2–C4, C7–C11 — Play Console listing content (title, descriptions, rating, Data Safety, category, contact, localized listings)
-> 6. B6 rebuild AAB with rotated keystore → B7 upload → pre-launch report → submit
+> **Remaining before submission (short list, in dependency order):**
+> 1. **Domain (niduna-site repo)** — buy `niduna.com` + attach to Vercel so `https://niduna.com/privacy/` is publicly reachable (the privacy *page* is already built; the Vercel project is SSO-gated until a domain is attached). Site-side steps: `niduna-site/RELEASE_PLAN.md` § S1. **Blocks C1, C10 and B5.**
+> 2. E1–E4 — Google Play Developer account ($25) + identity verification + payment profile + create app draft *(parallel with 1)*
+> 3. E5 — AdMob account + real ad unit IDs *(parallel with 1)* → then B4 (swap test IDs in code)
+> 4. Rotate the TEMP keystore password (see callout below) *(anytime before 5)*
+> 5. B5 in-app privacy link (needs 1) → B6 rebuild signed AAB
+> 6. C2–C4, C7–C11 — Play Console listing content (title, descriptions, rating, Data Safety, category, contact + privacy/marketing URLs from 1, localized listings)
+> 7. B7 upload AAB → pre-launch report → submit. **After approval:** run the site launch-day batch (`niduna-site/RELEASE_PLAN.md` § S2 — Play link, badge, JSON-LD, trust line).
 > **2026-06-02 update:** iOS widget code merged but disabled (Xcode 26 simctl install bug). Code complete, verify on real iPhone when convenient. See "Blocker Summary" below.
 > **2026-06-01 update:** Backend work deferred until post-publish. Code-only path: see "Code-Only Pre-Flight" below. Full detail in `docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`.
 > **2026-06-02 review:** see `docs/REVIEW-2026-06-01.md` for the full audit.
@@ -74,7 +75,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ✅ **Done** | `200c888` — ⚠️ **password is TEMP, must be rotated before publish** (see Keystore note below) |
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` — release AAB now signed, falls back to debug if `key.properties` is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
-| B5 | Add privacy policy link in Settings screen | Settings widget | ~30 min | ❌ | Blocked on C1 (privacy URL not hosted) |
+| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Blocked on C1 (domain not public yet — see `niduna-site/RELEASE_PLAN.md` § S1). Target URL: `https://niduna.com/privacy/` |
 | B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | ✅ **Done** | `build/app/outputs/bundle/release/app-release.aab` (50 MB, signed v2) — re-run any time with the script |
 | B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
 
@@ -93,7 +94,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 
 | # | Task | Specs | Effort | Status |
 |---|------|-------|--------|--------|
-| C1 | Write & host privacy policy page | GitHub Pages or similar; public URL required | ~1 hr | ❌ |
+| C1 | Write & host privacy policy page | Page is **built and deployed** at `niduna-site/privacy/` (brand-level + per-app sections, 2026-06-02). Remaining: make it publicly reachable — buy `niduna.com` + attach to Vercel (project is SSO-gated). See `niduna-site/RELEASE_PLAN.md` § S1. | domain purchase | 🟡 Blocked on domain |
 | C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
 | C3 | Short description (max 80 chars) | Example: *"Convert 170+ currencies instantly. Privacy-first. Beautiful."* | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Niduna differentiator | ~45 min | ❌ |
@@ -204,27 +205,54 @@ widgets, trend arrows, and chart-comparison deferral, see
 
 ---
 
-## Execution Order (Recommended)
+## Execution Order (Recommended — cross-repo master order, 2026-07-08)
+
+This order spans **two repos**: this app repo and `niduna-site`
+(the privacy policy + marketing pages live there; site-side detail in
+`niduna-site/RELEASE_PLAN.md`). Phases 0/1 can run in parallel;
+everything after depends on them.
 
 ```
-Step 1:  External — Register Play account ($25)                    [E1-E4]
-Step 2:  External — Register AdMob, get real ad unit IDs             [E5]
-Step 3:  Code — Generate keystore + update signing config              [B1-B3]
-Step 4:  Code — Swap AdMob test IDs for real ones                   [B4]
-Step 5:  Code — Privacy policy page + in-app link                     [B5]
-Step 6:  Code — Build release AAB with real keystore                 [B6]
-Step 7:  External — Upload AAB to Play Console                      [B7]
-Step 8:  Content — Privacy policy hosted publicly                  [C1]
-Step 9:  Content — Screenshots + feature graphic                  [C5-C6] ✅ Done
-Step 10: Content — App metadata (title, descriptions, category)      [C2-C4, C9-C11]
-Step 11: Content — Content rating + Data Safety forms               [C7-C8]
-Step 12: Review — Pre-launch report from Play Console               [auto after upload]
-Step 13: Submit for review                                             [Play Console]
+─ Phase 0 · Accounts (external, parallel with Phase 1) ────────────────
+Step 1:  Register Play Console account ($25) + identity + payments  [E1-E3]
+Step 2:  Create the app in Play Console (draft)                     [E4]
+Step 3:  Register AdMob, create real ad unit IDs                    [E5]
+
+─ Phase 1 · Make niduna.com public (SITE — blocks C1/C10/B5) ──────────
+Step 4:  Buy niduna.com + attach to Vercel            [niduna-site S1.1]
+Step 5:  Verify /privacy/ + /currency-converter/ are publicly
+         reachable (incognito, no SSO)                [niduna-site S1.2-S1.3]
+         → C1 becomes ✅; privacy + marketing URLs are now final
+
+─ Phase 2 · Finalize the app build (CODE — agent can do B4/B5/B6) ─────
+Step 6:  Rotate the TEMP keystore password (human, local)  [see callout]
+Step 7:  Swap AdMob test IDs for real ones (needs Step 3)  [B4]
+Step 8:  Add in-app privacy link → https://niduna.com/privacy/
+         (needs Step 5)                                     [B5]
+Step 9:  ./scripts/check.sh + build signed AAB              [B6]
+
+─ Phase 3 · Play Console listing (needs Phases 0-2) ───────────────────
+Step 10: Listing content: title, descriptions, category      [C2-C4, C9]
+Step 11: Contact email + website + privacy URL (from Step 5) [C10]
+Step 12: Upload screenshots + feature graphic (✅ ready,
+         refreshed 2026-07-08)                               [C5-C6]
+Step 13: Content rating questionnaire + Data Safety form     [C7-C8]
+Step 14: Localized listings (EN, DE, ES, IT, FR)             [C11]
+
+─ Phase 4 · Submit ────────────────────────────────────────────────────
+Step 15: Upload AAB → pre-launch report → fix if needed      [B7]
+Step 16: Submit for review
+
+─ Phase 5 · After approval (SITE launch-day batch) ────────────────────
+Step 17: Play Store link + "Available" badge + JSON-LD
+         datePublished + trust line, deploy + verify  [niduna-site S2]
+Step 18: Post-launch backlog: docs/FEATURE_IDEAS.md (app),
+         niduna-site PENDING.md deferred items
 ```
 
-Steps 1-2 are external and can happen in parallel.
-Steps 3-6 are code changes (agent can do autonomously).
-Steps 7-13 alternate between external console work and content creation.
+Rule of thumb: **nothing in Phases 2-4 can finish while the site is
+still SSO-gated** — the privacy URL is required by the in-app link (B5),
+the Console listing (C10), and the Data Safety form (C8).
 
 ---
 
@@ -318,6 +346,13 @@ These can ship in v0.2.0+ updates:
 
 ## Change Log (this file)
 
+- **2026-07-08 (later)** — Rewrote the Execution Order as a cross-repo
+  master order (Phases 0-5) covering this repo + `niduna-site`
+  (`niduna-site/RELEASE_PLAN.md` created the same day). Key correction:
+  C1's privacy *page* already exists on the site; the real blocker is
+  the domain purchase (Vercel SSO gate), which also blocks B5/C10.
+  Screenshots C5 re-captured post-polish. Header short list reordered
+  by dependency.
 - **2026-07-08** — Refreshed header with a consolidated "Remaining before
   submission" short list (accounts → AdMob IDs → privacy policy → keystore
   rotation → listing content → upload). Noted the 2026-06-16 accessibility
