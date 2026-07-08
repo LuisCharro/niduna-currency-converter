@@ -26,6 +26,7 @@ Privacy-first Flutter currency converter for the Niduna portfolio.
 | `PLAN.md` | Development plan, navigation structure, file layout, Phase 1 TODO |
 | `AGENTS.md` | Agent instructions, skills, verification rules, modularity rules |
 | `agent/README.md` | Repo-specific guidance, commands, iOS simulator notes |
+| `docs/FEATURE_IDEAS.md` | Ranked post-launch feature backlog from competitive research (v0.2+) |
 
 ## UI Guidance Resources For Agents
 
