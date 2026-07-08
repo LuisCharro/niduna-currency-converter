@@ -28,6 +28,9 @@ class ChartLinePlot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // The near-black canvas swallows the low-alpha fill; dark mode needs a
+    // stronger gradient for the chart to carry the same weight as light mode.
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -126,8 +129,8 @@ class ChartLinePlot extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: <Color>[
-                      lineColor.withValues(alpha: .18),
-                      lineColor.withValues(alpha: .02),
+                      lineColor.withValues(alpha: isDark ? .30 : .18),
+                      lineColor.withValues(alpha: isDark ? .06 : .02),
                     ],
                   ),
                 ),

@@ -147,6 +147,7 @@ class AppTheme {
         borderRadius: BorderRadius.circular(pillRadius),
       ),
     ),
+    switchTheme: _switchTheme(AppColors.light),
   );
 
   static final ThemeData dark = ThemeData(
@@ -188,7 +189,30 @@ class AppTheme {
       color: AppColors.dark.border.withValues(alpha: 0.15),
       thickness: 0.5,
     ),
+    switchTheme: _switchTheme(AppColors.dark),
   );
+
+  /// Switches must stay on palette tokens in both themes; Material defaults
+  /// introduce the cold grays the palette forbids.
+  static SwitchThemeData _switchTheme(AppColors colors) {
+    return SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.selected)
+            ? colors.container
+            : colors.muted,
+      ),
+      trackColor: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.selected)
+            ? colors.primary
+            : colors.containerHigh,
+      ),
+      trackOutlineColor: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.selected)
+            ? Colors.transparent
+            : colors.border.withValues(alpha: .45),
+      ),
+    );
+  }
 
   /// Resolves the app theme from the user's Dark mode preference. The choice is
   /// explicit (on = dark, off = light) and does not follow the system setting.

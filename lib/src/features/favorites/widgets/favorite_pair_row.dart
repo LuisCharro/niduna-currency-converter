@@ -60,7 +60,6 @@ class FavoritePairRow extends StatelessWidget {
                 color: colors.container,
                 borderRadius: BorderRadius.circular(AppTheme.radius),
                 border: Border.all(color: colors.border.withValues(alpha: .18)),
-                boxShadow: AppTheme.subtleShadowFor(context),
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),

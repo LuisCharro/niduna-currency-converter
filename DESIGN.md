@@ -210,8 +210,13 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 - Separated by **0.5px green-tinted divider** (border color at 15% opacity)
 - Flag icon (32px circle) on left
 - Currency name bold (16/w600), code gray (13/w500)
-- Rate value on right inside **moss-green pill badge** (#EDF5EB bg, #3D6E2C text)
+- Rate value on right as **plain bold text** — no pill on Convert rows
 - Swap icon appears only on the active/tapped row
+
+> **Value pill placement (deliberate):** the moss-green value pill
+> (#EDF5EB bg, #3D6E2C text) is reserved for **Favorites** rows as a
+> "pinned pair" signal. Convert rows stay plain. Do not "align" the two —
+> the asymmetry is intentional.
 
 ### Amount Input
 - Large input field (40px font, w800)

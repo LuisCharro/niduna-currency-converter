@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/settings_tile.dart';
 
 class SwitchTile extends StatelessWidget {
@@ -28,11 +27,7 @@ class SwitchTile extends StatelessWidget {
         child: SettingsTile(
           title: title,
           subtitle: subtitle,
-          trailing: Switch(
-            value: value,
-            onChanged: onChanged,
-            activeTrackColor: AppTheme.primary,
-          ),
+          trailing: Switch(value: value, onChanged: onChanged),
         ),
       ),
     );
