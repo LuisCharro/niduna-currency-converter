@@ -347,6 +347,7 @@ lib/
 | Provider profiles | DONE | Build-time `PROVIDER_PROFILE` env var; release guard |
 | Branded splash screens | DONE | Native Android + iOS launch screens |
 | Android adaptive icons | DONE | Foreground seal + warm paper background layer |
+| Flutter Web identity | DONE | Product favicon/PWA icons + Niduna Currency metadata replace Flutter defaults (2026-07-09) |
 | Store publishing checklists | DONE | Play Store + App Store checklists in `.plan/` |
 | Pull-to-refresh on Favorites & Charts | DONE | RefreshIndicator wrapping tab content |
 | Trend arrows (previous day comparison) | DONE | Yesterday rates fetch via Frankfurter historical endpoint |

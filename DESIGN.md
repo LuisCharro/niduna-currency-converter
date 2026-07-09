@@ -122,6 +122,13 @@ Emotional response: **warm, trustworthy, crafted**. The app should feel like a p
 - Manrope body font + Fraunces serif for editorial headings
 - Subtle noise texture on backgrounds (web only; approximated in mobile via warm gradients)
 
+**Brand relationship:**
+
+- The Niduna **Split Pod** is the parent-brand mark used on the corporate site.
+- Currency Converter keeps its exchange-arrow coin as its Android, iOS, and
+  Flutter Web product icon. The shared palette and rounded, warm treatment
+  create the relationship; the symbols do not need to match.
+
 **Design principles:**
 - **Warmth over clinical precision** — the app should feel inviting to touch, not sterile
 - Dividers, not cards — rows separated by thin lines, not boxed containers
