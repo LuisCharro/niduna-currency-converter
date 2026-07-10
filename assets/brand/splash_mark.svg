@@ -1,9 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
-  <!-- Splash screen mark: coin on transparent background.
-       Splash background colors: light #F6F8EF, dark #141A11 (flutter_native_splash). -->
-  <circle cx="512" cy="512" r="330" fill="#285F3B"/>
-  <rect x="300" y="408" width="280" height="68" rx="34" fill="#F5F4F0"/>
-  <path d="M 570 372 L 570 512 L 708 442 Z" fill="#F5F4F0"/>
-  <rect x="444" y="548" width="280" height="68" rx="34" fill="#A9C181"/>
-  <path d="M 454 512 L 454 652 L 316 582 Z" fill="#A9C181"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Currency Converter launch mark</title>
+  <desc id="desc">The double-rim exchange coin on a transparent canvas.</desc>
+
+  <circle cx="512" cy="512" r="330" fill="#B99A52"/>
+  <circle cx="512" cy="512" r="274" fill="#7A6232"/>
+  <circle cx="512" cy="512" r="258" fill="#F5F4F0"/>
+  <rect x="304" y="410" width="278" height="68" rx="34" fill="#285F3B"/>
+  <path d="M572 374v140l138-70-138-70Z" fill="#285F3B"/>
+  <rect x="442" y="546" width="278" height="68" rx="34" fill="#6F8C49"/>
+  <path d="M452 510v140l-138-70 138-70Z" fill="#6F8C49"/>
 </svg>

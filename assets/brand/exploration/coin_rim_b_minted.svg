@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Currency Converter soft minted-edge icon</title>
+  <desc id="desc">A broad twelve-lobed minted coin edge and cream face with two large opposing exchange arrows.</desc>
+
+  <rect width="1024" height="1024" rx="220" fill="#285F3B"/>
+
+  <!-- Twelve broad lobes read as a minted edge without fragile fine teeth. -->
+  <g fill="#B99A52">
+    <circle cx="512" cy="512" r="300"/>
+    <circle cx="512" cy="232" r="50"/>
+    <circle cx="652" cy="270" r="50"/>
+    <circle cx="754" cy="372" r="50"/>
+    <circle cx="792" cy="512" r="50"/>
+    <circle cx="754" cy="652" r="50"/>
+    <circle cx="652" cy="754" r="50"/>
+    <circle cx="512" cy="792" r="50"/>
+    <circle cx="372" cy="754" r="50"/>
+    <circle cx="270" cy="652" r="50"/>
+    <circle cx="232" cy="512" r="50"/>
+    <circle cx="270" cy="372" r="50"/>
+    <circle cx="372" cy="270" r="50"/>
+  </g>
+  <circle cx="512" cy="512" r="270" fill="#7A6232"/>
+  <circle cx="512" cy="512" r="254" fill="#F5F4F0"/>
+
+  <rect x="304" y="410" width="278" height="68" rx="34" fill="#285F3B"/>
+  <path d="M572 374v140l138-70-138-70Z" fill="#285F3B"/>
+  <rect x="442" y="546" width="278" height="68" rx="34" fill="#6F8C49"/>
+  <path d="M452 510v140l-138-70 138-70Z" fill="#6F8C49"/>
+</svg>

@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Currency Converter — coin rim exploration</title>
+    <link rel="icon" href="data:,">
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #171d14;
+        background: #f6f8ef;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        padding: clamp(24px, 4vw, 56px);
+        background: linear-gradient(180deg, #f6f8ef, #fff9ec);
+      }
+
+      main { width: min(1180px, 100%); margin: 0 auto; }
+
+      header { max-width: 760px; margin-bottom: 32px; }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: #6f8c49;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.05; }
+
+      header p { color: #5f6a58; font-size: 1.05rem; line-height: 1.6; }
+
+      .variants { display: grid; gap: 28px; }
+
+      article {
+        overflow: hidden;
+        border: 1px solid rgba(40, 95, 59, 0.16);
+        border-radius: 28px;
+        background: #fff;
+        box-shadow: 0 18px 48px rgba(23, 29, 20, 0.08);
+      }
+
+      .variant-heading { padding: 24px 26px 20px; }
+
+      .title-line { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+
+      h2 { margin: 0; font-size: 1.35rem; }
+
+      .recommended {
+        border-radius: 999px;
+        padding: 5px 10px;
+        color: #3d6e2c;
+        background: #edf5eb;
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .tradeoff { margin: 8px 0 0; color: #5f6a58; }
+
+      .surfaces { display: grid; grid-template-columns: 1fr 1fr; }
+
+      .surface {
+        min-width: 0;
+        padding: 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+
+      .surface.light { background: #f6f8ef; }
+      .surface.dark { color: #f6f8ef; background: #171d14; }
+
+      .surface-label {
+        margin: 0;
+        color: #66745b;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .dark .surface-label { color: #a9c181; }
+
+      .sizes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 22px;
+        align-items: flex-end;
+      }
+
+      figure { margin: 0; display: grid; justify-items: center; gap: 8px; }
+
+      img { display: block; width: var(--size); height: var(--size); }
+
+      figcaption { color: #66745b; font-size: 0.72rem; font-variant-numeric: tabular-nums; }
+      .dark figcaption { color: #aab4a2; }
+
+      @media (max-width: 760px) {
+        body { padding: 22px 14px 40px; }
+        .surfaces { grid-template-columns: 1fr; }
+        .surface { padding: 22px 18px; }
+        .sizes { gap: 18px; }
+        figure:first-child { width: 100%; justify-items: start; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Currency Converter · product icon</p>
+        <h1>Coin rim exploration</h1>
+        <p>Three flat-vector ways to restore the physical coin cue while preserving the established exchange arrows and Niduna palette.</p>
+      </header>
+
+      <section class="variants" aria-label="Icon variants">
+        <article>
+          <div class="variant-heading">
+            <div class="title-line">
+              <h2>A · Smooth double rim</h2>
+              <span class="recommended">Selected</span>
+            </div>
+            <p class="tradeoff">The clearest coin cue at every size, with the calmest and most durable silhouette.</p>
+          </div>
+          <div class="surfaces">
+            <div class="surface light">
+              <p class="surface-label">Light surface</p>
+              <div class="sizes" data-icon="coin_rim_a_smooth.svg"></div>
+            </div>
+            <div class="surface dark">
+              <p class="surface-label">Dark surface</p>
+              <div class="sizes" data-icon="coin_rim_a_smooth.svg"></div>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <div class="variant-heading">
+            <div class="title-line"><h2>B · Soft minted edge</h2></div>
+            <p class="tradeoff">The strongest physical-coin personality, traded for a busier outline at very small sizes.</p>
+          </div>
+          <div class="surfaces">
+            <div class="surface light">
+              <p class="surface-label">Light surface</p>
+              <div class="sizes" data-icon="coin_rim_b_minted.svg"></div>
+            </div>
+            <div class="surface dark">
+              <p class="surface-label">Dark surface</p>
+              <div class="sizes" data-icon="coin_rim_b_minted.svg"></div>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <div class="variant-heading">
+            <div class="title-line"><h2>C · Shallow dimensional rim</h2></div>
+            <p class="tradeoff">A little more tactile and premium, though its depth cues recede below 32 px.</p>
+          </div>
+          <div class="surfaces">
+            <div class="surface light">
+              <p class="surface-label">Light surface</p>
+              <div class="sizes" data-icon="coin_rim_c_shallow.svg"></div>
+            </div>
+            <div class="surface dark">
+              <p class="surface-label">Dark surface</p>
+              <div class="sizes" data-icon="coin_rim_c_shallow.svg"></div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      const sizes = [256, 64, 32, 16];
+      document.querySelectorAll('[data-icon]').forEach((row) => {
+        const source = row.dataset.icon;
+        const label = row.closest('article').querySelector('h2').textContent;
+        sizes.forEach((size) => {
+          const figure = document.createElement('figure');
+          const image = document.createElement('img');
+          const caption = document.createElement('figcaption');
+          image.src = source;
+          image.alt = `${label} at ${size} pixels`;
+          image.style.setProperty('--size', `${size}px`);
+          caption.textContent = `${size} px`;
+          figure.append(image, caption);
+          row.append(figure);
+        });
+      });
+    </script>
+  </body>
+</html>

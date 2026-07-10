@@ -52,6 +52,10 @@ app.*.map.json
 .tmp/
 .firebase/
 
+# Local browser-review artifacts
+.playwright-cli/
+/output/playwright/
+
 # Agent and shared skills
 .agent-local/
 .agent/.shared-skills-source

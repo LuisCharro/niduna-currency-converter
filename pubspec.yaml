@@ -55,10 +55,12 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.1
 
-# App icon generation. The source is the warm-paper "coral-ring" master that
-# matches the Android launcher icon. iOS only: Android icons are already
-# generated and tuned, so we leave them untouched here. remove_alpha_ios
-# flattens transparency because Apple rejects app icons with an alpha channel.
+# iOS icon generation uses the opaque minted-coin master produced by
+# scripts/generate_brand_icons.sh. The script also synchronizes Android, web,
+# macOS, Windows, and launch-screen assets from the canonical brand SVGs.
+# Android remains disabled here because the script creates its legacy and
+# adaptive assets at the exact platform density sizes. Apple icons are flattened
+# because App Store icon files cannot contain an alpha channel.
 flutter_launcher_icons:
   ios: true
   android: false

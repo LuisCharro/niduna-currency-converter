@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Currency Converter shallow dimensional-rim icon</title>
+  <desc id="desc">A smooth amber coin rim with restrained highlight and shade arcs, a cream face, and two large opposing exchange arrows.</desc>
+
+  <rect width="1024" height="1024" rx="220" fill="#285F3B"/>
+
+  <circle cx="512" cy="512" r="330" fill="#B99A52"/>
+  <!-- Two flat arc cues give the rim shallow depth without gradients or shadows. -->
+  <path d="M257 365a300 300 0 0 1 253-153" fill="none" stroke="#FBF3DB" stroke-width="20" stroke-linecap="round"/>
+  <path d="M772 662a300 300 0 0 1-208 146" fill="none" stroke="#7A6232" stroke-width="26" stroke-linecap="round"/>
+  <circle cx="512" cy="512" r="269" fill="#7A6232"/>
+  <circle cx="512" cy="512" r="253" fill="#F5F4F0"/>
+
+  <rect x="304" y="410" width="278" height="68" rx="34" fill="#285F3B"/>
+  <path d="M572 374v140l138-70-138-70Z" fill="#285F3B"/>
+  <rect x="442" y="546" width="278" height="68" rx="34" fill="#6F8C49"/>
+  <path d="M452 510v140l-138-70 138-70Z" fill="#6F8C49"/>
+</svg>

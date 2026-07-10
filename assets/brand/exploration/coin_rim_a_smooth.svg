@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
-  <title id="title">Currency Converter minted coin icon</title>
-  <desc id="desc">A smooth double-rim coin with two large opposing exchange arrows.</desc>
+  <title id="title">Currency Converter smooth double-rim icon</title>
+  <desc id="desc">A warm amber coin rim and cream inset face with two large opposing exchange arrows.</desc>
 
   <rect width="1024" height="1024" rx="220" fill="#285F3B"/>
 
-  <!-- The warm outer rim and inset face make the exchange symbol read as a coin. -->
+  <!-- The complete coin stays within the central 64.5% of the canvas. -->
   <circle cx="512" cy="512" r="330" fill="#B99A52"/>
   <circle cx="512" cy="512" r="274" fill="#7A6232"/>
   <circle cx="512" cy="512" r="258" fill="#F5F4F0"/>
 
+  <!-- Large opposing arrows preserve the established product symbol. -->
   <rect x="304" y="410" width="278" height="68" rx="34" fill="#285F3B"/>
   <path d="M572 374v140l138-70-138-70Z" fill="#285F3B"/>
   <rect x="442" y="546" width="278" height="68" rx="34" fill="#6F8C49"/>
