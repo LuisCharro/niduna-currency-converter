@@ -110,6 +110,15 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 > Then update `android/key.properties` with the new passwords, and delete
 > `/tmp/niduna_temp_keystore_pwd.txt` (the temp password file).
 > See `docs/RELEASE_COMMANDS.md` § "Keystore management" for full steps.
+>
+> **⚠️ Keystore BACKUP (added 2026-07-11 — do right after rotation):**
+> `niduna-upload.jks` and `key.properties` are gitignored and exist on
+> ONE machine only. After rotating: store a copy of the .jks + both
+> passwords in a password manager, plus a second copy off-machine
+> (encrypted USB / private cloud). Losing the upload key doesn't kill
+> the app (Play App Signing can reset upload keys) but costs days of
+> support friction; losing it before first upload costs nothing to
+> prevent now.
 
 ### Content / Metadata Steps
 
@@ -122,6 +131,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert / Chart / Favorites, light + dark | ~1 hr | ✅ **Done** (refreshed 2026-07-08) | 6 final screenshots at 1080×2400 in `docs/release-prep/screenshots/`, re-captured 2026-07-08 after the polish pass (flat Favorites cards, no nav clipping, visible dark chart fill). English, paid-user state (no ads), real currency icons. Captured on `Pixel7_EN` AVD; `SCREENSHOT_DARK=true ./.devtools/capture_android_screens.sh` for the dark set. Requires swiftshader GPU (`-gpu swiftshader_indirect`) for icon rendering. The older 8-tab set from 2026-06-01 is kept alongside as reference. |
 | C6 | Feature graphic (1024x500) | Branded graphic for featured placements | ~30 min | ✅ **Done** | `docs/release-prep/feature-graphic.png` (1024×500, botanical gradient + app name + phone mockup + tagline) |
 | C7 | Content rating questionnaire (IARC/CERT) | In Play Console > Policy > App content | ~15 min | ❌ |
+| C7b | **Target audience declaration — declare 13+** (added 2026-07-11) | Separate from C7! In App content → Target audience. Declaring ANY under-13 age group triggers the Families Policy (certified ad SDKs only, ad limits, stricter review) — wrong fit for an AdMob-funded utility. Content rating "Everyone" (C7) and target audience "13+" are compatible and both correct here. | ~5 min | ❌ |
 | C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII collected by us — **but the AdMob SDK must be declared** (device/advertising identifiers, ad interaction data; see the "Third-party SDKs" table below). Align answers with the consent setup from B8/E5b. | ~30 min | ❌ |
 | C9 | Category selection | Likely: Finance > Finance tools or Productivity | ~2 min | ❌ |
 | C10 | Contact email + website + privacy URL | Required fields in Console listing. `support@niduna.com` must actually receive mail first — email setup is `niduna-site/RELEASE_PLAN.md` § S1.4 | ~10 min | ❌ (blocked on domain + email) |
