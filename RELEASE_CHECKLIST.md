@@ -214,6 +214,19 @@ the production-access questionnaire honestly).
 - Explicitly tell them NOT to uninstall or opt out until you say so.
 - If short of 12: partners' phones, work colleagues, a second device
   per person (each needs its own Google account to count).
+- Still short — external fallbacks (researched 2026-07-11):
+  - **Free:** mutual-testing communities — r/AndroidClosedTesting
+    subreddit or closed-testing Discords (you opt into their tests in
+    exchange).
+  - **Paid, one-time ~$15-25:** tester services, e.g.
+    testerscommunity.com (~$15/15 testers), primetestlab.com (~$15,
+    same-day dropout replacement), or Upwork/Fiverr gigs ($20-25).
+  - **Quality caveat:** the production-access questionnaire asks how
+    testers were recruited and what feedback they gave — keep real
+    friends as the core (genuine usage + feedback) and use services/
+    communities only to top up past 12 concurrent. Never buy store
+    reviews/ratings — that's a ban-level policy violation; paid
+    *opt-in testing* is the tolerated gray zone.
 
 **Console setup (after E4, needs any signed AAB — the June build is
 fine for this; testers don't need the final version):**
