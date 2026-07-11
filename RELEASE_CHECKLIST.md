@@ -1,18 +1,19 @@
 # Release Checklist — Path to Google Play Store
 
-> **Last updated:** 2026-07-08
+> **Last updated:** 2026-07-11
 > **App version:** 0.1.0+1 (pre-MVP)
-> **Branch:** main (in sync with origin/main)
-> **Status:** Code path complete, AAB+APK built and signed, 0 lint issues. Screenshots (C5) and feature graphic (C6) done. Accessibility pass done 2026-06-16; polish pass + screenshot refresh done 2026-07-08 (239 tests). **Remaining code work: B4 (real AdMob IDs), B5 (privacy link), and B8 (UMP consent flow — found in the 2026-07-08 plan review); B4/B5 are blocked on external steps, B8 on the AdMob consent message (E5b).**
+> **Branch:** main
+> **Status:** Code path complete, AAB+APK built and signed, 0 lint issues. Screenshots (C5) and feature graphic (C6) done. Accessibility pass done 2026-06-16; polish pass + screenshot refresh done 2026-07-08 (239 tests). **Remaining code work: B4 (real AdMob IDs), B5 (privacy link), and B8 (UMP consent flow); B4/B5 are blocked on external steps, B8 on the AdMob consent message (E5b).** Site-side GDPR prep (fonts, privacy sections) completed 2026-07-11 — the site is ready for the domain.
 >
-> **Remaining before submission (short list, in dependency order):**
-> 1. **Domain + email (niduna-site repo)** — buy `niduna.com` + attach to Vercel so `https://niduna.com/privacy/` is publicly reachable (the privacy *page* is already built; the Vercel project is SSO-gated until a domain is attached), and set up email so `support@niduna.com` receives mail (free forwarding is enough — provider comparison + "ask the friend" note in the site plan). Site-side steps: `niduna-site/RELEASE_PLAN.md` § S1. **Blocks C1, C10 and B5.**
-> 2. E1–E4 — Google Play Developer account ($25) + identity verification + payment profile + create app draft *(parallel with 1)*
-> 3. E5 — AdMob account + real ad unit IDs + GDPR consent message (E5b) *(parallel with 1)* → then B4 (swap test IDs), B8 (UMP consent flow in code — **new 2026-07-08 review finding**), and `app-ads.txt` on the site (E5c)
-> 4. Rotate the TEMP keystore password (see callout below) *(anytime before 5)*
-> 5. B5 in-app privacy link (needs 1) → B6 rebuild signed AAB
-> 6. C2–C4, C7–C11 — Play Console listing content (title, descriptions, rating, Data Safety, category, contact + privacy/marketing URLs from 1, localized listings)
-> 7. B7 upload AAB → pre-launch report → submit. **After approval:** run the site launch-day batch (`niduna-site/RELEASE_PLAN.md` § S2 — Play link, badge, JSON-LD, trust line).
+> **Remaining before submission (short list, in dependency order — updated 2026-07-11):**
+> 1. **Domain + email (niduna-site repo)** — buy `niduna.com` + attach to Vercel, set up `support@niduna.com` forwarding. The site is GDPR-ready and already publicly reachable at `niduna.vercel.app`; the custom domain makes the privacy + marketing URLs final. Site steps: `niduna-site/RELEASE_PLAN.md` § S1. **Blocks C1, C10, B5 — and do it BEFORE starting the closed test so the App content declarations use the final URLs.**
+> 2. E1–E4 — Play Developer account (**personal account** — Pegolandia model, legal name becomes public; see identity note below) + verification + payments + app draft *(parallel with 1)*
+> 3. **E6 + E7 — declare EU DSA trader status, then START THE CLOSED TEST** (≥12 testers × 14 continuous days; upload the existing June AAB; full how-to in § "E7 — Closed-testing playbook"). **The longest fixed clock in the release (~3 weeks incl. reviews) — everything below runs in parallel with it.**
+> 4. E5/E5b — AdMob account + ad units + GDPR consent message → then B4 (real ad IDs), B8 (UMP consent flow), E5c (`app-ads.txt` on the site)
+> 5. Rotate the TEMP keystore password (see callout below) *(anytime before 6)*
+> 6. B5 in-app privacy link (needs 1) → B6 rebuild signed AAB
+> 7. C2–C4, C7–C11 — Play Console listing content (title, descriptions, rating, Data Safety, category, contact + privacy/marketing URLs from 1, localized listings)
+> 8. B7 upload final AAB → **confirm the E7 gate is passed + production access granted** → pre-launch report → submit. **After approval:** run the site launch-day batch (`niduna-site/RELEASE_PLAN.md` § S2 — Play link, badge, JSON-LD, trust line).
 > **2026-06-02 update:** iOS widget code merged but disabled (Xcode 26 simctl install bug). Code complete, verify on real iPhone when convenient. See "Blocker Summary" below.
 > **2026-06-01 update:** Backend work deferred until post-publish. Code-only path: see "Code-Only Pre-Flight" below. Full detail in `docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`.
 > **2026-06-02 review:** see `docs/REVIEW-2026-06-01.md` for the full audit.
@@ -68,6 +69,23 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | E5 | Register AdMob account + create ad units | https://admob.google.com | ❌ |
 | E5b | AdMob → Privacy & messaging → create the GDPR consent message (required for EEA/UK/CH ads; pairs with code step B8) | In AdMob console, after E5 | ❌ |
 | E5c | Publish `app-ads.txt` on niduna.com with the AdMob publisher ID from E5 | Site-side step — `niduna-site/RELEASE_PLAN.md` § S1.5 | ❌ |
+| E6 | **EU DSA trader declaration** (NEW 2026-07-11) — the app is monetized (ads + IAP), so under the EU Digital Services Act you must declare trader status in Play Console and provide verified contact details (legal name, address, email, phone). These are **publicly displayed on the EU store listing**. Without the declaration the app cannot be distributed in the EU (Google has been removing non-compliant apps since Feb 2025). | Play Console → App content → EU DSA trader status, after E4 | ❌ |
+| E7 | **Closed-testing gate for new personal accounts** (NEW 2026-07-11) — personal developer accounts created after Nov 2023 must run a **closed test with at least 12 opted-in testers for 14 continuous days** before they can apply for production access. This adds ≥2-3 weeks to the timeline and needs testers recruited (friends/family with Google accounts). Start the closed track as soon as an AAB exists — it can run in parallel with B4/B5/B8 and the listing work. Verify the exact tester count in the Console (Google has changed it before). **Full how-to: § "E7 — Closed-testing playbook" below.** | Play Console → Testing → Closed testing, after E4 + first AAB upload | ❌ |
+
+> **Publishing identity (decided 2026-07-11 — "Pegolandia model", see
+> `Niduna/docs/strategy/Niduna_Company_Options_CH_vs_US.md` Option 0 and
+> `Reprocess_deprecated/Pegolandia_Style_Brand_First_App_Portfolio_Plan.md`):**
+> publish as an **individual**, no company registered. "Niduna" is the
+> brand (app names, icons, website, © notice); the verified **legal
+> name** is what Google shows in "About the developer" for personal
+> accounts created after Nov 2023 — plus address/email/phone in the EU
+> via E6. Expect the store listing to show the personal name, exactly
+> like the reference developer's Apple listing does. Guardrails from the
+> strategy doc: never claim GmbH/LLC/Inc., never fake an address, keep
+> store/payment identity truthful; the *website* stays brand-first. The
+> site's privacy page (Contact & controller section, 2026-07-11) states
+> the individual-developer status and defers the publishing name to the
+> store listing.
 
 ### Code / Build Steps (agent can do these)
 
@@ -97,7 +115,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 
 | # | Task | Specs | Effort | Status |
 |---|------|-------|--------|--------|
-| C1 | Write & host privacy policy page | Page is **built and deployed** at `niduna-site/privacy/` (brand-level + per-app sections, 2026-06-02). Remaining: make it publicly reachable — buy `niduna.com` + attach to Vercel (project is SSO-gated). See `niduna-site/RELEASE_PLAN.md` § S1. | domain purchase | 🟡 Blocked on domain |
+| C1 | Write & host privacy policy page | Page is **built, deployed, and GDPR-hardened** (2026-07-11: self-hosted fonts, website + controller sections). Publicly reachable at `niduna.vercel.app/privacy` already; remaining: buy `niduna.com` + attach to Vercel so the FINAL URL exists (that URL goes into Play Console and the app). See `niduna-site/RELEASE_PLAN.md` § S1. | domain purchase | 🟡 Blocked on domain |
 | C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
 | C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Niduna differentiator | ~45 min | ❌ |
@@ -161,6 +179,64 @@ The IDs flow through the build, not the source:
 - Test with UMP debug geography = EEA on the emulator
   (`ConsentDebugSettings(debugGeography: DebugGeography.debugGeographyEea,
   testIdentifiers: [...])`) before trusting it.
+
+### E7 — Closed-testing playbook (the 12-tester / 14-day gate)
+
+**The rule, precisely:** personal accounts created after Nov 2023 must
+have ≥12 testers opted in to a closed test **concurrently and
+continuously for the trailing 14 days** before they can apply for
+production access. It is a rolling window: if the opted-in count drops
+below the minimum, the window is broken and the clock effectively
+restarts. It is NOT "12 people who each tested at some point."
+(Minimum was 20 at policy launch, reduced to 12 in 2024 — confirm the
+current number in the Console banner when the account exists.)
+
+**Store visibility during all this:** creating the app (E4) and running
+the closed test does NOT put it on the public Play Store. In closed
+testing the app is not searchable and has no public listing — it is
+reachable ONLY via the opt-in link, only by the testers you added. The
+public listing appears solely when you promote to production after the
+gate (Step 15b/16). So there is no "half-published" exposure risk in
+starting E7 early with the June AAB.
+
+**What testers need:** a Google account + an Android phone. What they
+actually do is a one-time ~2-minute task: click the opt-in link, accept,
+install the app from Play. After that their only job is passive — keep
+the app installed and stay opted in for 2 weeks. No daily usage, no
+feedback duty, no meetings. Occasional real use is a bonus (helps answer
+the production-access questionnaire honestly).
+
+**Recruiting plan (do this while creating the account):**
+- List candidates: friends/family/colleagues with Android. Target
+  **15-16 sign-ups** so 2-3 dropouts can't break the 14-day window.
+- The ask, in one sentence: "Install my app from this link and just
+  leave it on your phone for two weeks — nothing else to do."
+- Explicitly tell them NOT to uninstall or opt out until you say so.
+- If short of 12: partners' phones, work colleagues, a second device
+  per person (each needs its own Google account to count).
+
+**Console setup (after E4, needs any signed AAB — the June build is
+fine for this; testers don't need the final version):**
+1. Play Console → Testing → Closed testing → create track, upload AAB.
+2. Add testers by email list (or a Google Group — easier to manage).
+3. Publish the track (closed-test releases go through a short review).
+4. Send everyone the opt-in link; confirm the opted-in count in the
+   Console reaches 12+ — the 14-day clock runs from when the count is
+   satisfied, so chase stragglers in the first days.
+
+**During the 14 days:** glance at the opted-in count every few days;
+replace dropouts immediately. Note 2-3 pieces of real feedback — the
+questionnaire asks what you learned and what you changed.
+
+**After 14 days:** Console → apply for production access → answer the
+questionnaire (who tested, how you recruited, feedback, changes) →
+Google reviews the application (allow several days) → production
+publishing unlocks (B7/Step 16 becomes possible).
+
+**Timeline math:** opt-ins complete on day X → apply on day X+14 →
+plus Google's review of the application → plus the normal app review
+after submission. Budget ~3 weeks of calendar time from "testers
+invited" to "can go live", which is why Step 2c starts this in Phase 0.
 
 ### Keystore rotation — commands are in the callout above; afterwards
 re-run `./scripts/build_appbundle.sh` (B6) and confirm the AAB signature
@@ -300,8 +376,23 @@ everything after depends on them.
 
 ```
 ─ Phase 0 · Accounts (external, parallel with Phase 1) ────────────────
-Step 1:  Register Play Console account ($25) + identity + payments  [E1-E3]
+Step 1:  Register Play Console account ($25) — PERSONAL account
+         (Pegolandia model; legal name will be public) + identity
+         + payments                                                 [E1-E3]
 Step 2:  Create the app in Play Console (draft)                     [E4]
+Step 2b: Declare EU DSA trader status (name/address/email/phone
+         verified + shown on EU listing)                            [E6]
+Step 2c: START THE CLOSED TEST EARLY — upload any signed AAB to a
+         closed track, recruit ≥12 testers, let the 14-day clock
+         run in parallel with Phases 1-3 (hard gate for new
+         personal accounts before production access)               [E7]
+         ⚠ Ordering (decided 2026-07-11): buy the domain (Phase 1 /
+         site S1.1) BEFORE publishing the closed track — the App
+         content declarations that gate any release (privacy policy
+         URL, Data safety, content rating) should be filled with
+         https://niduna.com/privacy/ from day one, not a temporary
+         vercel.app URL. Site is GDPR-ready since 2026-07-11, so
+         nothing blocks the purchase.
 Step 3:  Register AdMob, create real ad unit IDs                    [E5]
 Step 3b: AdMob console: create the GDPR consent message
          (Privacy & messaging)                                      [E5b]
@@ -338,6 +429,9 @@ Step 14: Localized listings (EN, DE, ES, IT, FR)             [C11]
 
 ─ Phase 4 · Submit ────────────────────────────────────────────────────
 Step 15: Upload AAB → pre-launch report → fix if needed      [B7]
+Step 15b: Confirm the E7 closed-test gate is satisfied
+          (≥12 testers, 14 continuous days) and apply for
+          production access                                  [E7]
 Step 16: Submit for review
 
 ─ Phase 5 · After approval (SITE launch-day batch) ────────────────────
@@ -443,6 +537,19 @@ These can ship in v0.2.0+ updates:
 
 ## Change Log (this file)
 
+- **2026-07-11 (publishing-identity review)** — Adopted the
+  "Pegolandia model": publish as an individual, no company; brand
+  stays website/app-facing, legal identity lives in store
+  verification (guardrails from the strategy docs recorded above the
+  External Steps table). Two NEW external gates found missing: **E6**
+  EU DSA trader declaration (monetized app ⇒ verified contact details
+  publicly shown on EU listings, mandatory for EU distribution) and
+  **E7** the 12-tester/14-day closed-testing requirement for personal
+  accounts created after Nov 2023 — E7 is timeline-critical, so the
+  Execution Order now starts the closed track in Phase 0 (Step 2c)
+  and gates submission (Step 15b). Site-side GDPR work landed the
+  same day (fonts self-hosted, privacy page website + controller
+  sections — `niduna-site/RELEASE_PLAN.md` § S0).
 - **2026-07-08 (plan review)** — Full review of both release plans found
   4 gaps, now fixed: (1) **B8 NEW** — no UMP/GDPR consent flow exists in
   the app; required for EEA/UK/CH ad serving, pairs with new E5b (AdMob
