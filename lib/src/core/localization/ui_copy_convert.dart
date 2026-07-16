@@ -81,19 +81,6 @@ String nextUpdateLocalTime(BuildContext context) => switch (_lang(context)) {
       _ => 'The next expected update is shown in your local time.',
     };
 
-String fasterUpdatesPlanned(BuildContext context) => switch (_lang(context)) {
-      'es' =>
-        'Se prevén actualizaciones más rápidas en una futura suscripción Premium.',
-      'de' =>
-        'Schnellere Aktualisierungen sind für ein zukünftiges Premium-Abonnement geplant.',
-      'it' =>
-        'Aggiornamenti più rapidi sono previsti per un futuro abbonamento Premium.',
-      'fr' =>
-        'Des mises à jour plus rapides sont prévues pour un futur abonnement Premium.',
-      _ =>
-        'Faster updates are planned for a future Premium subscription.',
-    };
-
 String closeLensTooltip(BuildContext context) => switch (_lang(context)) {
       'es' => 'Cerrar panel',
       'de' => 'Ansicht schließen',

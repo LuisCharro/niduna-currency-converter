@@ -16,27 +16,25 @@ void main() {
   // RangeSelector ----------------------------------------------------------------
 
   testWidgets(
-    'RangeSelector: locked range shows a filled Icons.lock (not outline)',
+    'RangeSelector: locked intraday ranges are not rendered in v0.1',
     (tester) async {
       await tester.pumpWidget(
         _wrap(
           const RangeSelector(
             selected: ChartRange.oneMonth,
             onChanged: _noop,
-            canUseLockedRanges: false,
             includesCrypto: false,
           ),
         ),
       );
-      // 1H/6H/1D are locked. Find the one rendered in the first position.
-      final lockedIcons = find.byIcon(Icons.lock);
-      expect(
-        lockedIcons,
-        findsAtLeastNWidgets(3),
-        reason: 'Locked ranges (1H, 6H, 1D) must all show a filled lock icon',
-      );
-      // Make sure no outline version is used.
-      expect(find.byIcon(Icons.lock_outline), findsNothing);
+      // Only the 6 unlocked ranges (1W..2Y) render; no lock icons anywhere.
+      for (final label in ['1W', '1M', '3M', '6M', '1Y', '2Y']) {
+        expect(find.text(label), findsOneWidget);
+      }
+      for (final label in ['1H', '6H', '1D']) {
+        expect(find.text(label), findsNothing);
+      }
+      expect(find.byIcon(Icons.lock), findsNothing);
     },
   );
 
@@ -49,7 +47,6 @@ void main() {
           const RangeSelector(
             selected: selected,
             onChanged: _noop,
-            canUseLockedRanges: false,
             includesCrypto: false,
           ),
         ),
@@ -84,7 +81,6 @@ void main() {
           const RangeSelector(
             selected: selected,
             onChanged: _noop,
-            canUseLockedRanges: false,
             includesCrypto: false,
           ),
         ),

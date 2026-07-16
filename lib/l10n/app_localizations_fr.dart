@@ -173,20 +173,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Taux fiat, taux crypto, historique des graphiques et déverrouillages temporaires';
 
   @override
-  String get labelSubscription => 'Abonnement';
-
-  @override
-  String get labelSubscriptionSubtitle => 'Non disponible en v1';
-
-  @override
   String get labelRestorePurchases => 'Restaurer les achats';
 
   @override
   String get labelRestorePurchasesSubtitle =>
       'Revérifier les achats locaux sur cet appareil';
-
-  @override
-  String get labelSoon => 'Bientôt disponible';
 
   @override
   String get premiumUnlocks => 'Avantages Premium';

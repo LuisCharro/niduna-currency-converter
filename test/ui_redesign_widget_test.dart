@@ -93,7 +93,6 @@ void main() {
               child: RangeSelector(
                 selected: ChartRange.oneMonth,
                 onChanged: (_) {},
-                canUseLockedRanges: false,
                 includesCrypto: false,
               ),
             ),

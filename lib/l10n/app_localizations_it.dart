@@ -173,20 +173,11 @@ class AppLocalizationsIt extends AppLocalizations {
       'Tassi fiat, tassi crypto, cronologia grafici e sblocchi temporanei';
 
   @override
-  String get labelSubscription => 'Abbonamento';
-
-  @override
-  String get labelSubscriptionSubtitle => 'Non disponibile in v1';
-
-  @override
   String get labelRestorePurchases => 'Ripristina acquisti';
 
   @override
   String get labelRestorePurchasesSubtitle =>
       'Ricontrolla gli acquisti locali su questo dispositivo';
-
-  @override
-  String get labelSoon => 'Prossimamente';
 
   @override
   String get premiumUnlocks => 'Vantaggi Premium';

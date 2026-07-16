@@ -63,8 +63,6 @@ class _ChartsTabBodyState extends State<ChartsTabBody> {
                     child: ChartsChartSection(
                       state: state,
                       onRangeChanged: widget.controller.setRange,
-                      canUseLockedRanges:
-                          widget.monetization.canUseIntradayRanges,
                       onRetry: widget.controller.load,
                       swapVersion: _swapVersion,
                       lastPairKey: _lastPairKey,

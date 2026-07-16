@@ -75,7 +75,6 @@ void main() {
             body: RangeSelector(
               selected: ChartRange.oneWeek,
               onChanged: (_) {},
-              canUseLockedRanges: false,
               includesCrypto: false,
             ),
           ),

@@ -45,11 +45,6 @@ class DailyRatesInfoSheet extends StatelessWidget {
                 nextUpdateLocalTime(context),
                 style: AppTheme.caption.copyWith(color: colors.subtle),
               ),
-              const SizedBox(height: 8),
-              Text(
-                fasterUpdatesPlanned(context),
-                style: AppTheme.caption.copyWith(color: colors.subtle),
-              ),
             ],
           ),
         ),

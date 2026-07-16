@@ -172,20 +172,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Fiat rates, crypto rates, chart history and temporary unlocks';
 
   @override
-  String get labelSubscription => 'Subscription';
-
-  @override
-  String get labelSubscriptionSubtitle => 'Not available in v1';
-
-  @override
   String get labelRestorePurchases => 'Restore purchases';
 
   @override
   String get labelRestorePurchasesSubtitle =>
       'Re-check local store purchases on this device';
-
-  @override
-  String get labelSoon => 'Coming Soon';
 
   @override
   String get premiumUnlocks => 'Premium unlocks';

@@ -16,7 +16,7 @@
 > 8. B5 in-app privacy link (needs 1) + B9 real billing (needs 6) → B6 rebuild signed AAB (bump the pubspec `+N` versionCode)
 > 9. B7 upload final AAB → **confirm the E7 gate is passed + production access granted** → pre-launch report → submit. **After approval:** run the site launch-day batch (`niduna-site/RELEASE_PLAN.md` § S2 — Play link, badge, JSON-LD, trust line).
 >
-> **Open decision (2026-07-16, pending user choice):** whether to remove/hide the "Coming Soon" subscription teasers before the final AAB — the Settings "Subscription · Coming Soon" tile (`premium_section.dart`) and the Charts intraday snackbar ("requires Premium Subscription", `ui_copy_charts.dart:138`). Recommended: remove for v0.1 — they contradict the planned listing trust line ("No subscription.") and Apple rejects placeholder UI when iOS comes later. Decide before B6.
+> **~~Open decision~~ RESOLVED (2026-07-16): "Coming Soon" subscription teasers removed** — the Settings "Subscription · Coming Soon" tile, the Charts locked intraday chips (1H/6H/1D + premium snackbar), and the Convert info-sheet "faster updates / future Premium subscription" line are gone from the UI on all platforms (no platform gating). Entitlement plumbing kept for Phase 2. Verified on emulator light+dark, 239 tests pass.
 > **2026-06-02 update:** iOS widget code merged but disabled (Xcode 26 simctl install bug). Code complete, verify on real iPhone when convenient. See "Blocker Summary" below.
 > **2026-06-01 update:** Backend work deferred until post-publish. Code-only path: see "Code-Only Pre-Flight" below. Full detail in `docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`.
 > **2026-06-02 review:** see `docs/REVIEW-2026-06-01.md` for the full audit.
@@ -653,6 +653,16 @@ These can ship in v0.2.0+ updates:
 
 ## Change Log (this file)
 
+- **2026-07-16 (teaser removal implemented)** — The "Coming Soon"
+  open decision is resolved and DONE: removed the Settings
+  Subscription tile (+ its 3 l10n keys from all 5 ARBs), the locked
+  1H/6H/1D chart range chips with their premium snackbar, and the
+  Convert info-sheet "faster updates" subscription line. No platform
+  gating — removed everywhere. Entitlement plumbing
+  (`canUseIntradayRanges`, `ProductType.subscription`, dev panel)
+  kept as the Phase 2 seam. Verified: 239 tests pass, emulator
+  screenshots light+dark (Settings premium section, charts range
+  row, info sheet) all clean.
 - **2026-07-16 (third-pass consistency review)** — Swept both plans for
   statements contradicting the corrected closed-test gate and for stale
   premises. Fixed: (1) E7 blocker row still said the closed track "can

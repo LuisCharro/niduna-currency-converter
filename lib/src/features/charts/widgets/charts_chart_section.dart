@@ -14,7 +14,6 @@ class ChartsChartSection extends StatelessWidget {
   const ChartsChartSection({
     required this.state,
     required this.onRangeChanged,
-    required this.canUseLockedRanges,
     required this.onRetry,
     required this.swapVersion,
     required this.lastPairKey,
@@ -25,7 +24,6 @@ class ChartsChartSection extends StatelessWidget {
 
   final ChartState state;
   final ValueChanged<ChartRange> onRangeChanged;
-  final bool canUseLockedRanges;
   final VoidCallback onRetry;
   final int swapVersion;
   final String lastPairKey;
@@ -67,7 +65,6 @@ class ChartsChartSection extends StatelessWidget {
                 child: RangeSelector(
                   selected: state.range,
                   onChanged: onRangeChanged,
-                  canUseLockedRanges: canUseLockedRanges,
                   includesCrypto: state.includesCrypto,
                 ),
               ),

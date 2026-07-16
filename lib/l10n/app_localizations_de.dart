@@ -172,20 +172,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Fiat-Kurse, Krypto-Kurse, Chartverlauf und temporäre Freischaltungen';
 
   @override
-  String get labelSubscription => 'Abonnement';
-
-  @override
-  String get labelSubscriptionSubtitle => 'In v1 nicht verfügbar';
-
-  @override
   String get labelRestorePurchases => 'Käufe wiederherstellen';
 
   @override
   String get labelRestorePurchasesSubtitle =>
       'Lokale Store-Käufe auf diesem Gerät erneut prüfen';
-
-  @override
-  String get labelSoon => 'Bald verfügbar';
 
   @override
   String get premiumUnlocks => 'Premium-Freischaltungen';

@@ -89,9 +89,6 @@ String chartPairSubtitle(BuildContext context, String base, String quote) =>
 String chartRangeLabel(BuildContext context, String key) =>
     switch (_lang(context)) {
       'es' => switch (key) {
-          '1H' => '1H',
-          '6H' => '6H',
-          '1D' => '1D',
           '1W' => '1S',
           '1M' => '1M',
           '3M' => '3M',
@@ -101,41 +98,23 @@ String chartRangeLabel(BuildContext context, String key) =>
           _ => key,
         },
       'de' => switch (key) {
-          '1D' => '1T',
           '1Y' => '1J',
           '2Y' => '2J',
           _ => key,
         },
       'it' => switch (key) {
-          '1H' => '1O',
-          '6H' => '6O',
-          '1D' => '1G',
           '1W' => '1S',
           '1Y' => '1A',
           '2Y' => '2A',
           _ => key,
         },
       'fr' => switch (key) {
-          '1D' => '1J',
           '1W' => '1S',
           '1Y' => '1A',
           '2Y' => '2A',
           _ => key,
         },
       _ => key,
-    };
-
-String intradayPremiumMessage(BuildContext context) => switch (_lang(context)) {
-      'es' =>
-        'Los rangos intradía llegarán pronto; requieren suscripción Premium',
-      'de' =>
-        'Intraday-Bereiche kommen bald und erfordern ein Premium-Abonnement',
-      'it' =>
-        'Gli intervalli intraday arriveranno presto; richiedono un abbonamento Premium',
-      'fr' =>
-        'Les plages intrajournalières arrivent bientôt et nécessitent un abonnement Premium',
-      _ =>
-        'Intraday ranges coming soon — requires Premium Subscription',
     };
 
 String cryptoRangeLimitMessage(BuildContext context) =>

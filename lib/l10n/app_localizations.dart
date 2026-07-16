@@ -422,18 +422,6 @@ abstract class AppLocalizations {
   /// **'Fiat rates, crypto rates, chart history and temporary unlocks'**
   String get labelClearAllDataSubtitle;
 
-  /// Subscription setting title
-  ///
-  /// In en, this message translates to:
-  /// **'Subscription'**
-  String get labelSubscription;
-
-  /// Subscription setting subtitle
-  ///
-  /// In en, this message translates to:
-  /// **'Not available in v1'**
-  String get labelSubscriptionSubtitle;
-
   /// Restore purchases setting title
   ///
   /// In en, this message translates to:
@@ -445,12 +433,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Re-check local store purchases on this device'**
   String get labelRestorePurchasesSubtitle;
-
-  /// Coming soon badge
-  ///
-  /// In en, this message translates to:
-  /// **'Coming Soon'**
-  String get labelSoon;
 
   /// Premium unlocks text when not purchased
   ///

@@ -173,20 +173,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Tipos fiat, tipos cripto, historial de gráficos y desbloqueos temporales';
 
   @override
-  String get labelSubscription => 'Suscripción';
-
-  @override
-  String get labelSubscriptionSubtitle => 'No disponible en v1';
-
-  @override
   String get labelRestorePurchases => 'Restaurar compras';
 
   @override
   String get labelRestorePurchasesSubtitle =>
       'Volver a comprobar las compras locales en este dispositivo';
-
-  @override
-  String get labelSoon => 'Próximamente';
 
   @override
   String get premiumUnlocks => 'Ventajas Premium';

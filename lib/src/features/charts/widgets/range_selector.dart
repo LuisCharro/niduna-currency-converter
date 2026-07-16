@@ -11,14 +11,12 @@ class RangeSelector extends StatelessWidget {
   const RangeSelector({
     required this.selected,
     required this.onChanged,
-    required this.canUseLockedRanges,
     required this.includesCrypto,
     super.key = const Key('charts_range_selector'),
   });
 
   final ChartRange selected;
   final ValueChanged<ChartRange> onChanged;
-  final bool canUseLockedRanges;
   final bool includesCrypto;
 
   @override
@@ -27,21 +25,13 @@ class RangeSelector extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(horizontal: AppTheme.space2),
       child: Row(
-        children: ChartRange.values.map((range) {
+        children: ChartRange.values.where((range) => !range.locked).map((
+          range,
+        ) {
           final isSelected = range == selected;
-          final isLocked = range.locked && !canUseLockedRanges;
           final isCryptoUnavailable = includesCrypto && !range.supportsCrypto;
           void rangeTap() {
             HapticFeedback.selectionClick();
-            if (isLocked) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(intradayPremiumMessage(context)),
-                  duration: Duration(seconds: 3),
-                ),
-              );
-              return;
-            }
             if (isCryptoUnavailable) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -84,10 +74,7 @@ class RangeSelector extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (isLocked) ...[
-                          Icon(Icons.lock, size: 13, color: AppColors.of(context).primary.withValues(alpha: .75)),
-                          const SizedBox(width: 5),
-                        ] else if (isCryptoUnavailable) ...[
+                        if (isCryptoUnavailable) ...[
                           Icon(Icons.block, size: 12, color: AppColors.of(context).muted),
                           const SizedBox(width: 4),
                         ],
@@ -96,7 +83,7 @@ class RangeSelector extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: isLocked || isCryptoUnavailable
+                            color: isCryptoUnavailable
                                 ? AppColors.of(context).muted
                                 : isSelected
                                 ? AppColors.of(context).text

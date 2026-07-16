@@ -251,7 +251,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.textContaining('shown in your local time'), findsOneWidget);
-    expect(find.textContaining('future Premium subscription'), findsOneWidget);
+    expect(find.textContaining('future Premium subscription'), findsNothing);
   });
 
   testWidgets('Convert currency picker opens on a compact viewport', (
