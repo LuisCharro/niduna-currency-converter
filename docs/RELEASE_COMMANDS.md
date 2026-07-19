@@ -1,6 +1,12 @@
 # Release & Build Commands Reference
 
-> **What this is:** every command that takes parameters, with usage, what's required, what's optional, and what's missing when it fails. Maintained alongside the `release-prep` branch.
+> **What this is:** command syntax, prerequisites, and failure notes for the
+> current `main` branch. Historical sections are labeled where retained.
+>
+> **Ordering warning (2026-07-19):** this is a command reference, not a
+> release plan. Follow `../RELEASE_CHECKLIST.md` § "Execution Order". `main`
+> is the canonical branch; `release-prep` is historical. Android application
+> ID is `com.niduna.currency_converter`.
 >
 > **Convention:** All `IOS_SIMULATOR_ID` defaults shown below match the post-Phase A-D plan (`docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`). Override as needed.
 
@@ -442,15 +448,24 @@ git commit -m "docs(plan): reorder post-phase-ad plan to agreed code-only releas
 
 ---
 
-## What's still missing (intentional, awaiting user input)
+## What's still missing (reviewed 2026-07-19)
 
-- **B5 (privacy policy link in Settings):** needs a hosted URL (GitHub Pages, etc.) — code is ready to add the row, blocked on the URL
-- **B4 (replace AdMob test unit IDs):** swap `ca-app-pub-3940256099942544/...` for real AdMob unit IDs in `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, and `ios/Runner/Info.plist`
-- **C1-C11 (Play Store listing):** needs Play Console account ($25) + content creation (descriptions, screenshots, etc.) — Luis creates manually
-- **E1-E5 (Play Console + AdMob accounts):** external sign-up, no code work
+- **B4:** create the Android AdMob app/banner/rewarded units and inject the
+  real IDs with `ADMOB_USE_TEST_ADS=false`.
+- **B5:** add the Settings privacy link to the final
+  `https://niduna.com/privacy/` URL after domain verification.
+- **B8:** implement UMP, gate ads on `canRequestAds`, and add the required
+  privacy-options entry point; ad requests remain non-personalised.
+- **B9:** replace `PurchaseServiceStub` with Play Billing for all three
+  one-time products and wire Restore purchases.
+- **Final release:** rotate/back up the upload key, run checks, increment the
+  `+N` versionCode, build the signed release candidate, and verify it on Play
+  testing tracks.
+- **External:** commercial-compatible site hosting + domain/email, Play
+  account/verification/merchant profile/app draft, AdMob setup, store listing,
+  App content declarations, and closed testing.
 - **Apple Developer Program ($99/yr):** external sign-up
 - **Android home widget re-enable:** Kotlin file is in the source tree (`android/app/src/main/java/com/niduna/currency_converter/widget/NidunaAppWidgetProvider.kt`) but the `<receiver>` block in `AndroidManifest.xml` is currently commented out. To re-enable, restore the receiver from commit `55d7839` (`feature/widget-restore`). Build is verified; data flow works.
 - **iOS home widget re-enable:** Swift code is in the source tree, the `NidunaWidget` Xcode target is wired up, but the `Embed App Extensions` build phase is **disabled in main** because `xcrun simctl install` fails on iOS 26 / Xcode 26 with `Invalid placeholder attributes` (known simctl bug, not a code issue). To re-enable for real-device testing, run the `ios/scripts/add_widget_target.rb` script which is idempotent. See `docs/release-prep/README.md` for full re-enable steps.
 - **Keystore password rotation:** the keystore shipped with a TEMP password stored in `android/key.properties` and `/tmp/niduna_temp_keystore_pwd.txt`. Must be rotated via `keytool -storepasswd` + `keytool -keypasswd` before publishing (and the temp file deleted). Full steps in § "Rotate the keystore password" above.
 - **iOS appearance reset:** the smoke test script flips iOS sim to `dark`. After running, set it back to `light` with `xcrun simctl ui <UDID> appearance light` so the sim doesn't open dark for future work.
-

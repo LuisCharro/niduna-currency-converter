@@ -1,8 +1,16 @@
 # Currency Converter App — Definitions
 
-> **Status:** DEFINITIONS finalized after Phase roadmap pass
+> **Status:** Product-history/reference document. For launch scope and order,
+> `RELEASE_CHECKLIST.md` is authoritative.
 > **Created:** 2026-05-06
-> **Last updated:** 2026-05-22 (feature audit + doc alignment)
+> **Last reviewed:** 2026-07-19
+
+> **Current Android launch contract:** 34 fiat + 11 crypto; no backend,
+> account, cloud sync, subscription, or first-party analytics; banner ads plus
+> explicit opt-in rewarded ads; three one-time products (Remove Ads 1.99 CHF,
+> Charts Pro 2.99 CHF, Favorites Pro 0.99 CHF). Google Mobile Ads SDK data
+> practices are disclosed; "zero data collection" must not be used as an
+> absolute store claim.
 
 ---
 
@@ -41,9 +49,12 @@ first or defer the idea.
 
 - Phase 1 has no backend.
 - Phase 1 has no accounts, login, cloud sync, or user profile.
-- Phase 1 has zero tracking, zero analytics, and zero data collection.
-- Phase 1 monetization is banner ads, one-time Remove Ads (1.99 CHF), one-time Charts Pro (2.99 CHF), and optional subscription (Coming Soon — pricing TBD).
-- Phase 1 has four tabs only: `Convert`, `Favorites`, `Charts`, `Settings`. (Favorites tab hidden in v1 UI; code retained for Phase 2 re-enablement)
+- Phase 1 has no first-party analytics or Niduna user profile. AdMob's
+  collection/sharing must be disclosed in Play Data Safety and the policy.
+- Launch monetization is banner ads, user-initiated rewarded ads, and three
+  one-time products: Remove Ads (1.99 CHF), Charts Pro (2.99 CHF), and
+  Favorites Pro (0.99 CHF). No launch subscription or rental product.
+- Phase 1 has four visible tabs: `Convert`, `Favorites`, `Charts`, `Settings`.
 - Phase 1 includes EN, DE, ES, IT, FR localization for meaningful user-facing text.
 - RUB is not supported.
 - Dark mode is free and available in v1 (follows system default; toggle in Settings).
@@ -51,10 +62,9 @@ first or defer the idea.
 
 ### Monetization access policy
 
-- Active subscription always removes ads and unlocks all premium app features.
-- Without an active subscription, one-time unlocks can still grant specific features.
-- If subscription is canceled or expires, subscription-only access is removed.
-- If subscription is canceled or expires, one-time unlocks remain owned and active.
+- Subscription plumbing is retained only as a Phase 2 seam and is not exposed
+  or sold in the Android launch.
+- One-time unlocks grant only their documented feature.
 - Ads are shown only when both conditions are true:
   - no active subscription
   - no one-time Remove Ads ownership
@@ -63,11 +73,10 @@ first or defer the idea.
 
 - Free default chart pair is `USD -> EUR` (with free swap to `EUR -> USD`).
 - Free charts include ranges `1W`, `1M`, `3M`, `6M`, `1Y`, `2Y`.
-- Intraday ranges `1H`, `6H`, and `1D` are subscription-only.
 - "Choose any chart pair" is premium:
-  - unlocked by active subscription
-  - or unlocked by one-time Charts Pro ownership
-- Optional Phase 1.x monetization experiment: Rewarded Ad can grant temporary chart-pair unlock to pure-free users.
+  - unlocked by one-time Charts Pro ownership
+- A user-initiated Rewarded Ad can grant a temporary chart-pair unlock to
+  pure-free users.
   - applies only to chart pair selection
   - does not unlock intraday ranges (`1H`, `6H`, `1D`)
   - temporary unlock should be bidirectional for the selected pair
@@ -78,7 +87,7 @@ first or defer the idea.
 | Screen | Owns | Does not own |
 |--------|------|--------------|
 | `Convert` | amount input, base currency, multi-currency results, 11 crypto quote rows, favorite toggles, freshness/offline status, banner ad area | charts, settings, accounts, transfers |
-| `Favorites` | local favorite pairs, max-3 rule, edit/delete, jump back to Convert context | unlimited favorites, cloud sync |
+| `Favorites` | local pairs; 3 free, temporary 6-pair rewarded boost, Favorites Pro limit 16; reorder/delete; jump to Convert | unlimited favorites, cloud sync |
 | `Charts` | fiat historical charts up to 2 years, 11 crypto and mixed fiat/crypto charts up to 1 year, range selector, high/low/change | crypto history beyond 1 year, metals, export, multi-pair compare |
 | `Settings` | local preferences (default base, decimal places, refresh-on-open), cache controls, Remove Ads entry, privacy/about/version | account settings, backend sync, subscriptions before Phase 2 |
 
@@ -89,7 +98,7 @@ first or defer the idea.
 | Fiat latest rates | Frankfurter v2 | Keep last successful payload locally | Show cached stale/offline state if refresh fails |
 | Fiat historical rates | Frankfurter historical endpoints | Cache by pair and range | Show cached chart data if available |
 | Crypto latest rates (11 cryptos) | Build-time provider profile. Release-safe default: fawazahmed0. Dev profile may use CoinPaprika primary + fawazahmed0 fallback | Keep normalized USD source cache plus final latest snapshot cache | Preserve cached crypto if fresh enough and provider refresh fails |
-| Crypto historical rates (11 cryptos) | Build-time provider profile. Release-safe default: Coingecko (no API key). Dev profile may use CoinPaprika historical ticks | Cache source USD history by asset and final chart snapshots by pair | Show cached chart data if available |
+| Crypto historical rates (11 cryptos) | Build-time provider profile. Release-safe default: fawazahmed0 CC0 date files. Dev profile may use CoinPaprika historical ticks | Cache source USD history by asset and final chart snapshots by pair | Show cached chart data if available |
 | Favorites | Local storage | Persistent until user deletes | Never requires network |
 | Settings preferences | Local storage (SharedPreferences) | Persistent until user changes | Never requires network |
 | Temp pair unlocks | Local storage (SharedPreferences) | 24h TTL, auto-expire | Never requires network |
@@ -113,7 +122,8 @@ large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 |---------|------|-------------|------|
 | Remove Ads — forever | One-time | **1.99** | Core unlock; below My Currency Pro ($3.99) |
 | Charts Pro — all pairs forever | One-time | **2.99** | Unlocks any chart pair selection |
-| Subscription | Recurring | **Coming Soon** — 1-week free trial planned; store-local yearly price TBD | Informational only in Phase 1; real pricing TBD |
+| Favorites Pro — up to 16 pairs | One-time | **0.99** | Launch product |
+| Subscription | Recurring | Phase 2 only; no launch product or teaser | Requires a new product decision before implementation |
 
 > Remove Ads purchase hides ALL ad surfaces AND removes rewarded-ad offer prompts (per monetization-access-rules.md).
 
@@ -123,13 +133,13 @@ large UI layer separately. Keep `ROADMAP.md` as the practical sequencing guide.
 
 | Feature | Detail |
 |---------|--------|
-| **Currencies (fiat)** | 40 fiat currencies: USD, EUR, GBP, JPY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR, TWD, NZD, CNY, TRY, AED, ILS, ZAR |
+| **Currencies (fiat)** | 34 fiat currencies: USD, EUR, GBP, JPY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR, TWD, NZD, CNY, TRY, AED, ILS, ZAR |
 | **Conversion** | Client-side `amount × rate`; Frankfurter has **no `/convert` endpoint** |
 | **Historical charts** | Daily rates, up to 2 years, unlimited free in Phase 1 |
 | **Favorite pairs** | Save up to 3 locally (no account) |
 | **Offline mode** | Cache last known rates; show "last updated: [date]" |
 | **Dark mode** | Free in 2026 — do NOT charge for this |
-| **Ads** | Banner only (AdMob or similar) |
+| **Ads** | AdMob banners plus explicit user-initiated rewarded ads for the documented temporary unlocks; no interstitials |
 | **Data source** | Frankfurter v2 (`api.frankfurter.dev`), no API key, no monthly quota, anti-abuse rate limiting |
 | **Localization** | App UI text localized in EN, DE, ES, IT, FR (currency codes/tickers remain standard) |
 
@@ -178,7 +188,9 @@ Android first at launch, Apple later (no $100/year Apple fee initially).
 **Store-agnostic rule:** pricing, features, and data policies are identical on both platforms.
 
 Core promise: convert between currencies, see historical charts, no login required.
-Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, zero data collection**.
+Same privacy direction as Currency (currencyapp.com): **no Niduna account,
+no first-party analytics, and no backend user profile**. AdMob remains a
+disclosed third-party SDK in the ad-supported version.
 
 ---
 
@@ -188,7 +200,8 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 
 **Currency app collects Location + Identifiers for tracking** (App Store privacy label, May 2026). XE collects data for transfers. My Currency Converter Pro is better ("no data collected").
 
-**Niduna's positioning**: strictly **zero tracking, zero accounts, zero data collection**. Point to the App Store privacy label as proof.
+**Niduna's positioning**: no account, no cloud profile, no first-party
+analytics, local app data, and transparent disclosure of the ads SDK.
 
 ### Detailed competitor analysis
 
@@ -345,7 +358,11 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 
 ---
 
-## Phase Roadmap
+## Historical phase roadmap
+
+> The commercial roadmap below originated before the final Android launch
+> contract. Current launch scope is the contract at the top of this file;
+> future prices, subscriptions and backend triggers remain proposals.
 
 ### Phase 1 — MVP (Free + Ads + One-time Unlock)
 
@@ -376,16 +393,17 @@ Same philosophy as Currency (currencyapp.com): **zero tracking, zero accounts, z
 
 ---
 
-## Final Recommendation
+## Historical recommendation (superseded for launch details)
 
 Build the first release as a **simple, privacy-first, no-login, ad-supported converter**:
 
 1. Flutter app
 2. Frankfurter v2 primary data source
-3. 40 fiat currencies + 11 crypto (51 total) including CHF (RUB → TRY)
+3. 34 fiat currencies + 11 crypto (45 total) including CHF and TRY; no RUB
 4. Daily rates + 2-year charts + offline cache
-5. Banner ads only
-6. One-time **Remove Ads** at **1.99 CHF** (+ optional 30-day rental at 0.50 CHF — consider omitting at launch)
+5. Banner ads plus explicit user-initiated rewarded ads; no interstitials
+6. Three one-time products: **Remove Ads** 1.99 CHF, **Charts Pro** 2.99 CHF,
+   and **Favorites Pro** 0.99 CHF; no rental or subscription at launch
 7. No backend, no account, no API keys at launch
 8. Phase 1.x **includes** BTC/ETH latest rates and daily charts up to 1 year via no-key providers (implemented)
 9. Self-host Frankfurter only if/when DAU exceeds ~10,000
@@ -418,11 +436,11 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 |----------|---------|---------|----------|
 | **Data source** | Frankfurter free + fawazahmed0 CC0 for 11 crypto | ExchangeRate-API Pro + Frankfurter + optional broader crypto provider via backend | + expanded crypto/metals providers |
 | **Backend** | None | ASP.NET Core + PostgreSQL on Hostinger | Same |
-| **Currencies** | 40 fiat currencies + 11 crypto (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC) | All 200 from Frankfurter + broader crypto if approved | + Metals (XAU/XAG) |
+| **Currencies** | 34 fiat currencies + 11 crypto (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC) | Broader fiat/crypto if approved | + Metals (XAU/XAG) |
 | **Charts** | fiat daily up to 2Y; crypto daily up to 1Y | + Multi-pair comparison | + Metals overlays + extended crypto |
 | **Rate alerts** | No | Push via backend (subscription) | + Crypto price alerts |
-| **Monetization** | Ads + Remove Ads one-time | + Subscriptions (Basic: 12 CHF/año) | + Crypto/Metals add-on |
-| **Ads** | Banner only | Banner for free tier | Banner for free tier |
+| **Monetization** | Ads + three one-time products | Possible subscriptions (new decision required) | Possible Crypto/Metals add-on |
+| **Ads** | Banner + explicit opt-in rewarded | Re-evaluate for free tier | Re-evaluate for free tier |
 | **Metals** | No | No | Gold/Silver (XAU/XAG) |
 
 ---
@@ -433,7 +451,10 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 4 practical buckets: Phase 1 MVP, Phase 1.x no-key BTC/ETH extension, Phase 2 (backend + subscriptions and optional broader crypto API strategy), Phase 3 (metals + extended crypto + extensions).
 
 **Q: What's in the current launch scope?**
-40 fiat currencies + 11 crypto latest in Convert + fiat charts up to 2 years + crypto charts up to 1 year + offline cache + banner ads + Remove Ads (one-time 1.99 CHF). No backend, no metals, no alerts.
+34 fiat currencies + 11 crypto in Convert + fiat charts up to 2 years +
+crypto charts up to 1 year + offline cache + banner/opt-in rewarded ads +
+three one-time products (Remove Ads, Charts Pro, Favorites Pro). No backend,
+subscription, metals, or alerts.
 
 **Q: How to monetize not just cover costs?**
 Phase 1: ads + one-time Remove Ads accumulates cash reserve. Phase 2: subscriptions for alerts/hourly create recurring revenue. Don't use one-time purchases to fund ongoing backend — that's the fundamental mistake.

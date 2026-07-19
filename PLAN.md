@@ -1,13 +1,16 @@
 # Currency Converter — Development Plan
 
 > **Based on:** DEFINITIONS.md (2026-05-22)
-> **Status:** Phase 1 implementation nearly complete; store release blockers remain
+> **Status:** Historical implementation tracker. For current release order and
+> blockers use `RELEASE_CHECKLIST.md` only. Reviewed 2026-07-19.
 
 ---
 
 ## Overview
 
-Currency converter app for Android (iOS later) under Niduna brand. Privacy-first: zero tracking, zero accounts, zero data collection.
+Currency converter app for Android (iOS later) under Niduna brand.
+Privacy-first means no Niduna account, no first-party analytics and no backend;
+the ad-supported version still requires transparent AdMob disclosures.
 
 **Reference app:** Currency (currencyapp.com) — clone with privacy-first differentiation
 
@@ -59,7 +62,7 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 - Release-safe profile rules:
   - fiat latest + charts: Frankfurter
   - crypto latest: fawazahmed0
-  - crypto charts: Coingecko (no API key)
+  - crypto charts: fawazahmed0 CC0 date files
 - Dev profile rules:
   - crypto latest: CoinPaprika primary, fawazahmed0 fallback
   - crypto charts: CoinPaprika historical ticks
@@ -75,9 +78,9 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 
 | Type | Description | Intrusiveness | Phase 1 Use |
 |------|-------------|---------------|-------------|
-| **Banner** | 320x50 rectangle, bottom | Low | **Primary ad format (only one in Phase 1)** |
+| **Banner** | 320x50 rectangle, bottom | Low | **Primary persistent ad format in Phase 1** |
 | **Interstitial** | Full-screen between transitions | Medium | Future (Phase 2+) — not in MVP per DEFINITIONS |
-| **Rewarded** | User opt-in full-screen ad for temporary reward | Medium | Phase 1.x optional experiment (chart pair temporary unlock for pure-free users) |
+| **Rewarded** | User opt-in full-screen ad for temporary reward | Medium | Phase 1 launch: documented temporary chart/favorites unlocks for pure-free users |
 | **Native** | Blends with app content | Low | Future consideration |
 | **App Open** | Shown when app enters foreground | Medium | Future (if needed for revenue) |
 
@@ -138,7 +141,10 @@ See `ROADMAP.md` for acceptance criteria and guardrails.
 - Total: **1 API call per refresh**
 - Cross-rate calculation done client-side: `amount × rate`
 
-**Clarification:** This IS the multi-currency view. User types 100 USD, sees the 40 fiat conversions at once. No need to select "from/to" pairs separately. This matches the Currency app UX.
+**Clarification:** This IS the multi-currency view. User types 100 USD and
+sees the supported fiat conversions at once (34 in the current launch
+contract). No need to select "from/to" pairs separately. This matches the
+Currency app UX.
 
 ---
 
@@ -336,11 +342,12 @@ lib/
 | Favorites manual reorder | DONE | Always-visible drag handle on each row; order persisted. Replaced the earlier usage-based auto-sort (`FavoriteUsageTracker`/`sortedPairs` removed). |
 | Offline mode | DONE | Cache last known rates |
 | Dark mode | DONE | Follows system by default with a Settings entry point |
-| Banner ads | DONE (placeholders) | `AdBannerPlaceholder` in Convert, Charts, Chart Picker; no live AdMob SDK yet |
-| Remove Ads IAP | DONE | 1.99 CHF one-time (stub) |
-| Charts Pro IAP | DONE | Unlock all pairs forever (stub) |
-| Subscription UI | DONE | "Not available in v1 · 1 week free trial planned later" + "Soon" badge |
-| Rewarded Ad (chart pair unlock) | DONE | 24h temporary unlock for pure-free users |
+| Ad SDK/UI | PARTIAL | Google Mobile Ads is integrated, but real IDs and UMP/privacy options remain open |
+| Remove Ads IAP | PARTIAL | 1.99 CHF one-time UI; real Play Billing open in B9 |
+| Charts Pro IAP | PARTIAL | 2.99 CHF one-time UI; real Play Billing open in B9 |
+| Favorites Pro IAP | PARTIAL | 0.99 CHF one-time UI; real Play Billing open in B9 |
+| Subscription UI | REMOVED | Not a launch product; Phase 2 plumbing only |
+| Rewarded Ads | PARTIAL | Chart/favorites unlock UX exists; real ads + UMP remain open |
 | Data freshness indicator | DONE | `(i)` icon → `DailyRatesInfoSheet` explains ECB once-daily |
 | Pull-to-refresh on Convert | DONE | `RefreshIndicator` wrapping rates list |
 | Modal currency picker | DONE | `CurrencyPickerSheet` via `showModalBottomSheet` |
@@ -357,15 +364,14 @@ lib/
 | Starter favorites seeding | DONE | Seeds USD-EUR, USD-GBP, USD-BTC on first run so widget is useful immediately |
 | iOS home-screen widget code | DONE (disabled by default) | Target and Swift code wired; embed phase removed on main for iOS 26 sim install stability |
 | Calculator expression evaluator tests | DONE | 12 test cases covering arithmetic and edge cases |
-| 194 total tests passing | DONE | Current baseline after widget redesign work |
+| 239 total tests passing | LAST VERIFIED 2026-07-19 | Rerun after release-code changes |
 
 ### Data Sources
 
 | Source | Use | Key |
 |--------|-----|-----|
 | Frankfurter v2 | Fiat rates | No API key |
-| Coingecko | BTC/ETH historical (release_safe profile) | No API key |
-| fawazahmed0 | BTC/ETH latest fallback | No API key |
+| fawazahmed0 | 11-crypto latest + historical (release_safe profile) | No API key |
 | CoinPaprika | BTC/ETH latest + historical (dev profile only) | No API key |
 
 ### Technical Decisions
@@ -375,7 +381,7 @@ lib/
 | Framework | Flutter | Cross-platform (Android first) |
 | State management | ChangeNotifier (Flutter built-in observer pattern) | Lightweight, no external dependency |
 | Local storage | SharedPreferences | Simple key-value for favorites + cache |
-| HTTP client | dio | Better caching than http package |
+| HTTP client | `package:http` | Current implementation; repositories + SharedPreferences own caching |
 | Charts | fl_chart | Free, well-maintained |
 | Ads | Google Mobile Ads Flutter plugin | Verify current official package before Slice 7 integration |
 
@@ -388,7 +394,8 @@ lib/
 - [x] Slice 4: implement fiat historical charts with pair/range cache
 - [x] Slice 5: implement Settings preferences, cache controls, and chart banner ad
 - [x] Slice 6: integrate monetization entitlements and ad runtime (banner ads, Remove Ads, Charts Pro, Subscription, optional rewarded unlock)
-- [x] Slice 8: IAP paywall — PurchaseService stub, IapPurchasePlayer, Settings Premium section, Remove Ads + Charts Pro + Subscription (Coming Soon) buttons, banner CTA, intraday "coming soon" toast
+- [x] Slice 8 (historical): initial stub paywall. The launch UI now contains
+  Remove Ads + Charts Pro + Favorites Pro; subscription teasers were removed.
 - [x] Slice 9: data freshness indicator, dark mode, intraday toast copy fix, subscription v1 copy
 - [x] Slice 10: update root docs for the no-key BTC/ETH scope (aligned in commits 764340f + ad8caab)
 - [x] Slice 11: add BTC/ETH and mixed fiat/crypto charts up to 1 year
@@ -402,7 +409,8 @@ lib/
 >
 > **2026-06-01 update:** Backend (Phase 2/3) deferred until post-publish, only resumes if there are users. The code-only execution order lives in [`docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`](docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md) — work happens on branch `release-prep`.
 >
-> **2026-06-16 update:** App is code-complete for Android release; remaining launch blockers are account/hosting chores (Play Console, AdMob, privacy hosting, keystore password rotation). The prioritized **code-only, no-account, no-backend** backlog lives in [`docs/superpowers/plans/2026-06-16-code-only-next-steps.md`](docs/superpowers/plans/2026-06-16-code-only-next-steps.md): ~~(1) pre-launch robustness & accessibility pass~~ ✅ **DONE 2026-06-16**, (2) small/large widget families, (3) multi-pair chart comparison — deferred, likely a full Charts-tab UI/UX rework. **Resume point:** [`docs/superpowers/plans/2026-06-16-session-summary-and-next.md`](docs/superpowers/plans/2026-06-16-session-summary-and-next.md).
+> **2026-06-16 historical update:** this statement predates the later B8/B9
+> audit and is not a current release-readiness claim.
 >
 > **2026-07-08 update:** Pre-launch polish pass done (Settings copy merge → "Data & privacy", clipping/shadow/switch/chart-fill fixes, store screenshots re-captured, 239 tests). Release planning is now **cross-repo**: master order in `RELEASE_CHECKLIST.md` § "Execution Order" (Phases 0-5, per-step Implementation Notes); site-side in `niduna-site/RELEASE_PLAN.md` (domain + email + app-ads.txt block everything). Plan review found **B8 NEW: UMP consent flow missing** (required for EEA/CH ads). Post-launch feature backlog: `docs/FEATURE_IDEAS.md`. **Resume point:** [`docs/superpowers/plans/2026-07-08-session-summary-and-next.md`](docs/superpowers/plans/2026-07-08-session-summary-and-next.md).
 
@@ -411,12 +419,13 @@ lib/
 - [x] **P3 — Localization Step 2** (language content): add and validate ARB translations for EN, DE, ES, IT, FR across Convert, Charts, Settings, dialogs/sheets, empty/error states, and accessibility labels/tooltips where user-visible
 - [x] **P4 — Real AdMob SDK**: replace placeholder banners with live `google_mobile_ads` (DONE — live BannerAd + RewardedAd integrated, placeholder only shows on load failure or test mode; see `ad_banner_widget.dart`, `admob_rewarded_ad_service.dart`, `ad_helper.dart`)
 - [x] **P5 — Replace CoinGecko in release_safe crypto history** (DONE — fawazahmed0 per-date CDN snapshots, CC0-1.0, batched 10-concurrent)
-- [ ] **P6 — Release keystore signing**: move from debug signing config to proper release keystore → `RELEASE_CHECKLIST.md` B1-B3
+- [x] **P6 — Release keystore signing configuration**: implemented; password rotation, backup and final rebuild remain in `RELEASE_CHECKLIST.md`
 - [x] **P7 — Branded app name** ✅ committed `bade57e`
 - [ ] **P8 — Privacy policy URL**: required by both stores before submission → `RELEASE_CHECKLIST.md` C1, B5
 - [x] **P9 — iOS deployment target update** ✅ committed `bade57e`
 - [x] **P10 — Release APK + App Bundle** ✅ verified (needs real keystore for store submission)
-- [ ] **P11 — Store listing assets**: screenshots, descriptions, keywords for both stores → `RELEASE_CHECKLIST.md` C2-C11
+- [ ] **P11 — Store listing:** screenshots/graphic ready; English copy and
+  policy-facing fields require final review → `RELEASE_CHECKLIST.md` C2-C10
 - [x] **P12 — Long-press context menu** ~~on currency rows~~ — **deferred**: swipe-left already covers Pin/Swap/Hide actions
 
 ---

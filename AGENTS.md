@@ -19,7 +19,7 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (2026-07-08)
+## Current state (reviewed 2026-07-19)
 
 - **Branch:** `main` is the canonical branch. `release-prep`,
   `feature/widget-restore`, `feature/ios-widget-target` are kept
@@ -28,14 +28,15 @@ skills without changing this repo again.
   signed (v2, 50 MB). `flutter build apk --release` works (58 MB).
   `flutter build ios --simulator --debug` works, app installs and
   runs on iPhone 17 Pro sim (iOS 26.5).
-- **Tests:** 239/239 pass. `flutter analyze` is clean.
+- **Tests:** current recorded baseline is 239/239 pass with clean
+  `flutter analyze` (re-run 2026-07-19); rerun after release-code changes.
 - **2026-07-08 polish pass:** Settings data pages merged into one
   "Data & privacy" page (no dev vocabulary in user copy), Favorites
   clipping/shadow fixed, palette-token switches, dark chart fill,
   store screenshots re-captured. Dark screenshot sets:
   `SCREENSHOT_DARK=true ./.devtools/capture_android_screens.sh`;
   verification captures: `CAPTURE_TARGET_PATH=integration_test/ui_polish_verify_test.dart`.
-- **Release:** cross-repo master order in `RELEASE_CHECKLIST.md`
+- **Release:** the store path is **not code-complete**. Cross-repo master order in `RELEASE_CHECKLIST.md`
   § "Execution Order" + per-step "Implementation Notes"; site-side
   steps in the sibling repo `../../niduna-site/RELEASE_PLAN.md`.
   Post-launch feature backlog: `docs/FEATURE_IDEAS.md`.
@@ -53,10 +54,13 @@ skills without changing this repo again.
     real iPhone. Blocked on iOS 26 sim install bug.
   - See `docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`
     and `docs/superpowers/specs/2026-06-13-widget-redesign-design.md`.
-- **Release status:** see `RELEASE_CHECKLIST.md` for the full
-  Blocker Summary. Code path complete. 3 P1 items remaining
-  (AdMob IDs, keystore password, privacy policy URL) are all
-  external or one-line config swaps.
+- **Release status:** see `RELEASE_CHECKLIST.md` for the full Blocker
+  Summary. Open code includes real AdMob IDs, UMP + privacy options,
+  in-app privacy URL, and real Play Billing/restore. The current
+  `PurchaseServiceStub` must never reach a reviewable Play track.
+  Site launch also needs the approved Hostinger KVM 2 security/staging path,
+  `niduna.com`,
+  and working `support@niduna.com`.
 - **Review report:** `docs/REVIEW-2026-06-01.md` — full audit done
   2026-06-01/02. Read it before starting substantial new work.
 
@@ -68,7 +72,8 @@ Non-goals for normal feature work:
 
 - no backend (Phase 1)
 - no accounts
-- no tracking / analytics
+- no first-party analytics or Niduna user profiling; AdMob data practices
+  are disclosed and consent/privacy controls are release-critical
 - no cloud sync
 - no complex food database
 

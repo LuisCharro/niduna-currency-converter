@@ -1,20 +1,46 @@
 # Release Checklist — Path to Google Play Store
 
-> **Last updated:** 2026-07-16
+> **Last updated:** 2026-07-19
 > **App version:** 0.1.0+1 (pre-MVP)
 > **Branch:** main
-> **Status:** Code path complete, AAB+APK built and signed, 0 lint issues. Screenshots (C5) and feature graphic (C6) done. Accessibility pass done 2026-06-16; polish pass + screenshot refresh done 2026-07-08 (239 tests). **Remaining code work: B4 (real AdMob IDs), B5 (privacy link), B8 (UMP consent flow), and B9 (real Play Billing — NEW 2026-07-16, replaces the fake `PurchaseServiceStub` flow); B4/B5 are blocked on external steps, B8 on the AdMob consent message (E5b), B9 on the in-app products (E8).** Site-side GDPR prep (fonts, privacy sections) completed 2026-07-11 — the site is ready for the domain.
+> **Status:** The product UI and local data path are complete, but the
+> **store release path is not code-complete**. The last recorded baseline is
+> 239 passing tests with clean analysis (re-run 2026-07-19). Open release work is B4
+> (real AdMob IDs), B5 (privacy link), B8 (UMP consent + privacy-options
+> entry point), and B9 (real Play Billing replacing `PurchaseServiceStub`).
+> Screenshots and the feature graphic are ready. The site is GDPR-prepared,
+> but `niduna.com` does not resolve yet and the hosting plan must be made
+> compatible with commercial use before the monetized app launches.
 >
-> **Remaining before submission (short list, in dependency order — updated 2026-07-16):**
-> 1. **Domain + email (niduna-site repo)** — buy `niduna.com` + attach to Vercel, set up the `support@niduna.com` mailbox (decided 2026-07-16: Zoho Mail free plan). The site is GDPR-ready and already publicly reachable at `niduna.vercel.app`; the custom domain makes the privacy + marketing URLs final. Site steps: `niduna-site/RELEASE_PLAN.md` § S1. **Blocks C1, C10, B5 — and blocks the closed test, because the App content declarations need the final URLs.**
-> 2. E1–E4 — Play Developer account (**personal account** — Pegolandia model, legal name becomes public; see identity note below) + verification + payments/merchant profile + app draft *(parallel with 1)*
-> 3. C2–C4, C7–C11 — Play Console listing + content forms (title, descriptions, rating, target audience, Data Safety, category, contact + privacy/marketing URLs from 1, localized listings). **Moved up 2026-07-16: the Console blocks closed-track publishing until "Set up your app" is complete, so this must precede the closed test.** *(needs 1 for the URLs + 2 for the Console)*
-> 4. **E6 + E7 — declare EU DSA trader status, then START THE CLOSED TEST** (≥12 testers × 14 continuous days; upload the existing June AAB; full how-to in § "E7 — Closed-testing playbook"). **The longest fixed clock in the release (~3 weeks incl. reviews) — the remaining code work (items 5-8) runs in parallel with it.**
-> 5. E5/E5b — AdMob account + ad units + GDPR consent message → then B4 (real ad IDs), B8 (UMP consent flow), E5c (`app-ads.txt` on the site)
-> 6. **E8 + B9 — Play Billing (NEW 2026-07-16):** create the 3 in-app products in Play Console (Monetize → In-app products; needs E3 merchant profile + E4), then implement real billing in the app (replace `PurchaseServiceStub`, wire Restore purchases) and verify with license testers on the E7 closed track. **Must be in the final AAB — the current stub shows a fake "Processing payment" flow (Play payments-policy rejection risk, and every entitlement is free).** See Implementation Notes § B9.
-> 7. Rotate the TEMP keystore password (see callout below) *(anytime before 8)*
-> 8. B5 in-app privacy link (needs 1) + B9 real billing (needs 6) → B6 rebuild signed AAB (bump the pubspec `+N` versionCode)
-> 9. B7 upload final AAB → **confirm the E7 gate is passed + production access granted** → pre-launch report → submit. **After approval:** run the site launch-day batch (`niduna-site/RELEASE_PLAN.md` § S2 — Play link, badge, JSON-LD, trust line).
+> **Remaining before submission (short list, true dependency order — updated 2026-07-19):**
+> 1. **Site foundation:** follow the approved Hostinger KVM 2 static-migration
+> plan: preserve Vercel rollback, pass the VPS security/staging gate, claim the
+> included `niduna.com` entitlement, attach DNS, and create/test
+> `support@niduna.com`. Site detail: `niduna-site/RELEASE_PLAN.md` § S1 and
+> `niduna-site/docs/hostinger-static-migration.md`. This unlocks C1, C10, and
+> B5.
+> 2. **Accounts in parallel:** create the personal Play account, finish
+> identity + real-device verification, create/verify the merchant payments
+> profile, create the app draft, AdMob app/ad units/EEA message, and finalize
+> the immutable IDs for the three one-time products. Create the products as
+> soon as Console permits; some account/app states may first require a
+> billing-enabled bundle. [E1-E5, E5b, E8]
+> 3. **Release candidate before the closed test:** implement B4, B5, B8 and
+> B9; rotate and back up the upload key; run checks; build a signed AAB with a
+> new versionCode. **Do not upload the existing stub-purchase build to any
+> reviewable track.** Internal testing may be used first if useful.
+> 4. **Console setup:** finalize the English listing and all required App
+> content forms, including ads, target audience, Data Safety, financial
+> features and any trader-status task shown by Play Console. Localized store
+> listings are optional and must not delay the closed test. [C2-C10]
+> 5. **Closed test:** publish the release candidate to the closed track,
+> recruit 15-16 people so at least 12 remain opted in continuously for 14
+> days, and test real billing/restore plus UMP during the window. [E7]
+> 6. **Production:** fix findings with incremented versionCodes, apply for
+> production access after the gate, review the pre-launch report, submit, and
+> wait until the Play listing is publicly reachable.
+> 7. **Site launch batch:** only after the production listing is public,
+> replace Coming soon with the real Play URL and deploy/verify S2.
 >
 > **~~Open decision~~ RESOLVED (2026-07-16): "Coming Soon" subscription teasers removed** — the Settings "Subscription · Coming Soon" tile, the Charts locked intraday chips (1H/6H/1D + premium snackbar), and the Convert info-sheet "faster updates / future Premium subscription" line are gone from the UI on all platforms (no platform gating). Entitlement plumbing kept for Phase 2. Verified on emulator light+dark, 239 tests pass.
 > **2026-06-02 update:** iOS widget code merged but disabled (Xcode 26 simctl install bug). Code complete, verify on real iPhone when convenient. See "Blocker Summary" below.
@@ -23,7 +49,7 @@
 
 ---
 
-## Code-Only Pre-Flight (Agent — Branch `release-prep`)
+## Historical Code-Only Pre-Flight (reference only)
 
 This section is the agent's agreed order. The rest of this file is the human-paced release flow (external steps + content steps + final upload).
 
@@ -40,7 +66,8 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | 7 | Build signed AAB | B6: `./scripts/build_appbundle.sh` smoke | ✅ Done | AAB at `build/app/outputs/bundle/release/app-release.aab` (50 MB, signed v2) |
 | 8 | UI Polish cycle (Phase 6) | open | ✅ Done (range selector + decimal places) | `5491ea7` |
 
-**Total agent time:** ~5h focused. After this, release is blocked only on external work (E1–E5) and content (C1–C11).
+**Historical note:** this table predates B8/B9 and must not be used as the
+current release order. Open release work is listed at the top of this file.
 
 **Branch:** All this work is on `main` (merged from `release-prep` in commit `19f68b3`). The `release-prep` branch is kept around as a reference.
 
@@ -51,11 +78,37 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | Document | Purpose | Status |
 |----------|---------|--------|
 | **This file** | **Consolidated release checklist — start here** | — |
+| `../../niduna-site/RELEASE_PLAN.md` | Site-only subplan; must agree with this file | Active |
+| `docs/release-prep/play-store-listing.md` | Reviewable English listing draft | Active |
+| `docs/RELEASE_COMMANDS.md` | Commands only; not an ordering source | Active |
 | `docs/providers/frankfurter.md` | Fiat provider: license, endpoints, refresh cadence | Done |
 | `docs/providers/fawazahmed0.md` | Crypto provider: license, CDN, history approach | Done |
 | `docs/providers/coinpaprika.md` | Dev-only provider: why it's blocked for production | Done |
 | `.plan/PLAY_STORE_PUBLISH_CHECKLIST.md` | Detailed Play Console field-by-field reference | Done (may need minor updates below) |
 | `.plan/APP_STORE_PUBLISH_CHECKLIST.md` | App Store checklist (deferred — Android first) | Deferred |
+
+---
+
+## Current external references — re-check on execution day
+
+Store and SDK requirements change. These primary sources support the current
+ordering and declarations in this checklist:
+
+- [Production access for new personal accounts](https://support.google.com/googleplay/android-developer/answer/14151465?hl=en)
+  — closed-test eligibility, tester count and duration.
+- [Create and set up the store listing](https://support.google.com/googleplay/android-developer/answer/9859152?hl=en-EN)
+  — listing fields, limits and translations.
+- [Data Safety guidance](https://support.google.com/googleplay/android-developer/answer/10787469?hl=en)
+  and [Google Mobile Ads SDK disclosure](https://developers.google.com/admob/android/privacy/play-data-disclosure)
+  — declarations must include SDK behavior.
+- [UMP for Flutter](https://developers.google.com/admob/flutter/privacy) —
+  consent refresh, `canRequestAds` gating and privacy-options entry point.
+- [Payments profile](https://support.google.com/googleplay/android-developer/answer/7161426?hl=en)
+  and [one-time products](https://support.google.com/googleplay/android-developer/answer/1153481?hl=en)
+  — catalog setup, immutable IDs, pricing and Billing permission.
+
+If Play Console shows a stricter or account-specific task, follow the Console
+and update this checklist before proceeding.
 
 ---
 
@@ -72,9 +125,9 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | E5 | Register AdMob account + create ad units | https://admob.google.com | ❌ |
 | E5b | AdMob → Privacy & messaging → create the GDPR consent message (required for EEA/UK/CH ads; pairs with code step B8) | In AdMob console, after E5 | ❌ |
 | E5c | Publish `app-ads.txt` on niduna.com with the AdMob publisher ID from E5 | Site-side step — `niduna-site/RELEASE_PLAN.md` § S1.5 | ❌ |
-| E6 | **EU DSA trader declaration** (NEW 2026-07-11) — the app is monetized (ads + IAP), so under the EU Digital Services Act you must declare trader status in Play Console and provide verified contact details (legal name, address, email, phone). These are **publicly displayed on the EU store listing**. Without the declaration the app cannot be distributed in the EU (Google has been removing non-compliant apps since Feb 2025). | Play Console → App content → EU DSA trader status, after E4 | ❌ |
-| E7 | **Closed-testing gate for new personal accounts** (NEW 2026-07-11) — personal developer accounts created after Nov 2023 must run a **closed test with at least 12 opted-in testers for 14 continuous days** before they can apply for production access. This adds ≥2-3 weeks to the timeline and needs testers recruited (friends/family with Google accounts). Start the closed track as soon as the Console's "Set up your app" tasks are complete (content forms + store listing — they BLOCK closed-track publishing, see Step 2c GATE note); it then runs in parallel with the remaining code work (B4/B5/B8/B9). Verify the exact tester count in the Console (Google has changed it before). **Full how-to: § "E7 — Closed-testing playbook" below.** | Play Console → Testing → Closed testing, after E4 + content forms/listing + first AAB upload | ❌ |
-| E8 | **Create in-app products in Play Console** (NEW 2026-07-16) — Monetize → Products → In-app products: Remove Ads 1.99 CHF, Charts Pro 2.99 CHF, Favorites Pro 0.99 CHF (names/prices as shown in the Settings Premium section). Requires the merchant/payments profile (E3). **Product IDs created here must match the constants used in B9** — suggested: `remove_ads_lifetime`, `charts_pro_lifetime`, `favorites_pro_lifetime`. | Play Console → Monetize, after E3 + E4 | ❌ |
+| E6 | Complete the trader-status / verified-public-contact task shown by Play Console for EU distribution. Use truthful personal details and review exactly what Play says will be public before submitting. | Play Console → App content, after E4 | ❌ |
+| E7 | New personal accounts created after 2023-11-13 currently need a closed test with at least **12 opted-in testers for 14 continuous days** before applying for production access. Start only after app setup is complete **and a policy-safe release candidate exists**; target 15-16 recruits for dropout margin. | Play Console → Testing → Closed testing | ❌ |
+| E8 | **Finalize IDs, create and activate three one-time products in Play Console** — Remove Ads 1.99 CHF, Charts Pro 2.99 CHF, Favorites Pro 0.99 CHF. IDs cannot be changed/reused, so decide them before B9; suggested: `remove_ads_lifetime`, `charts_pro_lifetime`, `favorites_pro_lifetime`. Requires E3/E4. If Console does not expose product creation yet, implement B9 with those final IDs and upload the billing-enabled bundle to internal testing first; then create/activate the products before purchase testing or the closed track. | Play Console → Monetize with Play → Products → One-time products | ❌ |
 
 > **Publishing identity (decided 2026-07-11 — "Pegolandia model", see
 > `Niduna/docs/strategy/Niduna_Company_Options_CH_vs_US.md` Option 0 and
@@ -102,8 +155,8 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Blocked on C1 (domain not public yet — see `niduna-site/RELEASE_PLAN.md` § S1). Target URL: `https://niduna.com/privacy/` |
 | B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Build verified working (June AAB, 50 MB, signed v2), but the FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + B9 (real billing) + keystore rotation. Do not upload the existing artifact. **versionCode rule (added 2026-07-16):** every Play upload needs a strictly HIGHER build number — bump the `+N` in `pubspec.yaml` `version: 0.1.0+N` for each upload, closed-track updates included (Play rejects a reused versionCode). |
 | B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
-| B8 | **UMP consent flow (GDPR/EEA)** — NEW 2026-07-08 review | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Google requires a certified CMP consent message for EEA/UK/CH ad traffic (mandatory since 2024). Nothing in the app requests consent today. Pair with the AdMob-console side (E5: Privacy & messaging → create GDPR message). **Also:** the site privacy page claims "non-personalised advertising" — either configure NPA in the ad requests or align the privacy copy when implementing this. |
-| B9 | **Real Play Billing (NEW 2026-07-16)** — replace `PurchaseServiceStub` with a real implementation | `pubspec.yaml` (add `in_app_purchase`), new service in `lib/src/core/monetization/`, injection at `lib/src/app_shell.dart:94`, `settings_controller.dart:99` (restore), `iap_purchase_player.dart` (stream-driven phases) | ~1-2 days | ❌ | The app currently ships a FAKE purchase flow: 3 priced "Buy" buttons → "Processing payment…" overlay → always succeeds after ~2 s, no billing library present. Submitting this risks rejection (payments policy / broken functionality) and gives all entitlements away free. Blocked on E8 (products must exist in Console); test on the E7 closed track with license testers. **Full clues: Implementation Notes § B9.** |
+| B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Ad requests are already non-personalised, but the app still initializes Mobile Ads without UMP. Request consent info on every launch, show the form when required, gate ad requests on `canRequestAds`, and expose a privacy-options entry point when UMP reports it is required. Pair with E5b and keep the site policy aligned. |
+| B9 | **Real Play Billing** — replace `PurchaseServiceStub` with a real implementation | `pubspec.yaml` (add `in_app_purchase`), new service in `lib/src/core/monetization/`, injection at `lib/src/app_shell.dart:94`, `settings_controller.dart:99` (restore), `iap_purchase_player.dart` (stream-driven phases) | ~1-2 days | ❌ | The app currently ships a FAKE purchase flow: 3 priced "Buy" buttons → "Processing payment…" overlay → always succeeds after ~2 s, no billing library present. Submitting this risks rejection and gives entitlements away free. Implementation is not blocked by Console product creation once E8's immutable IDs are finalized. The products must be active before real purchase/restore testing and before the closed track. **Full clues: Implementation Notes § B9.** |
 
 > **⚠️ Keystore password rotation (NEW — 2026-06-02):**
 > The keystore was generated with a temporary password for this dev cycle.
@@ -129,7 +182,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 
 | # | Task | Specs | Effort | Status |
 |---|------|-------|--------|--------|
-| C1 | Write & host privacy policy page | Page is **built, deployed, and GDPR-hardened** (2026-07-11: self-hosted fonts, website + controller sections). Publicly reachable at `niduna.vercel.app/privacy` already; remaining: buy `niduna.com` + attach to Vercel so the FINAL URL exists (that URL goes into Play Console and the app). See `niduna-site/RELEASE_PLAN.md` § S1. | domain purchase | 🟡 Blocked on domain |
+| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The Vercel preview is public; remaining: complete the approved Hostinger KVM 2 security/staging gate, claim/configure `niduna.com`, attach DNS and verify the final URL. Update the policy's hosting paragraph only after the Hostinger host is live. See `niduna-site/RELEASE_PLAN.md` § S1. | Hostinger gate + domain | 🟡 Blocked |
 | C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
 | C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Niduna differentiator | ~45 min | ❌ |
@@ -140,7 +193,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII collected by us — **but the AdMob SDK must be declared** (device/advertising identifiers, ad interaction data; see the "Third-party SDKs" table below). Align answers with the consent setup from B8/E5b. | ~30 min | ❌ |
 | C9 | Category selection | Likely: Finance > Finance tools or Productivity | ~2 min | ❌ |
 | C10 | Contact email + website + privacy URL | Required fields in Console listing. `support@niduna.com` must actually receive mail first — email setup is `niduna-site/RELEASE_PLAN.md` § S1.4 | ~10 min | ❌ (blocked on domain + email) |
-| C11 | Localized listings (EN, DE, ES, IT, FR) | At minimum: translated short description | ~1 hr | ❌ |
+| C11 | Localized listings (DE, ES, IT, FR) | Optional post-launch optimization; Play can serve the default English listing/automatic translation | ~1 hr | ⏸ Optional |
 
 ---
 
@@ -185,17 +238,15 @@ The IDs flow through the build, not the source:
   .loadAndShowConsentFormIfRequired(...)` → only initialize/show ads when
   `canRequestAds` is true. Keep it non-blocking for app startup (ads are
   already lazy).
-- **Decision to make here:** always-non-personalized (add `npa: '1'`
-  extras to `AdRequest` in `lib/src/core/ads/ad_banner_widget.dart` and
-  `admob_rewarded_ad_service.dart`; matches the site privacy page as
-  written) vs consent-based personalization (higher revenue; then update
-  the site privacy page's "non-personalised advertising" claim —
-  `niduna-site/privacy/index.html` line ~142).
+- **Decision resolved:** both banner and rewarded code already use
+  `AdRequest(nonPersonalizedAds: true)`. Keep that behavior. UMP is still
+  required, and the app must expose a privacy-options entry point when
+  `getPrivacyOptionsRequirementStatus()` says it is required.
 - Test with UMP debug geography = EEA on the emulator
   (`ConsentDebugSettings(debugGeography: DebugGeography.debugGeographyEea,
   testIdentifiers: [...])`) before trusting it.
 
-### B9 — Real Play Billing (NEW 2026-07-16 — replaces the Phase-1 stub)
+### B9 — Real Play Billing (replaces the Phase-1 stub)
 
 **Decision context:** payments must work at launch, so the "Phase 2"
 migration documented in `.agent/iap-purchase-plan.md` § "Migration to
@@ -206,12 +257,15 @@ behind it, and no billing package exists in `pubspec.yaml`.
 
 Implementation clues (verified against the code 2026-07-16):
 
-1. **Console first (E8):** products must exist before the plugin can
-   query them. IDs are chosen here and must match the code — suggested
-   `remove_ads_lifetime` / `charts_pro_lifetime` /
-   `favorites_pro_lifetime`, priced 1.99 / 2.99 / 0.99 CHF as displayed
-   in `upgrade_shelf.dart`.
-2. Add `in_app_purchase` (official Flutter plugin) to `pubspec.yaml`.
+1. **Finalize IDs first (E8):** product IDs cannot be changed or reused and
+   must match the code — suggested `remove_ads_lifetime` /
+   `charts_pro_lifetime` / `favorites_pro_lifetime`, priced 1.99 / 2.99 /
+   0.99 CHF as displayed in `upgrade_shelf.dart`. Create/activate the products
+   immediately if Console permits; otherwise do it after step 2's
+   billing-enabled bundle is uploaded internally. They must be active before
+   product lookup and purchase tests.
+2. Add `in_app_purchase` (official Flutter plugin) to `pubspec.yaml`, implement
+   the service below, and make the first billing-enabled internal-test bundle.
 3. New `PlayPurchaseService implements PurchaseService`
    (`lib/src/core/monetization/purchase_service.dart` is the interface;
    all 3 products are non-consumables → `buyNonConsumable` +
@@ -293,8 +347,8 @@ the production-access questionnaire honestly).
     reviews/ratings — that's a ban-level policy violation; paid
     *opt-in testing* is the tolerated gray zone.
 
-**Console setup (after E4, needs any signed AAB — the June build is
-fine for this; testers don't need the final version):**
+**Console setup (after E4, using the policy-safe release candidate from
+B4/B5/B8/B9 — do not upload the June stub-purchase artifact):**
 1. Play Console → Testing → Closed testing → create track, upload AAB.
    (Blocked until the "Set up your app" dashboard tasks are complete —
    declarations + store listing; see the Step 2c GATE note in the
@@ -325,11 +379,10 @@ invited" to "can go live", which is why Step 2c starts this in Phase 0.
 re-run `./scripts/build_appbundle.sh` (B6) and confirm the AAB signature
 with `jarsigner -verify` or `apksigner`.
 
-### C2-C4 + C11 — Listing copy
-- Draft everything in a new `docs/release-prep/store-listing.md` (EN
-  master + DE/ES/IT/FR short descriptions) so it's reviewable before
-  pasting into the Console. The app's own ARB files are the vocabulary
-  reference for translated feature names.
+### C2-C4 — Default English listing copy
+- Use `docs/release-prep/play-store-listing.md` as the reviewable master
+  before pasting into Console. DE/ES/IT/FR listings are optional after launch;
+  the app ARB files are the vocabulary reference if they are added.
 - Facts to respect: **45 currencies (34 fiat + 11 crypto)** — count is
   from `lib/src/core/currency/supported_currencies.dart`; rates update
   once daily; free = full converter + charts, one-time IAPs remove
@@ -371,7 +424,7 @@ See `docs/providers/*.md` for full per-provider details.
 
 | Item | Evidence |
 |------|----------|
-| All 40 fiat currencies + 11 crypto | `supported_currencies.dart`, multi-provider repo |
+| All 34 fiat currencies + 11 crypto | `supported_currencies.dart`, multi-provider repo |
 | Client-side conversion (`amount × rate`) | Convert controller |
 | Historical charts (fiat 2Y, crypto 1Y) | Charts controller + fawazahmed0 date-file client |
 | Favorites (max 3, local storage) | FavoritesStore wired |
@@ -384,7 +437,7 @@ See `docs/providers/*.md` for full per-provider details.
 | iOS deployment target 15.0 | Committed `bade57e` |
 | Release APK + App Bundle builds verified | `scripts/build_apk.sh`, `scripts/build_appbundle.sh` |
 | Firebase hosting deploy pipeline | `scripts/firebase_hosting_*.sh` |
-| `./scripts/check.sh` passes (122 tests, 0 errors) | CI green |
+| Last full recorded `./scripts/check.sh` baseline | 239 tests, clean analysis on 2026-07-19; rerun after release-code changes |
 
 ### Provider Profile System — Correctly Segregated
 
@@ -450,115 +503,81 @@ widgets, trend arrows, and chart-comparison deferral, see
 
 ---
 
-## Execution Order (Recommended — cross-repo master order, 2026-07-08)
+## Execution Order (cross-repo master order — 2026-07-19)
 
-This order spans **two repos**: this app repo and `niduna-site`
-(the privacy policy + marketing pages live there; site-side detail in
-`niduna-site/RELEASE_PLAN.md`). Phases 0/1 can run in parallel.
-**Critical path (corrected 2026-07-16):** accounts + domain/email →
-Phase 3 content forms (they gate the closed track — see the Step 2c
-GATE note) → closed test starts its 14-day clock → Phase 2 code work
-runs inside that window → final AAB → E7 gate → submit.
+This is the order to follow. The site repo contains implementation detail for
+its own steps, but it does not redefine this sequence.
 
-```
-─ Phase 0 · Accounts (external, parallel with Phase 1) ────────────────
-Step 1:  Register Play Console account ($25) — PERSONAL account
-         (Pegolandia model; legal name will be public) + identity
-         + payments                                                 [E1-E3]
-Step 2:  Create the app in Play Console (draft)                     [E4]
-Step 2b: Declare EU DSA trader status (name/address/email/phone
-         verified + shown on EU listing)                            [E6]
-Step 2c: START THE CLOSED TEST AS EARLY AS THE CONSOLE ALLOWS —
-         upload a signed AAB to a closed track, recruit ≥12
-         testers, let the 14-day clock run in parallel with
-         Phase 2 (hard gate for new personal accounts before
-         production access)                                        [E7]
-         ⚠ GATE (corrected 2026-07-16): the Console blocks
-         publishing a CLOSED track until the "Set up your app"
-         dashboard tasks are complete — App content declarations
-         (privacy policy URL, ads, content rating C7, target
-         audience C7b, Data safety C8, DSA E6) AND the main store
-         listing (C2-C4 text, C5-C6 assets, C9 category, C10
-         contact details). Only INTERNAL testing skips these
-         forms — but internal does NOT count toward the
-         12-tester/14-day gate. Real order therefore: domain +
-         email (Phase 1) → fill the Phase 3 content (Steps 10-14)
-         → THEN publish the closed track. Phase 3 below becomes a
-         final review pass before submission.
-         ⚠ Ordering (decided 2026-07-11): buy the domain (Phase 1 /
-         site S1.1) first so every declared URL is
-         https://niduna.com/... from day one, not a temporary
-         vercel.app URL. Site is GDPR-ready since 2026-07-11, so
-         nothing blocks the purchase.
-Step 3:  Register AdMob, create real ad unit IDs                    [E5]
-Step 3b: AdMob console: create the GDPR consent message
-         (Privacy & messaging)                                      [E5b]
-Step 3c: Create the 3 in-app products (Monetize → In-app
-         products) — IDs/prices per Implementation Notes § B9
-         (needs Steps 1-2: merchant profile + app draft)            [E8]
+### Phase 1 — Foundations (site and accounts can run in parallel)
 
-─ Phase 1 · Make niduna.com public (SITE — blocks C1/C10/B5) ──────────
-Step 4:  Buy niduna.com + attach to Vercel            [niduna-site S1.1]
-Step 5:  Verify /privacy/ + /currency-converter/ are publicly
-         reachable (incognito, no SSO)                [niduna-site S1.2-S1.3]
-         → C1 becomes ✅; privacy + marketing URLs are now final
-Step 5b: Email on the domain — support@niduna.com must RECEIVE
-         mail (decided 2026-07-16: Zoho Mail free plan —
-         MX/SPF/DKIM setup, see site S1.4)            [niduna-site S1.4]
-         → needed by C10 (Console contact email) + site mailto CTAs
+1. **Prepare the approved Hostinger static migration before the domain.** Keep
+   Vercel as rollback, create the safety tag/branch, then pass the VPS
+   security and isolated staging gates. See
+   `../../niduna-site/docs/hostinger-static-migration.md` and
+   `../../niduna-site/RELEASE_PLAN.md` S1.0.
+2. Claim/configure the included `niduna.com` entitlement, attach it to the
+   verified Hostinger host, make apex canonical and redirect `www`, then verify
+   Home, Privacy and Currency Converter in an anonymous browser. [site S1.1-S1.3]
+3. Create `support@niduna.com`, publish MX/SPF/DKIM, and prove mail works in
+   both directions. [site S1.4]
+4. In parallel, create the **personal** Play account, complete identity,
+   contact and real-Android-device verification, create/verify the merchant
+   payments profile, and create the app draft. [E1-E4]
+5. Create the AdMob app, Android banner/rewarded units and European regulations
+   message. Finalize the three immutable one-time-product IDs and prices;
+   create them now if Console permits. [E5, E5b, E8]
 
-─ Phase 2 · Finalize the app build (CODE — agent can do B4/B8/B9/B5/B6) ─
-Step 6:  Rotate the TEMP keystore password (human, local)  [see callout]
-Step 7:  Swap AdMob test IDs for real ones (needs Step 3)  [B4]
-Step 7b: Implement UMP consent flow (needs Step 3b); align
-         the site's "non-personalised ads" claim            [B8]
-Step 7c: Publish app-ads.txt on niduna.com (needs Steps
-         3 + 4)                             [E5c / niduna-site S1.5]
-Step 8:  Add in-app privacy link → https://niduna.com/privacy/
-         (needs Step 5)                                     [B5]
-Step 8b: Implement real Play Billing — replace
-         PurchaseServiceStub, wire Restore purchases; verify
-         with license testers on the closed track
-         (needs Step 3c; see Implementation Notes § B9)     [B9]
-         ⚠ The AAB already on the closed track still has the
-         stub — fine for testers; upload the B9 build to the
-         SAME track when ready (bump pubspec `+N` — new
-         versionCode required; does not reset the 14-day
-         clock). Resolve the "Coming Soon" teaser decision
-         (header § Open decision) in this step too.
-Step 9:  ./scripts/check.sh + build signed AAB
-         (needs Steps 6-8b — final AAB must contain B4+B8+B5+B9) [B6]
+### Phase 2 — Build a policy-safe release candidate
 
-─ Phase 3 · Play Console listing — first filled BEFORE Step 2c (the
-   closed track needs it); at this point it is a final review pass ────
-Step 10: Listing content: title, descriptions, category      [C2-C4, C9]
-Step 11: Contact email (working support@ from Step 5b) +
-         website + privacy URL (from Step 5)                 [C10]
-Step 12: Upload screenshots + feature graphic (✅ ready,
-         refreshed 2026-07-08)                               [C5-C6]
-Step 13: Content rating questionnaire + Data Safety form     [C7-C8]
-Step 14: Localized listings (EN, DE, ES, IT, FR)             [C11]
+6. Publish `app-ads.txt` with the exact AdMob snippet and keep `niduna.com` as
+   the developer website in Play. [E5c / site S1.5]
+7. Implement real Android AdMob IDs, UMP consent + required privacy-options
+   entry point, in-app privacy URL, real Play Billing and Restore purchases
+   using E8's finalized IDs. [B4, B5, B8, B9]
+8. Rotate the temporary upload-key password, delete the temporary password
+   file, and store encrypted on-machine/off-machine backups.
+9. Run `./scripts/check.sh`; verify release-safe providers, no dev UI, real
+   billing failure/cancel/restore paths and non-personalised ad requests. Build
+   the signed AAB with a fresh `+N` versionCode. [B6]
+10. Upload to **internal testing** for a small smoke pass before the reviewable
+    closed track. If E8 was unavailable earlier, create/activate the products
+    after this billing-enabled upload. Verify product lookup, successful and
+    cancelled purchases, acknowledgement, relaunch persistence and Restore.
+    Internal testing does not count toward the 12/14-day production gate.
 
-─ Phase 4 · Submit ────────────────────────────────────────────────────
-Step 15: Upload AAB → pre-launch report → fix if needed      [B7]
-Step 15b: Confirm the E7 closed-test gate is satisfied
-          (≥12 testers, 14 continuous days) and apply for
-          production access                                  [E7]
-Step 16: Submit for review
+### Phase 3 — Finish Play setup, then start the fixed clock
 
-─ Phase 5 · After approval (SITE launch-day batch) ────────────────────
-Step 17: Play Store link + "Available" badge + JSON-LD
-         datePublished + trust line, deploy + verify  [niduna-site S2]
-Step 18: Post-launch backlog: docs/FEATURE_IDEAS.md (app),
-         niduna-site PENDING.md deferred items
-```
+11. Finalize the default English listing from
+    `docs/release-prep/play-store-listing.md`, upload the ready screenshots and
+    feature graphic, and use Android application ID
+    `com.niduna.currency_converter` everywhere. [C2-C6, C9-C10]
+12. Complete all App content declarations shown in Console: ads, content
+    rating, 13+ target audience, Data Safety based on the **final** AdMob/UMP
+    build, financial-features declaration, and trader/public-contact task.
+    [C7, C7b, C8, E6]
+13. Create the closed track, select every tester's country, upload the release
+    candidate only after all three products are active, and recruit 15-16
+    people so at least 12 remain opted in for 14 continuous days. [E7]
+14. During the window, monitor the count, gather real feedback, test purchases
+    and restore with license testers, review crashes/pre-launch findings, and
+    upload fixes to the same track with higher versionCodes.
 
-Rule of thumb: **nothing Console-facing can even start while
-`niduna.com` doesn't exist** (updated 2026-07-16 — the old "SSO-gated"
-premise is stale: the site is publicly reachable, the domain just isn't
-bought). The privacy URL is required by the App content forms that gate
-the closed track (Step 2c), the in-app link (B5), the Console listing
-(C10), and the Data Safety form (C8).
+### Phase 4 — Production and public-site switch
+
+15. When the gate is satisfied, apply for production access and answer the
+    testing questionnaire with real recruitment/feedback/change details.
+16. After access is granted, upload/promote the final verified build, review
+    the pre-launch report and submit for production review.
+17. Wait until the production Play listing is publicly reachable. Then execute
+    the site's S2 batch: correct Play URL, Available badge, release metadata,
+    trust line, deploy and click-test.
+18. Add DE/ES/IT/FR store listings later if wanted; they are not a launch gate.
+
+The fixed critical path is therefore:
+
+`Hostinger security/staging + domain/email + accounts → release candidate + Console
+setup → closed test (12/14 days) → production-access review → app review →
+public listing → site launch batch`.
 
 ---
 
@@ -602,7 +621,7 @@ the closed track (Step 2c), the in-app link (B5), the Console listing
 | App settings | SharedPreferences | Base currency, decimals, theme, refresh preference |
 | Rate cache | SharedPreferences | Last known fiat + crypto rates (offline use) |
 | Chart cache | SharedPreferences | Historical data for displayed pairs |
-| IAP state | Platform purchase receipt store | Remove Ads / Charts Pro ownership |
+| IAP state | Platform purchase receipt store + local entitlement cache | Remove Ads / Charts Pro / Favorites Pro ownership after B9 |
 | Temp unlocks | SharedPreferences | 24h chart-pair unlock TTLs |
 
 All local storage is cleared on app uninstall. Users can clear cache via Settings.
@@ -643,7 +662,7 @@ These can ship in v0.2.0+ updates:
 | Item | Priority | Notes |
 |------|----------|-------|
 | Crash reporting (Crashlytics) | Low | Post-MVP |
-| Analytics (privacy-compliant or none) | None per AGENTS.md | Phase 1 = zero tracking |
+| First-party analytics | None per AGENTS.md | AdMob SDK collection/sharing is disclosed separately |
 | Promo video | Nice-to-have | Increases conversion |
 | Tablet screenshots | Optional | Phone-first MVP |
 | Long-press context menu on rows | Low priority | Swipe already covers Pin/Swap |

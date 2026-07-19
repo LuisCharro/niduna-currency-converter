@@ -29,18 +29,20 @@ Use it when changing:
 3. Would App Store privacy details or Play Data safety need to change?
 4. Would a public privacy policy or in-app privacy text need to change?
 5. Does the app metadata or UI overclaim accuracy of rates?
-6. Are ads implemented as banner-only in Phase 1 (no interstitials)?
+6. Are normal ad surfaces banner-only, with rewarded ads initiated only by a
+   clear user action for the documented temporary unlocks (no interstitials)?
 
 ## Repo-specific rule
 
 For this app, the safe default is:
 
 - privacy-first tool
-- zero tracking
+- no first-party analytics or Niduna user profiling
 - zero accounts
-- zero data collection
+- no backend collection; disclose Google Mobile Ads SDK collection/sharing
 - offline-capable with cached rates
-- banner ads only (Phase 1)
+- banner ads on normal surfaces; opt-in rewarded ads only for documented
+  temporary chart/favorites unlocks; no interstitials
 
 Any change that weakens those assumptions should be treated as higher-risk.
 

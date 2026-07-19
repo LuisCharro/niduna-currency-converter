@@ -1,16 +1,21 @@
 # release-prep branch artifacts
 
+> **Historical implementation notes.** This directory is not a release-order
+> source. Use `../../RELEASE_CHECKLIST.md` for the current Android release
+> sequence and blockers. Statements below describe the state when the
+> `release-prep` work landed unless a paragraph explicitly says otherwise.
+
 This directory holds work-in-progress / disabled-state files that
 supported the `release-prep` branch but were not part of the active
 source tree at the time the release-prep work landed.
 
 ## Home-screen widget history (Android + iOS)
 
-The project has two home-screen widget implementations. Both are
-"code complete" but only the Android one is shipped in main right
-now. The iOS one is in main but disabled (see "Current state" below).
+The project has two home-screen widget implementations. At the time of this
+record, both implementations were code-complete but disabled or deferred as
+described below. Check the current source tree before changing either widget.
 
-### Android widget — shipped (working)
+### Android widget — implementation verified, integration disabled
 
 **Path:** `android/app/src/main/java/com/niduna/currency_converter/widget/NidunaAppWidgetProvider.kt`
 **Approach:** `AppWidgetProvider` + `RemoteViews`. No Glance, no Compose.

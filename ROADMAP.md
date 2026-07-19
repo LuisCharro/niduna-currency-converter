@@ -1,5 +1,11 @@
 # Currency Converter Roadmap
 
+> **Release note (2026-07-19):** this is the product/implementation roadmap.
+> `RELEASE_CHECKLIST.md` is the only source for launch order and blockers.
+> Current launch monetization is three one-time products (Remove Ads, Charts
+> Pro, Favorites Pro), banner ads, and explicit opt-in rewarded ads. There is
+> no launch subscription or subscription teaser.
+
 This file is the practical guide for sequencing product, design, data, and
 Flutter implementation work.
 
@@ -11,15 +17,17 @@ Use it together with:
 
 ## Current Reality
 
-The app has all Phase 1 slices implemented (slices 0-9, 11) and a UI redesign
-iteration 2 on branch `turbo/ui-redesign`. Feature audit completed 2026-05-22.
+The product UI/local-data path is implemented on `main`. The store path still
+needs real AdMob configuration, UMP/privacy options, the in-app privacy link,
+real Play Billing/restore, and the final signed release candidate. Last full
+recorded verification: 239 tests and clean analysis, re-run 2026-07-19.
 
 - a Flutter app with four visible tabs: `Convert`, `Favorites`, `Charts`,
   `Settings`
-- real fiat rates from Frankfurter v2 + BTC/ETH latest from no-key providers
+- real fiat rates from Frankfurter v2 + 11 crypto assets from no-key providers
 - historical charts: fiat up to 2Y, crypto up to 1Y
-- full monetization stubs: banner ad placeholders, Remove Ads, Charts Pro,
-  rewarded ad chart-pair unlock, subscription "Coming Soon" card
+- live AdMob integration still using test configuration; purchase UI for
+  Remove Ads, Charts Pro and Favorites Pro still backed by a stub
 - dark mode, data freshness indicator, pull-to-refresh, modal currency picker,
   and previous-day trend arrows on Convert rows
 - branded splash screens + adaptive icons (Android)
@@ -30,8 +38,7 @@ iteration 2 on branch `turbo/ui-redesign`. Feature audit completed 2026-05-22.
 - repo-local agent docs and skills
 - scripts for analysis, tests, and builds
 
-Remaining Phase 1 work: release signing, privacy policy, store listing
-metadata, and final store submission steps.
+Remaining launch work is tracked only in `RELEASE_CHECKLIST.md`.
 
 ## Product Contract First
 
@@ -57,7 +64,7 @@ Phase 1 has four primary tabs.
 
 | Tab | Primary job | Required content | Required states | Explicitly excluded |
 |-----|-------------|------------------|-----------------|---------------------|
-| `Convert` | Convert one amount into the supported fiat set plus BTC/ETH quote rows | amount input, base selector, fiat result rows, optional BTC/ETH quote rows, favorite star per row, last updated, local-only/privacy signal, refresh action, banner reserve | fresh, loading refresh, cached, stale/offline, fetch error with cached fallback, empty/no-cache error | transfers, accounts, RUB |
+| `Convert` | Convert one amount into the supported fiat set plus crypto quote rows | amount input, base selector, fiat result rows, 11 crypto quote rows, favorite star per row, last updated, local-only/privacy signal, refresh action, banner reserve | fresh, loading refresh, cached, stale/offline, fetch error with cached fallback, empty/no-cache error | transfers, accounts, RUB |
 | `Favorites` | Manage up to 3 local pairs | saved pair rows, last known value, delete/edit action, empty state, add/select pair flow | empty, 1-3 saved pairs, max reached, stale value, local storage error | cloud sync, login, unlimited favorites |
 | `Charts` | Review fiat and limited crypto history | pair selector, 1W/1M/3M/6M/1Y/2Y ranges, chart, high/low/change, last updated | loading, fresh, cached, stale/offline, no historical data, fetch error with cached fallback | crypto history beyond 1Y, metals, export, multi-pair comparison |
 | `Settings` | Configure local behavior and trust surface | default base, decimal precision, theme, refresh-on-open, clear cache, cache status, Remove Ads, privacy/about/version, subscription restore/management entry | normal, cache cleared, restore purchase/loading, IAP unavailable, no network for purchase | accounts, cloud backup |
@@ -77,7 +84,7 @@ Must include:
 - amount input
 - base currency selector
 - multi-currency results list
-- fiat currencies from the Phase 1 list plus optional BTC/ETH quote rows
+- 34 fiat currencies plus the 11 supported crypto quote rows
 - favorite toggle per row
 - **data freshness indicator** (last-updated timestamp + `(i)` info icon with ECB once-daily tooltip)
 - last updated status
@@ -149,7 +156,7 @@ Must include:
 - **Premium section** with IAP purchase cards:
   - Remove Ads one-time purchase entry
   - Charts Pro one-time purchase entry
-  - Subscription (informational "Coming Soon" / "Not available in v1" with pricing hint)
+  - Favorites Pro one-time purchase entry
   - Restore Purchases button
 - **"Remove ads" CTA row** below banner ad areas (Convert + Charts tabs): subtle text link below/beside the banner
 - Dev Sandbox section with entitlement toggles (visible during development)
@@ -164,14 +171,13 @@ Must not include:
 
 ### Monetization contract (Phase 1)
 
-- Active subscription unlocks all premium app features and hides ads.
-- Without subscription, users can still buy one-time unlocks.
-- If subscription expires, subscription-only access is removed.
-- If subscription expires, one-time unlocks remain active.
+- Subscription state is dormant Phase 2 plumbing and is not exposed at launch.
+- Launch entitlements come from the three one-time products.
 - Charts defaults to `USD -> EUR` (with free swap to `EUR -> USD`).
-- Charts intraday ranges (`1H`, `6H`, `1D`) are subscription-only.
-- Charts "any pair" selection is unlocked by subscription or one-time Charts Pro.
-- Pure-free users (no subscription, no Remove Ads, no Charts Pro) can unlock individual chart pairs for 24h by watching a Rewarded Ad.
+- Intraday ranges (`1H`, `6H`, `1D`) are not in the launch UI.
+- Charts "any pair" selection is unlocked by one-time Charts Pro.
+- Pure-free users (no Remove Ads or Charts Pro) can unlock individual chart
+  pairs temporarily by choosing to watch a Rewarded Ad.
 - Rewarded Ad grants bidirectional temporary access to one pair; does NOT unlock intraday ranges.
 - Remove Ads purchase hides ALL ad surfaces AND removes rewarded-ad offer prompts.
 - Temporary unlocks persist in SharedPreferences and survive app restarts until expiry.
@@ -182,13 +188,14 @@ Must not include:
 |---------|------|-------|------|
 | Remove Ads | One-time | 1.99 CHF | ✅ (simulated 2s purchase) |
 | Charts Pro | One-time | 2.99 CHF | ✅ (simulated 2s purchase) |
-| Subscription | Recurring | Coming Soon — 1-week free trial planned; store-local yearly price TBD | Informational only |
+| Favorites Pro | One-time | 0.99 CHF | Purchase UI exists; real billing open in B9 |
+| Subscription | Recurring | Not a launch product | Phase 2 decision only |
 
 #### Paywall entry points (Phase 1)
 
 | Entry point | Location | Product | UI type |
 |-------------|----------|---------|---------|
-| Settings Premium section | Settings tab | Remove Ads / Charts Pro / Subscription | Cards with Buy / Notify Me buttons |
+| Settings Premium section | Settings tab | Remove Ads / Charts Pro / Favorites Pro | Three one-time Buy cards |
 | Locked pair action sheet | Charts picker | Charts Pro | "Unlock all pairs forever" → IapPurchasePlayer |
 | Banner "Remove ads" CTA | Convert + Charts tabs | Remove Ads | Subtle text link below banner |
 
@@ -241,7 +248,7 @@ Supported scope:
 
 Sources:
 
-- release-safe profile: fawazahmed0 for BTC/ETH latest, Coingecko for BTC/ETH historical charts
+- release-safe profile: fawazahmed0 for 11-crypto latest and historical charts
 - dev CoinPaprika profile: CoinPaprika for BTC/ETH latest and historical, fawazahmed0 as latest fallback
 
 Still deferred:
@@ -583,10 +590,12 @@ Use these gates to avoid surprises:
 If a change fails one of these gates, stop and update the relevant doc before
 expanding code.
 
-## Feature Audit (2026-05-22)
+## Historical Feature Audit (2026-05-22 — do not use for current release state)
 
-All Phase 1 slices (0-9) and the BTC/ETH extension (Slice 11) are **implemented**.
-UI redesign iteration 2 is on branch `turbo/ui-redesign` (not yet merged).
+This snapshot is retained as implementation history. Several facts below were
+superseded on `main` (34 fiat, 11 crypto, four visible tabs, Favorites Pro,
+live AdMob widgets, removed subscription teaser). Use the top "Current Reality"
+section and `RELEASE_CHECKLIST.md` instead.
 
 ### Done
 
@@ -639,8 +648,8 @@ UI redesign iteration 2 is on branch `turbo/ui-redesign` (not yet merged).
 
 ### Next Best Step: Execute `RELEASE_CHECKLIST.md`
 
-All code features are complete. The path to store is operational:
-keystore → real AdMob IDs → privacy policy → screenshots → metadata → submit.
+The old one-line order above is superseded. The release still requires
+B4/B5/B8/B9 and the cross-repo dependencies in `RELEASE_CHECKLIST.md`.
 
 See [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) for the full ordered checklist with effort estimates.
 

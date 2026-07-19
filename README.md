@@ -2,20 +2,22 @@
 
 Privacy-first Flutter currency converter for the Niduna portfolio.
 
-**Phase 1 — MVP** | Android first, iOS later | No account, no tracking, no backend.
+**Android MVP release** | Android first, iOS later | No account, no first-party analytics, no backend.
 
-## What's in Phase 1
+## What's in the Android launch scope
 
 - 45 currencies total — 34 fiat + 11 crypto (USD, EUR, GBP, JPY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR, TWD, NZD, CNY, TRY, AED, ILS, ZAR + BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC); source of truth: `lib/src/core/currency/supported_currencies.dart`
 - Multi-currency conversion view (type one amount, see all conversions)
 - Historical charts (up to 2 years, unlimited free)
-- Favorites (save up to 3 currency pairs locally)
+- Favorites (3 free; temporary rewarded boost to 6; Favorites Pro up to 16)
 - Offline mode (cached rates, no network required)
 - Dark mode (free in 2026 — do not charge for this)
-- Banner ads (bottom, safe distance from input)
-- Remove Ads IAP (1.99 CHF one-time)
+- Banner ads plus user-initiated rewarded ads for temporary unlocks
+- Three one-time IAPs: Remove Ads (1.99 CHF), Charts Pro (2.99 CHF),
+  Favorites Pro (0.99 CHF); no launch subscription
 
-**Not in Phase 1:** crypto prices/charts, metals (XAU/XAG), push notifications, backend, accounts.
+**Not in the Android launch:** metals (XAU/XAG), push notifications,
+backend, accounts, subscriptions, or real-time/intraday rates.
 
 ## Core app docs
 
@@ -136,7 +138,8 @@ flutter pub get
 
 ## Product constraints
 
-- privacy-first: zero tracking, zero accounts, zero data collection
+- privacy-first: no Niduna account, no first-party analytics, no backend;
+  AdMob collection/sharing is disclosed and requires UMP/privacy controls
 - offline only in Phase 1
 - no backend
 - no login
@@ -154,11 +157,16 @@ flutter pub get
 | `./scripts/pub_get.sh` | fetch dependencies |
 | `./scripts/clean-deep-files.sh` | deep clean build artifacts |
 
-## Current phase (2026-07-08)
+## Current phase (reviewed 2026-07-19)
 
-- App is **code-complete for the Android release** (239 tests, all four
-  tabs live with real data, AdMob SDK integrated in test mode, IAP stubs)
-- Remaining launch work is external/config: see `RELEASE_CHECKLIST.md`
-  § "Execution Order" (accounts, domain via the sibling `niduna-site`
-  repo, real ad IDs + UMP consent flow, keystore rotation)
+- Product UI/local-data work is complete; the current recorded baseline is
+  239 passing tests with clean analysis (re-run 2026-07-19).
+- The Android **store release is not code-complete**: AdMob IDs, UMP consent
+  and privacy options, in-app privacy URL, real Play Billing/restore, and the
+  final signed AAB remain open.
+- Cross-repo order: `RELEASE_CHECKLIST.md` § "Execution Order". Site-only
+  steps: the sibling `niduna-site/RELEASE_PLAN.md`.
+- Android application ID (the value used in Play URLs and Console):
+  `com.niduna.currency_converter`. The camel-case
+  `com.niduna.currencyConverter` value belongs to the deferred iOS bundle.
 - Post-launch feature backlog: `docs/FEATURE_IDEAS.md`

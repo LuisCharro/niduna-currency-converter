@@ -4,7 +4,9 @@
 > Version: 0.1.0+1 (pre-MVP)
 > Target: Android first
 > Data sources: Frankfurter v2 (fiat), fawazahmed0 (crypto)
-> Privacy stance: zero tracking, zero accounts, zero data collection
+> Privacy stance: no Niduna account, no first-party analytics, no backend;
+> AdMob data practices disclosed separately
+> Last reviewed against code and cross-repo release plan: 2026-07-19
 
 ---
 
@@ -35,9 +37,9 @@ to compensate for ad positioning.
 Up to 80 characters. This is the one-liner shown in search results
 and Play Store lists. Three options:
 
-1. **A quiet currency converter. No accounts. No tracking. No ads in your data.** (78 chars)
-   *Recommended.* Leads with the differentiator (privacy) and uses the
-   brand's calm, matter-of-fact voice.
+1. **Convert 45 currencies. Charts, favorites, offline. No account needed.**
+   *Recommended.* Accurate, searchable, and does not conflict with the AdMob
+   disclosures required for the free version.
 2. **Convert 45 currencies. Charts, favorites, offline. No login, no tracking.** (74 chars)
    *Feature-led.* For a more utilitarian search position. Good fallback
    if the privacy line underperforms on install rate.
@@ -55,7 +57,8 @@ they're visible in search results before the "Read more" fold.
 
 A quiet currency converter for Android. Convert between 34 fiat
 currencies and 11 cryptocurrencies, see historical charts, and pin
-your most-used pairs. No accounts. No tracking. No ads in your data.
+your most-used pairs. No Niduna account, no cloud sync, and no
+first-party analytics.
 
 **Convert**
 Type an amount, pick a base currency, see the rest at a glance.
@@ -70,8 +73,9 @@ charts cover up to 1 year. Open the USD/EUR pair by default; choose
 any other pair as a one-time unlock.
 
 **Favorites**
-Save up to three pairs and jump back to them with the same base and
-quote already set. Everything stays on your device.
+Save up to three pairs free and jump back to them with the same base and
+quote already set. A rewarded ad can temporarily raise the limit to six;
+Favorites Pro unlocks up to sixteen. Everything stays on your device.
 
 **Offline**
 Once you've opened the app online, your last known rates and charts
@@ -83,13 +87,15 @@ Follows your system setting. Free, no upsell.
 
 **Privacy commitment**
 - No account, login, or email address.
-- No analytics, no tracking SDKs, no advertising identifiers.
+- No first-party analytics or Niduna user profile.
 - No cloud sync, no server-side user data, no backend in this version.
 - Your favorites, settings, and cached rates live on your device.
 - Exchange rate requests go directly from the app to public data
-  providers. The app sends nothing else.
-- We do not see how you use the app. We could not build a profile of
-  you even if we wanted to.
+  providers without a Niduna account or custom user ID.
+- The free version uses Google AdMob for banner and opt-in rewarded ads.
+  Niduna requests non-personalised ads; Google's SDK may process device/ad
+  identifiers, IP address, app interactions and diagnostics as disclosed in
+  the privacy policy. One purchase removes ad requests from the app UI.
 
 **Supported currencies**
 34 fiat: USD, EUR, GBP, JPY, CNY, CHF, SEK, NOK, DKK, PLN, CZK, HUF,
@@ -107,30 +113,20 @@ from your device. We do not proxy, log, or augment the requests.
 
 **In-app purchases (one-time, no subscription required)**
 - **Remove Ads** — one-time purchase, removes the small banner on
-  the Convert and Charts screens.
+  ad-supported screens and removes rewarded-ad prompts.
 - **Charts Pro** — one-time purchase, unlocks the ability to choose
   any currency pair in the Charts tab.
-- Both purchases are yours forever. Restore them on a new device
+- **Favorites Pro** — one-time purchase, raises the saved-pair limit to 16.
+- All three purchases are yours forever. Restore them on a new device
   from Settings.
-
-A subscription option is **coming soon** and will be optional.
-Removing ads and unlocking charts will remain available as one-time
-purchases regardless of whether you subscribe.
 
 **Language**
 The app interface is available in English, German, Spanish, Italian,
 and French.
 
 **About Niduna**
-Niduna is a small studio that builds calm, privacy-respecting
-software. We make a small number of things, and we try to make them
-well.
-
-**Coming next**
-A home-screen widget for at-a-glance rates, a built-in calculator
-on the amount field, and rate trend arrows on the Convert list.
-These are local-only features — they don't require an account or
-cloud sync.
+Niduna is the app brand of an independent developer building calm,
+privacy-respecting software.
 
 If you have feedback, the in-app Settings screen links to our
 contact page. We read everything.
@@ -144,9 +140,9 @@ Character count (approximate, including section headings):
 
 ## 4. Keywords / Tags
 
-Use as the developer's `keywords` field on the Play Console
-(separated by commas) and as a seed list for `app-store` search
-optimisation. 12 keywords, ordered by estimated search intent.
+Google Play does not expose an arbitrary comma-separated keywords field.
+Use this only as research vocabulary for natural listing copy, and select
+only relevant category tags from Play Console's fixed tag list.
 
 1. currency converter
 2. exchange rates
@@ -175,12 +171,9 @@ penalises listings that don't match user intent.
 
 **Primary category:** Finance
 
-**Secondary category (optional):** Tools
-
-Finance is the obvious match. Tools is a useful secondary if the
-listing underperforms in Finance discovery — it broadens the funnel
-to users searching for utility apps, and the listing is positioned
-as a tool, not a financial product.
+Google Play accepts one application category plus relevant fixed tags; it does
+not provide a second category field. Use **Finance** unless the actual Console
+taxonomy presents a more precise currency-converter option.
 
 **Content rating notes**
 
@@ -197,9 +190,8 @@ as a tool, not a financial product.
   - **Language:** No
   - **Controlled substances:** No (no gambling, no alcohol/tobacco)
   - **User-generated content:** No
-  - **Data sharing:** None (see privacy commitments in the
-    description)
-  - **Data collection:** None
+  - **Data sharing/collection:** answer from the final Data Safety audit;
+    AdMob means the overall answer cannot be "none"
 - IAP exists, so the "in-app purchases" content descriptor is
   required.
 
@@ -210,16 +202,16 @@ curiosity.
 
 **Privacy declaration (Play Console Data Safety form)**
 
-- **Data collected:** None
-- **Data shared:** None
-- **Data is not collected or shared.** This must be selected as
-  the overall answer. Even the AdMob SDK in release builds should
-  be configured with `requestNonPersonalizedAdsOnly` (or the
-  equivalent consent-mode setting) so that the data-safety form
-  stays accurate.
+- Do **not** select "Data is not collected or shared." Non-personalised ads do
+  not make the Google Mobile Ads SDK data-free.
+- Complete the form from the final release build and Google's current Mobile
+  Ads disclosure. At minimum review IP-derived approximate location,
+  app/product interactions, diagnostics, and device or other identifiers, with
+  the purposes Google documents for advertising, analytics and fraud
+  prevention.
+- Keep the form, this listing and `niduna-site/privacy/index.html` aligned after
+  UMP and real AdMob IDs are implemented.
 
-If a future version introduces accounts, cloud sync, or rate
-alerts, this section must be updated before that release. The
-"Data collected: None" promise in v1 is the differentiator, and
-eroding it silently is the fastest way to lose the audience that
-chose this app over the alternatives.
+If a future version introduces accounts, cloud sync, analytics, crash
+reporting, or rate alerts, update the form and privacy policy before that
+release.
