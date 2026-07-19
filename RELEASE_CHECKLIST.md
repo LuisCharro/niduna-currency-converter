@@ -14,8 +14,8 @@
 >
 > **Remaining before submission (short list, true dependency order — updated 2026-07-19):**
 > 1. **Site foundation:** follow the approved Hostinger KVM 2 static-migration
-> plan: preserve Vercel rollback, pass the VPS security/staging gate, claim the
-> included `niduna.com` entitlement, attach DNS, and create/test
+> plan: preserve Vercel rollback, pass the VPS security/staging gate, buy and
+> register `niduna.com` separately through Hostinger, attach DNS, and create/test
 > `support@niduna.com`. Site detail: `niduna-site/RELEASE_PLAN.md` § S1 and
 > `niduna-site/docs/hostinger-static-migration.md`. This unlocks C1, C10, and
 > B5.
@@ -182,7 +182,7 @@ and update this checklist before proceeding.
 
 | # | Task | Specs | Effort | Status |
 |---|------|-------|--------|--------|
-| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The Vercel preview is public; remaining: complete the approved Hostinger KVM 2 security/staging gate, claim/configure `niduna.com`, attach DNS and verify the final URL. Update the policy's hosting paragraph only after the Hostinger host is live. See `niduna-site/RELEASE_PLAN.md` § S1. | Hostinger gate + domain | 🟡 Blocked |
+| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The Vercel preview is public; remaining: complete the approved Hostinger KVM 2 security/staging gate, buy/register `niduna.com` separately through Hostinger, attach DNS and verify the final URL. Update the policy's hosting paragraph only after the Hostinger host is live. See `niduna-site/RELEASE_PLAN.md` § S1. | Hostinger gate + domain | 🟡 Blocked |
 | C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
 | C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Niduna differentiator | ~45 min | ❌ |
@@ -515,7 +515,7 @@ its own steps, but it does not redefine this sequence.
    security and isolated staging gates. See
    `../../niduna-site/docs/hostinger-static-migration.md` and
    `../../niduna-site/RELEASE_PLAN.md` S1.0.
-2. Claim/configure the included `niduna.com` entitlement, attach it to the
+2. Buy/register `niduna.com` separately through Hostinger, attach it to the
    verified Hostinger host, make apex canonical and redirect `www`, then verify
    Home, Privacy and Currency Converter in an anonymous browser. [site S1.1-S1.3]
 3. Create `support@niduna.com`, publish MX/SPF/DKIM, and prove mail works in
