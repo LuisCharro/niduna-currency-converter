@@ -6,8 +6,8 @@
 > **Status:** The product UI and local data path are complete, but the
 > **store release path is not code-complete**. The last recorded baseline is
 > 239 passing tests with clean analysis (re-verified 2026-08-28). The current
-> Flutter toolchain is healthy; a release AAB revalidation is still pending
-> after a Gradle build stalled without producing an artifact. Open release work is B4
+> Flutter toolchain is healthy and the release AAB smoke build was revalidated
+> successfully on 2026-08-28. Open release work is B4
 > (real AdMob IDs), B5 (privacy link), B8 (UMP consent + privacy-options
 > entry point), and B9 (real Play Billing replacing `PurchaseServiceStub`).
 > Screenshots and the feature graphic are ready. The site is GDPR-prepared,
@@ -16,9 +16,9 @@
 >
 > **Remaining before submission (short list, true dependency order — updated 2026-08-28):**
 > 0. **Re-entry/toolchain preflight:** keep the current Flutter/dependency
-> baseline unless a targeted update is justified; re-run the release AAB smoke
-> build and resolve the current Gradle stall before release-code work reaches
-> the final build gate.
+> baseline unless a targeted update is justified. This is complete for the
+> current machine; the final AAB still waits for B4/B5/B8/B9 and the key/version
+> gates below.
 > 1. **Site foundation:** follow the approved Hostinger KVM 2 static-migration
 > plan: preserve Vercel rollback, pass the VPS security/staging gate, buy and
 > register `niduna.com` separately through Hostinger, attach DNS, and create/test
@@ -75,9 +75,10 @@ implementation and records the current environment before external work starts.
   part of the release.
 - [x] **Dart verification** — `flutter analyze` and `flutter test` pass with
   239 tests (verified 2026-08-28).
-- [ ] **Android release-build revalidation** — the current `bundleRelease`
-  smoke attempt stalled in Gradle without an error or AAB. Investigate and
-  re-run before treating B6 as technically revalidated.
+- [x] **Android release-build revalidation** — `./scripts/build_appbundle.sh
+  --verbose` completed successfully on 2026-08-28 after Gradle repopulated its
+  local dependency cache. The diagnostic AAB is signed and verifies, but is not
+  publishable because it still uses test AdMob IDs and the purchase stub.
 
 ### Dependency policy for this release
 
@@ -198,7 +199,7 @@ and update this checklist before proceeding.
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` — release AAB now signed, falls back to debug if `key.properties` is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
 | B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Blocked on C1 (domain not public yet — see `niduna-site/RELEASE_PLAN.md` § S1). Target URL: `https://niduna.com/privacy/` |
-| B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Historically verified with the June AAB (50 MB, signed v2). The 2026-08-28 revalidation stalled in Gradle without producing an artifact. The FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + B9 (real billing) + keystore rotation. Do not upload the existing artifact. **versionCode rule (added 2026-07-16):** every Play upload needs a strictly HIGHER build number — bump the `+N` in `pubspec.yaml` `version: 0.1.0+N` for each upload, closed-track updates included (Play rejects a reused versionCode). |
+| B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Smoke revalidated on 2026-08-28: Gradle cache populated and a 51 MB signed AAB was produced and verified. The diagnostic artifact is not publishable because it still uses test AdMob IDs and the purchase stub. The FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + B9 (real billing) + keystore rotation. **Do not pass `--no-pub` to the release build:** Flutter must regenerate the release-filtered plugin registrant; with a stale development registrant, `integration_test` can break the Java compilation. **versionCode rule (added 2026-07-16):** every Play upload needs a strictly HIGHER build number — bump the `+N` in `pubspec.yaml` `version: 0.1.0+N` for each upload, closed-track updates included (Play rejects a reused versionCode). |
 | B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
 | B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Ad requests are already non-personalised, but the app still initializes Mobile Ads without UMP. Request consent info on every launch, show the form when required, gate ad requests on `canRequestAds`, and expose a privacy-options entry point when UMP reports it is required. Pair with E5b and keep the site policy aligned. |
 | B9 | **Real Play Billing** — replace `PurchaseServiceStub` with a real implementation | `pubspec.yaml` (add `in_app_purchase`), new service in `lib/src/core/monetization/`, injection at `lib/src/app_shell.dart:94`, `settings_controller.dart:99` (restore), `iap_purchase_player.dart` (stream-driven phases) | ~1-2 days | ❌ | The app currently ships a FAKE purchase flow: 3 priced "Buy" buttons → "Processing payment…" overlay → always succeeds after ~2 s, no billing library present. Submitting this risks rejection and gives entitlements away free. Implementation is not blocked by Console product creation once E8's immutable IDs are finalized. The products must be active before real purchase/restore testing and before the closed track. **Full clues: Implementation Notes § B9.** |
@@ -481,9 +482,9 @@ See `docs/providers/*.md` for full per-provider details.
 | i18n (EN, DE, ES, IT, FR) | ARB files + generated localizations |
 | Branded app name ("Currency Converter") | Committed `bade57e` |
 | iOS deployment target 15.0 | Committed `bade57e` |
-| Release APK + App Bundle builds historically verified | `scripts/build_apk.sh`, `scripts/build_appbundle.sh`; current AAB revalidation pending after the 2026-08-28 Gradle stall |
+| Release APK + App Bundle builds | `scripts/build_apk.sh`, `scripts/build_appbundle.sh`; AAB smoke revalidated 2026-08-28, final build remains gated on release-code changes |
 | Firebase hosting deploy pipeline | `scripts/firebase_hosting_*.sh` |
-| Latest direct verification | 239 tests and clean analysis on 2026-08-28; full `./scripts/check.sh` and release AAB still need revalidation after release-code changes |
+| Latest direct verification | 239 tests, clean analysis, and a signed AAB smoke build on 2026-08-28; full `./scripts/check.sh` and final AAB still follow B4/B5/B8/B9 |
 
 ### Provider Profile System — Correctly Segregated
 
@@ -729,10 +730,12 @@ These can ship in v0.2.0+ updates:
 - **2026-08-28 (release re-entry audit)** — Added Phase 0 for resuming the
   release after a pause. Flutter 3.41.7/Dart 3.11.5, the Android/iOS
   toolchain, dependency resolution, `flutter analyze`, and 239 tests were
-  re-verified. No global SDK or dependency upgrade is required. The current
-  Android AAB smoke build stalled in Gradle without producing an artifact, so
-  B6 remains pending revalidation before release-code work reaches its final
-  build gate.
+  re-verified. No global SDK or dependency upgrade is required. The first
+  `--no-pub` AAB attempt exposed a stale development plugin registrant; the
+  normal release command regenerated the release-filtered registrant and
+  produced a signed 51 MB diagnostic AAB. B6 is technically revalidated, but
+  the final AAB remains gated on B4/B5/B8/B9, key rotation, and a new
+  versionCode.
 - **2026-07-16 (teaser removal implemented)** — The "Coming Soon"
   open decision is resolved and DONE: removed the Settings
   Subscription tile (+ its 3 l10n keys from all 5 ARBs), the locked

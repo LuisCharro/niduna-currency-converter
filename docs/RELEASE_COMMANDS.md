@@ -12,6 +12,18 @@
 
 ---
 
+## Android release AAB smoke
+
+```bash
+./scripts/build_appbundle.sh --verbose
+```
+
+Run this from the repository root after `flutter pub get`. Do not add
+`--no-pub` to a release build: Flutter needs the release build pass to
+regenerate the native plugin registrant without dev-only plugins such as
+`integration_test`. This smoke build is not a Play candidate until the
+release checklist's B4/B5/B8/B9, signing, and version gates are complete.
+
 ## iOS simulator (dev / visual verify)
 
 ### Find a booted simulator
@@ -462,8 +474,9 @@ git commit -m "docs(plan): reorder post-phase-ad plan to agreed code-only releas
   `+N` versionCode, build the signed release candidate, and verify it on Play
   testing tracks.
 - **Re-entry/build preflight:** do not globally upgrade Flutter or packages as
-  part of the release. The current AAB smoke build stalled in Gradle on
-  2026-08-28 and must be re-run successfully before B6 is revalidated.
+  part of the release. The AAB smoke build was revalidated successfully on
+  2026-08-28; the final AAB remains gated on B4/B5/B8/B9 and final signing and
+  version checks.
 - **External:** commercial-compatible site hosting + domain/email, Play
   account/verification/merchant profile/app draft, AdMob setup, store listing,
   App content declarations, and closed testing.

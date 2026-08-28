@@ -167,8 +167,9 @@ flutter pub get
 - Cross-repo order: `RELEASE_CHECKLIST.md` § "Execution Order". Site-only
   steps: the sibling `niduna-site/RELEASE_PLAN.md`.
 - Release re-entry audit: no global Flutter/dependency upgrade is required.
-  The final Android AAB still needs a fresh build; the 2026-08-28 smoke
-  attempt stalled in Gradle without producing an artifact.
+  The Android AAB smoke build was revalidated on 2026-08-28 after Gradle
+  repopulated its local cache. The final AAB still waits for B4/B5/B8/B9,
+  key rotation, and a new versionCode.
 - Android application ID (the value used in Play URLs and Console):
   `com.niduna.currency_converter`. The camel-case
   `com.niduna.currencyConverter` value belongs to the deferred iOS bundle.
