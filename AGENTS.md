@@ -19,17 +19,18 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-07-19)
+## Current state (reviewed 2026-08-28)
 
 - **Branch:** `main` is the canonical branch. `release-prep`,
   `feature/widget-restore`, `feature/ios-widget-target` are kept
   around as references; all their useful code is already on `main`.
-- **Build:** `flutter build appbundle --release` works, AAB is
-  signed (v2, 50 MB). `flutter build apk --release` works (58 MB).
+- **Build:** release APK/AAB builds were historically verified and signed
+  (v2); the current AAB revalidation stalled in Gradle on 2026-08-28 without
+  producing an artifact and must be rerun before release.
   `flutter build ios --simulator --debug` works, app installs and
   runs on iPhone 17 Pro sim (iOS 26.5).
-- **Tests:** current recorded baseline is 239/239 pass with clean
-  `flutter analyze` (re-run 2026-07-19); rerun after release-code changes.
+- **Tests:** 239/239 pass with clean `flutter analyze` (re-verified
+  2026-08-28); rerun after release-code or dependency changes.
 - **2026-07-08 polish pass:** Settings data pages merged into one
   "Data & privacy" page (no dev vocabulary in user copy), Favorites
   clipping/shadow fixed, palette-token switches, dark chart fill,

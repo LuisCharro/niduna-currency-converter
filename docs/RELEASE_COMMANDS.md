@@ -448,7 +448,7 @@ git commit -m "docs(plan): reorder post-phase-ad plan to agreed code-only releas
 
 ---
 
-## What's still missing (reviewed 2026-07-19)
+## What's still missing (reviewed 2026-08-28)
 
 - **B4:** create the Android AdMob app/banner/rewarded units and inject the
   real IDs with `ADMOB_USE_TEST_ADS=false`.
@@ -461,6 +461,9 @@ git commit -m "docs(plan): reorder post-phase-ad plan to agreed code-only releas
 - **Final release:** rotate/back up the upload key, run checks, increment the
   `+N` versionCode, build the signed release candidate, and verify it on Play
   testing tracks.
+- **Re-entry/build preflight:** do not globally upgrade Flutter or packages as
+  part of the release. The current AAB smoke build stalled in Gradle on
+  2026-08-28 and must be re-run successfully before B6 is revalidated.
 - **External:** commercial-compatible site hosting + domain/email, Play
   account/verification/merchant profile/app draft, AdMob setup, store listing,
   App content declarations, and closed testing.
