@@ -131,7 +131,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | 4 | Release keystore trio | B2: `android/key.properties` | ✅ Done | `200c888` |
 | 4 | Release keystore trio | B3: `build.gradle.kts` release signing | ✅ Done | `200c888` |
 | 5 | Phase 1.x chart tests | crypto/crypto + fiat/crypto formulas | ✅ Done | `8a76058` (4 new tests) + `f65ef5e` (real logic fix) |
-| 6 | Privacy link in Settings | B5: new row in Settings widget | ❌ Unblocked — target URL is live at `https://honestfern.com/privacy/` | — |
+| 6 | Privacy link in Settings | B5: new row in Settings widget | ❌ Unblocked — target URL is live at `https://honestfern.com/currency-converter/privacy/` | — |
 | 7 | Build signed AAB | B6: `./scripts/build_appbundle.sh` smoke | ✅ Done | AAB at `build/app/outputs/bundle/release/app-release.aab` (50 MB, signed v2) |
 | 8 | UI Polish cycle (Phase 6) | open | ✅ Done (range selector + decimal places) | `5491ea7` |
 
@@ -221,7 +221,7 @@ and update this checklist before proceeding.
 | B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ✅ **Done** | `200c888` — ⚠️ **password is TEMP, must be rotated before publish** (see Keystore note below) |
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` — release AAB now signed, falls back to debug if `key.properties` is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
-| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Unblocked: target URL is live at `https://honestfern.com/privacy/`. See `niduna-site/RELEASE_PLAN.md` § S1. |
+| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Unblocked: target URL is live at `https://honestfern.com/currency-converter/privacy/`. See `niduna-site/RELEASE_PLAN.md` § S1. |
 | B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Smoke revalidated on 2026-08-28: Gradle cache populated and a 51 MB signed AAB was produced and verified. The diagnostic artifact is not publishable because it still uses test AdMob IDs and the purchase stub. The FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + B9 (real billing) + keystore rotation. **Do not pass `--no-pub` to the release build:** Flutter must regenerate the release-filtered plugin registrant; with a stale development registrant, `integration_test` can break the Java compilation. **versionCode rule (added 2026-07-16):** every Play upload needs a strictly HIGHER build number — bump the `+N` in `pubspec.yaml` `version: 0.1.0+N` for each upload, closed-track updates included (Play rejects a reused versionCode). |
 | B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
 | B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Ad requests are already non-personalised, but the app still initializes Mobile Ads without UMP. Request consent info on every launch, show the form when required, gate ad requests on `canRequestAds`, and expose a privacy-options entry point when UMP reports it is required. Pair with E5b and keep the site policy aligned. |
@@ -251,7 +251,7 @@ and update this checklist before proceeding.
 
 | # | Task | Specs | Effort | Status |
 |---|------|-------|--------|--------|
-| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. `https://honestfern.com/privacy/` is live on the Hostinger production host; the hosting paragraph now describes the Hostinger/Nginx arrangement. See `niduna-site/RELEASE_PLAN.md` § S1. | — | ✅ Done |
+| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The app-specific policy at `https://honestfern.com/currency-converter/privacy/` is live on the Hostinger production host; the general portfolio policy remains at `/privacy/`. See `niduna-site/RELEASE_PLAN.md` § S1. | — | ✅ Done |
 | C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
 | C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Honest Fern differentiator | ~45 min | ❌ |
@@ -293,7 +293,7 @@ The IDs flow through the build, not the source:
 - Natural spot: a "Privacy policy" `SettingsTile` at the bottom of the
   merged Data & privacy page
   (`lib/src/features/settings/widgets/data_details_page.dart`), opening
-  `https://honestfern.com/privacy/` with
+  `https://honestfern.com/currency-converter/privacy/` with
   `launchUrl(..., mode: LaunchMode.externalApplication)`.
 - New ARB key (e.g. `labelPrivacyPolicy`) in all 5 `lib/l10n/app_*.arb`
   + `flutter gen-l10n`; extend the page test in `test/widget_test.dart`
@@ -471,7 +471,7 @@ with `jarsigner -verify` or `apksigner`.
   see § "Financial Features Declaration").
 - **C10 values**: email `support@honestfern.com` (must receive — site plan
   S1.4), website `https://honestfern.com`, privacy
-  `https://honestfern.com/privacy/`, marketing URL
+  `https://honestfern.com/currency-converter/privacy/`, marketing URL
   `https://honestfern.com/currency-converter/`.
 
 ---

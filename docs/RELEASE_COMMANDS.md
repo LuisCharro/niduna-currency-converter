@@ -465,7 +465,7 @@ git commit -m "docs(plan): reorder post-phase-ad plan to agreed code-only releas
 - **B4:** create the Android AdMob app/banner/rewarded units and inject the
   real IDs with `ADMOB_USE_TEST_ADS=false`.
 - **B5:** add the Settings privacy link to the final
-  `https://honestfern.com/privacy/` URL after domain verification.
+  `https://honestfern.com/currency-converter/privacy/` URL after domain verification.
 - **B8:** implement UMP, gate ads on `canRequestAds`, and add the required
   privacy-options entry point; ad requests remain non-personalised.
 - **B9:** replace `PurchaseServiceStub` with Play Billing for all three

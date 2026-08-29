@@ -209,7 +209,7 @@ curiosity.
   app/product interactions, diagnostics, and device or other identifiers, with
   the purposes Google documents for advertising, analytics and fraud
   prevention.
-- Keep the form, this listing and `niduna-site/privacy/index.html` aligned after
+- Keep the form, this listing and `niduna-site/currency-converter/privacy/index.html` aligned after
   UMP and real AdMob IDs are implemented.
 
 If a future version introduces accounts, cloud sync, analytics, crash
