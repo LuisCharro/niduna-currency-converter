@@ -59,9 +59,9 @@ skills without changing this repo again.
   Summary. Open code includes real AdMob IDs, UMP + privacy options,
   in-app privacy URL, and real Play Billing/restore. The current
   `PurchaseServiceStub` must never reach a reviewable Play track.
-  Site launch also needs the approved Hostinger KVM 2 security/staging path,
-  `honestfern.com`,
-  and working `support@honestfern.com`.
+  Site launch uses the verified Hostinger KVM 2 production host and
+  `honestfern.com`; the remaining site-side gate is a working
+  `support@honestfern.com` mailbox.
 - **Review report:** `docs/REVIEW-2026-06-01.md` — full audit done
   2026-06-01/02. Read it before starting substantial new work.
 

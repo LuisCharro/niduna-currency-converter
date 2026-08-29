@@ -1,6 +1,6 @@
 # Release Checklist — Path to Google Play Store
 
-> **Last updated:** 2026-08-28
+> **Last updated:** 2026-08-29
 > **App version:** 0.1.0+1 (pre-MVP)
 > **Branch:** main
 > **Status:** The product UI and local data path are complete, but the
@@ -10,21 +10,21 @@
 > successfully on 2026-08-28. Open release work is B4
 > (real AdMob IDs), B5 (privacy link), B8 (UMP consent + privacy-options
 > entry point), and B9 (real Play Billing replacing `PurchaseServiceStub`).
-> Screenshots and the feature graphic are ready. The site is GDPR-prepared,
-> but `honestfern.com` does not resolve yet and the hosting plan must be made
-> compatible with commercial use before the monetized app launches.
+> Screenshots and the feature graphic are ready. The site is GDPR-prepared and
+> `https://honestfern.com/` is live on the verified Hostinger production host;
+> the remaining site gate is creating and testing `support@honestfern.com`.
 >
-> **Remaining before submission (short list, true dependency order — updated 2026-08-28):**
+> **Remaining before submission (short list, true dependency order — updated 2026-08-29):**
 > 0. **Re-entry/toolchain preflight:** keep the current Flutter/dependency
 > baseline unless a targeted update is justified. This is complete for the
 > current machine; the final AAB still waits for B4/B5/B8/B9 and the key/version
 > gates below.
-> 1. **Site foundation:** follow the approved Hostinger KVM 2 static-migration
-> plan: preserve Vercel rollback, pass the VPS security/staging gate, buy and
-> register `honestfern.com` separately through Hostinger, attach DNS, and create/test
-> `support@honestfern.com`. Site detail: `niduna-site/RELEASE_PLAN.md` § S1 and
-> `niduna-site/docs/hostinger-static-migration.md`. This unlocks C1, C10, and
-> B5.
+> 1. **Site foundation:** Hostinger security/staging, domain registration,
+> DNS cutover, HTTPS, public-path verification and production metadata are
+> complete. The remaining site gate is create/test `support@honestfern.com`
+> (site S1.4), which is required for C10. Site detail:
+> `niduna-site/RELEASE_PLAN.md` § S1 and
+> `niduna-site/docs/hostinger-static-migration.md`. C1 and B5 are now unblocked.
 > 2. **Accounts in parallel:** create the personal Play account, finish
 > identity + real-device verification, create/verify the merchant payments
 > profile, create the app draft, AdMob app/ad units/EEA message, and finalize
@@ -131,7 +131,7 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | 4 | Release keystore trio | B2: `android/key.properties` | ✅ Done | `200c888` |
 | 4 | Release keystore trio | B3: `build.gradle.kts` release signing | ✅ Done | `200c888` |
 | 5 | Phase 1.x chart tests | crypto/crypto + fiat/crypto formulas | ✅ Done | `8a76058` (4 new tests) + `f65ef5e` (real logic fix) |
-| 6 | Privacy link in Settings | B5: new row in Settings widget | ❌ Blocked on C1 (domain not public — see `niduna-site/RELEASE_PLAN.md`) | — |
+| 6 | Privacy link in Settings | B5: new row in Settings widget | ❌ Unblocked — target URL is live at `https://honestfern.com/privacy/` | — |
 | 7 | Build signed AAB | B6: `./scripts/build_appbundle.sh` smoke | ✅ Done | AAB at `build/app/outputs/bundle/release/app-release.aab` (50 MB, signed v2) |
 | 8 | UI Polish cycle (Phase 6) | open | ✅ Done (range selector + decimal places) | `5491ea7` |
 
@@ -221,7 +221,7 @@ and update this checklist before proceeding.
 | B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ✅ **Done** | `200c888` — ⚠️ **password is TEMP, must be rotated before publish** (see Keystore note below) |
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` — release AAB now signed, falls back to debug if `key.properties` is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
-| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Blocked on C1 (domain not public yet — see `niduna-site/RELEASE_PLAN.md` § S1). Target URL: `https://honestfern.com/privacy/` |
+| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Unblocked: target URL is live at `https://honestfern.com/privacy/`. See `niduna-site/RELEASE_PLAN.md` § S1. |
 | B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Smoke revalidated on 2026-08-28: Gradle cache populated and a 51 MB signed AAB was produced and verified. The diagnostic artifact is not publishable because it still uses test AdMob IDs and the purchase stub. The FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + B9 (real billing) + keystore rotation. **Do not pass `--no-pub` to the release build:** Flutter must regenerate the release-filtered plugin registrant; with a stale development registrant, `integration_test` can break the Java compilation. **versionCode rule (added 2026-07-16):** every Play upload needs a strictly HIGHER build number — bump the `+N` in `pubspec.yaml` `version: 0.1.0+N` for each upload, closed-track updates included (Play rejects a reused versionCode). |
 | B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
 | B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Ad requests are already non-personalised, but the app still initializes Mobile Ads without UMP. Request consent info on every launch, show the form when required, gate ad requests on `canRequestAds`, and expose a privacy-options entry point when UMP reports it is required. Pair with E5b and keep the site policy aligned. |
@@ -251,7 +251,7 @@ and update this checklist before proceeding.
 
 | # | Task | Specs | Effort | Status |
 |---|------|-------|--------|--------|
-| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The Vercel preview is public; remaining: complete the approved Hostinger KVM 2 security/staging gate, buy/register `honestfern.com` separately through Hostinger, attach DNS and verify the final URL. Update the policy's hosting paragraph only after the Hostinger host is live. See `niduna-site/RELEASE_PLAN.md` § S1. | Hostinger gate + domain | 🟡 Blocked |
+| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. `https://honestfern.com/privacy/` is live on the Hostinger production host; the hosting paragraph now describes the Hostinger/Nginx arrangement. See `niduna-site/RELEASE_PLAN.md` § S1. | — | ✅ Done |
 | C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
 | C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Honest Fern differentiator | ~45 min | ❌ |
@@ -588,16 +588,14 @@ dependency upgrade part of the release by default.
 
 ### Phase 1 — Foundations (site and accounts can run in parallel)
 
-1. **Prepare the approved Hostinger static migration before the domain.** Keep
-   Vercel as rollback, create the safety tag/branch, then pass the VPS
-   security and isolated staging gates. See
-   `../../niduna-site/docs/hostinger-static-migration.md` and
+1. **Hostinger static migration and domain cutover — complete.** Vercel remains
+   rollback; the VPS security/staging gates passed and the public site is live.
+   See `../../niduna-site/docs/hostinger-static-migration.md` and
    `../../niduna-site/RELEASE_PLAN.md` S1.0.
-2. Buy/register `honestfern.com` separately through Hostinger, attach it to the
-   verified Hostinger host, make apex canonical and redirect `www`, then verify
-   Home, Privacy and Currency Converter in an anonymous browser. [site S1.1-S1.3]
+2. Domain registration, apex DNS, HTTPS, public-path verification and
+   production metadata are complete. [site S1.1-S1.3]
 3. Create `support@honestfern.com`, publish MX/SPF/DKIM, and prove mail works in
-   both directions. [site S1.4]
+   both directions. [site S1.4 — next site step]
 4. In parallel, create the **personal** Play account, complete identity,
    contact and real-Android-device verification, create/verify the merchant
    payments profile, and create the app draft. [E1-E4]

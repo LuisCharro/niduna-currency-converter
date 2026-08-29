@@ -173,4 +173,7 @@ flutter pub get
 - Android application ID (the value used in Play URLs and Console):
   `com.honestfern.currency_converter`. The camel-case
   `com.honestfern.currencyConverter` value belongs to the deferred iOS bundle.
+- Site foundation: `https://honestfern.com/` is live on the verified Hostinger
+  production host; the remaining site-side step is to create and test
+  `support@honestfern.com` before using it in Play Console.
 - Post-launch feature backlog: `docs/FEATURE_IDEAS.md`
