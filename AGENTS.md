@@ -60,8 +60,9 @@ skills without changing this repo again.
   in-app privacy URL, and real Play Billing/restore. The current
   `PurchaseServiceStub` must never reach a reviewable Play track.
   Site launch uses the verified Hostinger KVM 2 production host and
-  `honestfern.com`; the remaining site-side gate is a working
-  `support@honestfern.com` mailbox.
+  `honestfern.com`; `support@honestfern.com` is operational after successful
+  receiving and sending tests. The remaining site work is the post-listing
+  launch batch.
 - **Review report:** `docs/REVIEW-2026-06-01.md` — full audit done
   2026-06-01/02. Read it before starting substantial new work.
 

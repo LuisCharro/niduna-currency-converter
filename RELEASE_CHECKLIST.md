@@ -12,7 +12,8 @@
 > entry point), and B9 (real Play Billing replacing `PurchaseServiceStub`).
 > Screenshots and the feature graphic are ready. The site is GDPR-prepared and
 > `https://honestfern.com/` is live on the verified Hostinger production host;
-> the remaining site gate is creating and testing `support@honestfern.com`.
+> `support@honestfern.com` is operational after successful receiving and
+> sending tests.
 >
 > **Remaining before submission (short list, true dependency order — updated 2026-08-29):**
 > 0. **Re-entry/toolchain preflight:** keep the current Flutter/dependency
@@ -21,8 +22,8 @@
 > gates below.
 > 1. **Site foundation:** Hostinger security/staging, domain registration,
 > DNS cutover, HTTPS, public-path verification and production metadata are
-> complete. The remaining site gate is create/test `support@honestfern.com`
-> (site S1.4), which is required for C10. Site detail:
+> complete. Site S1.4 is complete: `support@honestfern.com` is verified and
+> ready for C10. Site detail:
 > `niduna-site/RELEASE_PLAN.md` § S1 and
 > `niduna-site/docs/hostinger-static-migration.md`. C1 and B5 are now unblocked.
 > 2. **Accounts in parallel:** create the personal Play account, finish
@@ -261,7 +262,7 @@ and update this checklist before proceeding.
 | C7b | **Target audience declaration — declare 13+** (added 2026-07-11) | Separate from C7! In App content → Target audience. Declaring ANY under-13 age group triggers the Families Policy (certified ad SDKs only, ad limits, stricter review) — wrong fit for an AdMob-funded utility. Content rating "Everyone" (C7) and target audience "13+" are compatible and both correct here. | ~5 min | ❌ |
 | C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII collected by us — **but the AdMob SDK must be declared** (device/advertising identifiers, ad interaction data; see the "Third-party SDKs" table below). Align answers with the consent setup from B8/E5b. | ~30 min | ❌ |
 | C9 | Category selection | Likely: Finance > Finance tools or Productivity | ~2 min | ❌ |
-| C10 | Contact email + website + privacy URL | Required fields in Console listing. `support@honestfern.com` must actually receive mail first — email setup is `niduna-site/RELEASE_PLAN.md` § S1.4 | ~10 min | ❌ (blocked on domain + email) |
+| C10 | Contact email + website + privacy URL | Required fields in Console listing. `support@honestfern.com` receives and sends mail — email setup is `niduna-site/RELEASE_PLAN.md` § S1.4 | ~10 min | ❌ (unblocked; pending Play Console entry) |
 | C11 | Localized listings (DE, ES, IT, FR) | Optional post-launch optimization; Play can serve the default English listing/automatic translation | ~1 hr | ⏸ Optional |
 
 ---
@@ -469,8 +470,8 @@ with `jarsigner -verify` or `apksigner`.
   collected-not-shared-by-us, per the consent setup chosen in B8.
 - **C9**: Category = Finance (no financial-features declaration needed —
   see § "Financial Features Declaration").
-- **C10 values**: email `support@honestfern.com` (must receive — site plan
-  S1.4), website `https://honestfern.com`, privacy
+- **C10 values**: verified email `support@honestfern.com` (site plan S1.4),
+  website `https://honestfern.com`, privacy
   `https://honestfern.com/currency-converter/privacy/`, marketing URL
   `https://honestfern.com/currency-converter/`.
 
@@ -595,7 +596,7 @@ dependency upgrade part of the release by default.
 2. Domain registration, apex DNS, HTTPS, public-path verification and
    production metadata are complete. [site S1.1-S1.3]
 3. Create `support@honestfern.com`, publish MX/SPF/DKIM, and prove mail works in
-   both directions. [site S1.4 — next site step]
+   both directions. [site S1.4 — complete 2026-08-29; verified]
 4. In parallel, create the **personal** Play account, complete identity,
    contact and real-Android-device verification, create/verify the merchant
    payments profile, and create the app draft. [E1-E4]

@@ -174,6 +174,6 @@ flutter pub get
   `com.honestfern.currency_converter`. The camel-case
   `com.honestfern.currencyConverter` value belongs to the deferred iOS bundle.
 - Site foundation: `https://honestfern.com/` is live on the verified Hostinger
-  production host; the remaining site-side step is to create and test
-  `support@honestfern.com` before using it in Play Console.
+  production host; `support@honestfern.com` is verified and ready to use in
+  Play Console.
 - Post-launch feature backlog: `docs/FEATURE_IDEAS.md`
