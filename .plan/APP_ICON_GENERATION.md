@@ -1,13 +1,13 @@
 # App Icon Generation — MiniMax First, OpenAI Final
 
-> Purpose: improve the Niduna Currency Converter launcher icon without spending OpenAI money on broad exploration.
+> Purpose: improve the Honest Fern Currency Converter launcher icon without spending OpenAI money on broad exploration.
 > Use MiniMax for concept search, shortlist manually, then run one paid OpenAI pass only after the direction is clear.
 
 ---
 
 ## Current Icon Diagnosis
 
-The current app icon communicates currency exchange, but it still feels closer to generic fintech/travel utility than the current Niduna app identity.
+The current app icon communicates currency exchange, but it still feels closer to generic fintech/travel utility than the current Honest Fern app identity.
 
 ### Keep
 
@@ -17,7 +17,7 @@ The current app icon communicates currency exchange, but it still feels closer t
 
 ### Improve
 
-- Replace cold blue fintech palette with Niduna warm paper, forest, moss, and coral
+- Replace cold blue fintech palette with Honest Fern warm paper, forest, moss, and coral
 - Remove tiny airplane/path details; they disappear at launcher size
 - Avoid overlapping transparent shapes that become muddy at small sizes
 - Create a stronger one-glance silhouette
@@ -27,7 +27,7 @@ The current app icon communicates currency exchange, but it still feels closer t
 
 ## Icon North Star
 
-**A warm, premium currency instrument mark for Niduna.**
+**A warm, premium currency instrument mark for Honest Fern.**
 
 It should feel:
 
@@ -141,7 +141,7 @@ No text, no flags, no airplanes, no bank building, no blue fintech, no neon cryp
 ### Prompt Family D — Single Symbol
 
 ```text
-Mobile app launcher icon, 1024x1024, privacy-first currency converter for Niduna.
+Mobile app launcher icon, 1024x1024, privacy-first currency converter for Honest Fern.
 One bold abstract exchange symbol: two interlocking rounded strokes forming a calm circular motion around a small currency dot.
 Warm paper background, forest green main stroke, moss secondary stroke, restrained coral accent.
 Flat premium vector style, centered, balanced, no clutter, no tiny elements, clear silhouette at 29px.
@@ -185,7 +185,7 @@ Score each candidate 1-5:
 | Criterion | Question |
 |-----------|----------|
 | Silhouette | Is it recognizable at 29px without zooming? |
-| Niduna fit | Does it match warm paper + forest/moss/coral UI? |
+| Honest Fern fit | Does it match warm paper + forest/moss/coral UI? |
 | Currency clarity | Does it imply conversion without generic finance clichés? |
 | Premium feel | Does it feel crafted, not template-generated? |
 | Platform readiness | Would it survive iOS/Android masking and home-screen backgrounds? |
@@ -230,7 +230,7 @@ Template:
 Create a polished 1024x1024 mobile app launcher icon based on this approved direction:
 <describe winning MiniMax candidate in 2-4 sentences>
 
-Brand: Niduna Currency Converter, privacy-first, warm premium finance instrument.
+Brand: Honest Fern Currency Converter, privacy-first, warm premium finance instrument.
 Palette: warm cream paper background, deep forest green main mark, moss accent, restrained coral highlight.
 Style: clean flat vector-like icon, strong silhouette, centered, few shapes, high contrast, readable at 29px.
 Metaphor: currency conversion / exchange motion, not travel, not crypto trading.

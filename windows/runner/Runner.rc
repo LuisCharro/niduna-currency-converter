@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.niduna" "\0"
+            VALUE "CompanyName", "Honest Fern" "\0"
             VALUE "FileDescription", "currency_converter" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "currency_converter" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.niduna. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Honest Fern. All rights reserved." "\0"
             VALUE "OriginalFilename", "currency_converter.exe" "\0"
             VALUE "ProductName", "currency_converter" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

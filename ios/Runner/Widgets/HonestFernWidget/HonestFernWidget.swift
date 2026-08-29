@@ -3,7 +3,7 @@ import SwiftUI
 
 // Shared store written by the Flutter app via HomeWidget.saveWidgetData.
 private enum AppGroup {
-  static let id = "group.com.niduna.currencyConverter"
+  static let id = "group.com.honestfern.currencyConverter"
   static let store = UserDefaults(suiteName: id)
 
   // Reads the shared defaults plist straight from the App Group container.
@@ -19,7 +19,7 @@ private enum AppGroup {
   }
 }
 
-// Niduna palette — mirrors the Android widget (android/.../widget_layout.xml,
+// Honest Fern palette — mirrors the Android widget (android/.../widget_layout.xml,
 // widget_background.xml, widget_icon_circle.xml) so both platforms match.
 private enum Palette {
   static let paper  = Color(red: 1.0,  green: 0.976, blue: 0.925) // #FFF9EC card
@@ -31,7 +31,7 @@ private enum Palette {
   static let divider = Color(red: 0.157, green: 0.373, blue: 0.231).opacity(0.14) // #24285F3B
 }
 
-struct NidunaPair {
+struct HonestFernPair {
   let code: String
   let symbol: String
   let value: String
@@ -39,32 +39,32 @@ struct NidunaPair {
   let change: String  // e.g. "0.12%" (may be empty)
 }
 
-struct NidunaEntry: TimelineEntry {
+struct HonestFernEntry: TimelineEntry {
   let date: Date
   let amountLabel: String
   let updatedLabel: String
-  let pairs: [NidunaPair]
+  let pairs: [HonestFernPair]
 }
 
-struct NidunaProvider: TimelineProvider {
-  func placeholder(in context: Context) -> NidunaEntry {
-    NidunaEntry(
+struct HonestFernProvider: TimelineProvider {
+  func placeholder(in context: Context) -> HonestFernEntry {
+    HonestFernEntry(
       date: Date(),
       amountLabel: "100 USD",
       updatedLabel: "Updated today",
       pairs: [
-        NidunaPair(code: "EUR", symbol: "€", value: "86.34", trend: "down", change: "0.12%"),
-        NidunaPair(code: "GBP", symbol: "£", value: "74.57", trend: "up", change: "0.06%"),
-        NidunaPair(code: "BTC", symbol: "₿", value: "0.00155", trend: "none", change: ""),
+        HonestFernPair(code: "EUR", symbol: "€", value: "86.34", trend: "down", change: "0.12%"),
+        HonestFernPair(code: "GBP", symbol: "£", value: "74.57", trend: "up", change: "0.06%"),
+        HonestFernPair(code: "BTC", symbol: "₿", value: "0.00155", trend: "none", change: ""),
       ]
     )
   }
 
-  func getSnapshot(in context: Context, completion: @escaping (NidunaEntry) -> Void) {
+  func getSnapshot(in context: Context, completion: @escaping (HonestFernEntry) -> Void) {
     completion(readEntry())
   }
 
-  func getTimeline(in context: Context, completion: @escaping (Timeline<NidunaEntry>) -> Void) {
+  func getTimeline(in context: Context, completion: @escaping (Timeline<HonestFernEntry>) -> Void) {
     let entry = readEntry()
     // The app pokes WidgetCenter on every data push. If we read no data yet
     // (the app just wrote it and the shared file hasn't been flushed to disk),
@@ -75,7 +75,7 @@ struct NidunaProvider: TimelineProvider {
     completion(Timeline(entries: [entry], policy: .after(next)))
   }
 
-  private func readEntry() -> NidunaEntry {
+  private func readEntry() -> HonestFernEntry {
     let shared = AppGroup.sharedDict()
     let store = AppGroup.store
 
@@ -87,14 +87,14 @@ struct NidunaProvider: TimelineProvider {
       return store?.bool(forKey: key) ?? false
     }
 
-    var pairs: [NidunaPair] = []
+    var pairs: [HonestFernPair] = []
     for i in 0..<3 {
       let prefix = "pair_\(i)_"
       let value = str("\(prefix)value")
       guard flag("\(prefix)visible"), !value.isEmpty else { continue }
       let trend = str("\(prefix)trend")
       pairs.append(
-        NidunaPair(
+        HonestFernPair(
           code: str("\(prefix)code"),
           symbol: str("\(prefix)symbol"),
           value: value,
@@ -103,7 +103,7 @@ struct NidunaProvider: TimelineProvider {
         )
       )
     }
-    return NidunaEntry(
+    return HonestFernEntry(
       date: Date(),
       amountLabel: str("amountLabel"),
       updatedLabel: str("updatedLabel"),
@@ -119,7 +119,7 @@ private struct WidgetDivider: View {
 }
 
 private struct PairRow: View {
-  let pair: NidunaPair
+  let pair: HonestFernPair
 
   private var trendColor: Color {
     switch pair.trend {
@@ -173,13 +173,13 @@ private struct PairRow: View {
   }
 }
 
-struct NidunaWidgetEntryView: View {
-  var entry: NidunaEntry
+struct HonestFernWidgetEntryView: View {
+  var entry: HonestFernEntry
 
   var body: some View {
     if entry.pairs.isEmpty {
       VStack(alignment: .leading, spacing: 4) {
-        Text("Niduna").font(.system(size: 16, weight: .heavy)).foregroundColor(Palette.ink)
+        Text("Honest Fern").font(.system(size: 16, weight: .heavy)).foregroundColor(Palette.ink)
         Text("Open to load").font(.system(size: 12)).foregroundColor(Palette.muted)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -189,7 +189,7 @@ struct NidunaWidgetEntryView: View {
       VStack(alignment: .leading, spacing: 0) {
         // Header: amount (left) + updated (right) — matches the Android layout.
         HStack(alignment: .firstTextBaseline) {
-          Text(entry.amountLabel.isEmpty ? "Niduna" : entry.amountLabel)
+          Text(entry.amountLabel.isEmpty ? "Honest Fern" : entry.amountLabel)
             .font(.system(size: 18, weight: .medium))
             .foregroundColor(Palette.ink)
             .lineLimit(1)
@@ -219,24 +219,24 @@ struct NidunaWidgetEntryView: View {
   }
 }
 
-struct NidunaWidget: Widget {
-  let kind = "NidunaCurrencyWidget" // MUST match iOSName in home_widget_provider.dart
+struct HonestFernWidget: Widget {
+  let kind = "HonestFernCurrencyWidget" // MUST match iOSName in home_widget_provider.dart
 
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: kind, provider: NidunaProvider()) { entry in
+    StaticConfiguration(kind: kind, provider: HonestFernProvider()) { entry in
       if #available(iOS 17.0, *) {
-        NidunaWidgetEntryView(entry: entry).containerBackground(Palette.paper, for: .widget)
+        HonestFernWidgetEntryView(entry: entry).containerBackground(Palette.paper, for: .widget)
       } else {
-        NidunaWidgetEntryView(entry: entry)
+        HonestFernWidgetEntryView(entry: entry)
       }
     }
-    .configurationDisplayName("Niduna Currency")
+    .configurationDisplayName("Honest Fern Currency")
     .description("Your top currency pairs at a glance")
     .supportedFamilies([.systemMedium])
   }
 }
 
 @main
-struct NidunaWidgetBundle: WidgetBundle {
-  var body: some Widget { NidunaWidget() }
+struct HonestFernWidgetBundle: WidgetBundle {
+  var body: some Widget { HonestFernWidget() }
 }

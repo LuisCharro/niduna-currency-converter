@@ -25,7 +25,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Niduna · Currency'), findsOneWidget);
+    expect(find.text('Honest Fern · Currency'), findsOneWidget);
     expect(find.text('100 USD'), findsOneWidget);
     expect(find.text('Euro'), findsOneWidget);
     expect(find.text('€ 86.34'), findsOneWidget);

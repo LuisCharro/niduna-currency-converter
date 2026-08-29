@@ -45,14 +45,14 @@ skills without changing this repo again.
   - **Android:** fully redesigned — 3-pair icon-led widget with warm
     paper background, currency symbols in circles, thin dividers.
     Driven by app favorites with fallback pairs. Starter favorites
-    seeded on first run. Shows "Niduna · Open to load" placeholder
+    seeded on first run. Shows "Honest Fern · Open to load" placeholder
     when no data yet. Runtime-verified on Pixel 7 emulator.
-  - **iOS:** code complete, Xcode project target wired up, currently
-    **disabled by default** (Embed App Extensions phase removed so
-    iOS sim install works). Restore via
-    `GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.16.2_2/libexec ruby
-    ios/scripts/add_widget_target.rb` (idempotent) when testing on
-    real iPhone. Blocked on iOS 26 sim install bug.
+  - **iOS:** code complete, Xcode project target and Embed App Extensions
+    phase wired up. A real-device run still requires Apple signing; some
+    iOS 26 simulator installs are blocked by the known widget-extension
+    `Invalid placeholder attributes` issue. The repair script remains
+    idempotent: `GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.16.2_2/libexec
+    ruby ios/scripts/add_widget_target.rb`.
   - See `docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`
     and `docs/superpowers/specs/2026-06-13-widget-redesign-design.md`.
 - **Release status:** see `RELEASE_CHECKLIST.md` for the full Blocker
@@ -60,20 +60,20 @@ skills without changing this repo again.
   in-app privacy URL, and real Play Billing/restore. The current
   `PurchaseServiceStub` must never reach a reviewable Play track.
   Site launch also needs the approved Hostinger KVM 2 security/staging path,
-  `niduna.com`,
-  and working `support@niduna.com`.
+  `honestfern.com`,
+  and working `support@honestfern.com`.
 - **Review report:** `docs/REVIEW-2026-06-01.md` — full audit done
   2026-06-01/02. Read it before starting substantial new work.
 
 ## Product identity
 
-This repo is a privacy-first Flutter currency converter for the Niduna portfolio.
+This repo is a privacy-first Flutter currency converter for the Honest Fern portfolio.
 
 Non-goals for normal feature work:
 
 - no backend (Phase 1)
 - no accounts
-- no first-party analytics or Niduna user profiling; AdMob data practices
+- no first-party analytics or Honest Fern user profiling; AdMob data practices
   are disclosed and consent/privacy controls are release-critical
 - no cloud sync
 - no complex food database
@@ -415,12 +415,12 @@ IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/run_ios_simulator_app.sh
 
 # Build + reinstall + launch updated app (preferred after UI/code changes)
 IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} \
-  BUNDLE_ID=com.niduna.currencyConverter \
+  BUNDLE_ID=com.honestfern.currencyConverter \
   ./.devtools/sim_reinstall_build.sh
 
 # Android emulator build + reinstall + launch updated app
 ANDROID_SERIAL=${ANDROID_SERIAL:-booted} \
-  ANDROID_PACKAGE_NAME=com.niduna.currency_converter \
+  ANDROID_PACKAGE_NAME=com.honestfern.currency_converter \
   ./.devtools/android_reinstall_build.sh
 
 # Relaunch installed Android app (no rebuild) + manual screenshot
@@ -434,7 +434,7 @@ IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} \
   ./.devtools/run_ios_simulator_app.sh
 
 # Stop running app (fallback)
-xcrun simctl terminate <simulator_id> com.niduna.currencyConverter
+xcrun simctl terminate <simulator_id> com.honestfern.currencyConverter
 
 # Smoke test
 IOS_SIMULATOR_ID=${IOS_SIMULATOR_ID} ./.devtools/run_ios_minimal_smoke.sh

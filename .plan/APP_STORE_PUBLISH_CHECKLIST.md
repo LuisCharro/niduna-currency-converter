@@ -1,6 +1,6 @@
 # Apple App Store Publishing Checklist
 
-> Pre-submission checklist for Niduna Currency Converter on iOS.
+> Pre-submission checklist for Honest Fern Currency Converter on iOS.
 > Updated: 2026-05-22
 >
 > **Current app version:** `0.1.0+1` (pre-MVP, must stay `0.x.x`)
@@ -40,7 +40,7 @@
 |---|------|--------|---------------|
 | 2.1 | Development certificate created | 🔶 | Xcode can auto-manage; verify in Keychain Access |
 | 2.2 | Distribution certificate created | ❌ | **Required for App Store builds** (Apple Distribution type) |
-| 2.3 | App ID registered in Apple Developer portal | 🔶 | Bundle ID `com.niduna.currencyConverter` must be registered as Explicit App ID |
+| 2.3 | App ID registered in Apple Developer portal | 🔶 | Bundle ID `com.honestfern.currencyConverter` must be registered as Explicit App ID |
 | 2.4 | Provisioning profile created (App Store) | ❌ | Linked to distribution certificate + App ID |
 | 2.5 | Code signing style set correctly | ✅ | Project uses `CODE_SIGN_STYLE = Automatic` — good for Xcode Cloud / GitHub Actions |
 | 2.6 | Entitlements file configured (if needed) | 🔶 | Check if any capabilities require entitlements (Push Notifications, etc.) |
@@ -61,9 +61,9 @@ ls ~/Library/MobileDevice/Provisioning\ Profiles/
 
 | # | Task | Status | Current State |
 |---|------|--------|---------------|
-| 3.1 | `CFBundleDisplayName` branded | ❌ | Currently `"Currency Converter"` — generic. Should be `"Niduna"` or `"Niduna Convert"` |
+| 3.1 | `CFBundleDisplayName` branded | ❌ | Currently `"Currency Converter"` — generic. Should be `"Honest Fern"` or `"Honest Fern Convert"` |
 | 3.2 | `CFBundleName` branded | ❌ | Currently `"currency_converter"` — generic |
-| 3.3 | Bundle Identifier correct | ✅ | `com.niduna.currencyConverter` — set and consistent |
+| 3.3 | Bundle Identifier correct | ✅ | `com.honestfern.currencyConverter` — set and consistent |
 | 3.4 | Deployment target meets Apple's current minimum | 🔶 | **Currently `IPHONEOS_DEPLOYMENT_TARGET = 13.0`** (iOS 13 / 2019 — very old). **Apple requires apps to target the currently shipping iOS version minus ~2 years.** As of 2026, this likely means iOS 16+ or 17+ minimum. Verify in App Store Connect > App Information what the current required minimum is before submitting. Update in Xcode or `ios/Podfile`. |
 | 3.5 | Targeted device families appropriate | ✅ | iPhone + iPad (`"1,2"`) — good |
 | 3.6 | Swift version current | ✅ | Swift 5.0 — managed by Flutter toolchain |
@@ -165,7 +165,7 @@ Apple has stricter screenshot requirements than Play Store.
 | 7.4 | App preview video (optional) | ❌ | .M4V/.MP4, 15-30 seconds. Shows app interaction |
 | 7.5 | Subtitle (max 30 chars) | ❌ | Shown under app name in search results |
 | 7.6 | Promotional text (170 chars max) | ❌ | Editable anytime without review |
-| 7.7 | Description (4000 chars max) | ❌ | Feature list, privacy notes, what makes Niduna different |
+| 7.7 | Description (4000 chars max) | ❌ | Feature list, privacy notes, what makes Honest Fern different |
 | 7.8 | Keywords (100 chars max) | ❌ | Comma-separated search terms. No trade names, no "free", no unrelated terms |
 | 7.9 | Support URL | ❌ | **Required.** Web page where users can get help |
 | 7.10 | Marketing URL (optional) | ❌ | Your website / landing page |
@@ -184,7 +184,7 @@ Apple has stricter screenshot requirements than Play Store.
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 8.1 | App name (max 30 chars) | ❌ | Must be unique in App Store. Ideas: "Niduna Currency", "Niduna Convert" |
+| 8.1 | App name (max 30 chars) | ❌ | Must be unique in App Store. Ideas: "Honest Fern Currency", "Honest Fern Convert" |
 | 8.2 | Subtitle (max 30 chars) | ❌ | Example: "Offline-ready exchange rates" |
 | 8.3 | Keywords (max 100 chars, comma-separated) | ❌ | Example: "currency,converter,exchange,rates,offline,forex,money" |
 | 8.4 | Full description (4000 char max) | ❌ | Feature list, privacy-first positioning, what makes it different |

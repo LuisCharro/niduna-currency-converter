@@ -1,6 +1,6 @@
 # Flutter App Template — Guide
 
-Use this template as the starting point for new Flutter apps in the Niduna portfolio.
+Use this template as the starting point for new Flutter apps in the Honest Fern portfolio.
 
 ---
 
@@ -21,14 +21,14 @@ All placeholders use the `{{VAR_NAME}}` format and must be replaced:
 |------------|-------------|---------|
 | `{{APP_NAME}}` | Display name of the app | "Currency Converter" |
 | `{{APP_FOLDER}}` | Folder/kebab-case name | "currency-converter" |
-| `{{BUNDLE_ID}}` | iOS bundle identifier | "com.niduna.currencyConverter" |
+| `{{BUNDLE_ID}}` | iOS bundle identifier | "com.honestfern.currencyConverter" |
 | `{{FIREBASE_PROJECT}}` | Firebase project name | "currency-converter-by-niduna" |
 | `{{PHASE_1_SCOPE}}` | Phase 1 feature summary | "fiat currency conversion + charts" |
 | `{{ONE_LINE_DESCRIPTION}}` | One-line app description | "A privacy-first currency converter" |
 | `{{PARENT_PATH}}` | Parent folder path | "/Users/luis/Niduna/apps" |
 | `{{SHARED_SKILLS_REPO}}` | Path to shared skills repo | "/Users/luis/Repos/skills" |
 | `{{STORAGE_KEY_PREFIX}}` | SharedPreferences key prefix for seed data | "dailyCalories" |
-| `{{ANDROID_PACKAGE_NAME}}` | Android package name | "com.niduna.daily_calorie_needs_calculator" |
+| `{{ANDROID_PACKAGE_NAME}}` | Android package name | "com.honestfern.daily_calorie_needs_calculator" |
 | `{{TAB_LIST}}` | App shell tab order | "Tab 1: Home, Tab 2: ..." |
 
 ---
@@ -188,7 +188,7 @@ agent/sync-shared-skills.sh /path/to/shared/skills
 
 ## Agent Folders
 
-There are three agent-related folders in Niduna apps:
+There are three agent-related folders in Honest Fern apps:
 
 ### `agent/` (no dot) — Sync Scaffold
 

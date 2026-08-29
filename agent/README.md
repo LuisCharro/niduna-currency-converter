@@ -18,7 +18,7 @@ Keep reusable heuristics in copied shared skills under `./.agent-local/skills/`.
 
 ## Product and stack
 
-This repo is a Flutter currency converter for the Niduna portfolio.
+This repo is a Flutter currency converter for the Honest Fern portfolio.
 
 Primary app shell order (Phase 1):
 - `Convert` — multi-currency conversion view

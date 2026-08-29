@@ -1,6 +1,6 @@
 # UI Redesign Plan — "Professional Polish" Cycle
 
-> **Status:** Superseded in part by the Niduna hybrid polish direction
+> **Status:** Superseded in part by the Honest Fern hybrid polish direction
 > **Based on:** Competitor analysis (Currency app / miniapatti screenshots)
 > **Reference screens:** `/Users/luis/Downloads/CurrencyApp/` (7 PNGs)
 > **Goal:** Transform app from "functional but ugly" to professional, polished design
@@ -9,9 +9,9 @@
 
 This file remains useful for competitor analysis and interaction ideas, but
 the app should not copy the pure-white/iOS-blue visual recommendations below.
-The active direction is **Niduna hybrid**:
+The active direction is **Honest Fern hybrid**:
 
-- keep the warm Niduna palette, editorial type, and privacy-first personality
+- keep the warm Honest Fern palette, editorial type, and privacy-first personality
 - adopt the competitor's layout discipline: fewer wrappers, clearer rows,
   stronger chart hierarchy, and touch-friendly controls
 - preserve Phase 1 scope: no active crypto/metals/backend features
@@ -133,7 +133,7 @@ Files changed:
 
 ```
 ┌──────────────────────────────┐
-│  🛡️ Niduna Convert  [LOCAL] │  ← Header with branding
+│  🛡️ Honest Fern Convert  [LOCAL] │  ← Header with branding
 │  ● Updated: May 10 16:21 [i]│  ← Info bar
 ├──────────────────────────────┤
 │  ┌──────────────────────────┐│
@@ -186,7 +186,7 @@ Files changed:
 ### Specific Changes
 
 **Header (`convert_header.dart`):**
-- REMOVE shield icon + "Niduna Convert" branding
+- REMOVE shield icon + "Honest Fern Convert" branding
 - REPLACE with simple centered "Currency" title (like competitor)
 - Keep "+" button (add currency) and "..." menu on right
 - Optional: remove "LOCAL-ONLY" badge (competitor doesn't show privacy signals)

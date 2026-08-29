@@ -17,7 +17,7 @@ described below. Check the current source tree before changing either widget.
 
 ### Android widget — implementation verified, integration disabled
 
-**Path:** `android/app/src/main/java/com/niduna/currency_converter/widget/NidunaAppWidgetProvider.kt`
+**Path:** `android/app/src/main/java/com/honestfern/currency_converter/widget/HonestFernAppWidgetProvider.kt`
 **Approach:** `AppWidgetProvider` + `RemoteViews`. No Glance, no Compose.
 **Status:** ✅ Built, end-to-end verified on Android 16 emulator.
 Data bridge (Dart → SharedPreferences) confirmed working.
@@ -33,11 +33,11 @@ file is buildable as-is.
 
 ### iOS widget — code complete, sim install blocked
 
-**Path:** `ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift`
+**Path:** `ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.swift`
 **Approach:** `WidgetBundle` + `TimelineProvider` + `UserDefaults(suiteName:)`
 for the App Group data bridge. Modern iOS 17+ WidgetKit conventions.
 **Status:** ⚠️ Code complete and reviewed. The Xcode project has
-the `NidunaWidget` target wired up. The `Embed App Extensions` build
+the `HonestFernWidget` target wired up. The `Embed App Extensions` build
 phase is **disabled by default in main** so the iOS sim can install
 the app. Re-enable for real-device testing.
 
@@ -63,7 +63,7 @@ following the home_widget 0.9.2 example pattern.
 
 ### To re-enable the iOS widget target
 
-The default state in `main` has the `NidunaWidget` target in the
+The default state in `main` has the `HonestFernWidget` target in the
 Xcode project but the embed phase removed (so the sim app installs
 without the widget). To re-enable for real-device testing:
 
@@ -77,7 +77,7 @@ cd ios && GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.16.2_2/libexec \
     embed = runner.new_copy_files_build_phase('Embed App Extensions')
     embed.symbol_dst_subfolder_spec = :plug_ins
     embed.run_only_for_deployment_postprocessing = '0'
-    widget_product = project.targets.find { |t| t.name == 'NidunaWidget' }.product_reference
+    widget_product = project.targets.find { |t| t.name == 'HonestFernWidget' }.product_reference
     build_file = embed.add_file_reference(widget_product)
     build_file.settings = { 'ATTRIBUTES' => ['RemoveHeadersOnCopy'] }
     # Move the phase to after PBXResourcesBuildPhase to break Flutter's Thin Binary cycle

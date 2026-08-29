@@ -12,15 +12,15 @@
 #
 # Env:
 #   IOS_SIMULATOR_ID   simulator udid (default: first booted)
-#   APP_GROUP_ID       app group (default: group.com.niduna.currencyConverter)
-#   BUNDLE_ID          app bundle id (default: com.niduna.currencyConverter)
+#   APP_GROUP_ID       app group (default: group.com.honestfern.currencyConverter)
+#   BUNDLE_ID          app bundle id (default: com.honestfern.currencyConverter)
 #   LOG_WINDOW         log lookback for widget logs (default: 2m)
 
 set -euo pipefail
 
 sim="${IOS_SIMULATOR_ID:-}"
-group="${APP_GROUP_ID:-group.com.niduna.currencyConverter}"
-bundle="${BUNDLE_ID:-com.niduna.currencyConverter}"
+group="${APP_GROUP_ID:-group.com.honestfern.currencyConverter}"
+bundle="${BUNDLE_ID:-com.honestfern.currencyConverter}"
 log_window="${LOG_WINDOW:-2m}"
 
 if [[ -z "${sim}" ]]; then
@@ -71,5 +71,5 @@ echo
 
 echo "===== 3. Recent widget-extension logs (last ${log_window}) ====="
 xcrun simctl spawn "${sim}" log show --last "${log_window}" --style compact 2>/dev/null \
-  | grep -iE 'NidunaWidget|NIDUNA_WIDGET|widgetkit' | tail -15 \
+  | grep -iE 'HonestFernWidget|HONESTFERN_WIDGET|widgetkit' | tail -15 \
   || echo "   (none)"

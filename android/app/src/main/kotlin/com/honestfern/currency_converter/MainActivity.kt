@@ -1,4 +1,4 @@
-package com.niduna.currency_converter
+package com.honestfern.currency_converter
 
 import io.flutter.embedding.android.FlutterActivity
 

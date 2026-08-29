@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Privacy-first Flutter currency converter (Niduna portfolio). Phase 1 MVP: no backend, no accounts, no tracking, no cloud sync. Fiat rates come from Frankfurter (`api.frankfurter.dev`, no API key); everything is cached locally in SharedPreferences. Four tabs: Convert, Favorites, Charts, Settings.
+Privacy-first Flutter currency converter (Honest Fern portfolio). Phase 1 MVP: no backend, no accounts, no tracking, no cloud sync. Fiat rates come from Frankfurter (`api.frankfurter.dev`, no API key); everything is cached locally in SharedPreferences. Four tabs: Convert, Favorites, Charts, Settings.
 
 **AGENTS.md is the canonical agent instruction file for this repo — read it before substantial work.** It covers skills, devtools script inventory, provider profiles, hidden dev UI, and current project state. Other key docs: `ARCHITECTURE.md` (data/cache/network layers — read before touching those), `CODE_PATTERNS.md` (reference implementations), `DEFINITIONS.md` / `ROADMAP.md` / `PLAN.md` (product scope and delivery order), `RELEASE_CHECKLIST.md` (release master order + per-step implementation notes).
 
@@ -32,9 +32,9 @@ Use the `.devtools/` scripts, never raw `flutter run` (it blocks the terminal) a
 
 ```bash
 IOS_SIMULATOR_ID=$IOS_SIMULATOR_ID ./.devtools/run_ios_simulator_app.sh   # non-blocking launch
-IOS_SIMULATOR_ID=$IOS_SIMULATOR_ID BUNDLE_ID=com.niduna.currencyConverter \
+IOS_SIMULATOR_ID=$IOS_SIMULATOR_ID BUNDLE_ID=com.honestfern.currencyConverter \
   ./.devtools/sim_reinstall_build.sh                                      # build + reinstall + launch after changes
-ANDROID_PACKAGE_NAME=com.niduna.currency_converter \
+ANDROID_PACKAGE_NAME=com.honestfern.currency_converter \
   ./.devtools/android_reinstall_build.sh                                  # Android equivalent
 ./.devtools/sim_screenshot.sh [name]                                      # manual iOS screenshot
 IOS_SIMULATOR_ID=$IOS_SIMULATOR_ID ./.devtools/run_ios_minimal_smoke.sh   # smoke test

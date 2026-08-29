@@ -36,7 +36,7 @@ static.
 
 ## Design Constraints
 
-All changes should respect the current Niduna direction from
+All changes should respect the current Honest Fern direction from
 `/Users/luis/Niduna/apps/currency-converter/DESIGN.md`.
 
 Rules:

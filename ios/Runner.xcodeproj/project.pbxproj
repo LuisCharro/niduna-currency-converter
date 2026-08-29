@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		1C9FF587DC4C771D74964B5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3684030CE511859CCE3C4D19 /* Assets.xcassets */; };
-		22CF17CB5E7C602268A85A35 /* NidunaWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1C66238140FAA2E8D01B30BF /* NidunaWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		22CF17CB5E7C602268A85A35 /* HonestFernWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1C66238140FAA2E8D01B30BF /* HonestFernWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
@@ -22,7 +22,7 @@
 		B0A0F62441B2BE0D8BB78F96 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C1EA7F0032D3303095EBD5 /* Pods_RunnerTests.framework */; };
 		B3A6F9C8966DECEFB9CDD7C3 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A28FC1EBC6251065EE5EAC28 /* SwiftUI.framework */; };
 		D047C3FCD583F28331178F7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 750E9B991F03AC43C71DE1B7 /* Foundation.framework */; };
-		F495CC5AB55D239B2B489450 /* NidunaWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66049EC060D3139205806B13 /* NidunaWidget.swift */; };
+		F495CC5AB55D239B2B489450 /* HonestFernWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66049EC060D3139205806B13 /* HonestFernWidget.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,7 +42,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				22CF17CB5E7C602268A85A35 /* NidunaWidget.appex in Embed App Extensions */,
+				22CF17CB5E7C602268A85A35 /* HonestFernWidget.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,7 +63,7 @@
 		0F9B416B16F470D5F9055C1A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
-		1C66238140FAA2E8D01B30BF /* NidunaWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NidunaWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C66238140FAA2E8D01B30BF /* HonestFernWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HonestFernWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF582B40A21DC8FC828EE4E /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,16 +72,16 @@
 		3E8DBE4E0F8861BC6A60A9DB /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		5F574C3633B98C2D7ECD820C /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 		63F96EBAD1E44E29A47F0E98 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
-		66049EC060D3139205806B13 /* NidunaWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NidunaWidget.swift; sourceTree = "<group>"; };
-		6CBEA7FCECEF122978F401D7 /* NidunaWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NidunaWidget.swift; sourceTree = "<group>"; };
+		66049EC060D3139205806B13 /* HonestFernWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HonestFernWidget.swift; sourceTree = "<group>"; };
+		6CBEA7FCECEF122978F401D7 /* HonestFernWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HonestFernWidget.swift; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74D28422DC150128659EAF67 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		750E9B991F03AC43C71DE1B7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		763371D06C09D7579DA75D29 /* NidunaWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = NidunaWidget.entitlements; sourceTree = "<group>"; };
+		763371D06C09D7579DA75D29 /* HonestFernWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = HonestFernWidget.entitlements; sourceTree = "<group>"; };
 		7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		9690A7DB7FDBE200E7B888C2 /* NidunaWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NidunaWidget.swift; sourceTree = "<group>"; };
+		9690A7DB7FDBE200E7B888C2 /* HonestFernWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HonestFernWidget.swift; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,7 +93,7 @@
 		BB08CE23F467A47931FB6266 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5C1EA7F0032D3303095EBD5 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8D8CE4F84B36E5850D86324 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		F9B9E4FD56BC21A62DCF3CAE /* NidunaWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NidunaWidget.swift; sourceTree = "<group>"; };
+		F9B9E4FD56BC21A62DCF3CAE /* HonestFernWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HonestFernWidget.swift; sourceTree = "<group>"; };
 		FE5B34AD2919AE5EFD38626A /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -135,19 +135,19 @@
 			path = RunnerTests;
 			sourceTree = "<group>";
 		};
-		9305C78FB2373C6C336C80EF /* NidunaWidget */ = {
+		9305C78FB2373C6C336C80EF /* HonestFernWidget */ = {
 			isa = PBXGroup;
 			children = (
-				9690A7DB7FDBE200E7B888C2 /* NidunaWidget.swift */,
+				9690A7DB7FDBE200E7B888C2 /* HonestFernWidget.swift */,
 				74D28422DC150128659EAF67 /* Info.plist */,
-				763371D06C09D7579DA75D29 /* NidunaWidget.entitlements */,
+				763371D06C09D7579DA75D29 /* HonestFernWidget.entitlements */,
 				3684030CE511859CCE3C4D19 /* Assets.xcassets */,
-				6CBEA7FCECEF122978F401D7 /* NidunaWidget.swift */,
-				F9B9E4FD56BC21A62DCF3CAE /* NidunaWidget.swift */,
-				66049EC060D3139205806B13 /* NidunaWidget.swift */,
+				6CBEA7FCECEF122978F401D7 /* HonestFernWidget.swift */,
+				F9B9E4FD56BC21A62DCF3CAE /* HonestFernWidget.swift */,
+				66049EC060D3139205806B13 /* HonestFernWidget.swift */,
 			);
-			name = NidunaWidget;
-			path = Widgets/NidunaWidget;
+			name = HonestFernWidget;
+			path = Widgets/HonestFernWidget;
 			sourceTree = "<group>";
 		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
@@ -178,7 +178,7 @@
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
-				1C66238140FAA2E8D01B30BF /* NidunaWidget.appex */,
+				1C66238140FAA2E8D01B30BF /* HonestFernWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -195,7 +195,7 @@
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
-				9305C78FB2373C6C336C80EF /* NidunaWidget */,
+				9305C78FB2373C6C336C80EF /* HonestFernWidget */,
 				B859F7E035AEAD798D172534 /* Widgets */,
 			);
 			path = Runner;
@@ -246,9 +246,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2F7857D5EF2C1024B2D3BDE1 /* NidunaWidget */ = {
+		2F7857D5EF2C1024B2D3BDE1 /* HonestFernWidget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 88C3038F499D1895750C4F9E /* Build configuration list for PBXNativeTarget "NidunaWidget" */;
+			buildConfigurationList = 88C3038F499D1895750C4F9E /* Build configuration list for PBXNativeTarget "HonestFernWidget" */;
 			buildPhases = (
 				F83FCCE19AB690FD6C9C0B83 /* Sources */,
 				7FC9211F0D0931E1A02DB074 /* Frameworks */,
@@ -258,9 +258,9 @@
 			);
 			dependencies = (
 			);
-			name = NidunaWidget;
-			productName = NidunaWidget;
-			productReference = 1C66238140FAA2E8D01B30BF /* NidunaWidget.appex */;
+			name = HonestFernWidget;
+			productName = HonestFernWidget;
+			productReference = 1C66238140FAA2E8D01B30BF /* HonestFernWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		331C8080294A63A400263BE5 /* RunnerTests */ = {
@@ -341,7 +341,7 @@
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
-				2F7857D5EF2C1024B2D3BDE1 /* NidunaWidget */,
+				2F7857D5EF2C1024B2D3BDE1 /* HonestFernWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -510,7 +510,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F495CC5AB55D239B2B489450 /* NidunaWidget.swift in Sources */,
+				F495CC5AB55D239B2B489450 /* HonestFernWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,15 +550,15 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CODE_SIGN_ENTITLEMENTS = Runner/Widgets/NidunaWidget/NidunaWidget.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Runner/Widgets/HonestFernWidget/HonestFernWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = Runner/Widgets/NidunaWidget/Info.plist;
+				INFOPLIST_FILE = Runner/Widgets/HonestFernWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.niduna.currencyConverter.widget;
-				PRODUCT_NAME = NidunaWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestfern.currencyConverter.widget;
+				PRODUCT_NAME = HonestFernWidget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -635,7 +635,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.niduna.currencyConverter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestfern.currencyConverter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -652,7 +652,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.niduna.currencyConverter.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestfern.currencyConverter.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -670,7 +670,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.niduna.currencyConverter.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestfern.currencyConverter.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -686,7 +686,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.niduna.currencyConverter.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestfern.currencyConverter.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -699,15 +699,15 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CODE_SIGN_ENTITLEMENTS = Runner/Widgets/NidunaWidget/NidunaWidget.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Runner/Widgets/HonestFernWidget/HonestFernWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = Runner/Widgets/NidunaWidget/Info.plist;
+				INFOPLIST_FILE = Runner/Widgets/HonestFernWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.niduna.currencyConverter.widget;
-				PRODUCT_NAME = NidunaWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestfern.currencyConverter.widget;
+				PRODUCT_NAME = HonestFernWidget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -844,7 +844,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.niduna.currencyConverter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestfern.currencyConverter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -868,7 +868,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.niduna.currencyConverter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestfern.currencyConverter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -882,15 +882,15 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CODE_SIGN_ENTITLEMENTS = Runner/Widgets/NidunaWidget/NidunaWidget.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Runner/Widgets/HonestFernWidget/HonestFernWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = Runner/Widgets/NidunaWidget/Info.plist;
+				INFOPLIST_FILE = Runner/Widgets/HonestFernWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.niduna.currencyConverter.widget;
-				PRODUCT_NAME = NidunaWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestfern.currencyConverter.widget;
+				PRODUCT_NAME = HonestFernWidget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -914,7 +914,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		88C3038F499D1895750C4F9E /* Build configuration list for PBXNativeTarget "NidunaWidget" */ = {
+		88C3038F499D1895750C4F9E /* Build configuration list for PBXNativeTarget "HonestFernWidget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9FC259D06ADE79BD5C16852D /* Release */,

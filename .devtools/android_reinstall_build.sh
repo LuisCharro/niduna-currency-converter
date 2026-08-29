@@ -5,7 +5,7 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
 android_serial="${ANDROID_SERIAL:-booted}"
-package_name="${ANDROID_PACKAGE_NAME:-com.niduna.currency_converter}"
+package_name="${ANDROID_PACKAGE_NAME:-com.honestfern.currency_converter}"
 apk_path="${ANDROID_APK_PATH:-build/app/outputs/flutter-apk/app-debug.apk}"
 build_first="${BUILD_FIRST:-1}"
 grant_permissions="${GRANT_PERMISSIONS:-1}"

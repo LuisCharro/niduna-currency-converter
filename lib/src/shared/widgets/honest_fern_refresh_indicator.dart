@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 
-class NidunaRefreshIndicator extends StatelessWidget {
-  const NidunaRefreshIndicator({
+class HonestFernRefreshIndicator extends StatelessWidget {
+  const HonestFernRefreshIndicator({
     required this.child,
     required this.onRefresh,
     super.key,

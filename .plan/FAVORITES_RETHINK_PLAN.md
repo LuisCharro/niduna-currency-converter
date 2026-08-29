@@ -32,7 +32,7 @@ Reason:
 
 I used the repo's design and UI skills as constraints, not as decoration:
 
-- `DESIGN.md`: keep the Niduna warm paper surface, Manrope/Fraunces hierarchy,
+- `DESIGN.md`: keep the Honest Fern warm paper surface, Manrope/Fraunces hierarchy,
   thin dividers, compact rows, and forest-green interaction language.
 - `.agent-local/skills/mobile/mobile-ui-review.SKILL.md`: make the first visible
   area support the primary user job; keep touch targets near `48 x 48`; avoid
@@ -160,7 +160,7 @@ When the max is reached:
 
 ### Visual Design
 
-Use the current Niduna system:
+Use the current Honest Fern system:
 
 - warm paper background from `CanvasBackground`
 - no large cards
@@ -778,13 +778,13 @@ Then rebuild for manual testing:
 
 ```bash
 IOS_SIMULATOR_ID=AD6518C3-252E-4951-AE25-AF6732817FB1 \
-BUNDLE_ID=com.niduna.currencyConverter \
+BUNDLE_ID=com.honestfern.currencyConverter \
 ./.devtools/sim_reinstall_build.sh
 ```
 
 ```bash
 ANDROID_SERIAL=emulator-5556 \
-ANDROID_PACKAGE_NAME=com.niduna.currency_converter \
+ANDROID_PACKAGE_NAME=com.honestfern.currency_converter \
 ./.devtools/android_reinstall_build.sh
 ```
 

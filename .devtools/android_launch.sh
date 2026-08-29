@@ -7,7 +7,7 @@
 #
 # Usage:   ./.devtools/android_launch.sh
 # Env:     ANDROID_SERIAL (default: booted -> auto-detect, prefers emulator)
-#          ANDROID_PACKAGE_NAME (default: com.niduna.currency_converter)
+#          ANDROID_PACKAGE_NAME (default: com.honestfern.currency_converter)
 
 set -euo pipefail
 
@@ -15,7 +15,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
 source "${repo_root}/scripts/common.sh"
 
-package_name="${ANDROID_PACKAGE_NAME:-com.niduna.currency_converter}"
+package_name="${ANDROID_PACKAGE_NAME:-com.honestfern.currency_converter}"
 
 serial="$(resolve_android_serial)"
 if [[ -z "${serial}" ]]; then

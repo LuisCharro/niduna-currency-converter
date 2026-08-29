@@ -6,7 +6,7 @@
 > **Ordering warning (2026-07-19):** this is a command reference, not a
 > release plan. Follow `../RELEASE_CHECKLIST.md` § "Execution Order". `main`
 > is the canonical branch; `release-prep` is historical. Android application
-> ID is `com.niduna.currency_converter`.
+> ID is `com.honestfern.currency_converter`.
 >
 > **Convention:** All `IOS_SIMULATOR_ID` defaults shown below match the post-Phase A-D plan (`docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`). Override as needed.
 
@@ -47,7 +47,7 @@ IOS_SIMULATOR_ID=<UUID> \
 | Param | Required | Common value | Purpose |
 |---|---|---|---|
 | `IOS_SIMULATOR_ID` | yes (or it'll auto-pick) | `87FB7A6A-58E4-4F45-A44E-EC071B06BC04` (iPhone 17 Pro) | Which sim to install on |
-| `BUNDLE_ID` | yes (or use `IOS_BUNDLE_ID`) | `com.niduna.currencyConverter` | App's bundle identifier |
+| `BUNDLE_ID` | yes (or use `IOS_BUNDLE_ID`) | `com.honestfern.currencyConverter` | App's bundle identifier |
 | `PROVIDER_PROFILE` | yes | `dev_coinpaprika` for local · `release_safe` for release | Which currency/crypto provider config |
 | `APP_DEV_MODE` | yes | `true` for local · `false` for release | Show hidden developer section in Settings |
 | `BUILD_FIRST` | no | `1` (default) or `0` | Skip rebuild if AAB already built (then it just reinstalls) |
@@ -158,7 +158,7 @@ WORKDIR=/Users/luis/Niduna/apps/currency-converter
 cd "$WORKDIR"
 
 UDID=87FB7A6A-58E4-4F45-A44E-EC071B06BC04  # iPhone 17 Pro
-BUNDLE=com.niduna.currencyConverter
+BUNDLE=com.honestfern.currencyConverter
 export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 IDB=/tmp/idb-venv/bin/idb
 COMPANION=/Applications/idb-companion.app/bin/idb_companion
@@ -465,7 +465,7 @@ git commit -m "docs(plan): reorder post-phase-ad plan to agreed code-only releas
 - **B4:** create the Android AdMob app/banner/rewarded units and inject the
   real IDs with `ADMOB_USE_TEST_ADS=false`.
 - **B5:** add the Settings privacy link to the final
-  `https://niduna.com/privacy/` URL after domain verification.
+  `https://honestfern.com/privacy/` URL after domain verification.
 - **B8:** implement UMP, gate ads on `canRequestAds`, and add the required
   privacy-options entry point; ad requests remain non-personalised.
 - **B9:** replace `PurchaseServiceStub` with Play Billing for all three
@@ -481,7 +481,13 @@ git commit -m "docs(plan): reorder post-phase-ad plan to agreed code-only releas
   account/verification/merchant profile/app draft, AdMob setup, store listing,
   App content declarations, and closed testing.
 - **Apple Developer Program ($99/yr):** external sign-up
-- **Android home widget re-enable:** Kotlin file is in the source tree (`android/app/src/main/java/com/niduna/currency_converter/widget/NidunaAppWidgetProvider.kt`) but the `<receiver>` block in `AndroidManifest.xml` is currently commented out. To re-enable, restore the receiver from commit `55d7839` (`feature/widget-restore`). Build is verified; data flow works.
-- **iOS home widget re-enable:** Swift code is in the source tree, the `NidunaWidget` Xcode target is wired up, but the `Embed App Extensions` build phase is **disabled in main** because `xcrun simctl install` fails on iOS 26 / Xcode 26 with `Invalid placeholder attributes` (known simctl bug, not a code issue). To re-enable for real-device testing, run the `ios/scripts/add_widget_target.rb` script which is idempotent. See `docs/release-prep/README.md` for full re-enable steps.
+- **Android home widget:** the Kotlin provider and `<receiver>` declaration are
+  wired in the active source tree; no local re-enable step is pending.
+- **iOS home widget:** the Swift code, `HonestFernWidget` target, and `Embed
+  App Extensions` phase are wired in the active source tree. If the known iOS
+  26 / Xcode 26 `Invalid placeholder attributes` simulator failure occurs,
+  it is an environment blocker; real-device testing additionally needs Apple
+  signing. The `ios/scripts/add_widget_target.rb` script repairs this setup
+  idempotently.
 - **Keystore password rotation:** the keystore shipped with a TEMP password stored in `android/key.properties` and `/tmp/niduna_temp_keystore_pwd.txt`. Must be rotated via `keytool -storepasswd` + `keytool -keypasswd` before publishing (and the temp file deleted). Full steps in § "Rotate the keystore password" above.
 - **iOS appearance reset:** the smoke test script flips iOS sim to `dark`. After running, set it back to `light` with `xcrun simctl ui <UDID> appearance light` so the sim doesn't open dark for future work.

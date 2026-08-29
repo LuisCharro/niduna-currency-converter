@@ -79,7 +79,7 @@ Purpose: the main daily-use conversion surface.
 
 Must include:
 
-- Niduna branding
+- Honest Fern branding
 - privacy-first/local-only status
 - amount input
 - base currency selector

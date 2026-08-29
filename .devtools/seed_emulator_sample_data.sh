@@ -4,7 +4,7 @@ set -euo pipefail
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
-package_name="${ANDROID_PACKAGE_NAME:-com.niduna.currency_converter}"
+package_name="${ANDROID_PACKAGE_NAME:-com.honestfern.currency_converter}"
 android_serial="${ANDROID_SERIAL:-emulator-5554}"
 seed_days="${SEED_DAYS:-90}"
 temp_xml=""

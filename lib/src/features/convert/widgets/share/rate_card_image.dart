@@ -32,7 +32,7 @@ class RateCardImage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Niduna · Currency',
+              'Honest Fern · Currency',
               style: TextStyle(
                 fontFamily: 'Fraunces',
                 fontSize: 18,

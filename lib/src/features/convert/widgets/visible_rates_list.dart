@@ -8,7 +8,7 @@ import '../models/currency_quote.dart';
 import 'conversion_lens_sheet.dart';
 import 'currency_row_swipe_actions.dart';
 import 'currency_rate_row.dart';
-import '../../../shared/widgets/niduna_refresh_indicator.dart';
+import '../../../shared/widgets/honest_fern_refresh_indicator.dart';
 import '../../../shared/widgets/shimmer_loading.dart';
 
 class VisibleRatesList extends StatefulWidget {
@@ -127,7 +127,7 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
     );
 
     if (widget.onRefresh != null) {
-      return NidunaRefreshIndicator(
+      return HonestFernRefreshIndicator(
         onRefresh: widget.onRefresh!,
         child: list,
       );

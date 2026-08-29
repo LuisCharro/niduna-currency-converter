@@ -17,7 +17,7 @@ val keystoreProperties = Properties().apply {
 }
 
 android {
-    namespace = "com.niduna.currency_converter"
+    namespace = "com.honestfern.currency_converter"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -32,7 +32,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.niduna.currency_converter"
+        applicationId = "com.honestfern.currency_converter"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -74,7 +74,7 @@ flutter {
 
 // No Glance / Compose-runtime dep is needed for the home-screen widget.
 // We use the legacy AppWidgetProvider + RemoteViews pattern (see
-// NidunaAppWidgetProvider.kt) because the Glance-based path trips a
+// HonestFernAppWidgetProvider.kt) because the Glance-based path trips a
 // Kotlin 2.2.20 inliner bug on `currentState<T>()` / `LocalState.current`.
 // If we ever move back to Glance, add:
 //     implementation("androidx.glance:glance-appwidget:1.1.1")

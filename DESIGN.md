@@ -1,7 +1,7 @@
 ---
 version: alpha
-name: Niduna Currency Converter
-description: Privacy-first fiat currency converter for mobile. Warm, editorial, iOS-native feel with Niduna brand identity.
+name: Honest Fern Currency Converter
+description: Privacy-first fiat currency converter for mobile. Warm, editorial, iOS-native feel with Honest Fern brand identity.
 colors:
   bg: "#F6F8EF"
   text: "#171D14"
@@ -100,13 +100,13 @@ components:
 
 # Overview
 
-Privacy-first currency converter with a **warm, editorial aesthetic** rooted in the Niduna brand. The UI prioritizes **clarity and warmth** — information density without visual noise, without the cold clinical feel of generic utility apps.
+Privacy-first currency converter with a **warm, editorial aesthetic** rooted in the Honest Fern brand. The UI prioritizes **clarity and warmth** — information density without visual noise, without the cold clinical feel of generic utility apps.
 
 ## Current Redesign Direction
 
-The active direction is **Niduna hybrid**:
+The active direction is **Honest Fern hybrid**:
 
-- preserve the Niduna warm paper surface, forest green interaction color, and editorial typography
+- preserve the Honest Fern warm paper surface, forest green interaction color, and editorial typography
 - borrow the competitor's useful discipline: strong hierarchy, thin dividers, compact list rows, pill values, full-width charts, and confident touch targets
 - avoid copying the competitor's pure-white/iOS-blue style wholesale
 - use generated imagery only for icons, store assets, or empty states; do not add decorative backgrounds to the core product UI
@@ -124,7 +124,7 @@ Emotional response: **warm, trustworthy, crafted**. The app should feel like a p
 
 **Brand relationship:**
 
-- The Niduna **Split Pod** is the parent-brand mark used on the corporate site.
+- The Honest Fern **Split Pod** is the parent-brand mark used on the corporate site.
 - Currency Converter keeps its exchange-arrow coin as its Android, iOS, and
   Flutter Web product icon. The shared palette and rounded, warm treatment
   create the relationship; the symbols do not need to match.
@@ -136,11 +136,11 @@ Emotional response: **warm, trustworthy, crafted**. The app should feel like a p
 - Full-bleed content — no card wrappers around charts or lists
 - Typography as structure — weight and size create hierarchy, serif headings for editorial warmth
 - Floating navigation — bottom nav floats above content, paper-warm background
-- **Niduna differentiation** — same structural quality as competitor apps but visually distinct through warmth and brand personality
+- **Honest Fern differentiation** — same structural quality as competitor apps but visually distinct through warmth and brand personality
 
 ## Colors
 
-The palette is rooted in the **Niduna brand** (from niduna-site) with warm, organic tones:
+The palette is rooted in the **Honest Fern brand** (from niduna-site) with warm, organic tones:
 
 - **Background (#F6F8EF):** Warm paper canvas. Not pure white — reduces eye strain, adds premium feel. Slightly warmer at bottom via gradient.
 - **Text (#171D14):** Dark forest ink. Softer than pure #000 for reduced eye strain. Reads as near-black but warmer.
@@ -149,7 +149,7 @@ The palette is rooted in the **Niduna brand** (from niduna-site) with warm, orga
 - **Container (#FFF9EC):** Paper-warm. Used for nav bar, section backgrounds, floating nav. Cozy, not cold.
 - **ContainerHigh (#F5EDEE):** Secondary containers, filled inputs, active states.
 - **Border (rgba(40,95,59,0.14)):** Green-tinted separator. Blends into warm canvas naturally.
-- **Primary (#285F3B):** Forest leaf green. Used for active nav items, links, primary buttons, active states. The signature Niduna color — replaces iOS blue.
+- **Primary (#285F3B):** Forest leaf green. Used for active nav items, links, primary buttons, active states. The signature Honest Fern color — replaces iOS blue.
 - **Trend Up (#6F8C49):** Moss green. Positive changes, success states, value badges. Warmer and more organic than iOS green.
 - **Trend Down (#DC6543):** Coral. Negative changes, error states, destructive actions. Warmer and less alarming than iOS red.
 
@@ -201,7 +201,7 @@ Subtle background gradient (bottom 30% of screen): `#F6F8EF → #FBFCF6 → #FFF
 
 ## Shapes
 
-**Rounded-soft language** matching Niduna brand conventions:
+**Rounded-soft language** matching Honest Fern brand conventions:
 
 - **Pill radius (20px):** Buttons, chips, badges, nav container — the dominant shape
 - **Card radius (16px):** Large containers, modals, sheets

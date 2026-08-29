@@ -20,7 +20,7 @@
 
 ### Step 1: Identify Template Material
 
-Ask for each file/script/pattern: **Is this generic across all Niduna apps?**
+Ask for each file/script/pattern: **Is this generic across all Honest Fern apps?**
 
 **✅ IS template material:**
 - Devtools scripts (simulator interaction, no business logic)
@@ -224,7 +224,7 @@ Use lightweight tags on the template repo.
 **Extracted:**
 - T1: 6 new devtools scripts (sim_screenshot, sim_tap, sim_wait_ready, sim_uninstall, sim_fresh_install, capture_tabs)
 - T2: common.sh — replaced hardcoded `require_openclaw_target()` with generic `require_firebase_hosting_config()`
-- T3: capture_ios_screens.sh — removed hardcoded `com.niduna.currencyConverter` bundle ID
+- T3: capture_ios_screens.sh — removed hardcoded `com.honestfern.currencyConverter` bundle ID
 - T4: AGENTS.md — added Design Workflow section, 9-script devtools inventory table, expanded Common Commands
 - T5: DESIGN.md skeleton — copied structure from CC, blanked all tokens and component specs
 - T6: ARCHITECTURE.md skeleton — copied structure from CC, blanked feature names, kept pattern examples

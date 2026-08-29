@@ -73,8 +73,8 @@ bool get canOfferRewardedFavoritesBoost =>
 
 1. Click "Add app" → "Add your app manually"
 2. Platform: **Android**
-3. Package name: `com.niduna.currency_converter`
-3. App name: `Niduna Currency Converter` (or your choice)
+3. Package name: `com.honestfern.currency_converter`
+3. App name: `Honest Fern Currency Converter` (or your choice)
 4. Note down the **App ID**: format `ca-app-pub-XXXXXXXX~YYYYYYYYYY`
 
 ### 2c. Create Ad Units

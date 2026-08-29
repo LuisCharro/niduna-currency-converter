@@ -1,11 +1,11 @@
 {
-    "name": "Niduna Currency Converter",
-    "short_name": "Currency",
+    "name": "Honest Fern Currency Converter",
+    "short_name": "Honest Fern",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#F6F8EF",
     "theme_color": "#285F3B",
-    "description": "A calm, privacy-first currency converter by Niduna.",
+    "description": "A calm, privacy-first currency converter by Honest Fern.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

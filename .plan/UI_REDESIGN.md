@@ -11,7 +11,7 @@
 
 **Iteration 1** closed documentation drift, split oversized Charts files, removed card-wrapped empty states, attached the range rail to the chart block, and synced tokens. The app is cleaner and more maintainable — but the **visible leap is still too small**. A non-developer comparing before/after screenshots would call it “tidied,” not “redesigned.”
 
-**Iteration 2** targets a **beautiful, elegant, intuitive, production-ready** Niduna surface: Play Store quality with a **distinct** warm-instrument identity — not generic fintech cards, not Material-default utility chrome.
+**Iteration 2** targets a **beautiful, elegant, intuitive, production-ready** Honest Fern surface: Play Store quality with a **distinct** warm-instrument identity — not generic fintech cards, not Material-default utility chrome.
 
 ### Why v1 was not enough
 
@@ -23,12 +23,12 @@
 | Settings | `ScreenTitle`, divider tiles | `UpgradeShelf` + data subpages still read as “settings-card soup” |
 | Depth & color | Token sync | Flat paper everywhere; moss/coral used mainly on chips, not composition |
 | Motion | Chart `AnimatedSwitcher` | Rest of app feels static; states swap without designed transitions |
-| Empty/error | `InlineEmptyPanel` | Correct pattern, generic copy/icon — no Niduna personality |
+| Empty/error | `InlineEmptyPanel` | Correct pattern, generic copy/icon — no Honest Fern personality |
 | Acceptance | Engineer checklist | No explicit “screenshot diff obvious to non-dev” gate |
 
 ### v2 north-star outcome
 
-Someone opening the app for three seconds should think: **warm editorial finance instrument made by Niduna** — not “another currency converter with green accents.”
+Someone opening the app for three seconds should think: **warm editorial finance instrument made by Honest Fern** — not “another currency converter with green accents.”
 
 ---
 
@@ -39,7 +39,7 @@ Someone opening the app for three seconds should think: **warm editorial finance
 | S2-1 | **Non-developer redesign test:** side-by-side screenshots (v1 baseline vs v2) — 3/3 casual viewers say “clearly different app” without coaching | `.tmp/screens/ios/ui-redesign-v2/` vs `ui-redesign-baseline/` |
 | S2-2 | **Convert first viewport:** hero amount + base + status + **≥3 rate rows** visible on iPhone SE class without scroll | Manual + `capture_ios_ui_review_bundle.sh` |
 | S2-3 | **Charts first viewport:** pair identity + live rate + trend color + **≥40% screen height chart** on SE | Screenshot ruler / layout test |
-| S2-4 | Niduna brand identifiable with nav hidden (palette, Fraunces rhythm, divider instrument, no iOS blue) | Visual review |
+| S2-4 | Honest Fern brand identifiable with nav hidden (palette, Fraunces rhythm, divider instrument, no iOS blue) | Visual review |
 | S2-5 | `./scripts/check.sh` clean; text scale `1.3×` / `2.0×` — no clipped hero amount, range chips, or pair selectors | Widget tests + simulator |
 | S2-6 | Touch targets ≥ `48×48` on custom controls | Manual + keys |
 | S2-7 | Monetization looks **integrated** (banner shelf, premium, chart locks) — not bolted-on rectangles | Screenshot review |

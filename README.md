@@ -1,6 +1,6 @@
 # Currency Converter
 
-Privacy-first Flutter currency converter for the Niduna portfolio.
+Privacy-first Flutter currency converter for the Honest Fern portfolio.
 
 **Android MVP release** | Android first, iOS later | No account, no first-party analytics, no backend.
 
@@ -138,7 +138,7 @@ flutter pub get
 
 ## Product constraints
 
-- privacy-first: no Niduna account, no first-party analytics, no backend;
+- privacy-first: no Honest Fern account, no first-party analytics, no backend;
   AdMob collection/sharing is disclosed and requires UMP/privacy controls
 - offline only in Phase 1
 - no backend
@@ -171,6 +171,6 @@ flutter pub get
   repopulated its local cache. The final AAB still waits for B4/B5/B8/B9,
   key rotation, and a new versionCode.
 - Android application ID (the value used in Play URLs and Console):
-  `com.niduna.currency_converter`. The camel-case
-  `com.niduna.currencyConverter` value belongs to the deferred iOS bundle.
+  `com.honestfern.currency_converter`. The camel-case
+  `com.honestfern.currencyConverter` value belongs to the deferred iOS bundle.
 - Post-launch feature backlog: `docs/FEATURE_IDEAS.md`

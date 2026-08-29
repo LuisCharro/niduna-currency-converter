@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../shared/widgets/niduna_refresh_indicator.dart';
+import '../../../shared/widgets/honest_fern_refresh_indicator.dart';
 import '../../../shared/widgets/screen_title.dart';
 import '../../convert/domain/latest_rates_snapshot.dart';
 import '../domain/favorite_pair.dart';
@@ -72,7 +72,7 @@ class FavoritesTabBody extends StatelessWidget {
           );
 
     if (onRefresh == null) return list;
-    return NidunaRefreshIndicator(onRefresh: onRefresh!, child: list);
+    return HonestFernRefreshIndicator(onRefresh: onRefresh!, child: list);
   }
 
   /// Centers the empty state in the space left under the title instead of

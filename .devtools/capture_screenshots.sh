@@ -8,7 +8,7 @@ simulator_id="${IOS_SIMULATOR_ID:-booted}"
 output_dir="${SCREEN_OUTPUT_DIR:-${repo_root}/.tmp/screens/ios}"
 driver_path="test_driver/screenshots_driver.dart"
 target_path="${CAPTURE_TARGET_PATH:-integration_test/screenshot_gallery_test.dart}"
-bundle_id="${IOS_BUNDLE_ID:-${BUNDLE_ID:-com.niduna.currencyConverter}}"
+bundle_id="${IOS_BUNDLE_ID:-${BUNDLE_ID:-com.honestfern.currencyConverter}}"
 
 source "${repo_root}/scripts/common.sh"
 

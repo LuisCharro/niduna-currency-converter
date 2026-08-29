@@ -4,12 +4,12 @@ import 'widget_data.dart';
 
 class HomeWidgetProvider {
   static const _androidWidgetName =
-      'com.niduna.currency_converter.widget.NidunaAppWidgetProvider';
+      'com.honestfern.currency_converter.widget.HonestFernAppWidgetProvider';
 
   // Must equal the Swift `Widget.kind` in
-  // ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift so WidgetKit reloads
+  // ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.swift so WidgetKit reloads
   // the timeline when fresh data is pushed. Ignored on Android.
-  static const _iosWidgetName = 'NidunaCurrencyWidget';
+  static const _iosWidgetName = 'HonestFernCurrencyWidget';
 
   Future<void> pushData(HomeWidgetData data) async {
     try {

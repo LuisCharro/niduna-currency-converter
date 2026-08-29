@@ -5,7 +5,7 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
 simulator_id="${IOS_SIMULATOR_ID:-booted}"
-bundle_id="${IOS_BUNDLE_ID:-${BUNDLE_ID:-com.niduna.currencyConverter}}"
+bundle_id="${IOS_BUNDLE_ID:-${BUNDLE_ID:-com.honestfern.currencyConverter}}"
 seed_days="${SEED_DAYS:-90}"
 
 source "${repo_root}/scripts/common.sh"

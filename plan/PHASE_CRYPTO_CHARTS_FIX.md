@@ -3,7 +3,7 @@
 **Date:** 2026-05-20
 **Status:** READY — awaiting implementation
 **Supersedes:** `PHASE_COINCAP_INTEGRATION.md` (DONE but broken)
-**Repo:** `/workspace/repos/niduna-currency-converter`
+**Repo:** `/workspace/repos/honestfern-currency-converter`
 
 ---
 

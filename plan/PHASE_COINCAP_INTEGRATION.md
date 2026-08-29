@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-20
 **Status:** SUPERSEDED — CoinCap free API is dead (v2 connection refused, v3 requires paid auth). Replaced by CoinGecko in `PHASE_CRYPTO_CHARTS_FIX.md`.
-**Repo:** `/workspace/repos/niduna-currency-converter`
+**Repo:** `/workspace/repos/honestfern-currency-converter`
 
 ---
 

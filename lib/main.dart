@@ -15,15 +15,15 @@ void main() {
   // widget extension to read data the main app pushes via
   // HomeWidget.saveWidgetData. Android reads SharedPreferences directly
   // via the plugin and ignores this. The App Group is declared in
-  // ios/Runner/Runner.entitlements and ios/Runner/Widgets/NidunaWidget/
-  // NidunaWidget.entitlements. No-op on Android / when the group
+  // ios/Runner/Runner.entitlements and ios/Runner/Widgets/HonestFernWidget/
+  // HonestFernWidget.entitlements. No-op on Android / when the group
   // isn't granted.
   unawaited(
     HomeWidget.setAppGroupId(
       // iOS only — Android receives this argument and ignores it.
       // Wrap in try because on test/non-widget environments the
       // method channel may be missing.
-      'group.com.niduna.currencyConverter',
+      'group.com.honestfern.currencyConverter',
     ).catchError((Object e, StackTrace st) {
       // ignore: avoid_print
       print('HomeWidget.setAppGroupId failed: $e');
@@ -49,8 +49,8 @@ void _trustDevProxyCa() {
   //   adb shell run-as <applicationId> sh -c \
   //     'mkdir -p files && cp /data/local/tmp/dev_trusted_ca.pem files/'
   const pemPaths = [
-    '/data/data/com.niduna.currency_converter/files/dev_trusted_ca.pem',
-    '/sdcard/Android/data/com.niduna.currency_converter/files/'
+    '/data/data/com.honestfern.currency_converter/files/dev_trusted_ca.pem',
+    '/sdcard/Android/data/com.honestfern.currency_converter/files/'
         'dev_trusted_ca.pem',
     // Survives app reinstalls (integration test runs wipe app data).
     '/data/local/tmp/dev_trusted_ca.pem',

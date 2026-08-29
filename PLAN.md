@@ -8,8 +8,8 @@
 
 ## Overview
 
-Currency converter app for Android (iOS later) under Niduna brand.
-Privacy-first means no Niduna account, no first-party analytics and no backend;
+Currency converter app for Android (iOS later) under Honest Fern brand.
+Privacy-first means no Honest Fern account, no first-party analytics and no backend;
 the ad-supported version still requires transparent AdMob disclosures.
 
 **Reference app:** Currency (currencyapp.com) — clone with privacy-first differentiation
@@ -354,7 +354,7 @@ lib/
 | Provider profiles | DONE | Build-time `PROVIDER_PROFILE` env var; release guard |
 | Branded splash screens | DONE | Native Android + iOS launch screens |
 | Android adaptive icons | DONE | Foreground seal + warm paper background layer |
-| Flutter Web identity | DONE | Product favicon/PWA icons + Niduna Currency metadata replace Flutter defaults (2026-07-09) |
+| Flutter Web identity | DONE | Product favicon/PWA icons + Honest Fern Currency metadata replace Flutter defaults (2026-07-09) |
 | Store publishing checklists | DONE | Play Store + App Store checklists in `.plan/` |
 | Pull-to-refresh on Favorites & Charts | DONE | RefreshIndicator wrapping tab content |
 | Trend arrows (previous day comparison) | DONE | Yesterday rates fetch via Frankfurter historical endpoint |
@@ -433,13 +433,13 @@ lib/
 ## UI Redesign — "Professional Polish" Cycle
 
 > **Plan file:** `.agent/ui-redesign-plan.md`
-> **Status:** Superseded by Niduna hybrid polish pass
+> **Status:** Superseded by Honest Fern hybrid polish pass
 > **Trigger:** Visual quality gap vs competitor (Currency app / miniapatti)
 > **Reference screenshots:** `/Users/luis/Downloads/CurrencyApp/` (7 PNGs)
 
 ### Current Direction
 
-Use a **Niduna hybrid** direction for UI work:
+Use a **Honest Fern hybrid** direction for UI work:
 
 - keep the warm paper background, forest green accent, Manrope/Fraunces type, and privacy-first personality from `DESIGN.md`
 - adopt the competitor's discipline: fewer boxes, thinner dividers, stronger value pills, cleaner chart hierarchy, and larger touch targets
@@ -450,7 +450,7 @@ Use a **Niduna hybrid** direction for UI work:
 
 | Phase | Name | Goal | Status |
 |-------|------|------|--------|
-| 1 | Foundation | Theme/nav/ad polish around Niduna tokens | DONE (iter 2 on `turbo/ui-redesign`) |
+| 1 | Foundation | Theme/nav/ad polish around Honest Fern tokens | DONE (iter 2 on `turbo/ui-redesign`) |
 | 2 | Convert Screen | Reduce top weight, cleaner amount panel, sharper rows | DONE (iter 2 on `turbo/ui-redesign`) |
 | 3 | Chart Screen | Stronger hero header, fuller chart, cleaner controls | DONE (iter 2 on `turbo/ui-redesign`) |
 | 4 | Settings Cleanup | Controller extraction is done; visual density cleanup | DONE (controller extraction), PARTIAL (visual density) |

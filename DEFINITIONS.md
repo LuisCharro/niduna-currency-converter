@@ -49,7 +49,7 @@ first or defer the idea.
 
 - Phase 1 has no backend.
 - Phase 1 has no accounts, login, cloud sync, or user profile.
-- Phase 1 has no first-party analytics or Niduna user profile. AdMob's
+- Phase 1 has no first-party analytics or Honest Fern user profile. AdMob's
   collection/sharing must be disclosed in Play Data Safety and the policy.
 - Launch monetization is banner ads, user-initiated rewarded ads, and three
   one-time products: Remove Ads (1.99 CHF), Charts Pro (2.99 CHF), and
@@ -182,13 +182,13 @@ as the short source of truth for widget/trend/comparison status.
 
 ## Concept
 
-A free currency converter app for Android (eventually also iOS), published under the Niduna brand.
+A free currency converter app for Android (eventually also iOS), published under the Honest Fern brand.
 Android first at launch, Apple later (no $100/year Apple fee initially).
 
 **Store-agnostic rule:** pricing, features, and data policies are identical on both platforms.
 
 Core promise: convert between currencies, see historical charts, no login required.
-Same privacy direction as Currency (currencyapp.com): **no Niduna account,
+Same privacy direction as Currency (currencyapp.com): **no Honest Fern account,
 no first-party analytics, and no backend user profile**. AdMob remains a
 disclosed third-party SDK in the ad-supported version.
 
@@ -200,7 +200,7 @@ disclosed third-party SDK in the ad-supported version.
 
 **Currency app collects Location + Identifiers for tracking** (App Store privacy label, May 2026). XE collects data for transfers. My Currency Converter Pro is better ("no data collected").
 
-**Niduna's positioning**: no account, no cloud profile, no first-party
+**Honest Fern's positioning**: no account, no cloud profile, no first-party
 analytics, local app data, and transparent disclosure of the ads SDK.
 
 ### Detailed competitor analysis
@@ -250,10 +250,10 @@ analytics, local app data, and transparent disclosure of the ads SDK.
 | Ads | ✅ | ❌ | ✅ | ❌ | ? |
 | Privacy | Tracks Location+IDs | — | No data | No data | Transfers |
 
-### What Niduna can offer that competitors don't
+### What Honest Fern can offer that competitors don't
 
 1. **Privacy-first (no tracking, no accounts)** — verifiable differentiator vs Currency and XE
-2. **Direct one-time pricing vs subscription** — Niduna at ~2 CHF one-time vs Currency at $19.99/year
+2. **Direct one-time pricing vs subscription** — Honest Fern at ~2 CHF one-time vs Currency at $19.99/year
 3. **Unlimited free charts** — ⚠️ unverified; confirm directly in Currency app before claiming this
 4. **Cleaner, simpler UI** — no transfer upsells or subscription prompts
 5. **CHF-native positioning** — natural choice for CHF users
@@ -318,7 +318,7 @@ analytics, local app data, and transparent disclosure of the ads SDK.
 - **NO `/convert` endpoint** — app calculates `amount × rate` client-side using `/v2/rate/{base}/{quote}`
 - Self-hosting: Docker image available (`lineofflight/frankfurter`) — consider at 10,000+ DAU
 
-### How many calls can Niduna make safely?
+### How many calls can Honest Fern make safely?
 
 | DAU | Est. daily calls | Recommendation |
 |-----|-----------------|-----------------|

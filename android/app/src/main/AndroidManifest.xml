@@ -37,9 +37,9 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
-        <!-- Niduna home-screen widget (AppWidgetProvider + RemoteViews) -->
+        <!-- Honest Fern home-screen widget (AppWidgetProvider + RemoteViews) -->
         <receiver
-            android:name=".widget.NidunaAppWidgetProvider"
+            android:name=".widget.HonestFernAppWidgetProvider"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

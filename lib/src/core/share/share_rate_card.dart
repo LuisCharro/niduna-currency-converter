@@ -38,14 +38,14 @@ Future<void> shareRateCard(BuildContext context, RateCardData data) async {
 
     final dir = await getTemporaryDirectory();
     final file = File(
-      '${dir.path}/niduna-rates-${DateTime.now().millisecondsSinceEpoch}.png',
+      '${dir.path}/honestfern-rates-${DateTime.now().millisecondsSinceEpoch}.png',
     );
     await file.writeAsBytes(bytes);
 
     await SharePlus.instance.share(
       ShareParams(
         files: <XFile>[XFile(file.path)],
-        text: 'Exchange rates · ${data.baseAmountLabel} — via Niduna',
+        text: 'Exchange rates · ${data.baseAmountLabel} — via Honest Fern',
       ),
     );
   } catch (_) {

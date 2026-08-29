@@ -8,7 +8,7 @@ android_serial="${ANDROID_SERIAL:-emulator-5554}"
 output_dir="${SCREEN_OUTPUT_DIR:-${repo_root}/.tmp/screens/android}"
 driver_path="test_driver/screenshots_driver.dart"
 target_path="${CAPTURE_TARGET_PATH:-integration_test/screenshot_gallery_test.dart}"
-package_name="${ANDROID_PACKAGE_NAME:-com.niduna.currency_converter}"
+package_name="${ANDROID_PACKAGE_NAME:-com.honestfern.currency_converter}"
 
 source "${repo_root}/scripts/common.sh"
 

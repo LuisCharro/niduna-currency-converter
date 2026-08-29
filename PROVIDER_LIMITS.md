@@ -160,7 +160,7 @@ When the app calls a provider, the HTTP request contains:
 | **User-Agent** | Dart's `http` package default | Something like `dart-io/3.x` — identifies the HTTP library, not the user. |
 | **API key** | **No** | The app does not send any API key or auth token to any provider. |
 | **User ID** | **No** | The app has no accounts, no tracking, no device ID. |
-| **App identifier** | **No** | No custom header identifies this app or Niduna. |
+| **App identifier** | **No** | No custom header identifies this app or Honest Fern. |
 | **Request body** | No body | All calls are `GET` requests — no personal data in the URL or body. |
 
 ### Do They Log IPs?

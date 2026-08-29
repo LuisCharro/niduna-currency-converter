@@ -11,7 +11,7 @@
 > (real AdMob IDs), B5 (privacy link), B8 (UMP consent + privacy-options
 > entry point), and B9 (real Play Billing replacing `PurchaseServiceStub`).
 > Screenshots and the feature graphic are ready. The site is GDPR-prepared,
-> but `niduna.com` does not resolve yet and the hosting plan must be made
+> but `honestfern.com` does not resolve yet and the hosting plan must be made
 > compatible with commercial use before the monetized app launches.
 >
 > **Remaining before submission (short list, true dependency order — updated 2026-08-28):**
@@ -21,8 +21,8 @@
 > gates below.
 > 1. **Site foundation:** follow the approved Hostinger KVM 2 static-migration
 > plan: preserve Vercel rollback, pass the VPS security/staging gate, buy and
-> register `niduna.com` separately through Hostinger, attach DNS, and create/test
-> `support@niduna.com`. Site detail: `niduna-site/RELEASE_PLAN.md` § S1 and
+> register `honestfern.com` separately through Hostinger, attach DNS, and create/test
+> `support@honestfern.com`. Site detail: `niduna-site/RELEASE_PLAN.md` § S1 and
 > `niduna-site/docs/hostinger-static-migration.md`. This unlocks C1, C10, and
 > B5.
 > 2. **Accounts in parallel:** create the personal Play account, finish
@@ -47,9 +47,32 @@
 > wait until the Play listing is publicly reachable.
 > 7. **Site launch batch:** only after the production listing is public,
 > replace Coming soon with the real Play URL and deploy/verify S2.
+
+## Brand migration boundary
+
+The repository-side migration is complete for the active app surfaces:
+
+- Android namespace/application ID: `com.honestfern.currency_converter`
+- iOS Runner bundle ID: `com.honestfern.currencyConverter`
+- iOS App Group: `group.com.honestfern.currencyConverter`
+- Widget target/type names: `HonestFernWidget`, `HonestFernCurrencyWidget`,
+  and `HonestFernAppWidgetProvider`
+
+The following are later console or credential operations, not local renames:
+
+- Register the new Android application ID and iOS bundle/App Group IDs in the
+  relevant store/developer consoles, then issue matching signing/provisioning
+  resources.
+- Recheck AdMob/Firebase/Play Billing configuration against the real external
+  records before release. The existing Firebase project
+  `currency-converter-by-niduna` and existing signing keystore/alias names are
+  intentionally preserved until an authorized external migration exists.
 >
 > **~~Open decision~~ RESOLVED (2026-07-16): "Coming Soon" subscription teasers removed** — the Settings "Subscription · Coming Soon" tile, the Charts locked intraday chips (1H/6H/1D + premium snackbar), and the Convert info-sheet "faster updates / future Premium subscription" line are gone from the UI on all platforms (no platform gating). Entitlement plumbing kept for Phase 2. Verified on emulator light+dark, 239 tests pass.
-> **2026-06-02 update:** iOS widget code merged but disabled (Xcode 26 simctl install bug). Code complete, verify on real iPhone when convenient. See "Blocker Summary" below.
+> **Historical 2026-06-02 note:** iOS widget code was merged while simulator
+> installation was blocked by the Xcode 26 simctl issue. The current checkout
+> has the renamed target and embed phase wired; real-device verification still
+> requires signing. See "Blocker Summary" below.
 > **2026-06-01 update:** Backend work deferred until post-publish. Code-only path: see "Code-Only Pre-Flight" below. Full detail in `docs/superpowers/plans/2026-06-01-post-phase-ad-next-steps.md`.
 > **2026-06-02 review:** see `docs/REVIEW-2026-06-01.md` for the full audit.
 
@@ -170,15 +193,15 @@ and update this checklist before proceeding.
 | E4 | Create app in Play Console (draft mode) | In Play Console > All apps > Create app | ❌ |
 | E5 | Register AdMob account + create ad units | https://admob.google.com | ❌ |
 | E5b | AdMob → Privacy & messaging → create the GDPR consent message (required for EEA/UK/CH ads; pairs with code step B8) | In AdMob console, after E5 | ❌ |
-| E5c | Publish `app-ads.txt` on niduna.com with the AdMob publisher ID from E5 | Site-side step — `niduna-site/RELEASE_PLAN.md` § S1.5 | ❌ |
+| E5c | Publish `app-ads.txt` on honestfern.com with the AdMob publisher ID from E5 | Site-side step — `niduna-site/RELEASE_PLAN.md` § S1.5 | ❌ |
 | E6 | Complete the trader-status / verified-public-contact task shown by Play Console for EU distribution. Use truthful personal details and review exactly what Play says will be public before submitting. | Play Console → App content, after E4 | ❌ |
 | E7 | New personal accounts created after 2023-11-13 currently need a closed test with at least **12 opted-in testers for 14 continuous days** before applying for production access. Start only after app setup is complete **and a policy-safe release candidate exists**; target 15-16 recruits for dropout margin. | Play Console → Testing → Closed testing | ❌ |
 | E8 | **Finalize IDs, create and activate three one-time products in Play Console** — Remove Ads 1.99 CHF, Charts Pro 2.99 CHF, Favorites Pro 0.99 CHF. IDs cannot be changed/reused, so decide them before B9; suggested: `remove_ads_lifetime`, `charts_pro_lifetime`, `favorites_pro_lifetime`. Requires E3/E4. If Console does not expose product creation yet, implement B9 with those final IDs and upload the billing-enabled bundle to internal testing first; then create/activate the products before purchase testing or the closed track. | Play Console → Monetize with Play → Products → One-time products | ❌ |
 
 > **Publishing identity (decided 2026-07-11 — "Pegolandia model", see
-> `Niduna/docs/strategy/Niduna_Company_Options_CH_vs_US.md` Option 0 and
+> `Niduna/docs/strategy/Honest_Fern_Company_Options_CH_vs_US.md` Option 0 and
 > `Reprocess_deprecated/Pegolandia_Style_Brand_First_App_Portfolio_Plan.md`):**
-> publish as an **individual**, no company registered. "Niduna" is the
+> publish as an **individual**, no company registered. "Honest Fern" is the
 > brand (app names, icons, website, © notice); the verified **legal
 > name** is what Google shows in "About the developer" for personal
 > accounts created after Nov 2023 — plus address/email/phone in the EU
@@ -198,7 +221,7 @@ and update this checklist before proceeding.
 | B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ✅ **Done** | `200c888` — ⚠️ **password is TEMP, must be rotated before publish** (see Keystore note below) |
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` — release AAB now signed, falls back to debug if `key.properties` is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
-| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Blocked on C1 (domain not public yet — see `niduna-site/RELEASE_PLAN.md` § S1). Target URL: `https://niduna.com/privacy/` |
+| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Blocked on C1 (domain not public yet — see `niduna-site/RELEASE_PLAN.md` § S1). Target URL: `https://honestfern.com/privacy/` |
 | B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Smoke revalidated on 2026-08-28: Gradle cache populated and a 51 MB signed AAB was produced and verified. The diagnostic artifact is not publishable because it still uses test AdMob IDs and the purchase stub. The FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + B9 (real billing) + keystore rotation. **Do not pass `--no-pub` to the release build:** Flutter must regenerate the release-filtered plugin registrant; with a stale development registrant, `integration_test` can break the Java compilation. **versionCode rule (added 2026-07-16):** every Play upload needs a strictly HIGHER build number — bump the `+N` in `pubspec.yaml` `version: 0.1.0+N` for each upload, closed-track updates included (Play rejects a reused versionCode). |
 | B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
 | B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Ad requests are already non-personalised, but the app still initializes Mobile Ads without UMP. Request consent info on every launch, show the form when required, gate ad requests on `canRequestAds`, and expose a privacy-options entry point when UMP reports it is required. Pair with E5b and keep the site policy aligned. |
@@ -216,7 +239,7 @@ and update this checklist before proceeding.
 > See `docs/RELEASE_COMMANDS.md` § "Keystore management" for full steps.
 >
 > **⚠️ Keystore BACKUP (added 2026-07-11 — do right after rotation):**
-> `niduna-upload.jks` and `key.properties` are gitignored and exist on
+> `android/app/niduna-upload.jks` and `key.properties` are gitignored and exist on
 > ONE machine only. After rotating: store a copy of the .jks + both
 > passwords in a password manager, plus a second copy off-machine
 > (encrypted USB / private cloud). Losing the upload key doesn't kill
@@ -228,17 +251,17 @@ and update this checklist before proceeding.
 
 | # | Task | Specs | Effort | Status |
 |---|------|-------|--------|--------|
-| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The Vercel preview is public; remaining: complete the approved Hostinger KVM 2 security/staging gate, buy/register `niduna.com` separately through Hostinger, attach DNS and verify the final URL. Update the policy's hosting paragraph only after the Hostinger host is live. See `niduna-site/RELEASE_PLAN.md` § S1. | Hostinger gate + domain | 🟡 Blocked |
+| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The Vercel preview is public; remaining: complete the approved Hostinger KVM 2 security/staging gate, buy/register `honestfern.com` separately through Hostinger, attach DNS and verify the final URL. Update the policy's hosting paragraph only after the Hostinger host is live. See `niduna-site/RELEASE_PLAN.md` § S1. | Hostinger gate + domain | 🟡 Blocked |
 | C2 | App title (max 30 chars) | Must be unique in Play Store | ~10 min | ❌ |
 | C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ❌ |
-| C4 | Full description (max 4000 chars) | Features, privacy notes, Niduna differentiator | ~45 min | ❌ |
+| C4 | Full description (max 4000 chars) | Features, privacy notes, Honest Fern differentiator | ~45 min | ❌ |
 | C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert / Chart / Favorites, light + dark | ~1 hr | ✅ **Done** (refreshed 2026-07-08) | 6 final screenshots at 1080×2400 in `docs/release-prep/screenshots/`, re-captured 2026-07-08 after the polish pass (flat Favorites cards, no nav clipping, visible dark chart fill). English, paid-user state (no ads), real currency icons. Captured on `Pixel7_EN` AVD; `SCREENSHOT_DARK=true ./.devtools/capture_android_screens.sh` for the dark set. Requires swiftshader GPU (`-gpu swiftshader_indirect`) for icon rendering. The older 8-tab set from 2026-06-01 is kept alongside as reference. |
 | C6 | Feature graphic (1024x500) | Branded graphic for featured placements | ~30 min | ✅ **Done** | `docs/release-prep/feature-graphic.png` (1024×500, botanical gradient + app name + phone mockup + tagline) |
 | C7 | Content rating questionnaire (IARC/CERT) | In Play Console > Policy > App content | ~15 min | ❌ |
 | C7b | **Target audience declaration — declare 13+** (added 2026-07-11) | Separate from C7! In App content → Target audience. Declaring ANY under-13 age group triggers the Families Policy (certified ad SDKs only, ad limits, stricter review) — wrong fit for an AdMob-funded utility. Content rating "Everyone" (C7) and target audience "13+" are compatible and both correct here. | ~5 min | ❌ |
 | C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII collected by us — **but the AdMob SDK must be declared** (device/advertising identifiers, ad interaction data; see the "Third-party SDKs" table below). Align answers with the consent setup from B8/E5b. | ~30 min | ❌ |
 | C9 | Category selection | Likely: Finance > Finance tools or Productivity | ~2 min | ❌ |
-| C10 | Contact email + website + privacy URL | Required fields in Console listing. `support@niduna.com` must actually receive mail first — email setup is `niduna-site/RELEASE_PLAN.md` § S1.4 | ~10 min | ❌ (blocked on domain + email) |
+| C10 | Contact email + website + privacy URL | Required fields in Console listing. `support@honestfern.com` must actually receive mail first — email setup is `niduna-site/RELEASE_PLAN.md` § S1.4 | ~10 min | ❌ (blocked on domain + email) |
 | C11 | Localized listings (DE, ES, IT, FR) | Optional post-launch optimization; Play can serve the default English listing/automatic translation | ~1 hr | ⏸ Optional |
 
 ---
@@ -270,7 +293,7 @@ The IDs flow through the build, not the source:
 - Natural spot: a "Privacy policy" `SettingsTile` at the bottom of the
   merged Data & privacy page
   (`lib/src/features/settings/widgets/data_details_page.dart`), opening
-  `https://niduna.com/privacy/` with
+  `https://honestfern.com/privacy/` with
   `launchUrl(..., mode: LaunchMode.externalApplication)`.
 - New ARB key (e.g. `labelPrivacyPolicy`) in all 5 `lib/l10n/app_*.arb`
   + `flutter gen-l10n`; extend the page test in `test/widget_test.dart`
@@ -446,10 +469,10 @@ with `jarsigner -verify` or `apksigner`.
   collected-not-shared-by-us, per the consent setup chosen in B8.
 - **C9**: Category = Finance (no financial-features declaration needed —
   see § "Financial Features Declaration").
-- **C10 values**: email `support@niduna.com` (must receive — site plan
-  S1.4), website `https://niduna.com`, privacy
-  `https://niduna.com/privacy/`, marketing URL
-  `https://niduna.com/currency-converter/`.
+- **C10 values**: email `support@honestfern.com` (must receive — site plan
+  S1.4), website `https://honestfern.com`, privacy
+  `https://honestfern.com/privacy/`, marketing URL
+  `https://honestfern.com/currency-converter/`.
 
 ---
 
@@ -500,7 +523,7 @@ Dev scripts (`.devtools/*.sh`) override to `dev_coinpaprika`.
 
 ## Home-screen Widgets — Current State
 
-### Android widget — ✅ Redesigned and verified
+### Android widget — ✅ Redesigned, wired, and verified
 
 The Android home-screen widget has been completely redesigned from a
 single-pair placeholder to a 3-pair icon-led medium widget.
@@ -508,37 +531,37 @@ single-pair placeholder to a 3-pair icon-led medium widget.
 - **Layout:** header (amount + freshness) + 3 rows (currency symbol
   in circle + code + value + trend), thin dividers, warm paper surface
 - **Implementation:** `AppWidgetProvider` + `RemoteViews` (not Glance)
-- **Files:** `NidunaAppWidgetProvider.kt`, `widget_layout.xml`,
+- **Files:** `HonestFernAppWidgetProvider.kt`, `widget_layout.xml`,
   `widget_background.xml`, `widget_icon_circle.xml`
 - **Data bridge:** Dart `HomeWidgetProvider.pushData()` pushes 3 pairs
   (code, symbol, value, trend, changePercent per row) after rates load
 - **Favorites-driven:** shows top 3 favorites; fallback to
   EUR/GBP/BTC when favorites are empty
 - **Starter favorites:** seeds USD-EUR, USD-GBP, USD-BTC on first run
-- **Placeholder state:** shows "Niduna · Open to load" when no data
+- **Placeholder state:** shows "Honest Fern · Open to load" when no data
   pushed yet (widget added before app first opened)
 - **Design spec:** `docs/superpowers/specs/2026-06-13-widget-redesign-design.md`
 - **Verification:** ✅ runtime-verified on Pixel 7 emulator — 3 pairs
   render correctly, tap opens Convert, placeholder shows when no data
 
-### iOS widget — ⚠️ Code complete, sim install blocked
+### iOS widget — ⚠️ Code complete and wired, sim install may be blocked
 
 The iOS widget (WidgetKit) code is complete and the Xcode project
-target is wired up, but the iOS widget is **disabled by default in
-main** because `xcrun simctl install` fails on iOS 26 / Xcode 26
-with `Invalid placeholder attributes` for any widget extension. This
-is a known simctl bug, not a code issue.
+target and `Embed App Extensions` phase are wired up. Some iOS 26 / Xcode 26
+simulator installs fail with `Invalid placeholder attributes` for any widget
+extension; this is an environment issue, not a local brand-migration step.
 
-- **Files:** `ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift`,
-  `Info.plist`, `NidunaWidget.entitlements`, `Assets.xcassets/`
-- **Data bridge:** App Group `group.com.niduna.currencyConverter` —
+- **Files:** `ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.swift`,
+  `Info.plist`, `HonestFernWidget.entitlements`, `Assets.xcassets/`
+- **Data bridge:** App Group `group.com.honestfern.currencyConverter` —
   main app writes via `UserDefaults(suiteName: ...)` from Dart
   through the home_widget plugin; widget reads from the same suite
 - **Verification:** ✅ build succeeds, `.appex` is correctly
-  produced, embed phase in Xcode is correctly placed; ❌ iOS sim
-  install fails before the app can launch
-- **Re-enable for real device:** (a) `cd ios && GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.16.2_2/libexec ruby scripts/add_widget_target.rb`
-  (idempotent), (b) build & run on a real iPhone via Xcode
+  produced, and the embed phase is correctly placed; ❌ an affected iOS sim
+  install can fail before the app launches
+- **Real-device path:** run `cd ios && GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.16.2_2/libexec ruby scripts/add_widget_target.rb`
+  (idempotent), then build and run on a real iPhone via Xcode with valid Apple
+  signing resources
 - **Code quality:** follows iOS 17+ WidgetKit conventions
   (`@main WidgetBundle`, `TimelineProvider`, `UserDefaults(suiteName:)`)
 - **Full report:** `docs/release-prep/README.md` (Android + iOS widget
@@ -570,10 +593,10 @@ dependency upgrade part of the release by default.
    security and isolated staging gates. See
    `../../niduna-site/docs/hostinger-static-migration.md` and
    `../../niduna-site/RELEASE_PLAN.md` S1.0.
-2. Buy/register `niduna.com` separately through Hostinger, attach it to the
+2. Buy/register `honestfern.com` separately through Hostinger, attach it to the
    verified Hostinger host, make apex canonical and redirect `www`, then verify
    Home, Privacy and Currency Converter in an anonymous browser. [site S1.1-S1.3]
-3. Create `support@niduna.com`, publish MX/SPF/DKIM, and prove mail works in
+3. Create `support@honestfern.com`, publish MX/SPF/DKIM, and prove mail works in
    both directions. [site S1.4]
 4. In parallel, create the **personal** Play account, complete identity,
    contact and real-Android-device verification, create/verify the merchant
@@ -584,7 +607,7 @@ dependency upgrade part of the release by default.
 
 ### Phase 2 — Build a policy-safe release candidate
 
-6. Publish `app-ads.txt` with the exact AdMob snippet and keep `niduna.com` as
+6. Publish `app-ads.txt` with the exact AdMob snippet and keep `honestfern.com` as
    the developer website in Play. [E5c / site S1.5]
 7. Implement real Android AdMob IDs, UMP consent + required privacy-options
    entry point, in-app privacy URL, real Play Billing and Restore purchases
@@ -605,7 +628,7 @@ dependency upgrade part of the release by default.
 11. Finalize the default English listing from
     `docs/release-prep/play-store-listing.md`, upload the ready screenshots and
     feature graphic, and use Android application ID
-    `com.niduna.currency_converter` everywhere. [C2-C6, C9-C10]
+    `com.honestfern.currency_converter` everywhere. [C2-C6, C9-C10]
 12. Complete all App content declarations shown in Console: ads, content
     rating, 13+ target audience, Data Safety based on the **final** AdMob/UMP
     build, financial-features declaration, and trader/public-contact task.
@@ -752,7 +775,7 @@ These can ship in v0.2.0+ updates:
   run in parallel with the listing work" — listing/forms now correctly
   precede it; (2) Execution Order intro gained the corrected critical
   path; (3) "Rule of thumb" still cited the stale SSO-gate premise —
-  the real blocker is that `niduna.com` isn't bought; (4) **Data Safety
+  the real blocker is that `honestfern.com` isn't bought; (4) **Data Safety
   trap:** the "What To Disclose" tables still said advertising ID "NO /
   no tracking SDK", contradicting the C8 AdMob declaration — corrected
   so nobody answers the form wrong from this file; AdMob added to the
@@ -808,7 +831,7 @@ These can ship in v0.2.0+ updates:
   the app; required for EEA/UK/CH ad serving, pairs with new E5b (AdMob
   consent message) — and the site privacy page's "non-personalised ads"
   claim must be aligned when implementing it; (2) **E5c NEW** —
-  `app-ads.txt` on niduna.com (site plan S1.5); (3) B6 status corrected
+  `app-ads.txt` on honestfern.com (site plan S1.5); (3) B6 status corrected
   from Done to "must re-run" — the final AAB needs real ad IDs, privacy
   link, consent flow, and the rotated keystore; (4) C3's example claimed
   "170+ currencies" — the app supports exactly 45. C8 now explicitly

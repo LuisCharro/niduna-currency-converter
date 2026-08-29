@@ -8,7 +8,7 @@
 ## Goal
 
 Keep the visible typography hierarchy across `Convert`, `Charts`, and
-`Settings` feeling like one coherent Niduna product on iOS and Android,
+`Settings` feeling like one coherent Honest Fern product on iOS and Android,
 including localized Spanish Android builds.
 
 The app has changed since this plan was first written. `Convert` and `Charts`
@@ -84,7 +84,7 @@ only:
   card content", is also mostly obsolete.
 - Current `Charts` has a clear hierarchy: green kicker, large Fraunces pair
   title, metric row, freshness copy, range rail, chart, pair selector, metrics.
-- The header now feels closer to the Niduna editorial direction than the older
+- The header now feels closer to the Honest Fern editorial direction than the older
   screenshots.
 - The chart range labels and metric rail are readable on the captured iPhone
   17 Pro screen. Smaller phones still need verification.

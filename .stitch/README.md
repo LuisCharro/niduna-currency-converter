@@ -52,10 +52,10 @@ not product truth; `../DEFINITIONS.md` and `../ROADMAP.md` still decide scope.
 
 | Tab | Screen title | Screen ID | Notes |
 |-----|--------------|-----------|-------|
-| Convert | `Niduna Convert - Full Fiat List` | `baa4c962fece45ab98a26e3024373726` | Canonical fiat-only conversion surface. |
-| Favorites | `Niduna Favorites - Phase 1` | `fe9aeb0fb76b4cf6b0d2e072022d127c` | Corrected brand copy; max-3 local pairs. |
-| Charts | `Niduna Charts - Phase 1` | `8ebbace0af0840698e8a11151f29a19b` | Corrected brand copy; fiat-only chart state. |
-| Settings | `Niduna Settings - Phase 1` | `0cdd1d447adb4387983172222476b7bb` | Preferences, cache, Remove Ads, privacy/about. |
+| Convert | `Honest Fern Convert - Full Fiat List` | `baa4c962fece45ab98a26e3024373726` | Canonical fiat-only conversion surface. |
+| Favorites | `Honest Fern Favorites - Phase 1` | `fe9aeb0fb76b4cf6b0d2e072022d127c` | Corrected brand copy; max-3 local pairs. |
+| Charts | `Honest Fern Charts - Phase 1` | `8ebbace0af0840698e8a11151f29a19b` | Corrected brand copy; fiat-only chart state. |
+| Settings | `Honest Fern Settings - Phase 1` | `0cdd1d447adb4387983172222476b7bb` | Preferences, cache, Remove Ads, privacy/about. |
 
 ### Convert Artifacts
 

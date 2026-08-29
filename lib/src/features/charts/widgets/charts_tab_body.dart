@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/monetization/monetization_controller.dart';
 import '../../../core/rates/provider_config.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../shared/widgets/niduna_refresh_indicator.dart';
+import '../../../shared/widgets/honest_fern_refresh_indicator.dart';
 import '../presentation/charts_controller.dart';
 import 'chart_header.dart';
 import 'chart_metric_rail.dart';
@@ -43,7 +43,7 @@ class _ChartsTabBodyState extends State<ChartsTabBody> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final compact = constraints.maxHeight < 720;
-        return NidunaRefreshIndicator(
+        return HonestFernRefreshIndicator(
           onRefresh: widget.controller.refresh,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),

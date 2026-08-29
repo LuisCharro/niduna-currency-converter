@@ -1,4 +1,4 @@
-package com.niduna.currency_converter.widget
+package com.honestfern.currency_converter.widget
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -6,10 +6,10 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.RemoteViews
-import com.niduna.currency_converter.R
+import com.honestfern.currency_converter.R
 import es.antonborri.home_widget.HomeWidgetPlugin
 
-class NidunaAppWidgetProvider : AppWidgetProvider() {
+class HonestFernAppWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(
         context: Context,
@@ -29,7 +29,7 @@ class NidunaAppWidgetProvider : AppWidgetProvider() {
         val firstCode = prefs.getString("pair_0_code", "") ?: ""
 
         if (firstCode.isEmpty()) {
-            views.setTextViewText(R.id.widget_amount, "Niduna")
+            views.setTextViewText(R.id.widget_amount, "Honest Fern")
             views.setTextViewText(R.id.widget_updated, "Open to load")
             return views
         }

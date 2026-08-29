@@ -1,10 +1,10 @@
 # Google Play Store Listing — Currency Converter
 
-> Product: Currency Converter (by Niduna)
+> Product: Currency Converter (by Honest Fern)
 > Version: 0.1.0+1 (pre-MVP)
 > Target: Android first
 > Data sources: Frankfurter v2 (fiat), fawazahmed0 (crypto)
-> Privacy stance: no Niduna account, no first-party analytics, no backend;
+> Privacy stance: no Honest Fern account, no first-party analytics, no backend;
 > AdMob data practices disclosed separately
 > Last reviewed against code and cross-repo release plan: 2026-07-19
 
@@ -13,18 +13,18 @@
 ## 1. App Title
 
 Google Play allows up to 30 characters for the title field. The app is
-branded "Currency Converter" by Niduna. Three options, in order of
+branded "Currency Converter" by Honest Fern. Three options, in order of
 recommendation:
 
-1. **Currency Converter — Niduna** (28 chars)
-   *Recommended.* Pairs the descriptive product name with the brand
-   mark. "Niduna" reads as a maker signature, not an ad claim.
-2. **Currency Converter by Niduna** (30 chars)
-   *Alternative.* Slightly more natural English; the "by" reads as a
-   maker attribution. Hits the limit exactly.
-3. **Niduna Currency Converter** (26 chars)
-   *Brand-led.* Puts the maker first. Use if the brand will be the
-   primary growth signal (referral, word of mouth).
+1. **Honest Fern Converter** (21 chars)
+   *Recommended.* Keeps the maker and the product category visible
+   while staying within Google Play's title limit.
+2. **Currency Converter by Honest** (28 chars)
+   *Alternative.* Keeps the descriptive product name first and reads as
+   a maker attribution; the shortened maker name remains recognizable.
+3. **Currency Converter — Fern** (26 chars)
+   *Brand-led.* Keeps the product name exact and uses the distinctive
+   part of the maker name as a compact signature.
 
 Avoid "Free" or category words in the title. Google de-prioritises
 titles stuffed with generic terms, and the listing is not the place
@@ -57,7 +57,7 @@ they're visible in search results before the "Read more" fold.
 
 A quiet currency converter for Android. Convert between 34 fiat
 currencies and 11 cryptocurrencies, see historical charts, and pin
-your most-used pairs. No Niduna account, no cloud sync, and no
+your most-used pairs. No Honest Fern account, no cloud sync, and no
 first-party analytics.
 
 **Convert**
@@ -87,13 +87,13 @@ Follows your system setting. Free, no upsell.
 
 **Privacy commitment**
 - No account, login, or email address.
-- No first-party analytics or Niduna user profile.
+- No first-party analytics or Honest Fern user profile.
 - No cloud sync, no server-side user data, no backend in this version.
 - Your favorites, settings, and cached rates live on your device.
 - Exchange rate requests go directly from the app to public data
-  providers without a Niduna account or custom user ID.
+  providers without an Honest Fern account or custom user ID.
 - The free version uses Google AdMob for banner and opt-in rewarded ads.
-  Niduna requests non-personalised ads; Google's SDK may process device/ad
+  Honest Fern requests non-personalised ads; Google's SDK may process device/ad
   identifiers, IP address, app interactions and diagnostics as disclosed in
   the privacy policy. One purchase removes ad requests from the app UI.
 
@@ -124,8 +124,8 @@ from your device. We do not proxy, log, or augment the requests.
 The app interface is available in English, German, Spanish, Italian,
 and French.
 
-**About Niduna**
-Niduna is the app brand of an independent developer building calm,
+**About Honest Fern**
+Honest Fern is the app brand of an independent developer building calm,
 privacy-respecting software.
 
 If you have feedback, the in-app Settings screen links to our

@@ -69,6 +69,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>AppGroupIdentifier</key>
-	<string>group.com.niduna.currencyConverter</string>
+	<string>group.com.honestfern.currencyConverter</string>
 </dict>
 </plist>

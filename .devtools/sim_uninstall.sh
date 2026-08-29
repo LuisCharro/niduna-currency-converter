@@ -20,7 +20,7 @@ if [[ -z "${resolved}" ]]; then
   exit 1
 fi
 
-bundle_id="com.niduna.currencyConverter"
+bundle_id="com.honestfern.currencyConverter"
 
 echo "Uninstalling ${bundle_id} from simulator ${resolved}..."
 xcrun simctl uninstall "${resolved}" "${bundle_id}" 2>&1 || true

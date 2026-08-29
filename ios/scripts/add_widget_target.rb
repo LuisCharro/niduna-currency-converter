@@ -1,19 +1,19 @@
 #!/usr/bin/env ruby
-# Adds the NidunaWidget extension target to the Runner Xcode project.
+# Adds the HonestFernWidget extension target to the Runner Xcode project.
 # Idempotent: re-running on an already-configured project is a no-op.
 
 require 'xcodeproj'
 
 PROJECT_PATH = File.expand_path('../Runner.xcodeproj', __dir__)
-TARGET_NAME  = 'NidunaWidget'
+TARGET_NAME  = 'HonestFernWidget'
 APP_TARGET   = 'Runner'
-BUNDLE_ID    = 'com.niduna.currencyConverter'
+BUNDLE_ID    = 'com.honestfern.currencyConverter'
 WIDGET_BUNDLE_ID = "#{BUNDLE_ID}.widget"
-APP_GROUP    = 'group.com.niduna.currencyConverter'
+APP_GROUP    = 'group.com.honestfern.currencyConverter'
 DEPLOYMENT_TARGET = '15.0'
-WIDGET_SOURCE = 'ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift'
-WIDGET_INFO_PLIST = 'ios/Runner/Widgets/NidunaWidget/Info.plist'
-WIDGET_ENTITLEMENTS = 'ios/Runner/Widgets/NidunaWidget/NidunaWidget.entitlements'
+WIDGET_SOURCE = 'ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.swift'
+WIDGET_INFO_PLIST = 'ios/Runner/Widgets/HonestFernWidget/Info.plist'
+WIDGET_ENTITLEMENTS = 'ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.entitlements'
 APP_ENTITLEMENTS = 'ios/Runner/Runner.entitlements'
 
 # App version from pubspec (e.g. "0.1.0+1"). The widget extension MUST carry a
@@ -56,8 +56,8 @@ widget_target.build_configurations.each do |config|
   # cause "Invalid placeholder attributes" at simulator install time.
   config.build_settings['MARKETING_VERSION'] = MARKETING_VERSION
   config.build_settings['CURRENT_PROJECT_VERSION'] = CURRENT_PROJECT_VERSION
-  config.build_settings['CODE_SIGN_ENTITLEMENTS'] = 'Runner/Widgets/NidunaWidget/NidunaWidget.entitlements'
-  config.build_settings['INFOPLIST_FILE'] = 'Runner/Widgets/NidunaWidget/Info.plist'
+  config.build_settings['CODE_SIGN_ENTITLEMENTS'] = 'Runner/Widgets/HonestFernWidget/HonestFernWidget.entitlements'
+  config.build_settings['INFOPLIST_FILE'] = 'Runner/Widgets/HonestFernWidget/Info.plist'
   config.build_settings['SKIP_INSTALL'] = 'YES'
   config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
   config.build_settings['CODE_SIGN_STYLE'] = 'Automatic'
@@ -74,33 +74,40 @@ widget_target.build_configurations.each do |config|
 end
 
 # 3. Add Swift file to the target
-widget_target.source_build_phase.clear
 runner_group = project.main_group['Runner'] || project.main_group
-# Create a "NidunaWidget" group under the Runner group so paths resolve
-# relative to ios/Runner/NidunaWidget/. Then INFOPLIST_FILE and
-# CODE_SIGN_ENTITLEMENTS can use the simple "NidunaWidget/..." relative
+# Create a "HonestFernWidget" group under the Runner group so paths resolve
+# relative to ios/Runner/HonestFernWidget/. Then INFOPLIST_FILE and
+# CODE_SIGN_ENTITLEMENTS can use the simple "HonestFernWidget/..." relative
 # path that Xcode expects.
-widget_group = runner_group['NidunaWidget'] || runner_group.new_group('NidunaWidget', 'Widgets/NidunaWidget')
+widget_group = runner_group['HonestFernWidget'] || runner_group.new_group('HonestFernWidget', 'Widgets/HonestFernWidget')
 # Also create a parent "Widgets" group if not present
 unless runner_group['Widgets']
   runner_group.new_group('Widgets', 'Widgets')
 end
 
-unless widget_target.source_build_phase.files_references.any? { |f| f.path&.end_with?('NidunaWidget.swift') }
-  swift_ref = widget_group.new_file('NidunaWidget.swift')
-  widget_target.source_build_phase.add_file_reference(swift_ref)
-  puts "  Added source: NidunaWidget.swift"
+# Keep the existing file reference when the script is rerun. Clearing the
+# build phase first and then checking that phase made the old script add a new
+# PBXFileReference on every invocation, despite claiming to be idempotent.
+swift_ref = widget_target.source_build_phase.files_references.find do |file|
+  file.path&.end_with?(File.basename(WIDGET_SOURCE))
 end
+swift_ref ||= widget_group.children.find do |file|
+  file.respond_to?(:path) && file.path&.end_with?(File.basename(WIDGET_SOURCE))
+end
+swift_ref ||= widget_group.new_file(File.basename(WIDGET_SOURCE))
+
+widget_target.source_build_phase.clear
+widget_target.source_build_phase.add_file_reference(swift_ref)
 
 # 4. Add Info.plist and entitlements as file references (the build
 # settings point to them by relative path)
 existing_paths = widget_group.children.map { |c| c.respond_to?(:path) ? c.path : nil }
-unless existing_paths.any? { |p| p&.end_with?('Info.plist') }
-  info_plist_ref = widget_group.new_reference('Info.plist')
+unless existing_paths.any? { |p| p&.end_with?(File.basename(WIDGET_INFO_PLIST)) }
+  info_plist_ref = widget_group.new_reference(File.basename(WIDGET_INFO_PLIST))
   info_plist_ref.last_known_file_type = 'text.plist.xml'
 end
-unless existing_paths.any? { |p| p&.end_with?('.entitlements') }
-  ent_ref = widget_group.new_reference('NidunaWidget.entitlements')
+unless existing_paths.any? { |p| p&.end_with?(File.basename(WIDGET_ENTITLEMENTS)) }
+  ent_ref = widget_group.new_reference(File.basename(WIDGET_ENTITLEMENTS))
   ent_ref.last_known_file_type = 'text.plist.entitlements'
 end
 
@@ -145,11 +152,11 @@ puts "  Set Runner CODE_SIGN_ENTITLEMENTS"
 embed_phase = runner_target.copy_files_build_phases.find { |p| p.symbol_dst_subfolder_spec == :plug_ins }
 if embed_phase
   # Make sure it has the widget file
-  unless embed_phase.files_references.any? { |f| f.path == "NidunaWidget.appex" }
+  unless embed_phase.files_references.any? { |f| f.path == "HonestFernWidget.appex" }
     widget_product_ref = widget_target.product_reference
     build_file = embed_phase.add_file_reference(widget_product_ref)
     build_file.settings = { 'ATTRIBUTES' => ['RemoveHeadersOnCopy'] }
-    puts "  Embedded NidunaWidget.appex in Runner"
+    puts "  Embedded HonestFernWidget.appex in Runner"
   end
 else
   # Create the new phase AFTER the existing resources phase. We
@@ -188,7 +195,7 @@ end
 # cycle that Xcode complains about ("Cycle inside Runner").
 # unless runner_target.dependency_for_target(widget_target)
 #   runner_target.add_dependency(widget_target)
-#   puts "  Added Runner -> NidunaWidget dependency"
+#   puts "  Added Runner -> HonestFernWidget dependency"
 # end
 
 project.save

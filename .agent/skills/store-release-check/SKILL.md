@@ -37,7 +37,7 @@ Use it when changing:
 For this app, the safe default is:
 
 - privacy-first tool
-- no first-party analytics or Niduna user profiling
+- no first-party analytics or Honest Fern user profiling
 - zero accounts
 - no backend collection; disclose Google Mobile Ads SDK collection/sharing
 - offline-capable with cached rates

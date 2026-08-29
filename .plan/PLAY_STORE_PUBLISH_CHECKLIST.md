@@ -1,6 +1,6 @@
 # Google Play Store Publishing Checklist
 
-> Pre-submission checklist for Niduna Currency Converter.
+> Pre-submission checklist for Honest Fern Currency Converter.
 > Updated: 2026-05-22
 >
 > **Current app version:** `0.1.0+1` (pre-MVP, must stay `0.x.x`)
@@ -38,25 +38,20 @@
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 2.1 | Release keystore created | ❌ | `build.gradle.kts` still uses debug signing keys |
-| 2.2 | `key.properties` file created (excluded from git via `.gitignore`) | ❌ | Template needed — see [Signing docs](https://docs.flutter.dev/deployment/android#signing-the-app) |
-| 2.3 | `build.gradle.kts` release signing config updated | ❌ | Line 37: change from `signingConfigs.getByName("debug")` to release keystore |
+| 2.1 | Release keystore created | ✅ | Existing external key: `android/app/niduna-upload.jks` (gitignored; legacy filename intentionally retained) |
+| 2.2 | `key.properties` file created (excluded from git via `.gitignore`) | ✅ | Existing local configuration; never commit its secrets |
+| 2.3 | `build.gradle.kts` release signing config updated | ✅ | Release signing is wired to the existing key; see `RELEASE_CHECKLIST.md` |
 | 2.4 | Decision: Google Play App Signing vs self-managed key | 🔄 | Recommended: let Google manage the upload key for safety |
 | 2.5 | Keystore backup stored securely (not in repo) | ❌ | Lose this = can't update the app ever again |
 
 **Quick fix reference:**
 
 ```bash
-# Generate keystore (run once, store safely)
-keytool -genkey -v -keystore ~/niduna-release-key.jks \
-  -keyalg RSA -keysize 2048 -validity 10000 \
-  -alias niduna
-
-# Create android/key.properties (add to .gitignore!)
-storePassword=YOUR_PASSWORD
-keyPassword=YOUR_PASSWORD
-keyAlias=niduna
-storeFile=/Users/luis/niduna-release-key.jks
+# The existing release key is intentionally retained while the app is renamed.
+# Do not generate a second key unless an explicit signing-key migration is planned.
+keytool -list -v \
+  -keystore android/app/niduna-upload.jks \
+  -alias niduna_currency_converter_upload
 ```
 
 ---
@@ -65,7 +60,7 @@ storeFile=/Users/luis/niduna-release-key.jks
 
 | # | Task | Status | Current State |
 |---|------|--------|---------------|
-| 3.1 | `android:label` branded (not generic "currency_converter") | ❌ | Currently `"currency_converter"` — should be `"Niduna Currency Converter"` or similar |
+| 3.1 | `android:label` branded (not generic "currency_converter") | ❌ | Currently `"currency_converter"` — should be `"Honest Fern Currency Converter"` or similar |
 | 3.2 | Target API level meets current requirement | ✅ | **Verified: APK builds with `compileSdkVersion=36` (Android 16)** via Flutter 3.41.7. Exceeds Aug 2026 requirement of API 36. |
 | 3.3 | Min SDK reasonable | ✅ | Flutter default (21) covers ~99% of devices |
 | 3.4 | No unnecessary permissions declared | ✅ | Manifest has zero `<uses-permission>` entries — clean. Note: `INTERNET` is auto-added by Flutter's `http` package at build time (expected, needed for rate fetching) |
@@ -135,7 +130,7 @@ storeFile=/Users/luis/niduna-release-key.jks
 | 7.4 | Screenshots (phone, min 2, max 8) | ❌ | **1080px wide max**, JPEG/PNG. Show: Convert tab, Charts tab, Settings |
 | 7.5 | Screenshots (tablet, optional) | ❌ | If targeting tablets |
 | 7.6 | Short description (80 char max) | ❌ | Example: "Convert 170+ currencies instantly. Offline-ready. Beautiful design." |
-| 7.7 | Full description (4000 char max) | ❌ | Feature list, privacy notes, what makes Niduna different |
+| 7.7 | Full description (4000 char max) | ❌ | Feature list, privacy notes, what makes Honest Fern different |
 | 7.8 | Promo video (YouTube URL, optional) | ❌ | Nice-to-have, increases conversion |
 | 7.9 | Application type / Category | ❌ | Likely: Finance > Finance tools or Productivity |
 
@@ -153,7 +148,7 @@ storeFile=/Users/luis/niduna-release-key.jks
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 8.1 | App title (max 30 chars) | ❌ | Must be unique in Play Store. Ideas: "Niduna Currency", "Niduna Convert" |
+| 8.1 | App title (max 30 chars) | ❌ | Must be unique in Play Store. Ideas: "Honest Fern Currency", "Honest Fern Convert" |
 | 8.2 | Short description (max 80 chars) | ❌ | See 7.6 above |
 | 8.3 | Full description (max 4000 chars) | ❌ | See 7.7 above |
 | 8.4 | Contact email / website / privacy policy URL | ❌ | Required fields in Console |

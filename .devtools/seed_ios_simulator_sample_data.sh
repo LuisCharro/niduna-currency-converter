@@ -4,7 +4,7 @@ set -euo pipefail
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
-bundle_id="${IOS_BUNDLE_ID:-${BUNDLE_ID:-com.niduna.currencyConverter}}"
+bundle_id="${IOS_BUNDLE_ID:-${BUNDLE_ID:-com.honestfern.currencyConverter}}"
 simulator_id="${IOS_SIMULATOR_ID:-booted}"
 seed_days="${SEED_DAYS:-90}"
 launch_after_seed="${LAUNCH_AFTER_SEED:-1}"
