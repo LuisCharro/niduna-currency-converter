@@ -37,7 +37,9 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
     return SectionedCurrencyPicker(
       title: widget.title,
       subtitle: _subtitle(l10n),
-      currencies: allSupportedCurrencies,
+      currencies: widget.selectBaseMode
+          ? supportedFiatCurrencies
+          : allSupportedCurrencies,
       itemComparator: _compareItems,
       tileBuilder: (context, currency) {
         final isBase = currency.code == widget.base;

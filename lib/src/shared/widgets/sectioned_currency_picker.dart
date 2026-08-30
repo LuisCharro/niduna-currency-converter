@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../core/currency/currency_groups.dart';
 import '../../core/currency/supported_currencies.dart';
+import '../../core/localization/ui_copy.dart';
 import '../../core/theme/app_colors.dart';
 import 'currency_picker_chrome.dart';
 import 'currency_section_header.dart';
 
-typedef CurrencyTileBuilder = Widget Function(
-  BuildContext context,
-  SupportedCurrency currency,
-);
+typedef CurrencyTileBuilder =
+    Widget Function(BuildContext context, SupportedCurrency currency);
 
 class SectionedCurrencyPicker extends StatefulWidget {
   const SectionedCurrencyPicker({
@@ -38,8 +37,7 @@ class SectionedCurrencyPicker extends StatefulWidget {
 
 class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
   String _query = '';
-  late final Set<CurrencySection> _expandedSections =
-      Set<CurrencySection>.from(
+  late final Set<CurrencySection> _expandedSections = Set<CurrencySection>.from(
     widget.initialExpandedSections ??
         CurrencySection.values.where((s) => s.defaultExpanded),
   );
@@ -48,9 +46,11 @@ class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
     final q = _query.toLowerCase();
     if (q.isEmpty) return widget.currencies;
     return widget.currencies
-        .where((c) =>
-            c.code.toLowerCase().contains(q) ||
-            c.name.toLowerCase().contains(q))
+        .where(
+          (c) =>
+              c.code.toLowerCase().contains(q) ||
+              c.name.toLowerCase().contains(q),
+        )
         .toList();
   }
 
@@ -86,8 +86,7 @@ class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
                     : ListView.builder(
                         controller: scrollController,
                         itemCount: groups.length,
-                        itemBuilder: (context, i) =>
-                            _group(context, groups[i]),
+                        itemBuilder: (context, i) => _group(context, groups[i]),
                       ),
               ),
             ],
@@ -100,7 +99,7 @@ class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
   Widget _emptyState(BuildContext context) {
     return Center(
       child: Text(
-        'No currencies found',
+        noCurrenciesFound(context),
         style: TextStyle(color: AppColors.of(context).muted, fontSize: 14),
       ),
     );
@@ -136,13 +135,15 @@ class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
     final result = <Widget>[];
     for (final currency in items) {
       result.add(widget.tileBuilder(context, currency));
-      result.add(Padding(
-        padding: const EdgeInsets.only(left: 52),
-        child: Divider(
-          height: 1,
-          color: AppColors.of(context).border.withValues(alpha: .15),
+      result.add(
+        Padding(
+          padding: const EdgeInsets.only(left: 52),
+          child: Divider(
+            height: 1,
+            color: AppColors.of(context).border.withValues(alpha: .15),
+          ),
         ),
-      ));
+      );
     }
     return result;
   }

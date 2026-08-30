@@ -18,32 +18,40 @@ class CurrencySectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
+    return Semantics(
+      button: true,
+      expanded: isExpanded,
+      label: '${group.section.label} (${group.length})',
       onTap: onToggle,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(4, 14, 4, 8),
-        child: Row(
-          children: [
-            Icon(
-              isExpanded ? Icons.keyboard_arrow_down : Icons.chevron_right,
-              size: 20,
-              color: colors.muted,
-            ),
-            const SizedBox(width: 2),
-            Expanded(
-              child: Text(
-                '${group.section.label} (${group.length})',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
+      child: ExcludeSemantics(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: onToggle,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(4, 14, 4, 8),
+            child: Row(
+              children: [
+                Icon(
+                  isExpanded ? Icons.keyboard_arrow_down : Icons.chevron_right,
+                  size: 20,
                   color: colors.muted,
-                  letterSpacing: 0.5,
                 ),
-                overflow: TextOverflow.ellipsis,
-              ),
+                const SizedBox(width: 2),
+                Expanded(
+                  child: Text(
+                    '${group.section.label} (${group.length})',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: colors.muted,
+                      letterSpacing: 0.5,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -17,12 +17,25 @@ class QuoteValue extends StatelessWidget {
     // change that rounds to 0.00% (e.g. on weekends when ECB/Frankfurter
     // returns the same prior business day for both today and yesterday).
     final showTrend = shouldShowTrend(quote.trend, quote.changePercent);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Row(
-          mainAxisSize: MainAxisSize.min,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final amountText = Text(
+          '${quote.symbol} ${quote.amount}',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 19,
+            fontWeight: FontWeight.w900,
+            color: colors.text,
+            fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+            letterSpacing: -0.4,
+          ),
+        );
+
+        final amountRow = Row(
+          mainAxisSize: constraints.hasBoundedWidth
+              ? MainAxisSize.max
+              : MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             if (showTrend) ...<Widget>[
@@ -32,34 +45,45 @@ class QuoteValue extends StatelessWidget {
               ),
               const SizedBox(width: 8),
             ],
-            Text(
-              '${quote.symbol} ${quote.amount}',
-              style: TextStyle(
-                fontSize: 19,
-                fontWeight: FontWeight.w900,
-                color: colors.text,
-                fontFeatures: const <FontFeature>[
-                  FontFeature.tabularFigures(),
-                ],
-                letterSpacing: -0.4,
-              ),
-            ),
+            if (constraints.hasBoundedWidth)
+              Expanded(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerRight,
+                  child: amountText,
+                ),
+              )
+            else
+              amountText,
           ],
-        ),
-        if (quote.rateLine.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 3),
-            child: Text(
-              quote.rateLine,
-              style: TextStyle(
-                fontSize: 11.5,
-                fontWeight: FontWeight.w500,
-                color: colors.muted.withValues(alpha: .82),
-                letterSpacing: 0.2,
+        );
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            if (constraints.hasBoundedWidth)
+              SizedBox(width: constraints.maxWidth, child: amountRow)
+            else
+              amountRow,
+            if (quote.rateLine.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 3),
+                child: Text(
+                  quote.rateLine,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w500,
+                    color: colors.muted.withValues(alpha: .82),
+                    letterSpacing: 0.2,
+                  ),
+                ),
               ),
-            ),
-          ),
-      ],
+          ],
+        );
+      },
     );
   }
 }

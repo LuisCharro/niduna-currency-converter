@@ -116,7 +116,10 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
               onAmountChanged: widget.onAmountChanged,
             );
           },
-          child: CurrencyRateRow(quote: quote),
+          child: CurrencyRateRow(
+            quote: quote,
+            onSemanticsTap: () => _openConversionFromSemantics(context, quote),
+          ),
         );
       },
       separatorBuilder: (context, index) => Padding(
@@ -149,5 +152,17 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
         ),
       );
     }
+  }
+
+  void _openConversionFromSemantics(BuildContext context, CurrencyQuote quote) {
+    final size = MediaQuery.sizeOf(context);
+    ConversionLensSheet.show(
+      context: context,
+      anchor: Offset(size.width / 2, size.height / 2),
+      quote: quote,
+      base: widget.base,
+      amount: widget.amount,
+      onAmountChanged: widget.onAmountChanged,
+    );
   }
 }

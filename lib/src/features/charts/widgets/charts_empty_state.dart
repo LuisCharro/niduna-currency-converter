@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/designed_state_panel.dart';
@@ -15,7 +16,7 @@ class ChartsEmptyState extends StatelessWidget {
         compact: true,
         icon: Icons.show_chart_rounded,
         title: l10n?.noRatesTitle ?? 'No history yet',
-        subtitle: 'Try another range or currency pair',
+        subtitle: chartsEmptySubtitle(context),
         accent: AppTheme.primary,
       ),
     );

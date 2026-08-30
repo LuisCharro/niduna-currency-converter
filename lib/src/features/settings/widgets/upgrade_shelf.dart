@@ -53,9 +53,9 @@ class UpgradeShelf extends StatelessWidget {
           )
         else
           SettingsTile(
-            title: 'Remove Ads',
+            title: loc.labelRemoveAds,
             subtitle: loc.ownedOnDevice,
-            trailing: _OwnedBadge(),
+            trailing: _OwnedBadge(label: loc.ownedOnDevice),
           ),
         if (!m.hasChartsProLifetime)
           SettingsTile(
@@ -67,9 +67,9 @@ class UpgradeShelf extends StatelessWidget {
           )
         else
           SettingsTile(
-            title: 'Charts Pro',
+            title: loc.chartsProTitle,
             subtitle: loc.ownedOnDevice,
-            trailing: _OwnedBadge(),
+            trailing: _OwnedBadge(label: loc.ownedOnDevice),
           ),
         if (!m.hasFavoritesProLifetime)
           SettingsTile(
@@ -81,9 +81,9 @@ class UpgradeShelf extends StatelessWidget {
           )
         else
           SettingsTile(
-            title: 'Favorites Pro',
+            title: loc.favoritesProTitle,
             subtitle: loc.ownedOnDevice,
-            trailing: _OwnedBadge(),
+            trailing: _OwnedBadge(label: loc.ownedOnDevice),
             showDivider: false,
           ),
       ],
@@ -146,7 +146,9 @@ class _BuyChip extends StatelessWidget {
 }
 
 class _OwnedBadge extends StatelessWidget {
-  const _OwnedBadge();
+  const _OwnedBadge({required this.label});
+
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +159,7 @@ class _OwnedBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
       ),
       child: Text(
-        'Owned',
+        label,
         style: AppTheme.caption.copyWith(
           color: AppColors.of(context).trendUp,
           fontWeight: FontWeight.w800,

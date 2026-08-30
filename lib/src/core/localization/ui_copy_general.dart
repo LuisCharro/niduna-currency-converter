@@ -18,11 +18,11 @@ String chartsHeaderLabel(BuildContext context) => switch (_lang(context)) {
 
 String currentBaseSubtitle(BuildContext context, String base) =>
     switch (_lang(context)) {
-      'es' => 'Base actual $base · fiat y cripto',
-      'de' => 'Aktuelle Basis $base · Fiat und Krypto',
-      'it' => 'Base attuale $base · fiat e crypto',
-      'fr' => 'Base actuelle $base · fiat et crypto',
-      _ => 'Current base $base · fiat and crypto',
+      'es' => 'Base actual $base · solo fiat',
+      'de' => 'Aktuelle Basis $base · nur Fiat',
+      'it' => 'Base attuale $base · solo fiat',
+      'fr' => 'Base actuelle $base · fiat uniquement',
+      _ => 'Current base $base · fiat only',
     };
 
 String shownBaseSubtitle(BuildContext context, int count, String base) =>

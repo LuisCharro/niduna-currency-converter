@@ -289,7 +289,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Convert base picker includes crypto currencies', (
+  testWidgets('Convert base picker only includes supported fiat currencies', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
@@ -307,15 +307,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Select base currency'), findsOneWidget);
-    expect(find.text('Current base USD · fiat and crypto'), findsOneWidget);
-    await tester.scrollUntilVisible(
-      find.text('Bitcoin'),
-      300,
-      scrollable: find.byType(Scrollable).last,
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('Bitcoin'), findsOneWidget);
-    expect(find.text('Ethereum'), findsOneWidget);
+    expect(find.text('Current base USD · fiat only'), findsOneWidget);
+    // Crypto currencies are still available as quote currencies, but the
+    // latest-rates repository does not support a crypto base yet.
+    expect(find.text('Bitcoin'), findsNothing);
+    expect(find.text('Ethereum'), findsNothing);
   });
 
   testWidgets(
@@ -585,6 +581,7 @@ void main() {
     expect(find.text('Default base currency'), findsWidgets);
     expect(find.text('Dark mode'), findsWidgets);
     expect(find.text('Data & privacy'), findsOneWidget);
+    expect(find.byKey(const Key('open_privacy_policy')), findsOneWidget);
     // The old duplicate "Data sources" tile in About is gone (merged page).
     expect(find.text('Data sources'), findsNothing);
   });
@@ -610,6 +607,10 @@ void main() {
   testWidgets('Settings hierarchy uses calmer shared typography', (
     WidgetTester tester,
   ) async {
+    tester.view.physicalSize = const Size(800, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     final sc = makeSettingsController();
     addTearDown(sc.dispose);
     await tester.pumpWidget(
@@ -636,6 +637,10 @@ void main() {
   testWidgets('Settings premium subtitles are localized in Spanish', (
     WidgetTester tester,
   ) async {
+    tester.view.physicalSize = const Size(800, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     final sc = makeSettingsController();
     addTearDown(sc.dispose);
     await tester.pumpWidget(

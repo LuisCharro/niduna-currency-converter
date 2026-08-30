@@ -10,17 +10,23 @@ import 'quote_identity.dart';
 import 'quote_value.dart';
 
 class CurrencyRateRow extends StatelessWidget {
-  const CurrencyRateRow({
-    required this.quote,
-    super.key,
-  });
+  const CurrencyRateRow({required this.quote, this.onSemanticsTap, super.key});
 
   final CurrencyQuote quote;
+
+  /// Action exposed to assistive technology for the row's long-press action.
+  /// The visible gesture remains owned by [CurrencyRowSwipeActions].
+  final VoidCallback? onSemanticsTap;
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      onTapHint: l10n(context).openPairLabel(quote.code),
+      button: true,
+      focusable: true,
+      onTapHint: onSemanticsTap == null
+          ? null
+          : l10n(context).openPairLabel(quote.code),
+      onTap: onSemanticsTap,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -38,7 +44,9 @@ class CurrencyRateRow extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.of(context).border.withValues(alpha: .32),
+                        color: AppColors.of(
+                          context,
+                        ).border.withValues(alpha: .32),
                         width: 1.0,
                       ),
                     ),
@@ -53,7 +61,14 @@ class CurrencyRateRow extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(child: QuoteIdentity(quote: quote)),
                   const SizedBox(width: 12),
-                  QuoteValue(quote: quote),
+                  Flexible(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.sizeOf(context).width * .52,
+                      ),
+                      child: QuoteValue(quote: quote),
+                    ),
+                  ),
                 ],
               ),
             ),

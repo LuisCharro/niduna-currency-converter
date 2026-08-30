@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../features/convert/models/rate_card_data.dart';
 import '../../features/convert/widgets/share/rate_card_image.dart';
+import '../localization/ui_copy.dart';
 import 'rate_card_renderer.dart';
 
 /// Renders [data] as a branded card off-screen, writes a temp PNG, and opens
@@ -13,13 +14,18 @@ import 'rate_card_renderer.dart';
 Future<void> shareRateCard(BuildContext context, RateCardData data) async {
   final overlay = Overlay.of(context);
   final key = GlobalKey();
+  final imageFailedMessage = shareImageFailedMessage(context);
+  final ratesFailedMessage = shareRatesFailedMessage(context);
   final entry = OverlayEntry(
     builder: (_) => Positioned(
       left: -10000,
       top: 0,
       child: Material(
         type: MaterialType.transparency,
-        child: RepaintBoundary(key: key, child: RateCardImage(data: data)),
+        child: RepaintBoundary(
+          key: key,
+          child: RateCardImage(data: data),
+        ),
       ),
     ),
   );
@@ -30,9 +36,7 @@ Future<void> shareRateCard(BuildContext context, RateCardData data) async {
     await Future<void>.delayed(const Duration(milliseconds: 40));
     final bytes = await RateCardRenderer.captureBoundary(key, pixelRatio: 3);
     if (bytes == null) {
-      messenger.showSnackBar(
-        const SnackBar(content: Text('Couldn’t create the image, try again')),
-      );
+      messenger.showSnackBar(SnackBar(content: Text(imageFailedMessage)));
       return;
     }
 
@@ -49,9 +53,7 @@ Future<void> shareRateCard(BuildContext context, RateCardData data) async {
       ),
     );
   } catch (_) {
-    messenger.showSnackBar(
-      const SnackBar(content: Text('Couldn’t share the rates, try again')),
-    );
+    messenger.showSnackBar(SnackBar(content: Text(ratesFailedMessage)));
   } finally {
     entry.remove();
   }
