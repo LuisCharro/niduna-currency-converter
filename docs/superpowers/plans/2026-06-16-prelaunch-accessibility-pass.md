@@ -470,7 +470,7 @@ git rm lib/src/shared/widgets/inline_empty_panel.dart
 Run: `flutter analyze`
 Expected: `No issues found!`
 
-- [ ] **Step 4: Verify the existing offline/empty/loading states render.** On the Android emulator (fastest): with the app installed, turn the network off (`adb -s emulator-5554 shell svc wifi disable && adb -s emulator-5554 shell svc data disable`), clear app data (`adb -s emulator-5554 shell pm clear com.niduna.currency_converter`), relaunch via `.devtools/android_launch.sh`, and screenshot Convert → expect the `DesignedStatePanel` "No rates… pull to refresh / back online". Re-enable network (`svc wifi enable`), pull to refresh, confirm rates load. Capture Charts + Favorites empty states too. Record screenshots under `.tmp/screens/`.
+- [ ] **Step 4: Verify the existing offline/empty/loading states render.** On the Android emulator (fastest): with the app installed, turn the network off (`adb -s emulator-5554 shell svc wifi disable && adb -s emulator-5554 shell svc data disable`), clear app data (`adb -s emulator-5554 shell pm clear com.honestfern.currency_converter`), relaunch via `.devtools/android_launch.sh`, and screenshot Convert → expect the `DesignedStatePanel` "No rates… pull to refresh / back online". Re-enable network (`svc wifi enable`), pull to refresh, confirm rates load. Capture Charts + Favorites empty states too. Record screenshots under `.tmp/screens/`.
 
 - [ ] **Step 5: Commit.**
 ```bash

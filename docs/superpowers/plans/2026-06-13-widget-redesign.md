@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Replace the placeholder Android widget with a 3-pair favorites-driven medium widget that matches the Niduna design system.
+**Goal:** Replace the placeholder Android widget with a 3-pair favorites-driven medium widget that matches the Honest Fern design system.
 
 **Architecture:** Expand the Dart data bridge to push 3 pairs (code, value, trend, symbol) to SharedPreferences. Completely redesign the Android XML layout and Kotlin provider. Seed starter favorites on first run. iOS Swift update is included but lower priority.
 
@@ -25,8 +25,8 @@
 | `android/app/src/main/res/drawable/widget_background.xml` | Rewrite | Warm paper surface |
 | `android/app/src/main/res/drawable/widget_icon_circle.xml` | Create | Circle shape for currency icons |
 | `android/app/src/main/res/drawable/widget_divider.xml` | Create | Thin green-tinted divider |
-| `android/app/src/main/java/com/niduna/currency_converter/widget/NidunaAppWidgetProvider.kt` | Rewrite | Read 3 pairs, populate RemoteViews |
-| `ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift` | Update | Read 3 pairs from App Group |
+| `android/app/src/main/java/com/honestfern/currency_converter/widget/HonestFernAppWidgetProvider.kt` | Rewrite | Read 3 pairs, populate RemoteViews |
+| `ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.swift` | Update | Read 3 pairs from App Group |
 
 ---
 
@@ -101,7 +101,7 @@ import 'widget_data.dart';
 
 class HomeWidgetProvider {
   static const _androidWidgetName =
-      'com.niduna.currency_converter.widget.NidunaAppWidgetProvider';
+      'com.honestfern.currency_converter.widget.HonestFernAppWidgetProvider';
 
   Future<void> pushData(HomeWidgetData data) async {
     try {
@@ -461,25 +461,25 @@ git commit -m "feat(widget): warm paper background + icon circle + divider drawa
 
 ---
 
-## Task 6: Rewrite NidunaAppWidgetProvider.kt
+## Task 6: Rewrite HonestFernAppWidgetProvider.kt
 
 **Files:**
-- Rewrite: `android/app/src/main/java/com/niduna/currency_converter/widget/NidunaAppWidgetProvider.kt`
+- Rewrite: `android/app/src/main/java/com/honestfern/currency_converter/widget/HonestFernAppWidgetProvider.kt`
 
 - [ ] **Step 1: Write the new provider**
 
 ```kotlin
-package com.niduna.currency_converter.widget
+package com.honestfern.currency_converter.widget
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
-import com.niduna.currency_converter.R
+import com.honestfern.currency_converter.R
 import es.antonborri.home_widget.HomeWidgetPlugin
 
-class NidunaAppWidgetProvider : AppWidgetProvider() {
+class HonestFernAppWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(
         context: Context,
@@ -559,7 +559,7 @@ class NidunaAppWidgetProvider : AppWidgetProvider() {
 - [ ] **Step 2: Commit**
 
 ```bash
-git add android/app/src/main/java/com/niduna/currency_converter/widget/NidunaAppWidgetProvider.kt
+git add android/app/src/main/java/com/honestfern/currency_converter/widget/HonestFernAppWidgetProvider.kt
 git commit -m "feat(widget): rewrite Kotlin provider for 3-pair rendering"
 ```
 
@@ -627,11 +627,11 @@ git commit -m "feat(widget): seed starter favorites USD-EUR, USD-GBP, USD-BTC on
 ## Task 8: Update iOS widget for 3 pairs
 
 **Files:**
-- Update: `ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift`
+- Update: `ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.swift`
 
 - [ ] **Step 1: Update the Swift entry struct and provider**
 
-Replace the `NidunaEntry` and `readEntry()` in `NidunaWidget.swift` to read the new multi-pair keys:
+Replace the `HonestFernEntry` and `readEntry()` in `HonestFernWidget.swift` to read the new multi-pair keys:
 
 ```swift
 struct WidgetPairData {
@@ -642,7 +642,7 @@ struct WidgetPairData {
     let change: String
 }
 
-struct NidunaEntry: TimelineEntry {
+struct HonestFernEntry: TimelineEntry {
     let date: Date
     let amountLabel: String
     let updatedLabel: String
@@ -659,7 +659,7 @@ Create a row view for each pair and stack 3 of them in a `VStack`.
 - [ ] **Step 3: Commit**
 
 ```bash
-git add ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift
+git add ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.swift
 git commit -m "feat(widget): update iOS widget for 3-pair layout"
 ```
 
@@ -681,7 +681,7 @@ cd /Users/luis/Niduna/apps/currency-converter
 On the emulator:
 - Long-press home screen
 - Tap Widgets
-- Find Niduna Currency Converter
+- Find Currency
 - Drag medium widget to home screen
 
 - [ ] **Step 3: Verify checklist**

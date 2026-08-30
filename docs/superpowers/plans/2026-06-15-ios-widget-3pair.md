@@ -9,15 +9,15 @@
 
 ## Goal
 
-Bring the iOS home-screen widget to parity with the redesigned Android widget: show **up to 3 currency pairs** (symbol + code + value, with a day-over-day trend), driven by the same shared data the Flutter app already pushes, with a "Niduna · Open to load" placeholder when there's no data yet.
+Bring the iOS home-screen widget to parity with the redesigned Android widget: show **up to 3 currency pairs** (symbol + code + value, with an "Honest Fern / Open to load" placeholder when there's no data yet).
 
 ## Why it's needed
 
-The Flutter side and the Android widget were redesigned to a 3-pair model. The Flutter bridge (`lib/src/core/widget/home_widget_provider.dart`) now writes **3-pair keys**, but `ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift` still reads the **old single-pair keys** and renders one conversion. So on iOS the widget reads keys that are never written → shows placeholder/garbage.
+The Flutter side and the Android widget were redesigned to a 3-pair model. The Flutter bridge (`lib/src/core/widget/home_widget_provider.dart`) now writes **3-pair keys**, but `ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.swift` still reads the **old single-pair keys** and renders one conversion. So on iOS the widget reads keys that are never written → shows placeholder/garbage.
 
 ### Data contract (what Flutter writes — do not change without updating both sides)
 
-Written to App Group `group.com.niduna.currencyConverter` via `HomeWidget.saveWidgetData`:
+Written to App Group `group.com.honestfern.currencyConverter` via `HomeWidget.saveWidgetData`:
 
 | Key | Type | Example |
 |-----|------|---------|
@@ -35,7 +35,7 @@ Written to App Group `group.com.niduna.currencyConverter` via `HomeWidget.saveWi
 
 ### Current state of the iOS target
 
-- App Group is configured: `main.dart:22` calls `HomeWidget.setAppGroupId('group.com.niduna.currencyConverter')`; the group is in `ios/Runner/Runner.entitlements` and `ios/Runner/Widgets/NidunaWidget/NidunaWidget.entitlements`.
+- App Group is configured: `main.dart:22` calls `HomeWidget.setAppGroupId('group.com.honestfern.currencyConverter')`; the group is in `ios/Runner/Runner.entitlements` and `ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.entitlements`.
 - The WidgetKit target's **Embed App Extensions** build phase was removed so iOS-26 simulator installs work. Re-add it with the idempotent script:
   ```bash
   GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.16.2_2/libexec ruby ios/scripts/add_widget_target.rb
@@ -56,7 +56,7 @@ In `pushData`, change the `updateWidget` call to also pass the iOS widget kind s
 await HomeWidget.updateWidget(
   androidName: _androidWidgetName,
   qualifiedAndroidName: _androidWidgetName,
-  iOSName: 'NidunaCurrencyWidget', // must equal the Swift Widget `kind`
+  iOSName: 'HonestFernCurrencyWidget', // must equal the Swift Widget `kind`
 );
 ```
 
@@ -71,9 +71,9 @@ Expected: clean + all pass. (These tests assert the saved keys / no-throw behavi
 
 Commit: `feat(ios-widget): reload iOS widget timelines on data push`.
 
-### Task 2: Rewrite `NidunaWidget.swift` for the 3-pair model
+### Task 2: Rewrite `HonestFernWidget.swift` for the 3-pair model
 
-**File:** `ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift` (full replacement)
+**File:** `ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.swift` (full replacement)
 
 Mirror the Android 3-pair design: warm paper background, a small header (`amountLabel` + `updatedLabel`), then up to 3 rows of `symbol · code … value (trend%)`. Trend colors match `DESIGN.md` (`trendUp #6F8C49`, `trendDown #DC6543`). Placeholder when no visible pairs.
 
@@ -83,11 +83,11 @@ import SwiftUI
 
 // Shared store written by the Flutter app via HomeWidget.saveWidgetData.
 private enum AppGroup {
-  static let id = "group.com.niduna.currencyConverter"
+  static let id = "group.com.honestfern.currencyConverter"
   static let store = UserDefaults(suiteName: id)
 }
 
-// Niduna palette (see DESIGN.md).
+// Honest Fern palette (see DESIGN.md).
 private enum Palette {
   static let paper = Color(red: 0.96, green: 0.97, blue: 0.94)   // #F6F8EF
   static let ink   = Color(red: 0.09, green: 0.11, blue: 0.08)   // #171D14
@@ -105,16 +105,16 @@ struct NidunaPair {
   let change: String  // e.g. "0.12%" (may be empty)
 }
 
-struct NidunaEntry: TimelineEntry {
+struct HonestFernEntry: TimelineEntry {
   let date: Date
   let amountLabel: String
   let updatedLabel: String
   let pairs: [NidunaPair]
 }
 
-struct NidunaProvider: TimelineProvider {
-  func placeholder(in context: Context) -> NidunaEntry {
-    NidunaEntry(
+struct HonestFernProvider: TimelineProvider {
+  func placeholder(in context: Context) -> HonestFernEntry {
+    HonestFernEntry(
       date: Date(),
       amountLabel: "100 USD",
       updatedLabel: "Updated today",
@@ -126,17 +126,17 @@ struct NidunaProvider: TimelineProvider {
     )
   }
 
-  func getSnapshot(in context: Context, completion: @escaping (NidunaEntry) -> Void) {
+  func getSnapshot(in context: Context, completion: @escaping (HonestFernEntry) -> Void) {
     completion(readEntry())
   }
 
-  func getTimeline(in context: Context, completion: @escaping (Timeline<NidunaEntry>) -> Void) {
+  func getTimeline(in context: Context, completion: @escaping (Timeline<HonestFernEntry>) -> Void) {
     // The app pokes WidgetCenter on every data push; also self-refresh in 4h.
     let next = Date().addingTimeInterval(4 * 60 * 60)
     completion(Timeline(entries: [readEntry()], policy: .after(next)))
   }
 
-  private func readEntry() -> NidunaEntry {
+  private func readEntry() -> HonestFernEntry {
     let store = AppGroup.store
     var pairs: [NidunaPair] = []
     for i in 0..<3 {
@@ -154,7 +154,7 @@ struct NidunaProvider: TimelineProvider {
         )
       )
     }
-    return NidunaEntry(
+    return HonestFernEntry(
       date: Date(),
       amountLabel: store?.string(forKey: "amountLabel") ?? "",
       updatedLabel: store?.string(forKey: "updatedLabel") ?? "",
@@ -204,13 +204,13 @@ private struct PairRow: View {
   }
 }
 
-struct NidunaWidgetEntryView: View {
-  var entry: NidunaEntry
+struct HonestFernWidgetEntryView: View {
+  var entry: HonestFernEntry
 
   var body: some View {
     if entry.pairs.isEmpty {
       VStack(alignment: .leading, spacing: 4) {
-        Text("Niduna").font(.system(size: 16, weight: .heavy)).foregroundColor(Palette.ink)
+        Text("Honest Fern").font(.system(size: 16, weight: .heavy)).foregroundColor(Palette.ink)
         Text("Open to load").font(.system(size: 12)).foregroundColor(Palette.muted)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -239,31 +239,31 @@ struct NidunaWidgetEntryView: View {
   }
 }
 
-struct NidunaWidget: Widget {
-  let kind = "NidunaCurrencyWidget" // MUST match iOSName in home_widget_provider.dart
+struct HonestFernWidget: Widget {
+  let kind = "HonestFernCurrencyWidget" // MUST match iOSName in home_widget_provider.dart
 
   var body: some WidgetConfiguration {
-    StaticConfiguration(kind: kind, provider: NidunaProvider()) { entry in
+    StaticConfiguration(kind: kind, provider: HonestFernProvider()) { entry in
       if #available(iOS 17.0, *) {
-        NidunaWidgetEntryView(entry: entry).containerBackground(Palette.paper, for: .widget)
+        HonestFernWidgetEntryView(entry: entry).containerBackground(Palette.paper, for: .widget)
       } else {
-        NidunaWidgetEntryView(entry: entry)
+        HonestFernWidgetEntryView(entry: entry)
       }
     }
-    .configurationDisplayName("Niduna Currency")
+    .configurationDisplayName("Honest Fern Currency")
     .description("Your top currency pairs at a glance")
     .supportedFamilies([.systemMedium])
   }
 }
 
 @main
-struct NidunaWidgetBundle: WidgetBundle {
-  var body: some Widget { NidunaWidget() }
+struct HonestFernWidgetBundle: WidgetBundle {
+  var body: some Widget { HonestFernWidget() }
 }
 ```
 
 Notes for the implementer:
-- `kind` (`"NidunaCurrencyWidget"`) MUST equal the `iOSName` passed in Task 1.
+- `kind` (`"HonestFernCurrencyWidget"`) MUST equal the `iOSName` passed in Task 1.
 - iOS 17 requires `.containerBackground(...)` for the widget to draw its background; the `if #available` keeps it building on older SDKs.
 - `systemSmall` was dropped (3 rows don't fit a small widget cleanly) — only `.systemMedium`. Add `.systemSmall` later with a 1-pair layout if wanted.
 - The symbol-in-circle uses the currency `symbol` glyph (matches Android's symbol circles), not a flag asset — keeps the extension asset-free.
@@ -288,10 +288,10 @@ Do NOT commit a re-enabled Embed phase to `main` if it breaks simulator installs
 
 1. Build/run onto the device.
 2. Open the app once (so it pushes widget data), then background it.
-3. Add the Niduna medium widget to the home screen.
+3. Add the Honest Fern medium widget to the home screen.
 4. Confirm: up to 3 pairs render with symbol circles, codes, values, and trend arrows/percentages on the pairs that moved; header shows the base amount; footer shows the updated label.
 5. Force-refresh in the app (pull to refresh) and confirm the widget updates within a few seconds (the `iOSName` reload poke).
-6. Fresh install (no data yet) → confirm the "Niduna / Open to load" placeholder.
+6. Fresh install (no data yet) → confirm the "Honest Fern / Open to load" placeholder.
 7. Capture screenshots for the store listing.
 
 ---

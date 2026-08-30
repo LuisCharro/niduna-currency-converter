@@ -198,7 +198,7 @@ open -a Simulator
 
 # 3. Build + reinstall after code changes
 IOS_SIMULATOR_ID=87FB7A6A-58E4-4F45-A44E-EC071B06BC04 \
-  BUNDLE_ID=com.niduna.currencyConverter \
+  BUNDLE_ID=com.honestfern.currencyConverter \
   ./.devtools/sim_reinstall_build.sh
 
 # 4. Run tests
@@ -214,7 +214,7 @@ IOS_SIMULATOR_ID=87FB7A6A-58E4-4F45-A44E-EC071B06BC04 \
 - **Working directory:** `/Users/luis/Niduna/apps/currency-converter`
 - **Branch:** `main`
 - **Simulator ID:** `87FB7A6A-58E4-4F45-A44E-EC071B06BC04` (iOS 26.5, iPhone 17 Pro)
-- **Bundle ID:** `com.niduna.currencyConverter`
+- **Bundle ID:** `com.honestfern.currencyConverter`
 - **Version:** `0.1.0+1`
 - **Provider profile (dev):** `PROVIDER_PROFILE=dev_coinpaprika APP_DEV_MODE=true`
 - **Provider profile (release):** `PROVIDER_PROFILE=release_safe APP_DEV_MODE=false`

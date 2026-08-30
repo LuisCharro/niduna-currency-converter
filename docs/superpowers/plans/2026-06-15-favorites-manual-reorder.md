@@ -549,7 +549,7 @@ Read the PNG under `.tmp/screens/ios/` and confirm: each favorite row shows a `�
 
 - [ ] **Step 4: Confirm order persists**
 
-Reorder a pair by dragging its handle, fully close the app (`xcrun simctl terminate 87FB7A6A-58E4-4F45-A44E-EC071B06BC04 com.niduna.currencyConverter`), relaunch (`xcrun simctl launch 87FB7A6A-58E4-4F45-A44E-EC071B06BC04 com.niduna.currencyConverter`), and confirm the new order survived. (Verify the flow visually — do not script blind coordinate taps.)
+Reorder a pair by dragging its handle, fully close the app (`xcrun simctl terminate 87FB7A6A-58E4-4F45-A44E-EC071B06BC04 com.honestfern.currencyConverter`), relaunch (`xcrun simctl launch 87FB7A6A-58E4-4F45-A44E-EC071B06BC04 com.honestfern.currencyConverter`), and confirm the new order survived. (Verify the flow visually — do not script blind coordinate taps.)
 
 - [ ] **Step 5: Update PLAN.md feature table**
 

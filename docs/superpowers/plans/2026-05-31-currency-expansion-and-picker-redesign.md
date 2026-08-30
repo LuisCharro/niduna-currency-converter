@@ -1149,7 +1149,7 @@ Expected: analyze passes, tests pass
 
 ```bash
 IOS_SIMULATOR_ID=AD6518C3-252E-4951-AE25-AF6732817FB1 \
-  BUNDLE_ID=com.niduna.currencyConverter \
+  BUNDLE_ID=com.honestfern.currencyConverter \
   ./.devtools/sim_reinstall_build.sh
 ```
 

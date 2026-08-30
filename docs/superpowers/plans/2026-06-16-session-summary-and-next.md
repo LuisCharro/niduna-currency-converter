@@ -10,7 +10,7 @@
 
 - **Favorites manual reorder** — drag handle on each row, persisted order; replaced the usage-based auto-sort (`FavoriteUsageTracker`/`sortedPairs` removed).
 - **iOS home-screen widget — now fully working on the simulator:**
-  - Rewrote `NidunaWidget.swift` to the 3-pair model and **matched the Android design** (dark-green symbol circles `#285F3B`, cream card `#FFF9EC`, 22pt values, "Updated" top-right, ↑/↓ trend).
+  - Rewrote `HonestFernWidget.swift` to the 3-pair model and **matched the Android design** (dark-green symbol circles `#285F3B`, cream card `#FFF9EC`, 22pt values, "Updated" top-right, ↑/↓ trend).
   - Fixed the simulator **install** (`Invalid placeholder attributes`): widget Info.plist needed a non-empty version + `CFBundleExecutable`; `add_widget_target.rb` now pins version from pubspec.
   - Fixed the widget showing **"Open to load"**: it now reads the shared App Group **plist file directly** (the simulator's `UserDefaults(suiteName:)` doesn't surface cross-process writes), and `.devtools/sign_sim_widget.sh` re-signs the unsigned simulator build with the App Group entitlement (wired into the run/reinstall scripts).
 - **iOS app icon** regenerated via `flutter_launcher_icons` to match the Android coral-ring brand (master at `assets/brand/app_icon_master_1024.png`).

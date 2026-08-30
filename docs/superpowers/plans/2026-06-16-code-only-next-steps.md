@@ -75,7 +75,7 @@ low architectural risk.
 
 **Scope (candidate tasks — confirm during brainstorm):**
 - **iOS:** add `.systemSmall` (1-pair) and `.systemLarge` to
-  `supportedFamilies` in `NidunaWidget.swift`; design the per-size SwiftUI
+  `supportedFamilies` in `HonestFernWidget.swift`; design the per-size SwiftUI
   layouts (small = symbol circle + value; large = more rows / optional footer).
 - **Android:** provide matching layouts and `minWidth/minHeight` /
   `targetCellWidth` sizing so the widget resizes cleanly; reuse the existing

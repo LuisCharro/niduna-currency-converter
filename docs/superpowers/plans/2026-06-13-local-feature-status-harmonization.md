@@ -11,7 +11,7 @@
 | Area | Status | Notes |
 |------|--------|-------|
 | Favorites tab in nav | **Live on main** | `lib/src/shared/widgets/floating_pill_nav.dart` includes the Favorites tab. Any doc saying it is hidden is outdated. |
-| Android home-screen widget | **Redesigned and verified on main** | Completely redesigned from single-pair placeholder to 3-pair icon-led widget. Warm paper background, currency symbols in circles, thin dividers, trend arrows. Favorites-driven with fallback pairs. Starter favorites seeded on first run. Shows "Niduna · Open to load" placeholder when no data. Runtime-verified on Pixel 7 emulator. See `docs/superpowers/specs/2026-06-13-widget-redesign-design.md`. |
+| Android home-screen widget | **Redesigned and verified on main** | Completely redesigned from single-pair placeholder to 3-pair icon-led widget. Warm paper background, currency symbols in circles, thin dividers, trend arrows. Favorites-driven with fallback pairs. Starter favorites seeded on first run. Shows an "Honest Fern / Open to load" placeholder when no data. Runtime-verified on Pixel 7 emulator. See `docs/superpowers/specs/2026-06-13-widget-redesign-design.md`. |
 | iOS home-screen widget | **Code complete, disabled by default on main** | WidgetKit target exists and Swift code is wired, but the Embed App Extensions phase was removed to keep iOS 26 simulator installs working. Real-device verification still requires re-adding the embed phase. |
 | Rate trend arrows on Convert rows | **Implemented on main** | Yesterday rates are fetched in `ConvertController`, passed into `LatestRatesSnapshot.previousRates`, converted into `CurrencyQuote.previousRate`, and rendered through `TrendBadge` when present. Remaining work is UX verification, not feature implementation. |
 | Multi-pair chart comparison | **Deferred** | Still out of Phase 1.x. It requires a new chart information architecture and a dedicated UI redesign pass before coding. |
@@ -41,9 +41,9 @@
 
 - Favorites nav: `lib/src/shared/widgets/floating_pill_nav.dart`
 - Android widget bridge: `lib/src/core/widget/home_widget_provider.dart`
-- Android widget receiver: `android/app/src/main/java/com/niduna/currency_converter/widget/NidunaAppWidgetProvider.kt`
+- Android widget receiver: `android/app/src/main/java/com/honestfern/currency_converter/widget/HonestFernAppWidgetProvider.kt`
 - Android widget manifest entry: `android/app/src/main/AndroidManifest.xml`
-- iOS widget code: `ios/Runner/Widgets/NidunaWidget/NidunaWidget.swift`
+- iOS widget code: `ios/Runner/Widgets/HonestFernWidget/HonestFernWidget.swift`
 - Trend computation: `lib/src/features/convert/models/currency_quote.dart`
 - Trend enrichment: `lib/src/features/convert/presentation/convert_controller_loading.dart`
 - Trend rendering: `lib/src/features/convert/widgets/quote_value.dart`

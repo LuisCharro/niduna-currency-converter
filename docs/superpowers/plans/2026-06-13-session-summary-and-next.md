@@ -52,7 +52,7 @@
 | 1 | **Polish trend badge visual** | ~1 hr | Arrows work but are tiny and clipped at screen edge. Make them bigger and reposition. File: `lib/src/features/convert/widgets/trend_badge.dart` + `quote_value.dart` |
 | 2 | **Auto-sort favorites by usage** | 2-3 hr | Partial code exists: `lib/src/features/favorites/data/favorite_usage_tracker.dart`. Wire the sort into FavoritesStore + Convert list. |
 | 3 | **Built-in calculator (+-x/)** | 3-5 hr | Partial code exists: `lib/src/features/convert/widgets/amount_expression_state.dart`. Wire into amount input sheet. |
-| 4 | **iOS widget code update** | 1-2 hr | Swift code still uses old single-pair model. Update `NidunaWidget.swift` for 3-pair keys. **Cannot test** without real iPhone. |
+| 4 | **iOS widget code update** | 1-2 hr | Swift code still uses old single-pair model. Update `HonestFernWidget.swift` for 3-pair keys. **Cannot test** without real iPhone. |
 | 5 | **Share rate screenshot** | 2-3 hr | New feature. Export current Convert view as PNG + Android share intent. |
 
 ### External blockers (need human/account work)
