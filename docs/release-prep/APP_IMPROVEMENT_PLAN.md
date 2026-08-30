@@ -18,8 +18,7 @@ AdMob, website, email, or closed-testing steps documented there.
   Honest Fern Android application ID.
 - The current AAB is still diagnostic and must not be uploaded: it uses test
   AdMob configuration and the fake purchase implementation.
-- The 2026-08-30 local correction batch is intentionally uncommitted until
-  Luis reviews it.
+- The 2026-08-30 correction and quality batches are committed on `main`.
 
 ## P0 — Must fix before any reviewable Play track
 
@@ -51,8 +50,9 @@ or gate the sandbox so it cannot be activated in a reviewable release build.
 **Acceptance:** a release build has no Dev Sandbox UI and cannot grant
 products locally.
 
-**2026-08-30 status:** implemented locally by making developer tools available
-only in debug mode; the release AAB was rebuilt successfully.
+**2026-08-30 status:** implemented and committed in `af12283` by making
+developer tools available only in debug mode; the release AAB was rebuilt
+successfully.
 
 ### P0.3 Finish AdMob consent and production configuration
 
@@ -87,8 +87,8 @@ privacy policy, in-app copy, AdMob consent flow, and Play Data Safety answers
 describe the same behavior.
 
 **2026-08-30 status:** the Settings link and `url_launcher` dependency are
-implemented locally. Full wording/Data Safety alignment remains coupled to the
-future AdMob/UMP pass.
+implemented and committed in `7aed7b1`. Full wording/Data Safety alignment
+remains coupled to the future AdMob/UMP pass.
 
 ### P0.5 Make release signing fail closed
 

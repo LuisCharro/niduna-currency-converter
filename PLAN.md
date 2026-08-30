@@ -364,7 +364,7 @@ lib/
 | Starter favorites seeding | DONE | Seeds USD-EUR, USD-GBP, USD-BTC on first run so widget is useful immediately |
 | iOS home-screen widget code | DONE (disabled by default) | Target and Swift code wired; embed phase removed on main for iOS 26 sim install stability |
 | Calculator expression evaluator tests | DONE | 12 test cases covering arithmetic and edge cases |
-| 239 total tests passing | LAST VERIFIED 2026-07-19 | Rerun after release-code changes |
+| 241 total tests passing | LAST VERIFIED 2026-08-30 | Rerun after release-code changes |
 
 ### Data Sources
 
@@ -421,7 +421,7 @@ lib/
 - [x] **P5 — Replace CoinGecko in release_safe crypto history** (DONE — fawazahmed0 per-date CDN snapshots, CC0-1.0, batched 10-concurrent)
 - [x] **P6 — Release keystore signing configuration**: implemented; password rotation, backup and final rebuild remain in `RELEASE_CHECKLIST.md`
 - [x] **P7 — Branded app name** ✅ committed `bade57e`
-- [ ] **P8 — Privacy policy URL**: required by both stores before submission → `RELEASE_CHECKLIST.md` C1, B5
+- [x] **P8 — Privacy policy URL**: implemented in Settings and points to the app-specific HTTPS policy → `RELEASE_CHECKLIST.md` C1, B5 (2026-08-30)
 - [x] **P9 — iOS deployment target update** ✅ committed `bade57e`
 - [x] **P10 — Release APK + App Bundle** ✅ verified (needs real keystore for store submission)
 - [ ] **P11 — Store listing:** screenshots/graphic ready; English copy and

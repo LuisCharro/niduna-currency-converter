@@ -157,19 +157,20 @@ flutter pub get
 | `./scripts/pub_get.sh` | fetch dependencies |
 | `./scripts/clean-deep-files.sh` | deep clean build artifacts |
 
-## Current phase (reviewed 2026-08-28)
+## Current phase (reviewed 2026-08-30)
 
 - Product UI/local-data work is complete; the current recorded baseline is
-  239 passing tests with clean analysis (re-verified 2026-08-28).
+  241 passing tests with clean analysis (re-verified 2026-08-30).
 - The Android **store release is not code-complete**: AdMob IDs, UMP consent
-  and privacy options, in-app privacy URL, real Play Billing/restore, and the
-  final signed AAB remain open.
+  and privacy options, real Play Billing/restore, and the final signed AAB
+  remain open. The in-app privacy URL is implemented and committed; the current
+  AAB is diagnostic until AdMob and billing are production-ready.
 - Cross-repo order: `RELEASE_CHECKLIST.md` § "Execution Order". Site-only
   steps: the sibling `niduna-site/RELEASE_PLAN.md`.
 - Release re-entry audit: no global Flutter/dependency upgrade is required.
-  The Android AAB smoke build was revalidated on 2026-08-28 after Gradle
-  repopulated its local cache. The final AAB still waits for B4/B5/B8/B9,
-  key rotation, and a new versionCode.
+  The Android AAB smoke build was revalidated on 2026-08-30 after Gradle
+  repopulated its local cache. The final AAB still waits for B4/B8/B9, key
+  rotation, and the appropriate versionCode.
 - Android application ID (the value used in Play URLs and Console):
   `com.honestfern.currency_converter`. The camel-case
   `com.honestfern.currencyConverter` value belongs to the deferred iOS bundle.

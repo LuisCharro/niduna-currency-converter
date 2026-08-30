@@ -7,7 +7,7 @@
 > **store release path is not code-complete**. The last recorded baseline is
 > 241 passing tests with clean analysis (re-verified 2026-08-30). The current
 > Flutter toolchain is healthy and the release AAB smoke build was revalidated
-> successfully on 2026-08-28. Open release work is B4
+> successfully on 2026-08-30. Open release work is B4
 > (real AdMob IDs), B8 (UMP consent + privacy-options
 > entry point), and B9 (real Play Billing replacing `PurchaseServiceStub`).
 > Screenshots and the feature graphic are ready. The site is GDPR-prepared and
@@ -15,7 +15,7 @@
 > `support@honestfern.com` is operational after successful receiving and
 > sending tests.
 >
-> **Remaining before submission (short list, true dependency order — updated 2026-08-29):**
+> **Remaining before submission (short list, true dependency order — updated 2026-08-30):**
 > 0. **Re-entry/toolchain preflight:** keep the current Flutter/dependency
 > baseline unless a targeted update is justified. This is complete for the
 > current machine; the final AAB still waits for B4/B8/B9 and the key/version
@@ -26,9 +26,10 @@
 > ready for C10. Site detail:
 > `niduna-site/RELEASE_PLAN.md` § S1 and
 > `niduna-site/docs/hostinger-static-migration.md`. C1 and B5 are now unblocked.
-> 2. **Accounts in parallel:** create the personal Play account, finish
-> identity + real-device verification, create/verify the merchant payments
-> profile, create the app draft, AdMob app/ad units/EEA message, and finalize
+> 2. **Accounts in parallel:** the personal Play account has been paid for and
+> onboarding started; identity documents were submitted and are awaiting
+> approval. Real-device/contact verification, final payments-profile
+> confirmation, the app draft, AdMob app/ad units/EEA message, and finalization
 > the immutable IDs for the three one-time products. Create the products as
 > soon as Console permits; some account/app states may first require a
 > billing-enabled bundle. [E1-E5, E5b, E8]
@@ -49,10 +50,11 @@
 > 7. **Site launch batch:** only after the production listing is public,
 > replace Coming soon with the real Play URL and deploy/verify S2.
 
-The 2026-08-30 local quality batch also improves localization coverage,
+The 2026-08-30 quality batch improves localization coverage,
 screen-reader actions, narrow-layout behavior, chart error boundaries, crypto
 payload validation, Android widget privacy, and local secret-file permissions.
-These changes are intentionally uncommitted until Luis reviews them.
+These changes are committed on `main`; the resulting AAB remains diagnostic
+until real AdMob consent/configuration and Play Billing are implemented.
 
 ## Brand migration boundary
 
@@ -193,9 +195,9 @@ and update this checklist before proceeding.
 
 | # | Task | URL / Notes | Status |
 |---|------|-------------|--------|
-| E1 | Register Google Play Developer account ($25 one-time) | https://play.google.com/console | ❌ |
-| E2 | Verify developer identity (required since 2026) | In Play Console | ❌ |
-| E3 | Set up the payments/merchant profile — **launch-critical since 2026-07-16** (required before E8 in-app products can be created; needs bank details for payouts) | Play Console > Setup > Payments profile | ❌ |
+| E1 | Register Google Play Developer account ($25 one-time) | https://play.google.com/console | ✅ Paid and onboarding started 2026-08-30 |
+| E2 | Verify developer identity (required since 2026) | In Play Console | ⏳ Documents submitted; Google approval pending |
+| E3 | Set up the payments/merchant profile — **launch-critical since 2026-07-16** (required before E8 in-app products can be created; needs bank details for payouts) | Play Console > Setup > Payments profile | ⏳ Reached during onboarding; confirm final merchant-profile state in Console |
 | E4 | Create app in Play Console (draft mode) | In Play Console > All apps > Create app | ❌ |
 | E5 | Register AdMob account + create ad units | https://admob.google.com | ❌ |
 | E5b | AdMob → Privacy & messaging → create the GDPR consent message (required for EEA/UK/CH ads; pairs with code step B8) | In AdMob console, after E5 | ❌ |
@@ -227,8 +229,8 @@ and update this checklist before proceeding.
 | B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ✅ **Done** | `200c888` — ⚠️ **password is TEMP, must be rotated before publish** (see Keystore note below) |
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` + local 2026-08-30 hardening — release build now fails closed if `key.properties` or the keystore is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
-| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ✅ **Implemented locally 2026-08-30** | `url_launcher` opens `https://honestfern.com/currency-converter/privacy/`. Needs inclusion in the next release candidate. See `niduna-site/RELEASE_PLAN.md` § S1. |
-| B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Smoke revalidated on 2026-08-28: Gradle cache populated and a 51 MB signed AAB was produced and verified. The diagnostic artifact is not publishable because it still uses test AdMob IDs and the purchase stub. The FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + B9 (real billing) + keystore rotation. **Do not pass `--no-pub` to the release build:** Flutter must regenerate the release-filtered plugin registrant; with a stale development registrant, `integration_test` can break the Java compilation. **versionCode rule (added 2026-07-16):** every Play upload needs a strictly HIGHER build number — bump the `+N` in `pubspec.yaml` `version: 0.1.0+N` for each upload, closed-track updates included (Play rejects a reused versionCode). |
+| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ✅ **Implemented and committed 2026-08-30** | Commit `7aed7b1`; `url_launcher` opens `https://honestfern.com/currency-converter/privacy/`. Needs inclusion in the next release candidate. See `niduna-site/RELEASE_PLAN.md` § S1. |
+| B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Smoke build revalidated on 2026-08-30: a 53.4 MB signed AAB was produced and verified. The diagnostic artifact is not publishable because it still uses test AdMob IDs and the purchase stub. The FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + B9 (real billing) + keystore rotation. **Do not pass `--no-pub` to the release build:** Flutter must regenerate the release-filtered plugin registrant; with a stale development registrant, `integration_test` can break the Java compilation. **versionCode rule (added 2026-07-16):** every Play upload needs a strictly HIGHER build number — bump the `+N` in `pubspec.yaml` `version: 0.1.0+N` for each upload, closed-track updates included (Play rejects a reused versionCode). |
 | B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
 | B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Ad requests are already non-personalised, but the app still initializes Mobile Ads without UMP. Request consent info on every launch, show the form when required, gate ad requests on `canRequestAds`, and expose a privacy-options entry point when UMP reports it is required. Pair with E5b and keep the site policy aligned. |
 | B9 | **Real Play Billing** — replace `PurchaseServiceStub` with a real implementation | `pubspec.yaml` (add `in_app_purchase`), new service in `lib/src/core/monetization/`, injection at `lib/src/app_shell.dart:94`, `settings_controller.dart:99` (restore), `iap_purchase_player.dart` (stream-driven phases) | ~1-2 days | ❌ | The app currently ships a FAKE purchase flow: 3 priced "Buy" buttons → "Processing payment…" overlay → always succeeds after ~2 s, no billing library present. Submitting this risks rejection and gives entitlements away free. Implementation is not blocked by Console product creation once E8's immutable IDs are finalized. The products must be active before real purchase/restore testing and before the closed track. **Full clues: Implementation Notes § B9.** |

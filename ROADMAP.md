@@ -1,6 +1,6 @@
 # Currency Converter Roadmap
 
-> **Release note (2026-07-19):** this is the product/implementation roadmap.
+> **Release note (2026-08-30):** this is the product/implementation roadmap.
 > `RELEASE_CHECKLIST.md` is the only source for launch order and blockers.
 > Current launch monetization is three one-time products (Remove Ads, Charts
 > Pro, Favorites Pro), banner ads, and explicit opt-in rewarded ads. There is
@@ -18,9 +18,10 @@ Use it together with:
 ## Current Reality
 
 The product UI/local-data path is implemented on `main`. The store path still
-needs real AdMob configuration, UMP/privacy options, the in-app privacy link,
-real Play Billing/restore, and the final signed release candidate. Last full
-recorded verification: 239 tests and clean analysis, re-run 2026-07-19.
+needs real AdMob configuration, UMP/privacy options, real Play Billing/restore,
+and the final signed release candidate. The in-app privacy link is implemented.
+Last full recorded verification: 241 tests and clean analysis, re-run
+2026-08-30.
 
 - a Flutter app with four visible tabs: `Convert`, `Favorites`, `Charts`,
   `Settings`
