@@ -178,6 +178,21 @@ covered by the existing crypto tests; final device retry/offline QA remains.
 - Add a real Android-device manual QA pass for ads, consent, purchases,
   Restore, rate refresh, offline cache, widgets, and privacy links.
 
+### P2.5 Visual system polish and asset hygiene
+
+**2026-08-30 status:** completed the controlled visual pass without changing
+the product identity or regenerating the currency-badge family. The Convert
+utility controls and Add currencies action now have quieter secondary weight;
+rate lines and currency codes yield to converted amounts; and repeated action
+icons use the rounded Material family. `pln.png` and `thb.png` were normalized
+to actual PNG files without changing their artwork. The app icon and splash
+artwork were reviewed on the Android emulator and remain unchanged.
+
+The automated Android screenshot gallery produced verified Convert, Favorites,
+Chart, and Settings captures. A future badge redesign remains optional and
+should use deterministic, reviewed currency symbols/flags rather than blindly
+regenerating all assets.
+
 ## AdMob and Play Console dependency notes
 
 AdMob setup is a separate track from Play developer identity verification.
@@ -228,6 +243,9 @@ fixed large-text chart pair-code wrapping and overlapping chart date labels,
 aligned the Charts currency picker surface with Convert, added a regression
 test, and re-verified `./scripts/check.sh` with 242 tests. The final emulator
 check covered the main tabs, picker sheets, and Charts at a 1.3 text scale.
+The subsequent visual polish pass re-ran the build and automated Android
+gallery, producing reviewed captures for all four visible tabs and confirming
+the app icon/splash plus currency asset formats.
 No source changes are implied by this document alone. Each implementation
 batch must update this plan, the canonical release checklist, focused tests,
 and the final release evidence together.

@@ -245,7 +245,7 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 
 ### Floating Pill Navigation
 - Rounded container (radius 28) with **paper-warm** background
-- Three tabs: Convert / Charts / Settings
+- Four tabs: Convert / Favorites / Charts / Settings
 - Material Symbols Rounded icons
 - Active tab = **leaf green** icon+text; inactive = **sage muted**
 - Positioned at bottom, centered, flush to the safe area with no extra dock offset

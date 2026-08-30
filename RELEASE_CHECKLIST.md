@@ -513,7 +513,7 @@ See `docs/providers/*.md` for full per-provider details.
 | iOS deployment target 15.0 | Committed `bade57e` |
 | Release APK + App Bundle builds | `scripts/build_apk.sh`, `scripts/build_appbundle.sh`; AAB smoke revalidated 2026-08-30, final build remains gated on release-code changes |
 | Firebase hosting deploy pipeline | `scripts/firebase_hosting_*.sh` |
-| Latest direct verification | 241 tests, clean analysis, `./scripts/check.sh`, and a signed 53.4 MB diagnostic AAB on 2026-08-30; final AAB still follows B4/B8/B9, key rotation and versionCode bump |
+| Latest direct verification | 242 tests, clean analysis, `./scripts/check.sh`, and a signed 53.4 MB diagnostic AAB on 2026-08-30; final AAB still follows B4/B8/B9, key rotation and versionCode bump |
 
 ### Provider Profile System — Correctly Segregated
 
@@ -773,6 +773,12 @@ These can ship in v0.2.0+ updates:
   reduced date-label density to prevent overlap, and added a regression test.
   `./scripts/check.sh` passes with 242 tests. No new release blocker was found;
   physical-device TalkBack and final offline/monetization QA remain pending.
+- **2026-08-30 (visual polish pass)** — Reduced secondary visual weight on
+  Convert, standardized repeated actions on rounded Material icons, reviewed
+  the app icon/splash on the small Android emulator, and normalized the PLN/THB
+  currency assets to real PNG files without changing their artwork. The
+  automated Android gallery produced reviewed captures for Convert, Favorites,
+  Chart, and Settings. No new release blocker was found.
 - **2026-08-28 (release re-entry audit)** — Added Phase 0 for resuming the
   release after a pause. Flutter 3.41.7/Dart 3.11.5, the Android/iOS
   toolchain, dependency resolution, `flutter analyze`, and 239 tests were

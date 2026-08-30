@@ -7,7 +7,7 @@
 ## Product posture
 
 - Privacy-first precision instrument: no backend, accounts, analytics, or cloud sync in Phase 1.
-- Three-tab shell only: **Convert · Charts · Settings** (Favorites code retained, tab hidden until Phase 2).
+- Four-tab shell: **Convert · Favorites · Charts · Settings**.
 - Version stays `0.x.x` until MVP is explicitly confirmed.
 
 ## Visual identity
@@ -19,6 +19,8 @@
 | Typography | **Fraunces** = screen/chart headlines only; **Manrope** = all operational UI |
 | Structure | **Dividers, not cards** for lists/rows; `card` token = selected chip / raised control only |
 | Charts | Full-bleed plot on paper; range rail visually attached to chart block |
+| Iconography | Prefer rounded Material actions; reserve outlined icons for secondary or status affordances |
+| Currency badges | Keep symbols centered and readable at small sizes; preserve exact currency/flag meaning and review generated assets before replacing them |
 
 **Anti-palette:** iOS blue, neon crypto gradients, cold corporate gray, centered SaaS empty panels.
 
@@ -50,6 +52,7 @@ Implement and read colors from `AppTheme` — do not duplicate hex in widgets.
 - Use `AppTheme.screenTitleFraunces` (or `ScreenTitle` widget) for Convert, Charts pair headline, Settings title.
 - Never Fraunces on body, caption, micro, or currency codes.
 - Never Manrope on primary screen titles.
+- Secondary rate lines and currency codes should yield to the converted amount in contrast and size.
 
 ## Layout & bottom chrome
 

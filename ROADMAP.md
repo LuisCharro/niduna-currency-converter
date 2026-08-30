@@ -20,7 +20,7 @@ Use it together with:
 The product UI/local-data path is implemented on `main`. The store path still
 needs real AdMob configuration, UMP/privacy options, real Play Billing/restore,
 and the final signed release candidate. The in-app privacy link is implemented.
-Last full recorded verification: 241 tests and clean analysis, re-run
+Last full recorded verification: 242 tests and clean analysis, re-run
 2026-08-30.
 
 - a Flutter app with four visible tabs: `Convert`, `Favorites`, `Charts`,
@@ -607,7 +607,7 @@ section and `RELEASE_CHECKLIST.md` instead.
 | Historical charts (fiat up to 2Y, crypto up to 1Y) | `multi_provider_rates_client.dart` handles all pair types |
 | BTC/ETH + mixed fiat/crypto charts | `charts_controller.dart` clamps crypto to 1Y; picker includes BTC/ETH |
 | Favorites (max 3, local storage) | `FavoritesStore` wired into `ConvertController` |
-| Favorites tab **hidden** from nav | `floating_pill_nav.dart` has 3 tabs: Convert, Chart, Settings |
+| Favorites tab **visible** in nav | `floating_pill_nav.dart` has four tabs: Convert, Favorites, Chart, Settings |
 | Offline mode / cache | Cache per base/range; stale fallback works |
 | Dark mode | `AppTheme.dark` + Settings toggle + wired in `app.dart` |
 | Banner ad placeholders | `AdBannerPlaceholder` in Convert, Charts, Chart Picker |
@@ -679,7 +679,7 @@ and real user feedback (Reddit, App Store reviews, feature comparison).
 | Feature | Value | Effort | Why it matters |
 |---------|-------|--------|----------------|
 | **Calculator widget** (widget that lets you convert without opening app) | MEDIUM-HIGH | Medium | Natural evolution of home screen widget. CoinCalc Pro differentiator. |
-| **Re-enable Favorites tab** in nav (currently hidden) | MEDIUM | Low | Code exists, just needs nav slot restored. Favorites + auto-sort = strong retention for travelers. |
+| **Re-enable Favorites tab** in nav (superseded) | DONE | Low | Favorites is visible on `main`; retained here as historical audit context. |
 | **Custom currency list size** (free: 5 visible, premium: all 51) | MEDIUM | Low | CoinCalc's entire Pro upgrade is justified by "see more currencies at once". Natural IAP upsell. |
 | **Share rate screenshot** (export current Convert screen as image) | MEDIUM | Low | Word-of-mouth driver. Users share with friends "look how much X costs in Y". Free marketing. |
 | **Onboarding tutorial** (first-launch walkthrough) | MEDIUM | Medium | Reduces confusion on first use. Standard for finance apps. Can be a simple 3-step overlay. |
