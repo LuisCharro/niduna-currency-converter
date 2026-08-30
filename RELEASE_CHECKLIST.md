@@ -1,14 +1,14 @@
 # Release Checklist — Path to Google Play Store
 
-> **Last updated:** 2026-08-29
+> **Last updated:** 2026-08-30
 > **App version:** 0.1.0+1 (pre-MVP)
 > **Branch:** main
 > **Status:** The product UI and local data path are complete, but the
 > **store release path is not code-complete**. The last recorded baseline is
-> 239 passing tests with clean analysis (re-verified 2026-08-28). The current
+> 241 passing tests with clean analysis (re-verified 2026-08-30). The current
 > Flutter toolchain is healthy and the release AAB smoke build was revalidated
 > successfully on 2026-08-28. Open release work is B4
-> (real AdMob IDs), B5 (privacy link), B8 (UMP consent + privacy-options
+> (real AdMob IDs), B8 (UMP consent + privacy-options
 > entry point), and B9 (real Play Billing replacing `PurchaseServiceStub`).
 > Screenshots and the feature graphic are ready. The site is GDPR-prepared and
 > `https://honestfern.com/` is live on the verified Hostinger production host;
@@ -18,7 +18,7 @@
 > **Remaining before submission (short list, true dependency order — updated 2026-08-29):**
 > 0. **Re-entry/toolchain preflight:** keep the current Flutter/dependency
 > baseline unless a targeted update is justified. This is complete for the
-> current machine; the final AAB still waits for B4/B5/B8/B9 and the key/version
+> current machine; the final AAB still waits for B4/B8/B9 and the key/version
 > gates below.
 > 1. **Site foundation:** Hostinger security/staging, domain registration,
 > DNS cutover, HTTPS, public-path verification and production metadata are
@@ -32,7 +32,7 @@
 > the immutable IDs for the three one-time products. Create the products as
 > soon as Console permits; some account/app states may first require a
 > billing-enabled bundle. [E1-E5, E5b, E8]
-> 3. **Release candidate before the closed test:** implement B4, B5, B8 and
+> 3. **Release candidate before the closed test:** implement B4, B8 and
 > B9; rotate and back up the upload key; run checks; build a signed AAB with a
 > new versionCode. **Do not upload the existing stub-purchase build to any
 > reviewable track.** Internal testing may be used first if useful.
@@ -48,6 +48,11 @@
 > wait until the Play listing is publicly reachable.
 > 7. **Site launch batch:** only after the production listing is public,
 > replace Coming soon with the real Play URL and deploy/verify S2.
+
+The 2026-08-30 local quality batch also improves localization coverage,
+screen-reader actions, narrow-layout behavior, chart error boundaries, crypto
+payload validation, Android widget privacy, and local secret-file permissions.
+These changes are intentionally uncommitted until Luis reviews them.
 
 ## Brand migration boundary
 
@@ -115,7 +120,7 @@ implementation and records the current environment before external work starts.
   release without a clear reason and fresh verification.
 - Do not regenerate iOS Pods or release binaries merely because time passed.
   Regenerate native dependencies after relevant dependency changes, and build
-  the final AAB only after B4/B5/B8/B9, key rotation and the versionCode bump.
+  the final AAB only after B4/B8/B9, key rotation and the versionCode bump.
 
 ---
 
@@ -132,8 +137,8 @@ This section is the agent's agreed order. The rest of this file is the human-pac
 | 4 | Release keystore trio | B2: `android/key.properties` | ✅ Done | `200c888` |
 | 4 | Release keystore trio | B3: `build.gradle.kts` release signing | ✅ Done | `200c888` |
 | 5 | Phase 1.x chart tests | crypto/crypto + fiat/crypto formulas | ✅ Done | `8a76058` (4 new tests) + `f65ef5e` (real logic fix) |
-| 6 | Privacy link in Settings | B5: new row in Settings widget | ❌ Unblocked — target URL is live at `https://honestfern.com/currency-converter/privacy/` | — |
-| 7 | Build signed AAB | B6: `./scripts/build_appbundle.sh` smoke | ✅ Done | AAB at `build/app/outputs/bundle/release/app-release.aab` (50 MB, signed v2) |
+| 6 | Privacy link in Settings | B5: new row in Settings widget | ✅ Implemented locally 2026-08-30 — `url_launcher` opens `https://honestfern.com/currency-converter/privacy/` | Pending commit/release candidate |
+| 7 | Build signed AAB | B6: `./scripts/build_appbundle.sh` smoke | ✅ Done | AAB at `build/app/outputs/bundle/release/app-release.aab` (53.4 MB, signed and verified 2026-08-30) |
 | 8 | UI Polish cycle (Phase 6) | open | ✅ Done (range selector + decimal places) | `5491ea7` |
 
 **Historical note:** this table predates B8/B9 and must not be used as the
@@ -220,9 +225,9 @@ and update this checklist before proceeding.
 |---|------|--------|--------|--------|---|
 | B1 | Generate release keystore | N/A (external file) | ~10 min | ✅ **Done** | `200c888` — at `android/app/niduna-upload.jks` (RSA 2048, 10000-day, valid until 2053) |
 | B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ✅ **Done** | `200c888` — ⚠️ **password is TEMP, must be rotated before publish** (see Keystore note below) |
-| B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` — release AAB now signed, falls back to debug if `key.properties` is missing |
+| B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` + local 2026-08-30 hardening — release build now fails closed if `key.properties` or the keystore is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
-| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ❌ | Unblocked: target URL is live at `https://honestfern.com/currency-converter/privacy/`. See `niduna-site/RELEASE_PLAN.md` § S1. |
+| B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ✅ **Implemented locally 2026-08-30** | `url_launcher` opens `https://honestfern.com/currency-converter/privacy/`. Needs inclusion in the next release candidate. See `niduna-site/RELEASE_PLAN.md` § S1. |
 | B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Smoke revalidated on 2026-08-28: Gradle cache populated and a 51 MB signed AAB was produced and verified. The diagnostic artifact is not publishable because it still uses test AdMob IDs and the purchase stub. The FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + B9 (real billing) + keystore rotation. **Do not pass `--no-pub` to the release build:** Flutter must regenerate the release-filtered plugin registrant; with a stale development registrant, `integration_test` can break the Java compilation. **versionCode rule (added 2026-07-16):** every Play upload needs a strictly HIGHER build number — bump the `+N` in `pubspec.yaml` `version: 0.1.0+N` for each upload, closed-track updates included (Play rejects a reused versionCode). |
 | B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
 | B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Ad requests are already non-personalised, but the app still initializes Mobile Ads without UMP. Request consent info on every launch, show the form when required, gate ad requests on `canRequestAds`, and expose a privacy-options entry point when UMP reports it is required. Pair with E5b and keep the site policy aligned. |
@@ -289,16 +294,13 @@ The IDs flow through the build, not the source:
   `docs/RELEASE_COMMANDS.md`.
 
 ### B5 — In-app privacy link
-- **The app has NO `url_launcher`** — add `url_launcher: ^6.3.0` to
-  `pubspec.yaml` first; nothing in `lib/` can open a browser today.
-- Natural spot: a "Privacy policy" `SettingsTile` at the bottom of the
-  merged Data & privacy page
-  (`lib/src/features/settings/widgets/data_details_page.dart`), opening
+- Implemented locally on 2026-08-30: `url_launcher` is now a direct
+  dependency and Settings exposes a "Privacy" row in the merged Data section.
+- The row opens
   `https://honestfern.com/currency-converter/privacy/` with
   `launchUrl(..., mode: LaunchMode.externalApplication)`.
-- New ARB key (e.g. `labelPrivacyPolicy`) in all 5 `lib/l10n/app_*.arb`
-  + `flutter gen-l10n`; extend the page test in `test/widget_test.dart`
-  ("Data & privacy page attributes sources in plain language").
+- The link has a widget presence test. Final wording/Data Safety alignment
+  remains part of the B8 AdMob/UMP pass.
 
 ### B8 — UMP consent flow (after E5b creates the console message)
 - Entry point: `lib/main.dart:33` — today it fire-and-forgets
@@ -506,9 +508,9 @@ See `docs/providers/*.md` for full per-provider details.
 | i18n (EN, DE, ES, IT, FR) | ARB files + generated localizations |
 | Branded app name ("Currency Converter") | Committed `bade57e` |
 | iOS deployment target 15.0 | Committed `bade57e` |
-| Release APK + App Bundle builds | `scripts/build_apk.sh`, `scripts/build_appbundle.sh`; AAB smoke revalidated 2026-08-28, final build remains gated on release-code changes |
+| Release APK + App Bundle builds | `scripts/build_apk.sh`, `scripts/build_appbundle.sh`; AAB smoke revalidated 2026-08-30, final build remains gated on release-code changes |
 | Firebase hosting deploy pipeline | `scripts/firebase_hosting_*.sh` |
-| Latest direct verification | 239 tests, clean analysis, and a signed AAB smoke build on 2026-08-28; full `./scripts/check.sh` and final AAB still follow B4/B5/B8/B9 |
+| Latest direct verification | 241 tests, clean analysis, `./scripts/check.sh`, and a signed 53.4 MB diagnostic AAB on 2026-08-30; final AAB still follows B4/B8/B9, key rotation and versionCode bump |
 
 ### Provider Profile System — Correctly Segregated
 
@@ -749,6 +751,19 @@ These can ship in v0.2.0+ updates:
 
 ## Change Log (this file)
 
+- **2026-08-30 (correction batch)** — Added the in-app privacy link, removed
+  crypto from base-currency selection until crypto-base rates are supported,
+  made cached chart timestamps truthful, gated Dev Sandbox to debug builds,
+  and made release signing fail closed. `./scripts/check.sh` passes (239
+  tests); a sequential 53.4 MB diagnostic AAB was built and signature-verified.
+- **2026-08-30 (quality batch)** — Localized remaining visible error/share/
+  picker/product-status copy, wired screen-reader currency-row and section
+  header actions, hardened narrow quote layouts, contained unexpected chart
+  repository failures, rejected future-dated crypto payloads, removed the
+  Android lock-screen widget category, and restricted local secret files to
+  owner-only permissions. `./scripts/check.sh` passes (241 tests); the fresh
+  53.4 MB diagnostic AAB is signed and verified. AdMob and real billing remain
+  intentionally deferred.
 - **2026-08-28 (release re-entry audit)** — Added Phase 0 for resuming the
   release after a pause. Flutter 3.41.7/Dart 3.11.5, the Android/iOS
   toolchain, dependency resolution, `flutter analyze`, and 239 tests were
