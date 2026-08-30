@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -138,6 +139,41 @@ void main() {
     expect(find.byIcon(Icons.keyboard_arrow_down_rounded), findsNothing);
   });
 
+  testWidgets('ChartPairPill keeps currency codes on one line at large text', (
+    WidgetTester tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(125, 90));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(1.3)),
+          child: Scaffold(
+            body: Center(
+              child: SizedBox(
+                width: 142,
+                child: ChartPairPill(
+                  code: 'USD',
+                  locked: false,
+                  tempBadge: false,
+                  onTap: () {},
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final paragraph = tester.renderObject<RenderParagraph>(find.text('USD'));
+    expect(paragraph.maxLines, 1);
+    expect(paragraph.didExceedMaxLines, isFalse);
+    expect(paragraph.softWrap, isFalse);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('ChartMetricRail prioritizes crypto values over period label', (
     WidgetTester tester,
   ) async {
@@ -174,10 +210,9 @@ void main() {
   ) async {
     final chartsController = ChartsController(
       allowCryptoCharts: true,
-      repository: RatesServiceChartRepository(RatesService(
-        client: _FailingRatesClient(),
-        cache: _EmptyRatesCache(),
-      )),
+      repository: RatesServiceChartRepository(
+        RatesService(client: _FailingRatesClient(), cache: _EmptyRatesCache()),
+      ),
     );
     addTearDown(chartsController.dispose);
 
@@ -213,7 +248,10 @@ class _FakeRatesRepository implements ConvertRatesRepository {
   Future<LatestRatesSnapshot> fetchLatest(String base) async => fresh;
 
   @override
-  Future<Map<String, double>?> fetchPreviousRates(String base, {DateTime? referenceDate}) async => null;
+  Future<Map<String, double>?> fetchPreviousRates(
+    String base, {
+    DateTime? referenceDate,
+  }) async => null;
 }
 
 class _FailingRatesClient implements RatesClient {

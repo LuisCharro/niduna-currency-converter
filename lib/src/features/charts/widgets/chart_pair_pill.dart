@@ -27,6 +27,10 @@ class ChartPairPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final currency = currencyByCode(code);
     final narrow = MediaQuery.sizeOf(context).width < 380;
+    final largeText = MediaQuery.textScalerOf(context).scale(15) > 17.25;
+    final flagRadius = largeText ? 16.0 : chartPairFlagRadius;
+    final horizontalPadding = largeText ? 10.0 : AppTheme.space3;
+    final contentGap = largeText ? AppTheme.space1 : AppTheme.space2;
     return Material(
       color: AppColors.of(context).container.withValues(alpha: .72),
       borderRadius: BorderRadius.circular(AppTheme.pillRadius),
@@ -38,56 +42,56 @@ class ChartPairPill extends StatelessWidget {
           child: Container(
             constraints: const BoxConstraints(minHeight: 46),
             padding: const EdgeInsets.symmetric(
-              horizontal: AppTheme.space3,
               vertical: AppTheme.space2,
-            ),
+            ).copyWith(left: horizontalPadding, right: horizontalPadding),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-              border: Border.all(color: AppColors.of(context).border.withValues(alpha: .14)),
+              border: Border.all(
+                color: AppColors.of(context).border.withValues(alpha: .14),
+              ),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                CurrencyFlagIcon(
+                  code: code,
+                  symbol: currency.symbol,
+                  radius: flagRadius,
+                ),
+                SizedBox(width: contentGap),
                 Expanded(
-                  child: Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        CurrencyFlagIcon(
-                          code: code,
-                          symbol: currency.symbol,
-                          radius: chartPairFlagRadius,
-                        ),
-                        const SizedBox(width: AppTheme.space2),
-                        Flexible(
-                          child: Text(
-                            code,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.4,
-                            ),
-                            overflow: TextOverflow.visible,
-                          ),
-                        ),
-                        if (locked) ...<Widget>[
-                          const SizedBox(width: 4),
-                          Icon(Icons.lock_outline, size: 14, color: AppColors.of(context).muted),
-                        ],
-                        if (!tempBadge) ...<Widget>[
-                          const SizedBox(width: 2),
-                          Icon(
-                            Icons.keyboard_arrow_down_rounded,
-                            size: 17,
-                            color: AppColors.of(context).subtle,
-                          ),
-                        ],
-                      ],
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.center,
+                    child: Text(
+                      code,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.4,
+                      ),
+                      maxLines: 1,
+                      softWrap: false,
                     ),
                   ),
                 ),
-                if (tempBadge)
-                  ChartTempBadge(compact: narrow),
+                if (locked) ...<Widget>[
+                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.lock_outline,
+                    size: 14,
+                    color: AppColors.of(context).muted,
+                  ),
+                ],
+                if (!tempBadge) ...<Widget>[
+                  const SizedBox(width: 2),
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: largeText ? 15 : 17,
+                    color: AppColors.of(context).subtle,
+                  ),
+                ],
+                if (tempBadge) ChartTempBadge(compact: narrow),
               ],
             ),
           ),

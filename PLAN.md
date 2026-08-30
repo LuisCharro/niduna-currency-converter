@@ -364,7 +364,7 @@ lib/
 | Starter favorites seeding | DONE | Seeds USD-EUR, USD-GBP, USD-BTC on first run so widget is useful immediately |
 | iOS home-screen widget code | DONE (disabled by default) | Target and Swift code wired; embed phase removed on main for iOS 26 sim install stability |
 | Calculator expression evaluator tests | DONE | 12 test cases covering arithmetic and edge cases |
-| 241 total tests passing | LAST VERIFIED 2026-08-30 | Rerun after release-code changes |
+| 242 total tests passing | LAST VERIFIED 2026-08-30 | Rerun after release-code changes |
 
 ### Data Sources
 

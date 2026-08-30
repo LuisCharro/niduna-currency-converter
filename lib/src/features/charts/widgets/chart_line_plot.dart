@@ -156,7 +156,8 @@ class ChartLinePlot extends StatelessWidget {
           maxIncluded: false,
           getTitlesWidget: (value, meta) {
             final index = value.toInt();
-            if (value != index.toDouble() || !_labelIndexes().contains(index)) {
+            if (value != index.toDouble() ||
+                !_labelIndexes(context).contains(index)) {
               return const SizedBox.shrink();
             }
             return Padding(
@@ -176,18 +177,19 @@ class ChartLinePlot extends StatelessWidget {
     );
   }
 
-  Set<int> _labelIndexes() {
+  Set<int> _labelIndexes(BuildContext context) {
     final count = dates.length;
     if (count == 0) return const <int>{};
-    if (count <= 8) return List<int>.generate(count, (index) => index).toSet();
+    final scaledLabelSize = MediaQuery.textScalerOf(context).scale(11.5);
+    final labelCount = scaledLabelSize > 13 ? 4 : 5;
+    if (count <= labelCount + 1) {
+      return List<int>.generate(count, (index) => index).toSet();
+    }
 
-    final section = (count - 1) / 6;
-    return <int>{
-      section.round(),
-      (section * 2).round(),
-      (section * 3).round(),
-      (section * 4).round(),
-      (section * 5).round(),
-    };
+    final section = (count - 1) / (labelCount + 1);
+    return List<int>.generate(
+      labelCount,
+      (index) => (section * (index + 1)).round(),
+    ).toSet();
   }
 }

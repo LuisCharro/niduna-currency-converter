@@ -13,7 +13,7 @@ AdMob, website, email, or closed-testing steps documented there.
 
 - Flutter 3.41.7 / Dart 3.11.5.
 - `flutter analyze` passes.
-- 241 Flutter tests pass.
+- 242 Flutter tests pass.
 - A sequential release AAB build completes and is signed with the current
   Honest Fern Android application ID.
 - The current AAB is still diagnostic and must not be uploaded: it uses test
@@ -222,8 +222,12 @@ batch then passed `./scripts/check.sh` and another sequential AAB build. This
 is why the release procedure must run dependency resolution and the final build
 sequentially and must re-check the generated registrant.
 
-The follow-up quality batch also passed `./scripts/check.sh` with 241 tests and
-produced a fresh 53.4 MB signed diagnostic AAB. No source changes are implied
-by this document alone. Each implementation
+The follow-up quality batch passed `./scripts/check.sh` with 241 tests and
+produced a fresh 53.4 MB signed diagnostic AAB. The 2026-08-30 UX pass then
+fixed large-text chart pair-code wrapping and overlapping chart date labels,
+aligned the Charts currency picker surface with Convert, added a regression
+test, and re-verified `./scripts/check.sh` with 242 tests. The final emulator
+check covered the main tabs, picker sheets, and Charts at a 1.3 text scale.
+No source changes are implied by this document alone. Each implementation
 batch must update this plan, the canonical release checklist, focused tests,
 and the final release evidence together.

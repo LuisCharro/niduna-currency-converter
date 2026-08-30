@@ -5,7 +5,7 @@
 > **Branch:** main
 > **Status:** The product UI and local data path are complete, but the
 > **store release path is not code-complete**. The last recorded baseline is
-> 241 passing tests with clean analysis (re-verified 2026-08-30). The current
+> 242 passing tests with clean analysis (re-verified 2026-08-30). The current
 > Flutter toolchain is healthy and the release AAB smoke build was revalidated
 > successfully on 2026-08-30. Open release work is B4
 > (real AdMob IDs), B8 (UMP consent + privacy-options
@@ -50,9 +50,10 @@
 > 7. **Site launch batch:** only after the production listing is public,
 > replace Coming soon with the real Play URL and deploy/verify S2.
 
-The 2026-08-30 quality batch improves localization coverage,
-screen-reader actions, narrow-layout behavior, chart error boundaries, crypto
-payload validation, Android widget privacy, and local secret-file permissions.
+The 2026-08-30 quality and UX batches improve localization coverage,
+screen-reader actions, narrow-layout behavior, large-text chart layouts, chart
+picker consistency, chart error boundaries, crypto payload validation, Android
+widget privacy, and local secret-file permissions.
 These changes are committed on `main`; the resulting AAB remains diagnostic
 until real AdMob consent/configuration and Play Billing are implemented.
 
@@ -766,6 +767,12 @@ These can ship in v0.2.0+ updates:
   owner-only permissions. `./scripts/check.sh` passes (241 tests); the fresh
   53.4 MB diagnostic AAB is signed and verified. AdMob and real billing remain
   intentionally deferred.
+- **2026-08-30 (UX pass)** — Audited the main tabs and picker sheets on the
+  Android emulator, including 1.3x text scale. Aligned the Charts picker
+  surface with Convert, kept Chart pair codes on one line at large text,
+  reduced date-label density to prevent overlap, and added a regression test.
+  `./scripts/check.sh` passes with 242 tests. No new release blocker was found;
+  physical-device TalkBack and final offline/monetization QA remain pending.
 - **2026-08-28 (release re-entry audit)** — Added Phase 0 for resuming the
   release after a pause. Flutter 3.41.7/Dart 3.11.5, the Android/iOS
   toolchain, dependency resolution, `flutter analyze`, and 239 tests were
