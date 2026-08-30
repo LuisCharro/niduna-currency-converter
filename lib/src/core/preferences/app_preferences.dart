@@ -22,7 +22,9 @@ class AppPreferences extends ChangeNotifier {
   String get defaultBaseCurrency => _prefs.getString(_defaultBaseKey) ?? 'USD';
   int get decimalPlaces => _prefs.getInt(_decimalPlacesKey) ?? 2;
   bool get refreshOnOpen => _prefs.getBool(_refreshOnOpenKey) ?? true;
-  bool get devMode => _prefs.getBool(_devModeKey) ?? _defaultDevMode;
+  bool get devToolsAvailable => kDebugMode;
+  bool get devMode =>
+      devToolsAvailable && (_prefs.getBool(_devModeKey) ?? _defaultDevMode);
   bool get isDarkMode => _prefs.getBool(_darkModeKey) ?? false;
 
   bool get isDecimalPlacesSupported => decimalPlaces >= 2 && decimalPlaces <= 6;
@@ -55,6 +57,7 @@ class AppPreferences extends ChangeNotifier {
   }
 
   Future<void> setDevMode(bool value) async {
+    if (!devToolsAvailable) return;
     await _prefs.setBool(_devModeKey, value);
     notifyListeners();
   }

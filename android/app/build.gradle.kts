@@ -6,8 +6,7 @@ plugins {
 }
 
 // Load release keystore credentials from android/key.properties (gitignored).
-// If the file is missing, release builds fall back to debug signing so local
-// dev workflows keep working. For Play Store uploads, the file is required.
+// Debug builds remain independent of this file. Release builds must have it.
 import java.util.Properties
 import java.io.FileInputStream
 
@@ -57,15 +56,39 @@ android {
 
     buildTypes {
         release {
-            // Use the real release keystore if key.properties is present,
-            // otherwise fall back to debug signing for local dev convenience.
-            signingConfig = if (keystoreProperties.isNotEmpty()) {
-                signingConfigs.getByName("release")
-            } else {
-                signingConfigs.getByName("debug")
+            if (keystoreProperties.isNotEmpty()) {
+                signingConfig = signingConfigs.getByName("release")
             }
         }
     }
+}
+
+val verifyReleaseSigning = tasks.register("verifyReleaseSigning") {
+    doLast {
+        val requiredKeys = listOf(
+            "storeFile",
+            "storePassword",
+            "keyAlias",
+            "keyPassword",
+        )
+        val missingKeys = requiredKeys.filter { keystoreProperties[it].toString().isBlank() }
+        if (missingKeys.isNotEmpty()) {
+            throw GradleException(
+                "Release signing is not configured. Missing android/key.properties values: " +
+                    missingKeys.joinToString(", "),
+            )
+        }
+        val storeFilePath = keystoreProperties.getProperty("storeFile")
+        if (!project.file(storeFilePath).isFile) {
+            throw GradleException(
+                "Release signing keystore not found: ${project.file(storeFilePath).path}",
+            )
+        }
+    }
+}
+
+tasks.matching { it.name == "preReleaseBuild" }.configureEach {
+    dependsOn(verifyReleaseSigning)
 }
 
 flutter {
