@@ -117,7 +117,7 @@ class ChartPairStrip extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      backgroundColor: AppColors.of(context).card,
+      useSafeArea: true,
       builder: (_) => ChartCurrencyPickerSheet(
         title: selectingBase
             ? selectBaseCurrencyForChart(context)
