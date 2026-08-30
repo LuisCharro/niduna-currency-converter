@@ -33,13 +33,27 @@ class FawazahmedCryptoUsdPriceClient implements CryptoUsdPriceClient {
 
         final json = jsonDecode(response.body);
         if (json is! Map<String, dynamic>) {
-          throw const CryptoUsdPriceException('fawazahmed0 returned invalid payload');
+          throw const CryptoUsdPriceException(
+            'fawazahmed0 returned invalid payload',
+          );
         }
 
         final usd = json['usd'];
         final date = json['date'];
         if (usd is! Map<String, dynamic>) {
           throw const CryptoUsdPriceException('fawazahmed0 missing usd rates');
+        }
+        final savedAt = DateTime.tryParse('${date ?? ''}T00:00:00.000');
+        if (savedAt == null) {
+          throw const CryptoUsdPriceException(
+            'fawazahmed0 returned invalid date',
+          );
+        }
+        final tomorrow = DateTime.now().add(const Duration(days: 1));
+        if (savedAt.isAfter(tomorrow)) {
+          throw const CryptoUsdPriceException(
+            'fawazahmed0 returned a future date',
+          );
         }
 
         final pricesUsd = <String, double>{};
@@ -50,13 +64,15 @@ class FawazahmedCryptoUsdPriceClient implements CryptoUsdPriceClient {
         }
 
         if (pricesUsd.length < 2) {
-          throw const CryptoUsdPriceException('fawazahmed0 returned too few crypto rates');
+          throw const CryptoUsdPriceException(
+            'fawazahmed0 returned too few crypto rates',
+          );
         }
         _validate(pricesUsd);
 
         return CryptoUsdPriceSnapshot(
           provider: 'fawazahmed0',
-          savedAt: DateTime.tryParse('${date ?? ''}T00:00:00.000') ?? DateTime.now(),
+          savedAt: savedAt,
           pricesUsd: pricesUsd,
         );
       } catch (error) {
@@ -75,7 +91,9 @@ class FawazahmedCryptoUsdPriceClient implements CryptoUsdPriceClient {
     }
     final btc = pricesUsd['BTC']!;
     if (btc < 1000 || btc > 1000000) {
-      throw const CryptoUsdPriceException('fawazahmed0 returned implausible BTC price');
+      throw const CryptoUsdPriceException(
+        'fawazahmed0 returned implausible BTC price',
+      );
     }
     for (final entry in pricesUsd.entries) {
       if (entry.value.isNaN || entry.value <= 0) {

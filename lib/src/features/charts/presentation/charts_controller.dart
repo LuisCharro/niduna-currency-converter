@@ -122,12 +122,28 @@ class ChartsController extends ChangeNotifier {
     }
     final to = DateTime.now();
 
-    final result = await _repository.getHistoricalRates(
-      base: _state.base,
-      quote: _state.quote,
-      from: from,
-      to: to,
-    );
+    late final HistoricalResult result;
+    try {
+      result = await _repository.getHistoricalRates(
+        base: _state.base,
+        quote: _state.quote,
+        from: from,
+        to: to,
+      );
+    } catch (_) {
+      // Repositories normally convert provider failures into HistoricalResult,
+      // but this boundary also protects the UI from an unexpected client or
+      // cache exception. Never surface provider internals to users.
+      if (_disposed || requestVersion != _requestVersion) return;
+      _setState(
+        _state.copyWith(
+          status: ChartStatus.error,
+          data: const {},
+          message: null,
+        ),
+      );
+      return;
+    }
 
     if (_disposed || requestVersion != _requestVersion) {
       return;
@@ -142,7 +158,7 @@ class ChartsController extends ChangeNotifier {
     _setState(
       _state.copyWith(
         data: newData,
-        lastUpdated: newData.isNotEmpty ? DateTime.now() : null,
+        lastUpdated: result.snapshot?.savedAt,
         status: newStatus,
         message: newMessage,
       ),
