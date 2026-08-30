@@ -118,7 +118,22 @@ Each script writes to its own subdirectory under `.tmp/screens/ios/`.
 ./.devtools/capture_android_screens.sh
 ```
 
-Seeds data in-process and captures screenshots on Android emulator.
+Seeds data in-process and captures the paid/store-style gallery on an Android
+emulator. Use an absolute output path when running from another shell context.
+
+For a second four-tab layout pass with banner space removed, use the parallel
+Remove Ads-owned target:
+
+```bash
+SCREEN_OUTPUT_DIR=/absolute/path/to/.tmp/screens/android/paid \
+CAPTURE_TARGET_PATH=integration_test/screenshot_paid_test.dart \
+./.devtools/capture_android_screens.sh
+```
+
+This target simulates the `Remove Ads` entitlement, keeps three local favorite
+pairs, and captures Convert, Favorites, Chart, and Settings. The regular
+`integration_test/screenshot_demo_test.dart` remains the free-user path with
+ads enabled.
 
 It defaults to the dev crypto provider profile and visible developer UI.
 
