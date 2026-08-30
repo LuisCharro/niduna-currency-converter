@@ -137,6 +137,34 @@ ads enabled.
 
 It defaults to the dev crypto provider profile and visible developer UI.
 
+## Honest Fern site screenshot capture
+
+To regenerate the large fully unlocked paid-layout screenshots used by
+`niduna-site` and copy
+the stable five assets into that repository in one step:
+
+```bash
+./.devtools/capture_site_screenshots.sh
+```
+
+The helper reuses or starts the `Pixel7_EN` AVD on `emulator-5556`, verifies the
+1080×2400 screen size, captures both light and dark modes, and updates only the
+five `niduna-site/assets/screenshot-*.png` files consumed by the Currency
+Converter page. It uses the store-style gallery so the site previews contain
+neither ads nor upgrade prompts. It leaves the emulator running for inspection.
+
+Useful overrides:
+
+- `ANDROID_AVD`, `ANDROID_PORT`, `ANDROID_SERIAL`
+- `SITE_REPO_PATH`
+- `SCREEN_OUTPUT_DIR`
+- `BOOT_TIMEOUT_SECONDS`
+- `START_EMULATOR=0` when the target must already be running
+
+The generated working files remain under `.tmp/screens/android/site-paid/` and
+are intentionally gitignored. Review the five site assets visually before
+committing the site repository.
+
 ## iOS minimal smoke test
 
 ```bash
