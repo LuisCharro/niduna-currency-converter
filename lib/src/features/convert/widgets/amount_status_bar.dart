@@ -79,8 +79,8 @@ class AmountStatusBar extends StatelessWidget {
       ConvertStatus.refreshing => refreshingRates(context, lastUpdatedLabel),
       ConvertStatus.stale => cachedRatesLabel(context, lastUpdatedLabel),
       ConvertStatus.noCache => offlineRatesUnavailable(context),
-      ConvertStatus.cached || ConvertStatus.fresh =>
-        freshRatesLabel(context, lastUpdatedLabel),
+      ConvertStatus.cached ||
+      ConvertStatus.fresh => dailyRatesLabel(context, lastUpdatedLabel),
     };
   }
 

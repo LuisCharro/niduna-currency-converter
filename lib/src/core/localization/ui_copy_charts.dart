@@ -1,39 +1,16 @@
 part of 'ui_copy.dart';
 
-String chartJustUpdated(BuildContext context) => switch (_lang(context)) {
-  'es' => 'Actualizado ahora',
-  'de' => 'Gerade aktualisiert',
-  'it' => 'Appena aggiornato',
-  "fr" => "Mis à jour à l'instant",
-  _ => 'Just updated',
-};
-
-String chartUpdatedMinutesAgo(BuildContext context, int minutes) =>
-    switch (_lang(context)) {
-      'es' => 'Actualizado hace $minutes min',
-      'de' => 'Vor $minutes Min. aktualisiert',
-      'it' => 'Aggiornato $minutes min fa',
-      'fr' => 'Mis à jour il y a $minutes min',
-      _ => 'Updated ${minutes}m ago',
-    };
-
-String chartUpdatedHoursAgo(BuildContext context, int hours) =>
-    switch (_lang(context)) {
-      'es' => 'Actualizado hace $hours h',
-      'de' => 'Vor $hours Std. aktualisiert',
-      'it' => 'Aggiornato $hours h fa',
-      'fr' => 'Mis à jour il y a $hours h',
-      _ => 'Updated ${hours}h ago',
-    };
-
-String chartUpdatedDaysAgo(BuildContext context, int days) =>
-    switch (_lang(context)) {
-      'es' => 'Actualizado hace $days d',
-      'de' => 'Vor $days Tg. aktualisiert',
-      'it' => 'Aggiornato $days g fa',
-      'fr' => 'Mis à jour il y a $days j',
-      _ => 'Updated ${days}d ago',
-    };
+String chartDailyDataLabel(BuildContext context, DateTime checkedAt) {
+  final locale = Localizations.localeOf(context).toLanguageTag();
+  final date = DateFormat.MMMd(locale).format(checkedAt);
+  return switch (_lang(context)) {
+    'es' => 'Datos diarios · Comprobado $date',
+    'de' => 'Tagesdaten · Geprüft am $date',
+    'it' => 'Dati giornalieri · Verificati il $date',
+    'fr' => 'Données quotidiennes · Vérifiées le $date',
+    _ => 'Daily data · Checked $date',
+  };
+}
 
 String metricHigh(BuildContext context) => switch (_lang(context)) {
   'es' => 'Máximo',

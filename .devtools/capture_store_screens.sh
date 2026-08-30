@@ -51,6 +51,7 @@ dark_dir="${output_base}/dark"
 
 echo "=== Capturing LIGHT mode into ${light_dir} ==="
 SCREEN_OUTPUT_DIR="${light_dir}" \
+  SCREENSHOT_DARK= \
   PROVIDER_PROFILE="${provider_profile}" \
   APP_DEV_MODE="${app_dev_mode}" \
   bash "${script_dir}/capture_android_screens.sh"
@@ -61,6 +62,7 @@ sleep 2
 
 echo "=== Capturing DARK mode into ${dark_dir} ==="
 SCREEN_OUTPUT_DIR="${dark_dir}" \
+  SCREENSHOT_DARK=true \
   PROVIDER_PROFILE="${provider_profile}" \
   APP_DEV_MODE="${app_dev_mode}" \
   bash "${script_dir}/capture_android_screens.sh"

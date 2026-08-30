@@ -93,7 +93,7 @@ void main() {
     expect(find.text('Chart'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Favorites'), findsOneWidget);
-    expect(find.textContaining('Fresh'), findsOneWidget);
+    expect(find.textContaining('Daily rates'), findsOneWidget);
     expect(find.byKey(const Key('open_currency_picker')), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
@@ -152,7 +152,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('AMOUNT'), findsOneWidget);
-    expect(find.textContaining('Fresh'), findsOneWidget);
+    expect(find.textContaining('Daily rates'), findsOneWidget);
     expect(find.byKey(const Key('open_currency_picker')), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
     expect(find.textContaining('currencies visible'), findsNothing);
@@ -242,12 +242,12 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.textContaining('Fresh'));
+    await tester.tap(find.textContaining('Daily rates'));
     await tester.pumpAndSettle();
 
     expect(find.text('Daily exchange rates'), findsOneWidget);
     expect(
-      find.textContaining('not minute-by-minute market prices'),
+      find.textContaining('not live or intraday market prices'),
       findsOneWidget,
     );
     expect(find.textContaining('shown in your local time'), findsOneWidget);

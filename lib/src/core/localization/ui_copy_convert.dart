@@ -1,12 +1,14 @@
 part of 'ui_copy.dart';
 
 String dailyRatesTooltip(BuildContext context) => switch (_lang(context)) {
-  'es' => 'Los tipos se actualizan una vez al día. Toca para ver detalles.',
-  'de' => 'Kurse werden einmal täglich aktualisiert. Tippe für Details.',
-  'it' => 'I tassi si aggiornano una volta al giorno. Tocca per i dettagli.',
+  'es' =>
+    'Los tipos se actualizan una vez por día laborable. Toca para ver detalles.',
+  'de' => 'Kurse werden einmal pro Werktag aktualisiert. Tippe für Details.',
+  'it' =>
+    'I tassi si aggiornano una volta per giorno lavorativo. Tocca per i dettagli.',
   'fr' =>
-    'Les taux sont mis à jour une fois par jour. Touchez pour les détails.',
-  _ => 'Rates update once per day. Tap for details.',
+    'Les taux sont mis à jour une fois par jour ouvré. Touchez pour les détails.',
+  _ => 'Rates update once per business day. Tap for details.',
 };
 
 String loadingDailyRates(BuildContext context) => switch (_lang(context)) {
@@ -19,20 +21,20 @@ String loadingDailyRates(BuildContext context) => switch (_lang(context)) {
 
 String refreshingRates(BuildContext context, String lastUpdatedLabel) =>
     switch (_lang(context)) {
-      'es' => 'Actualizando · $lastUpdatedLabel',
-      'de' => 'Aktualisieren · $lastUpdatedLabel',
-      'it' => 'Aggiornamento · $lastUpdatedLabel',
-      'fr' => 'Actualisation · $lastUpdatedLabel',
-      _ => 'Refreshing · $lastUpdatedLabel',
+      'es' => 'Comprobando tipos diarios · $lastUpdatedLabel',
+      'de' => 'Tageskurse werden geprüft · $lastUpdatedLabel',
+      'it' => 'Controllo dei tassi giornalieri · $lastUpdatedLabel',
+      'fr' => 'Vérification des taux quotidiens · $lastUpdatedLabel',
+      _ => 'Checking daily rates · $lastUpdatedLabel',
     };
 
 String cachedRatesLabel(BuildContext context, String lastUpdatedLabel) =>
     switch (_lang(context)) {
-      'es' => 'En caché · $lastUpdatedLabel',
-      'de' => 'Zwischengespeichert · $lastUpdatedLabel',
-      'it' => 'In cache · $lastUpdatedLabel',
-      'fr' => 'En cache · $lastUpdatedLabel',
-      _ => 'Cached · $lastUpdatedLabel',
+      'es' => 'Tipos diarios en caché · $lastUpdatedLabel',
+      'de' => 'Gespeicherte Tageskurse · $lastUpdatedLabel',
+      'it' => 'Tassi giornalieri in cache · $lastUpdatedLabel',
+      'fr' => 'Taux quotidiens en cache · $lastUpdatedLabel',
+      _ => 'Cached daily rates · $lastUpdatedLabel',
     };
 
 String offlineRatesUnavailable(BuildContext context) =>
@@ -44,26 +46,26 @@ String offlineRatesUnavailable(BuildContext context) =>
       _ => 'Offline — rates unavailable',
     };
 
-String freshRatesLabel(BuildContext context, String lastUpdatedLabel) =>
+String dailyRatesLabel(BuildContext context, String lastUpdatedLabel) =>
     switch (_lang(context)) {
-      'es' => 'Actualizados · $lastUpdatedLabel',
-      'de' => 'Aktuell · $lastUpdatedLabel',
-      'it' => 'Aggiornati · $lastUpdatedLabel',
-      'fr' => 'À jour · $lastUpdatedLabel',
-      _ => 'Fresh · $lastUpdatedLabel',
+      'es' => 'Tipos diarios · $lastUpdatedLabel',
+      'de' => 'Tageskurse · $lastUpdatedLabel',
+      'it' => 'Tassi giornalieri · $lastUpdatedLabel',
+      'fr' => 'Taux quotidiens · $lastUpdatedLabel',
+      _ => 'Daily rates · $lastUpdatedLabel',
     };
 
 String dailyRatesBody(BuildContext context) => switch (_lang(context)) {
   'es' =>
-    'La versión gratuita actualiza los tipos de cambio una vez al día. Son útiles para conversiones cotidianas, pero no son precios de mercado al minuto.',
+    'La versión gratuita actualiza los tipos de cambio una vez por día laborable. Son útiles para conversiones cotidianas, pero no son precios de mercado en tiempo real.',
   'de' =>
-    'Die kostenlose Version aktualisiert Wechselkurse einmal täglich. Sie sind für alltägliche Umrechnungen nützlich, aber keine minutengenauen Marktpreise.',
+    'Die kostenlose Version aktualisiert Wechselkurse einmal pro Werktag. Sie sind für alltägliche Umrechnungen nützlich, aber keine minutengenauen Marktpreise.',
   'it' =>
-    'La versione gratuita aggiorna i tassi di cambio una volta al giorno. Sono utili per le conversioni quotidiane, ma non sono prezzi di mercato al minuto.',
+    'La versione gratuita aggiorna i tassi di cambio una volta per giorno lavorativo. Sono utili per le conversioni quotidiane, ma non sono prezzi di mercato in tempo reale.',
   'fr' =>
-    'La version gratuite met à jour les taux de change une fois par jour. Ils sont utiles pour les conversions quotidiennes, mais ne sont pas des prix de marché à la minute.',
+    'La version gratuite met à jour les taux de change une fois par jour ouvré. Ils sont utiles pour les conversions quotidiennes, mais ne sont pas des prix de marché en temps réel.',
   _ =>
-    'The free version updates exchange rates once per day. They are useful for everyday conversion, but they are not minute-by-minute market prices.',
+    'The free version updates exchange rates once per business day. They are useful for everyday conversion, but they are not live or intraday market prices.',
 };
 
 String nextUpdateLocalTime(BuildContext context) => switch (_lang(context)) {

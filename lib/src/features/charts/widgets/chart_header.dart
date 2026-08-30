@@ -129,14 +129,6 @@ class ChartHeader extends StatelessWidget {
 
   static String? _freshnessLabel(BuildContext context, DateTime? updated) {
     if (updated == null) return null;
-    final diff = DateTime.now().difference(updated);
-    if (diff.inMinutes < 1) return chartJustUpdated(context);
-    if (diff.inMinutes < 60) {
-      return chartUpdatedMinutesAgo(context, diff.inMinutes);
-    }
-    if (diff.inHours < 24) {
-      return chartUpdatedHoursAgo(context, diff.inHours);
-    }
-    return chartUpdatedDaysAgo(context, diff.inDays);
+    return chartDailyDataLabel(context, updated);
   }
 }
