@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
@@ -9,6 +10,10 @@ import 'widgets/iap_purchase_player.dart';
 import 'widgets/settings_detail_route.dart';
 
 class SettingsController extends ChangeNotifier {
+  static final Uri _privacyPolicyUri = Uri.parse(
+    'https://honestfern.com/currency-converter/privacy/',
+  );
+
   SettingsController({
     required this.preferences,
     required this.monetization,
@@ -37,6 +42,10 @@ class SettingsController extends ChangeNotifier {
         builder: (_) => const DataDetailsPage(),
       ),
     );
+  }
+
+  Future<void> openPrivacyPolicy() async {
+    await launchUrl(_privacyPolicyUri, mode: LaunchMode.externalApplication);
   }
 
   void requestClearCache(BuildContext context) {
@@ -70,6 +79,7 @@ class SettingsController extends ChangeNotifier {
   }
 
   void toggleDevMode(BuildContext context) {
+    if (!preferences.devToolsAvailable) return;
     final current = preferences.devMode;
     final next = !current;
     preferences.setDevMode(next);

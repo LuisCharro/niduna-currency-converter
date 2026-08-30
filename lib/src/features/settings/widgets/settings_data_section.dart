@@ -34,6 +34,15 @@ class SettingsDataSection extends StatelessWidget {
             color: AppColors.of(context).subtle,
           ),
         ),
+        SettingsTile(
+          key: const Key('open_privacy_policy'),
+          title: loc.labelPrivacy,
+          onTap: controller.openPrivacyPolicy,
+          trailing: Icon(
+            Icons.open_in_new_rounded,
+            color: AppColors.of(context).subtle,
+          ),
+        ),
         ClearCacheTile(controller: controller),
       ],
     );
