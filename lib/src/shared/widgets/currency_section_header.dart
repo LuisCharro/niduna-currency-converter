@@ -32,7 +32,9 @@ class CurrencySectionHeader extends StatelessWidget {
             child: Row(
               children: [
                 Icon(
-                  isExpanded ? Icons.keyboard_arrow_down : Icons.chevron_right,
+                  isExpanded
+                      ? Icons.keyboard_arrow_down_rounded
+                      : Icons.chevron_right_rounded,
                   size: 20,
                   color: colors.muted,
                 ),

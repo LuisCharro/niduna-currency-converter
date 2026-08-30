@@ -43,7 +43,11 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
                 button: true,
                 label: loc.closeTooltip,
                 child: IconButton(
-                  icon: Icon(Icons.close, size: 18, color: AppColors.of(context).muted),
+                  icon: Icon(
+                    Icons.close_rounded,
+                    size: 18,
+                    color: AppColors.of(context).muted,
+                  ),
                   tooltip: loc.closeTooltip,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
@@ -57,7 +61,7 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
             onChanged: (v) => setState(() => _query = v.trim().toUpperCase()),
             decoration: InputDecoration(
               hintText: loc.searchCodeOrName,
-              prefixIcon: const Icon(Icons.search, size: 20),
+              prefixIcon: const Icon(Icons.search_rounded, size: 20),
               isDense: true,
               filled: true,
               fillColor: AppColors.of(context).container.withValues(alpha: .55),
@@ -91,12 +95,17 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
                   c.code,
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: selected ? AppColors.of(context).muted : AppColors.of(context).text,
+                    color: selected
+                        ? AppColors.of(context).muted
+                        : AppColors.of(context).text,
                   ),
                 ),
                 subtitle: Text(c.name),
                 trailing: selected
-                    ? Icon(Icons.check_circle, color: AppColors.of(context).primary)
+                    ? Icon(
+                        Icons.check_circle_rounded,
+                        color: AppColors.of(context).primary,
+                      )
                     : null,
               );
             },

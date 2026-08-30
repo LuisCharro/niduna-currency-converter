@@ -17,13 +17,13 @@ class TrendBadge extends StatelessWidget {
 
     switch (trend) {
       case TrendDirection.up:
-        icon = Icons.arrow_upward;
+        icon = Icons.arrow_upward_rounded;
         color = colors.trendUp;
       case TrendDirection.down:
-        icon = Icons.arrow_downward;
+        icon = Icons.arrow_downward_rounded;
         color = colors.trendDown;
       case TrendDirection.flat:
-        icon = Icons.remove;
+        icon = Icons.remove_rounded;
         color = colors.muted.withValues(alpha: .6);
     }
 
@@ -35,7 +35,10 @@ class TrendBadge extends StatelessWidget {
     // legible unit instead of a tiny stray glyph. Tint is derived from the
     // trend colour, so it adapts to light/dark automatically.
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: label != null ? 7 : 5, vertical: 2.5),
+      padding: EdgeInsets.symmetric(
+        horizontal: label != null ? 7 : 5,
+        vertical: 2.5,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: .12),
         borderRadius: BorderRadius.circular(999),

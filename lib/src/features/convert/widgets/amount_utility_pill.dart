@@ -22,9 +22,9 @@ class AmountUtilityPill extends StatelessWidget {
     final loc = l10n(context);
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colors.card.withValues(alpha: .62),
+        color: colors.card.withValues(alpha: .46),
         borderRadius: BorderRadius.circular(AppTheme.pillRadius),
-        border: Border.all(color: colors.border.withValues(alpha: .12)),
+        border: Border.all(color: colors.border.withValues(alpha: .10)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -36,11 +36,11 @@ class AmountUtilityPill extends StatelessWidget {
             onPressed: onRefresh,
           ),
           SizedBox(
-            height: 20,
+            height: 16,
             child: VerticalDivider(
               width: 1,
               thickness: 1,
-              color: colors.border.withValues(alpha: .1),
+              color: colors.border.withValues(alpha: .08),
             ),
           ),
           _UtilityIconButton(
@@ -50,11 +50,11 @@ class AmountUtilityPill extends StatelessWidget {
             onPressed: onShare,
           ),
           SizedBox(
-            height: 20,
+            height: 16,
             child: VerticalDivider(
               width: 1,
               thickness: 1,
-              color: colors.border.withValues(alpha: .1),
+              color: colors.border.withValues(alpha: .08),
             ),
           ),
           _UtilityIconButton(
@@ -86,7 +86,7 @@ class _UtilityIconButton extends StatelessWidget {
     return IconButton(
       tooltip: tooltip,
       onPressed: onPressed,
-      icon: Icon(icon, size: 19),
+      icon: Icon(icon, size: 18),
       style: IconButton.styleFrom(
         foregroundColor: colors.primary,
         fixedSize: const Size(44, 44),

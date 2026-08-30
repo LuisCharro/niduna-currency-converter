@@ -74,10 +74,10 @@ class QuoteValue extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 11.5,
+                    fontSize: 11,
                     fontWeight: FontWeight.w500,
-                    color: colors.muted.withValues(alpha: .82),
-                    letterSpacing: 0.2,
+                    color: colors.muted.withValues(alpha: .72),
+                    letterSpacing: 0.1,
                   ),
                 ),
               ),

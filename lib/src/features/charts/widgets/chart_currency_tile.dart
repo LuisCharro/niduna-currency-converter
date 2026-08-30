@@ -58,20 +58,19 @@ class ChartCurrencyTile extends StatelessWidget {
                     locked
                         ? tapToUnlockLabel(context)
                         : tempUnlocked
-                            ? unlockedFor24hLabel(context)
-                            : isFixed
-                                ? currentCurrencyLabel(context, code)
-                                : name,
+                        ? unlockedFor24hLabel(context)
+                        : isFixed
+                        ? currentCurrencyLabel(context, code)
+                        : name,
                     style: TextStyle(
                       fontSize: 12,
                       color: tempUnlocked
                           ? AppColors.of(context).primary.withValues(alpha: .7)
                           : locked
-                              ? AppColors.of(context).muted
-                              : isFixed
-                                  ? AppColors.of(context).primary
-                                      .withValues(alpha: .5)
-                                  : AppColors.of(context).subtle,
+                          ? AppColors.of(context).muted
+                          : isFixed
+                          ? AppColors.of(context).primary.withValues(alpha: .5)
+                          : AppColors.of(context).subtle,
                     ),
                   ),
                 ],
@@ -90,9 +89,15 @@ class ChartCurrencyTile extends StatelessWidget {
             else if (tempUnlocked)
               _tempBadge(context)
             else if (isSelected)
-              Icon(Icons.check_circle, color: AppColors.of(context).primary)
+              Icon(
+                Icons.check_circle_rounded,
+                color: AppColors.of(context).primary,
+              )
             else if (unlocked)
-              Icon(Icons.chevron_right, color: AppColors.of(context).subtle)
+              Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.of(context).subtle,
+              )
             else
               _badge(
                 context,
@@ -156,7 +161,7 @@ class ChartCurrencyTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Icon(
-            Icons.schedule,
+            Icons.schedule_rounded,
             size: 13,
             color: AppColors.of(context).primary,
           ),
@@ -172,7 +177,7 @@ class ChartCurrencyTile extends StatelessWidget {
           if (isSelected) ...[
             const SizedBox(width: 4),
             Icon(
-              Icons.check_circle,
+              Icons.check_circle_rounded,
               size: 13,
               color: AppColors.of(context).primary,
             ),

@@ -34,21 +34,25 @@ class RatesSectionHeader extends StatelessWidget {
             onPressed: onEdit,
             style: OutlinedButton.styleFrom(
               foregroundColor: colors.primary,
-              backgroundColor: colors.card,
-              side: BorderSide(color: colors.border.withValues(alpha: .22)),
+              backgroundColor: colors.container.withValues(alpha: .64),
+              side: BorderSide(color: colors.border.withValues(alpha: .16)),
               padding: const EdgeInsets.symmetric(
                 horizontal: AppTheme.space3,
-                vertical: 8,
+                vertical: 7,
               ),
-              minimumSize: const Size(48, 38),
+              minimumSize: const Size(48, 40),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppTheme.pillRadius),
               ),
             ),
-            icon: const Icon(Icons.add_rounded, size: 18),
-            label: Text(l10n?.btnAdd ?? 'Add currencies',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800),
+            icon: const Icon(Icons.add_rounded, size: 17),
+            label: Text(
+              l10n?.btnAdd ?? 'Add currencies',
+              style: const TextStyle(
+                fontSize: 12.5,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],

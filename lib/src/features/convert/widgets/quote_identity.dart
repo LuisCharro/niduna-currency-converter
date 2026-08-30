@@ -29,10 +29,10 @@ class QuoteIdentity extends StatelessWidget {
         Text(
           quote.code,
           style: TextStyle(
-            fontSize: 13,
+            fontSize: 12.5,
             fontWeight: FontWeight.w500,
-            color: colors.muted,
-            letterSpacing: 0.5,
+            color: colors.muted.withValues(alpha: .9),
+            letterSpacing: 0.4,
           ),
         ),
       ],
