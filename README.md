@@ -26,8 +26,8 @@ ID stays on the Hostinger VPS, where a worker pulls, validates and stores the
 rates. A public Honest Fern API under `honestfern.com/currency/` then serves
 those stored results to this app and future Honest Fern apps. The mobile app
 must never contain the OXR credential and will keep its current providers as
-fallbacks. CoinGecko is optional and only for future intraday crypto after its
-separate licensing gate is cleared.
+fallbacks. **No CoinGecko: the crypto track was closed on 2026-09-06 — crypto
+stays on fawazahmed0 (CC0, daily, direct).**
 
 ## Core app docs
 

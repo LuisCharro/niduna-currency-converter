@@ -5,7 +5,8 @@
 > publication, how the app makes calls, and replacement strategies.
 >
 > **Current release boundary (2026-09-06):** the shipped `release_safe` profile
-> uses Frankfurter + fawazahmed0 only. CoinGecko is a future backend candidate,
+> uses Frankfurter + fawazahmed0 only. CoinGecko is NOT planned (crypto track
+> closed 2026-09-06); its notes below are historical,
 > not a current mobile-app dependency. The backend plan and its licensing gate
 > live in `../../docs/strategy/`.
 
@@ -26,7 +27,7 @@
 | **Frankfurter** | Fiat latest + historical | Unlicense (open source) | **Yes — explicitly** stated on their site: *"Is the API free for commercial use? Yes, absolutely."* | **YES** | None |
 | **fawazahmed0** | BTC/ETH latest + historical (release_safe) | **CC0-1.0** (public domain) | **Yes** — CC0 allows commercial use, modification, distribution with no restrictions | **YES** | None |
 | **CoinPaprika** | BTC/ETH latest + charts (dev only) | Proprietary ToS | **NO** — free plan forbids commercial use; paid plans ($99–$1,499/mo) are **internal tools only**; user-facing apps require custom Enterprise contract | **NO** | Dev-only; not shipped in release builds |
-| **CoinGecko** | Future backend candidate; not called by current `release_safe` app | Demo: no standard Commercial licence; Basic+: standard Commercial licence | **Demo: dev/soak only. Basic+: $35/mo monthly or $348/year ($29/mo effective), attribution required** | **Current app: N/A. Future own-VPS endpoint: AMBER until written confirmation** | Do not add to release-safe builds; confirm the VPS endpoint pattern before production |
+| **CoinGecko** | **Not planned** (track closed 2026-09-06); never called by `release_safe` app | Demo: no standard Commercial licence; Basic+: standard Commercial licence | **Demo: dev/soak only. Basic+: $35/mo monthly or $348/year ($29/mo effective), attribution required** | **Current app: N/A. Future own-VPS endpoint: AMBER until written confirmation** | Do not add to release-safe builds; confirm the VPS endpoint pattern before production |
 
 ### Detailed License Analysis
 
@@ -111,7 +112,14 @@ the primary crypto provider.
   exchange-grade (occasional bad values — app already validates with sanity ranges)
 - **Risk**: None (CC0 license)
 
-### Option B: CoinGecko Basic (Future Backend Candidate, Not Current App)
+### Option B: CoinGecko Basic — **NOT PLANNED (crypto track closed 2026-09-06)**
+
+> **Scope decision (2026-09-06):** no CoinGecko usage is planned in this app
+> or in the future Honest Fern rates service. Crypto stays on fawazahmed0
+> (CC0, daily, direct). The notes below are kept as a historical record; if
+> intraday crypto is ever revisited, re-verify everything — especially the
+> own-VPS-endpoint boundary, which remained AMBER (never confirmed in
+> writing) when this track was closed.
 
 - **Demo**: 10,000 calls/month and 100 calls/minute; intended for testing and
   prototyping. Treat it as development/soak only, not production commercial
@@ -127,8 +135,8 @@ the primary crypto provider.
   product, but prohibits selling, sublicensing, redistributing or syndicating
   API access. The published sources do not explicitly classify Honest Fern's
   proposed public VPS endpoint serving normalized/derived rates to its own
-  app. This remains AMBER until CoinGecko confirms the exact pattern in
-  writing; a Custom/Enterprise licence may be required.
+  app. This remained AMBER when the track was closed; a Custom/Enterprise
+  licence may be required.
 - **API key**: required for the server-side plan; never embed it in the mobile
   app.
 
@@ -163,7 +171,7 @@ Phase 1 (current Play Store release):
 
 Phase 2 (post-release backend, only when freshness justifies it):
   Latest rates:  Honest Fern VPS service with daily fallbacks
-  Crypto:        CoinGecko Basic is the candidate for intraday data
+  Crypto:        stays fawazahmed0 daily (CoinGecko track closed 2026-09-06)
   Cost:          $35/mo monthly or $348/year ($29/mo effective), plus taxes
   License:       Standard Commercial + attribution, but own-VPS endpoint
                  requires written confirmation before production
@@ -227,7 +235,7 @@ User's phone → Your backend → Provider
 |----------|-----|------|------------|---------|
 | **Frankfurter** (`api.frankfurter.dev`) | Fiat latest + historical | No key | ~10 req/min (soft); no hard monthly quota | Unlicense (commercial OK) |
 | **CoinPaprika** (`api.coinpaprika.com`) | BTC/ETH latest + historical | No key | **20,000 calls/month** on free plan | Proprietary (commercial **NOT** allowed on free or standard paid plans) |
-| **CoinGecko** (`api.coingecko.com`) | Future backend intraday crypto candidate | Server-side key only | Demo 10k/mo, 100/min; Basic 100k/mo, 300/min | Demo: dev/soak only; Basic+: Commercial + attribution; own-VPS endpoint AMBER pending written confirmation |
+| **CoinGecko** (`api.coingecko.com`) | **Not planned** — track closed 2026-09-06 (historical notes only) | Server-side key only | Demo 10k/mo, 100/min; Basic 100k/mo, 300/min | Demo: dev/soak only; Basic+: Commercial + attribution; own-VPS endpoint AMBER pending written confirmation |
 | **fawazahmed0** (`cdn.jsdelivr.net`) | BTC/ETH latest (fallback → primary candidate) | No key | **No rate limit** (static CDN file) | **CC0** (commercial OK) |
 
 ### Frankfurter Details
@@ -478,7 +486,7 @@ providers (Frankfurter + fawazahmed0) cover the current app legally.
 |----------|------|------|-------------|
 | **Frankfurter + fawazahmed0 only** (drop CoinPaprika) | Phase 1 launch | Free | Yes (Unlicense + CC0) |
 | **Add CoinGecko Demo** for crypto charts | Not for current release; dev/soak only | Free | No production commercial clearance |
-| **CoinGecko Basic** | Future backend when revenue/freshness justify it | $35/mo monthly or $348/year | Standard Commercial + attribution; own endpoint needs written confirmation |
+| **CoinGecko Basic** | Not planned (track closed 2026-09-06); revisit only if intraday crypto is ever needed again | $35/mo monthly or $348/year | Standard Commercial + attribution; own endpoint needs written confirmation |
 | **Phase 2 backend proxy** | ~500+ DAU or a clear product need | VPS cost + provider plan | Only after provider-specific terms are cleared |
 | **Self-hosted Frankfurter** | If Frankfurter rate-limits | Docker on existing VPS | Yes |
 | **CoinPaprika Enterprise** | Only if specifically needed | Custom ($500+/mo estimate) | Yes (with contract) |
