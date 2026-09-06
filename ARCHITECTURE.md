@@ -229,15 +229,18 @@ class RatesSnapshot {
 
 ## Phase 2: Backend VPS Integration
 
-When Phase 2 activates (backend proxy for paid API):
+When Phase 2 activates (OXR-backed Honest Fern service):
 
 ```
 RatesService
   └─ client: BackendRatesClient (instead of FrankfurterRatesClient)
-       └─ calls: https://your-vps.com/api/rates?base=USD
-            └─ VPS calls ExchangeRate-API Pro or self-hosted Frankfurter
+       └─ calls: https://honestfern.com/currency/fiat/latest?base=USD
+            └─ Honest Fern VPS API reads the validated OXR snapshot
+                 └─ hourly worker pulls OXR Developer and stores the data
 ```
 
+The OXR App ID remains server-side and is never shipped in the mobile app.
+Frankfurter remains the direct fallback if the Honest Fern API is unavailable.
 **No UI changes.** The consumer (`RatesService`) is unaware of which `RatesClient` is injected.
 
 ---

@@ -3,7 +3,7 @@
 > **Status:** Product-history/reference document. For launch scope and order,
 > `RELEASE_CHECKLIST.md` is authoritative.
 > **Created:** 2026-05-06
-> **Last reviewed:** 2026-07-19
+> **Last reviewed:** 2026-09-06
 
 > **Current Android launch contract:** 34 fiat + 11 crypto; no backend,
 > account, cloud sync, subscription, or first-party analytics; banner ads plus
@@ -11,6 +11,13 @@
 > Charts Pro 2.99 CHF, Favorites Pro 0.99 CHF). Google Mobile Ads SDK data
 > practices are disclosed; "zero data collection" must not be used as an
 > absolute store claim.
+
+> **Future rates-service decision (2026-09-06):** after the Android release,
+> the planned hourly-fiat path is OXR Developer ($12/month or $120/year) on
+> the existing VPS. A server-side worker will pull OXR, validate and store
+> snapshots, and a public Honest Fern API will serve the results to this app
+> and future apps. The OXR App ID must remain on the VPS. This does not change
+> the current launch contract.
 
 ---
 
@@ -324,7 +331,7 @@ analytics, local app data, and transparent disclosure of the ads SDK.
 |-----|-----------------|-----------------|
 | < 500 | < 2,000 | Stay on Frankfurter free, no caching needed |
 | 500–2,000 | 2,000–10,000 | Stay on Frankfurter, add local caching (5–15 min TTL) |
-| 2,000–10,000 | 10,000–50,000 | Consider ExchangeRate-API Pro ($10/month) |
+| 2,000–10,000 | 10,000–50,000 | Consider the OXR Developer VPS service ($12/month or $120/year) |
 | 10,000–50,000 | 50,000–250,000 | Backend proxy + paid API |
 | 50,000+ | 250,000+ | Self-host Frankfurter or enterprise paid API |
 
@@ -339,10 +346,11 @@ analytics, local app data, and transparent disclosure of the ads SDK.
 
 ### When to switch to paid API
 
-**ExchangeRate-API Pro** ($10/month → ~12 CHF/month):
-- 30,000 requests/month, hourly updates
-- With 30-min local cache: supports ~2,000–5,000 DAU
-- Break-even: ~10 subscribers (at 12 CHF/año) covers the cost
+**OXR Developer** ($12/month or $120/year):
+- 10,000 requests/month, hourly updates, and 195 world currencies
+- Keep the App ID server-side; the VPS worker stores validated snapshots
+- Serve apps through the public Honest Fern API rather than exposing OXR
+- Break-even: ~10 subscribers (at 12 CHF/año) covers the provider cost
 
 ---
 
@@ -380,7 +388,8 @@ analytics, local app data, and transparent disclosure of the ads SDK.
 | Crypto/Metals add-on | 5–8 CHF/año extra | broader crypto coverage, intraday crypto, XAU, XAG if backend/API strategy is approved |
 
 - **Backend stack**: ASP.NET Core Minimal API + PostgreSQL + Nginx on Hostinger VPS + Firebase Cloud Messaging (free tier)
-- **Additional cost**: ~$10/month (ExchangeRate-API Pro)
+- **Additional provider cost**: OXR Developer, $12/month or $120/year, for
+  hourly fiat. The App ID stays on the VPS; apps consume the Honest Fern API.
 
 ### Phase 3 — Metals + Extended Crypto + Extensions
 
@@ -434,8 +443,8 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 
 | Decision | Phase 1 | Phase 2 | Phase 3 |
 |----------|---------|---------|----------|
-| **Data source** | Frankfurter free + fawazahmed0 CC0 for 11 crypto | ExchangeRate-API Pro + Frankfurter + optional broader crypto provider via backend | + expanded crypto/metals providers |
-| **Backend** | None | ASP.NET Core + PostgreSQL on Hostinger | Same |
+| **Data source** | Frankfurter free + fawazahmed0 CC0 for 11 crypto | OXR Developer via the Honest Fern VPS API + Frankfurter/fawazahmed0 fallbacks; optional broader crypto provider | + expanded crypto/metals providers |
+| **Backend** | None | VPS worker pulls/stores OXR data; ASP.NET Core + PostgreSQL + public Honest Fern API on Hostinger | Same |
 | **Currencies** | 34 fiat currencies + 11 crypto (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC) | Broader fiat/crypto if approved | + Metals (XAU/XAG) |
 | **Charts** | fiat daily up to 2Y; crypto daily up to 1Y | + Multi-pair comparison | + Metals overlays + extended crypto |
 | **Rate alerts** | No | Push via backend (subscription) | + Crypto price alerts |
@@ -460,7 +469,7 @@ subscription, metals, or alerts.
 Phase 1: ads + one-time Remove Ads accumulates cash reserve. Phase 2: subscriptions for alerts/hourly create recurring revenue. Don't use one-time purchases to fund ongoing backend — that's the fundamental mistake.
 
 **Q: What does Phase 2 need in terms of backend?**
-ASP.NET Core Minimal API + PostgreSQL on existing Hostinger VPS + Firebase Cloud Messaging (free tier: 2M notifications/month). Total Phase 2 backend cost: ~$10/month (ExchangeRate-API Pro).
+ASP.NET Core Minimal API + PostgreSQL on existing Hostinger VPS + Firebase Cloud Messaging (free tier: 2M notifications/month). The worker pulls OXR Developer hourly, stores validated snapshots, and the public Honest Fern API serves them to the apps. Provider cost: $12/month or $120/year, plus the existing VPS cost.
 
 ---
 
@@ -469,11 +478,11 @@ ASP.NET Core Minimal API + PostgreSQL on existing Hostinger VPS + Firebase Cloud
 | Trigger | What backend does | DAU estimate |
 |---------|------------------|---------------|
 | Rate alert demand (user requests) | Sends push via FCM | Any DAU |
-| ExchangeRate-API Pro needed | Protects API key; server-side cache | ~2,000+ DAU |
+| Hourly fiat is needed | OXR Developer worker + server-side cache/API | ~2,000+ DAU or clear user demand |
 | Self-hosting Frankfurter | Full control over rate limits | ~10,000+ DAU |
 | Intraday/hourly data needed | Serves cached intraday data | ~5,000+ DAU |
 
-**Minimum viable backend**: ASP.NET Core Minimal API + PostgreSQL on existing Hostinger VPS + Firebase Cloud Messaging (free tier: 2M notifications/month). Total Phase 2 backend cost: ~$10/month.
+**Minimum viable backend**: ASP.NET Core Minimal API + PostgreSQL on existing Hostinger VPS + an hourly OXR Developer worker + public Honest Fern API + Firebase Cloud Messaging (free tier: 2M notifications/month). Recurring provider cost: $12/month or $120/year, in addition to the existing VPS.
 
 ---
 
@@ -517,6 +526,7 @@ At 10,000+ DAU, self-hosting Frankfurter eliminates rate-limit concerns entirely
 | Basic | **12 CHF/año** | Rate alerts (push via backend) + hourly refresh |
 | Crypto/Metals add-on | **5–8 CHF/año extra** | BTC, ETH, XAU, XAG if backend/API strategy is approved |
 
-**Break-even**: ~10 subscribers (Basic) covers ExchangeRate-API Pro ($10/month ≈ 12 CHF/month).
+**Break-even**: ~10 subscribers (Basic) covers OXR Developer ($12/month, roughly
+12 CHF/month).
 
 **Grandfathering**: Google Play auto-preserves prices for existing subscribers. Apple requires "Preserve prices for existing subscribers" in App Store Connect.

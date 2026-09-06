@@ -1,9 +1,18 @@
 # Plan: Fix Crypto Charts — Replace Broken CoinCap with CoinGecko
 
-**Date:** 2026-05-20
-**Status:** READY — awaiting implementation
+**Date:** 2026-05-20 (historical decision record; reviewed 2026-09-06)
+**Status:** SUPERSEDED — implementation completed; current release-safe provider is fawazahmed0
 **Supersedes:** `PHASE_COINCAP_INTEGRATION.md` (DONE but broken)
 **Repo:** `/workspace/repos/honestfern-currency-converter`
+
+> **Current boundary:** this document records the earlier CoinCap replacement
+> investigation. Do not reintroduce direct CoinGecko calls from this plan into
+> the release-safe mobile app. The current app uses Frankfurter + fawazahmed0;
+> CoinGecko is reserved for the future VPS-service track. If that track is
+> implemented, Basic is the commercial candidate ($35/mo monthly or
+> $348/year), attribution is still required, and the own-VPS endpoint needs
+> written confirmation from CoinGecko before production. See
+> `../../../../docs/strategy/Honest_Fern_Rate_Providers_Research.md`.
 
 ---
 
@@ -23,16 +32,25 @@ CoinCap's free API is dead. The current implementation uses `rest.coincap.io/v2`
 
 | Option | Pros | Cons | Verdict |
 |--------|------|------|---------|
-| **CoinGecko (public)** | Free, no API key, stable, proven. Public endpoint `api.coingecko.com/api/v3` confirmed working (tested 2026-05-20). Returns `[timestamp_ms, price]` pairs. | Rate limit 5-15 calls/min (variable). License: free for non-commercial. | **✅ Recommended** |
-| CoinGecko (Demo API) | 100 calls/min, 10K/month — much better rate limits | Requires free API key signup. Adds key management complexity. | Good future upgrade path, but unnecessary now |
+| **CoinGecko (public)** | Historical public endpoint was tested on 2026-05-20. | Do not treat the public/Demo tier as a commercial production path; current Demo is for testing/prototyping. | **Not selected for current release** |
+| CoinGecko (Basic API) | 100k credits/month, 300 calls/min; server-side key | $35/mo monthly or $348/year ($29/mo effective); standard Commercial licence + attribution. Future own-VPS endpoint still needs written confirmation. | Future backend candidate |
 | Revert to `none` | Safe, no external dependency | Users lose crypto charts entirely in release builds | Last resort only |
 | CoinPaprika for release | Already implemented, works | Was excluded from release due to unclear commercial license | Unchanged reasoning |
 | Self-hosted price data | Full control | Massive engineering effort, not worth it for 2 assets | Overkill |
 | Frankfurter | Only fiat | No crypto data at all | Not applicable |
 
-### Why CoinGecko works for us
-- **Already in the ecosystem**: CoinGecko is the de-facto free crypto data API used by thousands of apps
-- **No API key needed** for the public tier — zero secret management
+### Why CoinGecko remains a future option
+- CoinGecko offers a standard Commercial licence from Basic upward for
+  proprietary products, with clear quotas and server-side API keys.
+- The API Terms allow integration into an Application and allow charging/ads
+  around our product, but prohibit selling, sublicensing, redistributing or
+  syndicating API access.
+- Attribution is required on every plan: use “Data provided by CoinGecko” with
+  a direct API link; the Terms also specify prominent “Powered by CoinGecko” in
+  a legible font of at least size 10.
+- The published sources do not explicitly classify Honest Fern's proposed VPS
+  endpoint serving normalized/derived data to its own app. Written provider
+  confirmation is required before production.
 - **BTC + ETH IDs are `bitcoin` and `ethereum`** — same as CoinCap's `coinCapId` field already in `crypto_asset.dart`
 - **Historical data confirmed working**: tested `/coins/{id}/market_chart/range` endpoint, returns clean `[ms, price]` pairs
 - **Rate limits are fine**: mobile app makes 1 chart request per navigation → well under 5-15/min
@@ -89,21 +107,24 @@ GET https://api.coingecko.com/api/v3/coins/{id}/market_chart/range?vs_currency=u
 
 Our app uses ranges up to 1 year → **daily granularity automatically**. For shorter ranges (30/90 days), we get hourly data which is even better for chart quality.
 
-### Rate Limits
+### Rate Limits (rechecked 2026-09-06)
 | Tier | Rate Limit | Monthly Cap | Auth |
 |------|-----------|-------------|------|
-| Public (no key) | 5-15 calls/min (variable) | None documented | None |
-| Demo (free key) | 100 calls/min | 10,000 calls/month | `x-cg-demo-api-key` header |
-| Analyst ($29/mo) | 100 calls/min | 100,000 calls/month | API key |
+| Public (no key) | Variable | Not a production licence | None |
+| Demo (free key) | 100 calls/min | 10,000 calls/month | `x-cg-demo-api-key` header; dev/soak only |
+| Basic ($35/mo monthly or $348/year) | 300 calls/min | 100,000 calls/month | Server-side API key; standard Commercial + attribution |
 
 **For our use case**: 1-2 calls per chart view, user navigates manually → well within 5-15/min. If rate limiting becomes an issue, upgrade to Demo tier (free signup, just add header).
 
 ### License Considerations
-- CoinGecko public API is free for non-commercial use
-- Their ToS requires attribution (link to CoinGecko) in apps using the free tier
-- **Action**: Add "Data provided by CoinGecko" attribution to the Data Sources page
-- For commercial use, paid plans start at $29/mo (Analyst tier)
-- **Risk level**: Low — the app is a personal tool / side project. If it goes commercial, $29/mo is reasonable.
+- Basic, Analyst, Lite and Pro include the standard Commercial licence.
+- Attribution is required on every plan; a paid plan does not remove it.
+- The standard licence allows our own product to incorporate CoinGecko data,
+  but not API-access resale/redistribution. The own-VPS endpoint pattern is
+  still an open classification question.
+- **Action before backend production**: ask CoinGecko to confirm the exact
+  VPS-worker → Honest Fern endpoint → own-app flow, and record the answer in
+  `docs/strategy/provider_terms/`.
 
 ---
 
@@ -231,7 +252,7 @@ In `dev_sandbox_section.dart`:
 |------|-----------|--------|------------|
 | CoinGecko public rate limit hit | Low | Low | Cache aggressively (1-year cache already in place). Worst case: chart fails gracefully with error message |
 | CoinGecko deprecates public API | Low | Medium | Same situation as CoinCap. Mitigated by: (1) architecture supports swapping providers, (2) Demo tier with key is backup plan |
-| CoinGecko ToS requires paid plan for app store distribution | Low | Medium | Attributed free tier is fine for non-commercial. If app goes commercial, $29/mo Analyst plan is affordable |
+| CoinGecko production use is not covered by the selected tier or endpoint pattern | Medium | Medium | Keep Demo to dev/soak only; use Basic only after confirming the own-VPS endpoint and displaying attribution |
 | CoinGecko returns different granularity than expected | Very Low | Low | We normalize to daily timestamps regardless. Hourly data from shorter ranges is a bonus, not a problem |
 | `coinCapId` field name is confusing after switch | Low | None | Cosmetic — rename in follow-up. Values are identical for BTC/ETH |
 | Existing CoinCap cache entries become stale | None | None | Cache is keyed by code+date range — old entries just expire naturally via TTL |

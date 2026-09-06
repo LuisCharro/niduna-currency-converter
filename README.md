@@ -20,6 +20,15 @@ Privacy-first Flutter currency converter for the Honest Fern portfolio.
 **Not in the Android launch:** metals (XAU/XAG), push notifications,
 backend, accounts, subscriptions, or real-time/intraday rates.
 
+**Future backend direction (post-release, not current scope):** OXR Developer
+will be the planned hourly-fiat upstream ($12/month or $120/year). The OXR App
+ID stays on the Hostinger VPS, where a worker pulls, validates and stores the
+rates. A public Honest Fern API under `honestfern.com/currency/` then serves
+those stored results to this app and future Honest Fern apps. The mobile app
+must never contain the OXR credential and will keep its current providers as
+fallbacks. CoinGecko is optional and only for future intraday crypto after its
+separate licensing gate is cleared.
+
 ## Core app docs
 
 | Doc | Purpose |
@@ -56,7 +65,7 @@ When a future task involves Stitch:
 | Phase | Goal | Trigger |
 |-------|------|---------|
 | **Phase 1 (MVP)** | Free + ads + one-time Remove Ads | Now |
-| **Phase 2** | Backend + subscriptions (rate alerts, hourly refresh, optional crypto API strategy) | ~2,000 DAU |
+| **Phase 2** | OXR-backed VPS service + subscriptions (rate alerts, hourly refresh, optional crypto API strategy) | ~2,000 DAU |
 | **Phase 3** | Crypto charts + metals (XAU/XAG) + extensions | After Phase 2 |
 
 See `DEFINITIONS.md` → Phase Roadmap for full details.

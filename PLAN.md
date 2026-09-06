@@ -262,7 +262,9 @@ Currency app UX.
 
 **API cost:** Only 1 call per refresh. Frankfurter returns all rates in one response, so adding more fiat currencies later costs nothing extra.
 
-**Phase 2 enhancement:** More frequent refresh (hourly via backend), expand to all 200 Frankfurter currencies.
+**Phase 2 enhancement:** More frequent refresh through the future OXR Developer
+VPS service (hourly pull, server-side cache, public Honest Fern API), and
+expand to all 200 Frankfurter currencies.
 
 **Current extension:** BTC/ETH latest rates and daily charts up to 1 year can use no-key providers.
 
@@ -487,10 +489,12 @@ Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, serve
 | Database | PostgreSQL |
 | Host | Existing Hostinger VPS |
 | Push notifications | Firebase Cloud Messaging (free tier: 2M/month) |
-| Rate API | ExchangeRate-API Pro ($10/month) |
+| Rate upstream | OXR Developer ($12/month or $120/year) |
+| Rate worker/API | Hourly VPS pull + validation/storage + public Honest Fern API under `/currency/` |
 
 ### Additional Cost
-~$10/month (ExchangeRate-API Pro)
+OXR Developer: $12/month or $120/year, plus the existing VPS cost.
+The OXR App ID stays on the VPS; mobile apps call the Honest Fern API.
 
 ### Features
 
@@ -509,7 +513,8 @@ Phase 2 adds backend-dependent subscription value (alerts, hourly refresh, serve
 - [ ] Configure PostgreSQL database
 - [ ] Implement user device registration (FCM tokens)
 - [ ] Implement rate alert push notifications
-- [ ] Add hourly data refresh job
+- [ ] Add hourly OXR pull, validation and storage job
+- [ ] Add public Honest Fern rates API consumed by the mobile apps
 - [ ] Implement subscription management (Google Play + App Store)
 - [ ] Add multi-pair chart comparison
 - [ ] Add chart export feature

@@ -1,8 +1,19 @@
 # Provider Rate Limits, Licensing, and Call Budget
 
-> Last updated: 2026-05-26
+> Last updated: 2026-09-06
 > Purpose: document free provider limits, licensing status for commercial
 > publication, how the app makes calls, and replacement strategies.
+>
+> **Current release boundary (2026-09-06):** the shipped `release_safe` profile
+> uses Frankfurter + fawazahmed0 only. CoinGecko is a future backend candidate,
+> not a current mobile-app dependency. The backend plan and its licensing gate
+> live in `../../docs/strategy/`.
+
+> **Selected future fiat architecture:** use OXR Developer ($12/month or
+> $120/year) on the VPS. A server-side worker pulls OXR hourly, validates and
+> stores the snapshot, and a public Honest Fern API serves the normalized data
+> to the Currency Converter and future apps. The OXR App ID must never be
+> embedded in a mobile build. Keep Frankfurter and fawazahmed0 as fallbacks.
 
 ---
 
@@ -15,6 +26,7 @@
 | **Frankfurter** | Fiat latest + historical | Unlicense (open source) | **Yes — explicitly** stated on their site: *"Is the API free for commercial use? Yes, absolutely."* | **YES** | None |
 | **fawazahmed0** | BTC/ETH latest + historical (release_safe) | **CC0-1.0** (public domain) | **Yes** — CC0 allows commercial use, modification, distribution with no restrictions | **YES** | None |
 | **CoinPaprika** | BTC/ETH latest + charts (dev only) | Proprietary ToS | **NO** — free plan forbids commercial use; paid plans ($99–$1,499/mo) are **internal tools only**; user-facing apps require custom Enterprise contract | **NO** | Dev-only; not shipped in release builds |
+| **CoinGecko** | Future backend candidate; not called by current `release_safe` app | Demo: no standard Commercial licence; Basic+: standard Commercial licence | **Demo: dev/soak only. Basic+: $35/mo monthly or $348/year ($29/mo effective), attribution required** | **Current app: N/A. Future own-VPS endpoint: AMBER until written confirmation** | Do not add to release-safe builds; confirm the VPS endpoint pattern before production |
 
 ### Detailed License Analysis
 
@@ -99,16 +111,26 @@ the primary crypto provider.
   exchange-grade (occasional bad values — app already validates with sanity ranges)
 - **Risk**: None (CC0 license)
 
-### Option B: CoinGecko Demo Plan (Free Tier, Commercial Path)
+### Option B: CoinGecko Basic (Future Backend Candidate, Not Current App)
 
-- **Free plan**: 10,000 calls/month, 50+ endpoints, 1 year historical
-- **Commercial licensing**: available from **Analyst plan ($129/mo)** onwards
-  — no separate Enterprise contract needed
-- **Coverage**: 18,000+ coins, 250+ networks
-- **Free tier limitation**: Demo plan may not include commercial rights —
-  verify before relying on this. If it doesn't, you'd need the $129/mo plan
-  for Play Store publication.
-- **API key required**: Yes (but free to generate)
+- **Demo**: 10,000 calls/month and 100 calls/minute; intended for testing and
+  prototyping. Treat it as development/soak only, not production commercial
+  traffic.
+- **Basic**: $35/month monthly or $348/year ($29/month effective when billed
+  annually); 100,000 call credits/month and 300 calls/minute. Basic includes
+  the standard Commercial licence.
+- **Attribution**: required on every plan by the API Terms. Use “Data provided
+  by CoinGecko” with a direct link to the API page; the Terms also specify
+  prominent “Powered by CoinGecko” attribution in a legible font of at least
+  size 10.
+- **Important boundary**: CoinGecko allows integrating data into a proprietary
+  product, but prohibits selling, sublicensing, redistributing or syndicating
+  API access. The published sources do not explicitly classify Honest Fern's
+  proposed public VPS endpoint serving normalized/derived rates to its own
+  app. This remains AMBER until CoinGecko confirms the exact pattern in
+  writing; a Custom/Enterprise licence may be required.
+- **API key**: required for the server-side plan; never embed it in the mobile
+  app.
 
 ### Option C: DIA (diadata.org) (Free, No Key)
 
@@ -133,17 +155,18 @@ the primary crypto provider.
 ### Recommended Path
 
 ```
-Phase 1 (Play Store launch):
+Phase 1 (current Play Store release):
   Latest rates:  Frankfurter (fiat) + fawazahmed0 (crypto, promoted to primary)
-  Charts:        Frankfurter (fiat) + Coingecko (crypto, no API key, up to 1Y)
+  Charts:        Frankfurter (fiat) + fawazahmed0 (crypto, daily snapshots)
   Cost:          $0
-  License:       All clear (Unlicense + CC0 + Coingecko free tier)
+  License:       Unlicense + CC0; no CoinGecko dependency
 
-Phase 2 (when revenue justifies):
-  Latest rates:  Frankfurter + CoinGecko Analyst ($129/mo, commercial license)
-  Charts:        Frankfurter (fiat) + CoinGecko (crypto, full historical)
-  Cost:          ~$129/mo
-  License:       Commercial use explicitly granted
+Phase 2 (post-release backend, only when freshness justifies it):
+  Latest rates:  Honest Fern VPS service with daily fallbacks
+  Crypto:        CoinGecko Basic is the candidate for intraday data
+  Cost:          $35/mo monthly or $348/year ($29/mo effective), plus taxes
+  License:       Standard Commercial + attribution, but own-VPS endpoint
+                 requires written confirmation before production
 ```
 
 ---
@@ -204,6 +227,7 @@ User's phone → Your backend → Provider
 |----------|-----|------|------------|---------|
 | **Frankfurter** (`api.frankfurter.dev`) | Fiat latest + historical | No key | ~10 req/min (soft); no hard monthly quota | Unlicense (commercial OK) |
 | **CoinPaprika** (`api.coinpaprika.com`) | BTC/ETH latest + historical | No key | **20,000 calls/month** on free plan | Proprietary (commercial **NOT** allowed on free or standard paid plans) |
+| **CoinGecko** (`api.coingecko.com`) | Future backend intraday crypto candidate | Server-side key only | Demo 10k/mo, 100/min; Basic 100k/mo, 300/min | Demo: dev/soak only; Basic+: Commercial + attribution; own-VPS endpoint AMBER pending written confirmation |
 | **fawazahmed0** (`cdn.jsdelivr.net`) | BTC/ETH latest (fallback → primary candidate) | No key | **No rate limit** (static CDN file) | **CC0** (commercial OK) |
 
 ### Frankfurter Details
@@ -388,8 +412,8 @@ Crypto chart ranges will depend on the replacement provider's capabilities:
 | Replacement | Historical Available | Max Range | Commercial OK? |
 |-------------|---------------------|-----------|----------------|
 | fawazahmed0 (date files) | Daily snapshots | Unlimited (1 date per call) | Yes (CC0) |
-| CoinGecko Demo | 1 year daily | 1Y | Verify free tier terms |
-| CoinGecko Analyst ($129/mo) | Full historical | Unlimited | Yes |
+| CoinGecko Demo | 1 year daily | 1Y | Dev/soak only; not cleared for production |
+| CoinGecko Basic ($35/mo or $348/year) | Plan-dependent | Plan-dependent | Standard Commercial + attribution; own-VPS endpoint requires confirmation |
 | DIA | TBD | TBD | Verify |
 
 ### Recommendation
@@ -422,14 +446,16 @@ caching limits each device to ~3-8 calls/day, so even 50 users behind one IP =
 ### Your Backend Plan Is The Correct Long-Term Strategy
 
 ```
-Phase 1 (now, free):                  Phase 2 (when you have revenue):
+Phase 1 (now, free):                  Phase 2 (when justified):
 
-Phone → Frankfurter (fiat)            Phone → Your backend → Frankfurter
+Phone → Frankfurter (fiat)            Phone → Honest Fern public API
 Phone → fawazahmed0 (crypto)                      ↓
-                                      Your backend → CoinGecko ($129/mo, commercial)
+                                      VPS worker → OXR Developer ($12/mo
+                                      or $120/year) → validate + store
                                       Cache + rate control
-                                      One server IP to provider
-                                      ~$10-20/mo server cost
+                                      OXR App ID stays on the VPS
+                                      Optional CoinGecko only after its
+                                      own endpoint/licence gate is cleared
 ```
 
 **Benefits of the backend proxy:**
@@ -440,7 +466,9 @@ Phone → fawazahmed0 (crypto)                      ↓
 5. You can switch providers without app updates
 6. You can add rate limiting, monitoring, and analytics on your side
 
-**When to build the backend:** when you have real users and can justify the $10-20/month server cost + provider subscription. Until then, free providers (Frankfurter + fawazahmed0) cover all needs legally.
+**When to build the backend:** when you have real users and can justify the
+VPS cost plus OXR Developer ($12/month or $120/year). Until then, free
+providers (Frankfurter + fawazahmed0) cover the current app legally.
 
 ---
 
@@ -449,9 +477,9 @@ Phone → fawazahmed0 (crypto)                      ↓
 | Strategy | When | Cost | License OK? |
 |----------|------|------|-------------|
 | **Frankfurter + fawazahmed0 only** (drop CoinPaprika) | Phase 1 launch | Free | Yes (Unlicense + CC0) |
-| **Add CoinGecko Demo** for crypto charts | If fawazahmed0 charts insufficient | Free | Verify free tier terms |
-| **CoinGecko Analyst** ($129/mo) | When revenue justifies | $129/mo | Yes (commercial license included) |
-| **Phase 2 backend proxy** | ~500+ DAU | ~$10/mo server + provider | Yes |
+| **Add CoinGecko Demo** for crypto charts | Not for current release; dev/soak only | Free | No production commercial clearance |
+| **CoinGecko Basic** | Future backend when revenue/freshness justify it | $35/mo monthly or $348/year | Standard Commercial + attribution; own endpoint needs written confirmation |
+| **Phase 2 backend proxy** | ~500+ DAU or a clear product need | VPS cost + provider plan | Only after provider-specific terms are cleared |
 | **Self-hosted Frankfurter** | If Frankfurter rate-limits | Docker on existing VPS | Yes |
 | **CoinPaprika Enterprise** | Only if specifically needed | Custom ($500+/mo estimate) | Yes (with contract) |
 
@@ -468,4 +496,4 @@ Phone → fawazahmed0 (crypto)                      ↓
 | Am I doing too many calls? | **No**, not at current scale. Daily caching keeps calls minimal. |
 | Should I reduce chart ranges? | **No** for fiat. Crypto ranges depend on replacement provider. |
 | What happens if a provider fails? | fawazahmed0 fallback provides latest BTC/ETH. Fiat is independent. Charts cache persists. |
-| Is my backend plan the right approach? | **Yes** — backend proxy is the correct scale-up strategy. Free for now (Frankfurter + fawazahmed0), upgrade to CoinGecko when you have revenue. |
+| Is my backend plan the right approach? | **Yes** — backend proxy is the correct scale-up strategy. Free for now (Frankfurter + fawazahmed0); when justified, OXR Developer is the selected hourly-fiat upstream. CoinGecko remains optional for intraday crypto and needs its own licence confirmation. |
