@@ -9,4 +9,7 @@ class PurchaseServiceStub implements PurchaseService {
     await Future<void>.delayed(const Duration(milliseconds: 1200));
     return true;
   }
+
+  @override
+  Future<void> restore() async {}
 }

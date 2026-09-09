@@ -2,17 +2,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:currency_converter/src/core/monetization/monetization_controller.dart';
+import 'package:currency_converter/src/core/monetization/play_purchase_service.dart';
 import 'package:currency_converter/src/core/monetization/purchase_service.dart';
 import 'package:currency_converter/src/core/monetization/purchase_service_stub.dart';
 
 class _ImmediatePurchaseService implements PurchaseService {
   @override
   Future<bool> purchase(ProductType product) async => true;
+
+  @override
+  Future<void> restore() async {}
 }
 
 class _FailingPurchaseService implements PurchaseService {
   @override
   Future<bool> purchase(ProductType product) async => false;
+
+  @override
+  Future<void> restore() async {}
 }
 
 void main() {
@@ -113,6 +120,52 @@ void main() {
 
     test('has subscription value', () {
       expect(ProductType.subscription, isNotNull);
+    });
+  });
+
+  group('PlayPurchaseService product IDs', () {
+    test('maps store product IDs exactly as registered in Play Console', () {
+      expect(
+        PlayPurchaseService.productIds[ProductType.removeAds],
+        'remove_ads_lifetime',
+      );
+      expect(
+        PlayPurchaseService.productIds[ProductType.chartsPro],
+        'charts_pro_lifetime',
+      );
+      expect(
+        PlayPurchaseService.productIds[ProductType.favoritesPro],
+        'favorites_pro_lifetime',
+      );
+      expect(PlayPurchaseService.productIds.length, 3);
+    });
+  });
+
+  group('MonetizationController.applyLifetimeEntitlement', () {
+    test('grants Remove Ads from a store-confirmed purchase', () async {
+      final controller = MonetizationController(prefs);
+      expect(controller.hasRemoveAdsLifetime, isFalse);
+      await controller.applyLifetimeEntitlement(ProductType.removeAds);
+      expect(controller.hasRemoveAdsLifetime, isTrue);
+      expect(controller.adsEnabled, isFalse);
+    });
+
+    test('grants Charts Pro from a store-confirmed purchase', () async {
+      final controller = MonetizationController(prefs);
+      await controller.applyLifetimeEntitlement(ProductType.chartsPro);
+      expect(controller.hasChartsProLifetime, isTrue);
+    });
+
+    test('grants Favorites Pro from a store-confirmed purchase', () async {
+      final controller = MonetizationController(prefs);
+      await controller.applyLifetimeEntitlement(ProductType.favoritesPro);
+      expect(controller.hasFavoritesProLifetime, isTrue);
+    });
+
+    test('subscription type stays unwired in v1', () async {
+      final controller = MonetizationController(prefs);
+      await controller.applyLifetimeEntitlement(ProductType.subscription);
+      expect(controller.hasActiveSubscription, isFalse);
     });
   });
 }

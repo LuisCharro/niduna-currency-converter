@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/ads/admob_rewarded_ad_service.dart';
 import 'core/monetization/monetization_controller.dart';
+import 'core/monetization/play_purchase_service.dart';
 import 'core/preferences/app_preferences.dart';
 import 'core/rates/provider_config.dart';
 import 'core/rates/provider_factory.dart';
@@ -91,7 +92,15 @@ class _AppState extends State<AppShell> {
 
     final ratesCache = SharedPreferencesRatesCache(prefs);
     final adService = AdMobRewardedAdService();
-    _monetization = MonetizationController(prefs, adService: adService);
+    final purchaseService = PlayPurchaseService(
+      onEntitlement: (product) =>
+          _monetization?.applyLifetimeEntitlement(product),
+    );
+    _monetization = MonetizationController(
+      prefs,
+      adService: adService,
+      purchaseService: purchaseService,
+    );
     await _monetization!.loadTempUnlocks();
     final ratesService = RatesService(
       client: MultiProviderRatesClient(

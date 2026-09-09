@@ -174,4 +174,23 @@ class MonetizationController extends ChangeNotifier {
     await setFavoritesProLifetime(true);
     return true;
   }
+
+  /// Applies a store-confirmed purchase (bought or restored) to the local
+  /// entitlement store, which stays the UI source of truth.
+  Future<void> applyLifetimeEntitlement(ProductType product) async {
+    switch (product) {
+      case ProductType.removeAds:
+        await setRemoveAdsLifetime(true);
+      case ProductType.chartsPro:
+        await setChartsProLifetime(true);
+      case ProductType.favoritesPro:
+        await setFavoritesProLifetime(true);
+      case ProductType.subscription:
+        break;
+    }
+  }
+
+  /// Asks the store to re-deliver past purchases; restored products come
+  /// back through [applyLifetimeEntitlement].
+  Future<void> restorePurchases() => _purchaseService.restore();
 }

@@ -106,7 +106,8 @@ class SettingsController extends ChangeNotifier {
 
   void restorePurchases(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n(context).snackRestoreComingSoon)),
+      SnackBar(content: Text(l10n(context).snackRestoreChecking)),
     );
+    monetization.restorePurchases();
   }
 }

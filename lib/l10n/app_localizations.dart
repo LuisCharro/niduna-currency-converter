@@ -908,11 +908,11 @@ abstract class AppLocalizations {
   /// **'Cache cleared'**
   String get snackCacheCleared;
 
-  /// Snackbar shown when restore purchases is not yet available
+  /// No description provided for @snackRestoreChecking.
   ///
   /// In en, this message translates to:
-  /// **'Restore purchases is coming soon'**
-  String get snackRestoreComingSoon;
+  /// **'Checking your purchases…'**
+  String get snackRestoreChecking;
 }
 
 class _AppLocalizationsDelegate

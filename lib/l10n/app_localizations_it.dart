@@ -447,6 +447,5 @@ class AppLocalizationsIt extends AppLocalizations {
   String get snackCacheCleared => 'Cache cancellata';
 
   @override
-  String get snackRestoreComingSoon =>
-      'Il ripristino degli acquisti sarà presto disponibile';
+  String get snackRestoreChecking => 'Verifica degli acquisti…';
 }
