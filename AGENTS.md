@@ -19,7 +19,7 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-08-28)
+## Current state (reviewed 2026-09-09)
 
 - **Branch:** `main` is the canonical branch. `release-prep`,
   `feature/widget-restore`, `feature/ios-widget-target` are kept
@@ -29,18 +29,32 @@ skills without changing this repo again.
   producing an artifact and must be rerun before release.
   `flutter build ios --simulator --debug` works, app installs and
   runs on iPhone 17 Pro sim (iOS 26.5).
-- **Tests:** 239/239 pass with clean `flutter analyze` (re-verified
-  2026-08-28); rerun after release-code or dependency changes.
-- **2026-07-08 polish pass:** Settings data pages merged into one
-  "Data & privacy" page (no dev vocabulary in user copy), Favorites
-  clipping/shadow fixed, palette-token switches, dark chart fill,
-  store screenshots re-captured. Dark screenshot sets:
-  `SCREENSHOT_DARK=true ./.devtools/capture_android_screens.sh`;
-  verification captures: `CAPTURE_TARGET_PATH=integration_test/ui_polish_verify_test.dart`.
+- **Tests:** 242/242 pass with clean `flutter analyze` (re-verified
+  2026-09-09 via `./scripts/check.sh`); rerun after release-code or
+  dependency changes. Known working-tree drift: an uncommitted local
+  `pubspec.lock` downgrade (`meta` 1.17.0, `test_api` 0.7.10) — revert or
+  re-confirm before any release build.
+- **2026-09-09 pre-Play audit:** small-screen emulator pass
+  (`Small_Screen_API_36`, light+dark, all 4 tabs) found no new UI issues;
+  daily-rates messaging verified on all surfaces. Repo store screenshots
+  (`docs/release-prep/screenshots/`, 2026-07-08) are STALE — the site set
+  (`niduna-site/assets/screenshot-*.png`, 2026-08-30) matches the current
+  build; re-capture the store set before the listing upload.
 - **Release:** the store path is **not code-complete**. Cross-repo master order in `RELEASE_CHECKLIST.md`
   § "Execution Order" + per-step "Implementation Notes"; site-side
   steps in the sibling repo `../../niduna-site/RELEASE_PLAN.md`.
   Post-launch feature backlog: `docs/FEATURE_IDEAS.md`.
+  Open code blockers: B4 (real AdMob IDs), B8 (UMP consent + privacy
+  options), B9 (real Play Billing/restore). B5 (in-app privacy URL) is
+  done and committed. The current `PurchaseServiceStub` must never reach a
+  reviewable Play track. External state: Play identity verification is
+  COMPLETE; **the Play Console app draft is CREATED (2026-09-09,
+  "Currency Converter Honest Fern", Console app ID `4973875544480645622`)**,
+  merchant profile done (E3), billing diagnostic AAB `0.1.0+2` on internal
+  testing, and the 3 one-time products are ACTIVE (E8) — B9 is implemented
+  (247 tests green). Remaining external: AdMob app + ad units + EEA message
+  (E5/E5b). Remaining code: B8 (UMP), B4 (real ad IDs once E5 exists).
+  Site launch gates are done; `support@honestfern.com` is operational.
 - **Home-screen widgets:**
   - **Android:** fully redesigned — 3-pair icon-led widget with warm
     paper background, currency symbols in circles, thin dividers.
@@ -57,7 +71,8 @@ skills without changing this repo again.
     and `docs/superpowers/specs/2026-06-13-widget-redesign-design.md`.
 - **Release status:** see `RELEASE_CHECKLIST.md` for the full Blocker
   Summary. Open code includes real AdMob IDs, UMP + privacy options,
-  in-app privacy URL, and real Play Billing/restore. The current
+  and real Play Billing/restore (the in-app privacy URL is done).
+  The current
   `PurchaseServiceStub` must never reach a reviewable Play track.
   Site launch uses the verified Hostinger KVM 2 production host and
   `honestfern.com`; `support@honestfern.com` is operational after successful
@@ -90,21 +105,22 @@ For the current truth on Favorites nav visibility, widgets, trend arrows,
 and chart-comparison status, see
 `docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`.
 
-## Versioning policy (pre-MVP)
+## Versioning policy (first public release)
 
-Until this app reaches a validated MVP milestone, keep the app version in
-`0.x.x` (never `1.x.x`).
+**Decision 2026-09-09:** the first public Play release ships as **`1.0.0+2`**.
 
 Rules for this phase:
 
-- `pubspec.yaml` version must stay `0.x.x+build`
-- Firebase deploy script version labels must match the same `0.x.x` line
-- Move to `1.0.0` only when MVP scope is explicitly confirmed
+- Keep `pubspec.yaml` at `version: 0.1.0+1` until the release-candidate
+  gates are done (B4 + B8 + B9, keystore rotation, checks green) — then
+  apply the single bump to `1.0.0+2`.
+- Every Play upload (closed-track updates included) must increment `+N`.
+- Firebase deploy script version labels must match the app version line.
 
 Current baseline:
 
-- App version: `0.1.0+1`
-- Firebase version label: `0.1.0`
+- App version: `0.1.0+1` (unchanged until the RC bump)
+- Firebase version label: matches `pubspec.yaml` at each deploy
 
 ## Read first
 

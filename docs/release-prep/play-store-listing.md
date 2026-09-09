@@ -12,19 +12,23 @@
 
 ## 1. App Title
 
-Google Play allows up to 30 characters for the title field. The app is
-branded "Currency Converter" by Honest Fern. Three options, in order of
-recommendation:
+**DECIDED 2026-09-09: `Currency Converter Honest Fern`** (exactly 30/30
+characters).
 
-1. **Honest Fern Converter** (21 chars)
-   *Recommended.* Keeps the maker and the product category visible
-   while staying within Google Play's title limit.
-2. **Currency Converter by Honest** (28 chars)
-   *Alternative.* Keeps the descriptive product name first and reads as
-   a maker attribution; the shortened maker name remains recognizable.
-3. **Currency Converter — Fern** (26 chars)
-   *Brand-led.* Keeps the product name exact and uses the distinctive
-   part of the maker name as a compact signature.
+Rationale: the search phrase people type ("currency converter") leads the
+title where it weighs most, the Honest Fern brand closes it as a signature
+(the same product-first/brand-last pattern as the reference app
+"Kids Memory Pegolandia"), and because Play shows the developer's legal
+name — not the brand — as the developer, this title is the only store
+surface where Honest Fern appears. It also carries over unchanged to the
+future App Store release: it fits Apple's 30-char limit and the brand
+suffix satisfies Apple's unique-name requirement.
+
+Rejected alternatives (for the record): "Currency Converter by Honest
+Fern" (33 chars, doesn't fit), "Honest Fern Currency Converter" (brand
+first buries the search phrase), "Currency Converter" alone (leaves the
+brand with zero store presence), "Honest Fern Converter" (drops
+"currency" from the main search phrase).
 
 Avoid "Free" or category words in the title. Google de-prioritises
 titles stuffed with generic terms, and the listing is not the place
