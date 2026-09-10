@@ -7,7 +7,7 @@ change-log entries below. No production/closed-test release is approved yet.**
 
 ### Current evidence
 
-- App `main` baseline `a4c7489`; real Billing commit `09f1166`.
+- App `main` documentation baseline `78bffda`; real Billing commit `09f1166`.
   `pubspec.yaml` is **0.1.0+2**. Root/site/app were clean before the current
   documentation-only handoff; check all three repositories when resuming.
 - `./scripts/check.sh` re-run 2026-09-10: **247 tests, clean analysis**, no
@@ -34,7 +34,11 @@ change-log entries below. No production/closed-test release is approved yet.**
 
 ### Next action and ordered remaining work
 
-1. **B9 hardening — next bounded code task, after Luis authorizes fixes.**
+1. **E5/E5b — external AdMob prerequisites.** Luis must create the Android
+   AdMob app, banner/rewarded ad units, publisher ID and EEA/UK/CH consent
+   message. Record IDs without committing secrets; B4/B8 cannot close against
+   placeholders.
+2. **B9 hardening — bounded code task, after Luis authorizes fixes.**
    Real service already injected: `lib/src/app_shell.dart:95` and
    `lib/src/core/monetization/play_purchase_service.dart`. Review/correct
    uncaught query/buy exceptions and stuck processing UI (`purchase()` lines
@@ -45,18 +49,18 @@ change-log entries below. No production/closed-test release is approved yet.**
    platform-stream/error tests; existing new tests cover ID mapping and local
    grants, not these platform flows. Review duplicate pending requests,
    service disposal, pending purchase recovery and entitlement reconciliation.
-2. **Internal purchase acceptance.** Add internal testers and license testers,
+3. **Internal purchase acceptance.** Add internal testers and license testers,
    install via the existing opt-in link, verify all three products, cancel,
    pending, error, acknowledgement, relaunch, restore/reinstall and Remove Ads.
    Confirm a test-payment method before any purchase; no real charge authorized.
    Record actual device/account/build and results. Internal testing does not
    count toward the closed-test 12/14-day gate.
-3. **E5/E5b + B4/B8.** Create AdMob Android app, banner/rewarded units and
-   European regulations message; implement production IDs, UMP consent refresh,
+4. **B4/B8 implementation and acceptance.** After E5/E5b exists, implement
+   production IDs, UMP consent refresh,
    canRequestAds gating and required privacy-options entry. Android needs app
    ID + banner ID + rewarded ID; iOS IDs do not block this release. Publish
    app-ads.txt after publisher ID exists, with separate deploy approval.
-4. **Policy/listing/assets before closed test.** C5 store screenshots need
+5. **Policy/listing/assets before closed test.** C5 store screenshots need
    recapture after final UI. C6 feature graphic is NOT ready: it visibly says
    NIDUNA, Coming to Android, No tracking, 100% Offline and uses old UI.
    Replace it with Honest Fern, final UI and accurate cached-offline wording.
@@ -67,21 +71,21 @@ change-log entries below. No production/closed-test release is approved yet.**
    claim with manual light/dark selection; describe Frankfurter daily central
    bank data rather than claiming v2 is ECB-only; review daily wording for
    fiat business days versus crypto daily. Do not add future OXR/VPS/CoinGecko.
-5. **Signing + final build.** Key/properties exist, are gitignored, mode 600,
+6. **Signing + final build.** Key/properties exist, are gitignored, mode 600,
    keytool read succeeds (RSA 2048, valid to 2053). Temporary password-file path
    was absent; that does NOT prove rotation/backups. Confirm them with Luis
    and authorize any key operation separately. Keep existing upload-key
    identity now that an artifact is uploaded. Run checks and official build
    scripts, inspect merged manifest/signing/R8/native 16 KB compatibility on the
    final artifact and perform final device/UI/accessibility/offline acceptance.
-6. **Console + closed test.** Finish listing, ads/AD_ID, Data Safety, financial
+7. **Console + closed test.** Finish listing, ads/AD_ID, Data Safety, financial
    features, IARC rating, target audience, Finance category and trader/public
    contact tasks. Use final SDK behavior, not no-first-party-analytics as a
    no-data-collection answer. Review on-device UMP and rewarded early-close,
    failure/no-fill/offline states. Only then submit the safe candidate to closed
    testing with at least 12 opted-in testers for 14 continuous days (recheck live
    requirements); target 15-16 recruits. Production access/review comes later.
-7. **Site S2 only after public production listing:** replace Coming Soon with
+8. **Site S2 only after public production listing:** replace Coming Soon with
    actual Play URL, update metadata and deploy with approval.
 
 ### Version, authority and scope

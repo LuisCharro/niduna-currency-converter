@@ -21,7 +21,8 @@ skills without changing this repo again.
 
 ## Current state (reviewed 2026-09-10)
 
-- `main` is canonical; baseline `a4c7489`, Billing implementation `09f1166`.
+- `main` is canonical; current documentation baseline `78bffda`, Billing
+  implementation `09f1166`.
 - Start with `RELEASE_CHECKLIST.md` **Resume checkpoint — 2026-09-10**.
   It supersedes old audit completion claims and historical instructions below.
 - App is `0.1.0+2`; 247 tests and clean analysis verified with
@@ -32,6 +33,9 @@ skills without changing this repo again.
   acknowledgement completion, restore feedback, localized pricing and real
   license-tester acceptance. Do not replace it with the old stub.
 - B4 real Android AdMob configuration and B8 UMP/privacy options remain open.
+- E5/E5b are external prerequisites: AdMob Android app, banner/rewarded unit
+  IDs, publisher ID and EEA/UK/CH consent message. Once those exist, close B4
+  and B8 together so production ad requests are consent-gated.
 - B5 privacy link is implemented. Site is live, but policy/listing/assets need
   the corrections in the checkpoint; site work is not only post-launch.
 - Fresh final-candidate visual/offline/accessibility acceptance is pending.
