@@ -15,8 +15,9 @@
   - Rewarded: `ca-app-pub-1525645598421616/7452604243`
 - AdMob message **Honest Fern Europe Consent** is published for the app,
   with the privacy URL and Consent, Manage options and Do not consent enabled.
-- AdMob still shows Payment setup incomplete; wait for account verification for
-  app review and live serving. Keep test ads during development.
+- AdMob now shows the payment profile as complete. The account is still being
+  verified; AdMob says this usually takes 24 hours and can rarely take up to
+  two weeks. Keep test ads during development until approval is visible.
 
 ## Execution order
 
@@ -36,9 +37,9 @@
 starts it without blocking first paint, banners/rewarded ads await the gate,
 and Settings exposes Privacy options when required. Real Android IDs are
 available through the existing environment-based release build path. Keep
-`ADMOB_USE_TEST_ADS=true` until the account verification/payment warning is
-resolved; the production build command must set it to `false` and provide the
-three Android IDs.
+`ADMOB_USE_TEST_ADS=true` until account verification is complete; the
+production build command must set it to `false` and provide the three Android
+IDs.
 
 ### 2. B9 Billing hardening — Codex can implement
 
@@ -78,8 +79,8 @@ bottom navigation at 720×1280 and remains a non-blocking UI follow-up.
 
 ### 5. Luis-only console acceptance
 
-- Wait for AdMob account verification and confirm the red payment banner clears
-  or shows a clear remaining action.
+- Wait for AdMob account verification and confirm the account status becomes
+  approved (the payment profile is already complete).
 - Add license testers/internal testers in Play Console.
 - Install the internal build and test the three one-time products, restore,
   cancel, pending, relaunch and reinstall. Use test payment methods only.
