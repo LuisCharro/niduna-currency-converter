@@ -12,7 +12,10 @@
 > **Draft not approved for upload (2026-09-10).** Follow the master checklist
 > resume checkpoint. Pending: localized Play prices, manual-theme wording,
 > removal of no-tracking claims, accurate provider/cached-offline description,
-> final screenshots and replacement of the obsolete NIDUNA feature graphic.
+> final screenshots; the Honest Fern feature graphic is approved.
+
+The approved feature graphic is `feature-graphic.png` (1024x500). It is a
+brand asset; the separate store screenshots provide the real product UI.
 > The app title below is already entered in Console; do not choose it again.
 
 ---
