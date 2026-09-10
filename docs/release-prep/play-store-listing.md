@@ -1,12 +1,19 @@
 # Google Play Store Listing — Currency Converter
 
 > Product: Currency Converter (by Honest Fern)
-> Version: 0.1.0+1 (pre-MVP)
+> Current diagnostic version: 0.1.0+2; final 1.0.0 version/code pending RC gates
 > Target: Android first
 > Data sources: Frankfurter v2 (fiat), fawazahmed0 (crypto)
 > Privacy stance: no Honest Fern account, no first-party analytics, no backend;
 > AdMob data practices disclosed separately
 > Last reviewed against code and cross-repo release plan: 2026-07-19
+
+
+> **Draft not approved for upload (2026-09-10).** Follow the master checklist
+> resume checkpoint. Pending: localized Play prices, manual-theme wording,
+> removal of no-tracking claims, accurate provider/cached-offline description,
+> final screenshots and replacement of the obsolete NIDUNA feature graphic.
+> The app title below is already entered in Console; do not choose it again.
 
 ---
 

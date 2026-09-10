@@ -162,29 +162,19 @@ flutter pub get
 | `./scripts/check.sh` | analyze + test |
 | `./scripts/analyze.sh` | static analysis only |
 | `./scripts/test.sh` | unit tests |
-| `./scripts/build_apk.sh` | Android debug APK |
+| `./scripts/build_apk.sh` | Android release APK |
 | `./scripts/build_web.sh` | Flutter web build |
 | `./scripts/pub_get.sh` | fetch dependencies |
 | `./scripts/clean-deep-files.sh` | deep clean build artifacts |
 
-## Current phase (reviewed 2026-08-30)
+## Current phase (reviewed 2026-09-10)
 
-- Product UI/local-data work is complete; the current recorded baseline is
-  241 passing tests with clean analysis (re-verified 2026-08-30).
-- The Android **store release is not code-complete**: AdMob IDs, UMP consent
-  and privacy options, real Play Billing/restore, and the final signed AAB
-  remain open. The in-app privacy URL is implemented and committed; the current
-  AAB is diagnostic until AdMob and billing are production-ready.
-- Cross-repo order: `RELEASE_CHECKLIST.md` § "Execution Order". Site-only
-  steps: the sibling `niduna-site/RELEASE_PLAN.md`.
-- Release re-entry audit: no global Flutter/dependency upgrade is required.
-  The Android AAB smoke build was revalidated on 2026-08-30 after Gradle
-  repopulated its local cache. The final AAB still waits for B4/B8/B9, key
-  rotation, and the appropriate versionCode.
-- Android application ID (the value used in Play URLs and Console):
-  `com.honestfern.currency_converter`. The camel-case
-  `com.honestfern.currencyConverter` value belongs to the deferred iOS bundle.
-- Site foundation: `https://honestfern.com/` is live on the verified Hostinger
-  production host; `support@honestfern.com` is verified and ready to use in
-  Play Console.
-- Post-launch feature backlog: `docs/FEATURE_IDEAS.md`
+Read `RELEASE_CHECKLIST.md` **Resume checkpoint — 2026-09-10** first.
+Current version is `0.1.0+2`; the existing internal test and three active
+one-time products are recorded there. Real Play Billing is implemented but
+needs hardening and device acceptance; B4 AdMob and B8 UMP remain open.
+Latest checks: 247 tests, clean analysis, no lockfile drift (2026-09-10).
+Next: Billing exceptions/acknowledgement/restore/pricing review and license-tester
+verification, then ads/consent and final listing/privacy/assets alignment.
+No production release yet; no OXR/VPS service or CoinGecko in this scope.
+New binaries need code >= 3; bump version name to 1.0.0 only at the validated RC.

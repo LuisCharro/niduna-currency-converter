@@ -1,5 +1,10 @@
 # Currency Converter — Development Plan
 
+> Current release resume: `RELEASE_CHECKLIST.md` → **Resume checkpoint — 2026-09-10**.
+> Play internal code2/products already exist; Billing hardening/testing and B4/B8
+> remain. This document is product/history reference, not the next-action list.
+
+
 > **Based on:** DEFINITIONS.md (2026-05-22)
 > **Status:** Historical implementation tracker. For current release order and
 > blockers use `RELEASE_CHECKLIST.md` only. Reviewed 2026-07-19.

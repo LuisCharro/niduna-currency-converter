@@ -1,5 +1,10 @@
 # Currency Converter Roadmap
 
+> Current release resume: `RELEASE_CHECKLIST.md` → **Resume checkpoint — 2026-09-10**.
+> Play internal code2/products already exist; Billing hardening/testing and B4/B8
+> remain. This document is product/history reference, not the next-action list.
+
+
 > **Release note (2026-08-30):** this is the product/implementation roadmap.
 > `RELEASE_CHECKLIST.md` is the only source for launch order and blockers.
 > Current launch monetization is three one-time products (Remove Ads, Charts
@@ -20,15 +25,16 @@ Use it together with:
 The product UI/local-data path is implemented on `main`. The store path still
 needs real AdMob configuration, UMP/privacy options, real Play Billing/restore,
 and the final signed release candidate. The in-app privacy link is implemented.
-Last full recorded verification: 242 tests and clean analysis, re-run
-2026-08-30.
+Last full recorded verification: 247 tests and clean analysis, re-run
+2026-09-10.
 
 - a Flutter app with four visible tabs: `Convert`, `Favorites`, `Charts`,
   `Settings`
 - real fiat rates from Frankfurter v2 + 11 crypto assets from no-key providers
 - historical charts: fiat up to 2Y, crypto up to 1Y
 - live AdMob integration still using test configuration; purchase UI for
-  Remove Ads, Charts Pro and Favorites Pro still backed by a stub
+  Remove Ads, Charts Pro and Favorites Pro now wired to Play Billing;
+  error handling and real-device acceptance remain pending
 - dark mode, data freshness indicator, pull-to-refresh, modal currency picker,
   and previous-day trend arrows on Convert rows
 - branded splash screens + adaptive icons (Android)

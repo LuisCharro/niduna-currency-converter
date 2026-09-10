@@ -243,3 +243,47 @@ Widget build(BuildContext context) {
 
 MonetizationController (in `core/monetization/`) owns all entitlement state.
 Never duplicate entitlement checks — always go through the controller.
+---
+
+## Pattern: Text Measurement With User Font Scaling
+
+Found during the 2026-09-10 UI experiment (see
+`.agent/experiments/overnight-ui-ux-2026-09-10/REPORT.md` in the
+`codex/experiment-ui-ux-20260910` worktree). Affects every widget that
+picks a font size by measuring text with `TextPainter`
+(`AdaptiveAmountText`, `AmountEditingField`, `AmountValueRow`, …).
+
+**Rule 1 — always pass `textScaler` to `TextPainter`.**
+Measuring with the raw style while the `Text` widget renders with the
+system scaler produces sizes that overflow at large font scales:
+
+```dart
+final painter = TextPainter(
+  text: TextSpan(text: text, style: candidate),
+  textDirection: TextDirection.ltr,
+  maxLines: 1,
+  textScaler: MediaQuery.textScalerOf(context),  // ← REQUIRED
+)..layout(maxWidth: maxWidth);
+```
+
+**Rule 2 — never bake the scaler into the returned style.**
+Returning `style.copyWith(fontSize: scaler.scale(40))` makes the `Text`
+widget scale it AGAIN (double scaling → clipping). Return the UNSCALED
+style that fit; the ambient scaler does the rest.
+
+**Rule 3 — Android 14+ scales fonts NON-LINEARLY.**
+`TextScaler.linear(2.0)` is what tests use, but the OS reports a curve:
+at font_scale 2.0, `scaler.scale(1) == 2.0` while `scaler.scale(40) ≈ 56`
+(≈1.39×). Never assume `scale(n) == n * fontScale` for large `n`.
+
+**Rule 4 — prefer FittedBox over ellipsis for primary data.**
+When a single-line string is primary information (hero amount, pair
+codes, freshness date), wrap it in `FittedBox(fit: BoxFit.scaleDown)`
+or allow a second line. `overflow: TextOverflow.ellipsis` on primary
+data loses information users need ("100.0" vs "100.00").
+
+**Rule 5 — at large text scales, collapse or scroll, don't squeeze.**
+Fixed-height decorations (nav pill) overflow when labels double; either
+hide the label and keep `Semantics(label:)`, or switch the screen to a
+scrollable layout with a bounded content area (see `charts_tab_body.dart`
+`largeText` branch).

@@ -1,78 +1,104 @@
 # Release Checklist — Path to Google Play Store
 
-> **Last updated:** 2026-09-09 (post-audit plan sync)
-> **App version:** 0.1.0+1 in `pubspec.yaml` today; **target for the first
-> public release is `1.0.0+2`** (decision 2026-09-09 — bump only when the
-> release-candidate gates below are done, never before).
-> **Branch:** main
-> **Status:** The product UI and local data path are complete and
-> re-audited on 2026-09-09: `./scripts/check.sh` passes (242 tests, clean
-> analysis), and a fresh visual pass on the small-screen emulator
-> (`Small_Screen_API_36`, 720×1280) found no new issues in light or dark
-> mode across Convert/Favorites/Charts/Settings; the daily-rates messaging
-> ("Daily rates · Updated …") is clear on all surfaces. Google identity
-> verification is COMPLETE and a real Android device is verified with the
-> account, so **creating the Play Console app draft (E4) is the current
-> next action and is safe — a draft publishes nothing**. The store path is
-> still **not code-complete**: B4 (real AdMob IDs), B8 (UMP consent +
-> privacy options), and B9 (real Play Billing/restore) remain open, plus
-> keystore password rotation/backup and a re-capture of the repo's store
-> screenshots. Known 2026-09-09 repo drift: an uncommitted local
-> `pubspec.lock` downgrade (`meta` 1.17.0, `test_api` 0.7.10) must be
-> reverted or re-confirmed stable before any release build. The site is
-> GDPR-prepared and `https://honestfern.com/` is live on the verified
-> Hostinger production host; `support@honestfern.com` is operational.
-> **Play Console draft CREATED 2026-09-09** ("Currency Converter Honest
-> Fern", Console app ID `4973875544480645622`); the dashboard's own gate
-> text (12 opted-in testers / 14 continuous days) matches this checklist.
-> The remaining Console setup (listing + App content forms) gates the
-> closed track only, not internal testing.
->
-> **Remaining before submission (short list, true dependency order — updated 2026-08-30):**
-> 0. **Re-entry/toolchain preflight:** keep the current Flutter/dependency
-> baseline unless a targeted update is justified. This is complete for the
-> current machine; the final AAB still waits for B4/B8/B9 and the key/version
-> gates below.
-> 1. **Site foundation:** Hostinger security/staging, domain registration,
-> DNS cutover, HTTPS, public-path verification and production metadata are
-> complete. Site S1.4 is complete: `support@honestfern.com` is verified and
-> ready for C10. Site detail:
-> `niduna-site/RELEASE_PLAN.md` § S1 and
-> `niduna-site/docs/hostinger-static-migration.md`. C1 and B5 are now unblocked.
-> 2. **Accounts in parallel:** the personal Play account has been paid for,
-> identity verification is COMPLETE (2026-09-09), a real Android device
-> is verified with the account, the app draft is created (E4 ✅,
-> "Currency Converter Honest Fern"), the merchant payments profile is
-> complete with IBAN payouts + 15% fee-tier account group (E3 ✅), and the
-> three one-time products are created and ACTIVE (E8 ✅) after the
-> billing-enabled `0.1.0+2` AAB was published to internal testing.
-> **The only remaining external account gate is AdMob (E5/E5b)** — create
-> the app, the Android banner/rewarded ad units, and the EEA consent
-> message; the publisher ID also unblocks app-ads.txt (E5c/site S1.5).
-> [E5, E5b]
-> 3. **Release candidate before the closed test:** implement B4, B8 and
-> B9; rotate and back up the upload key; run checks; build a signed AAB with a
-> new versionCode. **Do not upload the existing stub-purchase build to any
-> reviewable track.** Internal testing may be used first if useful.
-> 4. **Console setup:** finalize the English listing and all required App
-> content forms, including ads, target audience, Data Safety, financial
-> features and any trader-status task shown by Play Console. Localized store
-> listings are optional and must not delay the closed test. [C2-C10]
-> 5. **Closed test:** publish the release candidate to the closed track,
-> recruit 15-16 people so at least 12 remain opted in continuously for 14
-> days, and test real billing/restore plus UMP during the window. [E7]
-> 6. **Production:** fix findings with incremented versionCodes, apply for
-> production access after the gate, review the pre-launch report, submit, and
-> wait until the Play listing is publicly reachable.
-> 7. **Site launch batch:** only after the production listing is public,
-> replace Coming soon with the real Play URL and deploy/verify S2.
+## Resume checkpoint — 2026-09-10
 
-The 2026-08-30 quality and UX batches improve localization coverage,
-screen-reader actions, narrow-layout behavior, large-text chart layouts, chart
-picker consistency, chart error boundaries, crypto payload validation, Android
-widget privacy, and local secret-file permissions.
-These changes are committed on `main`; the resulting AAB remains diagnostic
-until real AdMob consent/configuration and Play Billing are implemented.
+**Read this section first. It supersedes contradictory historical status and
+change-log entries below. No production/closed-test release is approved yet.**
+
+### Current evidence
+
+- App `main` baseline `a4c7489`; real Billing commit `09f1166`.
+  `pubspec.yaml` is **0.1.0+2**. Root/site/app were clean before the current
+  documentation-only handoff; check all three repositories when resuming.
+- `./scripts/check.sh` re-run 2026-09-10: **247 tests, clean analysis**, no
+  lockfile mutation. The earlier lockfile drift is no longer an open change.
+- Luis's update and the committed Console record say the billing-enabled
+  **AAB 0.1.0+2 is published to internal testing**, with all three one-time
+  products active. This audit did not independently inspect Console or match
+  uploaded bytes to a local artifact. Do not recreate the app/products.
+- Identity/device verification, app creation and merchant setup are recorded
+  complete (E2/E3/E4/E8). Title: **Currency Converter Honest Fern**;
+  Android ID `com.honestfern.currency_converter`; Console app ID
+  `4973875544480645622`.
+- Products: `remove_ads_lifetime` 1.99 CHF, `charts_pro_lifetime` 2.99 CHF,
+  `favorites_pro_lifetime` 0.99 CHF, with regional prices in Console.
+- Diagnostic release APK/AAB builds succeeded on 2026-09-09. APK v2 signature
+  and AAB JAR verification passed. These were pre-Billing diagnostic artifacts;
+  never confuse them with the uploaded Billing artifact or a final candidate.
+- This audit's visual evidence: normal release APK launched on
+  `Small_Screen_API_36` (360x640 logical pixels); light Convert/Favorites/Charts
+  inspected, daily text visible, test banner present. Captures in
+  `.tmp/release-audit-20260909/`. Automated gallery stalled at Test starting.
+  Complete four-tab light/dark, enlarged-text, offline and final Billing UI
+  acceptance is **still pending**, despite older blanket pass claims below.
+
+### Next action and ordered remaining work
+
+1. **B9 hardening — next bounded code task, after Luis authorizes fixes.**
+   Real service already injected: `lib/src/app_shell.dart:95` and
+   `lib/src/core/monetization/play_purchase_service.dart`. Review/correct
+   uncaught query/buy exceptions and stuck processing UI (`purchase()` lines
+   31-53; `iap_purchase_player.dart:56`), await/handle `completePurchase`
+   (`play_purchase_service.dart:71`), show restore completion/failure
+   (`settings_controller.dart:107`), and display Play-returned localized prices
+   instead of fixed CHF (`upgrade_shelf.dart:93`). Add meaningful mocked
+   platform-stream/error tests; existing new tests cover ID mapping and local
+   grants, not these platform flows. Review duplicate pending requests,
+   service disposal, pending purchase recovery and entitlement reconciliation.
+2. **Internal purchase acceptance.** Add internal testers and license testers,
+   install via the existing opt-in link, verify all three products, cancel,
+   pending, error, acknowledgement, relaunch, restore/reinstall and Remove Ads.
+   Confirm a test-payment method before any purchase; no real charge authorized.
+   Record actual device/account/build and results. Internal testing does not
+   count toward the closed-test 12/14-day gate.
+3. **E5/E5b + B4/B8.** Create AdMob Android app, banner/rewarded units and
+   European regulations message; implement production IDs, UMP consent refresh,
+   canRequestAds gating and required privacy-options entry. Android needs app
+   ID + banner ID + rewarded ID; iOS IDs do not block this release. Publish
+   app-ads.txt after publisher ID exists, with separate deploy approval.
+4. **Policy/listing/assets before closed test.** C5 store screenshots need
+   recapture after final UI. C6 feature graphic is NOT ready: it visibly says
+   NIDUNA, Coming to Android, No tracking, 100% Offline and uses old UI.
+   Replace it with Honest Fern, final UI and accurate cached-offline wording.
+   Site policy anticipates UMP/restore; align with final behavior and SDK data
+   categories. Correct its claim that clearing data removes settings (actual
+   app preserves them). Qualify site Six pinned (free 3 / rewarded 6 / Pro 16).
+   Listing: remove no-tracking alternative; replace automatic-system-theme
+   claim with manual light/dark selection; describe Frankfurter daily central
+   bank data rather than claiming v2 is ECB-only; review daily wording for
+   fiat business days versus crypto daily. Do not add future OXR/VPS/CoinGecko.
+5. **Signing + final build.** Key/properties exist, are gitignored, mode 600,
+   keytool read succeeds (RSA 2048, valid to 2053). Temporary password-file path
+   was absent; that does NOT prove rotation/backups. Confirm them with Luis
+   and authorize any key operation separately. Keep existing upload-key
+   identity now that an artifact is uploaded. Run checks and official build
+   scripts, inspect merged manifest/signing/R8/native 16 KB compatibility on the
+   final artifact and perform final device/UI/accessibility/offline acceptance.
+6. **Console + closed test.** Finish listing, ads/AD_ID, Data Safety, financial
+   features, IARC rating, target audience, Finance category and trader/public
+   contact tasks. Use final SDK behavior, not no-first-party-analytics as a
+   no-data-collection answer. Review on-device UMP and rewarded early-close,
+   failure/no-fill/offline states. Only then submit the safe candidate to closed
+   testing with at least 12 opted-in testers for 14 continuous days (recheck live
+   requirements); target 15-16 recruits. Production access/review comes later.
+7. **Site S2 only after public production listing:** replace Coming Soon with
+   actual Play URL, update metadata and deploy with approval.
+
+### Version, authority and scope
+
+Code 2 has already been uploaded. **A new binary needs an unused code >= 3**.
+The first public version name is `1.0.0` only after validation: use `1.0.0+3` if 3
+is still unused; otherwise the next available higher code. Interim diagnostics
+may stay 0.x. The old `1.0.0+2` target is superseded. Track promotion of the same
+artifact is separate from uploading a new binary.
+
+Current authorization: Markdown handoff only. No code/version/key changes,
+commits/pushes/deploys, purchases or additional Play submissions authorized.
+Preserve Honest Fern public branding; legacy Niduna folder/repo/keystore names
+are technical, not grounds for a wholesale rename. No backend, accounts,
+first-party analytics, OXR/VPS service, CoinGecko, subscriptions or iOS release.
+
+Older tables and change logs are history where they disagree with this checkpoint.
 
 ## Brand migration boundary
 
@@ -248,10 +274,10 @@ and update this checklist before proceeding.
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` + local 2026-08-30 hardening — release build now fails closed if `key.properties` or the keystore is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
 | B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ✅ **Implemented and committed 2026-08-30** | Commit `7aed7b1`; `url_launcher` opens `https://honestfern.com/currency-converter/privacy/`. Needs inclusion in the next release candidate. See `niduna-site/RELEASE_PLAN.md` § S1. |
-| B6 | Build release AAB with new keystore | `./scripts/build_appbundle.sh` | ~5 min | 🔁 **Must re-run before upload** | Smoke build revalidated on 2026-08-30: a 53.4 MB signed AAB was produced and verified. The diagnostic artifact is not publishable because it still uses test AdMob IDs and the purchase stub. The FINAL AAB must be rebuilt after B4 (real ad IDs) + B5 (privacy link) + B8 (consent flow) + B9 (real billing) + keystore rotation. **Do not pass `--no-pub` to the release build:** Flutter must regenerate the release-filtered plugin registrant; with a stale development registrant, `integration_test` can break the Java compilation. **versionCode rule (added 2026-07-16):** every Play upload needs a strictly HIGHER build number — bump the `+N` in pubspec for each upload, closed-track updates included (Play rejects a reused versionCode). **Version target (decided 2026-09-09):** the first public release ships as `1.0.0+2` — apply that single bump in the release-candidate step, after B4/B8/B9 and keystore rotation, not before. |
-| B7 | Upload AAB to Play Console | External step after B6 | — | ❌ | — |
+| B6 | Final signed AAB | `scripts/build_appbundle.sh` | — | Pending final candidate | Diagnostic builds exist; rebuild after B4/B8/B9 acceptance and signing/version gates. New binary code >= 3. Do not use stale diagnostic artifacts. |
+| B7 | Upload AAB | Play Console | — | Internal diagnostic recorded complete | Code 2 uploaded internally; closed/production submission remains pending and needs approval. |
 | B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Ad requests are already non-personalised, but the app still initializes Mobile Ads without UMP. Request consent info on every launch, show the form when required, gate ad requests on `canRequestAds`, and expose a privacy-options entry point when UMP reports it is required. Pair with E5b and keep the site policy aligned. |
-| B9 | **Real Play Billing** — replace `PurchaseServiceStub` with a real implementation | `pubspec.yaml` (add `in_app_purchase`), new service in `lib/src/core/monetization/`, injection at `lib/src/app_shell.dart:94`, `settings_controller.dart:99` (restore), `iap_purchase_player.dart` (stream-driven phases) | ~1-2 days | 🔁 **Implemented 2026-09-09 — code complete, 247 tests green** | `in_app_purchase: ^3.3.0` added; `play_purchase_service.dart` maps `remove_ads_lifetime`/`charts_pro_lifetime`/`favorites_pro_lifetime` (exact Console IDs), `buyNonConsumable` + stream handling (purchased/restored/error/canceled/pending) + `completePurchase`; wired in `app_shell.dart` via `onEntitlement` → `MonetizationController.applyLifetimeEntitlement`; Restore purchases now calls the store (replaces the "coming soon" snackbar, new l10n key `snackRestoreChecking` ×5 languages). Store-side remaining: upload the billing-enabled AAB (`0.1.0+2`) to internal testing → products page unlocks → create/activate the 3 products (E8) → real purchase/restore testing with license testers. **Full clues: Implementation Notes § B9.** |
+| B9 | Real Play Billing/restore | `play_purchase_service.dart`, purchase UI, settings | — | Implemented; hardening and acceptance OPEN | See current B9 notes and resume checkpoint. Products active; license-tester flows not yet verified. |
 
 > **⚠️ Keystore password rotation (NEW — 2026-06-02):**
 > The keystore was generated with a temporary password for this dev cycle.
@@ -282,7 +308,7 @@ and update this checklist before proceeding.
 | C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Honest Fern differentiator | ~45 min | ❌ |
 | C5 | Screenshots (min 2, max 8) | 1080px wide JPEG/PNG: Convert / Chart / Favorites, light + dark | ~1 hr | 🔁 **Must re-capture before listing upload (found 2026-09-09)** | The repo set in `docs/release-prep/screenshots/` dates from 2026-07-08 and predates the daily-rates freshness copy ("Fresh · Updated" → "Daily rates · Updated"), the header share button, and the trend badges — it no longer represents the final UI. The SITE screenshots (`niduna-site/assets/screenshot-*.png`, 2026-08-30) DO match the current build (verified 2026-09-09) — use them as the reference for what the re-captured set must look like. Re-capture on `Pixel7_EN` (large-screen AVD) with swiftshader (`-gpu swiftshader_indirect`); `SCREENSHOT_DARK=true ./.devtools/capture_android_screens.sh` for the dark set. |
-| C6 | Feature graphic (1024x500) | Branded graphic for featured placements | ~30 min | ✅ **Done** | `docs/release-prep/feature-graphic.png` (1024×500, botanical gradient + app name + phone mockup + tagline) |
+| C6 | Feature graphic (1024x500) | `docs/release-prep/feature-graphic.png` | — | OPEN — outdated public branding and claims | Replace NIDUNA / Coming to Android / No tracking / 100% Offline and old UI before listing upload. |
 | C7 | Content rating questionnaire (IARC/CERT) | In Play Console > Policy > App content | ~15 min | ❌ |
 | C7b | **Target audience declaration — declare 13+** (added 2026-07-11) | Separate from C7! In App content → Target audience. Declaring ANY under-13 age group triggers the Families Policy (certified ad SDKs only, ad limits, stricter review) — wrong fit for an AdMob-funded utility. Content rating "Everyone" (C7) and target audience "13+" are compatible and both correct here. | ~5 min | ❌ |
 | C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII collected by us — **but the AdMob SDK must be declared** (device/advertising identifiers, ad interaction data; see the "Third-party SDKs" table below). Align answers with the consent setup from B8/E5b. | ~30 min | ❌ |
@@ -338,58 +364,17 @@ The IDs flow through the build, not the source:
   (`ConsentDebugSettings(debugGeography: DebugGeography.debugGeographyEea,
   testIdentifiers: [...])`) before trusting it.
 
-### B9 — Real Play Billing (replaces the Phase-1 stub)
+### B9 — Real Play Billing: implemented, acceptance still open
 
-**Decision context:** payments must work at launch, so the "Phase 2"
-migration documented in `.agent/iap-purchase-plan.md` § "Migration to
-Real IAP" is pulled forward into this release. What ships today is
-fake: `purchase_service_stub.dart` waits ~2 s and returns success,
-`IapPurchasePlayer` shows "Processing payment…" with no payment system
-behind it, and no billing package exists in `pubspec.yaml`.
+`09f1166` adds `in_app_purchase`, injects `PlayPurchaseService` into AppShell,
+uses the three active non-consumable IDs, listens for purchase/restore events,
+and applies local entitlements. Settings now requests restore from Play.
+The production AppShell no longer uses the default stub.
 
-Implementation clues (verified against the code 2026-07-16):
-
-1. **Finalize IDs first (E8):** product IDs cannot be changed or reused and
-   must match the code — suggested `remove_ads_lifetime` /
-   `charts_pro_lifetime` / `favorites_pro_lifetime`, priced 1.99 / 2.99 /
-   0.99 CHF as displayed in `upgrade_shelf.dart`. Create/activate the products
-   immediately if Console permits; otherwise do it after step 2's
-   billing-enabled bundle is uploaded internally. They must be active before
-   product lookup and purchase tests.
-2. Add `in_app_purchase` (official Flutter plugin) to `pubspec.yaml`, implement
-   the service below, and make the first billing-enabled internal-test bundle.
-3. New `PlayPurchaseService implements PurchaseService`
-   (`lib/src/core/monetization/purchase_service.dart` is the interface;
-   all 3 products are non-consumables → `buyNonConsumable` +
-   `completePurchase`). Handle the `purchaseStream` states: pending,
-   purchased, restored, canceled, error.
-4. **Injection point:** `lib/src/app_shell.dart:94` constructs
-   `MonetizationController(prefs, adService: adService)` WITHOUT a
-   `purchaseService`, so the stub default at
-   `monetization_controller.dart:19` is what ships. Pass the real
-   service there; keep the stub as the test-only default.
-5. **Restore purchases:** `settings_controller.dart:99` currently shows
-   a "Restore purchases is coming soon" snackbar (contradicting its own
-   tile subtitle). Call `InAppPurchase.instance.restorePurchases()` and
-   re-derive entitlements from the restored purchase stream events.
-6. **`IapPurchasePlayer`** (`iap_purchase_player.dart`) phases are
-   timer-driven — rewire them to the purchase stream (pending →
-   processing, purchased → completed, canceled/error → failed).
-   `ProductType.subscription` stays unwired (not sold in v0.1).
-7. Local entitlement persistence (`MonetizationEntitlements` on
-   SharedPreferences) stays the UI source of truth; also listen to the
-   stream at startup for restored/pending purchases completing.
-8. **Tests:** extend/replace the stub tests listed in
-   `.agent/iap-purchase-plan.md` § Tests; mocks live in the test files
-   (repo rule), never in `lib/`.
-
-**Testing reality:** end-to-end purchase testing REQUIRES the app on a
-Play track (the E7 closed track is perfect) plus License testing (Play
-Console → Settings → License testing — add your own + testers' Gmail
-addresses; their test purchases are not charged). It cannot be tested
-before E4 + E8 exist. Device/emulator needs Play Store services and a
-logged-in Google account. Uploading the B9 build to the running closed
-track does NOT reset the E7 14-day clock.
+Do not redo the implementation or product setup. Follow steps 1-2 of the
+**Resume checkpoint — 2026-09-10** for the remaining error handling,
+acknowledgement, localized-price and real-device acceptance work.
+247 passing tests do not establish successful platform Billing behavior.
 
 ### E7 — Closed-testing playbook (the 12-tester / 14-day gate)
 
@@ -596,9 +581,10 @@ widgets, trend arrows, and chart-comparison deferral, see
 
 ---
 
-## Execution Order (cross-repo master order — 2026-08-28)
+## Execution Order (phase reference; current resume order above)
 
-This is the order to follow. The site repo contains implementation detail for
+Start at the dated resume checkpoint above; completed foundations below must not
+be repeated. The site repo contains implementation detail for
 its own steps, but it does not redefine this sequence.
 
 ### Phase 0 — Re-entry and toolchain preflight
@@ -771,6 +757,26 @@ These can ship in v0.2.0+ updates:
 
 ## Change Log (this file)
 
+- **2026-09-10 (UI/UX experiment run, then SHELVED for 1.0.0)** — The
+  overnight UI/UX experiment (`.agent/overnight-ui-ux-experiment.md`) was
+  activated and completed in an isolated worktree (branch
+  `codex/experiment-ui-ux-20260910`, base `a4c7489`; main untouched). Three
+  candidate fixes were implemented and verified at font scales 1.0/1.3/2.0
+  on 360×640dp and standard screens, light+dark: nav pill collapses to
+  icons at large text, hero amount/freshness line stop truncating
+  (TextPainter now measures with the system `textScaler` — Android 14+
+  scales non-linearly), Charts switches to a scrollable layout with a
+  bounded 240dp chart, and favorite pair titles use `FittedBox` instead of
+  ellipsis. Full report with before/after evidence:
+  `/Users/luis/Niduna-worktrees/currency-converter-ui-ux-20260910/.agent/experiments/overnight-ui-ux-2026-09-10/REPORT.md`.
+  **Decision (Luis, 2026-09-10): do NOT advance these UI changes for
+  1.0.0** — large font scale on the small test device is not a convincing
+  combination to ship now. The worktree/branch are preserved for review;
+  revisiting after launch (v1.1) would reuse the same diff. Useful
+  technical learning kept in `CODE_PATTERNS.md`
+  ("Text measurement with user font scaling"). No release gate changed:
+  B4 (real AdMob IDs), B8 (UMP) and the on-device purchase/restore test
+  against the active one-time products remain the open pre-RC work.
 - **2026-09-09 (Console session + B9 implemented)** — Luis created the Play
   Console app draft ("Currency Converter Honest Fern", app ID
   `4973875544480645622`), completed the merchant payments profile (E3 ✅:

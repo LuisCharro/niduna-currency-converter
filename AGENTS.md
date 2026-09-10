@@ -19,67 +19,29 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-09-09)
+## Current state (reviewed 2026-09-10)
 
-- **Branch:** `main` is the canonical branch. `release-prep`,
-  `feature/widget-restore`, `feature/ios-widget-target` are kept
-  around as references; all their useful code is already on `main`.
-- **Build:** release APK/AAB builds were historically verified and signed
-  (v2); the current AAB revalidation stalled in Gradle on 2026-08-28 without
-  producing an artifact and must be rerun before release.
-  `flutter build ios --simulator --debug` works, app installs and
-  runs on iPhone 17 Pro sim (iOS 26.5).
-- **Tests:** 242/242 pass with clean `flutter analyze` (re-verified
-  2026-09-09 via `./scripts/check.sh`); rerun after release-code or
-  dependency changes. Known working-tree drift: an uncommitted local
-  `pubspec.lock` downgrade (`meta` 1.17.0, `test_api` 0.7.10) — revert or
-  re-confirm before any release build.
-- **2026-09-09 pre-Play audit:** small-screen emulator pass
-  (`Small_Screen_API_36`, light+dark, all 4 tabs) found no new UI issues;
-  daily-rates messaging verified on all surfaces. Repo store screenshots
-  (`docs/release-prep/screenshots/`, 2026-07-08) are STALE — the site set
-  (`niduna-site/assets/screenshot-*.png`, 2026-08-30) matches the current
-  build; re-capture the store set before the listing upload.
-- **Release:** the store path is **not code-complete**. Cross-repo master order in `RELEASE_CHECKLIST.md`
-  § "Execution Order" + per-step "Implementation Notes"; site-side
-  steps in the sibling repo `../../niduna-site/RELEASE_PLAN.md`.
-  Post-launch feature backlog: `docs/FEATURE_IDEAS.md`.
-  Open code blockers: B4 (real AdMob IDs), B8 (UMP consent + privacy
-  options), B9 (real Play Billing/restore). B5 (in-app privacy URL) is
-  done and committed. The current `PurchaseServiceStub` must never reach a
-  reviewable Play track. External state: Play identity verification is
-  COMPLETE; **the Play Console app draft is CREATED (2026-09-09,
-  "Currency Converter Honest Fern", Console app ID `4973875544480645622`)**,
-  merchant profile done (E3), billing diagnostic AAB `0.1.0+2` on internal
-  testing, and the 3 one-time products are ACTIVE (E8) — B9 is implemented
-  (247 tests green). Remaining external: AdMob app + ad units + EEA message
-  (E5/E5b). Remaining code: B8 (UMP), B4 (real ad IDs once E5 exists).
-  Site launch gates are done; `support@honestfern.com` is operational.
-- **Home-screen widgets:**
-  - **Android:** fully redesigned — 3-pair icon-led widget with warm
-    paper background, currency symbols in circles, thin dividers.
-    Driven by app favorites with fallback pairs. Starter favorites
-    seeded on first run. Shows "Honest Fern · Open to load" placeholder
-    when no data yet. Runtime-verified on Pixel 7 emulator.
-  - **iOS:** code complete, Xcode project target and Embed App Extensions
-    phase wired up. A real-device run still requires Apple signing; some
-    iOS 26 simulator installs are blocked by the known widget-extension
-    `Invalid placeholder attributes` issue. The repair script remains
-    idempotent: `GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.16.2_2/libexec
-    ruby ios/scripts/add_widget_target.rb`.
-  - See `docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`
-    and `docs/superpowers/specs/2026-06-13-widget-redesign-design.md`.
-- **Release status:** see `RELEASE_CHECKLIST.md` for the full Blocker
-  Summary. Open code includes real AdMob IDs, UMP + privacy options,
-  and real Play Billing/restore (the in-app privacy URL is done).
-  The current
-  `PurchaseServiceStub` must never reach a reviewable Play track.
-  Site launch uses the verified Hostinger KVM 2 production host and
-  `honestfern.com`; `support@honestfern.com` is operational after successful
-  receiving and sending tests. The remaining site work is the post-listing
-  launch batch.
-- **Review report:** `docs/REVIEW-2026-06-01.md` — full audit done
-  2026-06-01/02. Read it before starting substantial new work.
+- `main` is canonical; baseline `a4c7489`, Billing implementation `09f1166`.
+- Start with `RELEASE_CHECKLIST.md` **Resume checkpoint — 2026-09-10**.
+  It supersedes old audit completion claims and historical instructions below.
+- App is `0.1.0+2`; 247 tests and clean analysis verified with
+  `./scripts/check.sh` on 2026-09-10, no lockfile drift in that run.
+- Play app exists, diagnostic AAB code 2 is on internal testing and three
+  one-time products are active according to the committed Console record.
+- Real Billing is injected by AppShell. B9 remains open for exception handling,
+  acknowledgement completion, restore feedback, localized pricing and real
+  license-tester acceptance. Do not replace it with the old stub.
+- B4 real Android AdMob configuration and B8 UMP/privacy options remain open.
+- B5 privacy link is implemented. Site is live, but policy/listing/assets need
+  the corrections in the checkpoint; site work is not only post-launch.
+- Fresh final-candidate visual/offline/accessibility acceptance is pending.
+  The 2026-09-09 screenshot integration attempt hung at Test starting; normal
+  release APK launched and light Convert/Favorites/Charts were inspected.
+  Do not claim a complete current four-tab light/dark pass from this evidence.
+- Historical Gradle stall is not the current blocker: diagnostic release APK
+  and AAB built successfully on 2026-09-09. Final build follows the open gates.
+- Keep existing widget implementation and iOS work out of this Android release
+  task unless a concrete Android regression requires investigation.
 
 ## Product identity
 
@@ -107,20 +69,12 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-**Decision 2026-09-09:** the first public Play release ships as **`1.0.0+2`**.
-
-Rules for this phase:
-
-- Keep `pubspec.yaml` at `version: 0.1.0+1` until the release-candidate
-  gates are done (B4 + B8 + B9, keystore rotation, checks green) — then
-  apply the single bump to `1.0.0+2`.
-- Every Play upload (closed-track updates included) must increment `+N`.
-- Firebase deploy script version labels must match the app version line.
-
-Current baseline:
-
-- App version: `0.1.0+1` (unchanged until the RC bump)
-- Firebase version label: matches `pubspec.yaml` at each deploy
+- Current `pubspec.yaml`: `0.1.0+2`; do not bump during documentation work.
+- Code 2 is already uploaded. New binaries need an unused higher code, at least 3.
+- First public version name is `1.0.0`, only after release gates are validated.
+  `1.0.0+3` is conditional on code 3 still being unused; the old `1.0.0+2`
+  target is obsolete. Intermediate diagnostic uploads may remain 0.x.
+- Promoting the same artifact between tracks does not require rebuilding it.
 
 ## Read first
 
