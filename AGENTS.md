@@ -25,6 +25,9 @@ skills without changing this repo again.
   implementation `09f1166`.
 - Start with `RELEASE_CHECKLIST.md` **Resume checkpoint — 2026-09-10**.
   It supersedes old audit completion claims and historical instructions below.
+- For the executable next phase, use `.agent/release-next-steps.md`; it records
+  the current AdMob IDs, ownership and stop conditions without authorizing an
+  upload or version bump.
 - App is `0.1.0+2`; 247 tests and clean analysis verified with
   `./scripts/check.sh` on 2026-09-10, no lockfile drift in that run.
 - Play app exists, diagnostic AAB code 2 is on internal testing and three

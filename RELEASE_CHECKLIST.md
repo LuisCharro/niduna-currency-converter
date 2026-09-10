@@ -43,6 +43,10 @@ change-log entries below. No production/closed-test release is approved yet.**
 
 ### Next action and ordered remaining work
 
+The detailed bounded execution plan is `.agent/release-next-steps.md`. It
+separates work Codex can execute locally from Play/AdMob actions that require
+Luis and keeps upload/version/deploy gates explicit.
+
 1. **E5/E5b — external AdMob prerequisites.** ✅ Completed 2026-09-10.
    IDs and the published EEA/UK/CH message are recorded above. E5c
    (`app-ads.txt`) remains open until the publisher ID is deployed on the site.
