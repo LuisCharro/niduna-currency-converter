@@ -16,6 +16,11 @@
 
 The approved feature graphic is `feature-graphic.png` (1024x500). It is a
 brand asset; the separate store screenshots provide the real product UI.
+
+The six current store screenshots are in `screenshots/`: Convert, Favorites,
+and Chart in light and dark modes. They were captured from the current build on
+the `Pixel7_EN` AVD with paid entitlements seeded so no ads or upgrade prompts
+appear.
 > The app title below is already entered in Console; do not choose it again.
 
 ---
