@@ -81,7 +81,11 @@ bottom navigation at 720×1280 and remains a non-blocking UI follow-up.
 
 - Wait for AdMob account verification and confirm the account status becomes
   approved (the payment profile is already complete).
-- Add license testers/internal testers in Play Console.
+- Confirm the email list is assigned to the Internal testing track and use its
+  opt-in link. An email list alone does not opt an account into a track.
+- Separately confirm your Google account is in Play Console's **License
+  testing** list. Track testers control download access; license testers make
+  Play Billing purchases test purchases without real charges.
 - Install the internal build and test the three one-time products, restore,
   cancel, pending, relaunch and reinstall. Use test payment methods only.
 - Confirm code `3` is unused before the final version bump.
