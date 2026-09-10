@@ -338,6 +338,18 @@ abstract class AppLocalizations {
   /// **'Privacy'**
   String get labelPrivacy;
 
+  /// No description provided for @privacyOptionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy options'**
+  String get privacyOptionsTitle;
+
+  /// No description provided for @privacyOptionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage advertising consent and privacy choices'**
+  String get privacyOptionsSubtitle;
+
   /// No account label
   ///
   /// In en, this message translates to:

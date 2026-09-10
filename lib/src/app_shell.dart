@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/ads/admob_rewarded_ad_service.dart';
+import 'core/ads/ad_consent_manager.dart';
 import 'core/monetization/monetization_controller.dart';
 import 'core/monetization/play_purchase_service.dart';
 import 'core/preferences/app_preferences.dart';
@@ -60,6 +63,9 @@ class _AppState extends State<AppShell> {
 
   Future<void> _initAsync() async {
     ProviderConfig.validateReleaseMode();
+    // Consent and the ad SDK are initialized in the background so a platform
+    // callback cannot hold the app's first frame (or test pump) open.
+    unawaited(AdConsentManager.instance.initialize());
     final prefs = await SharedPreferences.getInstance();
 
     _preferences = AppPreferences(prefs);
@@ -118,6 +124,7 @@ class _AppState extends State<AppShell> {
     _settingsController = SettingsController(
       preferences: _preferences!,
       monetization: _monetization!,
+      adConsent: AdConsentManager.instance,
       onClearCache: _onClearCache,
     );
 

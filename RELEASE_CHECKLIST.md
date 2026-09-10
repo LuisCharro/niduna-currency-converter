@@ -288,11 +288,11 @@ and update this checklist before proceeding.
 | B1 | Generate release keystore | N/A (external file) | ~10 min | ✅ **Done** | `200c888` — at `android/app/niduna-upload.jks` (RSA 2048, 10000-day, valid until 2053) |
 | B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ✅ **Done** | `200c888` — ⚠️ **password is TEMP, must be rotated before publish** (see Keystore note below) |
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` + local 2026-08-30 hardening — release build now fails closed if `key.properties` or the keystore is missing |
-| B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | ❌ | All 5 unit IDs + app ID still `ca-app-pub-3940256099942544/...` (Google's test IDs) |
+| B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | 🟡 **Integration ready; external acceptance open** | Real Android IDs are available through the existing release env path; development defaults remain Google's test IDs. AdMob account verification/payment setup is still pending before live serving. |
 | B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ✅ **Implemented and committed 2026-08-30** | Commit `7aed7b1`; `url_launcher` opens `https://honestfern.com/currency-converter/privacy/`. Needs inclusion in the next release candidate. See `niduna-site/RELEASE_PLAN.md` § S1. |
 | B6 | Final signed AAB | `scripts/build_appbundle.sh` | — | Pending final candidate | Diagnostic builds exist; rebuild after B4/B8/B9 acceptance and signing/version gates. New binary code >= 3. Do not use stale diagnostic artifacts. |
 | B7 | Upload AAB | Play Console | — | Internal diagnostic recorded complete | Code 2 uploaded internally; closed/production submission remains pending and needs approval. |
-| B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | ❌ | Ad requests are already non-personalised, but the app still initializes Mobile Ads without UMP. Request consent info on every launch, show the form when required, gate ad requests on `canRequestAds`, and expose a privacy-options entry point when UMP reports it is required. Pair with E5b and keep the site policy aligned. |
+| B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | 🟡 **Implemented; device acceptance open** | `AdConsentManager` requests consent on launch, shows the published form when required, gates banner/rewarded requests on `canRequestAds`, and exposes Privacy options in Settings. Verify the live Android dialog and ad behavior on the internal-test device. |
 | B9 | Real Play Billing/restore | `play_purchase_service.dart`, purchase UI, settings | — | Implemented; hardening and acceptance OPEN | See current B9 notes and resume checkpoint. Products active; license-tester flows not yet verified. |
 
 > **⚠️ Keystore password rotation (NEW — 2026-06-02):**
@@ -351,6 +351,11 @@ The IDs flow through the build, not the source:
   to Google's test app ID `~3347511713`).
 - **iOS app ID**: hardcoded test ID at `ios/Runner/Info.plist:28`
   (`GADApplicationIdentifier`) — only matters for the deferred iOS release.
+- **Android production values recorded 2026-09-10:** app ID
+  `ca-app-pub-1525645598421616~2391849252`, banner
+  `ca-app-pub-1525645598421616/6412809148`, rewarded
+  `ca-app-pub-1525645598421616/7452604243`. They are intentionally passed at
+  release-build time; source and development builds keep Google's test IDs.
 - Suggested: keep the real values in a gitignored `.env.release` sourced
   by the build scripts, and document the final command in
   `docs/RELEASE_COMMANDS.md`.
@@ -365,18 +370,18 @@ The IDs flow through the build, not the source:
   remains part of the B8 AdMob/UMP pass.
 
 ### B8 — UMP consent flow (after E5b creates the console message)
-- Entry point: `lib/main.dart:33` — today it fire-and-forgets
-  `MobileAds.instance.initialize()`. Wrap with the UMP sequence from the
-  same `google_mobile_ads` package: `ConsentInformation.instance
-  .requestConsentInfoUpdate(...)` → `ConsentForm
-  .loadAndShowConsentFormIfRequired(...)` → only initialize/show ads when
-  `canRequestAds` is true. Keep it non-blocking for app startup (ads are
-  already lazy).
+- Implemented 2026-09-10 in `lib/src/core/ads/ad_consent_manager.dart`.
+  `AppShell` starts the UMP sequence in the background; the manager calls
+  `ConsentInformation.requestConsentInfoUpdate(...)`, loads and shows the
+  form when required, initializes Mobile Ads only after `canRequestAds`, and
+  exposes `showPrivacyOptions()` through the Settings Data & privacy page.
+  Banner and rewarded requests both await the same gate. Desktop/widget-test
+  platforms skip the mobile channel so the test suite remains deterministic.
 - **Decision resolved:** both banner and rewarded code already use
   `AdRequest(nonPersonalizedAds: true)`. Keep that behavior. UMP is still
   required, and the app must expose a privacy-options entry point when
   `getPrivacyOptionsRequirementStatus()` says it is required.
-- Test with UMP debug geography = EEA on the emulator
+- Test with UMP debug geography = EEA on the emulator/device
   (`ConsentDebugSettings(debugGeography: DebugGeography.debugGeographyEea,
   testIdentifiers: [...])`) before trusting it.
 
@@ -531,7 +536,7 @@ See `docs/providers/*.md` for full per-provider details.
 | iOS deployment target 15.0 | Committed `bade57e` |
 | Release APK + App Bundle builds | `scripts/build_apk.sh`, `scripts/build_appbundle.sh`; AAB smoke revalidated 2026-08-30, final build remains gated on release-code changes |
 | Firebase hosting deploy pipeline | `scripts/firebase_hosting_*.sh` |
-| Latest direct verification | 242 tests, clean analysis, `./scripts/check.sh`, and a signed 53.4 MB diagnostic AAB on 2026-08-30; final AAB still follows B4/B8/B9, key rotation and versionCode bump |
+| Latest direct verification | 247 tests, clean analysis, `./scripts/check.sh`, and a signed 54.1 MB local test-ad AAB (`0.1.0+2`) on 2026-09-10; final AAB still follows real-ID wiring, device UMP/Billing acceptance, key rotation and versionCode bump |
 
 ### Provider Profile System — Correctly Segregated
 
@@ -772,6 +777,15 @@ These can ship in v0.2.0+ updates:
 ---
 
 ## Change Log (this file)
+
+- **2026-09-10 (B8 implementation + B4 release wiring)** — Added the shared
+  UMP consent gate and Settings privacy-options entry point. Banner and
+  rewarded ads now request only after `canRequestAds`; the production Android
+  AdMob IDs are recorded for the release command while test IDs remain the
+  development default. `flutter analyze`, all **247 tests**, and a local
+  signed test-ad AAB (`0.1.0+2`, 54.1 MB) pass. Device consent/ad behavior,
+  AdMob account verification, B9 purchase/restore acceptance, key rotation,
+  screenshots, and the final version bump remain open.
 
 - **2026-09-10 (UI/UX experiment run, then SHELVED for 1.0.0)** — The
   overnight UI/UX experiment (`.agent/overnight-ui-ux-experiment.md`) was

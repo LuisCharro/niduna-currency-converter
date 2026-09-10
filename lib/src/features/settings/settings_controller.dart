@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/monetization/monetization_controller.dart';
+import '../../core/ads/ad_consent_manager.dart';
 import '../../core/monetization/purchase_service.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../../l10n/app_localizations_safe.dart';
@@ -18,10 +19,12 @@ class SettingsController extends ChangeNotifier {
     required this.preferences,
     required this.monetization,
     required this.onClearCache,
-  });
+    AdConsentManager? adConsent,
+  }) : adConsent = adConsent ?? AdConsentManager.instance;
 
   final AppPreferences preferences;
   final MonetizationController monetization;
+  final AdConsentManager adConsent;
   final VoidCallback onClearCache;
 
   Future<void> pickBaseCurrency(BuildContext context, String selected) async {
@@ -48,6 +51,8 @@ class SettingsController extends ChangeNotifier {
     await launchUrl(_privacyPolicyUri, mode: LaunchMode.externalApplication);
   }
 
+  Future<void> openPrivacyOptions() => adConsent.showPrivacyOptions();
+
   void requestClearCache(BuildContext context) {
     final loc = l10n(context);
     showDialog(
@@ -64,9 +69,9 @@ class SettingsController extends ChangeNotifier {
             onPressed: () {
               Navigator.of(ctx).pop();
               onClearCache();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(loc.snackCacheCleared)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(loc.snackCacheCleared)));
             },
             child: Text(
               loc.btnClear,
@@ -105,9 +110,9 @@ class SettingsController extends ChangeNotifier {
   }
 
   void restorePurchases(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n(context).snackRestoreChecking)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n(context).snackRestoreChecking)));
     monetization.restorePurchases();
   }
 }

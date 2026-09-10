@@ -129,6 +129,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get labelPrivacy => 'Confidentialité';
 
   @override
+  String get privacyOptionsTitle => 'Options de confidentialité';
+
+  @override
+  String get privacyOptionsSubtitle =>
+      'Gérer le consentement publicitaire et les choix de confidentialité';
+
+  @override
   String get labelNoAccount => 'Aucun compte';
 
   @override

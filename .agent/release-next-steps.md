@@ -20,7 +20,7 @@
 
 ## Execution order
 
-### 1. B4+B8 app integration — Codex can implement
+### 1. B4+B8 app integration — implemented; device/account acceptance remains
 
 - Add the production IDs through the repository's existing configuration path;
   keep test IDs as the safe development default until release configuration.
@@ -31,6 +31,14 @@
 - Add a Settings entry point for UMP Privacy Options when required.
 - Preserve offline, no-consent, no-fill, early-close and Remove Ads states.
 - Add focused tests for consent gating and configuration selection.
+
+**2026-09-10 result:** `AdConsentManager` now owns the UMP gate; AppShell
+starts it without blocking first paint, banners/rewarded ads await the gate,
+and Settings exposes Privacy options when required. Real Android IDs are
+available through the existing environment-based release build path. Keep
+`ADMOB_USE_TEST_ADS=true` until the account verification/payment warning is
+resolved; the production build command must set it to `false` and provide the
+three Android IDs.
 
 ### 2. B9 Billing hardening — Codex can implement
 
@@ -59,6 +67,12 @@
 - Run device/emulator checks for Convert, Favorites, Charts and Settings in
   light/dark, small-screen, enlarged-text, offline and stale states.
 - Verify UMP, banner, rewarded, Remove Ads, restore and deep links.
+
+**2026-09-10 result:** `./scripts/check.sh` passes (clean analyze, 247 tests).
+`ADMOB_USE_TEST_ADS=true ./scripts/build_appbundle.sh` also produced and
+verified a signed `build/app/outputs/bundle/release/app-release.aab` (54.1 MB,
+still `0.1.0+2`; not uploaded). The remaining verification is on Android:
+consent form/Privacy options, live test ads, and billing purchase/restore.
 
 ### 5. Luis-only console acceptance
 

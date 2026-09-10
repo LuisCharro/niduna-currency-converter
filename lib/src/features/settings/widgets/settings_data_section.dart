@@ -43,6 +43,24 @@ class SettingsDataSection extends StatelessWidget {
             color: AppColors.of(context).subtle,
           ),
         ),
+        ListenableBuilder(
+          listenable: controller.adConsent,
+          builder: (context, _) {
+            if (!controller.adConsent.privacyOptionsRequired) {
+              return const SizedBox.shrink();
+            }
+            return SettingsTile(
+              key: const Key('open_privacy_options'),
+              title: loc.privacyOptionsTitle,
+              subtitle: loc.privacyOptionsSubtitle,
+              onTap: controller.openPrivacyOptions,
+              trailing: Icon(
+                Icons.tune_rounded,
+                color: AppColors.of(context).subtle,
+              ),
+            );
+          },
+        ),
         ClearCacheTile(controller: controller),
       ],
     );

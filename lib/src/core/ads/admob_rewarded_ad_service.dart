@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../monetization/rewarded_ad_service.dart';
+import 'ad_consent_manager.dart';
 import 'ad_helper.dart';
 
 class AdMobRewardedAdService implements RewardedAdService {
@@ -30,6 +31,11 @@ class AdMobRewardedAdService implements RewardedAdService {
 
   Future<void> _loadAndShowAd(String rewardType) async {
     try {
+      await AdConsentManager.instance.initialize();
+      if (!AdConsentManager.instance.canRequestAds) {
+        _completeResult(false);
+        return;
+      }
       _rewardedAd?.dispose();
       _rewardedAd = null;
 

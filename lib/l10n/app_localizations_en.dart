@@ -128,6 +128,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelPrivacy => 'Privacy';
 
   @override
+  String get privacyOptionsTitle => 'Privacy options';
+
+  @override
+  String get privacyOptionsSubtitle =>
+      'Manage advertising consent and privacy choices';
+
+  @override
   String get labelNoAccount => 'No account';
 
   @override

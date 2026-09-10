@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'ad_banner_placeholder.dart';
+import 'ad_consent_manager.dart';
 import 'ad_helper.dart';
 
 class AdBannerWidget extends StatefulWidget {
@@ -24,6 +25,8 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
   int? _pendingLoadWidth;
 
   Future<void> _loadBannerAd(int width) async {
+    await AdConsentManager.instance.initialize();
+    if (!AdConsentManager.instance.canRequestAds) return;
     _bannerAd?.dispose();
     _bannerAd = null;
     _hasLoadError = false;
