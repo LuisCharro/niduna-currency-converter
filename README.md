@@ -174,8 +174,8 @@ Current version is `0.1.0+2`; the existing internal test and three active
 one-time products are recorded there. Real Play Billing is implemented but
 needs hardening and device acceptance; B4 AdMob and B8 UMP remain open.
 Latest checks: 247 tests, clean analysis, no lockfile drift (2026-09-10).
-Next: confirm the external AdMob prerequisites, then harden Billing and close
-the B4+B8 production ads/consent pass before license-tester verification and
-final listing/privacy/assets alignment.
+Next: harden Billing and integrate the now-configured AdMob IDs/UMP flow for
+B4+B8, publish `app-ads.txt`, then run license-tester verification and final
+listing/privacy/assets alignment.
 No production release yet; no OXR/VPS service or CoinGecko in this scope.
 New binaries need code >= 3; bump version name to 1.0.0 only at the validated RC.

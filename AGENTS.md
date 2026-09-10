@@ -33,9 +33,10 @@ skills without changing this repo again.
   acknowledgement completion, restore feedback, localized pricing and real
   license-tester acceptance. Do not replace it with the old stub.
 - B4 real Android AdMob configuration and B8 UMP/privacy options remain open.
-- E5/E5b are external prerequisites: AdMob Android app, banner/rewarded unit
-  IDs, publisher ID and EEA/UK/CH consent message. Once those exist, close B4
-  and B8 together so production ad requests are consent-gated.
+- E5/E5b are complete in AdMob as of 2026-09-10. The recorded Android App ID,
+  Banner/Rewarded IDs, publisher ID and published EEA/UK/CH message are in the
+  release checklist. E5c (`app-ads.txt`) and the B4/B8 code integration remain
+  open; production ad requests must be consent-gated.
 - B5 privacy link is implemented. Site is live, but policy/listing/assets need
   the corrections in the checkpoint; site work is not only post-launch.
 - Fresh final-candidate visual/offline/accessibility acceptance is pending.

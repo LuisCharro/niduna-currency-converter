@@ -22,6 +22,15 @@ change-log entries below. No production/closed-test release is approved yet.**
   `4973875544480645622`.
 - Products: `remove_ads_lifetime` 1.99 CHF, `charts_pro_lifetime` 2.99 CHF,
   `favorites_pro_lifetime` 0.99 CHF, with regional prices in Console.
+- AdMob E5/E5b completed in the console on 2026-09-10: Android app
+  **Currency Converter Honest Fern**, App ID
+  `ca-app-pub-1525645598421616~2391849252`, publisher ID
+  `pub-1525645598421616`, Banner unit
+  `ca-app-pub-1525645598421616/6412809148`, Rewarded unit
+  `ca-app-pub-1525645598421616/7452604243`. European message **Honest Fern
+  Europe Consent** is published with the public privacy URL and Consent,
+  Manage options and Do not consent enabled. AdMob still shows **Payment setup
+  incomplete** while its payment profile is being activated.
 - Diagnostic release APK/AAB builds succeeded on 2026-09-09. APK v2 signature
   and AAB JAR verification passed. These were pre-Billing diagnostic artifacts;
   never confuse them with the uploaded Billing artifact or a final candidate.
@@ -34,10 +43,9 @@ change-log entries below. No production/closed-test release is approved yet.**
 
 ### Next action and ordered remaining work
 
-1. **E5/E5b — external AdMob prerequisites.** Luis must create the Android
-   AdMob app, banner/rewarded ad units, publisher ID and EEA/UK/CH consent
-   message. Record IDs without committing secrets; B4/B8 cannot close against
-   placeholders.
+1. **E5/E5b — external AdMob prerequisites.** ✅ Completed 2026-09-10.
+   IDs and the published EEA/UK/CH message are recorded above. E5c
+   (`app-ads.txt`) remains open until the publisher ID is deployed on the site.
 2. **B9 hardening — bounded code task, after Luis authorizes fixes.**
    Real service already injected: `lib/src/app_shell.dart:95` and
    `lib/src/core/monetization/play_purchase_service.dart`. Review/correct
@@ -247,8 +255,8 @@ and update this checklist before proceeding.
 | E2 | Verify developer identity (required since 2026) | In Play Console | ✅ **Complete (verified 2026-09-09); a real Android device is also verified with the account** |
 | E3 | Set up the payments/merchant profile — **launch-critical since 2026-07-16** (required before E8 in-app products can be created; needs bank details for payouts) | Play Console > Setup > Payments profile | ✅ **Done 2026-09-09** — merchant profile completed (Individual, legal name, `honestfern.com`, `support@honestfern.com`, statement name "Honest Fern", category Computer Software), IBAN payout method added, and the "Honest Fern" account group created for the 15% service-fee tier (accept the tier T&C when Console prompts it) |
 | E4 | Create app in Play Console (draft mode) | ✅ **Done 2026-09-09** — app created as "Currency Converter Honest Fern" (title per C2); Play Console app ID `4973875544480645622`; application ID `com.honestfern.currency_converter`. Draft publishes nothing. Unblocks E6 and E8. | ✅ |
-| E5 | Register AdMob account + create ad units | https://admob.google.com | ❌ |
-| E5b | AdMob → Privacy & messaging → create the GDPR consent message (required for EEA/UK/CH ads; pairs with code step B8) | In AdMob console, after E5 | ❌ |
+| E5 | Register AdMob account + create ad units | https://admob.google.com | ✅ **Done 2026-09-10** |
+| E5b | AdMob → Privacy & messaging → create the GDPR consent message (required for EEA/UK/CH ads; pairs with code step B8) | In AdMob console, after E5 | ✅ **Done 2026-09-10** |
 | E5c | Publish `app-ads.txt` on honestfern.com with the AdMob publisher ID from E5 | Site-side step — `niduna-site/RELEASE_PLAN.md` § S1.5 | ❌ |
 | E6 | Complete the trader-status / verified-public-contact task shown by Play Console for EU distribution. Use truthful personal details and review exactly what Play says will be public before submitting. | Play Console → App content, after E4 | ❌ |
 | E7 | New personal accounts created after 2023-11-13 currently need a closed test with at least **12 opted-in testers for 14 continuous days** before applying for production access. Start only after app setup is complete **and a policy-safe release candidate exists**; target 15-16 recruits for dropout margin. | Play Console → Testing → Closed testing | ❌ |
