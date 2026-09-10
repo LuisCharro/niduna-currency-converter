@@ -214,10 +214,13 @@ taxonomy presents a more precise currency-converter option.
 - IAP exists, so the "in-app purchases" content descriptor is
   required.
 
-**Target audience:** General / 13+. No content is restricted to
+**Target audience (product intent):** General / 13+. No content is restricted to
 specific age groups, but the app is positioned for adult users
 managing travel money, cross-border payments, or general currency
 curiosity.
+
+> Console checkpoint 2026-09-10: target age is saved as 13–15, 16–17, and 18+
+> (no under-13 group). Ads do not require an 18+ gate.
 
 **Privacy declaration (Play Console Data Safety form)**
 

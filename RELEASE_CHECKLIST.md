@@ -2,6 +2,17 @@
 
 ## Resume checkpoint — 2026-09-10
 
+### Console checkpoint — 2026-09-10 (draft only)
+
+- App repo HEAD: `4b3a544`; site repo HEAD: `9bc59bf`; root docs HEAD before this update: `ad79404`.
+- Play Console draft `Currency Converter Honest Fern` has the final Honest Fern listing assets. The dashboard reports **10/11 setup tasks complete**; Data Safety and Advertising ID changes are saved but remain in Publishing overview until Luis explicitly sends them for review.
+- Saved declarations: ads = yes, no restricted sign-in, content rating complete, government/financial/health declarations complete, category Tools, public contact `support@honestfern.com`, website `https://honestfern.com`.
+- Data Safety now discloses the four AdMob SDK categories sent off-device: approximate location, app interactions, diagnostics, and device/other IDs. Advertising ID is declared **Yes**. This reflects third-party SDK behavior; Honest Fern has no first-party accounts or analytics.
+- Target audience decision: **13+** (13–15, 16–17, and 18+; no under-13 group). Saved in Play Console as a draft on 2026-09-10. AdMob does not require an 18+ gate.
+- AdMob is approved, real ad units are configured, and `https://honestfern.com/app-ads.txt` returns HTTP 200. No Play review, rollout, or release submission has been sent.
+- Next gates: Data Safety, Advertising ID, and target age 13+ are saved in Publishing overview but not submitted. Play now exposes the real blocker: closed testing is 0/5 tasks. Before sending anything, rotate/back up the upload keystore, build the final candidate, choose countries and at least 12 testers, create the closed-test release, then preview and submit that release.
+- Console navigation verified: **Testing → Closed testing - Alpha → Testers**. The existing `Internal test email list` contains 1 user; it is not selected for the closed track yet. The closed-track page can reuse that list or create a separate list, but every tester must opt in through the closed-track link.
+
 **Read this section first. It supersedes contradictory historical status and
 change-log entries below. No production/closed-test release is approved yet.**
 
