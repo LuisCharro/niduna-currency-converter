@@ -92,6 +92,16 @@ bottom navigation at 720×1280 and remains a non-blocking UI follow-up.
 - Review final Play listing, Data Safety, ads declaration, financial-features
   declaration, IARC, trader/contact fields and closed-test testers.
 
+**2026-09-10 result:** The internal-test email list is assigned to the
+`Internal testing` track (1 user). The account accepted the opt-in invitation
+through the generated join link and now appears as a tester. The same email
+list is also selected under Play Console `Settings → Licence testing`, and
+Play Console confirmed “Your changes have been saved”. The account is therefore
+configured for both internal-build access and Play Billing licence testing.
+The remaining console/device step is to install the Play-distributed internal
+build and exercise each one-time purchase plus Restore; the locally installed
+APK is not sufficient evidence for Play Billing.
+
 ## Stop conditions
 
 Stop before any version bump, signed RC upload, closed-test submission, site
