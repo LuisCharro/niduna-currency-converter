@@ -107,7 +107,9 @@ installed on the Android work phone. With the configured licence-test account,
 all three one-time products were purchased successfully and their benefits
 were verified in the app: Remove Ads removed the ad surfaces, Charts Pro
 unlocked the additional charts, and Favorites Pro unlocked the favorites
-capability. Restore-after-reinstall remains the final Billing check.
+capability. The app was relaunched and Restore purchases completed without an
+error while the benefits remained available. Reinstall-after-restore remains
+the final Billing persistence check.
 
 ## Stop conditions
 

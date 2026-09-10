@@ -29,8 +29,9 @@ change-log entries below. No production/closed-test release is approved yet.**
   `ca-app-pub-1525645598421616/6412809148`, Rewarded unit
   `ca-app-pub-1525645598421616/7452604243`. European message **Honest Fern
   Europe Consent** is published with the public privacy URL and Consent,
-  Manage options and Do not consent enabled. AdMob still shows **Payment setup
-  incomplete** while its payment profile is being activated.
+  Manage options and Do not consent enabled. The AdMob payment profile is now
+  complete; the account itself is still awaiting AdMob verification/approval
+  before live serving.
 - Diagnostic release APK/AAB builds succeeded on 2026-09-09. APK v2 signature
   and AAB JAR verification passed. These were pre-Billing diagnostic artifacts;
   never confuse them with the uploaded Billing artifact or a final candidate.
@@ -298,8 +299,8 @@ and update this checklist before proceeding.
 | B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ✅ **Implemented and committed 2026-08-30** | Commit `7aed7b1`; `url_launcher` opens `https://honestfern.com/currency-converter/privacy/`. Needs inclusion in the next release candidate. See `niduna-site/RELEASE_PLAN.md` § S1. |
 | B6 | Final signed AAB | `scripts/build_appbundle.sh` | — | Pending final candidate | Diagnostic builds exist; rebuild after B4/B8/B9 acceptance and signing/version gates. New binary code >= 3. Do not use stale diagnostic artifacts. |
 | B7 | Upload AAB | Play Console | — | Internal diagnostic recorded complete | Code 2 uploaded internally; closed/production submission remains pending and needs approval. |
-| B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | 🟡 **Implemented; device acceptance open** | `AdConsentManager` requests consent on launch, shows the published form when required, gates banner/rewarded requests on `canRequestAds`, and exposes Privacy options in Settings. Verify the live Android dialog and ad behavior on the internal-test device. |
-| B9 | Real Play Billing/restore | `play_purchase_service.dart`, purchase UI, settings | — | Implemented; hardening and acceptance OPEN | See current B9 notes and resume checkpoint. Products active; license-tester flows not yet verified. |
+| B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | 🟡 **Implemented; AdMob account approval open** | `AdConsentManager` requests consent on launch, shows the published form when required, gates banner/rewarded requests on `canRequestAds`, and exposes Privacy options in Settings. The internal-test device loaded a confirmed AdMob test banner. |
+| B9 | Real Play Billing/restore | `play_purchase_service.dart`, purchase UI, settings | — | **Implemented and device-accepted; final edge cases open** | Internal-test account purchased all three active products, verified each entitlement, relaunched the app, and ran Restore without an error. Reinstall/restore and cancel/pending edge cases remain optional final checks. |
 
 > **⚠️ Keystore password rotation (NEW — 2026-06-02):**
 > The keystore was generated with a temporary password for this dev cycle.
@@ -391,17 +392,20 @@ The IDs flow through the build, not the source:
   (`ConsentDebugSettings(debugGeography: DebugGeography.debugGeographyEea,
   testIdentifiers: [...])`) before trusting it.
 
-### B9 — Real Play Billing: implemented, acceptance still open
+### B9 — Real Play Billing: implemented and internal-device acceptance recorded
 
 `09f1166` adds `in_app_purchase`, injects `PlayPurchaseService` into AppShell,
 uses the three active non-consumable IDs, listens for purchase/restore events,
 and applies local entitlements. Settings now requests restore from Play.
 The production AppShell no longer uses the default stub.
 
-Do not redo the implementation or product setup. Follow steps 1-2 of the
-**Resume checkpoint — 2026-09-10** for the remaining error handling,
-acknowledgement, localized-price and real-device acceptance work.
-247 passing tests do not establish successful platform Billing behavior.
+Do not redo the implementation or product setup. The Play-distributed internal
+build was installed on the Android work phone with the configured licence-test
+account. `remove_ads_lifetime`, `charts_pro_lifetime`, and
+`favorites_pro_lifetime` all completed successfully and their entitlements
+were verified. The app was relaunched and Restore purchases completed without
+an error; the benefits remained available. Reinstall/restore and cancel,
+pending, and error paths remain useful final edge-case checks.
 
 ### E7 — Closed-testing playbook (the 12-tester / 14-day gate)
 
