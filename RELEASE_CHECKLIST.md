@@ -30,8 +30,7 @@ change-log entries below. No production/closed-test release is approved yet.**
   `ca-app-pub-1525645598421616/7452604243`. European message **Honest Fern
   Europe Consent** is published with the public privacy URL and Consent,
   Manage options and Do not consent enabled. The AdMob payment profile is now
-  complete; the account itself is still awaiting AdMob verification/approval
-  before live serving.
+  complete, and AdMob reports the account approved with ad serving enabled.
 - Diagnostic release APK/AAB builds succeeded on 2026-09-09. APK v2 signature
   and AAB JAR verification passed. These were pre-Billing diagnostic artifacts;
   never confuse them with the uploaded Billing artifact or a final candidate.
@@ -295,11 +294,11 @@ and update this checklist before proceeding.
 | B1 | Generate release keystore | N/A (external file) | ~10 min | ✅ **Done** | `200c888` — at `android/app/niduna-upload.jks` (RSA 2048, 10000-day, valid until 2053) |
 | B2 | Create `android/key.properties` (gitignored) | `android/key.properties` | ~5 min | ✅ **Done** | `200c888` — ⚠️ **password is TEMP, must be rotated before publish** (see Keystore note below) |
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` + local 2026-08-30 hardening — release build now fails closed if `key.properties` or the keystore is missing |
-| B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | 🟡 **Integration ready; external acceptance open** | Real Android IDs are available through the existing release env path; development defaults remain Google's test IDs. AdMob payment profile is complete, but account verification is still pending before live serving. |
+| B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | 🟡 **Production build ready; Play store link/app review open** | Real Android IDs are available through the existing release env path; development defaults remain Google's test IDs. AdMob approval and ad serving are enabled, but AdMob still shows `Requires review` / `Add store to lift limit` until the app has a linkable Play store listing. |
 | B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ✅ **Implemented and committed 2026-08-30** | Commit `7aed7b1`; `url_launcher` opens `https://honestfern.com/currency-converter/privacy/`. Needs inclusion in the next release candidate. See `niduna-site/RELEASE_PLAN.md` § S1. |
 | B6 | Final signed AAB | `scripts/build_appbundle.sh` | — | Pending final candidate | Diagnostic builds exist; rebuild after B4/B8/B9 acceptance and signing/version gates. New binary code >= 3. Do not use stale diagnostic artifacts. |
 | B7 | Upload AAB | Play Console | — | Internal diagnostic recorded complete | Code 2 uploaded internally; closed/production submission remains pending and needs approval. |
-| B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | 🟡 **Implemented; AdMob account approval open** | `AdConsentManager` requests consent on launch, shows the published form when required, gates banner/rewarded requests on `canRequestAds`, and exposes Privacy options in Settings. The internal-test device loaded a confirmed AdMob test banner. |
+| B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | 🟡 **Implemented; production-device verification open** | `AdConsentManager` requests consent on launch, shows the published form when required, gates banner/rewarded requests on `canRequestAds`, and exposes Privacy options in Settings. The internal-test device loaded a confirmed AdMob test banner; the production-ID build still needs a Play-distributed device check. |
 | B9 | Real Play Billing/restore | `play_purchase_service.dart`, purchase UI, settings | — | **Implemented and device-accepted; final edge cases open** | Internal-test account purchased all three active products, verified each entitlement, relaunched the app, and ran Restore without an error. Reinstall/restore and cancel/pending edge cases remain optional final checks. |
 
 > **⚠️ Keystore password rotation (NEW — 2026-06-02):**

@@ -36,10 +36,9 @@
 **2026-09-10 result:** `AdConsentManager` now owns the UMP gate; AppShell
 starts it without blocking first paint, banners/rewarded ads await the gate,
 and Settings exposes Privacy options when required. Real Android IDs are
-available through the existing environment-based release build path. Keep
-`ADMOB_USE_TEST_ADS=true` until account verification is complete; the
-production build command must set it to `false` and provide the three Android
-IDs.
+available through the existing environment-based release build path. AdMob
+now reports the account approved and ad serving enabled. The production build
+command sets `ADMOB_USE_TEST_ADS=false` and provides the three Android IDs.
 
 ### 2. B9 Billing hardening — Codex can implement
 
@@ -69,18 +68,22 @@ IDs.
   light/dark, small-screen, enlarged-text, offline and stale states.
 - Verify UMP, banner, rewarded, Remove Ads, restore and deep links.
 
-**2026-09-10 result:** `./scripts/check.sh` passes (clean analyze, 247 tests).
-`ADMOB_USE_TEST_ADS=true ./scripts/build_appbundle.sh` also produced and
-verified a signed `build/app/outputs/bundle/release/app-release.aab` (54.1 MB,
-still `0.1.0+2`; not uploaded). The remaining verification is on Android:
-live test ads and billing purchase/restore. UMP and the basic UI smoke pass on
+**2026-09-10 result:** `./scripts/check.sh` passes with the production AdMob
+IDs (clean analyze, 247 tests). `ADMOB_USE_TEST_ADS=false
+./scripts/build_appbundle.sh` produced a signed
+`build/app/outputs/bundle/release/app-release.aab` (54.1 MB, still `0.1.0+2`;
+not uploaded). The AAB SHA-256 is
+`ccd2ad0d11cf7422f251471855e8f83140ea18237b487b2bcc05cc41bf4846af`.
+The remaining verification is on Android: live production ads and final
+billing edge cases. UMP and the basic UI smoke pass on
 `emulator-5554`; the Settings Privacy options row is partially covered by the
 bottom navigation at 720×1280 and remains a non-blocking UI follow-up.
 
 ### 5. Luis-only console acceptance
 
-- Wait for AdMob account verification and confirm the account status becomes
-  approved (the payment profile is already complete).
+- AdMob account verification is complete; the console reports the account
+  approved and ad serving enabled. The app still needs to be linked to its
+  public Play store entry once that listing is available.
 - Confirm the email list is assigned to the Internal testing track and use its
   opt-in link. An email list alone does not opt an account into a track.
 - Separately confirm your Google account is in Play Console's **License
