@@ -34,6 +34,12 @@ change-log entries below. No production/closed-test release is approved yet.**
 - Diagnostic release APK/AAB builds succeeded on 2026-09-09. APK v2 signature
   and AAB JAR verification passed. These were pre-Billing diagnostic artifacts;
   never confuse them with the uploaded Billing artifact or a final candidate.
+- Fresh-install smoke test on the release APK completed 2026-09-10 on
+  `emulator-5554`: UMP consent, Manage options/Data preferences, Accept all,
+  Settings Privacy options, base currency USD→CHF→USD, refresh, Favorites,
+  Charts ranges, and light/dark mode all worked. The emulator was left in
+  light mode with USD as the base currency. This does not replace Play Billing
+  purchase/restore acceptance on the internal-testing track.
 - This audit's visual evidence: normal release APK launched on
   `Small_Screen_API_36` (360x640 logical pixels); light Convert/Favorites/Charts
   inspected, daily text visible, test banner present. Captures in
@@ -786,6 +792,12 @@ These can ship in v0.2.0+ updates:
   signed test-ad AAB (`0.1.0+2`, 54.1 MB) pass. Device consent/ad behavior,
   AdMob account verification, B9 purchase/restore acceptance, key rotation,
   screenshots, and the final version bump remain open.
+
+- **2026-09-10 (fresh-install emulator smoke)** — Removed and reinstalled the
+  release APK on `emulator-5554`, then verified consent and Manage options,
+  Settings Privacy options, base-currency switching, refresh, Favorites,
+  Charts, and light/dark mode. No source changes were needed; the next
+  acceptance gate is real Play Billing purchase/restore on internal testing.
 
 - **2026-09-10 (UI/UX experiment run, then SHELVED for 1.0.0)** — The
   overnight UI/UX experiment (`.agent/overnight-ui-ux-experiment.md`) was

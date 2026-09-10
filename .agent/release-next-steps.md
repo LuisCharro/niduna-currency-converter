@@ -72,7 +72,9 @@ three Android IDs.
 `ADMOB_USE_TEST_ADS=true ./scripts/build_appbundle.sh` also produced and
 verified a signed `build/app/outputs/bundle/release/app-release.aab` (54.1 MB,
 still `0.1.0+2`; not uploaded). The remaining verification is on Android:
-consent form/Privacy options, live test ads, and billing purchase/restore.
+live test ads and billing purchase/restore. UMP and the basic UI smoke pass on
+`emulator-5554`; the Settings Privacy options row is partially covered by the
+bottom navigation at 720×1280 and remains a non-blocking UI follow-up.
 
 ### 5. Luis-only console acceptance
 
