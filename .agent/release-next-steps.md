@@ -114,6 +114,13 @@ capability. The app was relaunched and Restore purchases completed without an
 error while the benefits remained available. Reinstall-after-restore remains
 the final Billing persistence check.
 
+**2026-09-10 Play Console result:** The app's Privacy policy task was saved in
+Play Console with `https://honestfern.com/currency-converter/privacy/`. Play
+Console reported that the change is stored in Publishing overview and is ready
+for a later review submission; no release was submitted. The remaining app
+content tasks are Ads, Content rating, Target audience, Data safety, Financial
+features, category/contact details, and the Store Listing.
+
 ## Stop conditions
 
 Stop before any version bump, signed RC upload, closed-test submission, site

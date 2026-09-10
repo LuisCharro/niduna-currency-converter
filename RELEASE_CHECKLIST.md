@@ -325,7 +325,7 @@ and update this checklist before proceeding.
 
 | # | Task | Specs | Effort | Status |
 |---|------|-------|--------|--------|
-| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The app-specific policy at `https://honestfern.com/currency-converter/privacy/` is live on the Hostinger production host; the general portfolio policy remains at `/privacy/`. See `niduna-site/RELEASE_PLAN.md` § S1. | — | ✅ Done |
+| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The app-specific policy at `https://honestfern.com/currency-converter/privacy/` is live on the Hostinger production host; the general portfolio policy remains at `/privacy/`. The same URL was saved in Play Console App content on 2026-09-10; it remains in Publishing overview until a later review submission. See `niduna-site/RELEASE_PLAN.md` § S1. | — | ✅ Done |
 | C2 | App title (max 30 chars) | Note: Play does NOT require unique titles (Apple does) — the brand suffix is for identity and future-Apple reuse, not Play uniqueness | ~10 min | ✅ **Decided 2026-09-09 and entered in Console: `Currency Converter Honest Fern` (30/30)** — product-first/brand-last (the "Kids Memory Pegolandia" pattern); same title planned for the future App Store release. Full rationale in `docs/release-prep/play-store-listing.md` § 1. |
 | C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ❌ |
 | C4 | Full description (max 4000 chars) | Features, privacy notes, Honest Fern differentiator | ~45 min | ❌ |
