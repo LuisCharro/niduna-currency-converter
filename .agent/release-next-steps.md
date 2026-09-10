@@ -102,6 +102,13 @@ The remaining console/device step is to install the Play-distributed internal
 build and exercise each one-time purchase plus Restore; the locally installed
 APK is not sufficient evidence for Play Billing.
 
+**2026-09-10 device result:** The Play-distributed internal build was
+installed on the Android work phone. With the configured licence-test account,
+all three one-time products were purchased successfully and their benefits
+were verified in the app: Remove Ads removed the ad surfaces, Charts Pro
+unlocked the additional charts, and Favorites Pro unlocked the favorites
+capability. Restore-after-reinstall remains the final Billing check.
+
 ## Stop conditions
 
 Stop before any version bump, signed RC upload, closed-test submission, site
