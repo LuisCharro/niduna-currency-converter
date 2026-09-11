@@ -56,7 +56,6 @@ class _ChartsTabBodyState extends State<ChartsTabBody> {
                     quote: state.quote,
                     rate: state.currentRate,
                     changePercent: state.changePercent,
-                    onSwap: _handleSwap,
                     lastUpdated: state.lastUpdated,
                   ),
                   Expanded(
@@ -66,8 +65,8 @@ class _ChartsTabBodyState extends State<ChartsTabBody> {
                       onRetry: widget.controller.load,
                       swapVersion: _swapVersion,
                       lastPairKey: _lastPairKey,
-                      onSwapSettled:
-                          (key) => setState(() => _lastPairKey = key),
+                      onSwapSettled: (key) =>
+                          setState(() => _lastPairKey = key),
                       compact: compact,
                     ),
                   ),

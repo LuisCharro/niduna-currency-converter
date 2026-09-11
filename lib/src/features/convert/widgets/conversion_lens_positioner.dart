@@ -31,8 +31,10 @@ LensPosition calculateLensPosition(
   const bottomMargin = 52.0;
   final width = math.min(screenSize.width - hMargin * 2, 380.0);
   final safeHeight = screenSize.height - safePadding.top - safePadding.bottom;
-  final availableHeight =
-      math.max(320.0, safeHeight - topMargin - bottomMargin);
+  final availableHeight = math.max(
+    320.0,
+    safeHeight - topMargin - bottomMargin,
+  );
   final height = math.min(
     availableHeight,
     math.min(560.0, math.max(360.0, availableHeight * .74)),
@@ -61,8 +63,8 @@ String stripTrailingZeros(String formatted) {
 }
 
 String _fmtCrypto(double value, String code) => stripTrailingZeros(
-      NumberFormat('#,##0.${'0' * cryptoDigits(code)}', 'en').format(value),
-    );
+  NumberFormat('#,##0.${'0' * cryptoDigits(code)}', 'en').format(value),
+);
 
 String formatLensValue(double value, String code) {
   if (isCryptoCurrency(code)) {
@@ -71,7 +73,8 @@ String formatLensValue(double value, String code) {
       'en',
     ).format(value);
   }
-  final d = value >= 100 ? 0 : value >= 10 ? 2 : 3;
+  if (value >= 100) return NumberFormat('#,##0', 'en').format(value);
+  final d = value >= 10 ? 2 : 3;
   return NumberFormat('#,##0.${'0' * d}', 'en').format(value);
 }
 
@@ -146,9 +149,7 @@ Widget buildLensHero(
             await Clipboard.setData(ClipboardData(text: copy));
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(copiedConversionMessage(context, copy)),
-                ),
+                SnackBar(content: Text(copiedConversionMessage(context, copy))),
               );
             }
           },

@@ -8,14 +8,10 @@ import 'chart_line_plot.dart';
 import 'chart_touch_overlay.dart';
 
 class RateChart extends StatefulWidget {
-  const RateChart({
-    required this.data,
-    required this.currencySymbol,
-    super.key,
-  });
+  const RateChart({required this.data, required this.quoteCode, super.key});
 
   final Map<DateTime, double> data;
-  final String currencySymbol;
+  final String quoteCode;
 
   @override
   State<RateChart> createState() => _RateChartState();
@@ -136,16 +132,17 @@ class _RateChartState extends State<RateChart>
             child: Stack(
               children: <Widget>[
                 ChartLinePlot(
-                spots: spots,
-                dates: sortedDates,
-                minY: minY,
-                maxY: maxY,
-                lineColor: lineColor,
-                touchedIndex: _touchedIndex,
-                touchSpotThreshold: _touchThreshold(spots.length),
-                onTouch: _handleTouch,
-              ),
-                if (_touchedIndex != null && _touchedIndex! < sortedDates.length)
+                  spots: spots,
+                  dates: sortedDates,
+                  minY: minY,
+                  maxY: maxY,
+                  lineColor: lineColor,
+                  touchedIndex: _touchedIndex,
+                  touchSpotThreshold: _touchThreshold(spots.length),
+                  onTouch: _handleTouch,
+                ),
+                if (_touchedIndex != null &&
+                    _touchedIndex! < sortedDates.length)
                   Positioned.fill(
                     child: IgnorePointer(
                       child: Padding(
@@ -158,7 +155,7 @@ class _RateChartState extends State<RateChart>
                           alignment: Alignment.topLeft,
                           child: ChartTouchOverlay(
                             date: sortedDates[_touchedIndex!],
-                            currencySymbol: widget.currencySymbol,
+                            currencyCode: widget.quoteCode,
                             value: spots[_touchedIndex!].y,
                             baseValue: spots.first.y,
                             lineColor: lineColor,

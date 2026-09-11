@@ -143,8 +143,32 @@ class ChartLinePlot extends StatelessWidget {
   }
 
   FlTitlesData _titlesData(BuildContext context) {
+    final spansYears = dates.first.year != dates.last.year;
     return FlTitlesData(
-      leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      leftTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 46,
+          interval: (maxY - minY) / 2,
+          minIncluded: false,
+          maxIncluded: false,
+          getTitlesWidget: (value, meta) => Padding(
+            padding: const EdgeInsets.only(right: 2),
+            child: Text(
+              _formatYAxisValue(value),
+              textAlign: TextAlign.right,
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.clip,
+              style: TextStyle(
+                fontSize: 9,
+                color: AppColors.of(context).muted,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+      ),
       rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
       topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
       bottomTitles: AxisTitles(
@@ -163,7 +187,9 @@ class ChartLinePlot extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Text(
-                DateFormat('d MMM').format(dates[index]),
+                DateFormat(
+                  spansYears ? 'd MMM yyyy' : 'd MMM',
+                ).format(dates[index]),
                 style: TextStyle(
                   fontSize: 11.5,
                   color: AppColors.of(context).muted,
@@ -175,6 +201,14 @@ class ChartLinePlot extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formatYAxisValue(double value) {
+    final absolute = value.abs();
+    if (absolute >= 1000) return NumberFormat('#,##0').format(value);
+    if (absolute >= 1) return NumberFormat('#,##0.##').format(value);
+    final rounded = double.parse(value.toStringAsPrecision(3));
+    return NumberFormat('0.########').format(rounded);
   }
 
   Set<int> _labelIndexes(BuildContext context) {

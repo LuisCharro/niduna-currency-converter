@@ -122,11 +122,11 @@ String reverseTargetsLabel(BuildContext context) => switch (_lang(context)) {
 };
 
 String useActionLabel(BuildContext context) => switch (_lang(context)) {
-  'es' => 'Usar',
-  'de' => 'Verwenden',
-  'it' => 'Usa',
-  'fr' => 'Utiliser',
-  _ => 'Use',
+  'es' => 'Fijar importe',
+  'de' => 'Betrag setzen',
+  'it' => 'Importo',
+  'fr' => 'Définir le montant',
+  _ => 'Set amount',
 };
 
 String ratesSectionLabel(BuildContext context) => switch (_lang(context)) {

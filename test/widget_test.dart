@@ -497,7 +497,7 @@ void main() {
       expect(find.text('Conversion Lens'), findsOneWidget);
       expect(find.text('Quick base amounts'), findsOneWidget);
       expect(find.text('Reverse targets'), findsOneWidget);
-      expect(find.text('Use'), findsNWidgets(3));
+      expect(find.text('Set amount'), findsNWidgets(3));
     },
   );
 
@@ -524,9 +524,9 @@ void main() {
     await tester.pump(const Duration(milliseconds: 850));
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('Use').first);
+    await tester.ensureVisible(find.text('Set amount').first);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Use').first);
+    await tester.tap(find.text('Set amount').first);
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('conversion_lens')), findsNothing);
@@ -750,7 +750,7 @@ void main() {
           body: SizedBox(
             height: 320,
             child: RateChart(
-              currencySymbol: r'$',
+              quoteCode: 'USD',
               data: <DateTime, double>{
                 DateTime(2026, 5, 10): 0.8519,
                 DateTime(2026, 5, 11): 0.8542,

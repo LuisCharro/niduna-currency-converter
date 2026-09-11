@@ -4,11 +4,11 @@ String chartDailyDataLabel(BuildContext context, DateTime checkedAt) {
   final locale = Localizations.localeOf(context).toLanguageTag();
   final date = DateFormat.MMMd(locale).format(checkedAt);
   return switch (_lang(context)) {
-    'es' => 'Datos diarios · Comprobado $date',
-    'de' => 'Tagesdaten · Geprüft am $date',
-    'it' => 'Dati giornalieri · Verificati il $date',
-    'fr' => 'Données quotidiennes · Vérifiées le $date',
-    _ => 'Daily data · Checked $date',
+    'es' => 'Comprobado $date',
+    'de' => 'Geprüft $date',
+    'it' => 'Verificato $date',
+    'fr' => 'Vérifié $date',
+    _ => 'Checked $date',
   };
 }
 

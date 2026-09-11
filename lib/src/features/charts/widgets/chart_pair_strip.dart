@@ -45,7 +45,7 @@ class ChartPairStrip extends StatelessWidget {
               key: const Key('charts_pair_base'),
               code: base,
               locked: false,
-              tempBadge: _isPairTempUnlocked(),
+              tempBadge: _showsTempBadgeFor(base),
               onTap: () => _openPicker(context, selectingBase: true),
             ),
           ),
@@ -75,7 +75,7 @@ class ChartPairStrip extends StatelessWidget {
               key: const Key('charts_pair_quote'),
               code: quote,
               locked: !_isUnlocked(quote),
-              tempBadge: _isTempUnlocked(quote),
+              tempBadge: _showsTempBadgeFor(quote),
               onTap: () => _openPicker(context, selectingBase: false),
             ),
           ),
@@ -90,18 +90,25 @@ class ChartPairStrip extends StatelessWidget {
     return controller.isChartPairUnlocked(base, quote);
   }
 
-  bool _isTempUnlocked(String code) {
-    if (code == base) return false;
-    if (_freeDefaults.contains(code)) return false;
-    final canonical = TemporaryUnlock.canonicalKey(base, quote);
-    if (_isFreeDefaultPair(base, quote)) return false;
-    return controller.tempUnlockedCodes.contains(canonical);
-  }
-
   bool _isPairTempUnlocked() {
     if (_isFreeDefaultPair(base, quote)) return false;
     final canonical = TemporaryUnlock.canonicalKey(base, quote);
     return controller.tempUnlockedCodes.contains(canonical);
+  }
+
+  /// A temporary unlock belongs to the pair, not to an individual currency.
+  /// Show it once, preferring the non-default currency when the pair has one.
+  bool _showsTempBadgeFor(String code) {
+    if (!_isPairTempUnlocked()) return false;
+
+    final baseIsFree = _freeDefaults.contains(base);
+    final quoteIsFree = _freeDefaults.contains(quote);
+    if (baseIsFree != quoteIsFree) {
+      return code == (baseIsFree ? quote : base);
+    }
+
+    // Two restricted currencies share one pair entitlement; keep one marker.
+    return code == quote;
   }
 
   bool _isFreeDefaultPair(String a, String b) {

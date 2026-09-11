@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:currency_converter/src/core/monetization/monetization_controller.dart';
+import 'package:currency_converter/src/core/monetization/rewarded_ad_service.dart';
 import 'package:currency_converter/src/core/monetization/rewarded_ad_service_stub.dart';
 import 'package:currency_converter/src/core/rates/models/rates_snapshot.dart';
 import 'package:currency_converter/src/core/rates/rates_cache.dart';
@@ -15,6 +16,7 @@ import 'package:currency_converter/src/features/charts/domain/chart_range.dart';
 import 'package:currency_converter/src/features/charts/presentation/charts_controller.dart';
 import 'package:currency_converter/src/features/charts/widgets/chart_metric_rail.dart';
 import 'package:currency_converter/src/features/charts/widgets/chart_pair_pill.dart';
+import 'package:currency_converter/src/features/charts/widgets/chart_pair_strip.dart';
 import 'package:currency_converter/src/features/charts/widgets/range_selector.dart';
 import 'package:currency_converter/src/features/convert/data/latest_rates_repository.dart';
 import 'package:currency_converter/src/features/convert/domain/latest_rates_snapshot.dart';
@@ -174,6 +176,90 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets(
+    'ChartPairStrip shows a temporary pair unlock badge only once',
+    (WidgetTester tester) async {
+      final badgeController = MonetizationController(
+        prefs,
+        adService: _ImmediateAdService(),
+      );
+      await badgeController.requestRewardedChartUnlock('USD', 'BTC');
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: ChartPairStrip(
+              base: 'USD',
+              quote: 'BTC',
+              allowCryptoCharts: true,
+              onPairChanged: (_, _) {},
+              onSwap: () {},
+              controller: badgeController,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('charts_pair_base')),
+          matching: find.text('24h'),
+        ),
+        findsNothing,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('charts_pair_quote')),
+          matching: find.text('24h'),
+        ),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets(
+    'ChartPairStrip keeps the temporary badge with a restricted base currency',
+    (WidgetTester tester) async {
+      final badgeController = MonetizationController(
+        prefs,
+        adService: _ImmediateAdService(),
+      );
+      await badgeController.requestRewardedChartUnlock('BTC', 'USD');
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: ChartPairStrip(
+              base: 'BTC',
+              quote: 'USD',
+              allowCryptoCharts: true,
+              onPairChanged: (_, _) {},
+              onSwap: () {},
+              controller: badgeController,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('charts_pair_base')),
+          matching: find.text('24h'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('charts_pair_quote')),
+          matching: find.text('24h'),
+        ),
+        findsNothing,
+      );
+    },
+  );
+
   testWidgets('ChartMetricRail prioritizes crypto values over period label', (
     WidgetTester tester,
   ) async {
@@ -200,8 +286,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
-    expect(find.text('0.00001289'), findsOneWidget);
-    expect(find.text('0.00001173'), findsOneWidget);
+    expect(find.text('0.0000129'), findsOneWidget);
+    expect(find.text('0.0000117'), findsOneWidget);
+    expect(find.textContaining('BTC'), findsNothing);
     expect(find.text('Period'), findsNothing);
   });
 
@@ -234,6 +321,11 @@ void main() {
     expect(find.byKey(const Key('charts_pair_quote')), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+}
+
+class _ImmediateAdService implements RewardedAdService {
+  @override
+  Future<bool> showRewardedAd({required String rewardType}) async => true;
 }
 
 class _FakeRatesRepository implements ConvertRatesRepository {

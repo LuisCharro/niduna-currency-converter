@@ -8,7 +8,7 @@ import 'chart_value_formatter.dart';
 class ChartTouchOverlay extends StatelessWidget {
   const ChartTouchOverlay({
     required this.date,
-    required this.currencySymbol,
+    required this.currencyCode,
     required this.value,
     required this.baseValue,
     required this.lineColor,
@@ -16,7 +16,7 @@ class ChartTouchOverlay extends StatelessWidget {
   });
 
   final DateTime date;
-  final String currencySymbol;
+  final String currencyCode;
   final double value;
   final double baseValue;
   final Color lineColor;
@@ -28,9 +28,15 @@ class ChartTouchOverlay extends StatelessWidget {
         : 0.0;
     final absoluteChange = value - baseValue;
     final isPositiveChange = changePercent >= 0;
-    final trendColor = isPositiveChange ? AppColors.of(context).trendUp : AppColors.of(context).trendDown;
+    final trendColor = isPositiveChange
+        ? AppColors.of(context).trendUp
+        : AppColors.of(context).trendDown;
     final arrow = isPositiveChange ? '\u2191' : '\u2193';
-    final sign = isPositiveChange ? '+' : '';
+    final sign = absoluteChange > 0
+        ? '+'
+        : absoluteChange < 0
+        ? '−'
+        : '';
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -52,12 +58,12 @@ class ChartTouchOverlay extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              DateFormat('EEE d MMM').format(date).toUpperCase(),
+              DateFormat('EEE d MMM yyyy').format(date).toUpperCase(),
               style: ChartThemeText.micro(context, color: lineColor),
             ),
             const SizedBox(height: 3),
             Text(
-              '$currencySymbol ${formatChartValue(value)}',
+              '${formatChartValue(value)} $currencyCode',
               style: ChartThemeText.frauncesValue(context),
             ),
             const SizedBox(height: 1),
@@ -66,14 +72,14 @@ class ChartTouchOverlay extends StatelessWidget {
               children: <Widget>[
                 Text(
                   '$arrow ${changePercent.abs().toStringAsFixed(2)}%',
-                  style: ChartThemeText.caption(context, color: trendColor).copyWith(
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w800,
-                  ),
+                  style: ChartThemeText.caption(
+                    context,
+                    color: trendColor,
+                  ).copyWith(fontSize: 12.5, fontWeight: FontWeight.w800),
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  '$currencySymbol $sign${formatChartValue(absoluteChange.abs())}',
+                  '$sign${formatChartValue(absoluteChange.abs())} $currencyCode',
                   style: ChartThemeText.caption(context),
                 ),
               ],

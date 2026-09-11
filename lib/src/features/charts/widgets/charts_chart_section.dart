@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/currency/supported_currencies.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../domain/chart_range.dart';
@@ -129,10 +128,7 @@ class ChartsChartSection extends StatelessWidget {
         ),
         padding: EdgeInsets.only(top: compact ? 0 : 2, bottom: compact ? 0 : 4),
         child: SizedBox.expand(
-          child: RateChart(
-            data: state.data,
-            currencySymbol: currencyByCode(state.base).symbol,
-          ),
+          child: RateChart(data: state.data, quoteCode: state.quote),
         ),
       ),
     );

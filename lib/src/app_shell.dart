@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/ads/admob_rewarded_ad_service.dart';
@@ -177,30 +178,34 @@ class _AppState extends State<AppShell> {
       ),
     ];
 
+    final theme = AppTheme.themeFor(_preferences?.isDarkMode ?? false);
     return Theme(
-      data: AppTheme.themeFor(_preferences?.isDarkMode ?? false),
-      child: Scaffold(
-        body: Stack(
-          children: <Widget>[
-            Positioned.fill(
-              child: FadeSlideSwitcher(
-                switcherKey: const Key('shell_tab_transition'),
-                child: KeyedSubtree(
-                  key: ValueKey<int>(_currentIndex),
-                  child: screens[_currentIndex],
+      data: theme,
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: AppTheme.systemOverlayFor(theme.brightness),
+        child: Scaffold(
+          body: Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: FadeSlideSwitcher(
+                  switcherKey: const Key('shell_tab_transition'),
+                  child: KeyedSubtree(
+                    key: ValueKey<int>(_currentIndex),
+                    child: screens[_currentIndex],
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: FloatingPillNav(
-                selectedIndex: _currentIndex,
-                onTap: (index) => setState(() => _currentIndex = index),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: FloatingPillNav(
+                  selectedIndex: _currentIndex,
+                  onTap: (index) => setState(() => _currentIndex = index),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

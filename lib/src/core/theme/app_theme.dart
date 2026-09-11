@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'app_colors.dart';
 import 'app_decorations.dart';
@@ -56,12 +57,10 @@ class AppTheme {
       AppTextStyles.screenTitleStyle(context);
   static const TextStyle screenTitleFraunces =
       AppTextStyles.screenTitleFraunces;
-  static const TextStyle settingsGroupTitle =
-      AppTextStyles.settingsGroupTitle;
+  static const TextStyle settingsGroupTitle = AppTextStyles.settingsGroupTitle;
   static TextStyle settingsGroupTitleStyle(BuildContext context) =>
       AppTextStyles.settingsGroupTitleStyle(context);
-  static const TextStyle settingsTileTitle =
-      AppTextStyles.settingsTileTitle;
+  static const TextStyle settingsTileTitle = AppTextStyles.settingsTileTitle;
   static TextStyle settingsTileTitleStyle(BuildContext context) =>
       AppTextStyles.settingsTileTitleStyle(context);
   static const TextStyle supportingText = AppTextStyles.supportingText;
@@ -76,8 +75,7 @@ class AppTheme {
   static const List<double> heroAmountSizes = AppTextStyles.heroAmountSizes;
   static TextStyle pairTitleStyle(BuildContext context) =>
       AppTextStyles.pairTitleStyle(context);
-  static const TextStyle pairTitleFraunces =
-      AppTextStyles.pairTitleFraunces;
+  static const TextStyle pairTitleFraunces = AppTextStyles.pairTitleFraunces;
   static TextStyle metricValueStyle(BuildContext context) =>
       AppTextStyles.metricValueStyle(context);
   static const TextStyle metricValue = AppTextStyles.metricValue;
@@ -96,6 +94,22 @@ class AppTheme {
   static const List<BoxShadow> floatingShadow = AppDecorations.floatingShadow;
   static double tabScrollBottomPadding(BuildContext context) =>
       AppDecorations.tabScrollBottomPadding(context);
+
+  static SystemUiOverlayStyle systemOverlayFor(Brightness brightness) {
+    final isDark = brightness == Brightness.dark;
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+      statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
+      systemNavigationBarColor: isDark ? AppColors.dark.bg : bg,
+      systemNavigationBarIconBrightness: isDark
+          ? Brightness.light
+          : Brightness.dark,
+      systemNavigationBarDividerColor: Colors.transparent,
+      systemStatusBarContrastEnforced: false,
+      systemNavigationBarContrastEnforced: false,
+    );
+  }
 
   static final ThemeData light = ThemeData(
     useMaterial3: true,
@@ -116,6 +130,7 @@ class AppTheme {
         fontSize: 17,
         fontWeight: FontWeight.w600,
       ),
+      systemOverlayStyle: systemOverlayFor(Brightness.light),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: container,
@@ -169,6 +184,7 @@ class AppTheme {
         fontSize: 17,
         fontWeight: FontWeight.w600,
       ),
+      systemOverlayStyle: systemOverlayFor(Brightness.dark),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: AppColors.dark.container,

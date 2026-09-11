@@ -47,14 +47,14 @@ class ChartMetricRail extends StatelessWidget {
             Expanded(
               child: _MetricCell(
                 label: metricHigh(context),
-                value: high != null ? formatChartValue(high!) : '—',
+                value: high != null ? formatChartCompactValue(high!) : '—',
               ),
             ),
             _railDivider(context),
             Expanded(
               child: _MetricCell(
                 label: metricLow(context),
-                value: low != null ? formatChartValue(low!) : '—',
+                value: low != null ? formatChartCompactValue(low!) : '—',
               ),
             ),
             _railDivider(context),

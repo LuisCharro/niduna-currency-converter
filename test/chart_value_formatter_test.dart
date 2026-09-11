@@ -19,4 +19,12 @@ void main() {
       expect(formatChartValue(1234.5678), '1,234.57');
     },
   );
+
+  test(
+    'formatChartCompactValue keeps three significant digits for metric rails',
+    () {
+      expect(formatChartCompactValue(0.00001837), '0.0000184');
+      expect(formatChartCompactValue(1234.5678), '1,230');
+    },
+  );
 }
