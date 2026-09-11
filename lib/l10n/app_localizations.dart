@@ -707,7 +707,7 @@ abstract class AppLocalizations {
   /// Fiat data line 1
   ///
   /// In en, this message translates to:
-  /// **'Fiat rates come from Frankfurter using ECB data.'**
+  /// **'Fiat rates come from Frankfurter using public central-bank data.'**
   String get fiatDataLine1;
 
   /// Fiat data line 2

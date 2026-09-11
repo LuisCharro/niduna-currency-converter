@@ -10,7 +10,7 @@ void main() {
     await initializeDateFormatting('en', null);
   });
 
-  test('updatedLabel with rateDate shows formatted date', () {
+  test('updatedLabel identifies the provider rate date', () {
     final rateDate = DateTime(2026, 5, 30);
     final savedAt = DateTime(2026, 5, 31, 10, 0);
 
@@ -19,39 +19,27 @@ void main() {
       savedAt: savedAt,
     );
 
-    expect(label, contains('Updated'));
-    expect(label, contains('May'));
-    expect(label, contains('30'));
+    expect(label, 'Rates from May 30');
   });
 
   test('updatedLabel with null rateDate shows savedAt timestamp', () {
     final savedAt = DateTime(2026, 5, 31, 14, 30);
 
-    final label = RateFreshness.updatedLabel(
-      rateDate: null,
-      savedAt: savedAt,
-    );
+    final label = RateFreshness.updatedLabel(rateDate: null, savedAt: savedAt);
 
     expect(label, contains('Updated'));
     expect(label, contains('May'));
     expect(label, contains('31'));
   });
 
-  test('nextExpectedUpdate returns a future DateTime', () {
-    final now = DateTime(2026, 5, 27, 8, 0);
-    final next = RateFreshness.nextExpectedUpdate(now: now);
+  test('nextUpdateLabel describes the app policy without a fixed time', () {
+    final label = RateFreshness.nextUpdateLabel();
 
-    expect(next.isAfter(now), isTrue);
-  });
-
-  test('nextExpectedUpdate skips weekends', () {
-    final fridayAfterUpdate = DateTime(2026, 5, 29, 16, 0);
-    final next = RateFreshness.nextExpectedUpdate(
-      now: fridayAfterUpdate,
+    expect(
+      label,
+      'Checks automatically the first time you open the app each day',
     );
-
-    expect(next.weekday, isNot(DateTime.saturday));
-    expect(next.weekday, isNot(DateTime.sunday));
+    expect(label, isNot(contains('4:00')));
   });
 
   test('locale-specific labels contain expected text for en', () {
@@ -61,7 +49,7 @@ void main() {
       savedAt: DateTime(2026, 5, 31),
     );
 
-    expect(label, startsWith('Updated'));
+    expect(label, startsWith('Rates from'));
   });
 
   test('locale-specific labels contain expected text for es', () {
@@ -71,6 +59,6 @@ void main() {
       savedAt: DateTime(2026, 5, 31),
     );
 
-    expect(label, startsWith('Actualizado'));
+    expect(label, startsWith('Tipos del'));
   });
 }

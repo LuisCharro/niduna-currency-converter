@@ -93,7 +93,7 @@ void main() {
     expect(find.text('Chart'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Favorites'), findsOneWidget);
-    expect(find.textContaining('Daily rates'), findsOneWidget);
+    expect(find.textContaining('1× daily'), findsOneWidget);
     expect(find.byKey(const Key('open_currency_picker')), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
     expect(find.text('100.00'), findsOneWidget);
@@ -152,7 +152,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('AMOUNT'), findsOneWidget);
-    expect(find.textContaining('Daily rates'), findsOneWidget);
+    expect(find.textContaining('1× daily'), findsOneWidget);
     expect(find.byKey(const Key('open_currency_picker')), findsOneWidget);
     expect(find.text('Add currencies'), findsOneWidget);
     expect(find.textContaining('currencies visible'), findsNothing);
@@ -242,7 +242,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.textContaining('Daily rates'));
+    await tester.tap(find.textContaining('1× daily'));
     await tester.pumpAndSettle();
 
     expect(find.text('Daily exchange rates'), findsOneWidget);
@@ -250,7 +250,10 @@ void main() {
       find.textContaining('not live or intraday market prices'),
       findsOneWidget,
     );
-    expect(find.textContaining('shown in your local time'), findsOneWidget);
+    expect(
+      find.textContaining('publish new data at different times'),
+      findsOneWidget,
+    );
     expect(find.textContaining('future Premium subscription'), findsNothing);
   });
 
@@ -569,10 +572,7 @@ void main() {
     addTearDown(sc.dispose);
     await tester.pumpWidget(
       MaterialApp(
-        home: SettingsScreen(
-          controller: sc,
-          preferences: preferences,
-        ),
+        home: SettingsScreen(controller: sc, preferences: preferences),
       ),
     );
     expect(find.text('Conversion'), findsOneWidget);
@@ -591,7 +591,9 @@ void main() {
   ) async {
     await tester.pumpWidget(const MaterialApp(home: DataDetailsPage()));
     expect(
-      find.text('Fiat rates come from Frankfurter using ECB data.'),
+      find.text(
+        'Fiat rates come from Frankfurter using public central-bank data.',
+      ),
       findsOneWidget,
     );
     expect(
@@ -615,10 +617,7 @@ void main() {
     addTearDown(sc.dispose);
     await tester.pumpWidget(
       MaterialApp(
-        home: SettingsScreen(
-          controller: sc,
-          preferences: preferences,
-        ),
+        home: SettingsScreen(controller: sc, preferences: preferences),
       ),
     );
 
@@ -648,10 +647,7 @@ void main() {
         locale: const Locale('es'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: SettingsScreen(
-          controller: sc,
-          preferences: preferences,
-        ),
+        home: SettingsScreen(controller: sc, preferences: preferences),
       ),
     );
 
@@ -684,10 +680,9 @@ void main() {
 
     final chartsController = ChartsController(
       allowCryptoCharts: true,
-      repository: RatesServiceChartRepository(RatesService(
-        client: _FakeRatesClient(),
-        cache: _FakeRatesCache(),
-      )),
+      repository: RatesServiceChartRepository(
+        RatesService(client: _FakeRatesClient(), cache: _FakeRatesCache()),
+      ),
     );
     addTearDown(chartsController.dispose);
 
@@ -706,10 +701,7 @@ void main() {
     addTearDown(sc.dispose);
     await tester.pumpWidget(
       MaterialApp(
-        home: SettingsScreen(
-          controller: sc,
-          preferences: preferences,
-        ),
+        home: SettingsScreen(controller: sc, preferences: preferences),
       ),
     );
     final settingsTitle = tester.widget<Text>(find.text('Settings'));
@@ -728,10 +720,9 @@ void main() {
   ) async {
     final chartsController = ChartsController(
       allowCryptoCharts: true,
-      repository: RatesServiceChartRepository(RatesService(
-        client: _FakeRatesClient(),
-        cache: _FakeRatesCache(),
-      )),
+      repository: RatesServiceChartRepository(
+        RatesService(client: _FakeRatesClient(), cache: _FakeRatesCache()),
+      ),
     );
     addTearDown(chartsController.dispose);
 
@@ -797,10 +788,9 @@ void main() {
     await monetization.setRemoveAdsLifetime(true);
     final chartsController = ChartsController(
       allowCryptoCharts: true,
-      repository: RatesServiceChartRepository(RatesService(
-        client: _FakeRatesClient(),
-        cache: _FakeRatesCache(),
-      )),
+      repository: RatesServiceChartRepository(
+        RatesService(client: _FakeRatesClient(), cache: _FakeRatesCache()),
+      ),
     );
     addTearDown(chartsController.dispose);
 
@@ -940,7 +930,10 @@ class _FakeRatesRepository implements ConvertRatesRepository {
   }
 
   @override
-  Future<Map<String, double>?> fetchPreviousRates(String base, {DateTime? referenceDate}) async => null;
+  Future<Map<String, double>?> fetchPreviousRates(
+    String base, {
+    DateTime? referenceDate,
+  }) async => null;
 }
 
 class _FakeRatesClient implements RatesClient {

@@ -86,9 +86,11 @@ class MultiProviderLatestRatesRepository implements ConvertRatesRepository {
   Future<LatestRatesSnapshot> _fetchLatestUnshared(String base) async {
     final fiatSnapshot = await _fiatClient.fetchLatest(base);
     final cachedSnapshot = await _latestCache.read(base);
-    final cryptoSnapshot = await _readFreshCryptoCache() ?? await _fetchCryptoSafe();
+    final cryptoSnapshot =
+        await _readFreshCryptoCache() ?? await _fetchCryptoSafe();
 
     final mergedRates = Map<String, double>.from(fiatSnapshot.rates);
+    var combinedRateDate = fiatSnapshot.date;
     if (cryptoSnapshot != null) {
       mergedRates.addAll(
         _normalizer.normalizeFiatBase(
@@ -97,6 +99,7 @@ class MultiProviderLatestRatesRepository implements ConvertRatesRepository {
           cryptoUsdPrices: cryptoSnapshot.pricesUsd,
         )..removeWhere((code, _) => isFiatCurrency(code)),
       );
+      combinedRateDate = _oldestDate(combinedRateDate, cryptoSnapshot.savedAt);
     } else if (cachedSnapshot != null) {
       for (final currency in supportedCryptoCurrencies) {
         final cachedRate = cachedSnapshot.rates[currency.code];
@@ -104,11 +107,12 @@ class MultiProviderLatestRatesRepository implements ConvertRatesRepository {
           mergedRates[currency.code] = cachedRate;
         }
       }
+      combinedRateDate = _oldestDate(combinedRateDate, cachedSnapshot.date);
     }
 
     final snapshot = LatestRatesSnapshot(
       base: fiatSnapshot.base,
-      date: fiatSnapshot.date,
+      date: combinedRateDate,
       savedAt: fiatSnapshot.savedAt,
       rates: mergedRates,
     );
@@ -150,5 +154,13 @@ class MultiProviderLatestRatesRepository implements ConvertRatesRepository {
       }
     }
     return true;
+  }
+
+  DateTime? _oldestDate(DateTime? first, DateTime? second) {
+    if (second == null) return first;
+    final secondDate = DateTime(second.year, second.month, second.day);
+    if (first == null) return secondDate;
+    final firstDate = DateTime(first.year, first.month, first.day);
+    return secondDate.isBefore(firstDate) ? secondDate : firstDate;
   }
 }

@@ -27,7 +27,10 @@ class DailyRatesInfoSheet extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(l10n?.dailyRatesTitle ?? "Daily exchange rates", style: AppTheme.heading),
+              Text(
+                l10n?.dailyRatesTitle ?? "Daily exchange rates",
+                style: AppTheme.heading,
+              ),
               const SizedBox(height: 12),
               Text(
                 dailyRatesBody(context),
@@ -42,7 +45,7 @@ class DailyRatesInfoSheet extends StatelessWidget {
               _InfoLine(icon: Icons.schedule_rounded, text: nextUpdateLabel),
               const SizedBox(height: 18),
               Text(
-                nextUpdateLocalTime(context),
+                providerPublicationTiming(context),
                 style: AppTheme.caption.copyWith(color: colors.subtle),
               ),
             ],

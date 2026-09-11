@@ -326,7 +326,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get fiatDataLine1 =>
-      'Fiat-Kurse stammen von Frankfurter mit EZB-Daten.';
+      'Fiat-Kurse stammen von Frankfurter und öffentlichen Zentralbankdaten.';
 
   @override
   String get fiatDataLine2 =>

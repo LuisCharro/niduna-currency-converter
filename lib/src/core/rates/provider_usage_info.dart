@@ -57,7 +57,7 @@ class ProviderUsageInfo {
 
     final matrix = <ProviderMatrixRow>[
       const ProviderMatrixRow(
-        provider: 'Frankfurter / ECB',
+        provider: 'Frankfurter / central banks',
         role: 'Fiat latest + fiat history',
         status: 'Primary',
       ),
@@ -76,7 +76,7 @@ class ProviderUsageInfo {
     final roles = <ProviderUsageRole>[
       const ProviderUsageRole(
         title: 'Fiat latest',
-        provider: 'Frankfurter / ECB',
+        provider: 'Frankfurter / central banks',
         details: <String>[
           'Refreshes on the daily app policy.',
           'Stored in latest fiat cache.',
@@ -84,7 +84,7 @@ class ProviderUsageInfo {
       ),
       const ProviderUsageRole(
         title: 'Fiat charts',
-        provider: 'Frankfurter / ECB',
+        provider: 'Frankfurter / central banks',
         details: <String>[
           'Daily points up to 2 years.',
           'Stored in historical chart cache.',
@@ -113,7 +113,8 @@ class ProviderUsageInfo {
     return ProviderUsageInfo(
       profileLabel: ProviderConfig.profileLabel,
       profileValue: profileValue,
-      devModeValue: 'APP_DEV_MODE=${ProviderConfig.isPlayStoreSafe ? 'false' : 'true'}',
+      devModeValue:
+          'APP_DEV_MODE=${ProviderConfig.isPlayStoreSafe ? 'false' : 'true'}',
       cryptoChartsEnabled: ProviderConfig.cryptoChartsEnabled,
       roles: roles,
       matrix: matrix,

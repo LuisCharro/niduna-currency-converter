@@ -326,7 +326,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get fiatDataLine1 =>
-      'Los tipos fiat proceden de Frankfurter usando datos del BCE.';
+      'Los tipos fiat proceden de Frankfurter usando datos públicos de bancos centrales.';
 
   @override
   String get fiatDataLine2 =>

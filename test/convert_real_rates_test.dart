@@ -92,8 +92,11 @@ void main() {
 
     expect(controller.state.status, ConvertStatus.fresh);
     expect(controller.state.quotes.single.code, 'EUR');
-    expect(controller.state.lastUpdatedLabel, 'Updated May 8');
-    expect(controller.state.nextUpdateLabel, contains('Next around'));
+    expect(controller.state.lastUpdatedLabel, 'Rates from May 8');
+    expect(
+      controller.state.nextUpdateLabel,
+      'Checks automatically the first time you open the app each day',
+    );
   });
 
   test('rate freshness formats date-only updates without fake midnight', () {
@@ -102,31 +105,7 @@ void main() {
       savedAt: DateTime(2026, 5, 8, 9),
     );
 
-    expect(label, 'Updated May 8');
-  });
-
-  test('rate freshness calculates summer weekday update in Central Europe', () {
-    final next = RateFreshness.nextExpectedUpdate(
-      now: DateTime.utc(2026, 5, 15, 10),
-    );
-
-    expect(next.toUtc(), DateTime.utc(2026, 5, 15, 14));
-  });
-
-  test('rate freshness skips weekends', () {
-    final next = RateFreshness.nextExpectedUpdate(
-      now: DateTime.utc(2026, 5, 16, 10),
-    );
-
-    expect(next.toUtc(), DateTime.utc(2026, 5, 18, 14));
-  });
-
-  test('rate freshness calculates winter weekday update in Central Europe', () {
-    final next = RateFreshness.nextExpectedUpdate(
-      now: DateTime.utc(2026, 2, 2, 10),
-    );
-
-    expect(next.toUtc(), DateTime.utc(2026, 2, 2, 15));
+    expect(label, 'Rates from May 8');
   });
 
   test('controller recalculates visible quotes when amount changes', () async {
@@ -241,34 +220,36 @@ void main() {
     expect(snapshot.rates['EUR'], .85025);
   });
 
-  test('fetchPreviousRates picks the latest day before the reference date',
-      () async {
-    late Uri captured;
-    final client = FrankfurterLatestRatesClient(
-      client: MockClient((request) async {
-        captured = request.url;
-        // v1 time-series payload: date -> {code: rate}.
-        return http.Response(
-          '{"amount":1.0,"base":"USD","start_date":"2026-06-05",'
-          '"end_date":"2026-06-15","rates":{'
-          '"2026-06-11":{"EUR":0.8668},'
-          '"2026-06-12":{"EUR":0.8645},'
-          '"2026-06-15":{"EUR":0.8634}}}',
-          200,
-        );
-      }),
-    );
+  test(
+    'fetchPreviousRates picks the latest day before the reference date',
+    () async {
+      late Uri captured;
+      final client = FrankfurterLatestRatesClient(
+        client: MockClient((request) async {
+          captured = request.url;
+          // v1 time-series payload: date -> {code: rate}.
+          return http.Response(
+            '{"amount":1.0,"base":"USD","start_date":"2026-06-05",'
+            '"end_date":"2026-06-15","rates":{'
+            '"2026-06-11":{"EUR":0.8668},'
+            '"2026-06-12":{"EUR":0.8645},'
+            '"2026-06-15":{"EUR":0.8634}}}',
+            200,
+          );
+        }),
+      );
 
-    // Latest published day is Monday 2026-06-15, so "previous" is Friday 06-12.
-    final rates = await client.fetchPreviousRates(
-      'USD',
-      referenceDate: DateTime(2026, 6, 15),
-    );
+      // Latest published day is Monday 2026-06-15, so "previous" is Friday 06-12.
+      final rates = await client.fetchPreviousRates(
+        'USD',
+        referenceDate: DateTime(2026, 6, 15),
+      );
 
-    expect(captured.path, '/v1/2026-06-05..2026-06-15');
-    expect(captured.queryParameters['base'], 'USD');
-    expect(rates?['EUR'], 0.8645); // 06-12, not 06-15 (the reference itself)
-  });
+      expect(captured.path, '/v1/2026-06-05..2026-06-15');
+      expect(captured.queryParameters['base'], 'USD');
+      expect(rates?['EUR'], 0.8645); // 06-12, not 06-15 (the reference itself)
+    },
+  );
 }
 
 LatestRatesSnapshot _snapshot(Map<String, double> rates) {
@@ -299,5 +280,8 @@ class _FakeRatesRepository implements ConvertRatesRepository {
   }
 
   @override
-  Future<Map<String, double>?> fetchPreviousRates(String base, {DateTime? referenceDate}) async => null;
+  Future<Map<String, double>?> fetchPreviousRates(
+    String base, {
+    DateTime? referenceDate,
+  }) async => null;
 }

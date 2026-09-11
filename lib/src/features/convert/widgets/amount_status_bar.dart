@@ -27,6 +27,8 @@ class AmountStatusBar extends StatelessWidget {
     final colors = AppColors.of(context);
     final accent = _accentColor(context);
     return Semantics(
+      button: true,
+      label: _line(context),
       onTapHint: l10n(context).rateFreshnessInfoLabel,
       child: Tooltip(
         message: dailyRatesTooltip(context),

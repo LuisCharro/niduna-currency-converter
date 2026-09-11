@@ -2,13 +2,13 @@ part of 'ui_copy.dart';
 
 String dailyRatesTooltip(BuildContext context) => switch (_lang(context)) {
   'es' =>
-    'Los tipos se actualizan una vez por día laborable. Toca para ver detalles.',
-  'de' => 'Kurse werden einmal pro Werktag aktualisiert. Tippe für Details.',
+    'La app comprueba nuevos tipos una vez al día. Toca para ver detalles.',
+  'de' => 'Die App prüft einmal täglich neue Kurse. Tippe für Details.',
   'it' =>
-    'I tassi si aggiornano una volta per giorno lavorativo. Tocca per i dettagli.',
+    "L'app controlla nuovi tassi una volta al giorno. Tocca per i dettagli.",
   'fr' =>
-    'Les taux sont mis à jour une fois par jour ouvré. Touchez pour les détails.',
-  _ => 'Rates update once per business day. Tap for details.',
+    "L’app vérifie les nouveaux taux une fois par jour. Touchez pour les détails.",
+  _ => 'The app checks for new rates once daily. Tap for details.',
 };
 
 String loadingDailyRates(BuildContext context) => switch (_lang(context)) {
@@ -48,35 +48,36 @@ String offlineRatesUnavailable(BuildContext context) =>
 
 String dailyRatesLabel(BuildContext context, String lastUpdatedLabel) =>
     switch (_lang(context)) {
-      'es' => 'Tipos diarios · $lastUpdatedLabel',
-      'de' => 'Tageskurse · $lastUpdatedLabel',
-      'it' => 'Tassi giornalieri · $lastUpdatedLabel',
-      'fr' => 'Taux quotidiens · $lastUpdatedLabel',
-      _ => 'Daily rates · $lastUpdatedLabel',
+      'es' => '1 vez al día · $lastUpdatedLabel',
+      'de' => '1× täglich · $lastUpdatedLabel',
+      'it' => '1 volta al giorno · $lastUpdatedLabel',
+      'fr' => '1 fois par jour · $lastUpdatedLabel',
+      _ => '1× daily · $lastUpdatedLabel',
     };
 
 String dailyRatesBody(BuildContext context) => switch (_lang(context)) {
   'es' =>
-    'La versión gratuita actualiza los tipos de cambio una vez por día laborable. Son útiles para conversiones cotidianas, pero no son precios de mercado en tiempo real.',
+    'La app comprueba una vez al día los últimos tipos publicados por fuentes públicas. Las fuentes publican a horas distintas, por lo que la fecha disponible puede cambiar durante el día. No son precios de mercado en tiempo real.',
   'de' =>
-    'Die kostenlose Version aktualisiert Wechselkurse einmal pro Werktag. Sie sind für alltägliche Umrechnungen nützlich, aber keine minutengenauen Marktpreise.',
+    'Die App prüft einmal täglich die neuesten Kurse aus öffentlichen Quellen. Die Quellen veröffentlichen zu unterschiedlichen Zeiten, daher kann sich das verfügbare Datum im Tagesverlauf ändern. Es sind keine Echtzeit-Marktpreise.',
   'it' =>
-    'La versione gratuita aggiorna i tassi di cambio una volta per giorno lavorativo. Sono utili per le conversioni quotidiane, ma non sono prezzi di mercato in tempo reale.',
+    "L'app controlla una volta al giorno gli ultimi tassi pubblicati da fonti pubbliche. Le fonti pubblicano in orari diversi, quindi la data disponibile può cambiare durante il giorno. Non sono prezzi di mercato in tempo reale.",
   'fr' =>
-    'La version gratuite met à jour les taux de change une fois par jour ouvré. Ils sont utiles pour les conversions quotidiennes, mais ne sont pas des prix de marché en temps réel.',
+    'L’app vérifie une fois par jour les derniers taux publiés par des sources publiques. Ces sources publient à des heures différentes, la date disponible peut donc changer au cours de la journée. Il ne s’agit pas de prix de marché en temps réel.',
   _ =>
-    'The free version updates exchange rates once per business day. They are useful for everyday conversion, but they are not live or intraday market prices.',
+    'The app checks the latest rates from public sources once daily. Sources publish at different times, so the available rate date can change during the day. These are not live or intraday market prices.',
 };
 
-String nextUpdateLocalTime(BuildContext context) => switch (_lang(context)) {
-  'es' => 'La próxima actualización estimada se muestra en tu hora local.',
+String providerPublicationTiming(BuildContext context) => switch (_lang(
+  context,
+)) {
+  'es' => 'Las fuentes pueden publicar nuevos datos a distintas horas.',
   'de' =>
-    'Die nächste erwartete Aktualisierung wird in deiner Ortszeit angezeigt.',
-  'it' =>
-    'Il prossimo aggiornamento previsto è mostrato nel tuo fuso orario locale.',
+    'Die Quellen können neue Daten zu unterschiedlichen Zeiten veröffentlichen.',
+  'it' => 'Le fonti possono pubblicare nuovi dati in orari diversi.',
   'fr' =>
-    'La prochaine mise à jour estimée est affichée dans votre heure locale.',
-  _ => 'The next expected update is shown in your local time.',
+    'Les sources peuvent publier de nouvelles données à des heures différentes.',
+  _ => 'Sources may publish new data at different times.',
 };
 
 String closeLensTooltip(BuildContext context) => switch (_lang(context)) {

@@ -322,7 +322,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fiatDataLine1 =>
-      'Fiat rates come from Frankfurter using ECB data.';
+      'Fiat rates come from Frankfurter using public central-bank data.';
 
   @override
   String get fiatDataLine2 =>

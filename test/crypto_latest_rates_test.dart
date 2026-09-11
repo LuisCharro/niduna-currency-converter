@@ -100,31 +100,34 @@ void main() {
     },
   );
 
-  test('controller load refreshes when cached snapshot is missing crypto rates', () async {
-    SharedPreferences.setMockInitialValues(<String, Object>{
-      'pref_refresh_on_open': false,
-    });
-    final prefs = await SharedPreferences.getInstance();
-    final preferences = AppPreferences(prefs);
-    final repository = _CountingRatesRepository(
-      cached: LatestRatesSnapshot(
-        base: 'USD',
-        date: DateTime(2026, 5, 19),
-        savedAt: DateTime.now(),
-        rates: const <String, double>{'EUR': 0.92},
-      ),
-    );
+  test(
+    'controller load refreshes when cached snapshot is missing crypto rates',
+    () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        'pref_refresh_on_open': false,
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final preferences = AppPreferences(prefs);
+      final repository = _CountingRatesRepository(
+        cached: LatestRatesSnapshot(
+          base: 'USD',
+          date: DateTime(2026, 5, 19),
+          savedAt: DateTime.now(),
+          rates: const <String, double>{'EUR': 0.92},
+        ),
+      );
 
-    final controller = ConvertController(
-      repository: repository,
-      preferences: preferences,
-      selectedCodes: const <String>['EUR', 'BTC'],
-    );
+      final controller = ConvertController(
+        repository: repository,
+        preferences: preferences,
+        selectedCodes: const <String>['EUR', 'BTC'],
+      );
 
-    await controller.load();
+      await controller.load();
 
-    expect(repository.fetchCalls, 1);
-  });
+      expect(repository.fetchCalls, 1);
+    },
+  );
 
   test(
     'multi-provider repository merges BTC and ETH into fiat snapshot',
@@ -156,6 +159,37 @@ void main() {
       expect(snapshot.rates['GBP'], 0.8);
       expect(snapshot.rates['BTC'], closeTo(0.00002, 0.000000001));
       expect(snapshot.rates['ETH'], closeTo(0.0004, 0.000000001));
+    },
+  );
+
+  test(
+    'multi-provider repository reports the oldest combined rate date',
+    () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      final prefs = await SharedPreferences.getInstance();
+      final repository = MultiProviderLatestRatesRepository(
+        fiatClient: _FakeLatestRatesClient(
+          LatestRatesSnapshot(
+            base: 'USD',
+            date: DateTime(2026, 9, 11),
+            savedAt: DateTime(2026, 9, 11, 10),
+            rates: const <String, double>{'EUR': 0.86},
+          ),
+        ),
+        latestCache: LatestRatesCache(prefs),
+        cryptoCache: CryptoUsdPriceCache(prefs),
+        cryptoClient: _FakeCryptoUsdPriceClient(
+          CryptoUsdPriceSnapshot(
+            provider: 'fawazahmed0',
+            savedAt: DateTime(2026, 9, 10),
+            pricesUsd: const <String, double>{'BTC': 78000, 'ETH': 2500},
+          ),
+        ),
+      );
+
+      final snapshot = await repository.fetchLatest('USD');
+
+      expect(snapshot.date, DateTime(2026, 9, 10));
     },
   );
 
@@ -192,49 +226,53 @@ void main() {
 
       expect(snapshot.rates['EUR'], 0.92);
       expect(snapshot.rates['BTC'], 0.000013);
+      expect(snapshot.date, DateTime(2026, 5, 18));
     },
   );
 
-  test('multi-provider repository readCached backfills crypto from fresh crypto cache', () async {
-    SharedPreferences.setMockInitialValues(<String, Object>{});
-    final prefs = await SharedPreferences.getInstance();
-    final latestCache = LatestRatesCache(prefs);
-    final cryptoCache = CryptoUsdPriceCache(prefs);
-    await latestCache.write(
-      LatestRatesSnapshot(
-        base: 'EUR',
-        date: DateTime(2026, 5, 19),
-        savedAt: DateTime(2026, 5, 19, 10),
-        rates: const <String, double>{'USD': 1.2, 'GBP': 0.8},
-      ),
-    );
-    await cryptoCache.write(
-      CryptoUsdPriceSnapshot(
-        provider: 'test',
-        savedAt: _today,
-        pricesUsd: <String, double>{'BTC': 60000, 'ETH': 3000},
-      ),
-    );
-
-    final repository = MultiProviderLatestRatesRepository(
-      fiatClient: _FakeLatestRatesClient(
+  test(
+    'multi-provider repository readCached backfills crypto from fresh crypto cache',
+    () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      final prefs = await SharedPreferences.getInstance();
+      final latestCache = LatestRatesCache(prefs);
+      final cryptoCache = CryptoUsdPriceCache(prefs);
+      await latestCache.write(
         LatestRatesSnapshot(
           base: 'EUR',
           date: DateTime(2026, 5, 19),
           savedAt: DateTime(2026, 5, 19, 10),
           rates: const <String, double>{'USD': 1.2, 'GBP': 0.8},
         ),
-      ),
-      latestCache: latestCache,
-      cryptoCache: cryptoCache,
-      cryptoClient: _FailingCryptoUsdPriceClient(),
-    );
+      );
+      await cryptoCache.write(
+        CryptoUsdPriceSnapshot(
+          provider: 'test',
+          savedAt: _today,
+          pricesUsd: <String, double>{'BTC': 60000, 'ETH': 3000},
+        ),
+      );
 
-    final cached = await repository.readCached('EUR');
+      final repository = MultiProviderLatestRatesRepository(
+        fiatClient: _FakeLatestRatesClient(
+          LatestRatesSnapshot(
+            base: 'EUR',
+            date: DateTime(2026, 5, 19),
+            savedAt: DateTime(2026, 5, 19, 10),
+            rates: const <String, double>{'USD': 1.2, 'GBP': 0.8},
+          ),
+        ),
+        latestCache: latestCache,
+        cryptoCache: cryptoCache,
+        cryptoClient: _FailingCryptoUsdPriceClient(),
+      );
 
-    expect(cached?.rates['BTC'], closeTo(0.00002, 0.000000001));
-    expect(cached?.rates['ETH'], closeTo(0.0004, 0.000000001));
-  });
+      final cached = await repository.readCached('EUR');
+
+      expect(cached?.rates['BTC'], closeTo(0.00002, 0.000000001));
+      expect(cached?.rates['ETH'], closeTo(0.0004, 0.000000001));
+    },
+  );
 }
 
 final DateTime _today = DateTime.now();
@@ -248,7 +286,10 @@ class _FakeLatestRatesClient implements LatestRatesClient {
   Future<LatestRatesSnapshot> fetchLatest(String base) async => snapshot;
 
   @override
-  Future<Map<String, double>?> fetchPreviousRates(String base, {DateTime? referenceDate}) async => null;
+  Future<Map<String, double>?> fetchPreviousRates(
+    String base, {
+    DateTime? referenceDate,
+  }) async => null;
 }
 
 class _FakeCryptoUsdPriceClient implements CryptoUsdPriceClient {
@@ -283,5 +324,8 @@ class _CountingRatesRepository implements ConvertRatesRepository {
   }
 
   @override
-  Future<Map<String, double>?> fetchPreviousRates(String base, {DateTime? referenceDate}) async => null;
+  Future<Map<String, double>?> fetchPreviousRates(
+    String base, {
+    DateTime? referenceDate,
+  }) async => null;
 }
