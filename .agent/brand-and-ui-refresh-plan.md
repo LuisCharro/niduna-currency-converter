@@ -1,8 +1,9 @@
 # Honest Fern Currency Converter — Brand and UI refresh
 
-> **Status:** Active exploration on `codex/ui-freshness-and-brand-assets`.
-> This work targets the next closed-test candidate. It does not authorize a
-> version bump, Play upload, merge, push, or store submission.
+> **Status:** Phase 1 accepted; Phase 3 UI polish committed as `c08ec70`.
+> Phase 2 badge work remains blocked with no canonical asset
+> replacement. This work targets the next closed-test candidate and does not
+> authorize a version bump, Play upload, merge, or store submission.
 
 ## Goal
 
@@ -15,7 +16,8 @@ keep every visual change reversible.
 - Android remains the first release platform, but the canonical icon pipeline
   must regenerate valid iOS assets for the later App Store release.
 - Do not change rates, providers, billing, ads, consent, storage, navigation, or
-  feature limits as part of this visual cycle.
+  feature limits as part of this visual cycle, except the approved Chart
+  presentation and control-placement refinements recorded in Phase 3.
 - Do not add OXR/VPS, CoinGecko, accounts, analytics, or backend work.
 - Do not overwrite canonical brand assets until a proposal has been inspected
   at full size and launcher size.
@@ -143,6 +145,13 @@ the generated PNG is inspiration only.
 - Review screenshots and launch video are temporary QA evidence under `.tmp/`;
   they are not store screenshots or release artifacts.
 
+### Phase 1 closeout — 2026-09-11
+
+Luis accepted the modern gold-swap coin after live Android and iOS review. The
+launcher and splash assets are already part of the accepted predecessor commits;
+do not regenerate or revisit them during the Phase 3 commit. The public website
+icon refresh was completed separately by Luis.
+
 ## Phase 2 — Currency badges
 
 Audit the 45 current badges at their real 32–48 px display sizes. Replace only
@@ -159,6 +168,26 @@ changes to hierarchy, spacing, icon consistency, empty/loading/error states,
 and small-screen behavior. Explain each problem and proposed solution before
 changing the interface. Keep the existing warm paper, forest, Manrope/Fraunces,
 and dividers-not-cards system.
+
+### Phase 3 closeout — 2026-09-11
+
+The approved B1–B6 presentation batch is complete. It clarifies chart units and
+signed deltas, fixes Android system-bar contrast, removes dangling Lens decimal
+punctuation, improves Chart axis/readability and crypto density, makes temporary
+chart-unlock markers track the restricted currency in either selector, and
+consolidates the Chart swap action to the selector strip. The final header uses
+the released space for the trend chip on wide layouts and wraps safely on compact
+ones. No rate calculation, provider, billing, consent, entitlement persistence,
+version, or release configuration changed.
+
+`./scripts/check.sh` passed after the final UI adjustments. The latest locally
+installed debug APK used `PROVIDER_PROFILE=release_safe` and
+`APP_DEV_MODE=false`; its SHA-256 was
+`bf9c21a938d2f27205de7b8d98d0a7ac25edf3498aace3f8153e881377d1e11c`.
+Luis visually accepted the final Chart review on both large and small Android
+emulators. The implementation is committed as `c08ec70`; B7 and unverified
+loading/offline/accessibility matrices remain deferred rather than implicitly
+accepted.
 
 ## Release integration
 
