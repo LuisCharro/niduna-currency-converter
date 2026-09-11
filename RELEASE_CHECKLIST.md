@@ -711,11 +711,15 @@ public listing → site launch batch`.
 
 | Data type | Source | Frequency | How users see it |
 |-----------|--------|-----------|-----------------|
-| Fiat rates | Frankfurter / ECB | **Once per business day** (~16:00 CET) | "Updated May 29" label + `(i)` tooltip |
+| Fiat rates | Frankfurter v2 blended central-bank sources | App checks automatically once per local calendar day; manual refresh is available | Combined freshness label uses the oldest source date + `(i)` tooltip |
 | Crypto prices | fawazahmed0 CDN | **Once per day** (static JSON update) | Same freshness indicator |
 | Chart history | Frankfurter (fiat) / fawazahmed0 (crypto) | Cached persistently; refetched on gap or staleness | Date range shown on chart header |
 
-**Key phrase for policy:** *"Exchange rates update once daily from public central bank and open-data sources. No real-time or intraday data."*
+**Key phrase for policy:** *"The app checks exchange rates once daily from public central-bank and open-data sources. Source publication times differ. No real-time or intraday data."*
+
+When fiat and crypto sources report different dates, the Convert freshness
+indicator shows the older date. This is deliberately conservative because a
+cross-provider conversion cannot be fresher than its oldest component.
 
 ---
 

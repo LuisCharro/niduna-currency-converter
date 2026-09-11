@@ -65,7 +65,12 @@ first or defer the idea.
 - Phase 1 includes EN, DE, ES, IT, FR localization for meaningful user-facing text.
 - RUB is not supported.
 - Dark mode is free and available in v1 (follows system default; toggle in Settings).
-- Data freshness: Frankfurter/ECB fiat rates update once daily (~16:00 CET). Crypto latest and crypto charts also refresh on a daily app policy. App must communicate app-level freshness clearly.
+- Data freshness: the app checks Frankfurter v2's blended central-bank fiat
+  rates automatically once per local calendar day; users can refresh manually.
+  Provider publication times differ, so the displayed provider rate date is
+  the oldest date among the sources combined in the visible rates. Crypto
+  latest and crypto charts also use a daily app policy. The app must state
+  clearly that these are not real-time rates.
 
 ### Monetization access policy
 

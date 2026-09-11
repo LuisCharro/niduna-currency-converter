@@ -1,4 +1,4 @@
-# Frankfurter (ECB) — Fiat Exchange Rate Provider
+# Frankfurter — Fiat Exchange Rate Provider
 
 > **Status:** PRIMARY provider for all fiat data in all build profiles.
 > **License:** Unlicense (public domain) — commercial use explicitly allowed.
@@ -9,8 +9,9 @@
 ## What It Is
 
 Frankfurter is an open-source API that serves exchange rates sourced from the
-**European Central Bank (ECB)** plus 55 central banks worldwide. It is the
-canonical free source for daily fiat currency reference rates.
+**European Central Bank (ECB)** and many other central banks. Its v2 endpoint
+blends providers by default, so the latest rate date is not necessarily the ECB
+publication date.
 
 - **Website:** https://frankfurter.dev
 - **GitHub:** https://github.com/hakenes/frankfurter
@@ -46,7 +47,8 @@ USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF
 ```
 GET https://api.frankfurter.dev/v2/rates?base={BASE}&quotes={QUOTE_CODES}
 ```
-Returns latest rates for all 40 fiat currencies in **one call**.
+Returns latest rates for the requested fiat currencies in **one call**. Without
+a `providers` filter, Frankfurter v2 blends its available sources.
 
 ```
 GET https://api.frankfurter.dev/v1/{FROM_DATE}..{TO_DATE}?base={BASE}&symbols={QUOTE}
@@ -64,7 +66,8 @@ Returns historical daily rates for a date range (used by Charts tab).
 ### Cache behavior
 
 - Latest rates: persisted locally via `SharedPreferencesRatesCache`.
-  Shown immediately on app open; refreshed only when stale (>24h or user action).
+  Shown immediately on app open; refreshed automatically on the first app open
+  of a new local calendar day, or when the user requests a refresh.
 - Historical chart data: cached persistently per `(base, quote, range)` tuple.
   Reused offline; only new date gaps trigger additional fetches.
 
@@ -80,12 +83,16 @@ This means all conversion math happens on-device — no extra API calls.
 
 ## Refresh Cadence
 
-- **ECB publishes rates once per business day**, typically around **16:00 CET**
-  (Central European Time), Monday–Friday.
-- Weekends and ECB holidays: no new rates. Last Friday's rate stays current.
-- The app's `RateRefreshPolicy` considers rates "fresh" if fetched on the same calendar day.
+- Frankfurter v2 blends public central-bank sources by default. Individual
+  sources publish at different times, and their latest dates may differ.
+- The app's `RateRefreshPolicy` considers rates fresh if fetched on the same
+  local calendar day. A manual refresh can check again during that day.
+- The provider rate date shown in the UI identifies the data snapshot. It may
+  stay unchanged on weekends, holidays, or while sources have not published.
+  When the Convert snapshot also contains crypto data, the UI uses the older
+  of the fiat and crypto dates as the combined snapshot date.
 - The `DailyRatesInfoSheet` (tap `(i)` icon on Convert) explains this to users:
-  *"The free version updates exchange rates once per day."*
+  *"The app checks the latest rates from public sources once daily."*
 
 ## Rate Limits & Constraints
 

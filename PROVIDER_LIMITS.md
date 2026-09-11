@@ -240,8 +240,9 @@ User's phone → Your backend → Provider
 
 ### Frankfurter Details
 
-- Open-source, sources from ECB + 55 central banks
-- Daily rates only (updated once per business day)
+- Open-source, with rates from the ECB and many other central banks
+- Daily reference rates; v2 blends providers by default, whose publication dates
+  and times can differ
 - Historical data available (fiat only, no BTC/ETH)
 - No API key, no account
 - The v1 endpoint (`/v1/{date}`) supports date ranges like `2024-01-01..2024-06-01`
