@@ -1,16 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
-  <title id="title">Currency Converter minted coin icon</title>
-  <desc id="desc">A smooth double-rim coin with two large opposing exchange arrows.</desc>
-
-  <rect width="1024" height="1024" rx="220" fill="#285F3B"/>
-
-  <!-- The warm outer rim and inset face make the exchange symbol read as a coin. -->
-  <circle cx="512" cy="512" r="330" fill="#B99A52"/>
-  <circle cx="512" cy="512" r="274" fill="#7A6232"/>
-  <circle cx="512" cy="512" r="258" fill="#F5F4F0"/>
-
-  <rect x="304" y="410" width="278" height="68" rx="34" fill="#285F3B"/>
-  <path d="M572 374v140l138-70-138-70Z" fill="#285F3B"/>
-  <rect x="442" y="546" width="278" height="68" rx="34" fill="#6F8C49"/>
-  <path d="M452 510v140l-138-70 138-70Z" fill="#6F8C49"/>
+  <title id="title">Honest Fern Currency Converter icon</title>
+  <desc id="desc">A modern gold coin with two clear opposing exchange arrows on a forest green field.</desc>
+  <defs>
+    <radialGradient id="coinFace" cx="34%" cy="25%" r="82%">
+      <stop offset="0" stop-color="#F7DF83"/>
+      <stop offset="0.55" stop-color="#E2BC58"/>
+      <stop offset="1" stop-color="#C49335"/>
+    </radialGradient>
+  </defs>
+  <!-- Full-bleed square artwork. Android and Apple apply their own masks. -->
+  <rect width="1024" height="1024" fill="#285F3B"/>
+  <circle cx="512" cy="512" r="352" fill="#9B7026"/>
+  <circle cx="512" cy="512" r="326" fill="url(#coinFace)"/>
+  <circle cx="512" cy="512" r="311" fill="none" stroke="#F4D77A" stroke-width="5" opacity="0.72"/>
+  <rect x="322" y="394" width="292" height="82" rx="41" fill="#285F3B"/>
+  <path d="M568 359 L718 435 Q728 440 718 447 L568 523 Q557 529 559 515 L574 476 H568 Z" fill="#285F3B"/>
+  <rect x="410" y="548" width="292" height="82" rx="41" fill="#F6F8EF"/>
+  <path d="M456 513 L306 589 Q296 594 306 601 L456 677 Q467 683 465 669 L450 630 H456 Z" fill="#F6F8EF"/>
 </svg>

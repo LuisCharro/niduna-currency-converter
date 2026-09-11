@@ -51,15 +51,30 @@ render_svg "$SPLASH_SVG" 1024 assets/brand/splash_mark.png
 android_densities=(mdpi hdpi xhdpi xxhdpi xxxhdpi)
 legacy_sizes=(48 72 96 144 192)
 foreground_sizes=(108 162 216 324 432)
+splash_icon_sizes=(288 432 576 864 1152)
+legacy_splash_sizes=(128 192 256 384 512)
 for index in "${!android_densities[@]}"; do
   density="${android_densities[$index]}"
   legacy_size="${legacy_sizes[$index]}"
   foreground_size="${foreground_sizes[$index]}"
+  splash_icon_size="${splash_icon_sizes[$index]}"
+  legacy_splash_size="${legacy_splash_sizes[$index]}"
   mipmap_dir="android/app/src/main/res/mipmap-$density"
+  drawable_dir="android/app/src/main/res/drawable-$density"
 
-  render_svg "$APP_SVG" "$legacy_size" "$mipmap_dir/ic_launcher.png"
-  render_svg "$APP_SVG" "$legacy_size" "$mipmap_dir/ic_launcher_round.png"
+  render_svg "$APP_SVG" "$legacy_size" "$TMP_DIR/ic_launcher_$density.png"
+  legacy_radius=$((legacy_size / 5))
+  "$MAGICK" "$TMP_DIR/ic_launcher_$density.png" \
+    \( +clone -alpha transparent -fill white \
+       -draw "roundrectangle 0,0,$((legacy_size - 1)),$((legacy_size - 1)),$legacy_radius,$legacy_radius" \) \
+    -alpha off -compose CopyOpacity -composite -strip "$mipmap_dir/ic_launcher.png"
+  "$MAGICK" "$TMP_DIR/ic_launcher_$density.png" \
+    \( +clone -alpha transparent -fill white \
+       -draw "circle $((legacy_size / 2)),$((legacy_size / 2)) $((legacy_size / 2)),0" \) \
+    -alpha off -compose CopyOpacity -composite -strip "$mipmap_dir/ic_launcher_round.png"
   render_svg "$FOREGROUND_SVG" "$foreground_size" "$mipmap_dir/ic_launcher_foreground.png"
+  render_svg "$SPLASH_SVG" "$splash_icon_size" "$drawable_dir/splash_icon.png"
+  render_svg "$SPLASH_SVG" "$legacy_splash_size" "$drawable_dir/splash_mark.png"
 done
 
 # flutter_launcher_icons follows Contents.json and generates every required iOS
@@ -96,4 +111,4 @@ done
   "$TMP_DIR/app_icon_256.png" \
   -strip windows/runner/resources/app_icon.ico
 
-echo "Generated minted-coin icons for Android, iOS, web, macOS, and Windows."
+echo "Generated Honest Fern exchange-coin icons and launch marks for Android, iOS, web, macOS, and Windows."
