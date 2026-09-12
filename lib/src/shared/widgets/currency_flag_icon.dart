@@ -58,7 +58,7 @@ class CurrencyFlagIcon extends StatelessWidget {
     'USDT': 'assets/icons/currencies/usdt.png',
     'USDC': 'assets/icons/currencies/usdc.png',
     'BNB': 'assets/icons/currencies/bnb.png',
-    'MATIC': 'assets/icons/currencies/matic.png',
+    'POL': 'assets/icons/currencies/pol.png',
   };
 
   @override

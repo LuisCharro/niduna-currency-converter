@@ -21,7 +21,7 @@ const List<CryptoAsset> supportedCryptoAssets = <CryptoAsset>[
   CryptoAsset(code: 'USDT', coinPaprikaId: 'usdt-tether', coinCapId: 'tether'),
   CryptoAsset(code: 'USDC', coinPaprikaId: 'usdc-usd-coin', coinCapId: 'usd-coin'),
   CryptoAsset(code: 'BNB', coinPaprikaId: 'bnb-binance-coin', coinCapId: 'binancecoin'),
-  CryptoAsset(code: 'MATIC', coinPaprikaId: 'matic-polygon', coinCapId: 'matic-network'),
+  CryptoAsset(code: 'POL', coinPaprikaId: 'pol-polygon-ecosystem-token', coinCapId: 'polygon-ecosystem-token'),
 ];
 
 CryptoAsset cryptoAssetByCode(String code) {

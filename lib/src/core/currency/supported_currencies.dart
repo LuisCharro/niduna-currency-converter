@@ -63,7 +63,7 @@ const List<SupportedCurrency> supportedCryptoCurrencies = <SupportedCurrency>[
   SupportedCurrency(code: 'USDT', name: 'Tether USD', symbol: '₮'),
   SupportedCurrency(code: 'USDC', name: 'USD Coin', symbol: 'USDC'),
   SupportedCurrency(code: 'BNB', name: 'BNB', symbol: 'BNB'),
-  SupportedCurrency(code: 'MATIC', name: 'Polygon', symbol: 'MATIC'),
+  SupportedCurrency(code: 'POL', name: 'Polygon', symbol: 'POL'),
 ];
 
 const List<SupportedCurrency> supportedCurrencies = supportedFiatCurrencies;

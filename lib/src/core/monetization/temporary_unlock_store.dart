@@ -46,6 +46,43 @@ class TemporaryUnlockStore {
     await _preferences.remove(_registryKey);
   }
 
+  /// One-shot migration that rewrites legacy `MATIC` entries in the
+  /// registry to `POL`. Idempotent: a second call after the first must
+  /// leave the stored representation byte-equivalent (for non-MATIC entries).
+  ///
+  /// The shipped 1.0.0+4 registry format has overlapping quote marks between
+  /// outer registry and inner unlock JSON; the legacy `_parseJson` returns
+  /// an empty Map for it. Per plan §C4, when the format cannot be safely
+  /// decoded, MATIC entries are removed (not migrated to POL); unrelated
+  /// entries are left byte-equivalent.
+  Future<void> migrateIfNeeded() async {
+    final raw = _preferences.getString(_registryKey);
+    if (raw == null || raw.isEmpty) return;
+    if (!raw.contains('MATIC')) return;
+
+    // Step 1 — strip middle / last MATIC entries (preceded by `, `).
+    final midPattern = RegExp(
+      r',\s*"temp_unlock_(?:[A-Z]+_MATIC|MATIC_[A-Z]+)":\s*"\{[^}]*\}"[,\s]*',
+    );
+    var cleaned = raw.replaceAll(midPattern, '');
+
+    // Step 2 — strip the first MATIC entry if it survived step 1.
+    if (cleaned.contains(RegExp(
+      r'temp_unlock_(?:[A-Z]+_MATIC|MATIC_[A-Z]+)',
+    ))) {
+      cleaned = cleaned.replaceFirst(
+        RegExp(
+          r'\{\s*"temp_unlock_(?:[A-Z]+_MATIC|MATIC_[A-Z]+)":\s*"\{[^}]*\}"[,\s]*',
+        ),
+        '{',
+      );
+    }
+
+    if (cleaned != raw) {
+      await _preferences.setString(_registryKey, cleaned);
+    }
+  }
+
   Future<void> cleanExpired() async {
     final registry = await _loadRegistry();
     final expired = <String>[];

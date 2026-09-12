@@ -45,7 +45,7 @@ class CurrencyFlags {
     'USDT': '₮',
     'USDC': '◉',
     'BNB': '●',
-    'MATIC': '⬡',
+    'POL': '⬡',
   };
 
   static String forCode(String code) => _map[code.toUpperCase()] ?? '🏳️';

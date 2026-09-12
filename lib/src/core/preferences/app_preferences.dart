@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../currency/currency_code_migration.dart';
+
 class AppPreferences extends ChangeNotifier {
   AppPreferences(this._prefs);
 
@@ -19,7 +21,8 @@ class AppPreferences extends ChangeNotifier {
 
   static const List<String> defaultSelectedCodes = ['EUR', 'GBP', 'JPY'];
 
-  String get defaultBaseCurrency => _prefs.getString(_defaultBaseKey) ?? 'USD';
+  String get defaultBaseCurrency =>
+      canonicalCurrencyCode(_prefs.getString(_defaultBaseKey) ?? 'USD');
   int get decimalPlaces => _prefs.getInt(_decimalPlacesKey) ?? 2;
   bool get refreshOnOpen => _prefs.getBool(_refreshOnOpenKey) ?? true;
   bool get devToolsAvailable => kDebugMode;
@@ -32,16 +35,16 @@ class AppPreferences extends ChangeNotifier {
   List<String> get selectedCodes {
     final codes = _prefs.getStringList(_selectedCodesKey);
     if (codes == null || codes.isEmpty) return defaultSelectedCodes;
-    return codes;
+    return canonicalizeCodeList(codes);
   }
 
   Future<void> setSelectedCodes(List<String> codes) async {
-    await _prefs.setStringList(_selectedCodesKey, codes);
+    await _prefs.setStringList(_selectedCodesKey, canonicalizeCodeList(codes));
     notifyListeners();
   }
 
   Future<void> setDefaultBaseCurrency(String code) async {
-    await _prefs.setString(_defaultBaseKey, code);
+    await _prefs.setString(_defaultBaseKey, canonicalCurrencyCode(code));
     notifyListeners();
   }
 

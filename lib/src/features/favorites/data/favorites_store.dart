@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../core/currency/currency_code_migration.dart';
 import '../domain/favorite_pair.dart';
 
 class FavoritesStore extends ChangeNotifier {
@@ -68,7 +69,21 @@ class FavoritesStore extends ChangeNotifier {
   void _load() {
     final keys = _prefs.getStringList(_key);
     if (keys == null) return;
-    _pairs = keys.map((k) => tryParse(k)).whereType<FavoritePair>().toList();
+    final canonical = canonicalizeFavoriteKeys(keys);
+    _pairs =
+        canonical.map((k) => tryParse(k)).whereType<FavoritePair>().toList();
+    // Persist the canonicalised form so the next load is a no-op.
+    if (!_listEquals(canonical, keys)) {
+      _save();
+    }
+  }
+
+  bool _listEquals(List<String> a, List<String> b) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
   }
 
   static FavoritePair? tryParse(String key) {
