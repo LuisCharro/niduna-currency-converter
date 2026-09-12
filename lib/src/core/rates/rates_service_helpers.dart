@@ -116,12 +116,19 @@ class HistoricalFetcher {
         return HistoricalResult(
           status: HistoricalStatus.cached,
           snapshot: fallback,
-          message: 'Failed to refresh historical data. Showing cached data.',
+          message: 'Historical data is unavailable for this pair right now. '
+              'Showing cached data.',
         );
       }
+      // Bounded change per provider-coverage-remediation-plan §E1: do not
+      // surface raw exception internals (which previously leaked
+      // `RatesClientException: ...` strings) — use neutral copy that does
+      // not falsely imply a network fault when the real cause may be
+      // missing coverage or a parser mismatch.
       return HistoricalResult(
         status: HistoricalStatus.error,
-        message: 'Failed to load historical data: ${e.toString()}',
+        message: 'Historical data is unavailable for this pair right now. '
+            'Try again later.',
       );
     }
   }

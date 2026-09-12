@@ -69,6 +69,20 @@ class FrankfurterClient implements RatesClient {
     required DateTime from,
     required DateTime to,
   }) async {
+    if (base == quote) {
+      // Identity shortcut: USD/USD = 1 across the requested range.
+      // Avoids hitting Frankfurter for a no-op conversion that the
+      // MultiProviderRatesClient already short-circuits in mixed pairs.
+      final day = DateTime(from.year, from.month, from.day);
+      return HistoricalSnapshot(
+        base: base,
+        quote: quote,
+        coveredFrom: day,
+        coveredTo: day,
+        data: <DateTime, double>{day: 1.0},
+        savedAt: DateTime.now(),
+      );
+    }
     if (!isFiatCurrency(base) || !isFiatCurrency(quote)) {
       throw RatesClientException(
         'Frankfurter historical does not support $base/$quote',
@@ -76,11 +90,12 @@ class FrankfurterClient implements RatesClient {
     }
     final fromStr = from.toIso8601String().split('T').first;
     final toStr = to.toIso8601String().split('T').first;
-    final range = '$fromStr..$toStr';
 
-    final uri = Uri.https(_host, '/v1/$range', <String, String>{
+    final uri = Uri.https(_host, '/v2/rates', <String, String>{
+      'from': fromStr,
+      'to': toStr,
       'base': base,
-      'symbols': quote,
+      'quotes': quote,
     });
 
     final response = await _client.get(uri);
@@ -92,28 +107,21 @@ class FrankfurterClient implements RatesClient {
     }
 
     final json = jsonDecode(response.body);
-    if (json is! Map<String, dynamic>) {
+    if (json is! List) {
       throw const RatesClientException('Invalid historical payload');
     }
 
-    final ratesData = json['rates'] as Map<String, dynamic>?;
-
-    if (ratesData == null) {
-      throw const RatesClientException(
-        'Invalid historical payload: missing rates',
-      );
-    }
-
     final data = <DateTime, double>{};
-    for (final entry in ratesData.entries) {
-      final date = DateTime.tryParse(entry.key);
-      final dayRates = entry.value;
-      final rate = dayRates is Map<String, dynamic>
-          ? (dayRates[quote] as num?)?.toDouble()
-          : null;
-      if (date != null && rate != null) {
-        data[date] = rate;
-      }
+    for (final row in json) {
+      if (row is! Map<String, dynamic>) continue;
+      final dateStr = row['date'];
+      final rowQuote = row['quote'];
+      final rate = row['rate'];
+      if (dateStr is! String || rowQuote is! String || rate is! num) continue;
+      if (rowQuote != quote) continue;
+      final date = DateTime.tryParse(dateStr.split('T').first);
+      if (date == null) continue;
+      data[date] = rate.toDouble();
     }
 
     if (data.isEmpty) {
