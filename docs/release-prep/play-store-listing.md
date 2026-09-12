@@ -1,7 +1,7 @@
 # Google Play Store Listing — Currency Converter
 
 > Product: Currency Converter (by Honest Fern)
-> Current diagnostic version: 0.1.0+2; final 1.0.0 version/code pending RC gates
+> Current internal candidate: 1.0.0+4; next step: promote the same artifact to Closed testing
 > Target: Android first
 > Data sources: Frankfurter v2 (fiat), fawazahmed0 (crypto)
 > Privacy stance: no Honest Fern account, no first-party analytics, no backend;
@@ -9,10 +9,10 @@
 > Last reviewed against code and cross-repo release plan: 2026-07-19
 
 
-> **Draft not approved for upload (2026-09-10).** Follow the master checklist
-> resume checkpoint. Pending: localized Play prices, manual-theme wording,
-> removal of no-tracking claims, accurate provider/cached-offline description,
-> final screenshots; the Honest Fern feature graphic is approved.
+> **Play status — 2026-09-12:** the new icon and six phone screenshots are
+> selected in the default `en-GB` listing draft. They are saved in Publishing
+> overview and still need the remaining app-setup gates and review submission.
+> The Honest Fern feature graphic remains approved.
 
 The approved feature graphic is `feature-graphic.png` (1024x500). It is a
 brand asset; the separate store screenshots provide the real product UI.

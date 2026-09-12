@@ -161,6 +161,42 @@ and `ANDROID_SERIAL` only when a different 1080×2400 target is intentionally
 selected. The wrapper never bumps the version, uploads to Play, overwrites
 `docs/release-prep/screenshots/`, or changes Play Console state.
 
+The current Internal testing release is `1.0.0+4` (`versionCode 4`), including
+the late UMP/AdMob consent fix. Promote that same tested artifact to Closed
+testing and later Production. Do not rebuild an identical binary only to
+change its version name after testing; use `1.0.0+5` or higher only for a real
+follow-up fix.
+
+## Google Play update workflow
+
+The Play Publisher credentials are machine-local; see `AGENTS.local.md` for
+the configured key path. Never put the JSON key, OAuth tokens, or generated
+credentials in this repository.
+
+The current Play listing locale is `en-GB`. Use that locale when replacing
+the default listing icon or phone screenshots. Uploading assets to another
+locale can create a new draft listing and may cause the edit commit to fail.
+
+For phone screenshots, Play allows 2–8 images and requires a 16:9 or 9:16
+aspect ratio, with each side between 320 and 3,840 pixels. The candidate
+screenshots are captured at 1080×2400; prepare upload copies at 1350×2400
+(9:16) to preserve the complete app screen without distortion.
+
+When using the Play Console asset library, remove the old selected assets
+before adding replacements. Otherwise six old plus six new screenshots exceed
+the eight-image limit. Old assets may remain in the library, but only the
+selected set is used by the listing.
+
+The Publishing API can upload bundles, tracks, icons, and screenshots in an
+edit. A bundle/track edit can be committed with the testing-track permission.
+Store-listing changes may require the app-level `Release to production,
+exclude devices and use Play app signing` permission and may still need to be
+sent for review from Publishing overview. Do not grant that permission or
+send a review without explicit approval. If an API asset edit is uploaded but
+its commit fails, the assets can remain in the Play asset library; select them
+from the Console UI and save the default `en-GB` listing after removing the
+old selected assets.
+
 ## Honest Fern site screenshot capture
 
 To regenerate the large fully unlocked paid-layout screenshots used by

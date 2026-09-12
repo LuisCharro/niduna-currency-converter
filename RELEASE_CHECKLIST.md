@@ -2,6 +2,29 @@
 
 ## Resume checkpoint — 2026-09-12
 
+### Latest operational truth — 2026-09-12
+
+- The source now contains the UMP/AdMob late-consent fix and the signed
+  candidate `1.0.0+4` (`versionCode 4`) is published on the **Internal
+  testing** track. Code and documentation changes are pending commit.
+- The default Play listing is `en-GB`. The new Honest Fern icon and six
+  `1350×2400` phone screenshots are saved in the Play asset library and are
+  selected in the default listing draft; the old selected icon/screenshots
+  were removed. The listing changes are saved in Publishing overview but are
+  not yet sent for review.
+- The Play Publisher service account is app-scoped. Its API can commit the
+  bundle/track update; Store presence edits were completed through the owner
+  Console session because the API commit path returned `403` even after the
+  app-level production-release permission was granted. Do not broaden access
+  account-wide.
+- The next step is to promote **`1.0.0+4`** to Closed testing after Luis
+  accepts the Play-distributed build. If it passes the closed test, promote
+  that same tested artifact to Production; do not rebuild it merely to change
+  `versionName` later.
+- A personal developer account still needs at least 12 continuously opted-in
+  Closed-testers for 14 days before the production-access application; target
+  14–16 testers for margin. Internal testing does not start that clock.
+
 ### Console checkpoint — 2026-09-10 (draft only)
 
 - App repo HEAD: `4b3a544`; site repo HEAD: `9bc59bf`; root docs HEAD before this update: `ad79404`.
@@ -13,14 +36,15 @@
 - Next gates: Data Safety, Advertising ID, and target age 13+ are saved in Publishing overview but not submitted. Play now exposes the real blocker: closed testing is 0/5 tasks.
 - **Sequencing decision — 2026-09-12:** finish and merge the approved UI/asset
   branch first; refresh the current Play listing images; publish the resulting
-  `0.1.0+3` candidate to **Internal testing**; and let Luis accept that
+  `1.0.0+4` candidate to **Internal testing**; and let Luis accept that
   Play-distributed build before creating the closed-test release and recruiting
   14 opted-in testers. This is an internal/closed-test preparation sequence,
   not public-production approval or a `1.0.0` version decision.
 - Console navigation verified: **Testing → Closed testing - Alpha → Testers**. The existing `Internal test email list` contains 1 user; it is not selected for the closed track yet. The closed-track page can reuse that list or create a separate list, but every tester must opt in through the closed-track link.
 
-**Read this section first. It supersedes contradictory historical status and
-change-log entries below. No production/closed-test release is approved yet.**
+**Read the latest operational truth above first. It supersedes contradictory
+historical status and change-log entries below. No closed-test release or
+production release has been submitted yet.**
 
 ### Current evidence
 
@@ -64,7 +88,7 @@ change-log entries below. No production/closed-test release is approved yet.**
   Complete four-tab light/dark, enlarged-text, offline and final Billing UI
   acceptance is **still pending**, despite older blanket pass claims below.
 
-### Next action and ordered remaining work
+### Historical next action and ordered remaining work
 
 The detailed bounded execution plan is `.agent/release-next-steps.md`. It
 separates work Codex can execute locally from Play/AdMob actions that require
@@ -107,8 +131,9 @@ is still unused; otherwise the next available higher code. Interim diagnostics
 may stay 0.x. The old `1.0.0+2` target is superseded. Track promotion of the same
 artifact is separate from uploading a new binary.
 
-Current authorization: Markdown handoff only. No code/version/key changes,
-commits/pushes/deploys, purchases or additional Play submissions authorized.
+Current authorization: The Internal candidate has already been uploaded. Any
+new version bump, Closed-test submission, review submission or production
+publication still requires a concrete artifact review and explicit approval.
 Preserve Honest Fern public branding; legacy Niduna folder/repo/keystore names
 are technical, not grounds for a wholesale rename. No backend, accounts,
 first-party analytics, OXR/VPS service, CoinGecko, subscriptions or iOS release.

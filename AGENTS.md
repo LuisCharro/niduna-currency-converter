@@ -23,33 +23,39 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-09-10)
+## Current state (reviewed 2026-09-12)
 
-- `main` is canonical; current documentation baseline `78bffda`, Billing
-  implementation `09f1166`.
-- Start with `RELEASE_CHECKLIST.md` **Resume checkpoint — 2026-09-10**.
+- `main` is canonical; current documentation/release baseline is `682331f`.
+- Start with `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-12**.
   It supersedes old audit completion claims and historical instructions below.
 - For the executable next phase, use `.agent/release-next-steps.md`; it records
-  the current AdMob IDs, ownership and stop conditions without authorizing an
-  upload or version bump.
-- App is `0.1.0+2`; 247 tests and clean analysis verified with
-  `./scripts/check.sh` on 2026-09-10, no lockfile drift in that run.
-- Play app exists, diagnostic AAB code 2 is on internal testing and three
-  one-time products are active according to the committed Console record.
-- Real Billing is injected by AppShell. B9 remains open for exception handling,
-  acknowledgement completion, restore feedback, localized pricing and real
-  license-tester acceptance. Do not replace it with the old stub.
-- B4 real Android AdMob configuration and B8 UMP/privacy options remain open.
+  the current Play/API workflow, ownership and stop conditions.
+- For the concrete Play Publisher/API procedure and failure recovery, read
+  `docs/release-prep/google-play-publishing-runbook.md`.
+- When this checkout is inside the Honest Fern monorepo, read the portfolio
+  baseline first: `../../docs/platforms/google-play-developer-api.md`. Keep
+  package, artifact and track facts in this repository's runbook.
+- Internal testing contains signed candidate `1.0.0+4` (`versionCode 4`),
+  including the late UMP/AdMob consent fix. Promote that same tested artifact
+  to Closed testing and later Production after production access is approved.
+- The default Play listing is `en-GB`; the new icon and six phone screenshots
+  are saved in Publishing overview and await the remaining review gates.
+- `./scripts/check.sh` passed with 258 tests and clean analysis during the
+  current candidate preparation; do not infer production readiness from that
+  check alone.
+- Real Billing is injected by AppShell. Keep the real service and active Play
+  products; do not replace them with the old stub.
+- B4/B8 release configuration and device/account acceptance remain release
+  gates even though the implementation is present.
 - E5/E5b are complete in AdMob as of 2026-09-10. The recorded Android App ID,
   Banner/Rewarded IDs, publisher ID and published EEA/UK/CH message are in the
   release checklist. E5c (`app-ads.txt`) and the B4/B8 code integration remain
   open; production ad requests must be consent-gated.
 - B5 privacy link is implemented. Site is live, but policy/listing/assets need
   the corrections in the checkpoint; site work is not only post-launch.
-- Fresh final-candidate visual/offline/accessibility acceptance is pending.
-  The 2026-09-09 screenshot integration attempt hung at Test starting; normal
-  release APK launched and light Convert/Favorites/Charts were inspected.
-  Do not claim a complete current four-tab light/dark pass from this evidence.
+- The current Play candidate gallery was visually inspected in light and dark
+  modes on the large Android target; continue to verify the exact Play-
+  distributed artifact during Closed testing.
 - Historical Gradle stall is not the current blocker: diagnostic release APK
   and AAB built successfully on 2026-09-09. Final build follows the open gates.
 - Keep existing widget implementation and iOS work out of this Android release
@@ -81,11 +87,12 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `0.1.0+2`; do not bump during documentation work.
+- Current `pubspec.yaml`: `1.0.0+4`; Play Internal testing contains code 4.
 - Code 2 is already uploaded. New binaries need an unused higher code, at least 3.
-- First public version name is `1.0.0`, only after release gates are validated.
-  `1.0.0+3` is conditional on code 3 still being unused; the old `1.0.0+2`
-  target is obsolete. Intermediate diagnostic uploads may remain 0.x.
+- `1.0.0+4` is the intended Closed-testing candidate after Internal acceptance.
+  If fixes are needed, increment only the code (`1.0.0+5`, etc.).
+- Promote the tested `1.0.0` artifact to Production; do not rebuild an
+  identical binary merely to change its version name.
 - Promoting the same artifact between tracks does not require rebuilding it.
 
 ## Read first

@@ -167,15 +167,13 @@ flutter pub get
 | `./scripts/pub_get.sh` | fetch dependencies |
 | `./scripts/clean-deep-files.sh` | deep clean build artifacts |
 
-## Current phase (reviewed 2026-09-10)
+## Current phase (reviewed 2026-09-12)
 
-Read `RELEASE_CHECKLIST.md` **Resume checkpoint — 2026-09-10** first.
-Current version is `0.1.0+2`; the existing internal test and three active
-one-time products are recorded there. Real Play Billing is implemented but
-needs hardening and device acceptance; B4 AdMob and B8 UMP remain open.
-Latest checks: 247 tests, clean analysis, no lockfile drift (2026-09-10).
-Next: harden Billing and integrate the now-configured AdMob IDs/UMP flow for
-B4+B8, publish `app-ads.txt`, then run license-tester verification and final
-listing/privacy/assets alignment.
+Read `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-12** first.
+Internal testing currently has signed candidate `1.0.0+4` (`versionCode 4`),
+including the late UMP/AdMob consent fix. After acceptance, promote that same
+artifact to Closed testing, then after the required tester period and
+production-access approval, promote it to Production.
+The default `en-GB` Play listing has the new icon and six screenshots saved in
+Publishing overview, pending the remaining setup/review gates.
 No production release yet; no OXR/VPS service or CoinGecko in this scope.
-New binaries need code >= 3; bump version name to 1.0.0 only at the validated RC.

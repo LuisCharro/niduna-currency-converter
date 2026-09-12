@@ -205,18 +205,19 @@ accepted.
 
 ## Release integration
 
-After the selected visual changes pass QA, the agreed next sequence is:
+After the selected visual changes pass QA, the current release sequence is:
 
 1. finish this approved branch and merge it to `main`;
 2. regenerate and replace the Play screenshots because the visible Chart/UI and
    badge assets changed;
-3. build `0.1.0+3` with the next unused code and upload it to **Internal
-   testing** only;
-4. Luis accepts that exact Play-distributed candidate before it becomes the
-   closed-test artifact;
-5. create the closed-test release from the accepted artifact, then recruit 14
-   opted-in testers (target 15–16).
+3. use the already accepted `0.1.0+3` build for Internal testing;
+4. bump to `1.0.0+4`, run checks and build the signed AAB for **Closed
+   testing**;
+5. recruit 14–16 testers, keeping at least 12 opted in continuously for 14
+   days;
+6. after production access is approved, promote that same tested `1.0.0`
+   artifact to Production without an identical rebuild.
 
-This sequence does not authorize a public `1.0.0` decision, a production
-release, or unrelated product work. The release master remains
+The `1.0.0` name is now the agreed first-public-release target; it does not
+authorize a production release or unrelated product work. The release master remains
 `RELEASE_CHECKLIST.md`.

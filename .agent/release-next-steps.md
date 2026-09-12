@@ -1,13 +1,19 @@
 # Honest Fern release — next execution plan
 
-> Revised 2026-09-12 after the approved UI/asset branch. This is a bounded
-> execution plan, not approval to upload, publish, deploy, buy, or change the
-> release version. `RELEASE_CHECKLIST.md` remains the master checklist.
+> Revised 2026-09-12 after the Internal candidate and Play listing update.
+> This is a bounded execution plan; `RELEASE_CHECKLIST.md` remains the master
+> checklist.
 
 ## Current gates
 
-- Play draft exists; diagnostic internal AAB is `0.1.0+2`.
-- First public candidate remains `1.0.0+3`; do not bump yet.
+- Internal testing now has the signed `1.0.0+4` candidate (`versionCode 4`),
+  including the AdMob/UMP late-consent fix.
+- The same tested `1.0.0+4` artifact should be promoted to Closed testing;
+  no identical rebuild is needed before recruiting testers or later moving it
+  to Production.
+- The default Play listing locale is `en-GB`. The new icon and six phone
+  screenshots are saved in the listing draft and are waiting in Publishing
+  overview for the required review flow.
 - AdMob app and units exist:
   - App ID: `ca-app-pub-1525645598421616~2391849252`
   - Publisher ID: `pub-1525645598421616`
@@ -21,19 +27,22 @@
 
 ## Execution order
 
-### 0. Internal-candidate sequence — current plan
+### 0. Closed-test and first-public-release sequence — current plan
 
-1. Finish the current UI/asset branch and merge it to `main`; do not add the
-   deferred B7 product ideas to this release batch.
-2. From merged source, recapture the Play listing PNGs affected by the chart,
-   UI and currency-badge work and replace the Console screenshots.
-3. Confirm version code `3` is unused; build and upload **`0.1.0+3` only to
-   Internal testing**. Do not use the public `1.0.0` name yet.
-4. Luis installs that exact Play-distributed build and accepts the visible
-   changes plus UMP, ads, purchases and Restore.
-5. Only after that acceptance, create the closed-test release from the same
-   accepted AAB and recruit 14 opted-in testers (target 15–16). The test clock
-   starts from eligible closed-track opt-ins, not internal testing.
+1. Complete the remaining Play Console setup and send the saved listing and
+   declarations for review. Closed testing requires app setup to be complete.
+2. Verify the Play-distributed `1.0.0+4` build, including consent and test-ad
+   behavior, before changing tracks.
+3. Promote `1.0.0+4` to the Closed testing track and create/select the tester
+   list. Share the opt-in link and recruit 14–16 testers.
+4. Keep at least 12 testers opted in continuously for 14 days. Internal
+   testing does not count toward this requirement. If a real fix is needed,
+   upload `1.0.0+5` or higher while keeping the tested release on the same
+   Closed track.
+5. Apply for production access after the requirement is met and answer the
+   testing/product-readiness questions. After approval, promote the latest
+   tested `1.0.0` artifact to Production; do not rebuild it just to change its
+   version name.
 
 The B4/B8/B9 notes below remain quality and release-risk references. They are
 not authorization to expand the current UI branch or to submit a public release.
@@ -50,12 +59,14 @@ not authorization to expand the current UI branch or to submit a public release.
 - Preserve offline, no-consent, no-fill, early-close and Remove Ads states.
 - Add focused tests for consent gating and configuration selection.
 
-**2026-09-10 result:** `AdConsentManager` now owns the UMP gate; AppShell
-starts it without blocking first paint, banners/rewarded ads await the gate,
-and Settings exposes Privacy options when required. Real Android IDs are
-available through the existing environment-based release build path. AdMob
-now reports the account approved and ad serving enabled. The production build
-command sets `ADMOB_USE_TEST_ADS=false` and provides the three Android IDs.
+**2026-09-10 result:** `AdConsentManager` owns the UMP gate; AppShell starts
+it without blocking first paint, banners/rewarded ads await the gate, and
+Settings exposes Privacy options when required. **2026-09-12 follow-up:** the
+short platform timeouts could permanently leave the gate closed on a fresh
+install; `1.0.0+4` waits for the real UMP result and reloads banners after a
+late consent update. The local APK produced test-ad requests after UMP
+resolved. Real Android IDs remain available through the environment-based
+release build path; keep test ads for this internal diagnostic build.
 
 ### 2. B9 Billing hardening — Codex can implement
 
