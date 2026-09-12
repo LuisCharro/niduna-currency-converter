@@ -3,19 +3,25 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+typedef AdConsentTestResolver = Future<bool> Function();
+
 /// Owns the UMP lifecycle and the gate used by every ad surface.
 ///
 /// The manager deliberately starts closed: an ad request is allowed only
 /// after UMP has refreshed consent information and says it is safe to request
 /// ads. This keeps test/plugin failures fail-closed instead of bypassing UMP.
 class AdConsentManager extends ChangeNotifier {
-  AdConsentManager._();
+  AdConsentManager._({AdConsentTestResolver? testResolver})
+    : _testResolver = testResolver;
 
-  static const _platformTimeout = Duration(milliseconds: 300);
+  @visibleForTesting
+  AdConsentManager.forTesting(AdConsentTestResolver resolver)
+    : _testResolver = resolver;
 
   static final AdConsentManager instance = AdConsentManager._();
 
   Future<void>? _initialization;
+  final AdConsentTestResolver? _testResolver;
   bool _canRequestAds = false;
   bool _privacyOptionsRequired = false;
 
@@ -25,6 +31,13 @@ class AdConsentManager extends ChangeNotifier {
   Future<void> initialize() => _initialization ??= _initialize();
 
   Future<void> _initialize() async {
+    final testResolver = _testResolver;
+    if (testResolver != null) {
+      _canRequestAds = await testResolver();
+      notifyListeners();
+      return;
+    }
+
     // The Flutter test binding has no Android UMP channel. Avoid creating
     // timeout timers there; the Android/iOS path remains fail-closed below.
     if (WidgetsBinding.instance.runtimeType.toString().contains(
@@ -49,7 +62,7 @@ class AdConsentManager extends ChangeNotifier {
               if (error != null) {
                 debugPrint('UMP consent form error: ${error.message}');
               }
-            }).timeout(_platformTimeout);
+            });
           } catch (error) {
             debugPrint('UMP consent form failed: $error');
           } finally {
@@ -68,17 +81,13 @@ class AdConsentManager extends ChangeNotifier {
       complete();
     }
 
-    // A missing platform channel (unit/widget tests, desktop, or an early
-    // plugin lifecycle) must not hold the app's first frame forever. Keep the
-    // ad gate closed on timeout; a later platform callback can still refresh
-    // the state and notify listeners.
-    await done.future.timeout(
-      const Duration(milliseconds: 500),
-      onTimeout: complete,
-    );
+    // AppShell starts this work without awaiting it, so waiting here does not
+    // delay the first frame. Ad surfaces wait for the real UMP result instead
+    // of racing a short timeout and permanently disabling ads for this run.
+    await done.future;
     if (_canRequestAds) {
       try {
-        await MobileAds.instance.initialize().timeout(_platformTimeout);
+        await MobileAds.instance.initialize();
       } catch (error) {
         debugPrint('Mobile Ads initialization failed: $error');
       }
@@ -87,11 +96,9 @@ class AdConsentManager extends ChangeNotifier {
 
   Future<void> _refresh(ConsentInformation info) async {
     try {
-      _canRequestAds = await info.canRequestAds().timeout(_platformTimeout);
+      _canRequestAds = await info.canRequestAds();
       _privacyOptionsRequired =
-          await info.getPrivacyOptionsRequirementStatus().timeout(
-            _platformTimeout,
-          ) ==
+          await info.getPrivacyOptionsRequirementStatus() ==
           PrivacyOptionsRequirementStatus.required;
     } catch (error) {
       debugPrint('UMP consent state unavailable: $error');
@@ -107,7 +114,7 @@ class AdConsentManager extends ChangeNotifier {
         if (error != null) {
           debugPrint('UMP privacy options error: ${error.message}');
         }
-      }).timeout(_platformTimeout);
+      });
       await _refresh(ConsentInformation.instance);
     } catch (error) {
       debugPrint('UMP privacy options unavailable: $error');

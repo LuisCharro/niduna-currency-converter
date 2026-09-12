@@ -23,10 +23,29 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
   bool _isLoaded = false;
   int? _loadedWidth;
   int? _pendingLoadWidth;
+  int? _lastWidth;
+
+  @override
+  void initState() {
+    super.initState();
+    AdConsentManager.instance.addListener(_onConsentChanged);
+  }
+
+  void _onConsentChanged() {
+    final width = _lastWidth;
+    if (!mounted || width == null || !AdConsentManager.instance.canRequestAds) {
+      return;
+    }
+    _loadedWidth = null;
+    _queueLoad(width);
+  }
 
   Future<void> _loadBannerAd(int width) async {
     await AdConsentManager.instance.initialize();
-    if (!AdConsentManager.instance.canRequestAds) return;
+    if (!AdConsentManager.instance.canRequestAds) {
+      _loadedWidth = null;
+      return;
+    }
     _bannerAd?.dispose();
     _bannerAd = null;
     _hasLoadError = false;
@@ -103,6 +122,7 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
 
   @override
   void dispose() {
+    AdConsentManager.instance.removeListener(_onConsentChanged);
     _bannerAd?.dispose();
     super.dispose();
   }
@@ -112,7 +132,10 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth.floor();
-        if (width > 0) _queueLoad(width);
+        if (width > 0) {
+          _lastWidth = width;
+          _queueLoad(width);
+        }
 
         final ad = _bannerAd;
         final reservedHeight = width > 0
