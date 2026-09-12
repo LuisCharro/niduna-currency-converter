@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:currency_converter/src/core/currency/supported_currencies.dart';
 import 'package:currency_converter/src/core/rates/clients/frankfurter_client.dart';
 import 'package:currency_converter/src/core/rates/crypto/coinpaprika_crypto_usd_history_client.dart';
+import 'package:currency_converter/src/core/rates/crypto/crypto_asset.dart';
 import 'package:currency_converter/src/core/rates/crypto/crypto_usd_history_cache.dart';
 import 'package:currency_converter/src/core/rates/crypto/crypto_usd_history_client.dart';
 import 'package:currency_converter/src/core/rates/crypto/crypto_usd_history_snapshot.dart';
@@ -442,6 +444,92 @@ void main() {
     expect(controller.state.status, ChartStatus.error);
     expect(controller.state.data, isEmpty);
     expect(controller.state.message, isNull);
+  });
+
+  // ---------- Phase C POL provider mapping (TDD red) ----------
+
+  test('supportedCryptoAssets contains POL, not MATIC', () {
+    final codes = supportedCryptoAssets.map((a) => a.code).toSet();
+    expect(codes, contains('POL'));
+    expect(codes, isNot(contains('MATIC')));
+    expect(codes.length, 11);
+  });
+
+  test('supportedCryptoCurrencies contains POL with Polygon name', () {
+    final pol = supportedCryptoCurrencies.firstWhere((c) => c.code == 'POL');
+    expect(pol.name, 'Polygon');
+  });
+
+  test(
+    'supportedCryptoAssets and supportedCryptoCurrencies have identical codes',
+    () {
+      final assetCodes = supportedCryptoAssets.map((a) => a.code).toSet();
+      final currencyCodes = supportedCryptoCurrencies.map((c) => c.code).toSet();
+      expect(assetCodes, equals(currencyCodes));
+    },
+  );
+
+  test('fawazahmed0 latest parses pol provider key into POL price', () async {
+    final client = FawazahmedCryptoUsdPriceClient(
+      client: _StaticHttpClient(
+        jsonEncode(<String, Object>{
+          'date': '2026-09-12',
+          'usd': <String, Object>{
+            'btc': 0.000014,
+            'eth': 0.00028,
+            'pol': 1.5,
+          },
+        }),
+      ),
+    );
+
+    final snapshot = await client.fetchUsdPrices();
+    expect(snapshot.pricesUsd.containsKey('POL'), isTrue);
+    expect(snapshot.pricesUsd['POL'], closeTo(1 / 1.5, 0.0001));
+    expect(snapshot.pricesUsd.containsKey('MATIC'), isFalse);
+  });
+
+  test('fawazahmed0 history parses pol provider key for POL code', () async {
+    final client = FawazahmedCryptoUsdHistoryClient(
+      client: _StaticHttpClient(
+        '{"date":"2026-09-12","usd":{"pol":1.5,"btc":0.000014}}',
+      ),
+    );
+
+    final snapshot = await client.fetchUsdHistory(
+      code: 'POL',
+      from: DateTime(2026, 9, 12),
+      to: DateTime(2026, 9, 12),
+    );
+
+    expect(snapshot.code, 'POL');
+    expect(snapshot.pricesUsd[DateTime(2026, 9, 12)], closeTo(1 / 1.5, 0.0001));
+  });
+
+  test('multi-provider client composes USD → POL history', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final prefs = await SharedPreferences.getInstance();
+    final client = MultiProviderRatesClient(
+      fiatClient: _FakeFrankfurterClient(),
+      cryptoHistoryClient: _FakeCryptoUsdHistoryClient(
+        snapshots: <String, CryptoUsdHistorySnapshot>{
+          'POL': _cryptoHistory('POL', <DateTime, double>{
+            DateTime(2026, 9, 12): 0.667,
+          }),
+        },
+      ),
+      cryptoHistoryCache: CryptoUsdHistoryCache(prefs),
+    );
+
+    final result = await client.fetchHistorical(
+      base: 'USD',
+      quote: 'POL',
+      from: DateTime(2026, 9, 12),
+      to: DateTime(2026, 9, 12),
+    );
+
+    // USD/POL = 1 / POL/USD = 1 / 0.667
+    expect(result.data[DateTime(2026, 9, 12)], closeTo(1 / 0.667, 0.001));
   });
 }
 

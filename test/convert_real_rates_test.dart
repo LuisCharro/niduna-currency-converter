@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:currency_converter/src/core/currency/supported_currencies.dart';
 import 'package:currency_converter/src/features/convert/data/latest_rates_repository.dart';
 import 'package:currency_converter/src/features/convert/data/frankfurter_latest_rates_client.dart';
@@ -220,36 +222,151 @@ void main() {
     expect(snapshot.rates['EUR'], .85025);
   });
 
-  test(
-    'fetchPreviousRates picks the latest day before the reference date',
-    () async {
-      late Uri captured;
+  group('FrankfurterLatestRatesClient.fetchPreviousRates v2', () {
+    test('sends path /v2/rates with from, to, base, quotes', () async {
+      Uri? capturedUri;
       final client = FrankfurterLatestRatesClient(
         client: MockClient((request) async {
-          captured = request.url;
-          // v1 time-series payload: date -> {code: rate}.
+          capturedUri = request.url;
+          return http.Response('[]', 200);
+        }),
+      );
+
+      await client.fetchPreviousRates(
+        'USD',
+        referenceDate: DateTime(2026, 6, 15),
+      );
+
+      expect(capturedUri!.path, '/v2/rates');
+      expect(capturedUri!.queryParameters['base'], 'USD');
+      expect(capturedUri!.queryParameters['from'], '2026-06-05');
+      expect(capturedUri!.queryParameters['to'], '2026-06-15');
+      expect(capturedUri!.queryParameters.containsKey('quotes'), isTrue);
+      expect(
+        capturedUri!.queryParameters['quotes']!.split(','),
+        contains('CLP'),
+      );
+    });
+
+    test('parses v2 row-list shape, picks latest day before reference',
+        () async {
+      final client = FrankfurterLatestRatesClient(
+        client: MockClient((request) async {
           return http.Response(
-            '{"amount":1.0,"base":"USD","start_date":"2026-06-05",'
-            '"end_date":"2026-06-15","rates":{'
-            '"2026-06-11":{"EUR":0.8668},'
-            '"2026-06-12":{"EUR":0.8645},'
-            '"2026-06-15":{"EUR":0.8634}}}',
+            jsonEncode(<Map<String, dynamic>>[
+              {'date': '2026-06-11', 'base': 'USD', 'quote': 'CLP', 'rate': 920.5},
+              {'date': '2026-06-12', 'base': 'USD', 'quote': 'CLP', 'rate': 921.0},
+              {'date': '2026-06-15', 'base': 'USD', 'quote': 'CLP', 'rate': 923.8},
+            ]),
             200,
           );
         }),
       );
 
-      // Latest published day is Monday 2026-06-15, so "previous" is Friday 06-12.
       final rates = await client.fetchPreviousRates(
         'USD',
         referenceDate: DateTime(2026, 6, 15),
       );
 
-      expect(captured.path, '/v1/2026-06-05..2026-06-15');
-      expect(captured.queryParameters['base'], 'USD');
-      expect(rates?['EUR'], 0.8645); // 06-12, not 06-15 (the reference itself)
-    },
-  );
+      expect(rates, isNotNull);
+      expect(rates!['CLP'], 921.0); // 06-12, NOT 06-15 (reference excluded)
+    });
+
+    test('all quotes from same date — no mixing across days', () async {
+      final client = FrankfurterLatestRatesClient(
+        client: MockClient((request) async {
+          return http.Response(
+            jsonEncode(<Map<String, dynamic>>[
+              {'date': '2026-06-12', 'base': 'USD', 'quote': 'EUR', 'rate': 0.8645},
+              {'date': '2026-06-12', 'base': 'USD', 'quote': 'CLP', 'rate': 921.0},
+              {'date': '2026-06-13', 'base': 'USD', 'quote': 'EUR', 'rate': 0.8630},
+              {'date': '2026-06-13', 'base': 'USD', 'quote': 'CLP', 'rate': 925.0},
+            ]),
+            200,
+          );
+        }),
+      );
+
+      final rates = await client.fetchPreviousRates(
+        'USD',
+        referenceDate: DateTime(2026, 6, 15),
+      );
+
+      expect(rates!['EUR'], 0.8630); // 06-13 (latest before 06-15)
+      expect(rates['CLP'], 925.0);
+    });
+
+    test('returns null when no rows before reference', () async {
+      final client = FrankfurterLatestRatesClient(
+        client: MockClient((request) async {
+          return http.Response('[]', 200);
+        }),
+      );
+
+      final rates = await client.fetchPreviousRates(
+        'USD',
+        referenceDate: DateTime(2026, 6, 15),
+      );
+
+      expect(rates, isNull);
+    });
+
+    test('CLP, AED, ARS, COP, TWD returned in v2 row payload', () async {
+      final client = FrankfurterLatestRatesClient(
+        client: MockClient((request) async {
+          return http.Response(
+            jsonEncode(<Map<String, dynamic>>[
+              {'date': '2026-06-12', 'base': 'USD', 'quote': 'CLP', 'rate': 921.0},
+              {'date': '2026-06-12', 'base': 'USD', 'quote': 'AED', 'rate': 3.6725},
+              {'date': '2026-06-12', 'base': 'USD', 'quote': 'ARS', 'rate': 880.0},
+              {'date': '2026-06-12', 'base': 'USD', 'quote': 'COP', 'rate': 4100.0},
+              {'date': '2026-06-12', 'base': 'USD', 'quote': 'TWD', 'rate': 32.5},
+            ]),
+            200,
+          );
+        }),
+      );
+
+      final rates = await client.fetchPreviousRates(
+        'USD',
+        referenceDate: DateTime(2026, 6, 15),
+      );
+
+      expect(rates!.containsKey('CLP'), isTrue);
+      expect(rates.containsKey('AED'), isTrue);
+      expect(rates.containsKey('ARS'), isTrue);
+      expect(rates.containsKey('COP'), isTrue);
+      expect(rates.containsKey('TWD'), isTrue);
+    });
+
+    test('malformed/empty/non-200 → null (graceful degradation)', () async {
+      final client404 = FrankfurterLatestRatesClient(
+        client: MockClient(
+          (request) async => http.Response('not found', 404),
+        ),
+      );
+      expect(
+        await client404.fetchPreviousRates(
+          'USD',
+          referenceDate: DateTime(2026, 6, 15),
+        ),
+        isNull,
+      );
+
+      final clientBadJson = FrankfurterLatestRatesClient(
+        client: MockClient(
+          (request) async => http.Response('not json', 200),
+        ),
+      );
+      expect(
+        await clientBadJson.fetchPreviousRates(
+          'USD',
+          referenceDate: DateTime(2026, 6, 15),
+        ),
+        isNull,
+      );
+    });
+  });
 }
 
 LatestRatesSnapshot _snapshot(Map<String, double> rates) {
