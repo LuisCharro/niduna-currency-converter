@@ -387,13 +387,13 @@
   {
     "code": "COP",
     "name": "Colombian Peso",
-    "symbol": "COL$",
+    "symbol": "$",
     "text_color": "white",
-    "flag_desc": "three equal horizontal bands: yellow top, blue middle, red bottom",
+    "flag_desc": "Colombian flag bands: yellow upper half, blue middle quarter, red lower quarter",
     "flag_colors": "#FCD116 #003893 #CE1126",
     "contrast_layer": true,
     "subject_ref": "never",
-    "notes": "Explicitly forbid glossy ring, 3D border, and bubble frame around the edge."
+    "notes": "Use one large centered white dollar sign only; do not render COL$, COP$, letters, or a code. Explicitly forbid glossy ring, 3D border, and bubble frame around the edge."
   },
   {
     "code": "AED",

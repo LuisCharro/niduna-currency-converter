@@ -1,8 +1,8 @@
 # Honest Fern Currency Converter — Brand and UI refresh
 
-> **Status:** Phase 1 accepted; Phase 3 UI polish committed as `c08ec70`.
-> Phase 2 badge work remains blocked with no canonical asset
-> replacement. This work targets the next closed-test candidate and does not
+> **Status:** Phase 1 accepted; Phase 2 SOL/COP badge batch completed locally;
+> Phase 3 UI polish committed as `c08ec70`. This work targets the next
+> closed-test candidate and does not
 > authorize a version bump, Play upload, merge, or store submission.
 
 ## Goal
@@ -159,6 +159,20 @@ badges with an objective problem: wrong symbol or flag, blur, weak contrast,
 inconsistent crop, or unreadable small-size detail. Preserve recognizable flag
 meaning and use the repo's currency-badge generation/review workflow. Do not
 regenerate the whole family merely to make it new.
+
+### Phase 2 closeout — 2026-09-12
+
+Luis accepted targeted replacements for only SOL and COP. SOL now uses a crisp
+high-contrast Solana mark on a deep violet field; COP uses a centered `$` over
+the correctly proportioned Colombian flag, replacing the misleading `COL$`.
+Both assets remain 256×256 RGB PNGs and are masked by the existing
+`CurrencyFlagIcon` `CircleAvatar`; no alpha conversion or widget change was
+needed. The focused test, full `./scripts/check.sh`, debug APK build and visual
+review passed. The detailed hashes, device/build provenance and remaining
+compact-AVD automation limitation are recorded in
+`phase2-currency-badge-audit-2026-09-11.md`. A3/A4 remain deferred; no
+family-wide refresh, release version change, upload, commit or push follows
+from this closeout.
 
 ## Phase 3 — UI polish
 

@@ -4,10 +4,9 @@
 
 This section supersedes the historical audit retained below. Read it first.
 Stream A owns currency badge artwork only; Stream B owns UI presentation.
-Status: **A0 preflight completed; A1/A2 blocked by unavailable bounded generation route; A3/A4 remain deferred. No canonical badge changed.**
-The original review authorization covered documentation, not canonical asset
-replacement; the later execution record below records the bounded generation-route
-check and its stop condition.
+Status: **A0, A1 and A2 completed; A3/A4 remain deferred.** Only the approved
+SOL and COP canonical badges changed. The execution record below retains the
+earlier generation-route stop condition and records the later approved completion.
 
 Baseline: `codex/ui-freshness-and-brand-assets` at `f60ee97`.
 Only this file and the companion Phase 3 document were untracked at review start.
@@ -107,7 +106,7 @@ preflight issue; do not regenerate the family to recover.
 
 ### A1 — SOL contrast and recognition
 
-**Status:** recommended, P2. **Dependency:** A0 and batch approval.
+**Status:** completed 2026-09-12. **Dependency:** A0 and batch approval.
 Problem: pale mint/purple interior and white wordmark lose visual strength beside
 BTC/ETH at real Convert size. Mapping is correct (`currency_flag_icon.dart:53`).
 No runtime fix is needed.
@@ -135,7 +134,7 @@ generation cycle. Human visual selection precedes canonical replacement.
 
 ### A2 — COP artwork identifier and fit
 
-**Status:** recommended, P1 identifier correction. **Dependency:** A0 and approval.
+**Status:** completed 2026-09-12. **Dependency:** A0 and approval.
 Evidence: current PNG clearly reads `COL$` across the circle; runtime symbol is
 `COP$`. Hard clipping was not established in the new review and must not be
 reported as confirmed. Preferred artwork uses `$` on a recognizable simplified
@@ -213,6 +212,30 @@ loop was run, and `--deploy` was not invoked. A usable funded/provider-confirmed
 generation route plus visual selection is required before either SOL or COP can
 advance. The JSON still has COP's historical `COL$` prompt value; it was not
 edited because no image batch was produced.
+
+**A1/A2 — completed, 2026-09-12.** MiniMax produced one temporary candidate
+for each badge, both rejected for blur, halo and glow. The selected flat
+alternatives were then generated as noncanonical sources, manually accepted by
+Luis, and resized directly to the two intended 256×256 RGB PNGs. `--deploy`
+was not run, so no pre-existing `best/` candidate could affect another asset.
+COP's prompt is now aligned with the selected artwork: a single `$`, Colombian
+flag proportions (yellow half; blue and red quarters), and an explicit ban on
+`COL$`/`COP$` lettering. Changed canonical hashes are:
+
+```text
+SOL 42a1af56c0730971ff35f6d81c78e685711df2cec83b79ab887a76ae35f74d3b
+COP 2c390cdd815b50964fb090ece2cb74beed1bdf9fb8ff53697f7756794751e4c8
+```
+
+`./scripts/check.sh` passed with clean analysis and 178 tests. A debug APK
+with `PROVIDER_PROFILE=release_safe`, `APP_DEV_MODE=false` and test ads was
+built and installed on both Android API 36 emulators. Visual evidence confirms
+SOL in the large-emulator Convert list and COP in the compact-emulator Add
+currencies selector (`.tmp/screens/android/badges-large-app-20260912.png` and
+`.tmp/screens/android/badges-small-cop-20260912.png`). The compact AVD's
+stylus overlay intercepted later text-field automation, so this is not claimed
+as a complete every-surface or dark-theme asset matrix. No app code, routing,
+currency support, version, upload, commit or push changed.
 
 **A3/A4 — deferred unchanged.** No BGN cleanup or family-wide refresh was
 attempted. This preserves supported-code and legacy compatibility scope.
