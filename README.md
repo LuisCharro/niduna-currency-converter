@@ -6,7 +6,7 @@ Privacy-first Flutter currency converter for the Honest Fern portfolio.
 
 ## What's in the Android launch scope
 
-- 45 currencies total — 34 fiat + 11 crypto (USD, EUR, GBP, JPY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR, TWD, NZD, CNY, TRY, AED, ILS, ZAR + BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC); source of truth: `lib/src/core/currency/supported_currencies.dart`
+- 45 currencies total — 34 fiat + 11 crypto (USD, EUR, GBP, JPY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR, TWD, NZD, CNY, TRY, AED, ILS, ZAR + BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, POL); source of truth: `lib/src/core/currency/supported_currencies.dart`
 - Multi-currency conversion view (type one amount, see all conversions)
 - Four-tab shell: Convert, Favorites, Chart, and Settings
 - Historical charts (up to 2 years, unlimited free)

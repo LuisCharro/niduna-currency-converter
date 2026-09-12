@@ -121,7 +121,7 @@ Follows your system setting. Free, no upsell.
 RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP,
 IDR, MYR, TWD, NZD, TRY, AED, ILS, ZAR.
 11 crypto: BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB,
-MATIC.
+POL.
 
 **Data sources (transparency)**
 Fiat rates: Frankfurter v2, a free public API backed by European

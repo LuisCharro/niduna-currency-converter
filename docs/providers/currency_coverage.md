@@ -10,7 +10,7 @@
 
 | | Fiat currencies | Crypto currencies |
 |---|---|---|
-| **App uses (Convert tab)** | **40** | **11** (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC) |
+| **App uses (Convert tab)** | **34** | **11** (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, POL) |
 | **App uses (Charts — fiat pairs)** | Any of the 40 as base or quote | N/A |
 | **App uses (Charts — crypto pairs)** | N/A | **11** (same as Convert) |
 | **Frankfurter offers** | **~200** (ECB + 55 central banks) | None |
@@ -28,10 +28,10 @@ The Convert tab shows one row per supported currency:
 ```
 User types: 100 USD
 ↓ app fetches: GET /v2/rates?base=USD&quotes=EUR,GBP,JPY,...
-↓ shows 40 fiat result rows + 11 optional crypto quote rows
+↓ shows 34 fiat result rows + 11 optional crypto quote rows
 ```
 
-**40 Fiat Currencies (always shown):**
+**34 Fiat Currencies (always shown):**
 
 | Code | Name | Symbol | From Frankfurter? |
 |------|------|--------|-------------------|
@@ -84,7 +84,7 @@ User types: 100 USD
 | USDT | Tether USD | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
 | USDC | USD Coin | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
 | BNB | BNB | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
-| MATIC | Polygon | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
+| POL | Polygon | fawazahmed0 | CoinPaprika → fawazahmed0 fallback |
 
 Crypto rows show converted amount only (e.g., "₿ 0.00421" for 100 USD → BTC).
 They are **not selectable as base currency** in Phase 1.
@@ -93,15 +93,15 @@ They are **not selectable as base currency** in Phase 1.
 
 | Pair type | Base options | Quote options | Max range |
 |-----------|-------------|---------------|----------|
-| **Fiat/Fiat** | Any of the 40 fiat | Any of the 40 fiat (excluding base) | **2 years** |
+| **Fiat/Fiat** | Any of the 34 fiat | Any of the 34 fiat (excluding base) | **2 years** |
 | **Crypto/Crypto** | Any of 11 crypto | Any of 11 crypto | **1 year** |
-| **Fiat/Crypto** | Any of the 40 fiat | Any of 11 crypto | **1 year** |
-| **Crypto/Fiat** | Any of 11 crypto | Any of the 40 fiat | **1 year** |
+| **Fiat/Crypto** | Any of the 34 fiat | Any of 11 crypto | **1 year** |
+| **Crypto/Fiat** | Any of 11 crypto | Any of the 34 fiat | **1 year** |
 
 ### Favorites Tab
 
 - User can save up to **3 pairs** (free), **16** with IAP/ads.
-- Any combination of the above 51 currencies (40 fiat + 11 crypto).
+- Any combination of the above 45 currencies (34 fiat + 11 crypto).
 
 ---
 
@@ -118,7 +118,7 @@ plus 55 central banks worldwide.
 ### Full Currency Inventory (~200 currencies)
 
 Frankfurter exposes all currencies published by ECB and its partner central banks.
-The app requests only 40, but **many more are available**. Notable ones we don't use yet:
+The app requests only 34, but **many more are available**. Notable ones we don't use yet:
 
 #### Major currencies NOT in our MVP list (available from Frankfurter):
 
@@ -274,7 +274,7 @@ Notable cryptos available from fawazahmed0 that this app does **NOT** yet use:
 | Privacy coins | XMR, ZEC, DASH, ... |
 | DeFi bluechips | AAVE, UNI, COMP, MKR, YFI, LDO, CRV, CVX, FXS, ... |
 
-**Total available: 200+ cryptocurrencies. This app uses 11 (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC).**
+**Total available: 200+ cryptocurrencies. This app uses 11 (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, POL).**
 
 ### How the app picks which cryptos to show
 
@@ -292,7 +292,7 @@ const List<CryptoAsset> supportedCryptoAssets = <CryptoAsset>[
   CryptoAsset(code: 'USDT', coinPaprikaId: 'usdt-tether', coinCapId: 'tether'),
   CryptoAsset(code: 'USDC', coinPaprikaId: 'usdc-usd-coin', coinCapId: 'usd-coin'),
   CryptoAsset(code: 'BNB', coinPaprikaId: 'bnb-binance-coin', coinCapId: 'binancecoin'),
-  CryptoAsset(code: 'MATIC', coinPaprikaId: 'matic-polygon-networks', coinCapId: 'polygon-pos'),
+  CryptoAsset(code: 'POL', coinPaprikaId: 'pol-polygon-ecosystem-token', coinCapId: 'polygon-ecosystem-token'),
 ];
 ```
 
