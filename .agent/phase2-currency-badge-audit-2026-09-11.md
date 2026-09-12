@@ -4,9 +4,9 @@
 
 This section supersedes the historical audit retained below. Read it first.
 Stream A owns currency badge artwork only; Stream B owns UI presentation.
-Status: **A0, A1 and A2 completed; A3/A4 remain deferred.** Only the approved
-SOL and COP canonical badges changed. The execution record below retains the
-earlier generation-route stop condition and records the later approved completion.
+Status: **Phase 2 completed: A0–A4 are closed.** Only the approved SOL and COP
+canonical badges changed. The execution record below retains the earlier
+generation-route stop condition and records the later approved completion.
 
 Baseline: `codex/ui-freshness-and-brand-assets` at `f60ee97`.
 Only this file and the companion Phase 3 document were untracked at review start.
@@ -148,9 +148,10 @@ Stop if the proposal needs a change to currency support, formatter or routing.
 
 ### A3 — optional BGN maintenance
 
-**Status:** deferred, P3; no visual benefit. Run separately only if selected.
-BGN is absent from supported codes but retained in mapping, flags, colors and
-prompt definitions. Historical records may legitimately retain BGN references.
+**Status:** closed without change, 2026-09-12. BGN is intentionally retained.
+It is absent from supported codes but retained in mapping, flags, colors and
+prompt definitions. There is no user-visible benefit to removal, while a cleanup
+would require compatibility review.
 
 Minimal optional cleanup is the PNG plus matching map entry together. A broader
 cleanup would additionally inspect `currency_flags.dart`, `currency_colors.dart`
@@ -163,7 +164,8 @@ fallback still works; supported count remains 45. Stop on a compatibility concer
 
 ### A4 — other badges
 
-**Status:** deferred unless new measured evidence exists.
+**Status:** closed without change, 2026-09-12. No additional badge candidate
+was selected or evidenced.
 CHF, NOK/DKK, PLN/CZK/HUF/RON/IDR/AED, JPY/CNY, AUD/NZD and other crypto badges
 are not an approved family refresh. Country recognition preferences alone do not
 establish defects. Record the code, size, surface and specific failed criterion
@@ -237,8 +239,10 @@ stylus overlay intercepted later text-field automation, so this is not claimed
 as a complete every-surface or dark-theme asset matrix. No app code, routing,
 currency support, version, upload, commit or push changed.
 
-**A3/A4 — deferred unchanged.** No BGN cleanup or family-wide refresh was
-attempted. This preserves supported-code and legacy compatibility scope.
+**A3/A4 — closed without change, 2026-09-12.** No BGN cleanup or family-wide
+refresh was attempted. This preserves supported-code and legacy compatibility
+scope. A future measured badge defect is a new, separately approved task; it
+does not reopen this completed Phase 2 batch automatically.
 
 **Cross-stream verification provenance.** The original UI build used for the
 initial Stream B verification was source `f60ee97`, `release_safe`,

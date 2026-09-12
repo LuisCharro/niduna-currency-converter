@@ -170,8 +170,8 @@ Both assets remain 256×256 RGB PNGs and are masked by the existing
 needed. The focused test, full `./scripts/check.sh`, debug APK build and visual
 review passed. The detailed hashes, device/build provenance and remaining
 compact-AVD automation limitation are recorded in
-`phase2-currency-badge-audit-2026-09-11.md`. A3/A4 remain deferred; no
-family-wide refresh, release version change, upload, commit or push follows
+`phase2-currency-badge-audit-2026-09-11.md`. A3/A4 are closed without change;
+no family-wide refresh, release version change, upload, commit or push follows
 from this closeout.
 
 ## Phase 3 — UI polish
