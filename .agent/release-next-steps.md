@@ -8,9 +8,14 @@
 
 - Internal testing now has the signed `1.0.0+4` candidate (`versionCode 4`),
   including the AdMob/UMP late-consent fix.
-- The same tested `1.0.0+4` artifact should be promoted to Closed testing;
-  no identical rebuild is needed before recruiting testers or later moving it
-  to Production.
+- A later provider audit found two P0 coverage defects in that artifact:
+  historical/trend fiat calls still use Frankfurter v1, which omits AED, ARS,
+  CLP, COP and TWD, and Polygon is still keyed as MATIC while the release-safe
+  feed uses POL. Do not promote `1.0.0+4` to Closed.
+- The executable repair specification is
+  `.agent/provider-coverage-remediation-plan-2026-09-12.md`. A new Internal
+  candidate (`1.0.0+5` expected, subject to Play code availability) must pass
+  clean-install, upgrade, provider-coverage and device acceptance first.
 - The default Play listing locale is `en-GB`. The new icon and six phone
   screenshots are saved in the listing draft and are waiting in Publishing
   overview for the required review flow.
@@ -29,17 +34,22 @@
 
 ### 0. Closed-test and first-public-release sequence — current plan
 
-1. Complete the remaining Play Console setup and send the saved listing and
-   declarations for review. Closed testing requires app setup to be complete.
-2. Verify the Play-distributed `1.0.0+4` build, including consent and test-ad
-   behavior, before changing tracks.
-3. Promote `1.0.0+4` to the Closed testing track and create/select the tester
-   list. Share the opt-in link and recruit 14–16 testers.
-4. Keep at least 12 testers opted in continuously for 14 days. Internal
+1. Implement and independently review the provider-coverage remediation plan.
+   Do not include unrelated UI, backend, billing or ad changes.
+2. Verify all 34 fiat currencies and POL against the release-safe providers;
+   complete the clean-install, `1.0.0+4` upgrade and small/large-device matrix.
+3. With explicit approval, build and upload the next unused `1.0.0` code
+   (expected `+5`) to Internal testing only, then accept that exact
+   Play-distributed artifact.
+4. Complete the remaining Play Console setup and saved listing/declaration
+   review flow required before Closed testing.
+5. Promote the accepted fixed artifact to Closed testing, create/select the
+   tester list, share the opt-in link and recruit 14–16 testers.
+6. Keep at least 12 testers opted in continuously for 14 days. Internal
    testing does not count toward this requirement. If a real fix is needed,
-   upload `1.0.0+5` or higher while keeping the tested release on the same
-   Closed track.
-5. Apply for production access after the requirement is met and answer the
+   upload the next unused higher code while keeping the tested release on the
+   same Closed track.
+7. Apply for production access after the requirement is met and answer the
    testing/product-readiness questions. After approval, promote the latest
    tested `1.0.0` artifact to Production; do not rebuild it just to change its
    version name.
@@ -154,4 +164,6 @@ features, category/contact details, and the Store Listing.
 Stop before any version bump, signed RC upload, closed-test submission, site
 deploy, keystore operation or production publication. These require a separate
 explicit approval after the concrete artifact and verification results are
-ready.
+ready. Provider/catalog implementation is locally authorized only when Luis
+explicitly starts that implementation task; this document itself is not upload
+authorization.

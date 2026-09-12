@@ -25,19 +25,24 @@ skills without changing this repo again.
 
 ## Current state (reviewed 2026-09-12)
 
-- `main` is canonical; current documentation/release baseline is `682331f`.
+- `main` is canonical; recheck `HEAD` and worktree state before acting.
 - Start with `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-12**.
   It supersedes old audit completion claims and historical instructions below.
 - For the executable next phase, use `.agent/release-next-steps.md`; it records
   the current Play/API workflow, ownership and stop conditions.
+- A provider-coverage blocker was found after the `1.0.0+4` Internal build:
+  Frankfurter v1 history omits five advertised fiat currencies, and the
+  release-safe crypto feed now uses POL rather than MATIC. Read
+  `.agent/provider-coverage-remediation-plan-2026-09-12.md` before provider,
+  chart, catalog or next-candidate work.
 - For the concrete Play Publisher/API procedure and failure recovery, read
   `docs/release-prep/google-play-publishing-runbook.md`.
 - When this checkout is inside the Honest Fern monorepo, read the portfolio
   baseline first: `../../docs/platforms/google-play-developer-api.md`. Keep
   package, artifact and track facts in this repository's runbook.
-- Internal testing contains signed candidate `1.0.0+4` (`versionCode 4`),
-  including the late UMP/AdMob consent fix. Promote that same tested artifact
-  to Closed testing and later Production after production access is approved.
+- Internal testing contains signed build `1.0.0+4` (`versionCode 4`), including
+  the late UMP/AdMob consent fix. Do **not** promote it to Closed: repair and
+  accept the provider/catalog coverage in a new Internal candidate first.
 - The default Play listing is `en-GB`; the new icon and six phone screenshots
   are saved in Publishing overview and await the remaining review gates.
 - `./scripts/check.sh` passed with 258 tests and clean analysis during the
@@ -89,8 +94,8 @@ and chart-comparison status, see
 
 - Current `pubspec.yaml`: `1.0.0+4`; Play Internal testing contains code 4.
 - Code 2 is already uploaded. New binaries need an unused higher code, at least 3.
-- `1.0.0+4` is the intended Closed-testing candidate after Internal acceptance.
-  If fixes are needed, increment only the code (`1.0.0+5`, etc.).
+- `1.0.0+4` is superseded for Closed testing by the provider-coverage blocker.
+  After the fix passes review, use the next unused code (`1.0.0+5` expected).
 - Promote the tested `1.0.0` artifact to Production; do not rebuild an
   identical binary merely to change its version name.
 - Promoting the same artifact between tracks does not require rebuilding it.
