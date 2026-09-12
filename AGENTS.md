@@ -3,6 +3,10 @@
 This repo uses repo-local copied shared skills under `./.agent-local/skills`,
 plus repo-specific skills under `./.agent/skills`.
 
+If present, read `./AGENTS.local.md` after this file for machine-specific
+setup notes. That file is intentionally ignored by Git and must never contain
+private keys, access tokens, or other secret values.
+
 If the copied shared skills are missing, restore them before substantial work:
 
 ```bash
