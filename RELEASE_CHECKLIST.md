@@ -1,6 +1,6 @@
 # Release Checklist — Path to Google Play Store
 
-## Resume checkpoint — 2026-09-10
+## Resume checkpoint — 2026-09-12
 
 ### Console checkpoint — 2026-09-10 (draft only)
 
@@ -10,7 +10,13 @@
 - Data Safety now discloses the four AdMob SDK categories sent off-device: approximate location, app interactions, diagnostics, and device/other IDs. Advertising ID is declared **Yes**. This reflects third-party SDK behavior; Honest Fern has no first-party accounts or analytics.
 - Target audience decision: **13+** (13–15, 16–17, and 18+; no under-13 group). Saved in Play Console as a draft on 2026-09-10. AdMob does not require an 18+ gate.
 - AdMob is approved, real ad units are configured, and `https://honestfern.com/app-ads.txt` returns HTTP 200. No Play review, rollout, or release submission has been sent.
-- Next gates: Data Safety, Advertising ID, and target age 13+ are saved in Publishing overview but not submitted. Play now exposes the real blocker: closed testing is 0/5 tasks. Before sending anything, rotate/back up the upload keystore, build the final candidate, choose countries and at least 12 testers, create the closed-test release, then preview and submit that release.
+- Next gates: Data Safety, Advertising ID, and target age 13+ are saved in Publishing overview but not submitted. Play now exposes the real blocker: closed testing is 0/5 tasks.
+- **Sequencing decision — 2026-09-12:** finish and merge the approved UI/asset
+  branch first; refresh the current Play listing images; publish the resulting
+  `0.1.0+3` candidate to **Internal testing**; and let Luis accept that
+  Play-distributed build before creating the closed-test release and recruiting
+  14 opted-in testers. This is an internal/closed-test preparation sequence,
+  not public-production approval or a `1.0.0` version decision.
 - Console navigation verified: **Testing → Closed testing - Alpha → Testers**. The existing `Internal test email list` contains 1 user; it is not selected for the closed track yet. The closed-track page can reuse that list or create a separate list, but every tester must opt in through the closed-track link.
 
 **Read this section first. It supersedes contradictory historical status and
@@ -64,58 +70,34 @@ The detailed bounded execution plan is `.agent/release-next-steps.md`. It
 separates work Codex can execute locally from Play/AdMob actions that require
 Luis and keeps upload/version/deploy gates explicit.
 
-1. **E5/E5b — external AdMob prerequisites.** ✅ Completed 2026-09-10.
-   IDs and the published EEA/UK/CH message are recorded above. E5c
-   (`app-ads.txt`) remains open until the publisher ID is deployed on the site.
-2. **B9 hardening — bounded code task, after Luis authorizes fixes.**
-   Real service already injected: `lib/src/app_shell.dart:95` and
-   `lib/src/core/monetization/play_purchase_service.dart`. Review/correct
-   uncaught query/buy exceptions and stuck processing UI (`purchase()` lines
-   31-53; `iap_purchase_player.dart:56`), await/handle `completePurchase`
-   (`play_purchase_service.dart:71`), show restore completion/failure
-   (`settings_controller.dart:107`), and display Play-returned localized prices
-   instead of fixed CHF (`upgrade_shelf.dart:93`). Add meaningful mocked
-   platform-stream/error tests; existing new tests cover ID mapping and local
-   grants, not these platform flows. Review duplicate pending requests,
-   service disposal, pending purchase recovery and entitlement reconciliation.
-3. **Internal purchase acceptance.** Add internal testers and license testers,
-   install via the existing opt-in link, verify all three products, cancel,
-   pending, error, acknowledgement, relaunch, restore/reinstall and Remove Ads.
-   Confirm a test-payment method before any purchase; no real charge authorized.
-   Record actual device/account/build and results. Internal testing does not
-   count toward the closed-test 12/14-day gate.
-4. **B4/B8 implementation and acceptance.** After E5/E5b exists, implement
-   production IDs, UMP consent refresh,
-   canRequestAds gating and required privacy-options entry. Android needs app
-   ID + banner ID + rewarded ID; iOS IDs do not block this release. Publish
-   app-ads.txt after publisher ID exists, with separate deploy approval.
-5. **Policy/listing/assets before closed test.** C5 store screenshots need
-   recapture after final UI. C6 feature graphic is NOT ready: it visibly says
-   NIDUNA, Coming to Android, No tracking, 100% Offline and uses old UI.
-   Replace it with Honest Fern, final UI and accurate cached-offline wording.
-   Site policy anticipates UMP/restore; align with final behavior and SDK data
-   categories. Correct its claim that clearing data removes settings (actual
-   app preserves them). Qualify site Six pinned (free 3 / rewarded 6 / Pro 16).
-   Listing: remove no-tracking alternative; replace automatic-system-theme
-   claim with manual light/dark selection; describe Frankfurter daily central
-   bank data rather than claiming v2 is ECB-only; review daily wording for
-   fiat business days versus crypto daily. Do not add future OXR/VPS/CoinGecko.
-6. **Signing + final build.** Key/properties exist, are gitignored, mode 600,
-   keytool read succeeds (RSA 2048, valid to 2053). Temporary password-file path
-   was absent; that does NOT prove rotation/backups. Confirm them with Luis
-   and authorize any key operation separately. Keep existing upload-key
-   identity now that an artifact is uploaded. Run checks and official build
-   scripts, inspect merged manifest/signing/R8/native 16 KB compatibility on the
-   final artifact and perform final device/UI/accessibility/offline acceptance.
-7. **Console + closed test.** Finish listing, ads/AD_ID, Data Safety, financial
-   features, IARC rating, target audience, Finance category and trader/public
-   contact tasks. Use final SDK behavior, not no-first-party-analytics as a
-   no-data-collection answer. Review on-device UMP and rewarded early-close,
-   failure/no-fill/offline states. Only then submit the safe candidate to closed
-   testing with at least 12 opted-in testers for 14 continuous days (recheck live
-   requirements); target 15-16 recruits. Production access/review comes later.
-8. **Site S2 only after public production listing:** replace Coming Soon with
-   actual Play URL, update metadata and deploy with approval.
+1. **Close this branch, then merge to `main`.** The approved UI/UX, chart,
+   badge and trend-cache work belongs in the next internal candidate. Review
+   the final diff and merge; do not add optional B7 product work to this batch.
+2. **Regenerate the Play listing assets from merged current source.** The
+   existing screenshots predate visible Chart/UI and badge changes. Capture the
+   final approved Convert, Favorites and Chart surfaces at Play dimensions,
+   select the canonical 2–8 PNGs, and replace the Console listing images. Keep
+   the approved Honest Fern feature graphic unless a visible mismatch is found.
+3. **Build and upload one new Internal-testing candidate.** Confirm code `3`
+   is unused, set the internal candidate to `0.1.0+3`, run the official signed
+   AAB build, record its SHA-256 and install/inspect that exact artifact. Upload
+   it only to the existing Internal testing track; do not create a public or
+   closed-test release yet.
+4. **Luis's internal acceptance on the Play-distributed `0.1.0+3`.** Verify
+   the refreshed UI/assets, UMP/privacy options, ad/no-ad behavior, the three
+   one-time products and Restore on the actual opt-in build. Record device,
+   account and artifact. If a release-blocking fault appears, return to this
+   branch/main for a focused repair before any tester recruitment.
+5. **Create the closed-test release from the accepted artifact, then recruit.**
+   Choose countries and create/select the closed tester list, publish the
+   accepted AAB to the closed track, obtain its opt-in link, and recruit at
+   least 14 testers (target 15–16 for margin). Each person must opt in and stay
+   enrolled for the required continuous period; internal testers do not count.
+6. **Keep public launch separate.** Before production access/review, recheck
+   live Play requirements and complete the remaining public-release acceptance
+   (including Data Safety/Advertising ID publishing status and the final
+   accessibility/offline/no-fill evidence). Site S2 still waits for a public
+   Play URL.
 
 ### Version, authority and scope
 

@@ -205,12 +205,18 @@ accepted.
 
 ## Release integration
 
-After the selected visual changes pass QA:
+After the selected visual changes pass QA, the agreed next sequence is:
 
-1. regenerate Play screenshots only if the visible application UI changed;
-2. replace the Play launcher icon and any store asset that contains the old
-   product icon;
-3. synchronize the website's product icon, without changing unrelated images;
-4. update the release checklist and record exact artifact hashes;
-5. build with the next unused version code and test through Play before the
-   closed-test clock starts.
+1. finish this approved branch and merge it to `main`;
+2. regenerate and replace the Play screenshots because the visible Chart/UI and
+   badge assets changed;
+3. build `0.1.0+3` with the next unused code and upload it to **Internal
+   testing** only;
+4. Luis accepts that exact Play-distributed candidate before it becomes the
+   closed-test artifact;
+5. create the closed-test release from the accepted artifact, then recruit 14
+   opted-in testers (target 15–16).
+
+This sequence does not authorize a public `1.0.0` decision, a production
+release, or unrelated product work. The release master remains
+`RELEASE_CHECKLIST.md`.

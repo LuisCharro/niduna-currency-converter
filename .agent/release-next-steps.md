@@ -1,6 +1,6 @@
 # Honest Fern release — next execution plan
 
-> Created 2026-09-10 after the AdMob console setup. This is a bounded
+> Revised 2026-09-12 after the approved UI/asset branch. This is a bounded
 > execution plan, not approval to upload, publish, deploy, buy, or change the
 > release version. `RELEASE_CHECKLIST.md` remains the master checklist.
 
@@ -20,6 +20,23 @@
   two weeks. Keep test ads during development until approval is visible.
 
 ## Execution order
+
+### 0. Internal-candidate sequence — current plan
+
+1. Finish the current UI/asset branch and merge it to `main`; do not add the
+   deferred B7 product ideas to this release batch.
+2. From merged source, recapture the Play listing PNGs affected by the chart,
+   UI and currency-badge work and replace the Console screenshots.
+3. Confirm version code `3` is unused; build and upload **`0.1.0+3` only to
+   Internal testing**. Do not use the public `1.0.0` name yet.
+4. Luis installs that exact Play-distributed build and accepts the visible
+   changes plus UMP, ads, purchases and Restore.
+5. Only after that acceptance, create the closed-test release from the same
+   accepted AAB and recruit 14 opted-in testers (target 15–16). The test clock
+   starts from eligible closed-track opt-ins, not internal testing.
+
+The B4/B8/B9 notes below remain quality and release-risk references. They are
+not authorization to expand the current UI branch or to submit a public release.
 
 ### 1. B4+B8 app integration — implemented; device/account acceptance remains
 
