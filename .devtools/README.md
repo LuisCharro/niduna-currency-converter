@@ -137,6 +137,30 @@ ads enabled.
 
 It defaults to the dev crypto provider profile and visible developer UI.
 
+## Play candidate preparation
+
+After the approved branch has been merged to a clean `main`, prepare the local
+release artifacts and Play listing screenshots together:
+
+```bash
+EXPECTED_VERSION_CODE=3 \
+  ./.devtools/prepare_play_candidate.sh
+```
+
+The wrapper checks the repository and the large `emulator-5554` target, runs
+`./scripts/check.sh`, builds release APK and AAB artifacts with
+`release_safe`/`APP_DEV_MODE=false`, and runs the store screenshot gallery in
+light and dark mode. The gallery seeds paid entitlements, so its screenshots
+contain no ads or upgrade prompts; this does not change the release AAB's ad
+configuration.
+
+By default it requires the release AdMob environment variables used by
+`scripts/build_appbundle.sh` and writes to a timestamped directory under
+`.tmp/play-candidate/`. Override `PLAY_PREP_OUTPUT_DIR` for a fixed location
+and `ANDROID_SERIAL` only when a different 1080×2400 target is intentionally
+selected. The wrapper never bumps the version, uploads to Play, overwrites
+`docs/release-prep/screenshots/`, or changes Play Console state.
+
 ## Honest Fern site screenshot capture
 
 To regenerate the large fully unlocked paid-layout screenshots used by
