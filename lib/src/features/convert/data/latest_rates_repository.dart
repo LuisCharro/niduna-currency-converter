@@ -5,6 +5,7 @@ import 'latest_rates_cache.dart';
 abstract class ConvertRatesRepository {
   Future<LatestRatesSnapshot?> readCached(String base);
   Future<LatestRatesSnapshot> fetchLatest(String base);
+  Future<void> cacheSnapshot(LatestRatesSnapshot snapshot) async {}
   Future<Map<String, double>?> fetchPreviousRates(
     String base, {
     DateTime? referenceDate,
@@ -30,6 +31,10 @@ class LatestRatesRepository implements ConvertRatesRepository {
     await _cache.write(snapshot);
     return snapshot;
   }
+
+  @override
+  Future<void> cacheSnapshot(LatestRatesSnapshot snapshot) =>
+      _cache.write(snapshot);
 
   @override
   Future<Map<String, double>?> fetchPreviousRates(

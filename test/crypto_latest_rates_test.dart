@@ -67,6 +67,56 @@ void main() {
   });
 
   test(
+    'latest-rates cache preserves prior-day rates for trend badges',
+    () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      final prefs = await SharedPreferences.getInstance();
+      final cache = LatestRatesCache(prefs);
+      final snapshot = LatestRatesSnapshot(
+        base: 'USD',
+        date: DateTime(2026, 9, 11),
+        savedAt: DateTime(2026, 9, 12, 9),
+        rates: const <String, double>{'EUR': 0.86266},
+        previousRates: const <String, double>{'EUR': 0.86088},
+      );
+
+      await cache.write(snapshot);
+
+      final restored = await cache.read('USD');
+      expect(restored?.previousRates, const <String, double>{'EUR': 0.86088});
+    },
+  );
+
+  test('first fresh load caches prior-day rates after enrichment', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final prefs = await SharedPreferences.getInstance();
+    final cache = LatestRatesCache(prefs);
+    final repository = LatestRatesRepository(
+      client: _FakeLatestRatesClient(
+        LatestRatesSnapshot(
+          base: 'USD',
+          date: DateTime(2026, 9, 11),
+          savedAt: DateTime(2026, 9, 12, 9),
+          rates: const <String, double>{'EUR': 0.86266},
+        ),
+        previousRates: const <String, double>{'EUR': 0.86088},
+      ),
+      cache: cache,
+    );
+    final controller = ConvertController(
+      repository: repository,
+      selectedCodes: const <String>['EUR'],
+    );
+
+    await controller.load();
+    await Future<void>.delayed(Duration.zero);
+
+    expect((await cache.read('USD'))?.previousRates, const <String, double>{
+      'EUR': 0.86088,
+    });
+  });
+
+  test(
     'controller load skips refresh when refreshOnOpen is false and cache is complete',
     () async {
       SharedPreferences.setMockInitialValues(<String, Object>{
@@ -99,6 +149,29 @@ void main() {
       expect(controller.state.status, isNot(equals(ConvertStatus.noCache)));
     },
   );
+
+  test('controller enriches a same-day cache that lacks trend rates', () async {
+    final repository = _CountingRatesRepository(
+      cached: LatestRatesSnapshot(
+        base: 'USD',
+        date: DateTime(2026, 9, 11),
+        savedAt: DateTime.now(),
+        rates: const <String, double>{'EUR': 0.86266},
+      ),
+      previousRates: const <String, double>{'EUR': 0.86088},
+    );
+    final controller = ConvertController(
+      repository: repository,
+      selectedCodes: const <String>['EUR'],
+    );
+
+    await controller.load();
+    await Future<void>.delayed(Duration.zero);
+
+    expect(repository.fetchCalls, 0);
+    expect(repository.previousFetchCalls, 1);
+    expect(controller.state.quotes.single.changePercent, isNotNull);
+  });
 
   test(
     'controller load refreshes when cached snapshot is missing crypto rates',
@@ -278,9 +351,10 @@ void main() {
 final DateTime _today = DateTime.now();
 
 class _FakeLatestRatesClient implements LatestRatesClient {
-  const _FakeLatestRatesClient(this.snapshot);
+  const _FakeLatestRatesClient(this.snapshot, {this.previousRates});
 
   final LatestRatesSnapshot snapshot;
+  final Map<String, double>? previousRates;
 
   @override
   Future<LatestRatesSnapshot> fetchLatest(String base) async => snapshot;
@@ -289,7 +363,7 @@ class _FakeLatestRatesClient implements LatestRatesClient {
   Future<Map<String, double>?> fetchPreviousRates(
     String base, {
     DateTime? referenceDate,
-  }) async => null;
+  }) async => previousRates;
 }
 
 class _FakeCryptoUsdPriceClient implements CryptoUsdPriceClient {
@@ -309,10 +383,12 @@ class _FailingCryptoUsdPriceClient implements CryptoUsdPriceClient {
 }
 
 class _CountingRatesRepository implements ConvertRatesRepository {
-  _CountingRatesRepository({this.cached});
+  _CountingRatesRepository({this.cached, this.previousRates});
 
   final LatestRatesSnapshot? cached;
+  final Map<String, double>? previousRates;
   int fetchCalls = 0;
+  int previousFetchCalls = 0;
 
   @override
   Future<LatestRatesSnapshot?> readCached(String base) async => cached;
@@ -324,8 +400,14 @@ class _CountingRatesRepository implements ConvertRatesRepository {
   }
 
   @override
+  Future<void> cacheSnapshot(LatestRatesSnapshot snapshot) async {}
+
+  @override
   Future<Map<String, double>?> fetchPreviousRates(
     String base, {
     DateTime? referenceDate,
-  }) async => null;
+  }) async {
+    previousFetchCalls += 1;
+    return previousRates;
+  }
 }

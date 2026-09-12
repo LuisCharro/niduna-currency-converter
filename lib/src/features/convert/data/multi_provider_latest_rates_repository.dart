@@ -83,6 +83,10 @@ class MultiProviderLatestRatesRepository implements ConvertRatesRepository {
     }
   }
 
+  @override
+  Future<void> cacheSnapshot(LatestRatesSnapshot snapshot) =>
+      _latestCache.write(snapshot);
+
   Future<LatestRatesSnapshot> _fetchLatestUnshared(String base) async {
     final fiatSnapshot = await _fiatClient.fetchLatest(base);
     final cachedSnapshot = await _latestCache.read(base);

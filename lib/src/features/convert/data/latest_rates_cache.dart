@@ -33,6 +33,8 @@ class LatestRatesCache {
       }
     }
 
+    final previousRates = _decodeRates(json['previousRates']);
+
     final savedAt = DateTime.tryParse((json['savedAt'] as String?) ?? '');
     if (rates.isEmpty || savedAt == null) {
       return null;
@@ -43,6 +45,7 @@ class LatestRatesCache {
       date: DateTime.tryParse((json['date'] as String?) ?? ''),
       savedAt: savedAt,
       rates: rates,
+      previousRates: previousRates,
     );
   }
 
@@ -54,9 +57,22 @@ class LatestRatesCache {
         'date': snapshot.date?.toIso8601String(),
         'savedAt': snapshot.savedAt.toIso8601String(),
         'rates': snapshot.rates,
+        if (snapshot.previousRates != null)
+          'previousRates': snapshot.previousRates,
       }),
     );
   }
 
   String _key(String base) => 'latest_rates_$base';
+
+  Map<String, double>? _decodeRates(Object? value) {
+    if (value is! Map<String, dynamic>) return null;
+    final rates = <String, double>{};
+    for (final entry in value.entries) {
+      if (entry.value is num) {
+        rates[entry.key] = (entry.value as num).toDouble();
+      }
+    }
+    return rates.isEmpty ? null : rates;
+  }
 }

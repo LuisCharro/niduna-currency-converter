@@ -11,6 +11,10 @@ extension ConvertControllerLoading on ConvertController {
       _safeNotify();
     }
     if (!_shouldRefreshOnLoad(cached)) {
+      if (cached?.previousRates == null &&
+          _preferences?.refreshOnOpen != false) {
+        unawaited(_enrichWithYesterdayRates(cached!));
+      }
       return;
     }
     await refresh(hasCached: cached != null);
@@ -89,6 +93,7 @@ extension ConvertControllerLoading on ConvertController {
       );
       state = _stateFromSnapshot(enriched, state.status);
       _safeNotify();
+      await _repository.cacheSnapshot(enriched);
     } catch (_) {}
   }
 }

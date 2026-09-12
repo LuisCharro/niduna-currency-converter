@@ -280,6 +280,9 @@ class _FakeRatesRepository implements ConvertRatesRepository {
   }
 
   @override
+  Future<void> cacheSnapshot(LatestRatesSnapshot snapshot) async {}
+
+  @override
   Future<Map<String, double>?> fetchPreviousRates(
     String base, {
     DateTime? referenceDate,
