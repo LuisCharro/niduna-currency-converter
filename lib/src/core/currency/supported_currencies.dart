@@ -81,9 +81,14 @@ bool isCryptoCurrency(String code) {
   return supportedCryptoCurrencies.any((currency) => currency.code == code);
 }
 
+bool isSupportedCurrencyCode(String code) {
+  return allSupportedCurrencies.any((currency) => currency.code == code);
+}
+
 SupportedCurrency currencyByCode(String code) {
   return allSupportedCurrencies.firstWhere(
     (currency) => currency.code == code,
-    orElse: () => throw ArgumentError.value(code, 'code', 'Unsupported currency'),
+    orElse: () =>
+        throw ArgumentError.value(code, 'code', 'Unsupported currency'),
   );
 }

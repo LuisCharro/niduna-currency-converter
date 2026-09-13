@@ -1,178 +1,153 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../currency/currency_code_migration.dart';
+import '../currency/supported_currencies.dart';
 import 'models/temporary_unlock.dart';
 
 class TemporaryUnlockStore {
   TemporaryUnlockStore(this._preferences);
-  final SharedPreferences _preferences;
 
   static const String _registryKey = 'temp_unlocks_registry';
 
+  final SharedPreferences _preferences;
+
   Future<void> save(TemporaryUnlock unlock) async {
+    final canonical = _canonicalUnlock(unlock);
+    if (canonical == null) return;
     final registry = await _loadRegistry();
-    registry[unlock.storageKey] = unlock.toJson();
+    registry[canonical.storageKey] = canonical.toJson();
     await _saveRegistry(registry);
   }
 
   Future<TemporaryUnlock?> load(String base, String quote) async {
+    final canonicalBase = canonicalCurrencyCode(base);
+    final canonicalQuote = canonicalCurrencyCode(quote);
     final registry = await _loadRegistry();
-    final raw = registry[TemporaryUnlock.canonicalKey(base, quote)];
-    if (raw == null) return null;
-    final unlock = TemporaryUnlock.fromJson(raw as Map<String, dynamic>);
-    return unlock.isExpired ? null : unlock;
-  }
-
-  Future<Map<String, dynamic>> _loadRegistry() async {
-    final raw = _preferences.getString(_registryKey);
-    if (raw == null || raw.isEmpty) return {};
-    return _decodeMap(raw);
-  }
-
-  Future<void> _saveRegistry(Map<String, dynamic> registry) async {
-    await _preferences.setString(_registryKey, _encodeRegistry(registry));
+    final key =
+        'temp_unlock_${TemporaryUnlock.canonicalKey(canonicalBase, canonicalQuote)}';
+    final raw = registry[key];
+    if (raw is! Map) return null;
+    try {
+      final unlock = TemporaryUnlock.fromJson(raw.cast<String, dynamic>());
+      return unlock.isExpired ? null : unlock;
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<void> remove(String base, String quote) async {
     final registry = await _loadRegistry();
-    registry.remove(TemporaryUnlock.canonicalKey(base, quote));
-    await _saveRegistry(registry);
+    final key =
+        'temp_unlock_${TemporaryUnlock.canonicalKey(canonicalCurrencyCode(base), canonicalCurrencyCode(quote))}';
+    if (registry.remove(key) != null) await _saveRegistry(registry);
   }
 
-  Future<void> clearAll() async {
-    final keys = (await _loadRegistry()).keys.toList();
-    for (final key in keys) {
-      await _preferences.remove('temp_unlock_$key');
-    }
-    await _preferences.remove(_registryKey);
-  }
+  Future<void> clearAll() => _preferences.remove(_registryKey);
 
-  /// One-shot migration that rewrites legacy `MATIC` entries in the
-  /// registry to `POL`. Idempotent: a second call after the first must
-  /// leave the stored representation byte-equivalent (for non-MATIC entries).
-  ///
-  /// The shipped 1.0.0+4 registry format has overlapping quote marks between
-  /// outer registry and inner unlock JSON; the legacy `_parseJson` returns
-  /// an empty Map for it. Per plan §C4, when the format cannot be safely
-  /// decoded, MATIC entries are removed (not migrated to POL); unrelated
-  /// entries are left byte-equivalent.
+  /// Converts the invalid nested-string format written by `1.0.0+4` to valid
+  /// JSON and maps legacy MATIC pairs to POL. The rewrite is idempotent and
+  /// preserves every decodable, supported, unexpired unlock.
   Future<void> migrateIfNeeded() async {
     final raw = _preferences.getString(_registryKey);
     if (raw == null || raw.isEmpty) return;
-    if (!raw.contains('MATIC')) return;
+    final decoded = _decodeRegistry(raw);
+    if (decoded == null) return;
 
-    // Step 1 — strip middle / last MATIC entries (preceded by `, `).
-    final midPattern = RegExp(
-      r',\s*"temp_unlock_(?:[A-Z]+_MATIC|MATIC_[A-Z]+)":\s*"\{[^}]*\}"[,\s]*',
-    );
-    var cleaned = raw.replaceAll(midPattern, '');
-
-    // Step 2 — strip the first MATIC entry if it survived step 1.
-    if (cleaned.contains(RegExp(
-      r'temp_unlock_(?:[A-Z]+_MATIC|MATIC_[A-Z]+)',
-    ))) {
-      cleaned = cleaned.replaceFirst(
-        RegExp(
-          r'\{\s*"temp_unlock_(?:[A-Z]+_MATIC|MATIC_[A-Z]+)":\s*"\{[^}]*\}"[,\s]*',
-        ),
-        '{',
-      );
+    final migrated = <String, dynamic>{};
+    for (final value in decoded.values) {
+      if (value is! Map) continue;
+      try {
+        final unlock = TemporaryUnlock.fromJson(value.cast<String, dynamic>());
+        final canonical = _canonicalUnlock(unlock);
+        if (canonical != null && !canonical.isExpired) {
+          migrated[canonical.storageKey] = canonical.toJson();
+        }
+      } catch (_) {
+        // Ignore only the malformed entry; other unlocks remain recoverable.
+      }
     }
 
-    if (cleaned != raw) {
-      await _preferences.setString(_registryKey, cleaned);
-    }
+    final encoded = jsonEncode(migrated);
+    if (encoded != raw) await _preferences.setString(_registryKey, encoded);
   }
 
   Future<void> cleanExpired() async {
     final registry = await _loadRegistry();
-    final expired = <String>[];
-    for (final entry in registry.entries) {
-      final raw = entry.value;
-      if (raw is! Map<String, dynamic>) continue;
+    final active = <String, dynamic>{};
+    for (final value in registry.values) {
+      if (value is! Map) continue;
       try {
-        final unlock = TemporaryUnlock.fromJson(raw);
-        if (unlock.isExpired) expired.add(entry.key);
-      } catch (_) {}
-    }
-    for (final key in expired) {
-      registry.remove(key);
-      await _preferences.remove(key);
-    }
-    if (expired.isNotEmpty) await _saveRegistry(registry);
-  }
-
-  String _encodeRegistry(Map<String, dynamic> data) {
-    final parts = data.entries.map((e) {
-      final v = e.value is String ? e.value : _valueToString(e.value);
-      return '"${e.key}": "$v"';
-    });
-    return '{${parts.join(', ')}}';
-  }
-
-  String _valueToString(dynamic value) {
-    if (value is Map) return _encodeRegistry(value.cast<String, dynamic>());
-    if (value is List) return '[${value.join(', ')}]';
-    return value.toString();
-  }
-
-  Map<String, dynamic> _decodeMap(String raw) {
-    try {
-      return _parseJson(raw);
-    } catch (_) {}
-    return {};
-  }
-
-  Map<String, dynamic> _parseJson(String source) {
-    final result = <String, dynamic>{};
-    var i = 0;
-    while (i < source.length) {
-      if (source[i] == '{') {
-        i++;
-        while (i < source.length && source[i] != '}') {
-          final keyStart = source.indexOf("':", i);
-          if (keyStart == -1 || keyStart >= source.length) {
-            break;
-          }
-          final key = source
-              .substring(i, keyStart)
-              .trim()
-              .replaceAll('"', '')
-              .trim();
-          i = keyStart + 2;
-          if (i >= source.length) {
-            break;
-          }
-          final valStart = source.indexOf(':', i);
-          if (valStart == -1 || valStart >= source.length) {
-            break;
-          }
-          i = valStart + 1;
-          while (i < source.length && source[i] == ' ') {
-            i++;
-          }
-          if (i >= source.length) {
-            break;
-          }
-          final commaIdx = source.indexOf(',', i);
-          final braceIdx = source.indexOf('}', i);
-          var valEnd = commaIdx;
-          if (valEnd == -1 || (braceIdx >= 0 && braceIdx < valEnd)) {
-            valEnd = braceIdx;
-          }
-          if (valEnd == -1) {
-            valEnd = source.length;
-          }
-          result[key] = source
-              .substring(i, valEnd)
-              .trim()
-              .replaceAll('"', '')
-              .trim();
-          i = valEnd + 1;
+        final unlock = TemporaryUnlock.fromJson(value.cast<String, dynamic>());
+        final canonical = _canonicalUnlock(unlock);
+        if (canonical != null && !canonical.isExpired) {
+          active[canonical.storageKey] = canonical.toJson();
         }
-      } else {
-        i++;
+      } catch (_) {
+        // Malformed entries are omitted from the rewritten registry.
       }
     }
-    return result;
+    await _saveRegistry(active);
+  }
+
+  Future<Map<String, dynamic>> _loadRegistry() async {
+    final raw = _preferences.getString(_registryKey);
+    if (raw == null || raw.isEmpty) return <String, dynamic>{};
+    return _decodeRegistry(raw) ?? <String, dynamic>{};
+  }
+
+  Future<void> _saveRegistry(Map<String, dynamic> registry) =>
+      _preferences.setString(_registryKey, jsonEncode(registry));
+
+  Map<String, dynamic>? _decodeRegistry(String raw) {
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is Map) return decoded.cast<String, dynamic>();
+    } catch (_) {
+      return _decodeLegacyRegistry(raw);
+    }
+    return null;
+  }
+
+  Map<String, dynamic>? _decodeLegacyRegistry(String raw) {
+    final entries = <String, dynamic>{};
+    final entryPattern = RegExp(
+      r'"(temp_unlock_[A-Za-z0-9]+_[A-Za-z0-9]+)"\s*:\s*"\{([^}]*)\}"',
+    );
+    final fieldPattern = RegExp(r'"([A-Za-z]+)"\s*:\s*"([^"]*)"');
+
+    for (final entryMatch in entryPattern.allMatches(raw)) {
+      final body = entryMatch.group(2);
+      if (body == null) continue;
+      final fields = <String, dynamic>{};
+      for (final fieldMatch in fieldPattern.allMatches(body)) {
+        final key = fieldMatch.group(1);
+        final value = fieldMatch.group(2);
+        if (key == null || value == null) continue;
+        fields[key] = key == 'durationMs' ? int.tryParse(value) : value;
+      }
+      if (fields.length == 4 && fields['durationMs'] != null) {
+        entries[entryMatch.group(1)!] = fields;
+      }
+    }
+
+    return entries.isEmpty ? null : entries;
+  }
+
+  static TemporaryUnlock? _canonicalUnlock(TemporaryUnlock unlock) {
+    final base = canonicalCurrencyCode(unlock.base);
+    final quote = canonicalCurrencyCode(unlock.quote);
+    if (base == quote ||
+        !isSupportedCurrencyCode(base) ||
+        !isSupportedCurrencyCode(quote)) {
+      return null;
+    }
+    return TemporaryUnlock(
+      base: base,
+      quote: quote,
+      grantedAt: unlock.grantedAt,
+      duration: unlock.duration,
+    );
   }
 }

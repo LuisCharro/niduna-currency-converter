@@ -135,11 +135,12 @@ String chartErrorTitle(BuildContext context, String? message) {
 }
 
 String chartErrorSubtitle(BuildContext context) => switch (_lang(context)) {
-  'es' => 'Comprueba tu conexión e inténtalo de nuevo',
-  'de' => 'Prüfe deine Verbindung und versuche es erneut',
-  'it' => 'Controlla la connessione e riprova',
-  'fr' => 'Vérifiez votre connexion et réessayez',
-  _ => 'Check your connection and try again',
+  'es' =>
+    'Los datos históricos no están disponibles ahora. Inténtalo más tarde',
+  'de' => 'Historische Daten sind derzeit nicht verfügbar. Versuche es später',
+  'it' => 'I dati storici non sono disponibili ora. Riprova più tardi',
+  'fr' => 'Les données historiques sont indisponibles. Réessayez plus tard',
+  _ => 'Historical data is unavailable right now. Try again later.',
 };
 
 String chartsEmptySubtitle(BuildContext context) => switch (_lang(context)) {

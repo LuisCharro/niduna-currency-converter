@@ -70,6 +70,7 @@ class _AppState extends State<AppShell> {
     final prefs = await SharedPreferences.getInstance();
 
     _preferences = AppPreferences(prefs);
+    await _preferences!.migrateCurrencyCodesIfNeeded();
     _preferences!.addListener(_onPreferencesChanged);
 
     if (widget.favoritesStore == null) {

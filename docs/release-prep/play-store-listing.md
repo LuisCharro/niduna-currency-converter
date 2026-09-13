@@ -1,12 +1,13 @@
 # Google Play Store Listing — Currency Converter
 
 > Product: Currency Converter (by Honest Fern)
-> Current internal candidate: 1.0.0+4; next step: promote the same artifact to Closed testing
+> Current Internal artifact: 1.0.0+4 is superseded and must not be promoted;
+> the provider-coverage fix needs a new accepted Internal candidate (expected 1.0.0+5)
 > Target: Android first
 > Data sources: Frankfurter v2 (fiat), fawazahmed0 (crypto)
 > Privacy stance: no Honest Fern account, no first-party analytics, no backend;
 > AdMob data practices disclosed separately
-> Last reviewed against code and cross-repo release plan: 2026-07-19
+> Last reviewed against code and cross-repo release plan: 2026-09-12
 
 
 > **Play status — 2026-09-12:** the new icon and six phone screenshots are
@@ -81,9 +82,9 @@ first-party analytics.
 
 **Convert**
 Type an amount, pick a base currency, see the rest at a glance.
-Daily rates from the European Central Bank, refreshed once per
-business day. Last-update timestamp shown clearly so you always know
-what you're looking at.
+Daily reference rates from public central-bank data sources, checked once per
+day. Last-update timestamp shown clearly so you always know what you're
+looking at.
 
 **Charts**
 Daily history for any fiat pair up to 2 years. For pairs that include

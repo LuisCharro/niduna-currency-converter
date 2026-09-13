@@ -2,7 +2,8 @@
 
 > **Created:** 2026-09-12
 >
-> **Status:** approved investigation; implementation not started
+> **Status:** implemented and independently reviewed locally on 2026-09-13;
+> commit, version bump, upload and exact Play-artifact acceptance remain pending
 >
 > **Priority:** P0 before Closed testing
 >
@@ -305,8 +306,10 @@ source evidence:
 1. Use Frankfurter v2 for all fiat latest, historical and previous-day calls.
 2. Keep the existing direct-device provider architecture; no backend.
 3. Replace MATIC with POL and keep the catalog at 11 crypto / 45 total.
-4. Map persisted `MATIC` user choices to `POL` where the intent is durable:
-   selected codes, default base and Favorites.
+4. Map persisted `MATIC` selections and Favorites to `POL`. The durable default
+   base remains fiat-only by existing product contract; recover an invalid
+   legacy `MATIC` default to `USD` rather than introducing partial durable
+   crypto-base behavior.
 5. For a live, unexpired temporary unlock involving MATIC, map it to the same
    pair with POL if this can be done deterministically. If the registry's
    existing encoding makes safe migration impossible, remove only the affected
@@ -410,7 +413,7 @@ Add focused tests to existing files or a new
   `['EUR', 'POL', 'BTC']`;
 - duplicates collapse deterministically if both `MATIC` and `POL` exist;
 - unsupported garbage codes do not reach `currencyByCode()`;
-- default base `MATIC` becomes `POL`;
+- invalid durable default base `MATIC` becomes the safe fiat default `USD`;
 - favorite `MATIC-USD` becomes the equivalent POL pair and remains ordered;
 - favorites containing both old and new equivalent pairs deduplicate;
 - malformed favorite keys remain safely ignored;
@@ -588,7 +591,7 @@ Validation/deduplication should happen at the storage boundaries, not every
 time a widget renders. Apply it to:
 
 - `AppPreferences.selectedCodes`;
-- `AppPreferences.defaultBaseCurrency`;
+- `AppPreferences.defaultBaseCurrency`, preserving its fiat-only contract;
 - setters for those values, so legacy codes are not persisted again;
 - `FavoritesStore._load()` and additions;
 - temporary unlock serialization/load/registry cleanup.
@@ -810,8 +813,8 @@ selection requires an explicit, evidenced reason in the implementation report.
 - fawazahmed0 latest/history parse the `pol` key.
 - CoinPaprika/CoinGecko metadata IDs are current even though those providers
   remain non-release fallbacks/dev paths.
-- Existing stored MATIC selections/default/favorites cannot crash the app and
-  become POL deterministically.
+- Existing stored MATIC selections/favorites become POL deterministically;
+  an invalid MATIC default base recovers to USD without a blank first load.
 - No stale MATIC market data is relabeled as POL.
 - The POL badge is legible, correctly cropped and visually consistent in light
   and dark mode.
@@ -925,7 +928,7 @@ Seed or reproduce old state before upgrading:
 After upgrade:
 
 - app reaches first frame without exception;
-- base/selection/favorites show POL;
+- the durable default base recovers to USD while selections/favorites show POL;
 - duplicates are absent;
 - unrelated favorites/preferences/unlocks are preserved;
 - POL performs a fresh provider fetch rather than displaying renamed MATIC
@@ -1041,18 +1044,66 @@ release authorization.
 
 The implementation work is done only when all are true:
 
-- [ ] Frankfurter history uses v2 everywhere.
-- [ ] Previous-day trend data uses v2 everywhere.
-- [ ] All 34 fiat currencies pass the opt-in live coverage check.
-- [ ] CLP and all four other formerly absent v1 currencies work in Charts.
-- [ ] Mixed pairs involving those currencies work in both directions.
-- [ ] POL replaces MATIC in active code, UI, providers, asset and docs.
-- [ ] Existing MATIC local state migrates safely and idempotently.
-- [ ] POL latest and one-year history pass live and mocked checks.
-- [ ] POL badge passes light/dark, small/large visual inspection.
-- [ ] Error copy no longer falsely assumes every no-data failure is network.
-- [ ] `./scripts/check.sh` and `git diff --check` pass.
-- [ ] No unrelated scope or secrets entered the diff.
-- [ ] Active release docs block promotion of `1.0.0+4`.
-- [ ] Primary-agent independent review passes.
+- [x] Frankfurter history uses v2 everywhere.
+- [x] Previous-day trend data uses v2 everywhere.
+- [x] All 34 fiat currencies pass the opt-in live coverage check.
+- [x] CLP and all four other formerly absent v1 currencies work in Charts.
+- [x] Mixed pairs involving those currencies work in both directions.
+- [x] POL replaces MATIC in active code, UI, providers, asset and docs.
+- [x] Existing MATIC local state migrates safely and idempotently.
+- [x] POL latest and one-year history pass live and mocked checks.
+- [x] POL badge passes light/dark, small/large visual inspection.
+- [x] Error copy no longer falsely assumes every no-data failure is network.
+- [x] `./scripts/check.sh` and `git diff --check` pass.
+- [x] No unrelated scope or secrets entered the diff.
+- [x] Active release docs block promotion of `1.0.0+4`.
+- [x] Primary-agent independent review passes.
 - [ ] Luis approves any version bump/upload as a separate operational step.
+
+## 18. Local implementation and review closeout — 2026-09-13
+
+The six implementation commits were reviewed against this plan rather than
+accepted as a batch. The review found and corrected additional defects before
+release preparation:
+
+- latest, historical and previous-day v2 rows now reject wrong bases/quotes,
+  malformed or out-of-range dates and non-positive values; identity history
+  covers the full requested range;
+- the shipped temporary-unlock registry is decoded and rewritten as valid JSON,
+  uses the actual prefixed storage keys and preserves supported live unlocks;
+- selected currencies and Favorites canonicalize, validate, deduplicate and
+  persist migrated state before UI construction;
+- an old `MATIC` durable default is recovered to `USD`, because the Settings
+  base contract is fiat-only; `MATIC` selections, Favorites and unlocks still
+  migrate to `POL`;
+- chart provider/no-data errors now use neutral recovery copy and a neutral
+  chart icon rather than falsely diagnosing a network failure.
+
+Verification evidence:
+
+- `./scripts/check.sh`: clean analysis and 327 passing tests;
+- `git diff --check`: clean;
+- opt-in live diagnostic repeated at 2026-09-13 08:11 CEST: 5/5 checks passed;
+  Frankfurter v2 latest and history each covered all 34 fiat codes,
+  fawazahmed0 latest covered all 11 crypto codes, and POL history passed near
+  the 30-day and one-year boundaries;
+- final structured Luna review of the complete diff reported no actionable
+  correctness, migration, provider-validation, documentation or test-gap
+  finding;
+- large and small Android emulators covered representative fiat, mixed and POL
+  chart directions, clean first fetch/trend badges, light/dark layouts and an
+  offline cached launch;
+- seeded shipped-state migration on the small emulator preserved POL Favorites
+  and a live POL unlock, deduplicated selections, recovered the invalid default
+  base to USD, loaded usable conversion rates and remained identical on a
+  second launch;
+- the final reviewed debug APK was reinstalled over that seeded small-device
+  state without clearing data; Convert loaded USD/EUR/POL values and the POL
+  badge, while Charts rendered the cached/live USD/EUR one-month series with
+  the release-safe profile and test ads.
+
+This closeout did not change `pubspec.yaml`, create a bundle, upload to Play,
+alter a track, submit listing changes or start Closed testing. The reviewed
+working-tree corrections remain uncommitted until Luis explicitly requests the
+commit/release step. The next external acceptance boundary is a new Internal
+candidate using the next unused version code, expected `1.0.0+5`.

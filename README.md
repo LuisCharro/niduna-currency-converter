@@ -167,13 +167,14 @@ flutter pub get
 | `./scripts/pub_get.sh` | fetch dependencies |
 | `./scripts/clean-deep-files.sh` | deep clean build artifacts |
 
-## Current phase (reviewed 2026-09-12)
+## Current phase (reviewed 2026-09-13)
 
-Read `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-12** first.
-Internal testing currently has signed candidate `1.0.0+4` (`versionCode 4`),
-including the late UMP/AdMob consent fix. After acceptance, promote that same
-artifact to Closed testing, then after the required tester period and
-production-access approval, promote it to Production.
+Read `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-13** first.
+Internal testing currently has signed artifact `1.0.0+4` (`versionCode 4`),
+but a later provider-coverage audit superseded it. Do not promote code 4 to
+Closed. The locally implemented fix must pass independent/device acceptance
+and then become a new Internal candidate (expected `1.0.0+5`) before any
+Closed-test promotion.
 The default `en-GB` Play listing has the new icon and six screenshots saved in
 Publishing overview, pending the remaining setup/review gates.
 No production release yet; no OXR/VPS service or CoinGecko in this scope.

@@ -76,6 +76,7 @@ class MonetizationController extends ChangeNotifier {
       _entitlements.isChartPairUnlocked(base, quote);
 
   Future<void> loadTempUnlocks() async {
+    await TemporaryUnlockStore(_entitlements.preferences).migrateIfNeeded();
     await _entitlements.loadTempUnlocks();
     notifyListeners();
   }

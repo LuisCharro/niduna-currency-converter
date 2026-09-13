@@ -1,6 +1,6 @@
 # Honest Fern release — next execution plan
 
-> Revised 2026-09-12 after the Internal candidate and Play listing update.
+> Revised 2026-09-13 after local provider-remediation implementation and review.
 > This is a bounded execution plan; `RELEASE_CHECKLIST.md` remains the master
 > checklist.
 
@@ -11,11 +11,13 @@
 - A later provider audit found two P0 coverage defects in that artifact:
   historical/trend fiat calls still use Frankfurter v1, which omits AED, ARS,
   CLP, COP and TWD, and Polygon is still keyed as MATIC while the release-safe
-  feed uses POL. Do not promote `1.0.0+4` to Closed.
-- The executable repair specification is
-  `.agent/provider-coverage-remediation-plan-2026-09-12.md`. A new Internal
-  candidate (`1.0.0+5` expected, subject to Play code availability) must pass
-  clean-install, upgrade, provider-coverage and device acceptance first.
+  feed uses POL. The local source repair and independent review are complete;
+  no fixed Play artifact exists yet. Do not promote `1.0.0+4` to Closed.
+- The implementation and verification record is
+  `.agent/provider-coverage-remediation-plan-2026-09-12.md`. With explicit
+  approval, commit the reviewed diff and create a new Internal candidate
+  (`1.0.0+5` expected, subject to Play code availability). It must still pass
+  acceptance as the exact Play-distributed artifact.
 - The default Play listing locale is `en-GB`. The new icon and six phone
   screenshots are saved in the listing draft and are waiting in Publishing
   overview for the required review flow.
@@ -34,11 +36,14 @@
 
 ### 0. Closed-test and first-public-release sequence — current plan
 
-1. Implement and independently review the provider-coverage remediation plan.
-   Do not include unrelated UI, backend, billing or ad changes.
-2. Verify all 34 fiat currencies and POL against the release-safe providers;
-   complete the clean-install, `1.0.0+4` upgrade and small/large-device matrix.
-3. With explicit approval, build and upload the next unused `1.0.0` code
+1. **Complete locally (2026-09-13):** implement and independently review the
+   provider-coverage remediation without unrelated backend, billing or ad work.
+2. **Complete locally:** verify all 34 fiat currencies and POL against the
+   release-safe providers; run deterministic tests, representative small/large
+   device QA, clean-install QA and a seeded `1.0.0+4` persistence migration.
+   Exact Play-distributed upgrade acceptance remains pending.
+3. **Next, with explicit approval:** commit the reviewed corrections, build and
+   upload the next unused `1.0.0` code
    (expected `+5`) to Internal testing only, then accept that exact
    Play-distributed artifact.
 4. Complete the remaining Play Console setup and saved listing/declaration

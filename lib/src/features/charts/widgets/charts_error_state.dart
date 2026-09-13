@@ -21,7 +21,7 @@ class ChartsErrorState extends StatelessWidget {
     return Center(
       child: DesignedStatePanel(
         compact: true,
-        icon: Icons.wifi_off_rounded,
+        icon: Icons.show_chart_rounded,
         accent: AppTheme.trendDown,
         title: chartErrorTitle(context, message),
         subtitle: chartErrorSubtitle(context),

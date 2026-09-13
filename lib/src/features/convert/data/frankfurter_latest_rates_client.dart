@@ -21,6 +21,7 @@ class FrankfurterLatestRatesClient implements LatestRatesClient {
         .where((currency) => currency.code != base)
         .map((currency) => currency.code)
         .join(',');
+    final requestedQuotes = quotes.split(',').toSet();
     final uri = Uri.https(_host, '/v2/rates', <String, String>{
       'base': base,
       'quotes': quotes,
@@ -39,14 +40,22 @@ class FrankfurterLatestRatesClient implements LatestRatesClient {
     DateTime? date;
     final rates = <String, double>{};
     for (final row in json) {
-      if (row is Map<String, dynamic>) {
-        final quote = row['quote'];
-        final rate = row['rate'];
-        if (quote is String && rate is num) {
-          rates[quote] = rate.toDouble();
-        }
-        date ??= DateTime.tryParse((row['date'] as String?) ?? '');
+      if (row is! Map<String, dynamic>) continue;
+      final rowBase = row['base'];
+      final quote = row['quote'];
+      final rate = row['rate'];
+      final rawDate = row['date'];
+      final rowDate = rawDate is String ? DateTime.tryParse(rawDate) : null;
+      if (rowBase != base ||
+          quote is! String ||
+          !requestedQuotes.contains(quote) ||
+          rate is! num ||
+          rate <= 0 ||
+          rowDate == null) {
+        continue;
       }
+      rates[quote] = rate.toDouble();
+      if (date == null || rowDate.isAfter(date)) date = rowDate;
     }
 
     if (rates.isEmpty) {
@@ -79,6 +88,7 @@ class FrankfurterLatestRatesClient implements LatestRatesClient {
           .where((currency) => currency.code != base)
           .map((currency) => currency.code)
           .join(',');
+      final requestedQuotes = quotes.split(',').toSet();
       final uri = Uri.https(_host, '/v2/rates', <String, String>{
         'from': startStr,
         'to': referenceStr,
@@ -93,14 +103,37 @@ class FrankfurterLatestRatesClient implements LatestRatesClient {
 
       // Group v2 rows by date; row order is not a contract so we rebuild
       // the per-day map explicitly.
-      final byDate = <String, Map<String, double>>{};
+      final byDate = <DateTime, Map<String, double>>{};
+      final start = DateTime(
+        reference.year,
+        reference.month,
+        reference.day,
+      ).subtract(const Duration(days: 10));
+      final referenceDay = DateTime(
+        reference.year,
+        reference.month,
+        reference.day,
+      );
       for (final row in json) {
         if (row is! Map<String, dynamic>) continue;
         final dateStr = row['date'];
+        final rowBase = row['base'];
         final quote = row['quote'];
         final rate = row['rate'];
-        if (dateStr is! String || quote is! String || rate is! num) continue;
-        final date = dateStr.split('T').first;
+        if (dateStr is! String ||
+            rowBase != base ||
+            quote is! String ||
+            !requestedQuotes.contains(quote) ||
+            rate is! num ||
+            rate <= 0) {
+          continue;
+        }
+        final date = DateTime.tryParse(dateStr.split('T').first);
+        if (date == null ||
+            date.isBefore(start) ||
+            !date.isBefore(referenceDay)) {
+          continue;
+        }
         final map = byDate.putIfAbsent(date, () => <String, double>{});
         map[quote] = rate.toDouble();
       }
@@ -109,15 +142,10 @@ class FrankfurterLatestRatesClient implements LatestRatesClient {
 
       // Pick the latest date strictly before the reference, then return all
       // quotes from that single date — never mix rates across days.
-      String? chosen;
+      DateTime? chosen;
       for (final date in byDate.keys) {
-        if (date.compareTo(referenceStr) >= 0) continue;
-        if (chosen == null || date.compareTo(chosen) > 0) chosen = date;
+        if (chosen == null || date.isAfter(chosen)) chosen = date;
       }
-      chosen ??= byDate.keys.fold<String?>(
-        null,
-        (best, d) => best == null || d.compareTo(best) > 0 ? d : best,
-      );
       if (chosen == null) return null;
 
       final rates = byDate[chosen];

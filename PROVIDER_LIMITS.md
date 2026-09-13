@@ -1,6 +1,6 @@
 # Provider Rate Limits, Licensing, and Call Budget
 
-> Last updated: 2026-09-06
+> Last updated: 2026-09-12
 > Purpose: document free provider limits, licensing status for commercial
 > publication, how the app makes calls, and replacement strategies.
 >
@@ -25,7 +25,7 @@
 | Provider | Use in App | License | Commercial Use | Play Store Safe? | Action Needed |
 |----------|-----------|---------|----------------|-----------------|---------------|
 | **Frankfurter** | Fiat latest + historical | Unlicense (open source) | **Yes — explicitly** stated on their site: *"Is the API free for commercial use? Yes, absolutely."* | **YES** | None |
-| **fawazahmed0** | BTC/ETH latest + historical (release_safe) | **CC0-1.0** (public domain) | **Yes** — CC0 allows commercial use, modification, distribution with no restrictions | **YES** | None |
+| **fawazahmed0** | All 11 crypto latest + historical (`release_safe`) | **CC0-1.0** (public domain) | **Yes** — CC0 allows commercial use, modification, distribution with no restrictions | **YES** | None |
 | **CoinPaprika** | BTC/ETH latest + charts (dev only) | Proprietary ToS | **NO** — free plan forbids commercial use; paid plans ($99–$1,499/mo) are **internal tools only**; user-facing apps require custom Enterprise contract | **NO** | Dev-only; not shipped in release builds |
 | **CoinGecko** | **Not planned** (track closed 2026-09-06); never called by `release_safe` app | Demo: no standard Commercial licence; Basic+: standard Commercial licence | **Demo: dev/soak only. Basic+: $35/mo monthly or $348/year ($29/mo effective), attribution required** | **Current app: N/A. Future own-VPS endpoint: AMBER until written confirmation** | Do not add to release-safe builds; confirm the VPS endpoint pattern before production |
 
@@ -234,9 +234,9 @@ User's phone → Your backend → Provider
 | Provider | Use | Auth | Rate Limit | License |
 |----------|-----|------|------------|---------|
 | **Frankfurter** (`api.frankfurter.dev`) | Fiat latest + historical | No key | ~10 req/min (soft); no hard monthly quota | Unlicense (commercial OK) |
-| **CoinPaprika** (`api.coinpaprika.com`) | BTC/ETH latest + historical | No key | **20,000 calls/month** on free plan | Proprietary (commercial **NOT** allowed on free or standard paid plans) |
+| **CoinPaprika** (`api.coinpaprika.com`) | Development profile only; never `release_safe` | No key | **20,000 calls/month** on free plan | Proprietary (commercial **NOT** allowed on free or standard paid plans) |
 | **CoinGecko** (`api.coingecko.com`) | **Not planned** — track closed 2026-09-06 (historical notes only) | Server-side key only | Demo 10k/mo, 100/min; Basic 100k/mo, 300/min | Demo: dev/soak only; Basic+: Commercial + attribution; own-VPS endpoint AMBER pending written confirmation |
-| **fawazahmed0** (`cdn.jsdelivr.net`) | BTC/ETH latest (fallback → primary candidate) | No key | **No rate limit** (static CDN file) | **CC0** (commercial OK) |
+| **fawazahmed0** (`cdn.jsdelivr.net` + Pages mirror) | All 11 crypto latest + historical (`release_safe`) | No key | **No published quota** (static CDN/date files) | **CC0** (commercial OK) |
 
 ### Frankfurter Details
 
@@ -245,8 +245,7 @@ User's phone → Your backend → Provider
   and times can differ
 - Historical data available (fiat only, no BTC/ETH)
 - No API key, no account
-- The v1 endpoint (`/v1/{date}`) supports date ranges like `2024-01-01..2024-06-01`
-- The v2 endpoint (`/v2/rates`) returns latest rates
+- The app uses v2 (`/v2/rates`) for latest, previous-day and historical data
 - Self-hostable via Docker if needed at scale
 - Soft limit: ~10 requests/minute observed; no published hard cap
 - **License**: Unlicense — explicitly free for commercial use
@@ -271,10 +270,10 @@ User's phone → Your backend → Provider
 - Updated daily
 - No rate limit (it is a static file, not a dynamic API)
 - **CC0-1.0 license** — full public domain, commercial use explicitly allowed
-- Includes 200+ currencies including BTC/ETH
+- Includes 200+ currencies including all 11 supported crypto assets
 - Known issue: occasional bad crypto data (e.g. inverted BTC values on 2025-12-06)
 - The app validates prices against sanity ranges before accepting
-- **Best candidate for primary crypto provider** (replacing CoinPaprika)
+- **Current release-safe crypto provider** for all 11 supported assets
 
 ---
 
@@ -289,26 +288,25 @@ The app makes plain `GET` requests. No POST, no body, no custom headers, no auth
 GET https://api.frankfurter.dev/v2/rates?base=USD&quotes=EUR,GBP,JPY,...
 ```
 
-**Convert — crypto latest (CoinPaprika, 2 calls):**
-```
-GET https://api.coinpaprika.com/v1/tickers/btc-bitcoin?quotes=USD
-GET https://api.coinpaprika.com/v1/tickers/eth-ethereum?quotes=USD
-```
-
-**Convert — crypto fallback (fawazahmed0, only if CoinPaprika fails):**
+**Convert — crypto latest (fawazahmed0; Pages is the failure mirror):**
 ```
 GET https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json
+GET https://latest.currency-api.pages.dev/v1/currencies/usd.json
 ```
 
 **Charts — fiat historical (Frankfurter):**
 ```
-GET https://api.frankfurter.dev/v1/2025-01-01..2026-01-01?base=USD&symbols=EUR
+GET https://api.frankfurter.dev/v2/rates?from=2025-01-01&to=2026-01-01&base=USD&quotes=EUR
 ```
 
-**Charts — crypto historical (CoinPaprika, 1 per crypto asset):**
+**Charts — crypto historical (fawazahmed0; one successful file per date):**
 ```
-GET https://api.coinpaprika.com/v1/tickers/btc-bitcoin/historical?start=2025-01-01&end=2026-01-01&interval=1d&quote=usd
+GET https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@2026-01-01/v1/currencies/usd.min.json
+GET https://2026-01-01.currency-api.pages.dev/v1/currencies/usd.min.json
 ```
+
+CoinPaprika endpoints may be called only by the development provider profile;
+they are not part of a `release_safe` build.
 
 **Nothing else is sent.** No headers with app name, no API key, no user identifier, no device fingerprint.
 
@@ -318,16 +316,12 @@ Triggered when: app opens, user pulls to refresh, or daily cache expires.
 
 | Step | Provider | Calls | When |
 |------|----------|-------|------|
-| 1. Fetch fiat latest | Frankfurter | **1** | `GET /v2/rates?base=USD&quotes=...` (all 40 fiat in 1 call) |
-| 2. Fetch crypto USD prices | CoinPaprika | **2** | `GET /v1/tickers/btc-bitcoin?quotes=USD` + `GET /v1/tickers/eth-ethereum?quotes=USD` |
-| 3. Fallback (if CoinPaprika fails) | fawazahmed0 | **1** | Single static JSON download (contains all currencies) |
-| **Total per refresh** | | **1-3** | At most 3 calls per Convert refresh |
+| 1. Fetch fiat latest | Frankfurter | **1** | `GET /v2/rates?base=USD&quotes=...` (all 34 fiat in 1 call) |
+| 2. Fetch all 11 crypto USD prices | fawazahmed0 | **1 successful request** | CDN latest file; Pages is tried only on failure |
+| **Total per refresh** | | **2 successful requests** | One Frankfurter response + one static crypto file |
 
-Daily cap (1 refresh/day, 1 user): **3 CoinPaprika + 1 Frankfurter calls per day**
-
-With 500 DAU each refreshing once: **~1,000 CoinPaprika calls/day ≈ 30,000/month** — this exceeds the 20K limit.
-
-With 500 DAU but refresh-on-open = daily cached: most users hit cache, only first open of the day fetches. Realistic: **~500 unique user-days ≈ 1,500 CoinPaprika calls/month** — well under 20K.
+The app caches the combined snapshot once per local day. A mirror failure can
+add one extra request, but it does not create a CoinPaprika production call.
 
 ### Charts Tab (Historical Rates)
 
@@ -337,48 +331,53 @@ Triggered when: user selects a pair + range, or cached data is stale.
 
 | Step | Provider | Calls |
 |------|----------|-------|
-| Historical range | Frankfurter | **1** (`GET /v1/{from}..{to}?base=USD&symbols=EUR`) |
+| Historical range | Frankfurter | **1** (`GET /v2/rates?from={from}&to={to}&base=USD&quotes=EUR`) |
 
 **Crypto/Crypto pair (e.g. BTC/ETH):**
 
 | Step | Provider | Calls |
 |------|----------|-------|
-| BTC USD history | CoinPaprika | **1** |
-| ETH USD history | CoinPaprika | **1** |
-| **Total** | | **2** |
+| Base-asset USD history | fawazahmed0 | **1 successful request per missing date** |
+| Quote-asset USD history | fawazahmed0 | **1 successful request per missing date** |
+| **Total** | | **2 × number of uncached dates** |
 
 **Fiat/Crypto pair (e.g. EUR/BTC):**
 
 | Step | Provider | Calls |
 |------|----------|-------|
 | Fiat to USD history | Frankfurter | **1** |
-| Crypto USD history | CoinPaprika | **1** |
-| **Total** | | **2** |
+| Crypto USD history | fawazahmed0 | **1 successful request per missing date** |
+| **Total** | | **One fiat request + one file per missing crypto date** |
 
 **Crypto/Fiat pair (e.g. BTC/USD):**
 
 | Step | Provider | Calls |
 |------|----------|-------|
-| Crypto USD history | CoinPaprika | **1** |
+| Crypto USD history | fawazahmed0 | **1 successful request per missing date** |
 | USD to fiat (or identity if USD) | Frankfurter or **0** | **0-1** |
-| **Total** | | **1-2** |
+| **Total** | | **One file per missing date + optional fiat request** |
 
 Cache behavior: once a range is fetched, it is cached persistently. Only new date gaps trigger additional calls.
 
-### Per-User Daily Call Budget (Worst Case)
+### Per-user request shape
 
-| Action | Frankfurter | CoinPaprika | fawazahmed0 |
-|--------|-------------|-------------|-------------|
-| Convert open (1x/day) | 1 | 2 | 0 |
-| View 3 different chart pairs | 1-3 | 2-6 | 0 |
-| Switch ranges (same pair cached) | 0 | 0 | 0 |
-| **Daily worst case** | **4** | **8** | **0** |
+| Action | Frankfurter | fawazahmed0 (`release_safe`) |
+|--------|-------------|-------------------------------|
+| Convert refresh | 1 | 1 successful latest-file request |
+| New fiat/fiat chart range | 1 per missing segment | 0 |
+| New fiat/crypto chart range | 0–1 per missing fiat segment | 1 successful file per missing date |
+| New crypto/crypto chart range | 0 | 2 successful files per missing date |
+| Reopen a fully cached range | 0 | 0 |
+
+Historical crypto traffic is range-dependent, not a fixed 1–2-call operation.
+The client batches concurrent date-file requests and persists the result so only
+new gaps are fetched later.
 
 ---
 
 ## Monthly Call Budget Analysis
 
-### CoinPaprika (the tightest constraint — and a licensing blocker)
+### Historical CoinPaprika budget (development profile only)
 
 Free plan: **20,000 calls/month** — but **cannot be used commercially** anyway.
 
@@ -390,14 +389,15 @@ Free plan: **20,000 calls/month** — but **cannot be used commercially** anyway
 
 The quota discussion is **moot** — the license forbids commercial use regardless of call volume.
 
-### Why fawazahmed0 As Primary Crypto Provider Works
+### Why fawazahmed0 is the release-safe crypto provider
 
 1. **CC0 license**: no commercial use restrictions, no attribution required
 2. **No rate limit**: static CDN file, not a dynamic API
-3. **Already in the codebase**: currently a fallback, just needs promotion to primary
-4. **Includes BTC/ETH**: same data already used
+3. **Implemented in the release-safe profile**: latest and date-file history
+4. **Includes all 11 supported crypto assets**, including POL
 5. **Daily update**: matches the app's daily cache policy
-6. **Limitation**: no native historical time series endpoint (each date is a separate file) — charts would need a different approach or a secondary provider
+6. **Limitation**: no native historical time-series endpoint; the app fetches
+   one static file per missing date and caps crypto chart ranges at one year
 
 ---
 
@@ -411,12 +411,12 @@ The quota discussion is **moot** — the license forbids commercial use regardle
 | 1M | Yes | Yes | Standard |
 | 3M | Yes | Yes | Standard |
 | 6M | Yes | Yes | Standard |
-| 1Y | Yes | Yes | CoinPaprika free plan max |
-| 2Y | Yes | **No** | CoinPaprika free plan does not support > 1Y |
+| 1Y | Yes | Yes | Current product cap for date-file crypto history |
+| 2Y | Yes | **No** | Avoids excessive date-file requests in the no-key profile |
 
-### After CoinPaprika Replacement
+### Current and alternative crypto providers
 
-Crypto chart ranges will depend on the replacement provider's capabilities:
+The current release uses fawazahmed0. Alternatives remain future decisions:
 
 | Replacement | Historical Available | Max Range | Commercial OK? |
 |-------------|---------------------|-----------|----------------|
@@ -436,8 +436,9 @@ Keep current range structure for fiat. Crypto ranges adjust based on replacement
 
 ### Key Insight: Each User Has An Independent Quota
 
-Because there is **no API key** and **no shared identity**, providers treat each user
-as an independent caller:
+Because there is **no API key** and **no shared app identity**, dynamic-provider
+rate limiting is generally per client/network rather than one account-wide
+monthly bucket:
 
 - **User A** on WiFi at home → IP `203.0.113.5` → their own quota
 - **User B** on mobile data → IP `198.51.100.12` → their own quota
@@ -448,9 +449,10 @@ global "all users combined" limit.
 
 ### Edge Case: Shared IPs (Corporate/School WiFi)
 
-Many users behind one IP (e.g. office WiFi) share the per-IP rate limit. But daily
-caching limits each device to ~3-8 calls/day, so even 50 users behind one IP =
-~150-400 calls/day = ~12K/month — still under most quotas.
+Many users behind one IP (for example office WiFi) may share anti-abuse limits.
+Daily latest caching keeps normal refresh traffic low, while a first uncached
+crypto chart can request many date files. Persistent per-range caching prevents
+repeating that whole range on later opens.
 
 ### Your Backend Plan Is The Correct Long-Term Strategy
 
@@ -498,11 +500,11 @@ providers (Frankfurter + fawazahmed0) cover the current app legally.
 
 | Question | Answer |
 |----------|--------|
-| Can I publish on Play Store with current providers? | **NO** — CoinPaprika ToS forbids commercial use on free plan and user-facing display on all standard paid plans. **Must replace CoinPaprika.** |
-| What should I replace CoinPaprika with? | **fawazahmed0** (CC0, already in codebase) for latest rates. For charts, either compose from fawazahmed0 date files, or add CoinGecko. |
+| Can I publish on Play Store with current release-safe providers? | **Yes on provider licensing:** the shipped profile uses Frankfurter + fawazahmed0. CoinPaprika remains development-only. Other Play release gates still apply. |
+| What replaced CoinPaprika in release builds? | **fawazahmed0** (CC0) supplies latest rates and date-file chart history for all 11 crypto assets. |
 | Are Frankfurter and fawazahmed0 safe? | **Yes** — both explicitly allow commercial use (Unlicense + CC0). |
 | Does Google Play require special approval? | **No** — declare "no financial features." A rate display app is not a crypto exchange or wallet. |
 | Am I doing too many calls? | **No**, not at current scale. Daily caching keeps calls minimal. |
-| Should I reduce chart ranges? | **No** for fiat. Crypto ranges depend on replacement provider. |
-| What happens if a provider fails? | fawazahmed0 fallback provides latest BTC/ETH. Fiat is independent. Charts cache persists. |
+| Should I reduce chart ranges? | **No** for fiat. Crypto remains capped at one year because its history uses one date file per asset/day. |
+| What happens if a provider fails? | fawazahmed0 has a Pages mirror, fiat is independent, and the app preserves valid cached latest/chart data. |
 | Is my backend plan the right approach? | **Yes** — backend proxy is the correct scale-up strategy. Free for now (Frankfurter + fawazahmed0); when justified, OXR Developer is the selected hourly-fiat upstream. CoinGecko remains optional for intraday crypto and needs its own licence confirmation. |

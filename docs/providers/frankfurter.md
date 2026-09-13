@@ -31,12 +31,14 @@ publication date.
 
 | Data type | Coverage | Granularity | Max history |
 |-----------|---------|-------------|-------------|
-| Latest rates | 200 currencies (all 40 fiat currencies included) | Daily snapshot | N/A (current only) |
-| Historical time series | 200 currencies | **Daily** points | Back to 1999 (ECB data start) |
+| Latest rates | ~200 currencies (all 34 app fiat currencies included) | Daily snapshot | N/A (current only) |
+| Historical time series | ~200 currencies | **Daily** points | Source-dependent |
 
-### Supported MVP Currencies (all 16)
+### Supported app currencies (all 34)
 
-USD, EUR, GBP, JPY, CAD, AUD, CNY, INR, MXN, BRL, TRY, KRW, SGD, HKD, NZD, CHF
+USD, EUR, GBP, JPY, CNY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD,
+AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR,
+TWD, NZD, TRY, AED, ILS, ZAR
 
 **Not supported:** RUB (ECB suspended EUR/RUB on 2022-03-01)
 
@@ -51,9 +53,10 @@ Returns latest rates for the requested fiat currencies in **one call**. Without
 a `providers` filter, Frankfurter v2 blends its available sources.
 
 ```
-GET https://api.frankfurter.dev/v1/{FROM_DATE}..{TO_DATE}?base={BASE}&symbols={QUOTE}
+GET https://api.frankfurter.dev/v2/rates?from={FROM_DATE}&to={TO_DATE}&base={BASE}&quotes={QUOTE_CODES}
 ```
-Returns historical daily rates for a date range (used by Charts tab).
+Returns v2 row-list historical daily rates for a date range (used by Charts
+and previous-day trend badges).
 
 ### When calls happen
 
@@ -61,7 +64,8 @@ Returns historical daily rates for a date range (used by Charts tab).
 |---------|----------|-----------|
 | App opens (if cache stale/expired) | `/v2/rates` | Once per day max |
 | User pulls to refresh on Convert tab | `/v2/rates` | User-initiated |
-| User views a chart pair+range | `/v1/{range}` | Cached per pair+range |
+| Convert calculates daily trend badges | `/v2/rates` with `from`/`to` | Once per refresh when needed |
+| User views a chart pair+range | `/v2/rates` with `from`/`to` | Cached per pair+range |
 
 ### Cache behavior
 

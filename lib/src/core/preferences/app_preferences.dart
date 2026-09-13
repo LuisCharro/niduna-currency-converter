@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../currency/currency_code_migration.dart';
+import '../currency/supported_currencies.dart';
 
 class AppPreferences extends ChangeNotifier {
   AppPreferences(this._prefs);
@@ -21,8 +22,13 @@ class AppPreferences extends ChangeNotifier {
 
   static const List<String> defaultSelectedCodes = ['EUR', 'GBP', 'JPY'];
 
-  String get defaultBaseCurrency =>
-      canonicalCurrencyCode(_prefs.getString(_defaultBaseKey) ?? 'USD');
+  String get defaultBaseCurrency {
+    final code = canonicalCurrencyCode(
+      _prefs.getString(_defaultBaseKey) ?? 'USD',
+    );
+    return isFiatCurrency(code) ? code : 'USD';
+  }
+
   int get decimalPlaces => _prefs.getInt(_decimalPlacesKey) ?? 2;
   bool get refreshOnOpen => _prefs.getBool(_refreshOnOpenKey) ?? true;
   bool get devToolsAvailable => kDebugMode;
@@ -35,17 +41,41 @@ class AppPreferences extends ChangeNotifier {
   List<String> get selectedCodes {
     final codes = _prefs.getStringList(_selectedCodesKey);
     if (codes == null || codes.isEmpty) return defaultSelectedCodes;
-    return canonicalizeCodeList(codes);
+    final supported = _supportedCodes(codes);
+    return supported.isEmpty ? defaultSelectedCodes : supported;
   }
 
   Future<void> setSelectedCodes(List<String> codes) async {
-    await _prefs.setStringList(_selectedCodesKey, canonicalizeCodeList(codes));
+    await _prefs.setStringList(_selectedCodesKey, _supportedCodes(codes));
     notifyListeners();
   }
 
   Future<void> setDefaultBaseCurrency(String code) async {
-    await _prefs.setString(_defaultBaseKey, canonicalCurrencyCode(code));
+    final canonical = canonicalCurrencyCode(code);
+    if (!isFiatCurrency(canonical)) return;
+    await _prefs.setString(_defaultBaseKey, canonical);
     notifyListeners();
+  }
+
+  Future<void> migrateCurrencyCodesIfNeeded() async {
+    var changed = false;
+    final storedBase = _prefs.getString(_defaultBaseKey);
+    if (storedBase != null && storedBase != defaultBaseCurrency) {
+      await _prefs.setString(_defaultBaseKey, defaultBaseCurrency);
+      changed = true;
+    }
+
+    final storedCodes = _prefs.getStringList(_selectedCodesKey);
+    if (storedCodes != null) {
+      final migrated = _supportedCodes(storedCodes);
+      final normalized = migrated.isEmpty ? defaultSelectedCodes : migrated;
+      if (!_listEquals(storedCodes, normalized)) {
+        await _prefs.setStringList(_selectedCodesKey, normalized);
+        changed = true;
+      }
+    }
+
+    if (changed) notifyListeners();
   }
 
   Future<void> setDecimalPlaces(int value) async {
@@ -87,4 +117,15 @@ class AppPreferences extends ChangeNotifier {
   }
 
   static const List<int> supportedDecimalPlaces = [2, 3, 4, 5, 6];
+
+  static List<String> _supportedCodes(List<String> codes) =>
+      canonicalizeCodeList(codes).where(isSupportedCurrencyCode).toList();
+
+  static bool _listEquals(List<String> a, List<String> b) {
+    if (a.length != b.length) return false;
+    for (var index = 0; index < a.length; index++) {
+      if (a[index] != b[index]) return false;
+    }
+    return true;
+  }
 }

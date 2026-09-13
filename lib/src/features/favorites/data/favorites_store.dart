@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/currency/currency_code_migration.dart';
+import '../../../core/currency/supported_currencies.dart';
 import '../domain/favorite_pair.dart';
 
 class FavoritesStore extends ChangeNotifier {
@@ -18,8 +19,10 @@ class FavoritesStore extends ChangeNotifier {
 
   bool get isEmpty => _pairs.isEmpty;
 
-  bool isFavorite(String base, String quote) =>
-      _pairs.any((p) => p.base == base && p.quote == quote);
+  bool isFavorite(String base, String quote) {
+    final pair = _canonicalPair(base, quote);
+    return pair != null && _pairs.contains(pair);
+  }
 
   bool canAdd(String base, String quote, int limit) =>
       isFavorite(base, quote) || _pairs.length < limit;
@@ -30,16 +33,17 @@ class FavoritesStore extends ChangeNotifier {
       : await add(base, quote);
 
   Future<void> add(String base, String quote) async {
-    if (isFavorite(base, quote)) return;
-    _pairs = [..._pairs, FavoritePair(base: base, quote: quote)];
+    final pair = _canonicalPair(base, quote);
+    if (pair == null || _pairs.contains(pair)) return;
+    _pairs = [..._pairs, pair];
     _save();
     notifyListeners();
   }
 
   Future<void> remove(String base, String quote) async {
-    _pairs = _pairs
-        .where((p) => !(p.base == base && p.quote == quote))
-        .toList();
+    final pair = _canonicalPair(base, quote);
+    if (pair == null) return;
+    _pairs = _pairs.where((candidate) => candidate != pair).toList();
     _save();
     notifyListeners();
   }
@@ -69,9 +73,13 @@ class FavoritesStore extends ChangeNotifier {
   void _load() {
     final keys = _prefs.getStringList(_key);
     if (keys == null) return;
-    final canonical = canonicalizeFavoriteKeys(keys);
-    _pairs =
-        canonical.map((k) => tryParse(k)).whereType<FavoritePair>().toList();
+    final seen = <FavoritePair>{};
+    _pairs = keys
+        .map(tryParse)
+        .whereType<FavoritePair>()
+        .where(seen.add)
+        .toList();
+    final canonical = _pairs.map((pair) => pair.toKey()).toList();
     // Persist the canonicalised form so the next load is a no-op.
     if (!_listEquals(canonical, keys)) {
       _save();
@@ -88,10 +96,24 @@ class FavoritesStore extends ChangeNotifier {
 
   static FavoritePair? tryParse(String key) {
     try {
-      return FavoritePair.fromKey(key);
+      final canonical = canonicalizeFavoriteKey(key);
+      if (canonical == null) return null;
+      final pair = FavoritePair.fromKey(canonical);
+      return _canonicalPair(pair.base, pair.quote);
     } catch (_) {
       return null;
     }
+  }
+
+  static FavoritePair? _canonicalPair(String rawBase, String rawQuote) {
+    final base = canonicalCurrencyCode(rawBase);
+    final quote = canonicalCurrencyCode(rawQuote);
+    if (base == quote ||
+        !isSupportedCurrencyCode(base) ||
+        !isSupportedCurrencyCode(quote)) {
+      return null;
+    }
+    return FavoritePair(base: base, quote: quote);
   }
 
   Future<void> seedStarterIfEmpty() async {

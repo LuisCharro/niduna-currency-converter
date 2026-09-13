@@ -342,7 +342,7 @@ analytics, local app data, and transparent disclosure of the ads SDK.
 
 ### Crypto API (No-Key Phase 1.x)
 
-- 11 crypto currencies (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC) latest rates follow a build-time provider profile. Release-safe builds use fawazahmed0. Dev builds may use CoinPaprika as primary and fawazahmed0 as fallback.
+- 11 crypto currencies (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, POL) latest rates follow a build-time provider profile. Release-safe builds use fawazahmed0. Dev builds may use CoinPaprika as primary and fawazahmed0 as fallback.
 - Crypto daily historical charts use fawazahmed0 in the release-safe profile (no API key). Dev builds may use CoinPaprika historical ticks.
 - No API key is embedded in the mobile app.
 - No backend/proxy is required for this limited scope.
@@ -450,7 +450,7 @@ Build the first release as a **simple, privacy-first, no-login, ad-supported con
 |----------|---------|---------|----------|
 | **Data source** | Frankfurter free + fawazahmed0 CC0 for 11 crypto | OXR Developer via the Honest Fern VPS API + Frankfurter/fawazahmed0 fallbacks; optional broader crypto provider | + expanded crypto/metals providers |
 | **Backend** | None | VPS worker pulls/stores OXR data; ASP.NET Core + PostgreSQL + public Honest Fern API on Hostinger | Same |
-| **Currencies** | 34 fiat currencies + 11 crypto (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, MATIC) | Broader fiat/crypto if approved | + Metals (XAU/XAG) |
+| **Currencies** | 34 fiat currencies + 11 crypto (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, POL) | Broader fiat/crypto if approved | + Metals (XAU/XAG) |
 | **Charts** | fiat daily up to 2Y; crypto daily up to 1Y | + Multi-pair comparison | + Metals overlays + extended crypto |
 | **Rate alerts** | No | Push via backend (subscription) | + Crypto price alerts |
 | **Monetization** | Ads + three one-time products | Possible subscriptions (new decision required) | Possible Crypto/Metals add-on |

@@ -1,6 +1,6 @@
 # Currency Coverage — What Each Provider Offers vs What This App Uses
 
-> **Last updated:** 2026-05-31
+> **Last updated:** 2026-09-12
 > **Purpose:** Complete inventory of available currencies per provider,
 > versus what this app actually pulls and displays.
 
@@ -11,7 +11,7 @@
 | | Fiat currencies | Crypto currencies |
 |---|---|---|
 | **App uses (Convert tab)** | **34** | **11** (BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, POL) |
-| **App uses (Charts — fiat pairs)** | Any of the 40 as base or quote | N/A |
+| **App uses (Charts — fiat pairs)** | Any of the 34 as base or quote | N/A |
 | **App uses (Charts — crypto pairs)** | N/A | **11** (same as Convert) |
 | **Frankfurter offers** | **~200** (ECB + 55 central banks) | None |
 | **fawazahmed0 offers** | **200+** | **200+** (incl. all 11 supported cryptos) |
@@ -266,10 +266,10 @@ Notable cryptos available from fawazahmed0 that this app does **NOT** yet use:
 
 | Category | Examples (subset) |
 |---------|-------------------|
-| Top market cap | SOL, XRP, ADA, DOGE, AVAX, DOT, MATIC, LINK, UNI, ATOM, FIL, NEAR, APT, ICP, HBAR, EGLD, OP, ARB, AAVE, SNX, RUNE, 1INCH, CRV, SUSHI, COMP, AAVE, MKR, YFI, BAL, LDO, GMX, GNS, FXS, QNT, REN, ENJ, LRC, KAVA, INJ, RAD, DIA, BAND, COTI, FLOW, CELO, CHR, RLY, ALCX, AUDIT, GALA, SPELL, LOOKS, IMX, SAND, STORJ, AXS, GMT, GLP, JUP, ORCA, WOO, PERP, KP3R, RDNT, SUSHI, ... |
+| Top market cap | SOL, XRP, ADA, DOGE, AVAX, DOT, POL, LINK, UNI, ATOM, FIL, NEAR, APT, ICP, HBAR, EGLD, OP, ARB, AAVE, SNX, RUNE, 1INCH, CRV, SUSHI, COMP, AAVE, MKR, YFI, BAL, LDO, GMX, GNS, FXS, QNT, REN, ENJ, LRC, KAVA, INJ, RAD, DIA, BAND, COTI, FLOW, CELO, CHR, RLY, ALCX, AUDIT, GALA, SPELL, LOOKS, IMX, SAND, STORJ, AXS, GMT, GLP, JUP, ORCA, WOO, PERP, KP3R, RDNT, SUSHI, ... |
 | Stablecoins | USDT, USDC, DAI, BUSD, UST, TUSD, FRAX, FEI, GUSD, LUSD, MIM, USDN, USDP, USDS, ... |
 | Memes/altcoins | SHIB, PEPE, DOGE, BABYDOGE, FLOKI, BONK, CUMRO, ... |
-| Layer-2s | MATIC (Polygon), OP (Optimism), ARB (Arbitrum), METIS, ... |
+| Layer-2s | POL (Polygon), OP (Optimism), ARB (Arbitrum), METIS, ... |
 | Exchange tokens | BNB, KCS, KUCOIN, HT, GT, LEO, FTT, ... |
 | Privacy coins | XMR, ZEC, DASH, ... |
 | DeFi bluechips | AAVE, UNI, COMP, MKR, YFI, LDO, CRV, CVX, FXS, ... |
@@ -333,7 +333,7 @@ CoinPaprika covers **2,500+ cryptocurrencies** across categories:
 | Stablecoins | 50+ | USDT, USDC, DAI, BUSD, UST, TUSD, FRAX, FEI, ... |
 | DeFi tokens | 500+ | UNI, AAVE, COMP, MKR, SUSHI, CRV, 1INCH, ... |
 | Gaming/metaverse | 100+ | AXS, ILV, GALA, IMX, SAND, RAD, ... |
-| Layer-2s | 30+ | MATIC, OP, ARB, METIS, ... |
+| Layer-2s | 30+ | POL, OP, ARB, METIS, ... |
 | Exchange tokens | 20+ | BNB, KCS, HT, GT, LEO, FTT, ... |
 | Privacy coins | 10+ | XMR, ZEC, DASH, GRIN, ... |
 

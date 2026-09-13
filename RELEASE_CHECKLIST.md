@@ -1,17 +1,18 @@
 # Release Checklist — Path to Google Play Store
 
-## Resume checkpoint — 2026-09-12
+## Resume checkpoint — 2026-09-13
 
-### Latest operational truth — 2026-09-12
+### Latest operational truth — 2026-09-13
 
 - The source contains the UMP/AdMob late-consent fix and signed build
   `1.0.0+4` (`versionCode 4`) is published on the **Internal testing** track.
 - A 2026-09-12 provider audit found a P0 blocker in that build: historical and
   trend fiat calls still use Frankfurter v1, which omits AED, ARS, CLP, COP and
   TWD, while Polygon is still keyed as MATIC although the release-safe crypto
-  feed uses POL. Do **not** promote `1.0.0+4` to Closed. The executable fix and
-  verification contract is
-  `.agent/provider-coverage-remediation-plan-2026-09-12.md`.
+  feed uses POL. The local source repair and independent review completed on
+  2026-09-13; the exact fixed candidate has not been built or uploaded. Do
+  **not** promote `1.0.0+4` to Closed. The implementation and verification
+  record is `.agent/provider-coverage-remediation-plan-2026-09-12.md`.
 - The default Play listing is `en-GB`. The new Honest Fern icon and six
   `1350×2400` phone screenshots are saved in the Play asset library and are
   selected in the default listing draft; the old selected icon/screenshots
@@ -22,11 +23,11 @@
   Console session because the API commit path returned `403` even after the
   app-level production-release permission was granted. Do not broaden access
   account-wide.
-- The next step is to implement and independently review the provider-coverage
-  plan, then create and accept a new Internal candidate using the next unused
-  version code (`1.0.0+5` expected). Only that accepted fixed artifact may be
-  considered for Closed testing; do not rebuild it merely to change
-  `versionName` later.
+- The next operational step, after Luis explicitly approves the local diff, is
+  to commit it and create a new Internal candidate using the next unused
+  version code (`1.0.0+5` expected). Accept that exact Play-distributed build
+  on device before considering it for Closed testing; do not rebuild it merely
+  to change `versionName` later.
 - A personal developer account still needs at least 12 continuously opted-in
   Closed-testers for 14 days before the production-access application; target
   14–16 testers for margin. Internal testing does not start that clock.

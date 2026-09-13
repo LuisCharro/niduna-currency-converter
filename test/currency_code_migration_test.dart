@@ -1,5 +1,6 @@
 import 'package:currency_converter/src/core/currency/currency_code_migration.dart';
 import 'package:currency_converter/src/core/monetization/models/temporary_unlock.dart';
+import 'package:currency_converter/src/core/monetization/monetization_controller.dart';
 import 'package:currency_converter/src/core/monetization/temporary_unlock_store.dart';
 import 'package:currency_converter/src/core/preferences/app_preferences.dart';
 import 'package:currency_converter/src/features/favorites/data/favorites_store.dart';
@@ -50,10 +51,11 @@ void main() {
 
   group('canonicalizeCodeList', () {
     test('MATIC replaced by POL', () {
-      expect(
-        canonicalizeCodeList(<String>['EUR', 'MATIC', 'BTC']),
-        <String>['EUR', 'POL', 'BTC'],
-      );
+      expect(canonicalizeCodeList(<String>['EUR', 'MATIC', 'BTC']), <String>[
+        'EUR',
+        'POL',
+        'BTC',
+      ]);
     });
 
     test('MATIC + POL duplicate collapses to single POL', () {
@@ -64,10 +66,11 @@ void main() {
     });
 
     test('preserves order of non-MATIC codes', () {
-      expect(
-        canonicalizeCodeList(<String>['JPY', 'MATIC', 'CHF']),
-        <String>['JPY', 'POL', 'CHF'],
-      );
+      expect(canonicalizeCodeList(<String>['JPY', 'MATIC', 'CHF']), <String>[
+        'JPY',
+        'POL',
+        'CHF',
+      ]);
     });
 
     test('idempotent — running twice yields same result', () {
@@ -81,10 +84,11 @@ void main() {
     });
 
     test('unsupported codes preserved (validation is separate layer)', () {
-      expect(
-        canonicalizeCodeList(<String>['EUR', 'XXX', 'BTC']),
-        <String>['EUR', 'XXX', 'BTC'],
-      );
+      expect(canonicalizeCodeList(<String>['EUR', 'XXX', 'BTC']), <String>[
+        'EUR',
+        'XXX',
+        'BTC',
+      ]);
     });
   });
 
@@ -111,11 +115,13 @@ void main() {
       expect(canonicalizeFavoriteKey('POL-POL'), isNull);
     });
 
-    test('invalid format returned unchanged (validation is separate layer)',
-        () {
-      expect(canonicalizeFavoriteKey('INVALID'), 'INVALID');
-      expect(canonicalizeFavoriteKey('A-B-C'), 'A-B-C');
-    });
+    test(
+      'invalid format returned unchanged (validation is separate layer)',
+      () {
+        expect(canonicalizeFavoriteKey('INVALID'), 'INVALID');
+        expect(canonicalizeFavoriteKey('A-B-C'), 'A-B-C');
+      },
+    );
   });
 
   group('canonicalizeFavoriteKeys (list dedup)', () {
@@ -152,51 +158,93 @@ void main() {
       expect(preferences.selectedCodes, <String>['EUR', 'POL', 'BTC']);
     });
 
-    test('defaultBaseCurrency getter canonicalizes legacy MATIC', () async {
-      SharedPreferences.setMockInitialValues(<String, Object>{
-        'pref_default_base': 'MATIC',
-      });
-      final prefs = await SharedPreferences.getInstance();
-      final preferences = AppPreferences(prefs);
+    test(
+      'legacy MATIC default base falls back to supported fiat USD',
+      () async {
+        SharedPreferences.setMockInitialValues(<String, Object>{
+          'pref_default_base': 'MATIC',
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final preferences = AppPreferences(prefs);
 
-      expect(preferences.defaultBaseCurrency, 'POL');
-    });
+        expect(preferences.defaultBaseCurrency, 'USD');
+      },
+    );
 
     test('setSelectedCodes canonicalizes before persisting', () async {
       SharedPreferences.setMockInitialValues(<String, Object>{});
       final prefs = await SharedPreferences.getInstance();
       final preferences = AppPreferences(prefs);
 
-      await preferences
-          .setSelectedCodes(<String>['EUR', 'MATIC', 'BTC']);
+      await preferences.setSelectedCodes(<String>['EUR', 'MATIC', 'BTC']);
 
-      expect(
-        prefs.getStringList('pref_selected_codes'),
-        <String>['EUR', 'POL', 'BTC'],
-      );
+      expect(prefs.getStringList('pref_selected_codes'), <String>[
+        'EUR',
+        'POL',
+        'BTC',
+      ]);
     });
 
-    test('setDefaultBaseCurrency canonicalizes before persisting', () async {
-      SharedPreferences.setMockInitialValues(<String, Object>{});
+    test('setDefaultBaseCurrency rejects crypto values', () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        'pref_default_base': 'CHF',
+      });
       final prefs = await SharedPreferences.getInstance();
       final preferences = AppPreferences(prefs);
 
       await preferences.setDefaultBaseCurrency('MATIC');
 
-      expect(prefs.getString('pref_default_base'), 'POL');
+      expect(prefs.getString('pref_default_base'), 'CHF');
     });
 
-    test('setSelectedCodes persists normalized state — second read returns POL',
-        () async {
-      SharedPreferences.setMockInitialValues(<String, Object>{});
-      final prefs = await SharedPreferences.getInstance();
-      final preferences = AppPreferences(prefs);
+    test(
+      'setSelectedCodes persists normalized state — second read returns POL',
+      () async {
+        SharedPreferences.setMockInitialValues(<String, Object>{});
+        final prefs = await SharedPreferences.getInstance();
+        final preferences = AppPreferences(prefs);
 
-      await preferences.setSelectedCodes(<String>['MATIC']);
-      final after = preferences.selectedCodes;
-      expect(after, <String>['POL']);
-      expect(prefs.getStringList('pref_selected_codes'), <String>['POL']);
-    });
+        await preferences.setSelectedCodes(<String>['MATIC']);
+        final after = preferences.selectedCodes;
+        expect(after, <String>['POL']);
+        expect(prefs.getStringList('pref_selected_codes'), <String>['POL']);
+      },
+    );
+
+    test(
+      'migrateCurrencyCodesIfNeeded persists canonical supported values',
+      () async {
+        SharedPreferences.setMockInitialValues(<String, Object>{
+          'pref_default_base': 'MATIC',
+          'pref_selected_codes': <String>['EUR', 'MATIC', 'XXX', 'POL'],
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final preferences = AppPreferences(prefs);
+
+        await preferences.migrateCurrencyCodesIfNeeded();
+
+        expect(prefs.getString('pref_default_base'), 'USD');
+        expect(prefs.getStringList('pref_selected_codes'), <String>[
+          'EUR',
+          'POL',
+        ]);
+      },
+    );
+
+    test(
+      'unsupported persisted values fall back without reaching the UI',
+      () async {
+        SharedPreferences.setMockInitialValues(<String, Object>{
+          'pref_default_base': 'XXX',
+          'pref_selected_codes': <String>['XXX', 'EUR'],
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final preferences = AppPreferences(prefs);
+
+        expect(preferences.defaultBaseCurrency, 'USD');
+        expect(preferences.selectedCodes, <String>['EUR']);
+      },
+    );
   });
 
   group('FavoritesStore MATIC migration', () {
@@ -207,10 +255,10 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       final store = FavoritesStore(prefs);
 
-      expect(
-        store.pairs.map((p) => p.toKey()).toList(),
-        <String>['POL-USD', 'EUR-USD'],
-      );
+      expect(store.pairs.map((p) => p.toKey()).toList(), <String>[
+        'POL-USD',
+        'EUR-USD',
+      ]);
       store.dispose();
     });
 
@@ -244,62 +292,126 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       final store = FavoritesStore(prefs);
 
-      expect(
-        store.pairs.map((p) => p.toKey()).toList(),
-        <String>['USD-EUR', 'USD-GBP'],
-      );
+      expect(store.pairs.map((p) => p.toKey()).toList(), <String>[
+        'USD-EUR',
+        'USD-GBP',
+      ]);
       store.dispose();
     });
 
-    test('load migration is idempotent — second load yields same result',
-        () async {
-      SharedPreferences.setMockInitialValues(<String, Object>{
-        'favorite_pairs': <String>['MATIC-USD'],
-      });
-      final prefs = await SharedPreferences.getInstance();
-      final store1 = FavoritesStore(prefs);
-      expect(store1.pairs.first.toKey(), 'POL-USD');
-      store1.dispose();
+    test(
+      'load migration is idempotent — second load yields same result',
+      () async {
+        SharedPreferences.setMockInitialValues(<String, Object>{
+          'favorite_pairs': <String>['MATIC-USD'],
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final store1 = FavoritesStore(prefs);
+        expect(store1.pairs.first.toKey(), 'POL-USD');
+        store1.dispose();
 
-      final store2 = FavoritesStore(prefs);
-      expect(store2.pairs.first.toKey(), 'POL-USD');
-      store2.dispose();
+        final store2 = FavoritesStore(prefs);
+        expect(store2.pairs.first.toKey(), 'POL-USD');
+        store2.dispose();
+      },
+    );
+
+    test('add canonicalizes MATIC and rejects unsupported pairs', () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      final prefs = await SharedPreferences.getInstance();
+      final store = FavoritesStore(prefs);
+
+      await store.add('MATIC', 'USD');
+      await store.add('XXX', 'USD');
+      await store.add('POL', 'POL');
+
+      expect(store.pairs.map((pair) => pair.toKey()), <String>['POL-USD']);
+      expect(prefs.getStringList('favorite_pairs'), <String>['POL-USD']);
+      store.dispose();
     });
   });
 
   group('TemporaryUnlockStore MATIC migration', () {
-    test('migrateIfNeeded removes MATIC unlock registry entries (legacy format is unsafe to decode)', () async {
-      SharedPreferences.setMockInitialValues(<String, Object>{});
+    test(
+      'save writes reloadable JSON and load uses the stored key format',
+      () async {
+        SharedPreferences.setMockInitialValues(<String, Object>{});
+        final prefs = await SharedPreferences.getInstance();
+        final store = TemporaryUnlockStore(prefs);
+        final unlock = TemporaryUnlock(
+          base: 'USD',
+          quote: 'CHF',
+          grantedAt: DateTime.now(),
+        );
+
+        await store.save(unlock);
+        final reloaded = TemporaryUnlockStore(prefs);
+        final loaded = await reloaded.load('CHF', 'USD');
+
+        expect(loaded, isNotNull);
+        expect(loaded!.base, 'USD');
+        expect(loaded.quote, 'CHF');
+      },
+    );
+
+    test('controller startup migrates shipped MATIC unlock to POL', () async {
+      final grantedAt = DateTime.now().subtract(const Duration(minutes: 5));
+      final legacy =
+          '{"temp_unlock_MATIC_USD": "{'
+          '"base": "MATIC", "quote": "USD", '
+          '"grantedAt": "${grantedAt.toIso8601String()}", '
+          '"durationMs": "86400000"}"}';
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        'temp_unlocks_registry': legacy,
+      });
       final prefs = await SharedPreferences.getInstance();
-      final store = TemporaryUnlockStore(prefs);
+      final controller = MonetizationController(prefs);
 
-      await store.save(TemporaryUnlock(
-        base: 'MATIC',
-        quote: 'USD',
-        grantedAt: DateTime(2026, 9, 12, 12),
-      ));
+      await controller.loadTempUnlocks();
 
-      expect(prefs.getString('temp_unlocks_registry'), contains('MATIC'));
-
-      await store.migrateIfNeeded();
-
-      final after = prefs.getString('temp_unlocks_registry');
-      expect(after, isNotNull);
-      // Legacy format cannot be safely decoded; per plan §C4, MATIC entries
-      // are removed (not migrated to POL). The registry collapses to {}.
-      expect(after, equals('{}'));
+      expect(controller.isChartPairUnlocked('POL', 'USD'), isTrue);
+      expect(prefs.getString('temp_unlocks_registry'), contains('POL'));
+      expect(
+        prefs.getString('temp_unlocks_registry'),
+        isNot(contains('MATIC')),
+      );
+      controller.dispose();
     });
 
-    test('migrateIfNeeded is idempotent', () async {
-      SharedPreferences.setMockInitialValues(<String, Object>{});
-      final prefs = await SharedPreferences.getInstance();
-      final store = TemporaryUnlockStore(prefs);
+    test(
+      'migrateIfNeeded maps a shipped MATIC registry entry to POL',
+      () async {
+        final unlock = TemporaryUnlock(
+          base: 'MATIC',
+          quote: 'USD',
+          grantedAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        );
+        SharedPreferences.setMockInitialValues(<String, Object>{
+          'temp_unlocks_registry': _legacyRegistry(<TemporaryUnlock>[unlock]),
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final store = TemporaryUnlockStore(prefs);
 
-      await store.save(TemporaryUnlock(
+        await store.migrateIfNeeded();
+
+        final after = prefs.getString('temp_unlocks_registry');
+        expect(after, contains('POL'));
+        expect(after, isNot(contains('MATIC')));
+        expect(await store.load('POL', 'USD'), isNotNull);
+      },
+    );
+
+    test('migrateIfNeeded is idempotent', () async {
+      final unlock = TemporaryUnlock(
         base: 'MATIC',
         quote: 'USD',
-        grantedAt: DateTime(2026, 9, 12, 12),
-      ));
+        grantedAt: DateTime.now().subtract(const Duration(minutes: 5)),
+      );
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        'temp_unlocks_registry': _legacyRegistry(<TemporaryUnlock>[unlock]),
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final store = TemporaryUnlockStore(prefs);
 
       await store.migrateIfNeeded();
       final firstRaw = prefs.getString('temp_unlocks_registry');
@@ -310,61 +422,67 @@ void main() {
       expect(secondRaw, equals(firstRaw));
     });
 
-    test('migrateIfNeeded then fresh save works (registry can grow again)',
-        () async {
-      SharedPreferences.setMockInitialValues(<String, Object>{});
+    test(
+      'migrateIfNeeded then fresh save works (registry can grow again)',
+      () async {
+        final oldUnlock = TemporaryUnlock(
+          base: 'MATIC',
+          quote: 'USD',
+          grantedAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        );
+        SharedPreferences.setMockInitialValues(<String, Object>{
+          'temp_unlocks_registry': _legacyRegistry(<TemporaryUnlock>[
+            oldUnlock,
+          ]),
+        });
+        final prefs = await SharedPreferences.getInstance();
+        final store = TemporaryUnlockStore(prefs);
+        await store.migrateIfNeeded();
+
+        // Add a fresh unlock after migration — should not crash and should
+        // appear in the registry.
+        await store.save(
+          TemporaryUnlock(base: 'USD', quote: 'EUR', grantedAt: DateTime.now()),
+        );
+
+        final raw = prefs.getString('temp_unlocks_registry');
+        expect(raw, isNotNull);
+        // TemporaryUnlock.canonicalKey sorts alphabetically — USD/EUR is stored as EUR_USD.
+        expect(raw!, contains('EUR_USD'));
+        expect(raw, isNot(contains('MATIC')));
+      },
+    );
+
+    test('migrateIfNeeded preserves other shipped unlocks', () async {
+      final grantedAt = DateTime.now().subtract(const Duration(minutes: 5));
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        'temp_unlocks_registry': _legacyRegistry(<TemporaryUnlock>[
+          TemporaryUnlock(base: 'MATIC', quote: 'USD', grantedAt: grantedAt),
+          TemporaryUnlock(base: 'BTC', quote: 'EUR', grantedAt: grantedAt),
+        ]),
+      });
       final prefs = await SharedPreferences.getInstance();
       final store = TemporaryUnlockStore(prefs);
-
-      await store.save(TemporaryUnlock(
-        base: 'MATIC',
-        quote: 'USD',
-        grantedAt: DateTime(2026, 9, 12, 12),
-      ));
-      await store.migrateIfNeeded();
-
-      // Add a fresh unlock after migration — should not crash and should
-      // appear in the registry.
-      await store.save(TemporaryUnlock(
-        base: 'USD',
-        quote: 'EUR',
-        grantedAt: DateTime(2026, 9, 12, 13),
-      ));
-
-      final raw = prefs.getString('temp_unlocks_registry');
-      expect(raw, isNotNull);
-      // TemporaryUnlock.canonicalKey sorts alphabetically — USD/EUR is stored as EUR_USD.
-      expect(raw!, contains('EUR_USD'));
-      expect(raw, isNot(contains('MATIC')));
-    });
-
-    test('migrateIfNeeded preserves non-MATIC unlocks byte-equivalent',
-        () async {
-      SharedPreferences.setMockInitialValues(<String, Object>{});
-      final prefs = await SharedPreferences.getInstance();
-      final store = TemporaryUnlockStore(prefs);
-
-      // A MATIC unlock and a BTC unlock together
-      await store.save(TemporaryUnlock(
-        base: 'MATIC',
-        quote: 'USD',
-        grantedAt: DateTime(2026, 9, 12, 12),
-      ));
-      await store.save(TemporaryUnlock(
-        base: 'BTC',
-        quote: 'EUR',
-        grantedAt: DateTime(2026, 9, 12, 12),
-      ));
-
-      final before = prefs.getString('temp_unlocks_registry');
-      expect(before, contains('BTC_EUR'));
 
       await store.migrateIfNeeded();
 
       final after = prefs.getString('temp_unlocks_registry');
-      // BTC entry survives the MATIC removal byte-equivalent.
       expect(after, contains('BTC_EUR'));
+      expect(after, contains('POL_USD'));
       expect(after, isNot(contains('MATIC')));
+      expect(await store.load('BTC', 'EUR'), isNotNull);
     });
   });
+}
+
+String _legacyRegistry(List<TemporaryUnlock> unlocks) {
+  final entries = unlocks.map((unlock) {
+    final value = unlock
+        .toJson()
+        .entries
+        .map((entry) => '"${entry.key}": "${entry.value}"')
+        .join(', ');
+    return '"${unlock.storageKey}": "{$value}"';
+  });
+  return '{${entries.join(', ')}}';
 }

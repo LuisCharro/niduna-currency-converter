@@ -23,18 +23,19 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-09-12)
+## Current state (reviewed 2026-09-13)
 
 - `main` is canonical; recheck `HEAD` and worktree state before acting.
-- Start with `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-12**.
+- Start with `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-13**.
   It supersedes old audit completion claims and historical instructions below.
 - For the executable next phase, use `.agent/release-next-steps.md`; it records
   the current Play/API workflow, ownership and stop conditions.
 - A provider-coverage blocker was found after the `1.0.0+4` Internal build:
   Frankfurter v1 history omits five advertised fiat currencies, and the
-  release-safe crypto feed now uses POL rather than MATIC. Read
-  `.agent/provider-coverage-remediation-plan-2026-09-12.md` before provider,
-  chart, catalog or next-candidate work.
+  release-safe crypto feed now uses POL rather than MATIC. The local source
+  repair and independent review are complete but remain uncommitted at this
+  checkpoint; read `.agent/provider-coverage-remediation-plan-2026-09-12.md`
+  before provider, chart, catalog or next-candidate work.
 - For the concrete Play Publisher/API procedure and failure recovery, read
   `docs/release-prep/google-play-publishing-runbook.md`.
 - When this checkout is inside the Honest Fern monorepo, read the portfolio
@@ -45,9 +46,9 @@ skills without changing this repo again.
   accept the provider/catalog coverage in a new Internal candidate first.
 - The default Play listing is `en-GB`; the new icon and six phone screenshots
   are saved in Publishing overview and await the remaining review gates.
-- `./scripts/check.sh` passed with 258 tests and clean analysis during the
-  current candidate preparation; do not infer production readiness from that
-  check alone.
+- `./scripts/check.sh` passed with 327 tests and clean analysis during the
+  provider-remediation review; do not infer production readiness from that
+  check alone. Re-run it after any further edit.
 - Real Billing is injected by AppShell. Keep the real service and active Play
   products; do not replace them with the old stub.
 - B4/B8 release configuration and device/account acceptance remain release
