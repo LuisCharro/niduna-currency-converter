@@ -1056,9 +1056,9 @@ The implementation work is done only when all are true:
 - [x] Error copy no longer falsely assumes every no-data failure is network.
 - [x] `./scripts/check.sh` and `git diff --check` pass.
 - [x] No unrelated scope or secrets entered the diff.
-- [x] Active release docs block promotion of `1.0.0+4`.
+- [x] Active release docs block promotion of the superseded `versionCode 4`.
 - [x] Primary-agent independent review passes.
-- [ ] Luis approves any version bump/upload as a separate operational step.
+- [x] Luis approved the version bump/upload; `versionCode 5` is on Internal.
 
 ## 18. Local implementation and review closeout — 2026-09-13
 
@@ -1102,8 +1102,9 @@ Verification evidence:
   badge, while Charts rendered the cached/live USD/EUR one-month series with
   the release-safe profile and test ads.
 
-This closeout did not change `pubspec.yaml`, create a bundle, upload to Play,
-alter a track, submit listing changes or start Closed testing. The reviewed
-working-tree corrections remain uncommitted until Luis explicitly requests the
-commit/release step. The next external acceptance boundary is a new Internal
-candidate using the next unused version code, expected `1.0.0+5`.
+This closeout was committed as `26faed7`, version-bumped to `1.0.0+5`, built as
+the signed AAB recorded above, and uploaded to Internal testing through the
+Publisher API on 2026-09-13. It did not alter store assets, submit listing
+changes, promote to Closed testing or start the Closed-test clock. The next
+external acceptance boundary is installing and accepting the exact
+Play-distributed `versionCode 5` artifact.

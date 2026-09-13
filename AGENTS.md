@@ -33,17 +33,18 @@ skills without changing this repo again.
 - A provider-coverage blocker was found after the `1.0.0+4` Internal build:
   Frankfurter v1 history omits five advertised fiat currencies, and the
   release-safe crypto feed now uses POL rather than MATIC. The local source
-  repair and independent review are complete but remain uncommitted at this
-  checkpoint; read `.agent/provider-coverage-remediation-plan-2026-09-12.md`
-  before provider, chart, catalog or next-candidate work.
+  repair and independent review are complete in commit `26faed7`; read
+  `.agent/provider-coverage-remediation-plan-2026-09-12.md` before provider,
+  chart, catalog or next-candidate work.
 - For the concrete Play Publisher/API procedure and failure recovery, read
   `docs/release-prep/google-play-publishing-runbook.md`.
 - When this checkout is inside the Honest Fern monorepo, read the portfolio
   baseline first: `../../docs/platforms/google-play-developer-api.md`. Keep
   package, artifact and track facts in this repository's runbook.
-- Internal testing contains signed build `1.0.0+4` (`versionCode 4`), including
-  the late UMP/AdMob consent fix. Do **not** promote it to Closed: repair and
-  accept the provider/catalog coverage in a new Internal candidate first.
+- Internal testing now contains signed build `1.0.0` (`versionCode 5`), including
+  the provider/catalog repair and late UMP/AdMob consent fix. Accept this exact
+  Play-distributed candidate before promoting it to Closed; do not promote the
+  superseded `versionCode 4` artifact.
 - The default Play listing is `en-GB`; the new icon and six phone screenshots
   are saved in Publishing overview and await the remaining review gates.
 - `./scripts/check.sh` passed with 327 tests and clean analysis during the
@@ -93,10 +94,11 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+4`; Play Internal testing contains code 4.
+- Current `pubspec.yaml`: `1.0.0+5`; Play Internal testing contains code 5.
 - Code 2 is already uploaded. New binaries need an unused higher code, at least 3.
 - `1.0.0+4` is superseded for Closed testing by the provider-coverage blocker.
-  After the fix passes review, use the next unused code (`1.0.0+5` expected).
+  The repaired `1.0.0+5` candidate is now on Internal and must be accepted
+  from Google Play before Closed testing.
 - Promote the tested `1.0.0` artifact to Production; do not rebuild an
   identical binary merely to change its version name.
 - Promoting the same artifact between tracks does not require rebuilding it.

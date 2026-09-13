@@ -4,15 +4,20 @@
 
 ### Latest operational truth — 2026-09-13
 
-- The source contains the UMP/AdMob late-consent fix and signed build
-  `1.0.0+4` (`versionCode 4`) is published on the **Internal testing** track.
+- The source contains the provider-coverage repair, POL migration and
+  UMP/AdMob late-consent fix. Signed build `1.0.0` (`versionCode 5`) is now
+  published on the **Internal testing** track from commit `26faed7`.
 - A 2026-09-12 provider audit found a P0 blocker in that build: historical and
   trend fiat calls still use Frankfurter v1, which omits AED, ARS, CLP, COP and
   TWD, while Polygon is still keyed as MATIC although the release-safe crypto
   feed uses POL. The local source repair and independent review completed on
-  2026-09-13; the exact fixed candidate has not been built or uploaded. Do
-  **not** promote `1.0.0+4` to Closed. The implementation and verification
-  record is `.agent/provider-coverage-remediation-plan-2026-09-12.md`.
+  2026-09-13; the fixed candidate is uploaded but still needs acceptance from
+  the exact Play-distributed installation. Do **not** promote `versionCode 5`
+  to Closed before that acceptance. The implementation and verification record
+  is `.agent/provider-coverage-remediation-plan-2026-09-12.md`.
+- Internal upload evidence: release notes are “Improved currency data coverage,
+  Polygon support and chart reliability.” and the AAB SHA-256 is
+  `650965d346437851df85b53ced3447eef966f0942871d8774264bddc6a1a2e2f`.
 - The default Play listing is `en-GB`. The new Honest Fern icon and six
   `1350×2400` phone screenshots are saved in the Play asset library and are
   selected in the default listing draft; the old selected icon/screenshots
@@ -23,11 +28,9 @@
   Console session because the API commit path returned `403` even after the
   app-level production-release permission was granted. Do not broaden access
   account-wide.
-- The next operational step, after Luis explicitly approves the local diff, is
-  to commit it and create a new Internal candidate using the next unused
-  version code (`1.0.0+5` expected). Accept that exact Play-distributed build
-  on device before considering it for Closed testing; do not rebuild it merely
-  to change `versionName` later.
+- The next operational step is to install and accept the exact Play-distributed
+  `versionCode 5` on a real Android device. Do not rebuild it merely to change
+  `versionName` later.
 - A personal developer account still needs at least 12 continuously opted-in
   Closed-testers for 14 days before the production-access application; target
   14–16 testers for margin. Internal testing does not start that clock.

@@ -8,7 +8,7 @@ For the reusable portfolio-wide model, read
 when this repository is checked out inside the Honest Fern monorepo. This
 document owns only Currency Converter facts and commands.
 
-**Last verified:** 2026-09-12
+**Last verified:** 2026-09-13
 
 **Package:** `com.honestfern.currency_converter`
 
@@ -19,9 +19,12 @@ document owns only Currency Converter facts and commands.
 
 ## Current release state
 
-- Internal testing contains `1.0.0`, Android `versionCode 4`.
-- The published release notes are in English (`en-GB`): “Improved ad consent
-  handling and chart unlock reliability.”
+- Internal testing contains `1.0.0`, Android `versionCode 5`, uploaded from
+  commit `26faed7`.
+- The published release notes are in English (`en-GB`): “Improved currency data
+  coverage, Polygon support and chart reliability.”
+- Uploaded AAB SHA-256:
+  `650965d346437851df85b53ced3447eef966f0942871d8774264bddc6a1a2e2f`.
 - The stable internal opt-in link is
   `https://play.google.com/apps/internaltest/4701596695392061996`.
 - That link identifies the testing track, not a particular version. Testers
@@ -42,7 +45,7 @@ At that point, perform this bounded sequence:
    are configured. Keep the tester emails private; do not put them in Git or
    in release scripts.
 2. Confirm the source AAB is the accepted Internal artifact `1.0.0` /
-   `versionCode 4` (or a separately approved, higher-code fix), its release
+   `versionCode 5` (or a separately approved, higher-code fix), its release
    notes, and its country targeting.
 3. With Luis's explicit release instruction, use the Publisher API to assign
    that code to `closed` in one edit and commit it. Do not alter Production.
@@ -93,11 +96,11 @@ The release operation is an edit transaction:
 The current version source of truth is `pubspec.yaml`:
 
 ```text
-version: 1.0.0+4
+version: 1.0.0+5
 ```
 
 For a real follow-up fix, keep `versionName` `1.0.0` and increment only the
-build number (`1.0.0+5`, then `+6`, etc.). Play orders Android releases by
+build number (`1.0.0+6`, then `+7`, etc.). Play orders Android releases by
 `versionCode`; reusing a code is rejected. Promote the exact tested AAB between
 tracks instead of rebuilding it.
 

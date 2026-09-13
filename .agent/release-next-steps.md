@@ -6,17 +6,19 @@
 
 ## Current gates
 
-- Internal testing now has the signed `1.0.0+4` candidate (`versionCode 4`),
-  including the AdMob/UMP late-consent fix.
+- Internal testing now has the signed `1.0.0+5` candidate (`versionCode 5`),
+  including the provider/catalog repair and AdMob/UMP late-consent fix.
 - A later provider audit found two P0 coverage defects in that artifact:
   historical/trend fiat calls still use Frankfurter v1, which omits AED, ARS,
   CLP, COP and TWD, and Polygon is still keyed as MATIC while the release-safe
   feed uses POL. The local source repair and independent review are complete;
-  no fixed Play artifact exists yet. Do not promote `1.0.0+4` to Closed.
+  the fixed candidate is uploaded to Internal testing but has not yet been
+  accepted from the Play-distributed installation. Do not promote `1.0.0+5`
+  to Closed before that acceptance.
 - The implementation and verification record is
   `.agent/provider-coverage-remediation-plan-2026-09-12.md`. With explicit
-  approval, commit the reviewed diff and create a new Internal candidate
-  (`1.0.0+5` expected, subject to Play code availability). It must still pass
+  approval, commit `26faed7`, build and upload the new Internal candidate
+  (`1.0.0+5`). The upload completed on 2026-09-13; it must still pass
   acceptance as the exact Play-distributed artifact.
 - The default Play listing locale is `en-GB`. The new icon and six phone
   screenshots are saved in the listing draft and are waiting in Publishing
@@ -42,10 +44,9 @@
    release-safe providers; run deterministic tests, representative small/large
    device QA, clean-install QA and a seeded `1.0.0+4` persistence migration.
    Exact Play-distributed upgrade acceptance remains pending.
-3. **Next, with explicit approval:** commit the reviewed corrections, build and
-   upload the next unused `1.0.0` code
-   (expected `+5`) to Internal testing only, then accept that exact
-   Play-distributed artifact.
+3. **Complete (2026-09-13):** commit the reviewed corrections, build and upload
+   `1.0.0+5` to Internal testing only. Install and accept that exact
+   Play-distributed artifact next.
 4. Complete the remaining Play Console setup and saved listing/declaration
    review flow required before Closed testing.
 5. Promote the accepted fixed artifact to Closed testing, create/select the
