@@ -31,6 +31,7 @@ import 'package:currency_converter/src/features/settings/settings_controller.dar
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
 import 'package:currency_converter/src/features/settings/widgets/data_details_page.dart';
 import 'package:currency_converter/src/shared/widgets/bottom_tab_frame.dart';
+import 'package:currency_converter/src/shared/widgets/currency_section_header.dart';
 import 'package:currency_converter/src/shared/widgets/fade_slide_switcher.dart';
 import 'package:currency_converter/src/shared/widgets/floating_pill_nav.dart';
 import 'package:currency_converter/src/shared/widgets/press_scale.dart';
@@ -280,9 +281,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Visible currencies'), findsOneWidget);
-    // Default controller selectedCodes = ['EUR','GBP','JPY','CAD','BTC']
-    // (5 codes after remove('USD' base)), so the subtitle reads "5 shown".
-    expect(find.text('5 shown · USD base'), findsOneWidget);
+    // Default controller selectedCodes = ['EUR','GBP','JPY','BTC'].
+    expect(find.text('4 shown · USD base'), findsOneWidget);
     // Picker groups by region and defaults to expanding only the Crypto
     // section; USD (Americas) and EUR (Europe) tiles are not rendered until
     // the user expands those sections. The test scope is "picker opens on
@@ -292,7 +292,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Convert base picker only includes supported fiat currencies', (
+  testWidgets('Convert base picker exposes crypto as a temporary base option', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
@@ -310,11 +310,27 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Select base currency'), findsOneWidget);
-    expect(find.text('Current base USD · fiat only'), findsOneWidget);
-    // Crypto currencies are still available as quote currencies, but the
-    // latest-rates repository does not support a crypto base yet.
-    expect(find.text('Bitcoin'), findsNothing);
-    expect(find.text('Ethereum'), findsNothing);
+    expect(find.text('Current base USD'), findsOneWidget);
+
+    final searchField = find.byType(TextField);
+    await tester.enterText(searchField, 'BTC');
+    await tester.pumpAndSettle();
+
+    final cryptoHeader = find.byWidgetPredicate(
+      (widget) =>
+          widget is CurrencySectionHeader &&
+          widget.group.section.label == 'Crypto',
+    );
+    expect(cryptoHeader, findsOneWidget);
+    expect(
+      tester.widget<CurrencySectionHeader>(cryptoHeader).isExpanded,
+      isFalse,
+    );
+
+    await tester.tap(cryptoHeader);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Bitcoin'), findsOneWidget);
   });
 
   testWidgets(
@@ -358,7 +374,11 @@ void main() {
       fresh: _snapshot(<String, double>{'EUR': .92, 'BTC': .00001342}),
     );
     final cryptoController = ConvertController(repository: cryptoRepository)
-      ..configure(base: 'USD', amount: 100, selectedCodes: <String>['EUR']);
+      ..configure(
+        base: 'USD',
+        amount: 100,
+        selectedCodes: <String>['EUR', 'BTC'],
+      );
     await cryptoController.load();
 
     await tester.pumpWidget(
@@ -427,7 +447,11 @@ void main() {
         fresh: _snapshot(<String, double>{'EUR': .92, 'BTC': .00001342}),
       );
       final cryptoController = ConvertController(repository: cryptoRepository)
-        ..configure(base: 'USD', amount: 100, selectedCodes: <String>['EUR']);
+        ..configure(
+          base: 'USD',
+          amount: 100,
+          selectedCodes: <String>['EUR', 'BTC'],
+        );
       await cryptoController.load();
 
       await tester.pumpWidget(

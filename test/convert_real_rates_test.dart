@@ -176,6 +176,24 @@ void main() {
     expect(controller.state.quotes.single.code, 'NZD');
   });
 
+  test('controller adds a crypto currency selected by the user', () async {
+    final controller = ConvertController(
+      repository: _FakeRatesRepository(
+        fresh: _snapshot(<String, double>{'EUR': .92, 'ETH': .00042}),
+      ),
+      selectedCodes: <String>['EUR'],
+    );
+
+    await controller.load();
+    controller.toggleCode('ETH');
+
+    expect(controller.state.selectedCodes, <String>['EUR', 'ETH']);
+    expect(controller.state.quotes.map((quote) => quote.code), <String>[
+      'EUR',
+      'ETH',
+    ]);
+  });
+
   test('controller falls back to cached data on network failure', () async {
     final controller = ConvertController(
       repository: _FakeRatesRepository(

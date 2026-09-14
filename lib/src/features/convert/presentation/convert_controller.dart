@@ -43,8 +43,9 @@ class ConvertController extends ChangeNotifier {
   String _base = 'USD';
   double _amount = 100;
   String _amountText = '100.00';
-  List<String> _selectedCodes = <String>['EUR', 'GBP', 'JPY', 'CAD', 'BTC'];
-  Set<String> _hiddenCryptoCodes = <String>{};
+  List<String> _selectedCodes = List<String>.from(
+    AppPreferences.defaultSelectedCodes,
+  );
   LatestRatesSnapshot? _snapshot;
   int _decimalPlaces = 2;
 
@@ -70,7 +71,7 @@ class ConvertController extends ChangeNotifier {
     _amount = amount;
     _amountText = amount.toStringAsFixed(2);
     _selectedCodes = List<String>.from(
-      selectedCodes ?? <String>['EUR', 'GBP', 'JPY', 'CAD', 'BTC'],
+      selectedCodes ?? AppPreferences.defaultSelectedCodes,
     )..remove(base);
     state = ConvertState.loading().copyWith(
       base: _base,
@@ -155,7 +156,6 @@ class ConvertController extends ChangeNotifier {
       amount: _amount,
       decimalPlaces: _decimalPlaces,
       selectedCodes: _selectedCodes,
-      hiddenCryptoCodes: _hiddenCryptoCodes,
       favQuotes: favQuotes,
     );
     pushHomeWidgetData(_base, _amount, quotes, _snapshot, _favoritesStore);

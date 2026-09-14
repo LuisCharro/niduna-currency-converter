@@ -9,29 +9,16 @@ List<CurrencyQuote> buildQuotes({
   required double amount,
   required int decimalPlaces,
   Iterable<String>? quoteCodes,
-  Set<String> excludeCodes = const <String>{},
 }) {
   final explicitCodes =
       quoteCodes?.where((code) => code != snapshot.base).toList() ??
       supportedCurrencies.map((currency) => currency.code).toList();
 
-  // Auto-include crypto currencies that have rates in the snapshot,
-  // unless the user explicitly hid them via swipe-to-hide.
-  final cryptoCodes = supportedCryptoCurrencies
-      .map((c) => c.code)
-      .where((code) => snapshot.rates.containsKey(code))
-      .where((code) => !excludeCodes.contains(code));
-
-  final selectedCodes = <String>{
-    ...explicitCodes,
-    ...cryptoCodes,
-  }.toList();
-
   final amountDigits = '#,##0.${'0' * decimalPlaces}';
   final amountFormat = NumberFormat(amountDigits, 'en');
   final rateFormat = NumberFormat('0.${'0' * decimalPlaces}', 'en');
 
-  return selectedCodes
+  return explicitCodes
       .map(currencyByCode)
       .where((currency) => snapshot.rates.containsKey(currency.code))
       .map((currency) {
@@ -52,7 +39,9 @@ List<CurrencyQuote> buildQuotes({
           currency.symbol,
           currency.code,
           currency.name,
-          isCryptoCurrency(currency.code) ? quoteAmount : amountFormat.format(amount * rate),
+          isCryptoCurrency(currency.code)
+              ? quoteAmount
+              : amountFormat.format(amount * rate),
           isCryptoCurrency(currency.code)
               ? rateLine
               : '1 ${snapshot.base} = ${rateFormat.format(rate)} ${currency.code}',

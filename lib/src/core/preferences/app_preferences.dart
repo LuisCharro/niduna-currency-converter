@@ -20,7 +20,7 @@ class AppPreferences extends ChangeNotifier {
     defaultValue: false,
   );
 
-  static const List<String> defaultSelectedCodes = ['EUR', 'GBP', 'JPY'];
+  static const List<String> defaultSelectedCodes = ['EUR', 'GBP', 'JPY', 'BTC'];
 
   String get defaultBaseCurrency {
     final code = canonicalCurrencyCode(

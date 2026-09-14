@@ -18,7 +18,6 @@ List<CurrencyQuote> buildCurrencyQuotes({
   required double amount,
   required int decimalPlaces,
   required List<String> selectedCodes,
-  required Set<String> hiddenCryptoCodes,
   required Set<String> favQuotes,
 }) {
   final rawQuotes = buildQuotes(
@@ -26,7 +25,6 @@ List<CurrencyQuote> buildCurrencyQuotes({
     amount: amount,
     decimalPlaces: decimalPlaces,
     quoteCodes: selectedCodes,
-    excludeCodes: hiddenCryptoCodes,
   );
   return rawQuotes.map((q) {
     final isFav = favQuotes.contains(q.code);

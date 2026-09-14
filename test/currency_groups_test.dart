@@ -6,18 +6,42 @@ import 'package:currency_converter/src/core/currency/supported_currencies.dart';
 void main() {
   test('all 34 fiat currencies assigned to exactly one region', () {
     const europeCodes = <String>{
-      'EUR', 'GBP', 'CHF', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK', 'HUF', 'RON',
+      'EUR',
+      'GBP',
+      'CHF',
+      'SEK',
+      'NOK',
+      'DKK',
+      'PLN',
+      'CZK',
+      'HUF',
+      'RON',
     };
     const americasCodes = <String>{
-      'USD', 'CAD', 'AUD', 'MXN', 'BRL', 'ARS', 'CLP', 'COP',
+      'USD',
+      'CAD',
+      'AUD',
+      'MXN',
+      'BRL',
+      'ARS',
+      'CLP',
+      'COP',
     };
     const asiaPacificCodes = <String>{
-      'JPY', 'CNY', 'INR', 'SGD', 'HKD', 'KRW', 'THB', 'PHP', 'IDR', 'MYR',
-      'TWD', 'NZD',
+      'JPY',
+      'CNY',
+      'INR',
+      'SGD',
+      'HKD',
+      'KRW',
+      'THB',
+      'PHP',
+      'IDR',
+      'MYR',
+      'TWD',
+      'NZD',
     };
-    const meAfricaCodes = <String>{
-      'TRY', 'AED', 'ILS', 'ZAR',
-    };
+    const meAfricaCodes = <String>{'TRY', 'AED', 'ILS', 'ZAR'};
 
     final allRegionCodes = <String>{
       ...europeCodes,
@@ -33,7 +57,16 @@ void main() {
 
   test('Europe has exactly 10 codes', () {
     const europeCodes = <String>{
-      'EUR', 'GBP', 'CHF', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK', 'HUF', 'RON',
+      'EUR',
+      'GBP',
+      'CHF',
+      'SEK',
+      'NOK',
+      'DKK',
+      'PLN',
+      'CZK',
+      'HUF',
+      'RON',
     };
     expect(europeCodes.length, 10);
 
@@ -46,7 +79,14 @@ void main() {
 
   test('Americas has exactly 8 codes', () {
     const americasCodes = <String>{
-      'USD', 'CAD', 'AUD', 'MXN', 'BRL', 'ARS', 'CLP', 'COP',
+      'USD',
+      'CAD',
+      'AUD',
+      'MXN',
+      'BRL',
+      'ARS',
+      'CLP',
+      'COP',
     };
     expect(americasCodes.length, 8);
 
@@ -59,8 +99,18 @@ void main() {
 
   test('AsiaPacific has exactly 12 codes', () {
     const asiaPacificCodes = <String>{
-      'JPY', 'CNY', 'INR', 'SGD', 'HKD', 'KRW', 'THB', 'PHP', 'IDR', 'MYR',
-      'TWD', 'NZD',
+      'JPY',
+      'CNY',
+      'INR',
+      'SGD',
+      'HKD',
+      'KRW',
+      'THB',
+      'PHP',
+      'IDR',
+      'MYR',
+      'TWD',
+      'NZD',
     };
     expect(asiaPacificCodes.length, 12);
 
@@ -72,9 +122,7 @@ void main() {
   });
 
   test('MiddleEastAfrica has exactly 4 codes', () {
-    const meAfricaCodes = <String>{
-      'TRY', 'AED', 'ILS', 'ZAR',
-    };
+    const meAfricaCodes = <String>{'TRY', 'AED', 'ILS', 'ZAR'};
     expect(meAfricaCodes.length, 4);
 
     final groups = buildCurrencyGroups(currencies: supportedFiatCurrencies);
@@ -85,9 +133,7 @@ void main() {
   });
 
   test('Crypto section has exactly 11 codes', () {
-    final groups = buildCurrencyGroups(
-      currencies: allSupportedCurrencies,
-    );
+    final groups = buildCurrencyGroups(currencies: allSupportedCurrencies);
     final crypto = groups.firstWhere(
       (g) => g.section == CurrencySection.crypto,
     );
@@ -105,8 +151,8 @@ void main() {
     expect(groups.single.section, CurrencySection.crypto);
   });
 
-  test('default expanded is Crypto only', () {
-    expect(CurrencySection.crypto.defaultExpanded, isTrue);
+  test('all currency sections are collapsed by default', () {
+    expect(CurrencySection.crypto.defaultExpanded, isFalse);
     expect(CurrencySection.europe.defaultExpanded, isFalse);
     expect(CurrencySection.americas.defaultExpanded, isFalse);
     expect(CurrencySection.asiaPacific.defaultExpanded, isFalse);

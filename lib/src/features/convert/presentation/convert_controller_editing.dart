@@ -44,9 +44,7 @@ extension ConvertControllerEditing on ConvertController {
       return null;
     }
 
-    final rates = <String, double>{
-      current.base: 1 / baseRate,
-    };
+    final rates = <String, double>{current.base: 1 / baseRate};
     for (final entry in current.rates.entries) {
       if (entry.key == code) continue;
       rates[entry.key] = entry.value / baseRate;
@@ -74,20 +72,11 @@ extension ConvertControllerEditing on ConvertController {
     if (code == _base) {
       return;
     }
-    final isCrypto = isCryptoCurrency(code);
     if (_selectedCodes.contains(code)) {
       if (_selectedCodes.length == 1) {
         return;
       }
       _selectedCodes = _selectedCodes.where((value) => value != code).toList();
-      if (isCrypto) {
-        _hiddenCryptoCodes = <String>{..._hiddenCryptoCodes, code};
-      }
-    } else if (_hiddenCryptoCodes.contains(code)) {
-      _hiddenCryptoCodes = _hiddenCryptoCodes.where((c) => c != code).toSet();
-      _selectedCodes = <String>[..._selectedCodes, code];
-    } else if (isCrypto && _snapshot?.rates.containsKey(code) == true) {
-      _hiddenCryptoCodes = <String>{..._hiddenCryptoCodes, code};
     } else {
       _selectedCodes = <String>[..._selectedCodes, code];
     }

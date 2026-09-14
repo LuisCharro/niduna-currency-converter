@@ -22,15 +22,11 @@ enum CurrencySection {
     }
   }
 
-  bool get defaultExpanded =>
-      this == CurrencySection.crypto;
+  bool get defaultExpanded => false;
 }
 
 class CurrencyGroup {
-  const CurrencyGroup({
-    required this.section,
-    required this.currencies,
-  });
+  const CurrencyGroup({required this.section, required this.currencies});
 
   final CurrencySection section;
   final List<SupportedCurrency> currencies;
@@ -42,23 +38,46 @@ List<CurrencyGroup> buildCurrencyGroups({
   required List<SupportedCurrency> currencies,
 }) {
   const europeCodes = <String>{
-    'EUR', 'GBP', 'CHF', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK', 'HUF', 'RON',
+    'EUR',
+    'GBP',
+    'CHF',
+    'SEK',
+    'NOK',
+    'DKK',
+    'PLN',
+    'CZK',
+    'HUF',
+    'RON',
   };
   const americasCodes = <String>{
-    'USD', 'CAD', 'AUD', 'MXN', 'BRL', 'ARS', 'CLP', 'COP',
+    'USD',
+    'CAD',
+    'AUD',
+    'MXN',
+    'BRL',
+    'ARS',
+    'CLP',
+    'COP',
   };
   const asiaPacificCodes = <String>{
-    'JPY', 'CNY', 'INR', 'SGD', 'HKD', 'KRW', 'THB', 'PHP', 'IDR', 'MYR', 'TWD', 'NZD',
+    'JPY',
+    'CNY',
+    'INR',
+    'SGD',
+    'HKD',
+    'KRW',
+    'THB',
+    'PHP',
+    'IDR',
+    'MYR',
+    'TWD',
+    'NZD',
   };
-  const meAfricaCodes = <String>{
-    'TRY', 'AED', 'ILS', 'ZAR',
-  };
+  const meAfricaCodes = <String>{'TRY', 'AED', 'ILS', 'ZAR'};
 
   final groups = <CurrencyGroup>[];
 
-  final europe = currencies
-      .where((c) => europeCodes.contains(c.code))
-      .toList();
+  final europe = currencies.where((c) => europeCodes.contains(c.code)).toList();
   if (europe.isNotEmpty) {
     groups.add(
       CurrencyGroup(section: CurrencySection.europe, currencies: europe),
@@ -98,9 +117,7 @@ List<CurrencyGroup> buildCurrencyGroups({
     );
   }
 
-  final crypto = currencies
-      .where((c) => isCryptoCurrency(c.code))
-      .toList();
+  final crypto = currencies.where((c) => isCryptoCurrency(c.code)).toList();
   if (crypto.isNotEmpty) {
     groups.add(
       CurrencyGroup(section: CurrencySection.crypto, currencies: crypto),

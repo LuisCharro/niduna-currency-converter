@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Honest Fern Currency Converter
-description: Privacy-first fiat currency converter for mobile. Warm, editorial, iOS-native feel with Honest Fern brand identity.
+description: Privacy-first currency converter for mobile. Warm, editorial, iOS-native feel with Honest Fern brand identity.
 colors:
   bg: "#F6F8EF"
   text: "#171D14"
@@ -242,6 +242,28 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 - Large pill buttons (radius 24) with flag + currency code
 - Circular swap button between base and quote selectors
 - Shadow on selected state
+
+### Currency Selection Sheets
+
+Convert and Charts use the same grouped-currency interaction language.
+
+- Applies to Convert **Add currencies**, Convert **Select base currency**, and
+  the Charts base/quote pickers.
+- Group currencies as **Europe**, **Americas**, **Asia Pacific**, **Middle East
+  & Africa**, and **Crypto**. Each header displays its item count.
+- On every new opening, **all groups are collapsed**, including Crypto. Group
+  expansion is local to that sheet and is not persisted between openings or
+  shared between screens.
+- Search narrows the available groups and currencies but does not automatically
+  expand a result group; the person opens the matching group deliberately.
+- Convert Add currencies exposes the complete supported catalog as quote
+  currencies. Convert Select base currency exposes that same catalog for the
+  current conversion session, including Crypto.
+- Settings **Default currency** remains fiat-only: it controls the persistent
+  launch default and is deliberately separate from the temporary Convert base
+  selector.
+- Charts displays the same catalog when crypto charts are available. Pair locks
+  and 24-hour unlock affordances change availability, never catalog visibility.
 
 ### Floating Pill Navigation
 - Rounded container (radius 28) with **paper-warm** background

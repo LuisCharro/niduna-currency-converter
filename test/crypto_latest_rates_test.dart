@@ -31,6 +31,21 @@ void main() {
     },
   );
 
+  test(
+    'fresh preferences include Bitcoin but no other crypto by default',
+    () async {
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      final preferences = AppPreferences(await SharedPreferences.getInstance());
+
+      expect(preferences.selectedCodes, const <String>[
+        'EUR',
+        'GBP',
+        'JPY',
+        'BTC',
+      ]);
+    },
+  );
+
   test('buildQuotes keeps BTC precision in quote amounts and rate lines', () {
     final quotes = buildQuotes(
       snapshot: LatestRatesSnapshot(
@@ -46,6 +61,27 @@ void main() {
 
     expect(quotes.single.amount, '0.00150800');
     expect(quotes.single.rateLine, '1 EUR = 0.00001508 BTC');
+  });
+
+  test('buildQuotes does not add crypto that was not selected', () {
+    final quotes = buildQuotes(
+      snapshot: LatestRatesSnapshot(
+        base: 'USD',
+        date: DateTime(2026, 9, 14),
+        savedAt: DateTime(2026, 9, 14, 10),
+        rates: const <String, double>{
+          'EUR': 0.86,
+          'BTC': 0.000013,
+          'ETH': 0.00042,
+          'SOL': 0.006,
+        },
+      ),
+      amount: 100,
+      decimalPlaces: 2,
+      quoteCodes: const <String>['EUR', 'BTC'],
+    );
+
+    expect(quotes.map((quote) => quote.code), <String>['EUR', 'BTC']);
   });
 
   test('clearAllCaches removes latest and crypto cache keys', () async {
