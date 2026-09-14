@@ -8,7 +8,7 @@ For the reusable portfolio-wide model, read
 when this repository is checked out inside the Honest Fern monorepo. This
 document owns only Currency Converter facts and commands.
 
-**Last verified:** 2026-09-13
+**Last verified:** 2026-09-14
 
 **Package:** `com.honestfern.currency_converter`
 
@@ -19,12 +19,12 @@ document owns only Currency Converter facts and commands.
 
 ## Current release state
 
-- Internal testing contains `1.0.0`, Android `versionCode 5`, uploaded from
-  commit `26faed7`.
-- The published release notes are in English (`en-GB`): “Improved currency data
-  coverage, Polygon support and chart reliability.”
+- Internal testing contains `1.0.0`, Android `versionCode 6`, uploaded from
+  commit `aad8249`.
+- The published release notes are in English (`en-GB`): “Refined default
+  currency selection and crypto pickers.”
 - Uploaded AAB SHA-256:
-  `650965d346437851df85b53ced3447eef966f0942871d8774264bddc6a1a2e2f`.
+  `9f6c0464046b636fe0a3f66b74afa58217696e269477366a0f35addf51f5ed96`.
 - The stable internal opt-in link is
   `https://play.google.com/apps/internaltest/4701596695392061996`.
 - That link identifies the testing track, not a particular version. Testers
@@ -45,7 +45,7 @@ At that point, perform this bounded sequence:
    are configured. Keep the tester emails private; do not put them in Git or
    in release scripts.
 2. Confirm the source AAB is the accepted Internal artifact `1.0.0` /
-   `versionCode 5` (or a separately approved, higher-code fix), its release
+   `versionCode 6` (or a separately approved, higher-code fix), its release
    notes, and its country targeting.
 3. With Luis's explicit release instruction, use the Publisher API to assign
    that code to `closed` in one edit and commit it. Do not alter Production.
@@ -96,7 +96,7 @@ The release operation is an edit transaction:
 The current version source of truth is `pubspec.yaml`:
 
 ```text
-version: 1.0.0+5
+version: 1.0.0+6
 ```
 
 For a real follow-up fix, keep `versionName` `1.0.0` and increment only the

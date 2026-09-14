@@ -1,23 +1,21 @@
 # Release Checklist — Path to Google Play Store
 
-## Resume checkpoint — 2026-09-13
+## Resume checkpoint — 2026-09-14
 
-### Latest operational truth — 2026-09-13
+### Latest operational truth — 2026-09-14
 
-- The source contains the provider-coverage repair, POL migration and
-  UMP/AdMob late-consent fix. Signed build `1.0.0` (`versionCode 5`) is now
-  published on the **Internal testing** track from commit `26faed7`.
-- A 2026-09-12 provider audit found a P0 blocker in that build: historical and
-  trend fiat calls still use Frankfurter v1, which omits AED, ARS, CLP, COP and
-  TWD, while Polygon is still keyed as MATIC although the release-safe crypto
-  feed uses POL. The local source repair and independent review completed on
-  2026-09-13; the fixed candidate is uploaded but still needs acceptance from
-  the exact Play-distributed installation. Do **not** promote `versionCode 5`
-  to Closed before that acceptance. The implementation and verification record
-  is `.agent/provider-coverage-remediation-plan-2026-09-12.md`.
-- Internal upload evidence: release notes are “Improved currency data coverage,
-  Polygon support and chart reliability.” and the AAB SHA-256 is
-  `650965d346437851df85b53ced3447eef966f0942871d8774264bddc6a1a2e2f`.
+- Signed build `1.0.0` (`versionCode 6`) is published on the **Internal
+  testing** track from commit `aad8249`. It keeps the provider-coverage/POL
+  repair and adds the approved fresh-install defaults (EUR, GBP, JPY, BTC), no
+  automatic extra crypto quotes, crypto-capable temporary Convert bases, and
+  consistently collapsed currency groups.
+- The upload was committed and verified through a fresh Android Publisher API
+  edit on 2026-09-14. Release notes are “Refined default currency selection
+  and crypto pickers.” and the AAB SHA-256 is
+  `9f6c0464046b636fe0a3f66b74afa58217696e269477366a0f35addf51f5ed96`.
+- Install and accept the exact Play-distributed `versionCode 6` before Closed
+  testing. Do **not** promote superseded code 5. The provider remediation
+  record remains `.agent/provider-coverage-remediation-plan-2026-09-12.md`.
 - The default Play listing is `en-GB`. The new Honest Fern icon and six
   `1350×2400` phone screenshots are saved in the Play asset library and are
   selected in the default listing draft; the old selected icon/screenshots
@@ -29,7 +27,7 @@
   app-level production-release permission was granted. Do not broaden access
   account-wide.
 - The next operational step is to install and accept the exact Play-distributed
-  `versionCode 5` on a real Android device. Do not rebuild it merely to change
+  `versionCode 6` on a real Android device. Do not rebuild it merely to change
   `versionName` later.
 - A personal developer account still needs at least 12 continuously opted-in
   Closed-testers for 14 days before the production-access application; target

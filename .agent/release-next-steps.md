@@ -1,25 +1,22 @@
 # Honest Fern release — next execution plan
 
-> Revised 2026-09-13 after local provider-remediation implementation and review.
+> Revised 2026-09-14 after the approved default-selection and picker refinements.
 > This is a bounded execution plan; `RELEASE_CHECKLIST.md` remains the master
 > checklist.
 
 ## Current gates
 
-- Internal testing now has the signed `1.0.0+5` candidate (`versionCode 5`),
-  including the provider/catalog repair and AdMob/UMP late-consent fix.
-- A later provider audit found two P0 coverage defects in that artifact:
-  historical/trend fiat calls still use Frankfurter v1, which omits AED, ARS,
-  CLP, COP and TWD, and Polygon is still keyed as MATIC while the release-safe
-  feed uses POL. The local source repair and independent review are complete;
-  the fixed candidate is uploaded to Internal testing but has not yet been
-  accepted from the Play-distributed installation. Do not promote `1.0.0+5`
-  to Closed before that acceptance.
-- The implementation and verification record is
-  `.agent/provider-coverage-remediation-plan-2026-09-12.md`. With explicit
-  approval, commit `26faed7`, build and upload the new Internal candidate
-  (`1.0.0+5`). The upload completed on 2026-09-13; it must still pass
-  acceptance as the exact Play-distributed artifact.
+- Internal testing now has signed `1.0.0+6` (`versionCode 6`) from commit
+  `aad8249`. It includes the earlier provider/POL and late-consent repairs,
+  plus approved fresh-install currency defaults and consistent grouped pickers.
+- Its AAB SHA-256 is
+  `9f6c0464046b636fe0a3f66b74afa58217696e269477366a0f35addf51f5ed96`.
+  Android Publisher committed and independently verified the Internal track on
+  2026-09-14. It still requires acceptance from the exact Play-distributed
+  installation. Do not promote `1.0.0+6` to Closed before that acceptance.
+- The provider implementation and verification record remains
+  `.agent/provider-coverage-remediation-plan-2026-09-12.md`; code 5 is
+  superseded and is not the candidate to test or promote.
 - The default Play listing locale is `en-GB`. The new icon and six phone
   screenshots are saved in the listing draft and are waiting in Publishing
   overview for the required review flow.
@@ -44,8 +41,8 @@
    release-safe providers; run deterministic tests, representative small/large
    device QA, clean-install QA and a seeded `1.0.0+4` persistence migration.
    Exact Play-distributed upgrade acceptance remains pending.
-3. **Complete (2026-09-13):** commit the reviewed corrections, build and upload
-   `1.0.0+5` to Internal testing only. Install and accept that exact
+3. **Complete (2026-09-14):** commit the reviewed refinements, build and upload
+   `1.0.0+6` to Internal testing only. Install and accept that exact
    Play-distributed artifact next.
 4. Complete the remaining Play Console setup and saved listing/declaration
    review flow required before Closed testing.

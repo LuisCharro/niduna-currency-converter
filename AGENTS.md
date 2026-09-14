@@ -23,10 +23,10 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-09-13)
+## Current state (reviewed 2026-09-14)
 
 - `main` is canonical; recheck `HEAD` and worktree state before acting.
-- Start with `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-13**.
+- Start with `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-14**.
   It supersedes old audit completion claims and historical instructions below.
 - For the executable next phase, use `.agent/release-next-steps.md`; it records
   the current Play/API workflow, ownership and stop conditions.
@@ -41,14 +41,14 @@ skills without changing this repo again.
 - When this checkout is inside the Honest Fern monorepo, read the portfolio
   baseline first: `../../docs/platforms/google-play-developer-api.md`. Keep
   package, artifact and track facts in this repository's runbook.
-- Internal testing now contains signed build `1.0.0` (`versionCode 5`), including
-  the provider/catalog repair and late UMP/AdMob consent fix. Accept this exact
-  Play-distributed candidate before promoting it to Closed; do not promote the
-  superseded `versionCode 4` artifact.
+- Internal testing now contains signed build `1.0.0` (`versionCode 6`), adding
+  the refined fresh-install currency defaults and consistent currency pickers.
+  Accept this exact Play-distributed candidate before promoting it to Closed;
+  do not promote the superseded `versionCode 5` artifact.
 - The default Play listing is `en-GB`; the new icon and six phone screenshots
   are saved in Publishing overview and await the remaining review gates.
-- `./scripts/check.sh` passed with 327 tests and clean analysis during the
-  provider-remediation review; do not infer production readiness from that
+- `./scripts/check.sh` passed with 330 tests and clean analysis for the code-6
+  candidate; do not infer production readiness from that
   check alone. Re-run it after any further edit.
 - Real Billing is injected by AppShell. Keep the real service and active Play
   products; do not replace them with the old stub.
@@ -94,11 +94,11 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+5`; Play Internal testing contains code 5.
+- Current `pubspec.yaml`: `1.0.0+6`; Play Internal testing contains code 6.
 - Code 2 is already uploaded. New binaries need an unused higher code, at least 3.
-- `1.0.0+4` is superseded for Closed testing by the provider-coverage blocker.
-  The repaired `1.0.0+5` candidate is now on Internal and must be accepted
-  from Google Play before Closed testing.
+- `1.0.0+5` is superseded for Closed testing by the default-selection and
+  picker refinements. The `1.0.0+6` candidate is now on Internal and must be
+  accepted from Google Play before Closed testing.
 - Promote the tested `1.0.0` artifact to Production; do not rebuild an
   identical binary merely to change its version name.
 - Promoting the same artifact between tracks does not require rebuilding it.
