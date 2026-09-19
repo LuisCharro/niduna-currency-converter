@@ -45,9 +45,13 @@ void main() {
     await tester.pumpAndSettle(launchSettle);
 
     await tester.tap(find.byKey(const Key('charts_pair_quote')));
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    await tester.tap(find.text('BTC'));
+    await tester.enterText(find.byType(TextField), 'BTC');
+    await tester.pumpAndSettle();
+    await tester.tap(find.textContaining('Crypto (1)'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('BTC').last);
     await tester.pumpAndSettle(chartSettle);
 
     await tester.tap(find.byType(LineChart));
