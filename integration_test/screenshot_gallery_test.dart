@@ -26,6 +26,17 @@ Future<void> _seedPaidUserWithFavorites() async {
   ]);
 }
 
+Future<void> _precacheFavoriteFlags(WidgetTester tester) async {
+  final context = tester.element(find.byType(FloatingPillNav));
+  for (final code in <String>['btc', 'eur', 'gbp', 'chf', 'mxn', 'jpy']) {
+    await precacheImage(
+      AssetImage('assets/icons/currencies/$code.png'),
+      context,
+    );
+  }
+  await tester.pump();
+}
+
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   const launchSettle = Duration(seconds: 5);
@@ -66,6 +77,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle(launchSettle);
+    await _precacheFavoriteFlags(tester);
     await binding.takeScreenshot('03-favorites');
   });
 }
