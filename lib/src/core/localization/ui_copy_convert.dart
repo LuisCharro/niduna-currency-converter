@@ -173,6 +173,20 @@ String shareImageFailedMessage(BuildContext context) =>
       _ => 'Couldn’t create the image. Try again',
     };
 
+String convertRowActionsHintText(BuildContext context) =>
+    switch (_lang(context)) {
+      'es' =>
+        'Truco: mantén pulsada una fila para abrir la lupa · desliza a la izquierda para más',
+      'de' =>
+        'Tipp: Zeile gedrückt halten öffnet die Lupe · nach links wischen für mehr',
+      'it' =>
+        'Suggerimento: tieni premuta una riga per aprire la lente · scorri a sinistra per altro',
+      'fr' =>
+        'Astuce : maintenez une ligne pour ouvrir la loupe · balayez à gauche pour plus',
+      _ =>
+        'Tip: hold a row to open the lens · swipe left for more',
+    };
+
 String shareRatesFailedMessage(BuildContext context) =>
     switch (_lang(context)) {
       'es' => 'No se pudieron compartir los tipos. Inténtalo de nuevo',

@@ -6,6 +6,7 @@ import '../../core/monetization/monetization_controller.dart';
 import '../../core/share/share_rate_card.dart';
 import '../../shared/widgets/bottom_tab_frame.dart';
 import '../../shared/widgets/canvas_background.dart';
+import 'data/convert_row_hint_store.dart';
 import 'presentation/convert_controller.dart';
 import 'presentation/rate_card_data_mapper.dart';
 import 'widgets/ad_support_shelf.dart';
@@ -16,12 +17,14 @@ class ConvertScreen extends StatelessWidget {
     required this.controller,
     required this.monetization,
     required this.onNavigateToSettings,
+    this.hintStore,
     super.key,
   });
 
   final ConvertController controller;
   final MonetizationController monetization;
   final VoidCallback onNavigateToSettings;
+  final ConvertRowHintStore? hintStore;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,8 @@ class ConvertScreen extends StatelessWidget {
               listenable: controller,
               builder: (context, _) => ConvertContent(
                 state: controller.state,
+                decimalPlaces: controller.decimalPlaces,
+                hintStore: hintStore,
                 onRefresh: controller.refresh,
                 onAmountChanged: controller.setAmountText,
                 onSelectBase: controller.setBase,

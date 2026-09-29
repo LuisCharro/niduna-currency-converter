@@ -51,6 +51,7 @@ class ConvertController extends ChangeNotifier {
 
   ConvertState state = ConvertState.loading();
   LatestRatesSnapshot? get snapshot => _snapshot;
+  int get decimalPlaces => _decimalPlaces;
   List<FavoritePair> get favoritePairs =>
       _favoritesStore?.pairs ?? const <FavoritePair>[];
   bool get maxFavoritesReached {

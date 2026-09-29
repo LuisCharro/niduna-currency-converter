@@ -18,6 +18,7 @@ import 'core/rates/rates_service.dart';
 import 'core/rates/clients/frankfurter_client.dart';
 import 'core/rates/cache/shared_preferences_rates_cache.dart';
 import 'core/theme/app_theme.dart';
+import 'features/convert/data/convert_row_hint_store.dart';
 import 'features/convert/data/frankfurter_latest_rates_client.dart';
 import 'features/convert/data/latest_rates_cache.dart';
 import 'features/convert/data/latest_rates_repository.dart';
@@ -48,6 +49,7 @@ class _AppState extends State<AppShell> {
   int _currentIndex = 0;
   FavoritesStore? _localStore;
   ConvertController? _controller;
+  ConvertRowHintStore? _rowHintStore;
   ChartsController? _chartsController;
   SettingsController? _settingsController;
   MonetizationController? _monetization;
@@ -87,6 +89,7 @@ class _AppState extends State<AppShell> {
           cryptoClient: ProviderFactory.createCryptoLatestClient(),
         );
 
+    _rowHintStore = ConvertRowHintStore(prefs);
     _controller = ConvertController(
       repository: repo,
       favoritesStore: _favoritesStore,
@@ -162,6 +165,7 @@ class _AppState extends State<AppShell> {
         controller: _controller!,
         monetization: _monetization!,
         onNavigateToSettings: () => setState(() => _currentIndex = 3),
+        hintStore: _rowHintStore,
       ),
       FavoritesScreen(
         favoritesStore: _favoritesStore,
@@ -179,7 +183,7 @@ class _AppState extends State<AppShell> {
       ),
     ];
 
-    final theme = AppTheme.themeFor(_preferences?.isDarkMode ?? false);
+    final theme = AppTheme.themeFor(_effectiveIsDark(context));
     return Theme(
       data: theme,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -210,6 +214,17 @@ class _AppState extends State<AppShell> {
         ),
       ),
     );
+  }
+
+  bool _effectiveIsDark(BuildContext context) {
+    switch (_preferences?.themeMode ?? AppThemeMode.system) {
+      case AppThemeMode.dark:
+        return true;
+      case AppThemeMode.light:
+        return false;
+      case AppThemeMode.system:
+        return MediaQuery.platformBrightnessOf(context) == Brightness.dark;
+    }
   }
 
   Future<void> _onClearCache() async {

@@ -33,3 +33,21 @@ String shownBaseSubtitle(BuildContext context, int count, String base) =>
       'fr' => '$count affichées · base $base',
       _ => '$count shown · $base base',
     };
+
+String pickerSelectedSectionLabel(BuildContext context) =>
+    switch (_lang(context)) {
+      'es' => 'Seleccionada',
+      'de' => 'Ausgewählt',
+      'it' => 'Selezionata',
+      'fr' => 'Sélectionnée',
+      _ => 'Selected',
+    };
+
+String pickerPopularSectionLabel(BuildContext context) =>
+    switch (_lang(context)) {
+      'es' => 'Popular',
+      'de' => 'Beliebt',
+      'it' => 'Popolare',
+      'fr' => 'Populaire',
+      _ => 'Popular',
+    };

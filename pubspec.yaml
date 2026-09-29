@@ -56,6 +56,7 @@ dev_dependencies:
 
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.1
+  url_launcher_platform_interface: ^2.3.2
 
 # iOS icon generation uses the opaque minted-coin master produced by
 # scripts/generate_brand_icons.sh. The script also synchronizes Android, web,

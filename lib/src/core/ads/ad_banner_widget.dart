@@ -8,7 +8,13 @@ import 'ad_consent_manager.dart';
 import 'ad_helper.dart';
 
 class AdBannerWidget extends StatefulWidget {
-  const AdBannerWidget({super.key});
+  const AdBannerWidget({this.reserveMinHeight = true, super.key});
+
+  /// When false, the widget collapses to zero height until an ad (or its
+  /// failure placeholder) actually has content, instead of always reserving
+  /// the estimated banner slot height. Useful in contexts — like a picker
+  /// sheet — where a persistent blank reserved slot reads as a layout bug.
+  final bool reserveMinHeight;
 
   @override
   State<AdBannerWidget> createState() => _AdBannerWidgetState();
@@ -144,9 +150,11 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
         final slotHeight = (ad?.size.height.toDouble() ?? reservedHeight)
             .clamp(_minSlotHeight, 120)
             .toDouble();
-        final frameHeight = slotHeight > _minSlotHeight
-            ? slotHeight
-            : _minSlotHeight;
+        final hasVisibleContent = (_isLoaded && ad != null) ||
+            (_hasLoadError && AdHelper.showPlaceholderOnFailure);
+        final frameHeight = widget.reserveMinHeight || hasVisibleContent
+            ? (slotHeight > _minSlotHeight ? slotHeight : _minSlotHeight)
+            : 0.0;
         Widget content = const SizedBox.shrink();
 
         if (_isLoaded && ad != null) {

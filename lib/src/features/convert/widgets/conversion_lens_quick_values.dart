@@ -4,19 +4,21 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_theme.dart';
 import '../models/currency_quote.dart';
-import 'conversion_lens_positioner.dart';
+import 'conversion_lens_formatting.dart';
 
 class ConversionLensQuickValues extends StatelessWidget {
   const ConversionLensQuickValues({
     required this.quote,
     required this.base,
     required this.amount,
+    this.decimalPlaces = 2,
     super.key,
   });
 
   final CurrencyQuote quote;
   final String base;
   final double amount;
+  final int decimalPlaces;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +41,13 @@ class ConversionLensQuickValues extends StatelessWidget {
             children: values
                 .map(
                   (value) => LensValueRow(
-                    leading: formatLensValue(value, base),
+                    leading: formatLensValue(
+                      value,
+                      base,
+                      decimalPlaces: decimalPlaces,
+                    ),
                     trailing:
-                        '${formatLensConvertedAmount(value * quote.rate, quote.code)} ${quote.code}',
+                        '${formatLensConvertedAmount(value * quote.rate, quote.code, decimalPlaces: decimalPlaces)} ${quote.code}',
                   ),
                 )
                 .toList(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/clamped_text_scale.dart';
 import '../domain/chart_range.dart';
 import '../presentation/chart_state.dart';
 import 'charts_empty_state.dart';
@@ -43,18 +44,13 @@ class ChartsChartSection extends StatelessWidget {
             ),
           ),
         ),
-        child: Column(
-          children: <Widget>[
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: AppColors.of(context).container,
-                border: Border(
-                  bottom: BorderSide(
-                    color: AppColors.of(context).border.withValues(alpha: .1),
-                  ),
-                ),
-              ),
-              child: Padding(
+        // Axis labels and range pills have fixed slots; at large system
+        // font sizes they overlap or clip, so cap their growth here.
+        child: ClampedTextScale(
+          maxScaleFactor: 1.15,
+          child: Column(
+            children: <Widget>[
+              Padding(
                 padding: EdgeInsets.fromLTRB(
                   0,
                   compact ? 4 : 6,
@@ -67,15 +63,15 @@ class ChartsChartSection extends StatelessWidget {
                   includesCrypto: state.includesCrypto,
                 ),
               ),
-            ),
-            if (loading)
-              LinearProgressIndicator(
-                minHeight: 2,
-                backgroundColor: Colors.transparent,
-                color: AppColors.of(context).trendUp.withValues(alpha: .7),
-              ),
-            Expanded(child: _buildPlot(context)),
-          ],
+              if (loading)
+                LinearProgressIndicator(
+                  minHeight: 2,
+                  backgroundColor: Colors.transparent,
+                  color: AppColors.of(context).trendUp.withValues(alpha: .7),
+                ),
+              Expanded(child: _buildPlot(context)),
+            ],
+          ),
         ),
       ),
     );

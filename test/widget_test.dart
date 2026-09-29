@@ -649,13 +649,31 @@ void main() {
       ),
     );
     expect(find.text('Conversion'), findsOneWidget);
-    expect(find.text('Data'), findsOneWidget);
-    expect(find.text('Premium'), findsOneWidget);
     expect(find.text('Default base currency'), findsWidgets);
-    expect(find.text('Dark mode'), findsWidgets);
+    expect(find.text('Theme'), findsWidgets);
+    expect(find.text('System'), findsWidgets);
+    expect(find.text('Light'), findsWidgets);
+    expect(find.text('Dark'), findsWidgets);
+    expect(find.text('Data'), findsOneWidget);
     expect(find.text('Data & privacy'), findsOneWidget);
     expect(find.text('Privacy policy'), findsOneWidget);
     expect(find.byKey(const Key('open_privacy_policy')), findsOneWidget);
+
+    await tester.dragUntilVisible(
+      find.text('Premium'),
+      find.byType(Scrollable),
+      const Offset(0, -300),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Premium'), findsOneWidget);
+
+    await tester.dragUntilVisible(
+      find.text('Send feedback'),
+      find.byType(Scrollable),
+      const Offset(0, -300),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Send feedback'), findsOneWidget);
     // The old duplicate "Data sources" tile in About is gone (merged page).
     expect(find.text('Data sources'), findsNothing);
   });
@@ -729,14 +747,16 @@ void main() {
     );
 
     final title = tester.widget<Text>(find.text('Settings'));
-    final premiumTitle = tester.widget<Text>(find.text('Premium unlocks'));
+    final premiumNote = tester.widget<Text>(
+      find.text('One-time purchases — no account required.'),
+    );
     final rowTitle = tester.widget<Text>(
       find.text('Default base currency').first,
     );
 
     expect(title.style?.fontSize, 24);
-    expect(premiumTitle.style?.fontFamily, isNot('Fraunces'));
-    expect(premiumTitle.style?.fontSize, lessThan(20));
+    expect(premiumNote.style?.fontFamily, isNot('Fraunces'));
+    expect(premiumNote.style?.fontSize, lessThan(20));
     expect(rowTitle.style?.fontSize, 15);
   });
 
@@ -985,16 +1005,19 @@ void main() {
     await tester.pumpAndSettle();
     await tester.pump(const Duration(seconds: 1));
 
-    // Expand Europe section (collapsed by default; search doesn't auto-expand)
-    final europeHeader = find.text('Europe (10)');
-    expect(europeHeader, findsOneWidget);
-    await tester.tap(europeHeader);
-    await tester.pumpAndSettle();
-
-    // Search for EUR — must be present and not locked (free default for crypto pairs)
+    // Search for EUR — must be present and not locked (free default for crypto pairs).
+    // Searching narrows the region groups so the matched section header stays
+    // on screen regardless of any highlighted/popular currencies shown above
+    // the groups when the sheet first opens.
     final searchField = find.byType(TextField);
     expect(searchField, findsOneWidget);
     await tester.enterText(searchField, 'EUR');
+    await tester.pumpAndSettle();
+
+    // Expand Europe section (collapsed by default; search doesn't auto-expand)
+    final europeHeader = find.text('Europe (1)');
+    expect(europeHeader, findsOneWidget);
+    await tester.tap(europeHeader);
     await tester.pumpAndSettle();
 
     final eurTexts = find.text('EUR');

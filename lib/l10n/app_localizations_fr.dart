@@ -111,15 +111,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get labelRemoveAds => 'Supprimer les publicités';
 
   @override
-  String get labelDarkMode => 'Mode sombre';
-
-  @override
-  String get labelDarkModeOn => 'Activé';
-
-  @override
-  String get labelDarkModeFollowsSystem => 'Suivre le système';
-
-  @override
   String get labelAbout => 'À propos';
 
   @override
@@ -392,9 +383,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get favoritesProUnlocked => 'Up to 16 favorite pairs unlocked';
 
   @override
-  String get labelDarkModeOff => 'Désactivé';
-
-  @override
   String get refreshRatesTooltip => 'Actualiser les taux';
 
   @override
@@ -456,4 +444,33 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get snackRestoreChecking => 'Vérification de vos achats…';
+
+  @override
+  String get labelThemeMode => 'Thème';
+
+  @override
+  String get themeModeSystem => 'Système';
+
+  @override
+  String get themeModeLight => 'Clair';
+
+  @override
+  String get themeModeDark => 'Sombre';
+
+  @override
+  String get labelSendFeedback => 'Envoyer des commentaires';
+
+  @override
+  String get sendFeedbackSubtitle =>
+      'Questions, idées ou bugs — nous lisons tout';
+
+  @override
+  String feedbackEmailSubject(String version) {
+    return 'Retour sur Currency Converter ($version)';
+  }
+
+  @override
+  String snackNoEmailApp(String email) {
+    return 'Aucune application de messagerie trouvée — contactez-nous à $email';
+  }
 }

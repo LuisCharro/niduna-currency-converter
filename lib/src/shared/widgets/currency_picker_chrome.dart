@@ -24,11 +24,11 @@ class CurrencyPickerHeader extends StatelessWidget {
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Fraunces',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTheme.screenTitleStyle(
+                  context,
+                ).copyWith(fontSize: 19, color: colors.text),
               ),
               if (subtitle != null) ...[
                 const SizedBox(height: 2),

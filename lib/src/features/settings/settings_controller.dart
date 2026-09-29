@@ -14,6 +14,7 @@ class SettingsController extends ChangeNotifier {
   static final Uri _privacyPolicyUri = Uri.parse(
     'https://honestfern.com/currency-converter/privacy/',
   );
+  static const String feedbackEmailAddress = 'support@honestfern.com';
 
   SettingsController({
     required this.preferences,
@@ -35,7 +36,7 @@ class SettingsController extends ChangeNotifier {
 
   void toggleRefreshOnOpen(bool value) => preferences.setRefreshOnOpen(value);
 
-  void toggleDarkMode(bool value) => preferences.setDarkMode(value);
+  void setThemeMode(AppThemeMode mode) => preferences.setThemeMode(mode);
 
   void openDataDetails(BuildContext context) {
     final theme = Theme.of(context);
@@ -49,6 +50,26 @@ class SettingsController extends ChangeNotifier {
 
   Future<void> openPrivacyPolicy() async {
     await launchUrl(_privacyPolicyUri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> sendFeedback(BuildContext context, String appVersion) async {
+    final loc = l10n(context);
+    final uri = Uri(
+      scheme: 'mailto',
+      path: feedbackEmailAddress,
+      queryParameters: {'subject': loc.feedbackEmailSubject(appVersion)},
+    );
+    var launched = false;
+    try {
+      launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (_) {
+      launched = false;
+    }
+    if (!launched && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(loc.snackNoEmailApp(feedbackEmailAddress))),
+      );
+    }
   }
 
   Future<void> openPrivacyOptions() => adConsent.showPrivacyOptions();

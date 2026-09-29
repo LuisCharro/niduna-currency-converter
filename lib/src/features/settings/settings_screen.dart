@@ -13,7 +13,7 @@ import 'widgets/premium_section.dart';
 import 'widgets/settings_about_section.dart';
 import 'widgets/settings_data_section.dart';
 import 'widgets/section_header.dart';
-import 'widgets/switch_tile.dart';
+import 'widgets/theme_mode_tile.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({
@@ -50,14 +50,7 @@ class SettingsScreen extends StatelessWidget {
                   SectionHeader(title: loc.labelConversion),
                   BaseCurrencyTile(controller: controller),
                   DecimalPlacesTile(controller: controller),
-                  SwitchTile(
-                    title: loc.labelDarkMode,
-                    subtitle: preferences.isDarkMode
-                        ? loc.labelDarkModeOn
-                        : loc.labelDarkModeOff,
-                    value: preferences.isDarkMode,
-                    onChanged: controller.toggleDarkMode,
-                  ),
+                  ThemeModeTile(controller: controller),
                   const SizedBox(height: AppTheme.sectionGap),
                   SettingsDataSection(controller: controller),
                   const SizedBox(height: AppTheme.sectionGap),

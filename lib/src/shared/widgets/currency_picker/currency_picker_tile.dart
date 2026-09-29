@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/localization/ui_copy.dart';
 import '../../../core/currency/supported_currencies.dart';
+import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../shared/widgets/currency_flag_icon.dart';
+import '../currency_flag_icon.dart';
 
+/// Row for a currency inside a picker sheet. Shared across the Convert
+/// visible-currencies/base pickers and the Settings default-base picker.
+/// [selectBaseMode] switches between a single-select (radio) and a
+/// multi-toggle (check) presentation; the multi-toggle subtitle copy is
+/// Convert-specific and only used in that mode.
 class CurrencyPickerTile extends StatelessWidget {
   const CurrencyPickerTile({
     required this.currency,

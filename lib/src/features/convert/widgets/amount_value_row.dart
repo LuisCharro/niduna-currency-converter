@@ -12,6 +12,7 @@ class AmountValueRow extends StatelessWidget {
     required this.base,
     required this.onAmountChanged,
     required this.onBaseTap,
+    this.compact = false,
     super.key,
   });
 
@@ -19,13 +20,23 @@ class AmountValueRow extends StatelessWidget {
   final String base;
   final ValueChanged<String> onAmountChanged;
   final VoidCallback onBaseTap;
+  final bool compact;
+
+  /// Smaller adaptive font sizes used on short screens (see [AmountPanel]),
+  /// mirroring `AppTheme.heroAmountSizes` at a reduced scale.
+  static const List<double> _compactHeroAmountSizes = [38.0, 34.0, 30.0, 26.0];
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final display = amountText.isEmpty ? '0.00' : amountText;
     final colors = AppColors.of(context);
-    final baseStyle = AppTheme.heroAmountFor(context).copyWith(
+    final heroStyle = compact
+        ? AppTheme.heroAmountCompactStyle(
+            context,
+          ).copyWith(fontSize: _compactHeroAmountSizes.first)
+        : AppTheme.heroAmountFor(context);
+    final baseStyle = heroStyle.copyWith(
       color: amountText.isEmpty ? colors.muted : colors.text,
     );
 
@@ -110,13 +121,14 @@ class AmountValueRow extends StatelessWidget {
     TextStyle baseStyle,
     double maxWidth,
   ) {
-    for (final fontSize in AppTheme.heroAmountSizes) {
+    final sizes = compact ? _compactHeroAmountSizes : AppTheme.heroAmountSizes;
+    for (final fontSize in sizes) {
       if (fontSize < baseStyle.fontSize!) break;
       final candidate = baseStyle.copyWith(fontSize: fontSize);
       if (_fitsWidth(text, candidate, maxWidth)) {
         return candidate;
       }
     }
-    return baseStyle.copyWith(fontSize: AppTheme.heroAmountSizes.last);
+    return baseStyle.copyWith(fontSize: sizes.last);
   }
 }

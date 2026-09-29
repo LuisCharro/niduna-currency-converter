@@ -6,7 +6,7 @@ import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../models/currency_quote.dart';
-import 'conversion_lens_positioner.dart';
+import 'conversion_lens_formatting.dart';
 import 'conversion_lens_quick_values.dart' show LensValueRow;
 
 class ConversionLensReverseTarget extends StatelessWidget {
@@ -14,12 +14,14 @@ class ConversionLensReverseTarget extends StatelessWidget {
     required this.quote,
     required this.base,
     required this.onAmountChanged,
+    this.decimalPlaces = 2,
     super.key,
   });
 
   final CurrencyQuote quote;
   final String base;
   final ValueChanged<String> onAmountChanged;
+  final int decimalPlaces;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +44,13 @@ class ConversionLensReverseTarget extends StatelessWidget {
             children: targets
                 .map(
                   (target) => LensValueRow(
-                    leading: formatLensValue(target, quote.code),
+                    leading: formatLensValue(
+                      target,
+                      quote.code,
+                      decimalPlaces: decimalPlaces,
+                    ),
                     trailing:
-                        '${formatLensConvertedAmount(target / quote.rate, base)} $base',
+                        '${formatLensConvertedAmount(target / quote.rate, base, decimalPlaces: decimalPlaces)} $base',
                     actionLabel: useActionLabel(context),
                     onAction: () {
                       HapticFeedback.selectionClick();

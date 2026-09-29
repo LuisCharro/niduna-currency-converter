@@ -25,6 +25,32 @@ enum CurrencySection {
   bool get defaultExpanded => false;
 }
 
+/// Widely-used currencies offered as quick picks in picker sheets, ahead of
+/// the collapsible region groups. Only codes present in a given picker's
+/// currency list are ever shown.
+const List<String> popularCurrencyCodes = <String>[
+  'USD',
+  'EUR',
+  'GBP',
+  'JPY',
+  'CHF',
+  'CAD',
+  'AUD',
+  'CNY',
+  'BTC',
+  'ETH',
+];
+
+/// The region/category section that contains [code], if any, computed from
+/// [currencies]. Used to auto-expand the group holding the current
+/// base/quote when a picker opens.
+CurrencySection? sectionForCode(String code, List<SupportedCurrency> currencies) {
+  for (final group in buildCurrencyGroups(currencies: currencies)) {
+    if (group.currencies.any((c) => c.code == code)) return group.section;
+  }
+  return null;
+}
+
 class CurrencyGroup {
   const CurrencyGroup({required this.section, required this.currencies});
 

@@ -4,7 +4,7 @@ import '../../../core/localization/ui_copy.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/sectioned_currency_picker.dart';
-import 'currency_picker_tile.dart';
+import '../../../shared/widgets/currency_picker/currency_picker_tile.dart';
 
 class CurrencyPickerSheet extends StatefulWidget {
   const CurrencyPickerSheet({
@@ -39,6 +39,10 @@ class _CurrencyPickerSheetState extends State<CurrencyPickerSheet> {
       subtitle: _subtitle(l10n),
       currencies: allSupportedCurrencies,
       itemComparator: _compareItems,
+      highlightedCodes: widget.selectBaseMode
+          ? [widget.base]
+          : [widget.base, ..._selectedCodes],
+      expandSectionsForCodes: [widget.base],
       tileBuilder: (context, currency) {
         final isBase = currency.code == widget.base;
         final isSelected = _selectedCodes.contains(currency.code);

@@ -58,11 +58,6 @@ class ChartHeader extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppTheme.space1),
-          Text(
-            '$base / $quote',
-            style: AppTheme.pairTitleStyle(context),
-          ),
-          const SizedBox(height: AppTheme.space2),
           SizedBox(
             width: double.infinity,
             child: Wrap(
@@ -71,11 +66,12 @@ class ChartHeader extends StatelessWidget {
               runSpacing: AppTheme.space1,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
-                if (rate != null)
-                  Text(
-                    '1 $base = ${formatChartValue(rate!)} $quote',
-                    style: AppTheme.metricValueStyle(context),
-                  ),
+                Text(
+                  rate != null
+                      ? '$base / $quote · 1 $base = ${formatChartValue(rate!)} $quote'
+                      : '$base / $quote',
+                  style: _subtitleStyle(context),
+                ),
                 if (changePercent != null)
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -104,5 +100,16 @@ class ChartHeader extends StatelessWidget {
   static String? _freshnessLabel(BuildContext context, DateTime? updated) {
     if (updated == null) return null;
     return chartDailyDataLabel(context, updated);
+  }
+
+  /// Single subtitle-level line for the pair + rate (kept below the screen
+  /// title so Charts has one headline level, matching Convert/Favorites).
+  static TextStyle _subtitleStyle(BuildContext context) {
+    return TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w700,
+      height: 1.25,
+      color: AppColors.of(context).text,
+    );
   }
 }

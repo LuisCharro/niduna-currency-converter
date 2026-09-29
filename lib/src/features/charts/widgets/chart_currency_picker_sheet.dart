@@ -148,8 +148,10 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
         widget.quoteCurrency,
       ),
       currencies: currencies,
+      highlightedCodes: [widget.selectedCode],
+      expandSectionsForCodes: [widget.selectedCode],
       headerWidget: widget.controller.adsEnabled
-          ? const AdBannerWidget()
+          ? const AdBannerWidget(reserveMinHeight: false)
           : null,
       tileBuilder: (context, currency) {
         final isSelected = currency.code == widget.selectedCode;

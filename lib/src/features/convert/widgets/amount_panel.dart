@@ -21,6 +21,7 @@ class AmountPanel extends StatelessWidget {
     required this.onMore,
     required this.onAmountChanged,
     required this.onBaseTap,
+    this.compact = false,
     super.key,
   });
 
@@ -36,24 +37,29 @@ class AmountPanel extends StatelessWidget {
   final ValueChanged<String> onAmountChanged;
   final VoidCallback onBaseTap;
 
+  /// Short-screen density mode (see `MediaQuery` height < 700 in
+  /// `ConvertContent`): smaller amount number, tighter padding, so more rate
+  /// rows are visible above the ad shelf. Normal/tall screens are unaffected.
+  final bool compact;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: AppTheme.pageInsets.copyWith(
-        top: AppTheme.space2,
-        bottom: AppTheme.space3,
+        top: compact ? AppTheme.space1 : AppTheme.space2,
+        bottom: compact ? AppTheme.space1 : AppTheme.space3,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           AmountHeaderRow(onRefresh: () => onRefresh(), onShare: onShare, onMore: onMore),
-          const SizedBox(height: AppTheme.space3),
+          SizedBox(height: compact ? AppTheme.space2 : AppTheme.space3),
           InstrumentPanel(
-            padding: const EdgeInsets.fromLTRB(
+            padding: EdgeInsets.fromLTRB(
               AppTheme.space4,
-              AppTheme.space5,
+              compact ? AppTheme.space3 : AppTheme.space5,
               AppTheme.space4,
-              AppTheme.space3,
+              compact ? AppTheme.space2 : AppTheme.space3,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,8 +69,9 @@ class AmountPanel extends StatelessWidget {
                   base: base,
                   onAmountChanged: onAmountChanged,
                   onBaseTap: onBaseTap,
+                  compact: compact,
                 ),
-                const SizedBox(height: AppTheme.space3),
+                SizedBox(height: compact ? AppTheme.space2 : AppTheme.space3),
                 AmountStatusBar(
                   isRefreshing: isRefreshing,
                   lastUpdatedLabel: lastUpdatedLabel,

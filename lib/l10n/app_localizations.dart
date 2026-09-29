@@ -302,24 +302,6 @@ abstract class AppLocalizations {
   /// **'Remove ads'**
   String get labelRemoveAds;
 
-  /// Dark mode toggle label
-  ///
-  /// In en, this message translates to:
-  /// **'Dark mode'**
-  String get labelDarkMode;
-
-  /// Dark mode on subtitle
-  ///
-  /// In en, this message translates to:
-  /// **'On'**
-  String get labelDarkModeOn;
-
-  /// Dark mode follows system subtitle
-  ///
-  /// In en, this message translates to:
-  /// **'Follows system'**
-  String get labelDarkModeFollowsSystem;
-
   /// About section label
   ///
   /// In en, this message translates to:
@@ -812,12 +794,6 @@ abstract class AppLocalizations {
   /// **'Up to 16 favorite pairs unlocked'**
   String get favoritesProUnlocked;
 
-  /// No description provided for @labelDarkModeOff.
-  ///
-  /// In en, this message translates to:
-  /// **'Off'**
-  String get labelDarkModeOff;
-
   /// No description provided for @refreshRatesTooltip.
   ///
   /// In en, this message translates to:
@@ -925,6 +901,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Checking your purchases…'**
   String get snackRestoreChecking;
+
+  /// Theme setting title (System/Light/Dark selector)
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get labelThemeMode;
+
+  /// Theme mode option: follow system setting
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeModeSystem;
+
+  /// Theme mode option: light
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeModeLight;
+
+  /// Theme mode option: dark
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeModeDark;
+
+  /// Send feedback tile title in Settings About section
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get labelSendFeedback;
+
+  /// Send feedback tile subtitle in Settings About section
+  ///
+  /// In en, this message translates to:
+  /// **'Questions, ideas or bugs — we read everything'**
+  String get sendFeedbackSubtitle;
+
+  /// Email subject line used when opening the feedback mailto link
+  ///
+  /// In en, this message translates to:
+  /// **'Currency Converter feedback ({version})'**
+  String feedbackEmailSubject(String version);
+
+  /// Snackbar shown when no email app is available to send feedback
+  ///
+  /// In en, this message translates to:
+  /// **'No email app found — contact us at {email}'**
+  String snackNoEmailApp(String email);
 }
 
 class _AppLocalizationsDelegate

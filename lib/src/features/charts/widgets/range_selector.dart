@@ -56,7 +56,7 @@ class RangeSelector extends StatelessWidget {
                   onTap: rangeTap,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 180),
-                    constraints: const BoxConstraints(minHeight: 36, minWidth: 44),
+                    constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                       color: isSelected

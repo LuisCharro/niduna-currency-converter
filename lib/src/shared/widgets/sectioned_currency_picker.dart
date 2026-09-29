@@ -19,6 +19,9 @@ class SectionedCurrencyPicker extends StatefulWidget {
     this.initialExpandedSections,
     this.headerWidget,
     this.itemComparator,
+    this.highlightedCodes = const <String>[],
+    this.popularCodes = popularCurrencyCodes,
+    this.expandSectionsForCodes = const <String>[],
     super.key,
   });
 
@@ -30,6 +33,20 @@ class SectionedCurrencyPicker extends StatefulWidget {
   final Widget? headerWidget;
   final Comparator<SupportedCurrency>? itemComparator;
 
+  /// Codes to surface first, under a "Selected" heading, when the sheet
+  /// opens with no active search (e.g. the current base, or the currently
+  /// visible/selected currencies).
+  final List<String> highlightedCodes;
+
+  /// Widely-used currencies to surface under a "Popular" heading, skipping
+  /// any already shown in [highlightedCodes]. Defaults to a standard set.
+  final List<String> popularCodes;
+
+  /// Codes whose containing region/category group should start expanded
+  /// (in addition to [initialExpandedSections]). Typically the current
+  /// base or quote currency.
+  final List<String> expandSectionsForCodes;
+
   @override
   State<SectionedCurrencyPicker> createState() =>
       _SectionedCurrencyPickerState();
@@ -37,10 +54,19 @@ class SectionedCurrencyPicker extends StatefulWidget {
 
 class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
   String _query = '';
-  late final Set<CurrencySection> _expandedSections = Set<CurrencySection>.from(
-    widget.initialExpandedSections ??
-        CurrencySection.values.where((s) => s.defaultExpanded),
-  );
+  late final Set<CurrencySection> _expandedSections = _initialExpanded();
+
+  Set<CurrencySection> _initialExpanded() {
+    final result = Set<CurrencySection>.from(
+      widget.initialExpandedSections ??
+          CurrencySection.values.where((s) => s.defaultExpanded),
+    );
+    for (final code in widget.expandSectionsForCodes) {
+      final section = sectionForCode(code, widget.currencies);
+      if (section != null) result.add(section);
+    }
+    return result;
+  }
 
   List<SupportedCurrency> get _filtered {
     final q = _query.toLowerCase();
@@ -52,6 +78,32 @@ class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
               c.name.toLowerCase().contains(q),
         )
         .toList();
+  }
+
+  bool get _showTopSection => _query.isEmpty;
+
+  List<SupportedCurrency> get _topSelected {
+    final byCode = {for (final c in widget.currencies) c.code: c};
+    final result = <SupportedCurrency>[];
+    for (final code in widget.highlightedCodes) {
+      final currency = byCode[code];
+      if (currency != null && !result.any((c) => c.code == code)) {
+        result.add(currency);
+      }
+    }
+    return result;
+  }
+
+  List<SupportedCurrency> get _topPopular {
+    final byCode = {for (final c in widget.currencies) c.code: c};
+    final selectedCodes = _topSelected.map((c) => c.code).toSet();
+    final result = <SupportedCurrency>[];
+    for (final code in widget.popularCodes) {
+      if (selectedCodes.contains(code)) continue;
+      final currency = byCode[code];
+      if (currency != null) result.add(currency);
+    }
+    return result;
   }
 
   @override
@@ -85,8 +137,14 @@ class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
                     ? _emptyState(context)
                     : ListView.builder(
                         controller: scrollController,
-                        itemCount: groups.length,
-                        itemBuilder: (context, i) => _group(context, groups[i]),
+                        itemCount: groups.length + (_showTopSection ? 1 : 0),
+                        itemBuilder: (context, i) {
+                          if (_showTopSection) {
+                            if (i == 0) return _topSection(context);
+                            return _group(context, groups[i - 1]);
+                          }
+                          return _group(context, groups[i]);
+                        },
                       ),
               ),
             ],
@@ -94,6 +152,51 @@ class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
         ),
       ),
     );
+  }
+
+  Widget _topSection(BuildContext context) {
+    final selected = _topSelected;
+    final popular = _topPopular;
+    if (selected.isEmpty && popular.isEmpty) return const SizedBox.shrink();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (selected.isNotEmpty)
+          ..._topSubsection(context, pickerSelectedSectionLabel(context), selected),
+        if (popular.isNotEmpty)
+          ..._topSubsection(context, pickerPopularSectionLabel(context), popular),
+      ],
+    );
+  }
+
+  List<Widget> _topSubsection(
+    BuildContext context,
+    String label,
+    List<SupportedCurrency> items,
+  ) {
+    final colors = AppColors.of(context);
+    return [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(4, 10, 4, 8),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: colors.muted,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ),
+      for (final currency in items) ...[
+        widget.tileBuilder(context, currency),
+        Padding(
+          padding: const EdgeInsets.only(left: 52),
+          child: Divider(height: 1, color: colors.border.withValues(alpha: .15)),
+        ),
+      ],
+    ];
   }
 
   Widget _emptyState(BuildContext context) {

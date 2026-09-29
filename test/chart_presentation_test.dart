@@ -26,7 +26,7 @@ void main() {
       ),
     );
 
-    expect(find.text('1 USD = 0.862660 EUR'), findsOneWidget);
+    expect(find.text('USD / EUR · 1 USD = 0.862660 EUR'), findsOneWidget);
     expect(find.text(r'$ 0.862660'), findsNothing);
     expect(find.text('Checked Sep 11'), findsOneWidget);
     expect(find.textContaining('Daily data'), findsNothing);
@@ -55,7 +55,9 @@ void main() {
       ),
     );
 
-    final rate = tester.getRect(find.text('1 USD = 0.00001301 BTC'));
+    final rate = tester.getRect(
+      find.text('USD / BTC · 1 USD = 0.00001301 BTC'),
+    );
     final trendChip = find.ancestor(
       of: find.text('↓ 17.07%'),
       matching: find.byType(Container),

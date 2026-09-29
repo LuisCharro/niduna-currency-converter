@@ -5,6 +5,7 @@ import '../../../core/localization/ui_copy.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../models/currency_quote.dart';
+import 'conversion_lens_hero.dart';
 import 'conversion_lens_positioner.dart';
 import 'conversion_lens_quick_values.dart';
 import 'conversion_lens_reverse_target.dart';
@@ -15,6 +16,7 @@ class ConversionLensSheet extends StatelessWidget {
     required this.base,
     required this.amount,
     required this.onAmountChanged,
+    this.decimalPlaces = 2,
     super.key,
   });
 
@@ -22,6 +24,7 @@ class ConversionLensSheet extends StatelessWidget {
   final String base;
   final double amount;
   final ValueChanged<String> onAmountChanged;
+  final int decimalPlaces;
 
   static Future<void> show({
     required BuildContext context,
@@ -30,6 +33,7 @@ class ConversionLensSheet extends StatelessWidget {
     required String base,
     required double amount,
     required ValueChanged<String> onAmountChanged,
+    int decimalPlaces = 2,
   }) {
     final media = MediaQuery.of(context);
     final pos = calculateLensPosition(media.size, media.padding, anchor);
@@ -58,6 +62,7 @@ class ConversionLensSheet extends StatelessWidget {
                 quote: quote,
                 base: base,
                 amount: amount,
+                decimalPlaces: decimalPlaces,
                 onAmountChanged: onAmountChanged,
               ),
             ),
@@ -137,7 +142,13 @@ class ConversionLensSheet extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            buildLensHero(context, quote, base, amount),
+            buildLensHero(
+              context,
+              quote,
+              base,
+              amount,
+              decimalPlaces: decimalPlaces,
+            ),
             const SizedBox(height: 14),
             Expanded(
               child: SingleChildScrollView(
@@ -147,11 +158,13 @@ class ConversionLensSheet extends StatelessWidget {
                       quote: quote,
                       base: base,
                       amount: amount,
+                      decimalPlaces: decimalPlaces,
                     ),
                     const SizedBox(height: 12),
                     ConversionLensReverseTarget(
                       quote: quote,
                       base: base,
+                      decimalPlaces: decimalPlaces,
                       onAmountChanged: onAmountChanged,
                     ),
                   ],

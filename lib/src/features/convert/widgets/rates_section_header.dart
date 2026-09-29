@@ -7,20 +7,26 @@ import '../../../../l10n/app_localizations.dart';
 
 /// Rates ledger header with light Edit affordance (D2-CON-5).
 class RatesSectionHeader extends StatelessWidget {
-  const RatesSectionHeader({required this.onEdit, super.key});
+  const RatesSectionHeader({
+    required this.onEdit,
+    this.compact = false,
+    super.key,
+  });
 
   final VoidCallback onEdit;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final colors = AppColors.of(context);
+    final verticalPad = compact ? AppTheme.space1 : AppTheme.space2;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
+      padding: EdgeInsets.fromLTRB(
         AppTheme.pagePadding,
-        AppTheme.space2,
+        verticalPad,
         AppTheme.pagePadding,
-        AppTheme.space2,
+        verticalPad,
       ),
       child: Row(
         children: <Widget>[

@@ -23,6 +23,8 @@ class VisibleRatesList extends StatefulWidget {
     this.maxFavoritesReached = false,
     this.onRefresh,
     this.isLoading = false,
+    this.decimalPlaces = 2,
+    this.onLensOpened,
     super.key,
   });
 
@@ -36,6 +38,11 @@ class VisibleRatesList extends StatefulWidget {
   final bool maxFavoritesReached;
   final Future<void> Function()? onRefresh;
   final bool isLoading;
+  final int decimalPlaces;
+
+  /// Called whenever the Conversion Lens is opened from a row, so callers
+  /// can auto-dismiss the row-actions discoverability hint after first use.
+  final VoidCallback? onLensOpened;
 
   @override
   State<VisibleRatesList> createState() => _VisibleRatesListState();
@@ -107,12 +114,14 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
             widget.onSetBase(quote.code);
           },
           onPressed: (position) {
+            widget.onLensOpened?.call();
             ConversionLensSheet.show(
               context: context,
               anchor: position,
               quote: quote,
               base: widget.base,
               amount: widget.amount,
+              decimalPlaces: widget.decimalPlaces,
               onAmountChanged: widget.onAmountChanged,
             );
           },
@@ -155,6 +164,7 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
   }
 
   void _openConversionFromSemantics(BuildContext context, CurrencyQuote quote) {
+    widget.onLensOpened?.call();
     final size = MediaQuery.sizeOf(context);
     ConversionLensSheet.show(
       context: context,
@@ -162,6 +172,7 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
       quote: quote,
       base: widget.base,
       amount: widget.amount,
+      decimalPlaces: widget.decimalPlaces,
       onAmountChanged: widget.onAmountChanged,
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../l10n/app_localizations_safe.dart';
 import '../settings_controller.dart';
 import 'section_header.dart';
+import 'send_feedback_tile.dart';
 import 'version_tile.dart';
 
 class SettingsAboutSection extends StatelessWidget {
@@ -17,6 +18,7 @@ class SettingsAboutSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SectionHeader(title: loc.labelAbout),
+        SendFeedbackTile(controller: controller),
         VersionTile(controller: controller),
       ],
     );

@@ -1,4 +1,4 @@
-import 'package:currency_converter/src/features/convert/widgets/conversion_lens_positioner.dart';
+import 'package:currency_converter/src/features/convert/widgets/conversion_lens_formatting.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -43,5 +43,37 @@ void main() {
 
   test('formatHeroConverted has no fractional part for zero-decimal currencies', () {
     expect(formatHeroConverted(15733.4, 'JPY'), '15,733');
+  });
+
+  test('formatLensValue honors a non-default decimalPlaces setting', () {
+    expect(
+      formatLensValue(0.879, 'EUR', decimalPlaces: 4),
+      '0.8790',
+    );
+    expect(
+      formatLensValue(12.5, 'USD', decimalPlaces: 3),
+      '12.500',
+    );
+    // Whole-number presets stay plain integers regardless of decimalPlaces.
+    expect(formatLensValue(100, 'USD', decimalPlaces: 4), '100');
+  });
+
+  test(
+    'formatLensConvertedAmount honors a non-default decimalPlaces setting',
+    () {
+      expect(
+        formatLensConvertedAmount(0.8794, 'EUR', decimalPlaces: 4),
+        '0.8794',
+      );
+      expect(
+        formatLensConvertedAmount(879.4, 'EUR', decimalPlaces: 3),
+        '879.400',
+      );
+    },
+  );
+
+  test('formatHeroConverted honors a non-default decimalPlaces setting', () {
+    expect(formatHeroConverted(43.97123, 'EUR', decimalPlaces: 4), '43.9712');
+    expect(formatHeroConverted(0.8794, 'EUR', decimalPlaces: 4), '0.87940');
   });
 }

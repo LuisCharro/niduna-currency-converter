@@ -27,20 +27,11 @@ class UpgradeShelf extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(
-            2,
-            AppTheme.space2,
-            2,
-            AppTheme.space2,
-          ),
+          padding: const EdgeInsets.fromLTRB(2, 0, 2, AppTheme.space2),
           child: Text(
-            hasPremium ? loc.premiumActive : loc.premiumUnlocks,
-            style: AppTheme.settingsGroupTitleStyle(context),
+            hasPremium ? loc.paidUnlocksStay : loc.oneTimePurchaseNote,
+            style: AppTheme.supportingTextStyle(context),
           ),
-        ),
-        Text(
-          hasPremium ? loc.paidUnlocksStay : loc.oneTimePurchaseNote,
-          style: AppTheme.supportingTextStyle(context),
         ),
         const SizedBox(height: AppTheme.space3),
         if (!m.hasRemoveAdsLifetime)

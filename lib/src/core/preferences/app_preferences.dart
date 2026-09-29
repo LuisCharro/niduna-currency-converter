@@ -4,6 +4,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../currency/currency_code_migration.dart';
 import '../currency/supported_currencies.dart';
 
+/// Theme preference. `system` follows the OS setting; `light`/`dark` are
+/// explicit overrides.
+enum AppThemeMode {
+  system,
+  light,
+  dark;
+
+  static AppThemeMode fromName(String? name) {
+    return AppThemeMode.values.firstWhere(
+      (mode) => mode.name == name,
+      orElse: () => AppThemeMode.system,
+    );
+  }
+}
+
 class AppPreferences extends ChangeNotifier {
   AppPreferences(this._prefs);
 
@@ -14,6 +29,7 @@ class AppPreferences extends ChangeNotifier {
   static const String _refreshOnOpenKey = 'pref_refresh_on_open';
   static const String _devModeKey = 'pref_dev_mode';
   static const String _darkModeKey = 'pref_dark_mode';
+  static const String _themeModeKey = 'pref_theme_mode';
   static const String _selectedCodesKey = 'pref_selected_codes';
   static const bool _defaultDevMode = bool.fromEnvironment(
     'APP_DEV_MODE',
@@ -34,7 +50,19 @@ class AppPreferences extends ChangeNotifier {
   bool get devToolsAvailable => kDebugMode;
   bool get devMode =>
       devToolsAvailable && (_prefs.getBool(_devModeKey) ?? _defaultDevMode);
-  bool get isDarkMode => _prefs.getBool(_darkModeKey) ?? false;
+  /// Effective theme preference. Reads the new tri-state key when present;
+  /// otherwise migrates from the legacy `pref_dark_mode` boolean:
+  /// absent -> [AppThemeMode.system], `true` -> [AppThemeMode.dark],
+  /// `false` -> [AppThemeMode.light].
+  AppThemeMode get themeMode {
+    final stored = _prefs.getString(_themeModeKey);
+    if (stored != null) return AppThemeMode.fromName(stored);
+
+    final legacyDark = _prefs.getBool(_darkModeKey);
+    if (legacyDark == true) return AppThemeMode.dark;
+    if (legacyDark == false) return AppThemeMode.light;
+    return AppThemeMode.system;
+  }
 
   bool get isDecimalPlacesSupported => decimalPlaces >= 2 && decimalPlaces <= 6;
 
@@ -95,8 +123,8 @@ class AppPreferences extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setDarkMode(bool value) async {
-    await _prefs.setBool(_darkModeKey, value);
+  Future<void> setThemeMode(AppThemeMode mode) async {
+    await _prefs.setString(_themeModeKey, mode.name);
     notifyListeners();
   }
 
