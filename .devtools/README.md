@@ -137,6 +137,21 @@ ads enabled.
 
 It defaults to the dev crypto provider profile and visible developer UI.
 
+## UX review tour (Android, multi-device)
+
+```bash
+./.devtools/capture_android_ux_tour.sh                      # Small_Screen_API_36 exp_night_36 Pixel7_EN
+UX_TOUR_THEMES=light ./.devtools/capture_android_ux_tour.sh Small_Screen_API_36
+```
+
+Boots each AVD (via `android_boot_emulator.sh`), runs
+`integration_test/ux_review_tour_test.dart` as a fresh free user and writes
+16 screens per AVD/theme to `.tmp/screens/android/ux-tour/<avd>/<theme>/`,
+plus `run.log` (grep it for `overflowed by`). Defaults to what users see:
+`release_safe`, `APP_DEV_MODE=false`. While it runs the emulator display can
+look frozen (the test renders to an offscreen image) — don't touch it.
+The AdMob banner is a platform view and is not captured.
+
 ## Play candidate preparation
 
 After the approved branch has been merged to a clean `main`, prepare the local

@@ -503,6 +503,8 @@ For Android device/emulator discovery before install:
 | `android_launch.sh` | Launch/relaunch installed app; resolves launcher activity and retries until the app is foreground (survives the post-reinstall Play Protect overlay) | `ANDROID_SERIAL`, `ANDROID_PACKAGE_NAME` |
 | `android_screenshot.sh` | Manual screenshot → `.tmp/screens/android/`; `MAX_DIM=N` downscales the long side (a 1080x2400 capture exceeds some viewers — `MAX_DIM=1400` keeps it readable) | `ANDROID_SERIAL`, `MAX_DIM` |
 | `list_android_emulators.sh` | List connected devices + available AVDs | (none) |
+| `android_boot_emulator.sh <avd>` | Boot an AVD in the background, wait for boot, print its serial (reuses a running one) | `EMULATOR_HEADLESS`, `BOOT_TIMEOUT_S` |
+| `capture_android_ux_tour.sh [avd...]` | UX review tour (16 screens, fresh free user, `release_safe`, no dev UI) on each AVD in light+dark → `.tmp/screens/android/ux-tour/<avd>/<theme>/`. `exp_night_36` runs at font scale 2.0 and surfaces overflows in `run.log` | `UX_TOUR_THEMES`, `UX_TOUR_PAID` |
 | `sim_uninstall.sh` | Uninstall from simulator | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `sim_fresh_install.sh` | Uninstall + fresh run | `IOS_SIMULATOR_ID`, `BUNDLE_ID` |
 | `capture_tabs.sh` | Auto-capture all tabs | `IOS_SIMULATOR_ID` |
