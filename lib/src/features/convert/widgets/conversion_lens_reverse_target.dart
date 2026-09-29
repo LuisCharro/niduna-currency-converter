@@ -44,7 +44,7 @@ class ConversionLensReverseTarget extends StatelessWidget {
                   (target) => LensValueRow(
                     leading: formatLensValue(target, quote.code),
                     trailing:
-                        '${formatLensValue(target / quote.rate, base)} $base',
+                        '${formatLensConvertedAmount(target / quote.rate, base)} $base',
                     actionLabel: useActionLabel(context),
                     onAction: () {
                       HapticFeedback.selectionClick();

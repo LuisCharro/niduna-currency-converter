@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 
+import '../../../core/currency/amount_formatting.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../models/currency_quote.dart';
 import 'latest_rates_snapshot.dart';
@@ -14,8 +15,6 @@ List<CurrencyQuote> buildQuotes({
       quoteCodes?.where((code) => code != snapshot.base).toList() ??
       supportedCurrencies.map((currency) => currency.code).toList();
 
-  final amountDigits = '#,##0.${'0' * decimalPlaces}';
-  final amountFormat = NumberFormat(amountDigits, 'en');
   final rateFormat = NumberFormat('0.${'0' * decimalPlaces}', 'en');
 
   return explicitCodes
@@ -39,9 +38,7 @@ List<CurrencyQuote> buildQuotes({
           currency.symbol,
           currency.code,
           currency.name,
-          isCryptoCurrency(currency.code)
-              ? quoteAmount
-              : amountFormat.format(amount * rate),
+          quoteAmount,
           isCryptoCurrency(currency.code)
               ? rateLine
               : '1 ${snapshot.base} = ${rateFormat.format(rate)} ${currency.code}',
@@ -52,17 +49,8 @@ List<CurrencyQuote> buildQuotes({
       .toList(growable: false);
 }
 
-int _cryptoDigits(String code) {
-  if (code == 'BTC') return 8;
-  if (code == 'USDT' || code == 'USDC') return 2;
-  if (code == 'DOGE') return 4;
-  return 6;
-}
-
-String _formatAmount(double value, String code, int decimalPlaces) {
-  final digits = isCryptoCurrency(code) ? _cryptoDigits(code) : decimalPlaces;
-  return NumberFormat('#,##0.${'0' * digits}', 'en').format(value);
-}
+String _formatAmount(double value, String code, int decimalPlaces) =>
+    formatConvertedAmount(value, code, decimalPlaces);
 
 String _formatRateLine({
   required String base,
@@ -70,7 +58,9 @@ String _formatRateLine({
   required double rate,
   required int decimalPlaces,
 }) {
-  final digits = isCryptoCurrency(quote) ? _cryptoDigits(quote) : decimalPlaces;
+  final digits = isCryptoCurrency(quote)
+      ? cryptoAmountDigits(quote)
+      : decimalPlaces;
   final format = NumberFormat('0.${'0' * digits}', 'en');
   return '1 $base = ${format.format(rate)} $quote';
 }

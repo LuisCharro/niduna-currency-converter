@@ -77,7 +77,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get favoritesEmptyBody =>
-      'Scorri a sinistra su una riga valuta in Converti, poi tocca Fissa.';
+      'Scorri a sinistra su una riga valuta in Converti, poi tocca Preferito.';
 
   @override
   String get favoritesOpenConvert => 'Apri Converti';
@@ -102,10 +102,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get openFavoriteTooltip => 'Apri coppia in Converti';
 
   @override
-  String get favoriteActionPin => 'Fissa';
+  String get favoriteActionPin => 'Preferito';
 
   @override
-  String get favoriteActionSaved => 'Fissata';
+  String get favoriteActionSaved => 'Nei preferiti';
 
   @override
   String get labelRemoveAds => 'Rimuovi annunci';
@@ -126,7 +126,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get labelVersion => 'Versione';
 
   @override
-  String get labelPrivacy => 'Privacy';
+  String get labelPrivacy => 'Informativa sulla privacy';
 
   @override
   String get privacyOptionsTitle => 'Opzioni privacy';

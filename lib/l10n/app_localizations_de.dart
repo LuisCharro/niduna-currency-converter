@@ -76,7 +76,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get favoritesEmptyBody =>
-      'Wische eine Währungszeile in Umrechnen nach links und tippe auf Fixieren.';
+      'Wische eine Währungszeile in Umrechnen nach links und tippe auf Favorit.';
 
   @override
   String get favoritesOpenConvert => 'Umrechnen öffnen';
@@ -101,10 +101,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get openFavoriteTooltip => 'Paar in Umrechnen öffnen';
 
   @override
-  String get favoriteActionPin => 'Fixieren';
+  String get favoriteActionPin => 'Favorit';
 
   @override
-  String get favoriteActionSaved => 'Fixiert';
+  String get favoriteActionSaved => 'Favorisiert';
 
   @override
   String get labelRemoveAds => 'Werbung entfernen';
@@ -125,7 +125,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labelVersion => 'Version';
 
   @override
-  String get labelPrivacy => 'Datenschutz';
+  String get labelPrivacy => 'Datenschutzerklärung';
 
   @override
   String get privacyOptionsTitle => 'Datenschutzoptionen';

@@ -239,7 +239,7 @@ abstract class AppLocalizations {
   /// No description provided for @favoritesEmptyBody.
   ///
   /// In en, this message translates to:
-  /// **'Swipe left on a currency row in Convert, then tap Pin.'**
+  /// **'Swipe left on a currency row in Convert, then tap Favorite.'**
   String get favoritesEmptyBody;
 
   /// No description provided for @favoritesOpenConvert.
@@ -287,13 +287,13 @@ abstract class AppLocalizations {
   /// No description provided for @favoriteActionPin.
   ///
   /// In en, this message translates to:
-  /// **'Pin'**
+  /// **'Favorite'**
   String get favoriteActionPin;
 
   /// No description provided for @favoriteActionSaved.
   ///
   /// In en, this message translates to:
-  /// **'Saved'**
+  /// **'Favorited'**
   String get favoriteActionSaved;
 
   /// Remove ads in-app purchase label
@@ -332,10 +332,10 @@ abstract class AppLocalizations {
   /// **'Version'**
   String get labelVersion;
 
-  /// Privacy section label
+  /// External privacy policy link label
   ///
   /// In en, this message translates to:
-  /// **'Privacy'**
+  /// **'Privacy policy'**
   String get labelPrivacy;
 
   /// No description provided for @privacyOptionsTitle.

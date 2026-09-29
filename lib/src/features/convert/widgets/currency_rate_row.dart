@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/clamped_text_scale.dart';
 import '../../../shared/widgets/currency_flag_icon.dart';
 import '../models/currency_quote.dart';
 import 'quote_identity.dart';
@@ -36,40 +37,48 @@ class CurrencyRateRow extends StatelessWidget {
             constraints: const BoxConstraints(minHeight: AppTheme.rowMinHeight),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.of(
-                          context,
-                        ).border.withValues(alpha: .32),
-                        width: 1.0,
+              // The row sits inside a fixed-height swipe card
+              // (CurrencyRowSwipeActions pins it to AppTheme.rowMinHeight), so
+              // its two text lines cannot grow past that box at large system
+              // font sizes. Clamp the scale here rather than in the swipe
+              // card, keeping the value legible without overflowing.
+              child: ClampedTextScale(
+                maxScaleFactor: 1.3,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.of(
+                            context,
+                          ).border.withValues(alpha: .32),
+                          width: 1.0,
+                        ),
+                      ),
+                      child: Center(
+                        child: CurrencyFlagIcon(
+                          code: quote.code,
+                          symbol: quote.symbol,
+                          radius: 18,
+                        ),
                       ),
                     ),
-                    child: Center(
-                      child: CurrencyFlagIcon(
-                        code: quote.code,
-                        symbol: quote.symbol,
-                        radius: 18,
+                    const SizedBox(width: 12),
+                    Expanded(child: QuoteIdentity(quote: quote)),
+                    const SizedBox(width: 12),
+                    Flexible(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.sizeOf(context).width * .52,
+                        ),
+                        child: QuoteValue(quote: quote),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(child: QuoteIdentity(quote: quote)),
-                  const SizedBox(width: 12),
-                  Flexible(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.sizeOf(context).width * .52,
-                      ),
-                      child: QuoteValue(quote: quote),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

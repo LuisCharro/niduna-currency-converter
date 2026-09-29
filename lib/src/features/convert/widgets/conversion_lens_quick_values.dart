@@ -41,7 +41,7 @@ class ConversionLensQuickValues extends StatelessWidget {
                   (value) => LensValueRow(
                     leading: formatLensValue(value, base),
                     trailing:
-                        '${formatLensValue(value * quote.rate, quote.code)} ${quote.code}',
+                        '${formatLensConvertedAmount(value * quote.rate, quote.code)} ${quote.code}',
                   ),
                 )
                 .toList(),

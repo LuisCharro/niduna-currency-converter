@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../shared/widgets/clamped_text_scale.dart';
 
 class SwipeActionsRail extends StatelessWidget {
   const SwipeActionsRail({
@@ -150,36 +151,39 @@ class SwipeActionButton extends StatelessWidget {
                             color: backgroundColor,
                             borderRadius: BorderRadius.circular(14),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                width: 32,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  color: Color.lerp(
-                                    backgroundColor,
-                                    iconBadgeColor,
-                                    0.9,
+                          child: ClampedTextScale(
+                            maxScaleFactor: 1.3,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    color: Color.lerp(
+                                      backgroundColor,
+                                      iconBadgeColor,
+                                      0.9,
+                                    ),
+                                    shape: BoxShape.circle,
                                   ),
-                                  shape: BoxShape.circle,
+                                  child: Icon(icon, color: color, size: 18),
                                 ),
-                                child: Icon(icon, color: color, size: 18),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                shortLabel,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w800,
-                                  color: color,
-                                  height: 1,
-                                  letterSpacing: 0.15,
+                                const SizedBox(height: 4),
+                                Text(
+                                  shortLabel,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    color: color,
+                                    height: 1,
+                                    letterSpacing: 0.15,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),

@@ -367,6 +367,55 @@ void main() {
     },
   );
 
+  testWidgets(
+    'Convert row swipe favorite action toggles between Favorite and Favorited',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: ConvertScreen(
+            controller: controller,
+            monetization: monetization,
+            onNavigateToSettings: () {},
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final euroFinder = find.text('Euro');
+      expect(euroFinder, findsWidgets);
+
+      await tester.drag(euroFinder.first, const Offset(-160, 0));
+      await tester.pumpAndSettle();
+
+      final euroFavoriteAction = find.byKey(const Key('favorite_EUR'));
+      expect(
+        find.descendant(of: euroFavoriteAction, matching: find.text('Favorite')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: euroFavoriteAction, matching: find.text('Favorited')),
+        findsNothing,
+      );
+
+      await tester.tap(euroFavoriteAction);
+      await tester.pumpAndSettle();
+
+      await tester.drag(find.text('Euro').first, const Offset(-160, 0));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.descendant(of: euroFavoriteAction, matching: find.text('Favorited')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: euroFavoriteAction, matching: find.text('Favorite')),
+        findsNothing,
+      );
+    },
+  );
+
   testWidgets('Convert crypto row can be swapped into base from swipe action', (
     WidgetTester tester,
   ) async {
@@ -605,10 +654,44 @@ void main() {
     expect(find.text('Default base currency'), findsWidgets);
     expect(find.text('Dark mode'), findsWidgets);
     expect(find.text('Data & privacy'), findsOneWidget);
+    expect(find.text('Privacy policy'), findsOneWidget);
     expect(find.byKey(const Key('open_privacy_policy')), findsOneWidget);
     // The old duplicate "Data sources" tile in About is gone (merged page).
     expect(find.text('Data sources'), findsNothing);
   });
+
+  testWidgets(
+    'Settings section headers are all left-aligned like Conversion/Premium',
+    (WidgetTester tester) async {
+      final sc = makeSettingsController();
+      addTearDown(sc.dispose);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: SettingsScreen(controller: sc, preferences: preferences),
+        ),
+      );
+
+      for (final title in <String>['Data', 'About']) {
+        // "About" sits below the fold; scroll it into the sliver's built
+        // range before searching for it.
+        await tester.dragUntilVisible(
+          find.text(title),
+          find.byType(Scrollable),
+          const Offset(0, -200),
+        );
+        await tester.pumpAndSettle();
+
+        final column = tester.widget<Column>(
+          find.ancestor(of: find.text(title), matching: find.byType(Column)).first,
+        );
+        expect(
+          column.crossAxisAlignment,
+          CrossAxisAlignment.start,
+          reason: '"$title" section header column should be left-aligned',
+        );
+      }
+    },
+  );
 
   testWidgets('Data & privacy page attributes sources in plain language', (
     WidgetTester tester,

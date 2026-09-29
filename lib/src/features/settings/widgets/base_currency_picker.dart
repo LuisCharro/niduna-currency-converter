@@ -34,11 +34,12 @@ class _BaseCurrencyPickerState extends State<BaseCurrencyPicker> {
           padding: const EdgeInsets.fromLTRB(20, 6, 12, 8),
           child: Row(
             children: <Widget>[
-              Text(
-                loc.selectBaseCurrency,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+              Expanded(
+                child: Text(
+                  loc.selectBaseCurrency,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                ),
               ),
-              const Spacer(),
               Semantics(
                 button: true,
                 label: loc.closeTooltip,

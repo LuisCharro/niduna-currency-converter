@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/localization/ui_copy.dart';
+import '../../../core/currency/amount_formatting.dart';
+import '../../../core/currency/currency_decimals.dart';
 import '../../../core/currency/supported_currencies.dart';
 import '../models/currency_quote.dart';
 
@@ -66,6 +68,17 @@ String _fmtCrypto(double value, String code) => stripTrailingZeros(
   NumberFormat('#,##0.${'0' * cryptoDigits(code)}', 'en').format(value),
 );
 
+/// Default fiat decimal precision used for lens values when no explicit user
+/// setting is threaded through. Matches the app's default `decimalPlaces`
+/// setting so the lens agrees with the main rate list's formatting.
+const int _lensDefaultDecimalPlaces = 2;
+
+/// Formats a clean preset/target amount shown on the *input* side of a lens
+/// row (e.g. the "Quick base amounts" left column, or a reverse-target
+/// value): whole numbers such as 1, 10, 100, 1000 read as plain integers
+/// instead of picking up spurious trailing zeros, while any genuinely
+/// fractional value (e.g. a user-typed amount) falls back to the same
+/// formatting the main rate list uses.
 String formatLensValue(double value, String code) {
   if (isCryptoCurrency(code)) {
     return NumberFormat(
@@ -73,10 +86,23 @@ String formatLensValue(double value, String code) {
       'en',
     ).format(value);
   }
-  if (value >= 100) return NumberFormat('#,##0', 'en').format(value);
-  final d = value >= 10 ? 2 : 3;
-  return NumberFormat('#,##0.${'0' * d}', 'en').format(value);
+  // Zero-decimal currencies (e.g. JPY) never show a fractional part.
+  if (isZeroDecimalCurrency(code)) {
+    return NumberFormat('#,##0', 'en').format(value);
+  }
+  // Clean whole-number presets (1, 10, 50, 100, 1000, ...) read as plain
+  // integers rather than picking up spurious trailing zeros.
+  if (value == value.roundToDouble()) {
+    return NumberFormat('#,##0', 'en').format(value);
+  }
+  return formatConvertedAmount(value, code, _lensDefaultDecimalPlaces);
 }
+
+/// Formats a *computed* converted amount on a lens row (e.g. the "Quick base
+/// amounts" right column, or a reverse-target's computed base amount) using
+/// exactly the same formatter as the main rate list, so the two always agree.
+String formatLensConvertedAmount(double value, String code) =>
+    formatConvertedAmount(value, code, _lensDefaultDecimalPlaces);
 
 String formatLensInput(double value) {
   if (value >= 100) return value.toStringAsFixed(0);
@@ -90,6 +116,7 @@ String formatHeroBase(double v, String c) => isCryptoCurrency(c)
 
 String formatHeroConverted(double v, String c) {
   if (isCryptoCurrency(c)) return _fmtCrypto(v, c);
+  if (isZeroDecimalCurrency(c)) return NumberFormat('#,##0', 'en').format(v);
   if (v >= 10) return NumberFormat('#,##0.00', 'en').format(v);
   return NumberFormat('#,##0.000', 'en').format(v);
 }

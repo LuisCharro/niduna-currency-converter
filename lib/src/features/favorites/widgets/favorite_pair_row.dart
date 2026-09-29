@@ -7,6 +7,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../convert/domain/latest_rates_snapshot.dart';
 import '../../convert/models/trend.dart';
+import '../../../shared/widgets/clamped_text_scale.dart';
 import '../../convert/widgets/trend_badge.dart';
 import '../domain/favorite_pair.dart';
 import '../domain/favorite_pair_rate.dart';
@@ -106,26 +107,37 @@ class FavoritePairRow extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            pairLabel,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTheme.settingsTileTitleStyle(context).copyWith(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w800,
+                    // Clamp scale here: the title has priority via Expanded,
+                    // but the trend badge and rate pill still grow with the
+                    // system font size and would otherwise crowd the title
+                    // down to a sliver (e.g. "U…") at large text scales.
+                    ClampedTextScale(
+                      maxScaleFactor: 1.3,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              pairLabel,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTheme.settingsTileTitleStyle(context)
+                                  .copyWith(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w800,
+                                  ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        if (showTrend) ...<Widget>[
-                          TrendBadge(trend: trend!, changePercent: changePercent),
                           const SizedBox(width: 8),
+                          if (showTrend) ...<Widget>[
+                            TrendBadge(
+                              trend: trend!,
+                              changePercent: changePercent,
+                            ),
+                            const SizedBox(width: 8),
+                          ],
+                          FavoriteRateText(rate: rate),
                         ],
-                        FavoriteRateText(rate: rate),
-                      ],
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(

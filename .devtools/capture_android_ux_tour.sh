@@ -12,6 +12,10 @@
 # Env:     UX_TOUR_THEMES   (default: "light dark")
 #          UX_TOUR_PAID     (default: false; true simulates all entitlements)
 #          UX_TOUR_OUT      (default: .tmp/screens/android/ux-tour)
+#          UX_TOUR_KEEP_EMULATORS (default: false) — by default each AVD this
+#                           script booted is shut down after its run, so only
+#                           one emulator uses RAM at a time. AVDs that were
+#                           already running are left alone.
 #          PROVIDER_PROFILE / APP_DEV_MODE to override the defaults above.
 
 set -euo pipefail
@@ -38,8 +42,12 @@ done < <(
     flutter_app_define_args
 )
 
+running_before="$(run_adb devices | awk '$1 ~ /^emulator-/ { print $1 }')"
+
 for avd in "${avds[@]}"; do
   serial="$("${script_dir}/android_boot_emulator.sh" "${avd}")"
+  booted_here=true
+  grep -qx "${serial}" <<<"${running_before}" && booted_here=false
   for theme in ${themes}; do
     dark=false
     [[ "${theme}" == "dark" ]] && dark=true
@@ -57,6 +65,11 @@ for avd in "${avds[@]}"; do
       --dart-define=SCREENSHOT_PAID="${paid}" \
       2>&1 | tee "${out_dir}/run.log" | grep -E "UX_TOUR|All tests|Some tests|Error|FAILED" || true
   done
+  if [[ "${booted_here}" == "true" && "${UX_TOUR_KEEP_EMULATORS:-false}" != "true" ]]; then
+    echo "Shutting down ${avd} (${serial})"
+    run_adb -s "${serial}" emu kill >/dev/null 2>&1 || true
+    sleep 3
+  fi
 done
 
 echo "Done. Screens under ${out_root}"

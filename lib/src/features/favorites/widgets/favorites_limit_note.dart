@@ -61,7 +61,13 @@ class FavoritesLimitNote extends StatelessWidget {
                   children: <Widget>[
                     Icon(Icons.play_circle_outline, size: 16),
                     const SizedBox(width: 8),
-                    Text(l10n(context).watchAdToAddMore),
+                    Flexible(
+                      child: Text(
+                        l10n(context).watchAdToAddMore,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -83,7 +89,13 @@ class FavoritesLimitNote extends StatelessWidget {
                 children: <Widget>[
                   Icon(Icons.diamond_outlined, size: 16),
                   const SizedBox(width: 8),
-                  Text(l10n(context).favoritesUnlockForever),
+                  Flexible(
+                    child: Text(
+                      l10n(context).favoritesUnlockForever,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -17,6 +17,7 @@ class SettingsDataSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = l10n(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SectionHeader(title: loc.labelData),
         SwitchTile(

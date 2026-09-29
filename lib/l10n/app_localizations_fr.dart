@@ -77,7 +77,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get favoritesEmptyBody =>
-      'Balayez une ligne de devise vers la gauche dans Convertir, puis touchez Épingler.';
+      'Balayez une ligne de devise vers la gauche dans Convertir, puis touchez Favori.';
 
   @override
   String get favoritesOpenConvert => 'Ouvrir Convertir';
@@ -102,10 +102,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get openFavoriteTooltip => 'Ouvrir la paire dans Convertir';
 
   @override
-  String get favoriteActionPin => 'Épingler';
+  String get favoriteActionPin => 'Favori';
 
   @override
-  String get favoriteActionSaved => 'Épinglé';
+  String get favoriteActionSaved => 'En favori';
 
   @override
   String get labelRemoveAds => 'Supprimer les publicités';
@@ -126,7 +126,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get labelVersion => 'Version';
 
   @override
-  String get labelPrivacy => 'Confidentialité';
+  String get labelPrivacy => 'Politique de confidentialité';
 
   @override
   String get privacyOptionsTitle => 'Options de confidentialité';

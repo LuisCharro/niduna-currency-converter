@@ -10,7 +10,8 @@
 #          EMULATOR_HEADLESS (default: false; true adds -no-window)
 #          BOOT_TIMEOUT_S    (default: 240)
 #
-# Emulator output goes to .tmp/emulator-<avd>.log.
+# Emulator output goes to .tmp/emulator-<avd>.log. Each emulator uses 2-4 GB of RAM;
+# avoid running several at once on a laptop.
 # List AVDs with ./.devtools/list_android_emulators.sh.
 
 set -euo pipefail

@@ -14,6 +14,7 @@ class SettingsAboutSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = l10n(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SectionHeader(title: loc.labelAbout),
         VersionTile(controller: controller),

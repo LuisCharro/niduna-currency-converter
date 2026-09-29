@@ -76,7 +76,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favoritesEmptyBody =>
-      'Swipe left on a currency row in Convert, then tap Pin.';
+      'Swipe left on a currency row in Convert, then tap Favorite.';
 
   @override
   String get favoritesOpenConvert => 'Open Convert';
@@ -101,10 +101,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openFavoriteTooltip => 'Open pair in Convert';
 
   @override
-  String get favoriteActionPin => 'Pin';
+  String get favoriteActionPin => 'Favorite';
 
   @override
-  String get favoriteActionSaved => 'Saved';
+  String get favoriteActionSaved => 'Favorited';
 
   @override
   String get labelRemoveAds => 'Remove ads';
@@ -125,7 +125,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelVersion => 'Version';
 
   @override
-  String get labelPrivacy => 'Privacy';
+  String get labelPrivacy => 'Privacy policy';
 
   @override
   String get privacyOptionsTitle => 'Privacy options';

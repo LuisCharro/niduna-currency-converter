@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../shared/widgets/clamped_text_scale.dart';
 import 'chart_theme_text.dart';
 import 'chart_value_formatter.dart';
 
@@ -53,38 +54,41 @@ class ChartTouchOverlay extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              DateFormat('EEE d MMM yyyy').format(date).toUpperCase(),
-              style: ChartThemeText.micro(context, color: lineColor),
-            ),
-            const SizedBox(height: 3),
-            Text(
-              '${formatChartValue(value)} $currencyCode',
-              style: ChartThemeText.frauncesValue(context),
-            ),
-            const SizedBox(height: 1),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  '$arrow ${changePercent.abs().toStringAsFixed(2)}%',
-                  style: ChartThemeText.caption(
-                    context,
-                    color: trendColor,
-                  ).copyWith(fontSize: 12.5, fontWeight: FontWeight.w800),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '$sign${formatChartValue(absoluteChange.abs())} $currencyCode',
-                  style: ChartThemeText.caption(context),
-                ),
-              ],
-            ),
-          ],
+        child: ClampedTextScale(
+          maxScaleFactor: 1.3,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                DateFormat('EEE d MMM yyyy').format(date).toUpperCase(),
+                style: ChartThemeText.micro(context, color: lineColor),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                '${formatChartValue(value)} $currencyCode',
+                style: ChartThemeText.frauncesValue(context),
+              ),
+              const SizedBox(height: 1),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    '$arrow ${changePercent.abs().toStringAsFixed(2)}%',
+                    style: ChartThemeText.caption(
+                      context,
+                      color: trendColor,
+                    ).copyWith(fontSize: 12.5, fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '$sign${formatChartValue(absoluteChange.abs())} $currencyCode',
+                    style: ChartThemeText.caption(context),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

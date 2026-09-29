@@ -63,6 +63,24 @@ void main() {
     expect(quotes.single.rateLine, '1 EUR = 0.00001508 BTC');
   });
 
+  test('buildQuotes renders zero-decimal fiat amounts without a fractional part', () {
+    final quotes = buildQuotes(
+      snapshot: LatestRatesSnapshot(
+        base: 'USD',
+        date: DateTime(2026, 5, 19),
+        savedAt: DateTime(2026, 5, 19, 10),
+        rates: const <String, double>{'JPY': 157.33},
+      ),
+      amount: 100,
+      decimalPlaces: 2,
+      quoteCodes: const <String>['JPY'],
+    );
+
+    expect(quotes.single.amount, '15,733');
+    // Rate lines keep their own precision regardless of the zero-decimal rule.
+    expect(quotes.single.rateLine, '1 USD = 157.33 JPY');
+  });
+
   test('buildQuotes does not add crypto that was not selected', () {
     final quotes = buildQuotes(
       snapshot: LatestRatesSnapshot(
