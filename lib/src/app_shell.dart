@@ -1,34 +1,17 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'core/ads/admob_rewarded_ad_service.dart';
-import 'core/ads/ad_consent_manager.dart';
+import 'app_dependencies.dart';
 import 'core/monetization/monetization_controller.dart';
-import 'core/monetization/play_purchase_service.dart';
 import 'core/preferences/app_preferences.dart';
-import 'core/rates/provider_config.dart';
-import 'core/rates/provider_factory.dart';
-import 'core/rates/crypto/crypto_usd_history_cache.dart';
-import 'core/rates/crypto/crypto_usd_price_cache.dart';
-import 'core/rates/multi_provider_rates_client.dart';
-import 'core/rates/rates_service.dart';
-import 'core/rates/clients/frankfurter_client.dart';
-import 'core/rates/cache/shared_preferences_rates_cache.dart';
 import 'core/theme/app_theme.dart';
 import 'features/convert/data/convert_row_hint_store.dart';
-import 'features/convert/data/frankfurter_latest_rates_client.dart';
-import 'features/convert/data/latest_rates_cache.dart';
 import 'features/convert/data/latest_rates_repository.dart';
-import 'features/convert/data/multi_provider_latest_rates_repository.dart';
 import 'features/convert/convert_screen.dart';
 import 'features/convert/presentation/convert_controller.dart';
 import 'features/favorites/data/favorites_store.dart';
 import 'features/favorites/favorites_screen.dart';
 import 'features/charts/charts_screen.dart';
-import 'features/charts/data/rates_service_chart_repository.dart';
 import 'features/charts/presentation/charts_controller.dart';
 import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_screen.dart';
@@ -65,73 +48,21 @@ class _AppState extends State<AppShell> {
   }
 
   Future<void> _initAsync() async {
-    ProviderConfig.validateReleaseMode();
-    // Consent and the ad SDK are initialized in the background so a platform
-    // callback cannot hold the app's first frame (or test pump) open.
-    unawaited(AdConsentManager.instance.initialize());
-    final prefs = await SharedPreferences.getInstance();
-
-    _preferences = AppPreferences(prefs);
-    await _preferences!.migrateCurrencyCodesIfNeeded();
-    _preferences!.addListener(_onPreferencesChanged);
-
-    if (widget.favoritesStore == null) {
-      _localStore = FavoritesStore(prefs);
-    }
-    await _favoritesStore.seedStarterIfEmpty();
-
-    final repo =
-        widget.convertRepository ??
-        MultiProviderLatestRatesRepository(
-          fiatClient: FrankfurterLatestRatesClient(),
-          latestCache: LatestRatesCache(prefs),
-          cryptoCache: CryptoUsdPriceCache(prefs),
-          cryptoClient: ProviderFactory.createCryptoLatestClient(),
-        );
-
-    _rowHintStore = ConvertRowHintStore(prefs);
-    _controller = ConvertController(
-      repository: repo,
-      favoritesStore: _favoritesStore,
-      preferences: _preferences,
-      defaultBase: _preferences!.defaultBaseCurrency,
-      decimalPlaces: _preferences!.decimalPlaces,
-      selectedCodes: _preferences!.selectedCodes,
+    final deps = await AppDependencies.bootstrap(
+      convertRepository: widget.convertRepository,
+      favoritesStore: widget.favoritesStore,
+      onClearCache: _onClearCache,
       favoritesLimitProvider: () => _monetization?.favoritesEffectiveLimit ?? 3,
     );
-    _controller!.load();
 
-    final ratesCache = SharedPreferencesRatesCache(prefs);
-    final adService = AdMobRewardedAdService();
-    final purchaseService = PlayPurchaseService(
-      onEntitlement: (product) =>
-          _monetization?.applyLifetimeEntitlement(product),
-    );
-    _monetization = MonetizationController(
-      prefs,
-      adService: adService,
-      purchaseService: purchaseService,
-    );
-    await _monetization!.loadTempUnlocks();
-    final ratesService = RatesService(
-      client: MultiProviderRatesClient(
-        fiatClient: FrankfurterClient(),
-        cryptoHistoryClient: ProviderFactory.createCryptoHistoryClient(),
-        cryptoHistoryCache: CryptoUsdHistoryCache(prefs),
-      ),
-      cache: ratesCache,
-    );
-    _chartsController = ChartsController(
-      repository: RatesServiceChartRepository(ratesService),
-      allowCryptoCharts: ProviderConfig.cryptoChartsEnabled,
-      defaultBase: _preferences!.defaultBaseCurrency,
-    );
-    _settingsController = SettingsController(
-      preferences: _preferences!,
-      monetization: _monetization!,
-      adConsent: AdConsentManager.instance,
-      onClearCache: _onClearCache,
-    );
+    _preferences = deps.preferences;
+    _preferences!.addListener(_onPreferencesChanged);
+    _localStore = deps.localStore;
+    _rowHintStore = deps.rowHintStore;
+    _controller = deps.controller;
+    _monetization = deps.monetization;
+    _chartsController = deps.chartsController;
+    _settingsController = deps.settingsController;
 
     if (mounted) {
       setState(() => _ready = true);

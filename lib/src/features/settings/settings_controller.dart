@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/ads/ad_consent_manager.dart';
 import '../../core/monetization/purchase_service.dart';
 import '../../core/preferences/app_preferences.dart';
 import '../../../l10n/app_localizations_safe.dart';
+import 'settings_links.dart';
+import 'widgets/clear_cache_dialog.dart';
 import 'widgets/data_details_page.dart';
 import 'widgets/iap_purchase_player.dart';
 import 'widgets/settings_detail_route.dart';
 
 class SettingsController extends ChangeNotifier {
-  static final Uri _privacyPolicyUri = Uri.parse(
-    'https://honestfern.com/currency-converter/privacy/',
-  );
-  static const String feedbackEmailAddress = 'support@honestfern.com';
+  static const String feedbackEmailAddress = SettingsLinks.feedbackEmailAddress;
 
   SettingsController({
     required this.preferences,
     required this.monetization,
     required this.onClearCache,
     AdConsentManager? adConsent,
-  }) : adConsent = adConsent ?? AdConsentManager.instance;
+    SettingsLinks? links,
+  }) : adConsent = adConsent ?? AdConsentManager.instance,
+       _links = links ?? const SettingsLinks();
 
   final AppPreferences preferences;
   final MonetizationController monetization;
   final AdConsentManager adConsent;
   final VoidCallback onClearCache;
+  final SettingsLinks _links;
 
   Future<void> pickBaseCurrency(BuildContext context, String selected) async {
     preferences.setDefaultBaseCurrency(selected);
@@ -48,61 +49,15 @@ class SettingsController extends ChangeNotifier {
     );
   }
 
-  Future<void> openPrivacyPolicy() async {
-    await launchUrl(_privacyPolicyUri, mode: LaunchMode.externalApplication);
-  }
+  Future<void> openPrivacyPolicy() => _links.openPrivacyPolicy();
 
-  Future<void> sendFeedback(BuildContext context, String appVersion) async {
-    final loc = l10n(context);
-    final uri = Uri(
-      scheme: 'mailto',
-      path: feedbackEmailAddress,
-      queryParameters: {'subject': loc.feedbackEmailSubject(appVersion)},
-    );
-    var launched = false;
-    try {
-      launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } catch (_) {
-      launched = false;
-    }
-    if (!launched && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(loc.snackNoEmailApp(feedbackEmailAddress))),
-      );
-    }
-  }
+  Future<void> sendFeedback(BuildContext context, String appVersion) =>
+      _links.sendFeedback(context, appVersion);
 
   Future<void> openPrivacyOptions() => adConsent.showPrivacyOptions();
 
-  void requestClearCache(BuildContext context) {
-    final loc = l10n(context);
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(loc.clearDataDialogTitle),
-        content: Text(loc.labelClearAllDataSubtitle),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(loc.btnCancel),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              onClearCache();
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(loc.snackCacheCleared)));
-            },
-            child: Text(
-              loc.btnClear,
-              style: TextStyle(color: Colors.red.shade400),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  void requestClearCache(BuildContext context) =>
+      showClearCacheDialog(context, onConfirm: onClearCache);
 
   void toggleDevMode(BuildContext context) {
     if (!preferences.devToolsAvailable) return;

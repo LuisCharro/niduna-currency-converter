@@ -98,6 +98,17 @@ shelf looks empty in these screenshots only.
 
 ---
 
+## Status (2026-09-30)
+
+- Batch 1 done — `5055e4e` (A1–A3, B6, B14, B15). Tour: 0 overflows on all 3 AVDs.
+- Batch 2 done — `2b6b4e1` (B5, B7–B13; chart axis labels capped at large text).
+  B16 (crypto rows without trend badge) not done.
+- File-size cleanup — app_shell.dart / settings_controller.dart split.
+- Batch 3 (store content, C17–C20) and version bump: owner handles Play
+  Store directly. Listing still claims "follows your system setting" (now
+  true) and "Settings links to our contact page" (now true: Send feedback).
+- D21 (`CLAUDE.md` 0.x.x version rule vs 1.0.0 on Play) still open.
+
 ## Suggested batches
 
 - **Batch 1 (bugs):** 1, 2, 3, 6, 14, 15 — then re-run the tour on all 3 AVDs.
