@@ -66,7 +66,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get labelLastUpdated => 'Última actualización';
 
   @override
-  String get labelNoFavorites => 'Aún no hay favoritos';
+  String get labelNoFavorites => 'Fija los pares que más consultas';
 
   @override
   String get labelAddFavorite => 'Añadir favorito';
@@ -76,8 +76,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Pares locales guardados en este dispositivo';
 
   @override
-  String get favoritesEmptyBody =>
-      'Desliza una fila de divisa a la izquierda en Convertir y toca Favorito.';
+  String favoritesEmptyBody(Object limit) {
+    return 'Desliza cualquier divisa hacia la izquierda en Convertir y toca Favorito. Hasta $limit pares, gratis.';
+  }
 
   @override
   String get favoritesOpenConvert => 'Abrir Convertir';
@@ -354,14 +355,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String favoritesPairsHidden(Object count) {
-    return '$count pairs hidden';
+    return '$count pares ocultos';
   }
 
   @override
-  String get favoritesWatchAdToShow => 'Watch ad to see all';
+  String get favoritesWatchAdToShow => 'Ver anuncio para ver todos';
 
   @override
-  String get favoritesUnlockForever => 'Unlock 16 pairs forever';
+  String get favoritesUnlockForever => 'Desbloquea 16 pares para siempre';
 
   @override
   String get favoritesLimitReached => 'Favorites limit reached';
@@ -372,7 +373,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get watchAdToAddMore => 'Watch ad to add 3 more';
+  String get watchAdToAddMore => 'Ver anuncio para añadir 3 más';
 
   @override
   String get unlockingFavoritesPro => 'Unlocking Favorites Pro';
@@ -471,4 +472,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String snackNoEmailApp(String email) {
     return 'No se encontró ninguna aplicación de correo — contáctanos en $email';
   }
+
+  @override
+  String favoritesMorePairsHeader(Object effectiveLimit, Object visibleCount) {
+    return 'MÁS PARES · $visibleCount DE $effectiveLimit';
+  }
+
+  @override
+  String get favoritesAddPairSlot => 'Añadir un par';
+
+  @override
+  String get favoritesWantMorePairs => '¿Quieres más pares?';
+
+  @override
+  String get favoritesWatchAdPillLabel => 'Anuncio +3';
+
+  @override
+  String get favoritesProPillLabel => '16 para siempre';
+
+  @override
+  String get favoritesFirstPairPreview => 'Tu primer par aparece aquí';
 }

@@ -391,11 +391,17 @@ void main() {
 
       final euroFavoriteAction = find.byKey(const Key('favorite_EUR'));
       expect(
-        find.descendant(of: euroFavoriteAction, matching: find.text('Favorite')),
+        find.descendant(
+          of: euroFavoriteAction,
+          matching: find.text('Favorite'),
+        ),
         findsOneWidget,
       );
       expect(
-        find.descendant(of: euroFavoriteAction, matching: find.text('Favorited')),
+        find.descendant(
+          of: euroFavoriteAction,
+          matching: find.text('Favorited'),
+        ),
         findsNothing,
       );
 
@@ -406,11 +412,17 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        find.descendant(of: euroFavoriteAction, matching: find.text('Favorited')),
+        find.descendant(
+          of: euroFavoriteAction,
+          matching: find.text('Favorited'),
+        ),
         findsOneWidget,
       );
       expect(
-        find.descendant(of: euroFavoriteAction, matching: find.text('Favorite')),
+        find.descendant(
+          of: euroFavoriteAction,
+          matching: find.text('Favorite'),
+        ),
         findsNothing,
       );
     },
@@ -619,7 +631,7 @@ void main() {
         ),
       ),
     );
-    expect(find.text('No favorites yet'), findsOneWidget);
+    expect(find.text('Pin the pairs you check most'), findsOneWidget);
   });
 
   testWidgets('Favorites screen shows pair with rate', (
@@ -636,8 +648,12 @@ void main() {
         ),
       ),
     );
-    expect(find.text('USD → EUR'), findsOneWidget);
-    expect(find.text('0.9200'), findsOneWidget);
+    // findsWidgets (not findsOneWidget): the hero card's swipe stack also
+    // builds an invisible, non-semantic sizing proxy of the same content so
+    // it can size itself to its content's natural height (see
+    // FavoriteSwipeRow) — the visible copy is what these are really about.
+    expect(find.text('USD → EUR'), findsWidgets);
+    expect(find.text('0.9200'), findsWidgets);
   });
 
   testWidgets('Settings screen shows sections', (WidgetTester tester) async {
@@ -700,7 +716,9 @@ void main() {
         await tester.pumpAndSettle();
 
         final column = tester.widget<Column>(
-          find.ancestor(of: find.text(title), matching: find.byType(Column)).first,
+          find
+              .ancestor(of: find.text(title), matching: find.byType(Column))
+              .first,
         );
         expect(
           column.crossAxisAlignment,

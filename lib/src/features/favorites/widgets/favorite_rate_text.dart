@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' as intl;
 
 import '../../../shared/widgets/value_pill.dart';
+import '../domain/favorite_pair_rate.dart';
 
 class FavoriteRateText extends StatelessWidget {
   const FavoriteRateText({required this.rate, super.key});
@@ -10,21 +10,11 @@ class FavoriteRateText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Compact: less internal padding keeps the gap to the trend line below
+    // it tight, rather than reading as a big empty gap under the pill.
     return ValuePill(
-      text: rate == null ? '\u2014' : _formatRate(rate!),
+      text: rate == null ? '—' : formatFavoriteRate(rate!),
+      compact: true,
     );
-  }
-
-  String _formatRate(double value) {
-    if (value == 0) return '0';
-    final abs = value.abs();
-    final decimals = abs >= 100
-        ? 2
-        : abs >= .01
-        ? 4
-        : 8;
-    return intl.NumberFormat.decimalPatternDigits(
-      decimalDigits: decimals,
-    ).format(value);
   }
 }

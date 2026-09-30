@@ -221,7 +221,7 @@ abstract class AppLocalizations {
   /// Empty favorites message
   ///
   /// In en, this message translates to:
-  /// **'No favorites yet'**
+  /// **'Pin the pairs you check most'**
   String get labelNoFavorites;
 
   /// Add favorite action label
@@ -239,8 +239,8 @@ abstract class AppLocalizations {
   /// No description provided for @favoritesEmptyBody.
   ///
   /// In en, this message translates to:
-  /// **'Swipe left on a currency row in Convert, then tap Favorite.'**
-  String get favoritesEmptyBody;
+  /// **'Swipe left on any currency in Convert and tap Favorite. Up to {limit} pairs, free.'**
+  String favoritesEmptyBody(Object limit);
 
   /// No description provided for @favoritesOpenConvert.
   ///
@@ -949,6 +949,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No email app found — contact us at {email}'**
   String snackNoEmailApp(String email);
+
+  /// No description provided for @favoritesMorePairsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'MORE PAIRS · {visibleCount} OF {effectiveLimit}'**
+  String favoritesMorePairsHeader(Object effectiveLimit, Object visibleCount);
+
+  /// No description provided for @favoritesAddPairSlot.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a pair'**
+  String get favoritesAddPairSlot;
+
+  /// No description provided for @favoritesWantMorePairs.
+  ///
+  /// In en, this message translates to:
+  /// **'Want more pairs?'**
+  String get favoritesWantMorePairs;
+
+  /// No description provided for @favoritesWatchAdPillLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch ad +3'**
+  String get favoritesWatchAdPillLabel;
+
+  /// No description provided for @favoritesProPillLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'16 forever'**
+  String get favoritesProPillLabel;
+
+  /// No description provided for @favoritesFirstPairPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Your first pair shows here'**
+  String get favoritesFirstPairPreview;
 }
 
 class _AppLocalizationsDelegate

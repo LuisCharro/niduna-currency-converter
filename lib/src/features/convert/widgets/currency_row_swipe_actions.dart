@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/swipe_draggable_card.dart';
 import 'swipe_action_widgets.dart';
-import 'swipe_draggable_card.dart';
 
 class CurrencyRowSwipeActions extends StatefulWidget {
   const CurrencyRowSwipeActions({
@@ -35,6 +35,10 @@ class CurrencyRowSwipeActions extends StatefulWidget {
 }
 
 class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
+  // Fits the 3-action rail (favorite/base/remove); Favorites' 1-action rail
+  // uses its own, smaller reveal width (see FavoriteSwipeRow).
+  static const double _maxReveal = 244;
+
   double _reveal = 0;
   bool _isOpen = false;
 
@@ -42,7 +46,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
   void initState() {
     super.initState();
     _isOpen = widget.isOpen;
-    _reveal = widget.isOpen ? SwipeDraggableCard.maxReveal : 0;
+    _reveal = widget.isOpen ? _maxReveal : 0;
   }
 
   @override
@@ -50,7 +54,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.isOpen == widget.isOpen) return;
     _isOpen = widget.isOpen;
-    _reveal = widget.isOpen ? SwipeDraggableCard.maxReveal : 0;
+    _reveal = widget.isOpen ? _maxReveal : 0;
   }
 
   @override
@@ -71,6 +75,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
           ),
           SwipeDraggableCard(
             reveal: _reveal,
+            maxReveal: _maxReveal,
             isOpen: _isOpen,
             onRevealChanged: _onRevealChanged,
             onOpenChanged: _onOpenChanged,
@@ -89,7 +94,7 @@ class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
   void _onOpenChanged(bool open) {
     setState(() {
       _isOpen = open;
-      _reveal = open ? SwipeDraggableCard.maxReveal : 0;
+      _reveal = open ? _maxReveal : 0;
     });
     widget.onOpenChanged(open);
   }

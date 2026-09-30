@@ -66,7 +66,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get labelLastUpdated => 'Dernière mise à jour';
 
   @override
-  String get labelNoFavorites => 'Aucun favori pour le moment';
+  String get labelNoFavorites =>
+      'Épinglez les paires que vous consultez le plus';
 
   @override
   String get labelAddFavorite => 'Ajouter un favori';
@@ -76,8 +77,9 @@ class AppLocalizationsFr extends AppLocalizations {
       'Paires locales enregistrées sur cet appareil';
 
   @override
-  String get favoritesEmptyBody =>
-      'Balayez une ligne de devise vers la gauche dans Convertir, puis touchez Favori.';
+  String favoritesEmptyBody(Object limit) {
+    return 'Balayez une devise vers la gauche dans Convertir, puis touchez Favori. Jusqu\'à $limit paires, gratuit.';
+  }
 
   @override
   String get favoritesOpenConvert => 'Ouvrir Convertir';
@@ -356,14 +358,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String favoritesPairsHidden(Object count) {
-    return '$count pairs hidden';
+    return '$count paires masquées';
   }
 
   @override
-  String get favoritesWatchAdToShow => 'Watch ad to see all';
+  String get favoritesWatchAdToShow => 'Regarder une pub pour tout voir';
 
   @override
-  String get favoritesUnlockForever => 'Unlock 16 pairs forever';
+  String get favoritesUnlockForever => 'Débloquer 16 paires pour toujours';
 
   @override
   String get favoritesLimitReached => 'Favorites limit reached';
@@ -374,7 +376,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get watchAdToAddMore => 'Watch ad to add 3 more';
+  String get watchAdToAddMore => 'Regarder une pub pour ajouter 3 de plus';
 
   @override
   String get unlockingFavoritesPro => 'Unlocking Favorites Pro';
@@ -473,4 +475,24 @@ class AppLocalizationsFr extends AppLocalizations {
   String snackNoEmailApp(String email) {
     return 'Aucune application de messagerie trouvée — contactez-nous à $email';
   }
+
+  @override
+  String favoritesMorePairsHeader(Object effectiveLimit, Object visibleCount) {
+    return 'AUTRES PAIRES · $visibleCount SUR $effectiveLimit';
+  }
+
+  @override
+  String get favoritesAddPairSlot => 'Ajouter une paire';
+
+  @override
+  String get favoritesWantMorePairs => 'Plus de paires ?';
+
+  @override
+  String get favoritesWatchAdPillLabel => 'Pub +3';
+
+  @override
+  String get favoritesProPillLabel => '16 à vie';
+
+  @override
+  String get favoritesFirstPairPreview => 'Votre première paire apparaît ici';
 }

@@ -9,8 +9,9 @@ import 'package:currency_converter/src/features/convert/models/currency_quote.da
 import 'package:currency_converter/src/features/convert/widgets/currency_rate_row.dart';
 import 'package:currency_converter/src/features/convert/widgets/swipe_action_widgets.dart';
 import 'package:currency_converter/src/features/favorites/domain/favorite_pair.dart';
+import 'package:currency_converter/src/features/favorites/widgets/favorite_hero_card.dart';
 import 'package:currency_converter/src/features/favorites/widgets/favorite_pair_row.dart';
-import 'package:currency_converter/src/features/favorites/widgets/favorites_limit_note.dart';
+import 'package:currency_converter/src/features/favorites/widgets/favorites_upgrade_row.dart';
 import 'package:currency_converter/src/features/settings/widgets/base_currency_picker.dart';
 import 'package:currency_converter/src/shared/widgets/floating_pill_nav_item.dart';
 
@@ -130,13 +131,15 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('FavoritesLimitNote does not overflow at text scale 2.0', (
+  testWidgets('FavoritesUpgradeRow does not overflow at text scale 2.0', (
     tester,
   ) async {
     await pumpAtLargeTextScale(
       tester,
-      FavoritesLimitNote(
+      FavoritesUpgradeRow(
+        hiddenCount: 0,
         canOfferBoost: true,
+        hasFavoritesPro: false,
         onWatchAd: () {},
         onBuyPro: () {},
       ),
@@ -144,6 +147,25 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets(
+    'FavoritesUpgradeRow (hidden-pairs variant) does not overflow at text '
+    'scale 2.0',
+    (tester) async {
+      await pumpAtLargeTextScale(
+        tester,
+        FavoritesUpgradeRow(
+          hiddenCount: 4,
+          canOfferBoost: true,
+          hasFavoritesPro: false,
+          onWatchAd: () {},
+          onBuyPro: () {},
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('ChartTouchOverlay does not overflow at text scale 2.0', (
     tester,
@@ -206,11 +228,11 @@ void main() {
         padding: const EdgeInsets.all(12),
         child: FavoritePairRow(
           pair: pair,
-          index: 0,
+          index: 1,
           snapshot: snapshot,
-          showDivider: false,
           onOpen: () {},
           onRemove: () {},
+          onMoveUp: () {},
         ),
       ),
     );
@@ -222,4 +244,48 @@ void main() {
     expect(find.textContaining('USD'), findsWidgets);
     expect(find.textContaining('EUR'), findsWidgets);
   });
+
+  testWidgets(
+    'FavoriteHeroCard does not overflow at text scale 2.0, with or without '
+    'a reverse rate',
+    (tester) async {
+      const pair = FavoritePair(base: 'USD', quote: 'BTC');
+      final snapshot = LatestRatesSnapshot(
+        base: 'USD',
+        date: DateTime(2026, 5, 8),
+        savedAt: DateTime(2026, 5, 8, 9),
+        rates: const <String, double>{'BTC': 0.0000120354},
+        previousRates: const <String, double>{'BTC': 0.0000121000},
+      );
+      await pumpAtLargeTextScale(
+        tester,
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: FavoriteHeroCard(
+            pair: pair,
+            snapshot: snapshot,
+            onOpen: () {},
+            onRemove: () {},
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+
+      await pumpAtLargeTextScale(
+        tester,
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: FavoriteHeroCard(
+            pair: pair,
+            snapshot: null,
+            onOpen: () {},
+            onRemove: () {},
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    },
+  );
 }

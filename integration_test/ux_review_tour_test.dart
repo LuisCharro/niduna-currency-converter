@@ -44,9 +44,9 @@ void main() {
     await _seedFreshUser();
 
     Finder nav(IconData icon) => find.descendant(
-          of: find.byType(FloatingPillNav),
-          matching: find.byIcon(icon),
-        );
+      of: find.byType(FloatingPillNav),
+      matching: find.byIcon(icon),
+    );
 
     Future<void> settleFor([Duration d = settle]) async {
       await tester.pump(const Duration(milliseconds: 300));
@@ -95,10 +95,15 @@ void main() {
 
     await step('04-lens', () async {
       final row = find.byKey(const Key('convert_row_EUR')).evaluate().isEmpty
-          ? find.byWidgetPredicate(
-              (w) => w.key is ValueKey<String> &&
-                  (w.key! as ValueKey<String>).value.startsWith('convert_row_'),
-            ).first
+          ? find
+                .byWidgetPredicate(
+                  (w) =>
+                      w.key is ValueKey<String> &&
+                      (w.key! as ValueKey<String>).value.startsWith(
+                        'convert_row_',
+                      ),
+                )
+                .first
           : find.byKey(const Key('convert_row_EUR'));
       // The row opens the lens after an 800 ms "charge" hold.
       final gesture = await tester.startGesture(tester.getCenter(row));
@@ -111,10 +116,13 @@ void main() {
     });
 
     await step('05-swipe', () async {
-      final row = find.byWidgetPredicate(
-        (w) => w.key is ValueKey<String> &&
-            (w.key! as ValueKey<String>).value.startsWith('convert_row_'),
-      ).first;
+      final row = find
+          .byWidgetPredicate(
+            (w) =>
+                w.key is ValueKey<String> &&
+                (w.key! as ValueKey<String>).value.startsWith('convert_row_'),
+          )
+          .first;
       await tester.drag(row, const Offset(-220, 0));
       await shot('05-row-swipe-actions');
       await tester.drag(row, const Offset(220, 0));
@@ -122,7 +130,9 @@ void main() {
     });
 
     await step('06-base-picker', () async {
-      await tester.tap(find.byKey(const Key('open_base_currency_picker')).first);
+      await tester.tap(
+        find.byKey(const Key('open_base_currency_picker')).first,
+      );
       await shot('06-base-picker');
       await dismissSheet();
     });
@@ -136,6 +146,16 @@ void main() {
     await step('08-favorites', () async {
       await tester.tap(nav(Icons.star_rounded));
       await shot('08-favorites');
+    });
+
+    await step('08b-favorites-swipe', () async {
+      // The second favorites row (first after the hero card) is the
+      // USD → GBP starter pair; swipe it left to reveal Remove.
+      final row = find.byKey(const ValueKey<String>('USD-GBP'));
+      await tester.drag(row, const Offset(-200, 0));
+      await shot('08b-favorites-swipe');
+      await tester.drag(row, const Offset(200, 0));
+      await settleFor();
     });
 
     await step('09-charts', () async {

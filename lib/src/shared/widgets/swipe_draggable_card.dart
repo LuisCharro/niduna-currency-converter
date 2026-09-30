@@ -1,28 +1,49 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../core/theme/app_colors.dart';
+import 'swipe_radial_fill_painter.dart';
 
+/// The card's own surface while it sits over its actions rail: [card] draws
+/// an elevated, canvas-toned card (Convert's rows, Favorites' hero); [plain]
+/// is fully transparent with no shadow, so plain content (Favorites' rows)
+/// reads as flush with the page canvas behind it, not as a floating card.
+enum SwipeCardSurface { card, plain }
+
+/// Generic horizontal swipe-to-reveal card: drags left to reveal an actions
+/// rail behind it, snaps open/closed, and (when [enableLongPressCharge] is
+/// true) lets a long hold open the rail without dragging.
+///
+/// Shared by Convert's currency rows (3-action rail, charge enabled) and
+/// Favorites' rows/hero (1-action "Remove" rail, charge disabled so a long
+/// press is free to start drag-reorder instead).
 class SwipeDraggableCard extends StatefulWidget {
   const SwipeDraggableCard({
     required this.isOpen,
     required this.reveal,
+    required this.maxReveal,
     required this.onRevealChanged,
     required this.onOpenChanged,
     required this.onPressed,
     required this.child,
+    this.enableLongPressCharge = true,
+    this.surface = SwipeCardSurface.card,
     super.key,
   });
+
   final bool isOpen;
   final double reveal;
+  final double maxReveal;
   final ValueChanged<double> onRevealChanged;
   final ValueChanged<bool> onOpenChanged;
   final ValueChanged<Offset> onPressed;
   final Widget child;
-  static const double maxReveal = 244;
+  final bool enableLongPressCharge;
+  final SwipeCardSurface surface;
+
   static const Duration _duration = Duration(milliseconds: 220);
   static const Duration _pressDuration = Duration(milliseconds: 160);
   static const Duration _chargeDuration = Duration(milliseconds: 800);
+
   @override
   State<SwipeDraggableCard> createState() => _SwipeDraggableCardState();
 }
@@ -42,12 +63,13 @@ class _SwipeDraggableCardState extends State<SwipeDraggableCard>
   void initState() {
     super.initState();
     _reveal = widget.reveal;
-    _chargeController = AnimationController(
-      vsync: this,
-      duration: SwipeDraggableCard._chargeDuration,
-    )
-      ..addStatusListener(_onChargeStatusChanged)
-      ..addListener(_onChargeProgress);
+    _chargeController =
+        AnimationController(
+            vsync: this,
+            duration: SwipeDraggableCard._chargeDuration,
+          )
+          ..addStatusListener(_onChargeStatusChanged)
+          ..addListener(_onChargeProgress);
   }
 
   @override
@@ -81,7 +103,7 @@ class _SwipeDraggableCardState extends State<SwipeDraggableCard>
   void didUpdateWidget(covariant SwipeDraggableCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (_isDragging || oldWidget.isOpen == widget.isOpen) return;
-    setState(() => _reveal = widget.isOpen ? SwipeDraggableCard.maxReveal : 0);
+    setState(() => _reveal = widget.isOpen ? widget.maxReveal : 0);
   }
 
   void _release() {
@@ -92,7 +114,8 @@ class _SwipeDraggableCardState extends State<SwipeDraggableCard>
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
-    final revealProgress = _reveal / SwipeDraggableCard.maxReveal;
+    final isPlain = widget.surface == SwipeCardSurface.plain;
+    final revealProgress = _reveal / widget.maxReveal;
     return AnimatedPositioned(
       duration: _isDragging ? Duration.zero : SwipeDraggableCard._duration,
       curve: Curves.easeOutCubic,
@@ -103,7 +126,7 @@ class _SwipeDraggableCardState extends State<SwipeDraggableCard>
         onTapDown: (d) {
           _tapPosition = d.globalPosition;
           _localTapPosition = d.localPosition;
-          if (widget.isOpen) return;
+          if (!widget.enableLongPressCharge || widget.isOpen) return;
           _setPressed(true, withHaptic: true);
           _isHolding = true;
           _lastHapticThreshold = 0;
@@ -124,8 +147,7 @@ class _SwipeDraggableCardState extends State<SwipeDraggableCard>
         },
         onHorizontalDragUpdate: (d) {
           setState(() {
-            _reveal =
-                (_reveal - d.delta.dx).clamp(0.0, SwipeDraggableCard.maxReveal);
+            _reveal = (_reveal - d.delta.dx).clamp(0.0, widget.maxReveal);
           });
           widget.onRevealChanged(_reveal);
         },
@@ -145,41 +167,45 @@ class _SwipeDraggableCardState extends State<SwipeDraggableCard>
             transform: Matrix4.translationValues(0, _isPressed ? -2 : 0, 0),
             transformAlignment: Alignment.center,
             decoration: BoxDecoration(
-              color: colors.bg,
+              color: isPlain ? Colors.transparent : colors.bg,
               borderRadius: BorderRadius.circular(18),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: colors.primary.withValues(
-                    alpha:
-                        _isPressed ? 0.1 : 0.04 + (0.04 * revealProgress),
-                  ),
-                  blurRadius: _isPressed ? 16 : 8 + (4 * revealProgress),
-                  offset: Offset(0, _isPressed ? 6 : 2),
-                ),
-              ],
+              boxShadow: isPlain
+                  ? null
+                  : <BoxShadow>[
+                      BoxShadow(
+                        color: colors.primary.withValues(
+                          alpha: _isPressed
+                              ? 0.1
+                              : 0.04 + (0.04 * revealProgress),
+                        ),
+                        blurRadius: _isPressed ? 16 : 8 + (4 * revealProgress),
+                        offset: Offset(0, _isPressed ? 6 : 2),
+                      ),
+                    ],
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(18),
               child: Stack(
                 children: <Widget>[
                   widget.child,
-                  AnimatedBuilder(
-                    animation: _chargeController,
-                    builder: (context, _) {
-                      if (_chargeController.value == 0 ||
-                          _localTapPosition == null) {
-                        return const SizedBox.shrink();
-                      }
-                      return Positioned.fill(
-                        child: CustomPaint(
-                          painter: _RadialFillPainter(
-                            progress: _chargeController.value,
-                            center: _localTapPosition!,
+                  if (widget.enableLongPressCharge)
+                    AnimatedBuilder(
+                      animation: _chargeController,
+                      builder: (context, _) {
+                        if (_chargeController.value == 0 ||
+                            _localTapPosition == null) {
+                          return const SizedBox.shrink();
+                        }
+                        return Positioned.fill(
+                          child: CustomPaint(
+                            painter: SwipeRadialFillPainter(
+                              progress: _chargeController.value,
+                              center: _localTapPosition!,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
                 ],
               ),
             ),
@@ -193,7 +219,7 @@ class _SwipeDraggableCardState extends State<SwipeDraggableCard>
     setState(() {
       _isDragging = false;
       _isPressed = false;
-      _reveal = open ? SwipeDraggableCard.maxReveal : 0;
+      _reveal = open ? widget.maxReveal : 0;
     });
     widget.onRevealChanged(_reveal);
     widget.onOpenChanged(open);
@@ -209,28 +235,10 @@ class _SwipeDraggableCardState extends State<SwipeDraggableCard>
     _isHolding = false;
     _chargeController.stop();
     if (_chargeController.value > 0) {
-      _chargeController
-          .animateTo(0, duration: const Duration(milliseconds: 120));
+      _chargeController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 120),
+      );
     }
   }
-}
-
-class _RadialFillPainter extends CustomPainter {
-  const _RadialFillPainter({required this.progress, required this.center});
-  final double progress;
-  final Offset center;
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (progress <= 0) return;
-    final r =
-        math.sqrt(size.width * size.width + size.height * size.height) * 0.6;
-    final ep = Curves.easeOut.transform(progress.clamp(0.0, 1.0));
-    final op = Curves.easeIn.transform(progress.clamp(0.0, 1.0));
-    canvas.drawCircle(
-        center, r * ep, Paint()..color = Color.fromRGBO(45, 106, 70, op * .15));
-  }
-
-  @override
-  bool shouldRepaint(_RadialFillPainter old) =>
-      progress != old.progress || center != old.center;
 }

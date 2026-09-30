@@ -66,7 +66,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelLastUpdated => 'Last updated';
 
   @override
-  String get labelNoFavorites => 'No favorites yet';
+  String get labelNoFavorites => 'Pin the pairs you check most';
 
   @override
   String get labelAddFavorite => 'Add favorite';
@@ -75,8 +75,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get favoritesLocalSubtitle => 'Local pairs saved on this device';
 
   @override
-  String get favoritesEmptyBody =>
-      'Swipe left on a currency row in Convert, then tap Favorite.';
+  String favoritesEmptyBody(Object limit) {
+    return 'Swipe left on any currency in Convert and tap Favorite. Up to $limit pairs, free.';
+  }
 
   @override
   String get favoritesOpenConvert => 'Open Convert';
@@ -466,4 +467,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String snackNoEmailApp(String email) {
     return 'No email app found — contact us at $email';
   }
+
+  @override
+  String favoritesMorePairsHeader(Object effectiveLimit, Object visibleCount) {
+    return 'MORE PAIRS · $visibleCount OF $effectiveLimit';
+  }
+
+  @override
+  String get favoritesAddPairSlot => 'Add a pair';
+
+  @override
+  String get favoritesWantMorePairs => 'Want more pairs?';
+
+  @override
+  String get favoritesWatchAdPillLabel => 'Watch ad +3';
+
+  @override
+  String get favoritesProPillLabel => '16 forever';
+
+  @override
+  String get favoritesFirstPairPreview => 'Your first pair shows here';
 }

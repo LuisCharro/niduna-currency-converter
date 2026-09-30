@@ -54,7 +54,10 @@ for avd in "${avds[@]}"; do
     out_dir="${out_root}/${avd}/${theme}"
     mkdir -p "${out_dir}"
     rm -f "${out_dir}"/*.png
-    run_adb -s "${serial}" shell am force-stop "${package_name}" >/dev/null 2>&1 || true
+    # Fresh install each run: the tour starts as a new user anyway, and
+    # replacing a large debug APK in place can hit INSUFFICIENT_STORAGE on
+    # small AVDs.
+    run_adb -s "${serial}" uninstall "${package_name}" >/dev/null 2>&1 || true
     echo "== ${avd} (${serial}) ${theme} -> ${out_dir}"
     SCREEN_OUTPUT_DIR="${out_dir}" run_flutter drive \
       --driver=test_driver/screenshots_driver.dart \

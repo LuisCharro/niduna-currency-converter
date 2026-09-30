@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/honest_fern_refresh_indicator.dart';
-import '../../../shared/widgets/screen_title.dart';
 import '../../convert/domain/latest_rates_snapshot.dart';
 import '../domain/favorite_pair.dart';
 import 'favorites_empty_state.dart';
+import 'favorites_header_row.dart';
 import 'favorites_list.dart';
 
 class FavoritesTabBody extends StatelessWidget {
@@ -47,12 +46,15 @@ class FavoritesTabBody extends StatelessWidget {
       top: AppTheme.space6,
       bottom: AppTheme.tabScrollBottomPadding(context),
     );
+    final header = FavoritesHeaderRow(
+      onRefresh: onRefresh == null ? null : () => onRefresh!(),
+    );
     final list = pairs.isEmpty
-        ? _emptyBody(context, insets)
+        ? _emptyBody(context, insets, header)
         : ListView(
             padding: insets,
             children: <Widget>[
-              ScreenTitle(l10n(context).tabFavorites),
+              header,
               const SizedBox(height: AppTheme.space4),
               FavoritesList(
                 pairs: pairs,
@@ -75,23 +77,26 @@ class FavoritesTabBody extends StatelessWidget {
     return HonestFernRefreshIndicator(onRefresh: onRefresh!, child: list);
   }
 
-  /// Centers the empty state in the space left under the title instead of
+  /// Centers the empty state in the space left under the header instead of
   /// leaving a dead paper gap above the nav.
-  Widget _emptyBody(BuildContext context, EdgeInsets insets) {
+  Widget _emptyBody(BuildContext context, EdgeInsets insets, Widget header) {
     return CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       slivers: <Widget>[
         SliverPadding(
           padding: insets.copyWith(bottom: 0),
-          sliver: SliverToBoxAdapter(
-            child: ScreenTitle(l10n(context).tabFavorites),
-          ),
+          sliver: SliverToBoxAdapter(child: header),
         ),
         SliverFillRemaining(
           hasScrollBody: false,
           child: Padding(
             padding: insets.copyWith(top: AppTheme.space4),
-            child: Center(child: FavoritesEmptyState(onAdd: onAdd)),
+            child: Center(
+              child: FavoritesEmptyState(
+                effectiveLimit: effectiveLimit,
+                onAdd: onAdd,
+              ),
+            ),
           ),
         ),
       ],

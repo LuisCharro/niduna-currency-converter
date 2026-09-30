@@ -1,183 +1,126 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart' as intl;
 
-import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/clamped_text_scale.dart';
+import '../../../shared/widgets/overlapping_flag_pair.dart';
 import '../../convert/domain/latest_rates_snapshot.dart';
 import '../../convert/models/trend.dart';
-import '../../../shared/widgets/clamped_text_scale.dart';
-import '../../convert/widgets/trend_badge.dart';
 import '../domain/favorite_pair.dart';
 import '../domain/favorite_pair_rate.dart';
-import 'favorite_pair_identity.dart';
-import 'favorite_rate_text.dart';
+import '../domain/favorite_reverse_rate.dart';
+import 'favorite_pair_title_column.dart';
+import 'favorite_pair_value_column.dart';
+import 'favorite_swipe_row.dart';
 
+/// A plain Convert-style rate row for pairs after the hero (index 1..n):
+/// overlapping flags, "BASE → QUOTE" + reverse-rate supporting line, and the
+/// green value pill with the trend underneath. No card/border/shadow (per
+/// DESIGN.md) — rows sit flush on the page canvas, separated by a hairline
+/// divider (omitted after the last row).
 class FavoritePairRow extends StatelessWidget {
   const FavoritePairRow({
     required this.pair,
     required this.index,
     required this.snapshot,
-    required this.showDivider,
     required this.onOpen,
     required this.onRemove,
+    required this.onMoveUp,
+    this.isLast = false,
     super.key,
   });
+
+  // Tall enough for the title column (2 lines) or the value column (a value
+  // pill + a trend line) at a clamped 1.3x text scale, plus row padding.
+  static const double rowHeight = 92;
 
   final FavoritePair pair;
   final int index;
   final LatestRatesSnapshot? snapshot;
-  final bool showDivider;
   final VoidCallback onOpen;
   final VoidCallback onRemove;
+  final VoidCallback? onMoveUp;
+  final bool isLast;
 
   @override
   Widget build(BuildContext context) {
-    final colors = AppColors.of(context);
-    final loc = l10n(context);
     final rate = rateForFavoritePair(pair: pair, snapshot: snapshot);
-    final previousRate =
-        previousRateForFavoritePair(pair: pair, snapshot: snapshot);
+    final previousRate = previousRateForFavoritePair(
+      pair: pair,
+      snapshot: snapshot,
+    );
     final trend = trendDirectionFor(rate, previousRate);
     final changePercent = changePercentFor(rate, previousRate);
     final showTrend = shouldShowTrend(trend, changePercent);
-    final pairLabel = '${pair.base} → ${pair.quote}';
-    final directRateLine = _directRateLine(rate);
-    return Padding(
-      padding: EdgeInsets.only(bottom: showDivider ? AppTheme.space3 : 0),
-      child: Material(
-        color: Colors.transparent,
-        child: Semantics(
-          onTapHint: loc.openFavoriteTooltip,
-          child: InkWell(
-            onTap: () {
-              HapticFeedback.selectionClick();
-              onOpen();
-            },
-            borderRadius: BorderRadius.circular(AppTheme.radius),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: colors.container,
-                borderRadius: BorderRadius.circular(AppTheme.radius),
-                border: Border.all(color: colors.border.withValues(alpha: .18)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        FavoritePairIdentity(pair: pair),
-                        const Spacer(),
-                        Semantics(
-                          button: true,
-                          label: loc.removeFavoriteTooltip,
-                          child: IconButton(
-                            onPressed: () {
-                              HapticFeedback.selectionClick();
-                              onRemove();
-                            },
-                            icon: Icon(
-                              Icons.close_rounded,
-                              size: 18,
-                              color: colors.subtle,
-                            ),
-                            tooltip: loc.removeFavoriteTooltip,
-                            visualDensity: VisualDensity.compact,
-                            constraints: const BoxConstraints(
-                              minWidth: 40,
-                              minHeight: 40,
-                            ),
-                          ),
-                        ),
-                        ReorderableDragStartListener(
-                          index: index,
-                          child: SizedBox(
-                            width: 40,
-                            height: 40,
-                            child: Icon(
-                              Icons.drag_handle,
-                              size: 22,
-                              color: colors.muted,
-                              semanticLabel: loc.reorderFavoriteTooltip,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    // Clamp scale here: the title has priority via Expanded,
-                    // but the trend badge and rate pill still grow with the
-                    // system font size and would otherwise crowd the title
-                    // down to a sliver (e.g. "U…") at large text scales.
-                    ClampedTextScale(
-                      maxScaleFactor: 1.3,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              pairLabel,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppTheme.settingsTileTitleStyle(context)
-                                  .copyWith(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          if (showTrend) ...<Widget>[
-                            TrendBadge(
-                              trend: trend!,
-                              changePercent: changePercent,
-                            ),
-                            const SizedBox(width: 8),
-                          ],
-                          FavoriteRateText(rate: rate),
-                        ],
+    final colors = AppColors.of(context);
+
+    return Column(
+      children: <Widget>[
+        FavoriteSwipeRow(
+          pair: pair,
+          index: index,
+          height: rowHeight,
+          onOpen: onOpen,
+          onRemove: onRemove,
+          onMoveUp: onMoveUp,
+          child: Padding(
+            // No extra horizontal inset (matches Convert's plain
+            // CurrencyRateRow): the row is flush with the page/list padding
+            // that already wraps the whole list, so it lines up with the
+            // "MORE PAIRS" label and the hero card's outer edge, not indented
+            // further than either.
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: ClampedTextScale(
+              maxScaleFactor: 1.3,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  OverlappingFlagPair(base: pair.base, quote: pair.quote),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: FavoritePairTitleColumn(
+                      pair: pair,
+                      reverseLine: favoriteReverseRateLine(
+                        pair: pair,
+                        rate: rate,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            directRateLine,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTheme.supportingTextStyle(context).copyWith(
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ],
+                  ),
+                  const SizedBox(width: 10),
+                  // Long crypto values ("0.00001202") must not squeeze the
+                  // title into an ellipsis — cap the value column's width
+                  // and shrink it (not the title) if it needs more. FittedBox
+                  // needs bounded constraints on both axes (an unbounded
+                  // maxHeight makes it compute a NaN scale), so cap the
+                  // height too, to the row's available content height.
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.sizeOf(context).width * 0.40,
+                      maxHeight: rowHeight - 20,
                     ),
-                  ],
-                ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerRight,
+                      child: FavoritePairValueColumn(
+                        rate: rate,
+                        trend: showTrend ? trend : null,
+                        changePercent: changePercent,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
-      ),
+        if (!isLast)
+          Padding(
+            padding: const EdgeInsets.only(left: 62),
+            child: Divider(
+              color: colors.border.withValues(alpha: .20),
+              height: .5,
+            ),
+          ),
+      ],
     );
-  }
-
-  String _directRateLine(double? rate) {
-    if (rate == null) return '1 ${pair.base} = — ${pair.quote}';
-    return '1 ${pair.base} = ${_formatRate(rate)} ${pair.quote}';
-  }
-
-  String _formatRate(double value) {
-    final abs = value.abs();
-    final decimals = abs >= 100
-        ? 2
-        : abs >= .1
-        ? 4
-        : 6;
-    return intl.NumberFormat.decimalPatternDigits(
-      decimalDigits: decimals,
-    ).format(value);
   }
 }
