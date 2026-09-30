@@ -8,7 +8,7 @@ For the reusable portfolio-wide model, read
 when this repository is checked out inside the Honest Fern monorepo. This
 document owns only Currency Converter facts and commands.
 
-**Last verified:** 2026-09-14
+**Last verified:** 2026-09-30
 
 **Package:** `com.honestfern.currency_converter`
 
@@ -19,19 +19,25 @@ document owns only Currency Converter facts and commands.
 
 ## Current release state
 
-- Internal testing contains `1.0.0`, Android `versionCode 6`, uploaded from
-  commit `aad8249`.
-- The published release notes are in English (`en-GB`): “Refined default
-  currency selection and crypto pickers.”
+- Internal testing contains `1.0.0`, Android `versionCode 7`, built from
+  commit `c21561d` (with version bump `71f1d1a`) and status `completed`.
+- The current release notes are in English (`en-GB`): “Refreshed Favorites and
+  refined the app interface.”
 - Uploaded AAB SHA-256:
-  `9f6c0464046b636fe0a3f66b74afa58217696e269477366a0f35addf51f5ed96`.
+  `1d8de98cecad06b16d5a5109eef6c4d7c365e5129043b8c35edbb627f448b1bf`.
+- Six refreshed `1350x2400` phone screenshots are selected in the default
+  `en-GB` listing. They are saved as draft changes, not sent for review. The
+  Store presence API edit returned HTTP 403 at validation, so the authenticated
+  owner Console was used for selection and saving; bundle and Internal-track
+  publishing succeeded through the API.
 - The stable internal opt-in link is
   `https://play.google.com/apps/internaltest/4701596695392061996`.
 - That link identifies the testing track, not a particular version. Testers
   should join once and then update from Google Play when a newer release is
   published.
-- The next intended operation is promotion of the same tested artifact to
-  Closed testing. Do not rebuild merely to change its version name.
+- Install and accept the exact Play-distributed version code 7 on a real
+  Android device before considering Closed testing. Do not promote until that
+  acceptance gate and the other checklist gates are satisfied.
 
 ## Closed-testing promotion — next approved decision point
 

@@ -1,6 +1,32 @@
 # Release Checklist — Path to Google Play Store
 
-## Resume checkpoint — 2026-09-14
+## Resume checkpoint — 2026-09-30
+
+### Latest operational truth — 2026-09-30
+
+- The UX/UI refresh is committed on `main` through `c21561d`; the candidate is
+  `1.0.0+7` (`versionCode 7`). The signed AAB SHA-256 is
+  `1d8de98cecad06b16d5a5109eef6c4d7c365e5129043b8c35edbb627f448b1bf`.
+- Play Internal now contains version code 7 with status `completed`. It
+  replaces code 6 as the current Internal release; release notes are “Refreshed
+  Favorites and refined the app interface.” (en-GB).
+- Six refreshed `1350×2400` phone screenshots are selected in the default
+  `en-GB` listing. They were saved as draft changes in Play Console and have
+  not been sent for review. The assets came from the 2026-09-30 emulator
+  captures; no tablet screenshots were added.
+- The listing API upload placed images in the Play asset library, but its
+  `edits.validate` call returned HTTP 403. Following the documented fallback,
+  the owner Console session selected and saved the six images. Keep the
+  service account app-scoped; do not widen permissions.
+- The website screenshot refresh is deployed at `https://honestfern.com/`.
+  The Favorites flags now load before capture; the refreshed app captures
+  passed the test suite and were visually checked in light and dark themes.
+- Next gate: install the exact Play-distributed version code 7 on a real
+  Android device and accept it before any Closed-test promotion. Do not send
+  the listing draft for review, create a Closed release, or promote to
+  Production without Luis's explicit instruction.
+
+## Historical checkpoint — 2026-09-14
 
 ### Latest operational truth — 2026-09-14
 
