@@ -26,9 +26,9 @@ Future<void> _seedPaidUserWithFavorites() async {
   ]);
 }
 
-Future<void> _precacheFavoriteFlags(WidgetTester tester) async {
+Future<void> _precacheFlags(WidgetTester tester, List<String> codes) async {
   final context = tester.element(find.byType(FloatingPillNav));
-  for (final code in <String>['btc', 'eur', 'gbp', 'chf', 'mxn', 'jpy']) {
+  for (final code in codes) {
     await precacheImage(
       AssetImage('assets/icons/currencies/$code.png'),
       context,
@@ -50,6 +50,7 @@ void main() {
 
     app.main();
     await tester.pumpAndSettle(launchSettle);
+    await _precacheFlags(tester, <String>['usd', 'eur', 'gbp', 'jpy', 'btc']);
     await binding.takeScreenshot('01-convert');
 
     await tester.tap(find.byIcon(Icons.show_chart_rounded));
@@ -77,7 +78,14 @@ void main() {
       ),
     );
     await tester.pumpAndSettle(launchSettle);
-    await _precacheFavoriteFlags(tester);
+    await _precacheFlags(tester, <String>[
+      'btc',
+      'eur',
+      'gbp',
+      'chf',
+      'mxn',
+      'jpy',
+    ]);
     await binding.takeScreenshot('03-favorites');
   });
 }
