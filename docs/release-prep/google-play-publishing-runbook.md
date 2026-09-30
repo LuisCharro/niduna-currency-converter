@@ -17,56 +17,89 @@ document owns only Currency Converter facts and commands.
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
 
-## Current release state
+## Current release state — 2026-09-30
 
-- Internal testing contains `1.0.0`, Android `versionCode 7`, built from
-  commit `c21561d` (with version bump `71f1d1a`) and status `completed`.
-- The current release notes are in English (`en-GB`): “Refreshed Favorites and
-  refined the app interface.”
-- Uploaded AAB SHA-256:
-  `1d8de98cecad06b16d5a5109eef6c4d7c365e5129043b8c35edbb627f448b1bf`.
-- Six refreshed `1350x2400` phone screenshots are selected in the default
-  `en-GB` listing. They are saved as draft changes, not sent for review. The
-  Store presence API edit returned HTTP 403 at validation, so the authenticated
-  owner Console was used for selection and saving; bundle and Internal-track
-  publishing succeeded through the API.
-- The stable internal opt-in link is
-  `https://play.google.com/apps/internaltest/4701596695392061996`.
-- That link identifies the testing track, not a particular version. Testers
-  should join once and then update from Google Play when a newer release is
-  published.
-- Install and accept the exact Play-distributed version code 7 on a real
-  Android device before considering Closed testing. Do not promote until that
-  acceptance gate and the other checklist gates are satisfied.
+Closed Alpha and Internal serve `1.0.0 (7)`, built from `c21561d` with version
+bump `71f1d1a`. AAB SHA-256:
+`1d8de98cecad06b16d5a5109eef6c4d7c365e5129043b8c35edbb627f448b1bf`.
+Notes: “Refreshed Favorites and refined the app interface.” (`en-GB`).
+Closed reused the accepted Internal artifact from Play's library. All 13
+changes were submitted with approval and published; Alpha shows Active and
+“Available to selected testers”, released 30 September 19:31. Managed
+publishing is off. There is no recorded Production release.
 
-## Closed-testing promotion — next approved decision point
+Six refreshed `1350x2400` screenshots were included in the published listing
+changes. The Store presence API validation returned HTTP 403, so the owner
+Console selected/saved the assets; do not broaden API access.
 
-Do not create a Closed release just because a single email address is on the
-tester list. Luis will request this operation after recruiting a practical
-cohort (target 14–16 people) and confirming that the app is ready.
+Actual Console track IDs: Internal `4701596695392061996`; Closed Alpha
+`4700576461420899940`. Before using the API, list tracks and verify its returned
+track identifier; do not blindly assign the literal `closed` (it previously
+returned 404). Record API identity separately if it differs from the Console ID.
 
-At that point, perform this bounded sequence:
+## Tester invitations and monitoring — current next step
 
-1. Check in Play Console that Closed tester selection and countries/regions
-   are configured. Keep the tester emails private; do not put them in Git or
-   in release scripts.
-2. Confirm the source AAB is the accepted Internal artifact `1.0.0` /
-   `versionCode 6` (or a separately approved, higher-code fix), its release
-   notes, and its country targeting.
-3. With Luis's explicit release instruction, use the Publisher API to assign
-   that code to `closed` in one edit and commit it. Do not alter Production.
-4. Create a fresh read-only edit to verify the committed Closed track, then
-   delete that verification edit.
-5. Copy the live **Closed** opt-in URL from the Console's Testers tab and give
-   it to Luis. It is different from the Internal opt-in URL above.
-6. Each person must opt in through that Closed link. Email-list membership and
-   installing the Internal build do not count. Monitor the Console until at
-   least 12 people are actually opted in continuously for the 14-day
-   requirement.
+- Console → Test and release → Testing → Closed testing → Alpha → Testers.
+- Selected: `Testers for Closed Test` (20); unselected: `Internal test email list`
+  (2). These are private email lists with user-defined names. Selection is
+  independent in Internal, Closed and Licence testing; multiple selected lists
+  form a union, not additional counts for duplicates.
+- Countries: Spain and Switzerland. Eligibility depends on Play account country.
+- **Send:** https://play.google.com/apps/testing/com.honestfern.currency_converter
+  This app-specific web opt-in link also works from an Android browser.
+- **Install page / Join on Android:**
+  https://play.google.com/store/apps/details?id=com.honestfern.currency_converter
+- **Internal acceptance/exit:**
+  https://play.google.com/apps/internaltest/4701596695392061996
+  It stays stable across Internal builds and is not the Closed invitation.
+- Luis plans emailing the cohort on 2026-10-01; invitations are not yet recorded
+  as sent. Play does not email invitations when a list is populated.
 
-Stop before committing if the selected countries, version code, artifact or
-release notes are ambiguous, or if the Console has an unfinished setup/review
-gate. Resolve and record that fact first.
+Each person opens the Closed web URL with their authorized Google account,
+accepts testing, then follows the Play installation link. Internal is optional;
+existing Internal participants leave Internal before accepting Closed.
+Luis reports a working Closed install on the work phone. Do not infer the
+cohort count or 14-day eligibility from one install or the 20-email list.
+Read Dashboard actual opt-ins/date and record them before claiming eligibility.
+Maintain at least 12 genuine testers continuously opted in for 14 days and
+collect real use/feedback. New testers can join during the test; they need their
+own continuous period and do not reset earlier testers' history.
+
+## Licence testing is separate from Closed testing
+
+Account Console → Settings → Monetisation → Licence testing. As verified
+2026-09-30, only `Billing test - work account` (1 account) is selected and
+saved; the 2- and 20-email lists are unselected. Response remains
+`RESPOND_NORMALLY`; no need to change legacy licence responses for Billing QA.
+Private tester email/account details live in ignored `AGENTS.local.md`.
+
+Testing tracks alone do not prevent real charges, even Internal. Licence
+testers receive test payment instruments for this developer account's apps;
+apps from other developers retain normal purchases. It is reversible and does
+not grant Console access. Test ads are independent of Billing test mode.
+
+**Open device issue:** after saving Licence testing, Luis still saw the real
+Visa checkout. A test-card purchase is not yet verified. Before confirming:
+
+1. Expand the purchase dialog and verify the account that downloaded the app
+   is the licence-test account (multiple-account devices can use another one).
+2. Require the explicit test-purchase notice and a test payment instrument,
+   such as “Test card, always approves”. A displayed price alone is not proof.
+3. If still showing a real method without the test notice, cancel, close the
+   app/Play Store, clear Play Store cache, allow propagation and retry. No
+   guaranteed propagation time is established here; don't repeat real purchases.
+4. If unresolved, inspect saved list membership/account and record the blocker;
+   do not rebuild or leave Closed merely to fix Billing-account recognition.
+5. Once test mode is visible, verify all three one-time products, purchase
+   acknowledgement, relaunch and Restore; record exact build/account evidence.
+
+Do not tell invited friends to buy for free: their 20-email list is not selected
+for Licence testing. Enabling it later requires an explicit cohort decision.
+
+Sources checked 2026-09-30:
+[Billing tests](https://developer.android.com/google/play/billing/test),
+[test-track setup](https://support.google.com/googleplay/android-developer/answer/9845334?hl=en),
+[production-access requirements](https://support.google.com/googleplay/android-developer/answer/14151465?hl=en).
 
 ## Local credentials boundary
 
@@ -102,11 +135,11 @@ The release operation is an edit transaction:
 The current version source of truth is `pubspec.yaml`:
 
 ```text
-version: 1.0.0+6
+version: 1.0.0+7
 ```
 
 For a real follow-up fix, keep `versionName` `1.0.0` and increment only the
-build number (`1.0.0+6`, then `+7`, etc.). Play orders Android releases by
+build number (`1.0.0+7`, then `+8`, etc.). Play orders Android releases by
 `versionCode`; reusing a code is rejected. Promote the exact tested AAB between
 tracks instead of rebuilding it.
 

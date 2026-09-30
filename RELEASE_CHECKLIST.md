@@ -4,27 +4,78 @@
 
 ### Latest operational truth — 2026-09-30
 
-- The UX/UI refresh is committed on `main` through `c21561d`; the candidate is
-  `1.0.0+7` (`versionCode 7`). The signed AAB SHA-256 is
+- **Closed testing – Alpha is live:** Console shows Active and “Available to
+  selected testers”, release `1.0.0 (7)`, released 30 September at 19:31.
+  All 13 setup/listing/declaration/release changes were submitted with Luis's
+  approval and subsequently published. Earlier “not submitted”, “in review”,
+  “1/5 setup” and “no Closed release” snapshots are historical, not open gates.
+- Internal also contains code 7. The accepted AAB came from `c21561d` with
+  version bump `71f1d1a`; SHA-256:
   `1d8de98cecad06b16d5a5109eef6c4d7c365e5129043b8c35edbb627f448b1bf`.
-- Play Internal now contains version code 7 with status `completed`. It
-  replaces code 6 as the current Internal release; release notes are “Refreshed
-  Favorites and refined the app interface.” (en-GB).
-- Six refreshed `1350×2400` phone screenshots are selected in the default
-  `en-GB` listing. They were saved as draft changes in Play Console and have
-  not been sent for review. The assets came from the 2026-09-30 emulator
-  captures; no tablet screenshots were added.
-- The listing API upload placed images in the Play asset library, but its
-  `edits.validate` call returned HTTP 403. Following the documented fallback,
-  the owner Console session selected and saved the six images. Keep the
-  service account app-scoped; do not widen permissions.
-- The website screenshot refresh is deployed at `https://honestfern.com/`.
-  The Favorites flags now load before capture; the refreshed app captures
-  passed the test suite and were visually checked in light and dark themes.
-- Next gate: install the exact Play-distributed version code 7 on a real
-  Android device and accept it before any Closed-test promotion. Do not send
-  the listing draft for review, create a Closed release, or promote to
-  Production without Luis's explicit instruction.
+  Closed reused the existing AAB from Play's library; no new binary was needed.
+- Closed countries are Spain and Switzerland. Check the tester's Play account
+  country, not only physical location, when diagnosing eligibility.
+- **Closed list selection verified by navigating Console:**
+  `Testers for Closed Test` (20 emails) selected; `Internal test email list`
+  (2 emails) unselected. List names are user-defined; a list called “Closed”
+  can also be used in Internal. Selection is separate for each track and for
+  Licence testing. Multiple selected lists allow their combined accounts;
+  duplicate emails do not represent additional testers.
+- Luis reports two accounts previously joined Internal. He subsequently
+  reports joining Closed and installing/using the app on a work Android phone.
+  This is user-reported device evidence, not a verified Console cohort count.
+  The latest actual Closed opt-in count and eligibility dates remain to check.
+- **Next owner step: send invitations on 2026-10-01 (planned, not sent).**
+  Give all authorized testers the Closed web opt-in URL below, ask them to
+  accept with the listed Google account, install/update, use the app and send
+  feedback. Play does not send these invitations merely because emails were added.
+- Only `Billing test - work account` (1 account) is selected in account-level
+  **Settings → Licence testing**. Console confirms changes saved, with
+  `RESPOND_NORMALLY`. The 2- and 20-email lists are unselected there; ordinary
+  Closed testers must not assume their purchases are free.
+- **Billing verification remains open:** after this setting was saved, Luis
+  still saw the real Visa checkout. No successful test-card purchase on that
+  account has been verified. Test ads do not prove test billing. Do not confirm
+  a real payment method for a no-charge test; use the troubleshooting steps
+  in the publishing runbook. Private account details belong in ignored local notes.
+- Six refreshed `1350×2400` phone screenshots were included in the published
+  `en-GB` listing changes. API asset validation returned HTTP 403; the owner
+  Console selected/saved them. Keep the publisher service account app-scoped.
+- Website screenshots are deployed at `https://honestfern.com/`; capture waits
+  for Favorites flags. Site stays Coming Soon until Production is publicly
+  available. Closed availability does not authorize the public-site launch.
+- No Production release or production-access approval is recorded. At least
+  12 testers must remain opted in to Closed continuously for the preceding
+  14 days, with real testing and feedback, before applying for access.
+
+### Links and next-session checklist
+
+| Purpose | Verified URL |
+| --- | --- |
+| Closed acceptance (send this to testers, also works on Android) | https://play.google.com/apps/testing/com.honestfern.currency_converter |
+| Google Play installation/store page (“Join on Android”) | https://play.google.com/store/apps/details?id=com.honestfern.currency_converter |
+| Internal acceptance/exit | https://play.google.com/apps/internaltest/4701596695392061996 |
+
+The web link is app-specific because it includes the package name. Accept
+Closed explicitly before following its installation link. Internal is optional;
+do not send new Closed testers through Internal first. Existing Internal
+participants must leave Internal and then accept Closed with the same account.
+
+- [x] Closed Alpha release 7 live; Spain/Switzerland and selected 20-email list verified.
+- [x] Separate one-account billing-test list saved in Licence testing.
+- [ ] Verify test notice and test payment instrument on the work phone;
+      test the three IAPs, relaunch and Restore without a real charge.
+- [ ] Luis sends Closed opt-in invitations; verify every recipient is in a
+      selected Closed list and uses that same Google account.
+- [ ] Check Dashboard actual opt-ins and eligibility dates; record dated count.
+- [ ] Gather real feedback, review crashes/pre-launch reports and fix regressions.
+- [ ] Reach at least 12 continuously opted-in testers for 14 days, then apply
+      for production access with truthful recruitment/feedback/change evidence.
+- [ ] After access approval and Luis's explicit release instruction, verify
+      production ads/UMP/Billing and the final artifact; submit Production.
+      Do not assume the test-ad candidate is the final production configuration.
+- [ ] After approved Production becomes publicly reachable, perform the site's
+      S2 launch batch from `niduna-site/RELEASE_PLAN.md` with deployment approval.
 
 ## Historical checkpoint — 2026-09-14
 
@@ -77,8 +128,8 @@
 - Console navigation verified: **Testing → Closed testing - Alpha → Testers**. The existing `Internal test email list` contains 1 user; it is not selected for the closed track yet. The closed-track page can reuse that list or create a separate list, but every tester must opt in through the closed-track link.
 
 **Read the latest operational truth above first. It supersedes contradictory
-historical status and change-log entries below. No closed-test release or
-production release has been submitted yet.**
+historical status and change-log entries below. Closed is now live; no
+Production release is recorded.**
 
 ### Current evidence
 
@@ -307,7 +358,11 @@ and update this checklist before proceeding.
 
 ---
 
-## Blocker Summary — Must Complete Before Submission
+## Release reference tables — dated evidence and remaining Production gates
+
+The 2026-09-30 checkpoint above controls execution. Historical dated notes
+are not instructions to recreate accepted resources; verify still-open
+Production/device/security tasks separately before a public release.
 
 ### External Steps (you do these outside the codebase)
 
@@ -321,7 +376,7 @@ and update this checklist before proceeding.
 | E5b | AdMob → Privacy & messaging → create the GDPR consent message (required for EEA/UK/CH ads; pairs with code step B8) | In AdMob console, after E5 | ✅ **Done 2026-09-10** |
 | E5c | Publish `app-ads.txt` on honestfern.com with the AdMob publisher ID from E5 | Site-side step — `niduna-site/RELEASE_PLAN.md` § S1.5 | ✅ **Deployed 2026-09-10** — Hostinger release `77ac413b590e07768b2e4a3fb8858fe101afecba`; public URL returns HTTP 200. AdMob crawl remains pending. |
 | E6 | Complete the trader-status / verified-public-contact task shown by Play Console for EU distribution. Use truthful personal details and review exactly what Play says will be public before submitting. | Play Console → App content, after E4 | ❌ |
-| E7 | New personal accounts created after 2023-11-13 currently need a closed test with at least **12 opted-in testers for 14 continuous days** before applying for production access. Start only after app setup is complete **and a policy-safe release candidate exists**; target 15-16 recruits for dropout margin. | Play Console → Testing → Closed testing | ❌ |
+| E7 | Closed test: at least 12 continuously opted in for 14 days, real usage/feedback, then production-access application | Dashboard eligibility; E7 playbook below | 🟡 Closed release live; invitations planned 2026-10-01, cohort count/duration not yet verified |
 | E8 | **Finalize IDs, create and activate three one-time products in Play Console** — Remove Ads 1.99 CHF, Charts Pro 2.99 CHF, Favorites Pro 0.99 CHF. IDs cannot be changed/reused, so decide them before B9; suggested: `remove_ads_lifetime`, `charts_pro_lifetime`, `favorites_pro_lifetime`. Requires E3/E4. If Console does not expose product creation yet, implement B9 with those final IDs and upload the billing-enabled bundle to internal testing first; then create/activate the products before purchase testing or the closed track. | Play Console → Monetize with Play → Products → One-time products | ✅ **Done 2026-09-09** — all three products created and ACTIVE with the exact planned IDs (Digital app sales tax category, All ages, all regions priced via bulk edit from CHF base). Unlocked after the `0.1.0+2` billing-enabled AAB was published to internal testing. |
 
 > **Publishing identity (decided 2026-07-11 — "Pegolandia model", see
@@ -348,8 +403,8 @@ and update this checklist before proceeding.
 | B3 | Update `build.gradle.kts` release signing config | `android/app/build.gradle.kts` line ~37 | ~10 min | ✅ **Done** | `200c888` + local 2026-08-30 hardening — release build now fails closed if `key.properties` or the keystore is missing |
 | B4 | Replace AdMob test unit IDs with real ones | `lib/src/core/ads/ad_helper.dart`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist` | ~15 min | 🟡 **Production build ready; Play store link/app review open** | Real Android IDs are available through the existing release env path; development defaults remain Google's test IDs. AdMob approval and ad serving are enabled, but AdMob still shows `Requires review` / `Add store to lift limit` until the app has a linkable Play store listing. |
 | B5 | Add privacy policy link in Settings screen | Settings widget (natural spot: the merged "Data & privacy" page) | ~30 min | ✅ **Implemented and committed 2026-08-30** | Commit `7aed7b1`; `url_launcher` opens `https://honestfern.com/currency-converter/privacy/`. Needs inclusion in the next release candidate. See `niduna-site/RELEASE_PLAN.md` § S1. |
-| B6 | Final signed AAB | `scripts/build_appbundle.sh` | — | Pending final candidate | Diagnostic builds exist; rebuild after B4/B8/B9 acceptance and signing/version gates. New binary code >= 3. Do not use stale diagnostic artifacts. |
-| B7 | Upload AAB | Play Console | — | Internal diagnostic recorded complete | Code 2 uploaded internally; closed/production submission remains pending and needs approval. |
+| B6 | Final signed AAB | `scripts/build_appbundle.sh` | — | Code 7 serves Closed; final Production configuration still to verify | Preserve the accepted hash above. Any changed binary needs the next unused code (8 or higher), QA and approval. |
+| B7 | Upload/promote AAB | Play Console / Publisher API | — | Internal and Closed code 7 complete | Closed live 2026-09-30; Production is still pending and needs approval. |
 | B8 | **UMP consent flow + privacy options** | Ads init path (`lib/src/core/ads/`), uses `ConsentInformation`/`ConsentForm` from `google_mobile_ads` | ~2-3 hr | 🟡 **Implemented; production-device verification open** | `AdConsentManager` requests consent on launch, shows the published form when required, gates banner/rewarded requests on `canRequestAds`, and exposes Privacy options in Settings. The internal-test device loaded a confirmed AdMob test banner; the production-ID build still needs a Play-distributed device check. |
 | B9 | Real Play Billing/restore | `play_purchase_service.dart`, purchase UI, settings | — | **Implemented and device-accepted; final edge cases open** | Internal-test account purchased all three active products, verified each entitlement, relaunched the app, and ran Restore without an error. Reinstall/restore and cancel/pending edge cases remain optional final checks. |
 
@@ -377,17 +432,17 @@ and update this checklist before proceeding.
 
 | # | Task | Specs | Effort | Status |
 |---|------|-------|--------|--------|
-| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The app-specific policy at `https://honestfern.com/currency-converter/privacy/` is live on the Hostinger production host; the general portfolio policy remains at `/privacy/`. The same URL was saved in Play Console App content on 2026-09-10; it remains in Publishing overview until a later review submission. See `niduna-site/RELEASE_PLAN.md` § S1. | — | ✅ Done |
+| C1 | Write & host privacy policy page | Page is built, deployed and GDPR-prepared. The app-specific policy at `https://honestfern.com/currency-converter/privacy/` is live on the Hostinger production host; the general portfolio policy remains at `/privacy/`. The same URL was saved in Play Console App content on 2026-09-10; the review changes published with Closed on 2026-09-30. See `niduna-site/RELEASE_PLAN.md` § S1. | — | ✅ Done |
 | C2 | App title (max 30 chars) | Note: Play does NOT require unique titles (Apple does) — the brand suffix is for identity and future-Apple reuse, not Play uniqueness | ~10 min | ✅ **Decided 2026-09-09 and entered in Console: `Currency Converter Honest Fern` (30/30)** — product-first/brand-last (the "Kids Memory Pegolandia" pattern); same title planned for the future App Store release. Full rationale in `docs/release-prep/play-store-listing.md` § 1. |
-| C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ❌ |
-| C4 | Full description (max 4000 chars) | Features, privacy notes, Honest Fern differentiator | ~45 min | ❌ |
-| C5 | Screenshots (min 2, max 8) | 1080px wide PNG: Convert / Chart / Favorites, light + dark | ~1 hr | ✅ **Re-captured 2026-09-10** | Generated from the current build with `capture_store_screens.sh` on the `Pixel7_EN` AVD (`1080x2400`), using `release_safe`, seeded paid entitlements, and no ads/prompts. The six canonical files are in `docs/release-prep/screenshots/`. Settings was captured separately for QA but is intentionally excluded from the store set because its long premium page is clipped at the viewport bottom. |
+| C3 | Short description (max 80 chars) | Example: *"45 currencies & crypto. Private, offline, no account."* (the app supports exactly 45 — do NOT claim 170+) | ~15 min | ✅ Included in published setup/listing changes 2026-09-30 |
+| C4 | Full description (max 4000 chars) | Features, privacy notes, Honest Fern differentiator | ~45 min | ✅ Included in published setup/listing changes 2026-09-30 |
+| C5 | Phone screenshots (min 2, max 8) | Six refreshed 1350×2400 copies from 2026-09-30 captures, selected in en-GB | — | ✅ Included in published listing changes |
 | C6 | Feature graphic (1024x500) | `docs/release-prep/feature-graphic.png` | — | ✅ Honest Fern graphic approved for listing preparation | Replaced the obsolete NIDUNA / Coming to Android / No tracking / 100% Offline graphic. Product UI remains represented by the separate store screenshots. |
-| C7 | Content rating questionnaire (IARC/CERT) | In Play Console > Policy > App content | ~15 min | ❌ |
-| C7b | **Target audience declaration — declare 13+** (added 2026-07-11) | Separate from C7! In App content → Target audience. Declaring ANY under-13 age group triggers the Families Policy (certified ad SDKs only, ad limits, stricter review) — wrong fit for an AdMob-funded utility. Content rating "Everyone" (C7) and target audience "13+" are compatible and both correct here. | ~5 min | ❌ |
-| C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII collected by us — **but the AdMob SDK must be declared** (device/advertising identifiers, ad interaction data; see the "Third-party SDKs" table below). Align answers with the consent setup from B8/E5b. | ~30 min | ❌ |
-| C9 | Category selection | Likely: Finance > Finance tools or Productivity | ~2 min | ❌ |
-| C10 | Contact email + website + privacy URL | Required fields in Console listing. `support@honestfern.com` receives and sends mail — email setup is `niduna-site/RELEASE_PLAN.md` § S1.4 | ~10 min | ❌ (unblocked; pending Play Console entry) |
+| C7 | Content rating questionnaire (IARC/CERT) | In Play Console > Policy > App content | ~15 min | ✅ Included in published setup/listing changes 2026-09-30 |
+| C7b | **Target audience declaration — declare 13+** (added 2026-07-11) | Separate from C7! In App content → Target audience. Declaring ANY under-13 age group triggers the Families Policy (certified ad SDKs only, ad limits, stricter review) — wrong fit for an AdMob-funded utility. Content rating "Everyone" (C7) and target audience "13+" are compatible and both correct here. | ~5 min | ✅ Included in published setup/listing changes 2026-09-30 |
+| C8 | Data Safety form | Match actual behavior: HTTPS calls, local storage, zero PII collected by us — **but the AdMob SDK must be declared** (device/advertising identifiers, ad interaction data; see the "Third-party SDKs" table below). Align answers with the consent setup from B8/E5b. | ~30 min | ✅ Included in published setup/listing changes 2026-09-30 |
+| C9 | Category selection | Tools app | ~2 min | ✅ Published with Closed setup 2026-09-30 |
+| C10 | Contact email + website + privacy URL | Required fields in Console listing. `support@honestfern.com` receives and sends mail — email setup is `niduna-site/RELEASE_PLAN.md` § S1.4 | ~10 min | ✅ Included in published setup/listing changes 2026-09-30 |
 | C11 | Localized listings (DE, ES, IT, FR) | Optional post-launch optimization; Play can serve the default English listing/automatic translation | ~1 hr | ⏸ Optional |
 
 ---
@@ -458,82 +513,42 @@ were verified. The app was relaunched and Restore purchases completed without
 an error; the benefits remained available. Reinstall/restore and cancel,
 pending, and error paths remain useful final edge-case checks.
 
-### E7 — Closed-testing playbook (the 12-tester / 14-day gate)
+### E7 — Closed-testing playbook (12 testers / 14 days)
 
-**The rule, precisely:** personal accounts created after Nov 2023 must
-have ≥12 testers opted in to a closed test **concurrently and
-continuously for the trailing 14 days** before they can apply for
-production access. It is a rolling window: if the opted-in count drops
-below the minimum, the window is broken and the clock effectively
-restarts. It is NOT "12 people who each tested at some point."
-(Minimum was 20 at policy launch, reduced to 12 in 2024 — confirm the
-current number in the Console banner when the account exists.)
+At least 12 testers must have been continuously opted in to Closed for the
+14 days preceding a production-access application. Email-list size, Internal
+installs and release publication time do not establish this requirement.
+Use Dashboard eligibility, not a guessed date. Additional people can join
+while the test runs; their own uninterrupted period begins at opt-in. Adding
+people does not erase existing participants' history, but a late replacement
+cannot supply another person's missing days.
 
-**Store visibility during all this:** creating the app (E4) and running
-the closed test does NOT put it on the public Play Store. In closed
-testing the app is not searchable and has no public listing — it is
-reachable ONLY via the opt-in link, only by the testers you added. The
-public listing appears solely when you promote to production after the
-gate (Step 15b/16). So there is no "half-published" exposure risk in
-starting E7 early with the June AAB.
+For this app, preparation and publication are complete; use the latest
+checkpoint above rather than creating another track/release. For future apps:
+configure declarations/listing, selected tester lists and Play-account countries,
+promote the accepted artifact, submit required review changes with approval,
+and verify “Available to selected testers” before distributing the opt-in URL.
 
-**What testers need:** a Google account + an Android phone. What they
-actually do is a one-time ~2-minute task: click the opt-in link, accept,
-install the app from Play. After that their only job is passive — keep
-the app installed and stay opted in for 2 weeks. No daily usage, no
-feedback duty, no meetings. Occasional real use is a bonus (helps answer
-the production-access questionnaire honestly).
+Send the web acceptance link to genuine testers; they use the authorized
+Google account, accept, then install from Play. Existing Internal participants
+must leave Internal first. Invite more than 12 for margin. Ask people to use
+Convert, Favorites, Charts and Settings and report problems; passive installation
+alone is not adequate evidence of engagement. No specific daily-use quota is
+promised by this guide. Do not count extra devices as extra genuine people.
 
-**Recruiting plan (do this while creating the account):**
-- List candidates: friends/family/colleagues with Android. Target
-  **15-16 sign-ups** so 2-3 dropouts can't break the 14-day window.
-- The ask, in one sentence: "Install my app from this link and just
-  leave it on your phone for two weeks — nothing else to do."
-- Explicitly tell them NOT to uninstall or opt out until you say so.
-- If short of 12: partners' phones, work colleagues, a second device
-  per person (each needs its own Google account to count).
-- Still short — external fallbacks (researched 2026-07-11):
-  - **Free:** mutual-testing communities — r/AndroidClosedTesting
-    subreddit or closed-testing Discords (you opt into their tests in
-    exchange).
-  - **Paid, one-time ~$15-25:** tester services, e.g.
-    testerscommunity.com (~$15/15 testers), primetestlab.com (~$15,
-    same-day dropout replacement), or Upwork/Fiverr gigs ($20-25).
-  - **Quality caveat:** the production-access questionnaire asks how
-    testers were recruited and what feedback they gave — keep real
-    friends as the core (genuine usage + feedback) and use services/
-    communities only to top up past 12 concurrent. Never buy store
-    reviews/ratings — that's a ban-level policy violation; paid
-    *opt-in testing* is the tolerated gray zone.
+Monitor dated opt-in counts and feedback, crashes and pre-launch reports.
+If fixes are needed, use a higher unused version code on the same Closed track
+with normal QA/release approval. Use Licence testers for no-charge IAP QA;
+never tell all Closed testers their purchases are automatically free.
 
-**Console setup (after E4, using the policy-safe release candidate from
-B4/B5/B8/B9 — do not upload the June stub-purchase artifact):**
-1. Play Console → Testing → Closed testing → create track, upload AAB.
-   (Blocked until the "Set up your app" dashboard tasks are complete —
-   declarations + store listing; see the Step 2c GATE note in the
-   Execution Order.)
-2. Add testers by email list (or a Google Group — easier to manage).
-3. Set the track's country availability to include EVERY tester's
-   country — testers outside the selected countries cannot opt in.
-4. Publish the track (closed-test releases go through a short review).
-5. Send everyone the opt-in link; confirm the opted-in count in the
-   Console reaches 12+ — the 14-day clock runs from when the count is
-   satisfied, so chase stragglers in the first days.
+Once eligible, apply for production access and answer the testing/readiness
+questions accurately. Google may request more testing; access is not automatic
+and does not itself publish the app. Production submission/review and the
+public website launch remain later gates with explicit approval.
 
-**During the 14 days:** glance at the opted-in count every few days;
-replace dropouts immediately. Note 2-3 pieces of real feedback — the
-questionnaire asks what you learned and what you changed.
-
-**After 14 days:** Console → apply for production access → answer the
-questionnaire (who tested, how you recruited, feedback, changes) →
-Google reviews the application (allow several days) → production
-publishing unlocks (B7/Step 16 becomes possible).
-
-**Timeline math:** opt-ins complete on day X → apply on day X+14 →
-plus Google's review of the application → plus the normal app review
-after submission. Budget ~3 weeks of calendar time from "testers
-invited" to "can go live", which is why Step 2c remains a later release gate
-after the re-entry preflight and the Play setup requirements.
+Sources checked 2026-09-30:
+[testing requirements](https://support.google.com/googleplay/android-developer/answer/14151465?hl=en),
+[test-track setup](https://support.google.com/googleplay/android-developer/answer/9845334?hl=en).
 
 ### Keystore rotation — commands are in the callout above; afterwards
 re-run `./scripts/build_appbundle.sh` (B6) and confirm the AAB signature

@@ -167,14 +167,17 @@ flutter pub get
 | `./scripts/pub_get.sh` | fetch dependencies |
 | `./scripts/clean-deep-files.sh` | deep clean build artifacts |
 
-## Current phase (reviewed 2026-09-13)
+## Current phase (reviewed 2026-09-30)
 
-Read `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-13** first.
-Internal testing currently has signed artifact `1.0.0+4` (`versionCode 4`),
-but a later provider-coverage audit superseded it. Do not promote code 4 to
-Closed. The locally implemented fix must pass independent/device acceptance
-and then become a new Internal candidate (expected `1.0.0+5`) before any
-Closed-test promotion.
-The default `en-GB` Play listing has the new icon and six screenshots saved in
-Publishing overview, pending the remaining setup/review gates.
-No production release yet; no OXR/VPS service or CoinGecko in this scope.
+Read `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-30** first,
+then `docs/release-prep/google-play-publishing-runbook.md`. Internal and Closed
+Alpha serve `1.0.0+7`; Closed is available to selected testers in Spain and
+Switzerland. The 20-email list is selected; invitations are planned for
+2026-10-01, not yet recorded as sent. Email eligibility is not Closed opt-in.
+
+Next: share the Closed acceptance link, verify Dashboard opt-ins/eligibility,
+gather real feedback and complete the 12-testers/14-days gate. Licence testing
+is separate: only a one-account list is enabled, and its mobile test payment
+instrument remains unverified. Other cohort purchases may charge real money.
+No Production release yet; the website remains Coming Soon. Production access,
+final monetisation QA, release approval and the site launch batch remain later.

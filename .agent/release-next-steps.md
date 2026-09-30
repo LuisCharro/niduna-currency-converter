@@ -1,64 +1,50 @@
 # Honest Fern release — next execution plan
 
-> Revised 2026-09-14 after the approved default-selection and picker refinements.
+> Revised 2026-09-30 after Closed Alpha became available and Licence testing was checked.
 > This is a bounded execution plan; `RELEASE_CHECKLIST.md` remains the master
 > checklist.
 
 ## Current gates
 
-- Internal testing now has signed `1.0.0+6` (`versionCode 6`) from commit
-  `aad8249`. It includes the earlier provider/POL and late-consent repairs,
-  plus approved fresh-install currency defaults and consistent grouped pickers.
-- Its AAB SHA-256 is
-  `9f6c0464046b636fe0a3f66b74afa58217696e269477366a0f35addf51f5ed96`.
-  Android Publisher committed and independently verified the Internal track on
-  2026-09-14. It still requires acceptance from the exact Play-distributed
-  installation. Do not promote `1.0.0+6` to Closed before that acceptance.
-- The provider implementation and verification record remains
-  `.agent/provider-coverage-remediation-plan-2026-09-12.md`; code 5 is
-  superseded and is not the candidate to test or promote.
-- The default Play listing locale is `en-GB`. The new icon and six phone
-  screenshots are saved in the listing draft and are waiting in Publishing
-  overview for the required review flow.
-- AdMob app and units exist:
-  - App ID: `ca-app-pub-1525645598421616~2391849252`
-  - Publisher ID: `pub-1525645598421616`
-  - Banner: `ca-app-pub-1525645598421616/6412809148`
-  - Rewarded: `ca-app-pub-1525645598421616/7452604243`
-- AdMob message **Honest Fern Europe Consent** is published for the app,
-  with the privacy URL and Consent, Manage options and Do not consent enabled.
-- AdMob now shows the payment profile as complete. The account is still being
-  verified; AdMob says this usually takes 24 hours and can rarely take up to
-  two weeks. Keep test ads during development until approval is visible.
+`RELEASE_CHECKLIST.md` and the publishing runbook hold the dated evidence,
+artifact identity, links and private-list counts. As of 2026-09-30, Internal
+and Closed Alpha serve code 7. Closed is Active / Available to selected testers,
+with Spain/Switzerland and `Testers for Closed Test` (20) selected; the 2-email
+list is unselected there. Review/setup changes have published. Do not restart
+preparation or treat historical entries below as current blockers.
+
+Only `Billing test - work account` (1) is selected in Licence testing; lists
+20/2 are unselected. Device checkout still showed real Visa after saving:
+no successful no-charge Billing test on that account has been verified.
 
 ## Execution order
 
-### 0. Closed-test and first-public-release sequence — current plan
+### 0. Current next steps through the public launch
 
-1. **Complete locally (2026-09-13):** implement and independently review the
-   provider-coverage remediation without unrelated backend, billing or ad work.
-2. **Complete locally:** verify all 34 fiat currencies and POL against the
-   release-safe providers; run deterministic tests, representative small/large
-   device QA, clean-install QA and a seeded `1.0.0+4` persistence migration.
-   Exact Play-distributed upgrade acceptance remains pending.
-3. **Complete (2026-09-14):** commit the reviewed refinements, build and upload
-   `1.0.0+6` to Internal testing only. Install and accept that exact
-   Play-distributed artifact next.
-4. Complete the remaining Play Console setup and saved listing/declaration
-   review flow required before Closed testing.
-5. Promote the accepted fixed artifact to Closed testing, create/select the
-   tester list, share the opt-in link and recruit 14–16 testers.
-6. Keep at least 12 testers opted in continuously for 14 days. Internal
-   testing does not count toward this requirement. If a real fix is needed,
-   upload the next unused higher code while keeping the tested release on the
-   same Closed track.
-7. Apply for production access after the requirement is met and answer the
-   testing/product-readiness questions. After approval, promote the latest
-   tested `1.0.0` artifact to Production; do not rebuild it just to change its
-   version name.
+1. **Pending device verification:** confirm the licence-test account in the
+   purchase dialog and test notice/test card before confirming. Troubleshoot
+   account, cache and propagation per the runbook. Test all three IAPs,
+   relaunch/Restore and record evidence; do not pay accidentally.
+2. **Luis plans 2026-10-01:** email the Closed web opt-in link from the runbook
+   to the authorized cohort. Existing Internal participants leave Internal
+   first. New testers go straight to Closed, accept and install/update.
+3. Verify actual Dashboard opt-in count/date; list membership or a working
+   work-phone install is not evidence of the full cohort's eligibility.
+4. Keep at least 12 genuine testers continuously opted in for 14 days, collect
+   usage/feedback and review crashes/pre-launch results. Late joiners can join;
+   their own continuous eligibility starts at opt-in. Use the same Closed track
+   and higher unused version codes for separately approved tested fixes.
+5. Once eligible, apply for production access with accurate answers. Approval
+   is not automatic; additional testing may be requested.
+6. After access approval, complete final production ads/UMP/Billing and artifact
+   acceptance, then submit Production with explicit release approval. Reuse a
+   tested artifact only if its production configuration passes; a binary change
+   requires a higher unused code.
+7. After approved Production is publicly reachable, execute the site's S2 batch
+   with deployment approval; Closed visibility does not trigger Coming Soon removal.
 
-The B4/B8/B9 notes below remain quality and release-risk references. They are
-not authorization to expand the current UI branch or to submit a public release.
+Historical B4/B8/B9 sections below are quality references, not evidence that
+all current-account/production gates have passed or authorization to publish.
 
 ### 1. B4+B8 app integration — implemented; device/account acceptance remains
 
@@ -120,7 +106,10 @@ billing edge cases. UMP and the basic UI smoke pass on
 `emulator-5554`; the Settings Privacy options row is partially covered by the
 bottom navigation at 720×1280 and remains a non-blocking UI follow-up.
 
-### 5. Luis-only console acceptance
+### 5. Historical Console acceptance — 2026-09-10
+
+The list selections, code 3 reminder and pending setup tasks below belong to
+that old checkpoint. Use section 0 and the current runbook for today’s action.
 
 - AdMob account verification is complete; the console reports the account
   approved and ad serving enabled. The app still needs to be linked to its
@@ -164,7 +153,7 @@ features, category/contact details, and the Store Listing.
 
 ## Stop conditions
 
-Stop before any version bump, signed RC upload, closed-test submission, site
+Stop before any new version bump, signed RC upload, further track submission, site
 deploy, keystore operation or production publication. These require a separate
 explicit approval after the concrete artifact and verification results are
 ready. Provider/catalog implementation is locally authorized only when Luis

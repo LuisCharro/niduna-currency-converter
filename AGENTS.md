@@ -23,10 +23,10 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-09-14)
+## Current state (reviewed 2026-09-30)
 
 - `main` is canonical; recheck `HEAD` and worktree state before acting.
-- Start with `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-14**.
+- Start with `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-30**.
   It supersedes old audit completion claims and historical instructions below.
 - For the executable next phase, use `.agent/release-next-steps.md`; it records
   the current Play/API workflow, ownership and stop conditions.
@@ -41,15 +41,24 @@ skills without changing this repo again.
 - When this checkout is inside the Honest Fern monorepo, read the portfolio
   baseline first: `../../docs/platforms/google-play-developer-api.md`. Keep
   package, artifact and track facts in this repository's runbook.
-- Internal testing now contains signed build `1.0.0` (`versionCode 6`), adding
-  the refined fresh-install currency defaults and consistent currency pickers.
-  Accept this exact Play-distributed candidate before promoting it to Closed;
-  do not promote the superseded `versionCode 5` artifact.
-- The default Play listing is `en-GB`; the new icon and six phone screenshots
-  are saved in Publishing overview and await the remaining review gates.
-- `./scripts/check.sh` passed with 330 tests and clean analysis for the code-6
-  candidate; do not infer production readiness from that
-  check alone. Re-run it after any further edit.
+- Internal and **Closed Alpha** now serve `1.0.0 (7)` from `c21561d`
+  (version bump `71f1d1a`). Closed shows Active / Available to selected testers
+  as of 2026-09-30, with Spain/Switzerland and the 20-email list selected.
+  Review submission is complete; do not recreate the release or setup tasks.
+- Read the master checkpoint and publishing runbook for actual opt-in links,
+  track identity, list selection and Billing-account troubleshooting. Do not
+  assume email-list membership means opt-in or free purchases.
+- Next: Luis plans emailing Closed invitations on 2026-10-01. Verify Dashboard
+  actual opt-ins/eligibility dates, gather feedback and maintain at least 12
+  continuously opted-in testers for 14 days before applying for access.
+- Only the separate one-account list is selected for Licence testing. The
+  work phone still showed real payment methods after saving; test Billing
+  remains unverified on that account. The 20-email cohort is not licence-enabled.
+- Six refreshed screenshots/listing and declarations were submitted and
+  published with Closed. Production access, production-ad acceptance and the
+  public Production release/site launch remain separate gates.
+- Re-run `./scripts/check.sh` after any source edit; a passing local check does
+  not establish Play Console setup or release readiness.
 - Real Billing is injected by AppShell. Keep the real service and active Play
   products; do not replace them with the old stub.
 - B4/B8 release configuration and device/account acceptance remain release
@@ -94,11 +103,10 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+6`; Play Internal testing contains code 6.
+- Current `pubspec.yaml`: `1.0.0+7`; Play Internal and Closed Alpha contain code 7.
 - Code 2 is already uploaded. New binaries need an unused higher code, at least 3.
-- `1.0.0+5` is superseded for Closed testing by the default-selection and
-  picker refinements. The `1.0.0+6` candidate is now on Internal and must be
-  accepted from Google Play before Closed testing.
+- `1.0.0+7` is the current Closed build. A real fix requires the next unused
+  version code (`1.0.0+8` or higher).
 - Promote the tested `1.0.0` artifact to Production; do not rebuild an
   identical binary merely to change its version name.
 - Promoting the same artifact between tracks does not require rebuilding it.
