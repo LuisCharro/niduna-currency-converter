@@ -492,4 +492,34 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get favoritesFirstPairPreview => 'Dein erstes Paar erscheint hier';
+
+  @override
+  String get convertFromTitle => 'Umrechnen von';
+
+  @override
+  String get savedCurrenciesSubtitle => 'Wähle eine Währung aus deiner Liste';
+
+  @override
+  String get addAnotherCurrency => 'Weitere Währung hinzufügen…';
+
+  @override
+  String convertFromCurrency(String code) {
+    return 'Von $code umrechnen';
+  }
+
+  @override
+  String get btnUndo => 'Rückgängig';
+
+  @override
+  String get convertSwipeActionsExplanation =>
+      'Basiswährung ändern, Favorit speichern oder entfernen.';
+
+  @override
+  String get favoritesSwipeHint =>
+      'Wische nach links, um ein gespeichertes Paar zu entfernen.';
+
+  @override
+  String currencyRemoved(String code) {
+    return '$code aus deiner Liste entfernt';
+  }
 }

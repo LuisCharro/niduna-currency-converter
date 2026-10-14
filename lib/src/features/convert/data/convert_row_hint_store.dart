@@ -8,7 +8,13 @@ class ConvertRowHintStore {
 
   static const _key = 'hint_convert_row_actions_seen';
 
+  static const _swipeKey = 'hint_convert_swipe_actions_seen';
+
   final SharedPreferences _preferences;
+
+  bool get swipeSeen => _preferences.getBool(_swipeKey) ?? false;
+
+  Future<void> markSwipeSeen() => _preferences.setBool(_swipeKey, true);
 
   bool get seen => _preferences.getBool(_key) ?? false;
 

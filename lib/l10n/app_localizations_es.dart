@@ -492,4 +492,34 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get favoritesFirstPairPreview => 'Tu primer par aparece aquí';
+
+  @override
+  String get convertFromTitle => 'Convertir desde';
+
+  @override
+  String get savedCurrenciesSubtitle => 'Elige una moneda de tu lista';
+
+  @override
+  String get addAnotherCurrency => 'Añadir otra moneda…';
+
+  @override
+  String convertFromCurrency(String code) {
+    return 'Convertir desde $code';
+  }
+
+  @override
+  String get btnUndo => 'Deshacer';
+
+  @override
+  String get convertSwipeActionsExplanation =>
+      'Cambia la moneda base, guarda un favorito o elimina.';
+
+  @override
+  String get favoritesSwipeHint =>
+      'Desliza a la izquierda para eliminar un par guardado.';
+
+  @override
+  String currencyRemoved(String code) {
+    return '$code eliminada de tu lista';
+  }
 }

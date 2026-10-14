@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -38,6 +39,7 @@ class _AppState extends State<AppShell> {
   MonetizationController? _monetization;
   AppPreferences? _preferences;
   bool _ready = false;
+  int _lastDefaultBaseRevision = 0;
 
   FavoritesStore get _favoritesStore => widget.favoritesStore ?? _localStore!;
 
@@ -56,6 +58,7 @@ class _AppState extends State<AppShell> {
     );
 
     _preferences = deps.preferences;
+    _lastDefaultBaseRevision = deps.preferences.defaultBaseRevision;
     _preferences!.addListener(_onPreferencesChanged);
     _localStore = deps.localStore;
     _rowHintStore = deps.rowHintStore;
@@ -82,6 +85,13 @@ class _AppState extends State<AppShell> {
   void _onPreferencesChanged() {
     final preferences = _preferences;
     if (preferences == null) return;
+    if (preferences.defaultBaseRevision != _lastDefaultBaseRevision) {
+      _lastDefaultBaseRevision = preferences.defaultBaseRevision;
+      unawaited(
+        _controller?.setBase(preferences.defaultBaseCurrency) ??
+            Future<void>.value(),
+      );
+    }
     _controller?.setDecimalPlaces(preferences.decimalPlaces);
     if (mounted) setState(() {});
   }

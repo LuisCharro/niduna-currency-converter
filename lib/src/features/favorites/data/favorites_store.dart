@@ -48,6 +48,25 @@ class FavoritesStore extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Restores just the removed pair, leaving other additions/removals intact.
+  Future<void> restore(FavoritePair pair, {required int index}) async {
+    final canonical = _canonicalPair(pair.base, pair.quote);
+    if (canonical == null || _pairs.contains(canonical)) return;
+    final next = [..._pairs];
+    next.insert(index.clamp(0, next.length), canonical);
+    _pairs = next;
+    await _persist();
+    notifyListeners();
+  }
+
+  bool get swipeHintSeen =>
+      _prefs.getBool('hint_favorites_swipe_seen') ?? false;
+
+  Future<void> markSwipeHintSeen() async {
+    await _prefs.setBool('hint_favorites_swipe_seen', true);
+    notifyListeners();
+  }
+
   /// Moves the favorite at [oldIndex] to [newIndex] and persists the new order.
   /// [newIndex] follows the ReorderableListView convention (it can be
   /// `length`, meaning "after the last item").

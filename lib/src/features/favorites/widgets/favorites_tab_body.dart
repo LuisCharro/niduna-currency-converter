@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations_safe.dart';
+import '../../../core/theme/app_colors.dart';
+
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/honest_fern_refresh_indicator.dart';
 import '../../convert/domain/latest_rates_snapshot.dart';
@@ -23,6 +26,8 @@ class FavoritesTabBody extends StatelessWidget {
     required this.onWatchAd,
     required this.onBuyPro,
     this.onRefresh,
+    this.showSwipeHint = false,
+    this.onDismissSwipeHint,
     super.key,
   });
 
@@ -39,6 +44,8 @@ class FavoritesTabBody extends StatelessWidget {
   final VoidCallback onWatchAd;
   final VoidCallback onBuyPro;
   final RefreshCallback? onRefresh;
+  final bool showSwipeHint;
+  final VoidCallback? onDismissSwipeHint;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +63,27 @@ class FavoritesTabBody extends StatelessWidget {
             children: <Widget>[
               header,
               const SizedBox(height: AppTheme.space4),
+              if (showSwipeHint) ...[
+                Row(
+                  key: const Key('favorites_swipe_hint'),
+                  children: [
+                    Expanded(
+                      child: Text(
+                        l10n(context).favoritesSwipeHint,
+                        style: AppTheme.caption.copyWith(
+                          color: AppColors.of(context).muted,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      tooltip: l10n(context).closeTooltip,
+                      onPressed: onDismissSwipeHint,
+                      icon: const Icon(Icons.close_rounded, size: 18),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppTheme.space2),
+              ],
               FavoritesList(
                 pairs: pairs,
                 effectiveLimit: effectiveLimit,

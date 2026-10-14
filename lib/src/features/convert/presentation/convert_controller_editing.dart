@@ -5,13 +5,15 @@ extension ConvertControllerEditing on ConvertController {
     if (code == _base) {
       return;
     }
-    final previousBase = _base;
+    if (!isSupportedCurrencyCode(code)) return;
+    final revision = ++_baseRevision;
     _base = code;
-    _selectedCodes = <String>[
-      previousBase,
-      ..._selectedCodes.where((selected) => selected != code),
-    ];
-    _preferences?.setSelectedCodes(_selectedCodes);
+    if (!_currencyCodes.contains(code)) _currencyCodes.add(code);
+    _selectedCodes = _currencyCodes
+        .where((selected) => selected != code)
+        .toList();
+    await _preferences?.saveConvertSelection(_base, _currencyCodes);
+    if (_disposed || revision != _baseRevision) return;
     final nextSnapshot = _buildSnapshotWithCryptoBase(code);
     if (nextSnapshot != null) {
       state = _stateFromSnapshot(nextSnapshot, state.status);
@@ -25,6 +27,7 @@ extension ConvertControllerEditing on ConvertController {
       quotes: const <CurrencyQuote>[],
       base: _base,
       selectedCodes: _selectedCodes,
+      currencyCodes: List.unmodifiable(_currencyCodes),
       lastUpdatedLabel: 'Loading rates',
       nextUpdateLabel: 'Updates once daily',
       message: null,
@@ -69,7 +72,7 @@ extension ConvertControllerEditing on ConvertController {
   }
 
   void toggleCode(String code) {
-    if (code == _base) {
+    if (code == _base || !isSupportedCurrencyCode(code)) {
       return;
     }
     if (_selectedCodes.contains(code)) {
@@ -77,12 +80,37 @@ extension ConvertControllerEditing on ConvertController {
         return;
       }
       _selectedCodes = _selectedCodes.where((value) => value != code).toList();
+      _currencyCodes.remove(code);
     } else {
       _selectedCodes = <String>[..._selectedCodes, code];
+      _currencyCodes.add(code);
     }
-    _preferences?.setSelectedCodes(_selectedCodes);
+    unawaited(
+      _preferences?.saveConvertSelection(_base, List.of(_currencyCodes)) ??
+          Future<void>.value(),
+    );
     state = _snapshot == null
-        ? state.copyWith(selectedCodes: _selectedCodes)
+        ? state.copyWith(
+            selectedCodes: _selectedCodes,
+            currencyCodes: List.unmodifiable(_currencyCodes),
+          )
+        : _stateFromSnapshot(_snapshot!, state.status);
+    _safeNotify();
+  }
+
+  void restoreCode(String code, int index) {
+    if (!isSupportedCurrencyCode(code) || _currencyCodes.contains(code)) return;
+    _currencyCodes.insert(index.clamp(0, _currencyCodes.length), code);
+    _selectedCodes = _currencyCodes.where((code) => code != _base).toList();
+    unawaited(
+      _preferences?.saveConvertSelection(_base, List.of(_currencyCodes)) ??
+          Future<void>.value(),
+    );
+    state = _snapshot == null
+        ? state.copyWith(
+            selectedCodes: _selectedCodes,
+            currencyCodes: List.unmodifiable(_currencyCodes),
+          )
         : _stateFromSnapshot(_snapshot!, state.status);
     _safeNotify();
   }

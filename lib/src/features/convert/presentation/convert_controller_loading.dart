@@ -2,10 +2,12 @@ part of 'convert_controller.dart';
 
 extension ConvertControllerLoading on ConvertController {
   Future<void> load() async {
+    final revision = _baseRevision;
     if (state.base != _base) {
       configure(base: _base, amount: _amount, selectedCodes: _selectedCodes);
     }
     final cached = await _repository.readCached(_base);
+    if (_disposed || revision != _baseRevision) return;
     if (cached != null) {
       state = _stateFromSnapshot(cached, ConvertStatus.cached);
       _safeNotify();
@@ -49,6 +51,7 @@ extension ConvertControllerLoading on ConvertController {
   }
 
   Future<void> refresh({bool hasCached = false}) async {
+    final revision = _baseRevision;
     if (state.hasQuotes) {
       state = state.copyWith(status: ConvertStatus.refreshing);
       _safeNotify();
@@ -56,10 +59,12 @@ extension ConvertControllerLoading on ConvertController {
 
     try {
       final fresh = await _repository.fetchLatest(_base);
+      if (_disposed || revision != _baseRevision) return;
       state = _stateFromSnapshot(fresh, ConvertStatus.fresh);
       _safeNotify();
       unawaited(_enrichWithYesterdayRates(fresh));
     } catch (_) {
+      if (_disposed || revision != _baseRevision) return;
       state = state.hasQuotes || hasCached
           ? state.copyWith(
               status: ConvertStatus.stale,

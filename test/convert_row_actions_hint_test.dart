@@ -69,7 +69,7 @@ void main() {
   testWidgets('dismissing the hint hides it and persists', (tester) async {
     await prefs.clear();
     final store = ConvertRowHintStore(prefs);
-    expect(store.seen, isFalse);
+    expect(store.swipeSeen, isFalse);
     await tester.pumpWidget(host(store));
     await tester.pumpAndSettle();
 
@@ -77,13 +77,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(ConvertRowActionsHint), findsNothing);
-    expect(store.seen, isTrue);
+    expect(store.swipeSeen, isTrue);
   });
 
   testWidgets('hint does not show once already marked seen', (tester) async {
     await prefs.clear();
     final store = ConvertRowHintStore(prefs);
-    await store.markSeen();
+    await store.markSwipeSeen();
     await tester.pumpWidget(host(store));
     await tester.pumpAndSettle();
     expect(find.byType(ConvertRowActionsHint), findsNothing);

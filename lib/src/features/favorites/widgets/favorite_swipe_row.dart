@@ -7,6 +7,7 @@ import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/single_swipe_action_rail.dart';
 import '../../../shared/widgets/swipe_draggable_card.dart';
+import '../../../shared/widgets/swipe_action_layout.dart';
 import '../domain/favorite_pair.dart';
 
 /// Swipe-left-to-reveal-Remove + long-press-to-reorder wrapper shared by the
@@ -28,7 +29,7 @@ class FavoriteSwipeRow extends StatefulWidget {
     super.key,
   });
 
-  static const double maxReveal = 92;
+  static const double maxReveal = SwipeActionLayout.singleReveal;
 
   final FavoritePair pair;
   final int index;
@@ -99,9 +100,8 @@ class _FavoriteSwipeRowState extends State<FavoriteSwipeRow> {
         Positioned.fill(
           child: SingleSwipeActionRail(
             actionKey: Key('remove_${widget.pair.toKey()}'),
-            icon: Icons.remove_circle_rounded,
+            icon: Icons.delete_outline_rounded,
             label: loc.removeFavoriteTooltip,
-            shortLabel: loc.btnRemove,
             color: colors.coralInk,
             backgroundColor: colors.coralSurface,
             reveal: _reveal,
