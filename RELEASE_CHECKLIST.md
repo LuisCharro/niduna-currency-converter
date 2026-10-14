@@ -1,5 +1,22 @@
 # Release Checklist — Path to Google Play Store
 
+## Development checkpoint — 2026-10-14
+
+- Local candidate `1.0.0+8` on `codex/convert-currency-selection` preserves the
+  Convert collection and last base, limits the top picker to saved currencies,
+  locks Android phones to portrait, and aligns swipe actions and removal Undo
+  across Convert and Favorites. `DESIGN.md` records the approved behavior.
+- Release APK code 8 was built and exercised on the Pixel 7 emulator, including
+  restart persistence, removal/Undo, portrait rotation and both swipe trays.
+- Read-only Console verification: latest uploaded bundle is still code 7;
+  Internal and Closed Alpha both serve `1.0.0 (7)`. Code 8 is not uploaded.
+- Dashboard reports 12 testers opted in for 13 continuous days; production
+  access application remains disabled. Recheck Console before applying;
+  14 days is an eligibility threshold, not an automatic end or publication.
+- Next release steps: review/merge the development branch, prepare and verify
+  the signed AAB, then upload to the selected track with Luis's authorization.
+  Keep testers opted in while awaiting eligibility and production-access review.
+
 ## Resume checkpoint — 2026-09-30
 
 ### Latest operational truth — 2026-09-30

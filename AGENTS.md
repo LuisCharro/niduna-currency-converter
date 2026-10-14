@@ -103,10 +103,12 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+7`; Play Internal and Closed Alpha contain code 7.
-- Code 2 is already uploaded. New binaries need an unused higher code, at least 3.
-- `1.0.0+7` is the current Closed build. A real fix requires the next unused
-  version code (`1.0.0+8` or higher).
+- Current `pubspec.yaml`: `1.0.0+8`, the local follow-up candidate. It has not
+  been uploaded to Play. Play Internal and Closed Alpha still contain code 7
+  (verified 2026-10-14).
+- Code 7 is the highest uploaded code. New binaries need an unused higher code.
+- Keep the candidate's version name `1.0.0`; code 8 contains the Convert
+  persistence, currency picker, portrait and swipe-action improvements.
 - Promote the tested `1.0.0` artifact to Production; do not rebuild an
   identical binary merely to change its version name.
 - Promoting the same artifact between tracks does not require rebuilding it.
