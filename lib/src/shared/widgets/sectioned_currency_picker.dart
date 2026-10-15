@@ -109,6 +109,57 @@ class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
   @override
   Widget build(BuildContext context) {
     final groups = buildCurrencyGroups(currencies: _filtered);
+    if (MediaQuery.sizeOf(context).height < 500) {
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: CurrencyPickerSearchField(
+                      onChanged: (v) => setState(() => _query = v.trim()),
+                    ),
+                  ),
+                  IconButton(
+                    tooltip: MaterialLocalizations.of(
+                      context,
+                    ).closeButtonTooltip,
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(Icons.close_rounded),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: groups.isEmpty
+                    ? _emptyState(context)
+                    : ListView.builder(
+                        itemCount: groups.length + (_showTopSection ? 1 : 0),
+                        itemBuilder: (context, i) {
+                          if (_showTopSection && i == 0) {
+                            return _topSection(context);
+                          }
+                          return _group(
+                            context,
+                            groups[i - (_showTopSection ? 1 : 0)],
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: .84,
@@ -163,9 +214,17 @@ class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (selected.isNotEmpty)
-          ..._topSubsection(context, pickerSelectedSectionLabel(context), selected),
+          ..._topSubsection(
+            context,
+            pickerSelectedSectionLabel(context),
+            selected,
+          ),
         if (popular.isNotEmpty)
-          ..._topSubsection(context, pickerPopularSectionLabel(context), popular),
+          ..._topSubsection(
+            context,
+            pickerPopularSectionLabel(context),
+            popular,
+          ),
       ],
     );
   }
@@ -193,7 +252,10 @@ class _SectionedCurrencyPickerState extends State<SectionedCurrencyPicker> {
         widget.tileBuilder(context, currency),
         Padding(
           padding: const EdgeInsets.only(left: 52),
-          child: Divider(height: 1, color: colors.border.withValues(alpha: .15)),
+          child: Divider(
+            height: 1,
+            color: colors.border.withValues(alpha: .15),
+          ),
         ),
       ],
     ];

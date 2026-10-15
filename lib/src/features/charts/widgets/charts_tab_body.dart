@@ -14,11 +14,13 @@ class ChartsTabBody extends StatefulWidget {
   const ChartsTabBody({
     required this.controller,
     required this.monetization,
+    this.onExpand,
     super.key,
   });
 
   final ChartsController controller;
   final MonetizationController monetization;
+  final VoidCallback? onExpand;
 
   @override
   State<ChartsTabBody> createState() => _ChartsTabBodyState();
@@ -61,6 +63,7 @@ class _ChartsTabBodyState extends State<ChartsTabBody> {
                   Expanded(
                     child: ChartsChartSection(
                       state: state,
+                      onExpand: widget.onExpand,
                       onRangeChanged: widget.controller.setRange,
                       onRetry: widget.controller.load,
                       swapVersion: _swapVersion,

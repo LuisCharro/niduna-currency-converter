@@ -8,10 +8,16 @@ import 'chart_line_plot.dart';
 import 'chart_touch_overlay.dart';
 
 class RateChart extends StatefulWidget {
-  const RateChart({required this.data, required this.quoteCode, super.key});
+  const RateChart({
+    required this.data,
+    required this.quoteCode,
+    this.compactDetails = false,
+    super.key,
+  });
 
   final Map<DateTime, double> data;
   final String quoteCode;
+  final bool compactDetails;
 
   @override
   State<RateChart> createState() => _RateChartState();
@@ -145,6 +151,7 @@ class _RateChartState extends State<RateChart>
                     _touchedIndex! < sortedDates.length)
                   Positioned.fill(
                     child: IgnorePointer(
+                      ignoring: !widget.compactDetails,
                       child: Padding(
                         padding: const EdgeInsets.only(
                           top: 8,
@@ -154,6 +161,7 @@ class _RateChartState extends State<RateChart>
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: ChartTouchOverlay(
+                            compact: widget.compactDetails,
                             date: sortedDates[_touchedIndex!],
                             currencyCode: widget.quoteCode,
                             value: spots[_touchedIndex!].y,

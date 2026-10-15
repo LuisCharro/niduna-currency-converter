@@ -44,7 +44,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
 
   bool _isUnlocked(String code) {
     if (code == _fixedSide) return true;
-    if (_isFreeDefaultCurrency(code)) return true;
+
     final candidateBase = widget.selectingBase ? code : widget.baseCurrency;
     final candidateQuote = widget.selectingBase ? widget.quoteCurrency : code;
     return widget.controller.isChartPairUnlocked(candidateBase, candidateQuote);
@@ -52,7 +52,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
 
   bool _isTempUnlocked(String code) {
     if (code == _fixedSide) return false;
-    if (_isFreeDefaultCurrency(code)) return false;
+
     final candidateBase = widget.selectingBase ? code : widget.baseCurrency;
     final candidateQuote = widget.selectingBase ? widget.quoteCurrency : code;
     final canonical = TemporaryUnlock.canonicalKey(
@@ -65,16 +65,15 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
 
   bool _isSameAsFixed(String code) => code == _fixedSide;
 
-  static const _freeDefaults = {'USD', 'EUR'};
-
-  bool _isFreeDefaultCurrency(String code) => _freeDefaults.contains(code);
-
   bool _isFreeDefaultPair(String a, String b) {
     final sorted = [a, b]..sort();
     return sorted[0] == 'EUR' && sorted[1] == 'USD';
   }
 
   Future<void> _showLockedAction(BuildContext context, String code) async {
+    if (!(ModalRoute.isCurrentOf(context) ?? true)) return;
+    final navigator = Navigator.of(context);
+    final themes = InheritedTheme.capture(from: context, to: navigator.context);
     final choice = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
@@ -82,12 +81,14 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
       backgroundColor: AppColors.of(context).card,
       builder: (_) => SafeArea(
         top: false,
-        child: LockedPairActionSheet(
-          canWatchAd: widget.controller.canOfferRewardedChartUnlock,
-          onWatchAd: () => Navigator.of(context).pop('watch_ad'),
-          onBuyForever: () {
-            Navigator.of(context).pop('buy_forever');
-          },
+        child: SingleChildScrollView(
+          child: LockedPairActionSheet(
+            canWatchAd: widget.controller.canOfferRewardedChartUnlock,
+            onWatchAd: () => Navigator.of(context).pop('watch_ad'),
+            onBuyForever: () {
+              Navigator.of(context).pop('buy_forever');
+            },
+          ),
         ),
       ),
     );
@@ -98,15 +99,24 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
       final granted = await Navigator.of(context).push<bool>(
         MaterialPageRoute<bool>(
           fullscreenDialog: true,
-          builder: (_) => IapPurchasePlayer(
-            controller: widget.controller,
-            product: ProductType.chartsPro,
-            onResult: (success) => Navigator.of(context).pop(success),
+          builder: (playerContext) => themes.wrap(
+            IapPurchasePlayer(
+              controller: widget.controller,
+              product: ProductType.chartsPro,
+              onResult: (success) {
+                if (playerContext.mounted &&
+                    (ModalRoute.isCurrentOf(playerContext) ?? false)) {
+                  Navigator.of(playerContext).pop(success);
+                }
+              },
+            ),
           ),
         ),
       );
 
-      if (granted == true && context.mounted) {
+      if (granted == true &&
+          context.mounted &&
+          (ModalRoute.isCurrentOf(context) ?? false)) {
         Navigator.of(context).pop(code);
       }
       return;
@@ -118,16 +128,25 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
     final granted = await Navigator.of(context).push<bool>(
       MaterialPageRoute<bool>(
         fullscreenDialog: true,
-        builder: (_) => RewardedAdPlayer(
-          controller: widget.controller,
-          base: adBase,
-          quote: adQuote,
-          onResult: (success) => Navigator.of(context).pop(success),
+        builder: (playerContext) => themes.wrap(
+          RewardedAdPlayer(
+            controller: widget.controller,
+            base: adBase,
+            quote: adQuote,
+            onResult: (success) {
+              if (playerContext.mounted &&
+                  (ModalRoute.isCurrentOf(playerContext) ?? false)) {
+                Navigator.of(playerContext).pop(success);
+              }
+            },
+          ),
         ),
       ),
     );
 
-    if (granted == true && context.mounted) {
+    if (granted == true &&
+        context.mounted &&
+        (ModalRoute.isCurrentOf(context) ?? false)) {
       Navigator.of(context).pop(code);
     }
   }
@@ -135,9 +154,7 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
   @override
   Widget build(BuildContext context) {
     final currencies = allSupportedCurrencies
-        .where(
-          (c) => widget.allowCryptoCharts || !isCryptoCurrency(c.code),
-        )
+        .where((c) => widget.allowCryptoCharts || !isCryptoCurrency(c.code))
         .toList();
 
     return SectionedCurrencyPicker(
@@ -150,7 +167,10 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
       currencies: currencies,
       highlightedCodes: [widget.selectedCode],
       expandSectionsForCodes: [widget.selectedCode],
-      headerWidget: widget.controller.adsEnabled
+      headerWidget:
+          widget.controller.adsEnabled &&
+              (ModalRoute.isCurrentOf(context) ?? true) &&
+              MediaQuery.sizeOf(context).height >= 500
           ? const AdBannerWidget(reserveMinHeight: false)
           : null,
       tileBuilder: (context, currency) {
@@ -169,8 +189,8 @@ class _ChartCurrencyPickerSheetState extends State<ChartCurrencyPickerSheet> {
           onTap: isFixed
               ? null
               : unlocked
-                  ? () => Navigator.of(context).pop(currency.code)
-                  : () => _showLockedAction(context, currency.code),
+              ? () => Navigator.of(context).pop(currency.code)
+              : () => _showLockedAction(context, currency.code),
         );
       },
     );

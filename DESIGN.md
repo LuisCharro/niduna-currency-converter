@@ -177,7 +177,8 @@ Single font fallback chain: `["Fraunces", "Georgia", "serif"]`
 
 **Single-column mobile layout** with generous safe area padding on warm paper canvas:
 
-- Android phones stay in portrait when the device rotates. Platform restrictions
+- Android phones stay in portrait when the device rotates, except for the
+  explicitly opened Charts viewer described below. Platform restrictions
   on large-screen devices may override orientation locks; phone layout is the
   acceptance target for this release.
 
@@ -246,6 +247,28 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 - Large pill buttons (radius 24) with flag + currency code
 - Circular swap button between base and quote selectors
 - Shadow on selected state
+
+### Expanded Charts viewer (Android)
+
+- The phone-and-rotation-arrow icon beside the periods opens a separate landscape screen. It shares
+  the selected pair, period and data with Charts; opening/closing does not refresh.
+- Periods and a 48px collapse action stay at the top. The graph takes the full
+  width. Bottom navigation is covered; collapse or Android Back returns to portrait.
+- The bottom band places base/swap/quote controls left and a standard 320×50
+  banner right with a 16px gap. Available width and text scale determine whether
+  they fit; otherwise controls and banner use separate rows. Ads keep their real
+  dimensions, and users without ads have no empty advertising slot.
+- Pair controls remain at least 48px tall. Currency selection uses a full screen
+  picker with a compact header at short heights. Search, locks, voluntary rewarded
+  ads and purchases keep the same pair-based access policy as normal Charts.
+- Point details share the portrait card styling and all four values: date, rate,
+  percentage change and absolute change. Landscape places identity left and change
+  right, wrapping into two rows when needed, inside a bounded scrollable card. Errors and
+  waiting/purchase screens scroll when vertical space is limited.
+- Covered app banners are disposed. The visible route owns its own banner;
+  returning creates a fresh banner at the current size.
+- Native ads and store screens control their own presentation. Returning restores
+  the viewer orientation; closing the viewer restores portrait. No immersive mode.
 
 ### Saved Currencies and Base Selection
 

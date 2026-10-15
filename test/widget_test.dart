@@ -1006,7 +1006,7 @@ void main() {
     expect(find.text('Unlock all pairs forever'), findsOneWidget);
   });
 
-  testWidgets('chart picker keeps USD and EUR selectable for crypto pairs', (
+  testWidgets('chart picker requires pair access for EUR against crypto', (
     WidgetTester tester,
   ) async {
     tester.view.physicalSize = const Size(390, 844);
@@ -1029,7 +1029,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.pump(const Duration(seconds: 1));
 
-    // Search for EUR — must be present and not locked (free default for crypto pairs).
+    // EUR remains in the catalog; ETH/EUR requires access to that pair.
     // Searching narrows the region groups so the matched section header stays
     // on screen regardless of any highlighted/popular currencies shown above
     // the groups when the sheet first opens.
@@ -1053,7 +1053,7 @@ void main() {
     expect(eurListTile, findsOneWidget);
     expect(
       find.descendant(of: eurListTile, matching: find.text('Tap to unlock')),
-      findsNothing,
+      findsOneWidget,
     );
   });
 }

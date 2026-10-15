@@ -522,4 +522,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String currencyRemoved(String code) {
     return '$code eliminada de tu lista';
   }
+
+  @override
+  String get expandChartTooltip => 'Ver en horizontal';
+
+  @override
+  String get collapseChartTooltip => 'Volver a vertical';
+
+  @override
+  String get chartAdLoading => 'Cargando anuncio…';
+
+  @override
+  String get chartAdUnavailable => 'Anuncio no disponible';
+
+  @override
+  String get chartAdInstructions =>
+      'Sigue las instrucciones del anuncio para obtener la recompensa';
 }

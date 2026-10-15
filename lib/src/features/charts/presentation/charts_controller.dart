@@ -27,6 +27,7 @@ class ChartsController extends ChangeNotifier {
 
   final ChartRepository _repository;
   final bool _allowCryptoCharts;
+  bool get allowCryptoCharts => _allowCryptoCharts;
   ChartState _state;
   bool _disposed = false;
   int _requestVersion = 0;

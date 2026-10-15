@@ -25,7 +25,11 @@ class LockedPairActionSheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(Icons.lock_outline, size: 40, color: AppColors.of(context).muted),
+            Icon(
+              Icons.lock_outline,
+              size: 40,
+              color: AppColors.of(context).muted,
+            ),
             const SizedBox(height: 12),
             Text(
               pairLockedTitle(context),
@@ -38,14 +42,19 @@ class LockedPairActionSheet extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               pairLockedSubtitle(context, canWatchAd),
-              style: TextStyle(fontSize: 13, color: AppColors.of(context).muted),
+              style: TextStyle(
+                fontSize: 13,
+                color: AppColors.of(context).muted,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             if (canWatchAd) ...<Widget>[
-              SizedBox(
-                width: double.infinity,
-                height: 48,
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minWidth: double.infinity,
+                  minHeight: 48,
+                ),
                 child: FilledButton.tonal(
                   onPressed: onWatchAd,
                   style: FilledButton.styleFrom(
@@ -56,18 +65,20 @@ class LockedPairActionSheet extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                       Icon(Icons.play_circle_outline, size: 18),
-                       const SizedBox(width: 8),
-                       Text(watchAdUnlockLabel(context)),
-                     ],
+                      Icon(Icons.play_circle_outline, size: 18),
+                      const SizedBox(width: 8),
+                      Flexible(child: Text(watchAdUnlockLabel(context))),
+                    ],
                   ),
                 ),
               ),
               const SizedBox(height: 10),
             ],
-            SizedBox(
-              width: double.infinity,
-              height: 48,
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                minWidth: double.infinity,
+                minHeight: 48,
+              ),
               child: FilledButton(
                 onPressed: onBuyForever,
                 style: FilledButton.styleFrom(
@@ -78,17 +89,20 @@ class LockedPairActionSheet extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                     Icon(Icons.diamond_outlined, size: 18),
-                     const SizedBox(width: 8),
-                     Text(unlockAllPairsForeverLabel(context)),
-                   ],
+                    Icon(Icons.diamond_outlined, size: 18),
+                    const SizedBox(width: 8),
+                    Flexible(child: Text(unlockAllPairsForeverLabel(context))),
+                  ],
                 ),
               ),
             ),
             const SizedBox(height: 12),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text(l10n?.btnCancel ?? 'Cancel', style: TextStyle(color: AppColors.of(context).subtle)),
+              child: Text(
+                l10n?.btnCancel ?? 'Cancel',
+                style: TextStyle(color: AppColors.of(context).subtle),
+              ),
             ),
           ],
         ),

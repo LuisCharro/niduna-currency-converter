@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'chart_orientation_icon.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
@@ -9,6 +10,7 @@ import 'charts_empty_state.dart';
 import 'charts_error_state.dart';
 import 'range_selector.dart';
 import 'rate_chart.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 
 class ChartsChartSection extends StatelessWidget {
   const ChartsChartSection({
@@ -19,6 +21,9 @@ class ChartsChartSection extends StatelessWidget {
     required this.lastPairKey,
     required this.onSwapSettled,
     this.compact = false,
+    this.onExpand,
+    this.showRangeSelector = true,
+    this.compactDetails = false,
     super.key,
   });
 
@@ -29,6 +34,9 @@ class ChartsChartSection extends StatelessWidget {
   final String lastPairKey;
   final ValueChanged<String> onSwapSettled;
   final bool compact;
+  final VoidCallback? onExpand;
+  final bool showRangeSelector;
+  final bool compactDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -50,19 +58,36 @@ class ChartsChartSection extends StatelessWidget {
           maxScaleFactor: 1.15,
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  0,
-                  compact ? 4 : 6,
-                  0,
-                  compact ? 4 : 6,
+              if (showRangeSelector)
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    0,
+                    compact ? 4 : 6,
+                    0,
+                    compact ? 4 : 6,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: RangeSelector(
+                          selected: state.range,
+                          onChanged: onRangeChanged,
+                          includesCrypto: state.includesCrypto,
+                        ),
+                      ),
+                      if (onExpand != null)
+                        IconButton(
+                          key: const Key('charts_expand'),
+                          iconSize: 30,
+                          tooltip: l10n(context).expandChartTooltip,
+                          onPressed: onExpand,
+                          icon: const ChartOrientationIcon(
+                            targetLandscape: true,
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-                child: RangeSelector(
-                  selected: state.range,
-                  onChanged: onRangeChanged,
-                  includesCrypto: state.includesCrypto,
-                ),
-              ),
               if (loading)
                 LinearProgressIndicator(
                   minHeight: 2,
@@ -83,11 +108,14 @@ class ChartsChartSection extends StatelessWidget {
     }
 
     if (state.status == ChartStatus.error && state.data.isEmpty) {
-      return ChartsErrorState(message: state.message, onRetry: onRetry);
+      final error = ChartsErrorState(message: state.message, onRetry: onRetry);
+      return compactDetails ? SingleChildScrollView(child: error) : error;
     }
 
     if (state.data.isEmpty) {
-      return const ChartsEmptyState();
+      return compactDetails
+          ? const SingleChildScrollView(child: ChartsEmptyState())
+          : const ChartsEmptyState();
     }
 
     final currentPairKey = '${state.base}-${state.quote}';
@@ -124,7 +152,11 @@ class ChartsChartSection extends StatelessWidget {
         ),
         padding: EdgeInsets.only(top: compact ? 0 : 2, bottom: compact ? 0 : 4),
         child: SizedBox.expand(
-          child: RateChart(data: state.data, quoteCode: state.quote),
+          child: RateChart(
+            data: state.data,
+            quoteCode: state.quote,
+            compactDetails: compactDetails,
+          ),
         ),
       ),
     );

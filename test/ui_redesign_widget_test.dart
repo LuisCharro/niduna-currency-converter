@@ -325,7 +325,10 @@ void main() {
 
 class _ImmediateAdService implements RewardedAdService {
   @override
-  Future<bool> showRewardedAd({required String rewardType}) async => true;
+  Future<bool> showRewardedAd({
+    required String rewardType,
+    RewardedAdCancellation? cancellation,
+  }) async => true;
 }
 
 class _FakeRatesRepository implements ConvertRatesRepository {

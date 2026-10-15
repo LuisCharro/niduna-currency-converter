@@ -1,111 +1,121 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../monetization/rewarded_ad_service.dart';
 import 'ad_consent_manager.dart';
 import 'ad_helper.dart';
 
+/// Owns one SDK operation at a time, independently of the presenting route.
 class AdMobRewardedAdService implements RewardedAdService {
-  RewardedAd? _rewardedAd;
-  Completer<bool>? _resultCompleter;
-  bool _rewardEarned = false;
+  AdMobRewardedAdService({
+    Future<bool> Function()? canRequestAds,
+    Future<void> Function(RewardedAdLoadCallback)? loadAd,
+  }) : _canRequestAds = canRequestAds ?? _requestConsent,
+       _loadAd = loadAd ?? _loadSdkAd;
 
-  @override
-  Future<bool> showRewardedAd({required String rewardType}) {
-    if (_resultCompleter != null) return Future.value(false);
+  final Future<bool> Function() _canRequestAds;
+  final Future<void> Function(RewardedAdLoadCallback) _loadAd;
+  _RewardedOperation? _active;
 
-    _rewardEarned = false;
-    _resultCompleter = Completer<bool>();
-
-    unawaited(
-      _loadAndShowAd(rewardType).catchError((Object error, StackTrace stack) {
-        debugPrint('Rewarded ad error: $error');
-        _completeResult(false);
-      }),
-    );
-
-    return _resultCompleter!.future;
+  static Future<bool> _requestConsent() async {
+    await AdConsentManager.instance.initialize();
+    return AdConsentManager.instance.canRequestAds;
   }
 
-  Future<void> _loadAndShowAd(String rewardType) async {
-    try {
-      await AdConsentManager.instance.initialize();
-      if (!AdConsentManager.instance.canRequestAds) {
-        _completeResult(false);
-        return;
-      }
-      _rewardedAd?.dispose();
-      _rewardedAd = null;
-
-      await RewardedAd.load(
+  static Future<void> _loadSdkAd(RewardedAdLoadCallback callback) =>
+      RewardedAd.load(
         adUnitId: AdHelper.rewardedAdUnitId,
         request: const AdRequest(nonPersonalizedAds: true),
-        rewardedAdLoadCallback: RewardedAdLoadCallback(
-          onAdLoaded: (RewardedAd ad) {
-            debugPrint('Rewarded ad loaded for: $rewardType');
-            _rewardedAd = ad;
-            _setUpFullScreenCallbacks(ad);
-            unawaited(_showAd(ad));
+        rewardedAdLoadCallback: callback,
+      );
+
+  @override
+  Future<bool> showRewardedAd({
+    required String rewardType,
+    RewardedAdCancellation? cancellation,
+  }) {
+    if (_active != null || cancellation?.isCancelled == true) {
+      return Future.value(false);
+    }
+    final operation = _RewardedOperation(cancellation);
+    _active = operation;
+    operation.onCancel = () {
+      // Native fullscreen presentation belongs to the SDK until dismissal.
+      if (!operation.shown) _finish(operation, false);
+    };
+    cancellation?.addListener(operation.onCancel);
+    unawaited(_load(operation));
+    return operation.result.future;
+  }
+
+  bool _isActive(_RewardedOperation operation) => identical(_active, operation);
+
+  Future<void> _load(_RewardedOperation operation) async {
+    try {
+      final permitted = await _canRequestAds();
+      if (!_isActive(operation)) return;
+      if (!permitted) {
+        _finish(operation, false);
+        return;
+      }
+      await _loadAd(
+        RewardedAdLoadCallback(
+          onAdLoaded: (ad) {
+            if (!_isActive(operation)) {
+              unawaited(ad.dispose());
+              return;
+            }
+            operation.ad = ad;
+            ad.fullScreenContentCallback =
+                FullScreenContentCallback<RewardedAd>(
+                  onAdDismissedFullScreenContent: (_) =>
+                      _finish(operation, operation.earned),
+                  onAdFailedToShowFullScreenContent: (_, _) =>
+                      _finish(operation, false),
+                );
+            operation.shown = true;
+            unawaited(_show(operation, ad));
           },
-          onAdFailedToLoad: (LoadAdError error) {
-            debugPrint('Rewarded ad failed to load: $error');
-            _completeResult(false);
-          },
+          onAdFailedToLoad: (_) => _finish(operation, false),
         ),
       );
-    } catch (error) {
-      debugPrint('Rewarded ad failed before loading: $error');
-      _completeResult(false);
+    } catch (_) {
+      _finish(operation, false);
     }
   }
 
-  void _setUpFullScreenCallbacks(RewardedAd ad) {
-    ad.fullScreenContentCallback = FullScreenContentCallback<RewardedAd>(
-      onAdShowedFullScreenContent: (ad) {
-        debugPrint('Rewarded ad showed full screen');
-      },
-      onAdDismissedFullScreenContent: (ad) {
-        debugPrint('Rewarded ad dismissed');
-        ad.dispose();
-        _rewardedAd = null;
-        _completeResult(_rewardEarned);
-      },
-      onAdFailedToShowFullScreenContent: (ad, error) {
-        debugPrint('Rewarded ad failed to show: $error');
-        ad.dispose();
-        _rewardedAd = null;
-        _completeResult(false);
-      },
-      onAdImpression: (ad) {
-        debugPrint('Rewarded ad impression recorded');
-      },
-    );
-  }
-
-  Future<void> _showAd(RewardedAd ad) async {
+  Future<void> _show(_RewardedOperation operation, RewardedAd ad) async {
     try {
       await ad.show(
-        onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-          debugPrint('User earned reward: ${reward.amount} ${reward.type}');
-          _rewardEarned = true;
+        onUserEarnedReward: (_, _) {
+          if (_isActive(operation)) operation.earned = true;
         },
       );
-    } catch (error) {
-      debugPrint('Rewarded ad show threw: $error');
-      ad.dispose();
-      _rewardedAd = null;
-      _completeResult(false);
+    } catch (_) {
+      _finish(operation, false);
     }
   }
 
-  void _completeResult(bool success) {
-    final completer = _resultCompleter;
-    if (completer != null && !completer.isCompleted) {
-      completer.complete(success);
-    }
-    _resultCompleter = null;
-    _rewardEarned = false;
+  void _finish(_RewardedOperation operation, bool success) {
+    // A callback from an abandoned load may never complete a newer operation.
+    if (!_isActive(operation)) return;
+    _active = null;
+    operation.cancellation?.removeListener(operation.onCancel);
+    final ad = operation.ad;
+    operation.ad = null;
+    if (ad != null) unawaited(ad.dispose());
+    operation.result.complete(success);
   }
+}
+
+class _RewardedOperation {
+  _RewardedOperation(this.cancellation);
+
+  final RewardedAdCancellation? cancellation;
+  final Completer<bool> result = Completer<bool>();
+  late final void Function() onCancel;
+  RewardedAd? ad;
+  bool shown = false;
+  bool earned = false;
 }

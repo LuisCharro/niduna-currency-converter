@@ -1033,6 +1033,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{code} removed from your list'**
   String currencyRemoved(String code);
+
+  /// No description provided for @expandChartTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'View horizontally'**
+  String get expandChartTooltip;
+
+  /// No description provided for @collapseChartTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to vertical'**
+  String get collapseChartTooltip;
+
+  /// No description provided for @chartAdLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading ad…'**
+  String get chartAdLoading;
+
+  /// No description provided for @chartAdUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad unavailable'**
+  String get chartAdUnavailable;
+
+  /// No description provided for @chartAdInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the ad’s instructions to earn the reward'**
+  String get chartAdInstructions;
 }
 
 class _AppLocalizationsDelegate
