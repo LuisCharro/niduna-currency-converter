@@ -1,56 +1,62 @@
 # Estrategia de precios — Currency Converter
 
-Fecha: 2026-10-19. **Propuesta, pendiente de aprobación de Luis.** No se han
-modificado precios en Google Play. Compras únicas de por vida, sin suscripciones.
+Fecha: 2026-10-19. **Recomendación fundamentada; todavía no aplicada en Play.**
+Tres compras únicas de por vida, sin suscripciones. Véase la
+[investigación de mercado, fuentes y límites](research-2026-10-19.md).
+El JSON mantiene estado `proposed-not-approved` para distinguir la propuesta
+local de una decisión de publicación ya ejecutada.
 
-## Qué hay realmente en Play
+## Catálogo observado
 
 Lectura autenticada con `monetization.onetimeproducts.list`: tres productos,
-una opción de compra `ACTIVE` por producto, `legacyCompatible: true` y 174
-regiones configuradas en cada uno. Hay 65 monedas diferentes. Tener precio
-configurado no significa que la app esté distribuida en todos esos países;
-la disponibilidad de la app se gestiona aparte.
+una opción de compra ACTIVE/legacyCompatible por producto, 174 regiones cada
+uno y 65 monedas. Precio configurado no equivale a distribución de la app en
+ese país. Snapshot fechado en `.tmp/play-pricing/20261019/catalog-snapshot.json`.
 
-| Producto | Suiza CHF | España EUR | EE. UU. USD | Propuesta en esas tres monedas |
-| --- | ---: | ---: | ---: | ---: |
-| Quitar anuncios | 2,00 | 2,59 | 2,49 | 1,99 |
-| Charts Pro | 3,00 | 3,79 | 3,69 | 2,99 |
-| Favorites Pro | 1,00 | 1,29 | 1,19 | 0,99 |
+| Compra única | Suiza actual CHF | España actual EUR | EE. UU. actual USD |
+| --- | ---: | ---: | ---: |
+| Quitar anuncios | 2,00 | 2,59 | 2,49 |
+| Charts Pro | 3,00 | 3,79 | 3,69 |
+| Favorites Pro | 1,00 | 1,29 | 1,19 |
 
-Son importes del catálogo, no ingresos netos del desarrollador. El tratamiento
-fiscal y el total de checkout dependen del mercado y de Play. No confundir
-precio configurado, impuestos y comisión. Hay diferencias incluso dentro de
-EUR: quitar anuncios figura a 2,49 en Alemania/Francia y 2,59 en España.
+Los importes no son ingreso neto. El tratamiento fiscal y total de checkout
+se verifican por mercado. Incluso dentro de EUR hay diferencias actuales:
+quitar anuncios es 2,49 en Alemania/Francia y 2,59 en España.
 
-## Propuesta de lanzamiento
+## Recomendación tras investigar
 
-Mantener tres niveles sencillos: Favorites 0,99; quitar anuncios 1,99;
-Charts 2,99. Aplicarlos a Suiza/Liechtenstein, 21 mercados EUR seleccionados y Estados Unidos.
-El precio es una decisión de producto, no una equivalencia exacta de divisas.
-No hace falta que EUR, USD y CHF produzcan el mismo ingreso neto.
+| Compra única | CHF, CH y LI | EUR, mercados seleccionados | USD, solo US |
+| --- | ---: | ---: | ---: |
+| Quitar anuncios | 2,00 | 1,99 | 1,99 |
+| Charts Pro | 3,00 | 2,99 | 2,99 |
+| Favorites Pro | 1,00 | 0,99 | 0,99 |
 
-Los finales ,99 son una hipótesis comercial convencional, no una garantía de
-mayor conversión. Los precios actuales de 1/2/3 CHF tampoco son incorrectos;
-esta propuesta elige coherencia entre los mercados prioritarios. No hay aún
-resultados de ventas que demuestren un precio óptimo para esta app.
+Conservar los precios redondos suizos que Luis considera adecuados. Los ,99 en
+EUR/USD son convenciones sencillas, no una garantía de más ventas. Las fuentes
+Android encontradas publican quitar anuncios a 1,99–2,99 USD; un conversor iOS
+lista Remove ads a 2,99 EUR. No es una media representativa ni prueba de precios
+Android europeos. Charts y Favorites requieren juicio sobre nuestras funciones;
+no se encontró un benchmark idéntico para esos dos desbloqueos separados.
+La investigación explica estas diferencias y por qué se descartan suscripciones,
+reseñas antiguas y desbloqueos completos caros como equivalentes directos.
 
-**Impacto:** Suiza baja entre 0,33 % y 1 %. España baja aproximadamente
-21–23 % y EE. UU. 17–20 %. No es un cambio meramente cosmético. Como alternativa
-más conservadora de ingresos podrían usarse 2,49/3,79/1,29 EUR y mantenerse los USD
-actuales, pero la propuesta principal prioriza un lanzamiento asequible.
+Comprar las tres opciones suma 5,97 EUR/USD o 6 CHF de precio de catálogo.
+La versión gratuita conserva su alcance actual. No se añade bundle ni se cambia
+la aplicación. En España la propuesta baja los precios aproximadamente 21–23 %;
+en EE. UU. 17–20 %. Suiza no cambia. No se presenta la rebaja como solo cosmética.
 
-Alcance exacto del JSON propuesto:
+## Alcance exacto
 
-- CHF: Suiza y Liechtenstein (2 regiones).
+- CHF: Suiza conserva 2/3/1 CHF; Liechtenstein se armoniza a esos importes
+  (actualmente 2,10/3,20/1,10 CHF).
 - EUR: AT, BE, BG, CY, DE, EE, ES, FI, FR, GR, HR, IE, IT, LT, LU, LV, MT,
-  NL, PT, SI, SK (21 regiones explícitas). Las otras 12 regiones del catálogo
-  que cobran en EUR, algunas como moneda alternativa, conservan su precio.
-- USD: solo `US`. Hay **75 regiones** configuradas en USD; no son todas EE. UU.
-- Resultado: **72 precios modificados en 24 regiones**. Las otras 450 filas
-  de precio (150 regiones por producto) mantienen su valor actual.
-- No cambiar disponibilidad, países de distribución, IDs, compras anteriores,
-  impuestos, ofertas ni `newRegionsConfig`. Estos precios de futuras regiones
-  quedan como están y necesitan una decisión propia antes de ampliaciones.
+  NL, PT, SI, SK. Las otras 12 regiones que cobran en EUR mantienen precios.
+- USD: solo US; las otras 74 regiones con precio en USD mantienen sus importes.
+- Resultado del plan: **69 precios cambian en 23 regiones**. Las otras 453 filas
+  (151 regiones por producto, incluida Suiza) mantienen su precio.
+- Preservar disponibilidad, países de distribución, IDs, compras anteriores,
+  impuestos, ofertas y `newRegionsConfig`. Los precios de futuras regiones
+  necesitan una decisión propia antes de futuras ampliaciones.
 
 ## Resto del mundo
 

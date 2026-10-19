@@ -2,12 +2,12 @@
   "schemaVersion": 1,
   "status": "proposed-not-approved",
   "packageName": "com.honestfern.currency_converter",
-  "strategy": "Launch anchors: CHF regions, 21 explicitly selected EUR markets, US only; retain other regions including USD/EUR fallback markets.",
+  "strategy": "Research-backed launch recommendation: retain 1/2/3 CHF; 0.99/1.99/2.99 EUR in 21 selected markets and USD in US; retain other regions.",
   "products": {
     "remove_ads_lifetime": {
       "purchaseOptionId": "remove-ads-lifetime",
       "currencyOverrides": {
-        "CHF": "1.99"
+        "CHF": "2.00"
       },
       "regionOverrides": {
         "US": {
@@ -103,7 +103,7 @@
     "charts_pro_lifetime": {
       "purchaseOptionId": "charts-pro-lifetime",
       "currencyOverrides": {
-        "CHF": "2.99"
+        "CHF": "3.00"
       },
       "regionOverrides": {
         "US": {
@@ -199,7 +199,7 @@
     "favorites_pro_lifetime": {
       "purchaseOptionId": "favorites-pro-lifetime",
       "currencyOverrides": {
-        "CHF": "0.99"
+        "CHF": "1.00"
       },
       "regionOverrides": {
         "US": {
@@ -292,5 +292,6 @@
         }
       }
     }
-  }
+  },
+  "research": "research-2026-10-19.md"
 }
