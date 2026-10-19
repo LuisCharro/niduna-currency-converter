@@ -12,32 +12,54 @@ without moving the app repository or its release checklist.
 - `scripts/google_play.py verify-access` checks service-account access using
   the same create/delete verification edit without uploading or changing a
   track.
+- `scripts/google_play.py plan-closed` validates a local candidate, checks the
+  live Closed Alpha track and all listed bundles, then deletes its temporary
+  read edit without uploading or changing a track.
 - `scripts/google_play.py upload-closed` uploads one signed AAB to the
   configured Closed Alpha track in a single edit transaction. It requires an
-  explicit artifact, release name and version code, checks `pubspec.yaml`,
-  checks that the code is unused on every Play track, and prints the artifact
-  SHA-256. It cannot target Internal or Production.
+  explicit artifact and version code, derives its release label from
+  `pubspec.yaml`, checks that the code is unused across bundles and track
+  releases, validates the edit, compares Google's SHA-256 with the local file,
+  and prints the result. It cannot target Internal or Production.
 - Candidate preparation remains app-owned: `.devtools/prepare_play_candidate.sh`
   runs checks, creates local APK/AAB artifacts and store screenshots, and
   writes them under `.tmp/play-candidate/`. It does not upload anything.
-- Internal promotion, listing changes, review submission and Production
-  release are not implemented by this adapter. Use the app publishing runbook
-  for those controlled steps.
+- Internal promotion, listing changes, separate review management and
+  Production release are not implemented by this adapter. A track commit may
+  still enter Play's review/publishing process; check Console before telling
+  testers an update is available.
 
-Example, after reviewing a candidate and explicitly authorizing its upload:
+Set up the local isolated environment once, then use the wrapper for commands.
+It stores the virtual environment under ignored `.tmp/` and never handles the
+credential file itself:
 
 ```bash
-GOOGLE_APPLICATION_CREDENTIALS=/path/to/app-scoped-key.json \
-  python3 stores/google-play/scripts/google_play.py upload-closed \
-  --aab .tmp/play-candidate/<candidate>/artifacts/app-release.aab \
-  --version-code 8 --release-name '1.0.0 (8)'
+./.devtools/google_play.sh setup
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/app-scoped-key.json
+./.devtools/google_play.sh status
 ```
 
-After an upload, run `status` again in a fresh API edit and confirm the
-`alpha` release code, name and status. If upload or commit reports an error,
-inspect fresh track state before retrying.
+Before any authorized upload, run the non-mutating preflight and review its target,
+version code, file size and SHA-256:
+
+```bash
+./.devtools/google_play.sh plan-closed \
+  --aab .tmp/play-candidate/<candidate>/artifacts/app-release.aab \
+  --version-code <next-version-code>
+```
+
+After the owner explicitly authorizes that artifact for Closed Alpha, replace
+`plan-closed` with `upload-closed`. The upload command checks the code again
+inside its write transaction. After an upload, run `status` in a fresh API edit
+and confirm track, release name, code and status. If commit outcome is
+ambiguous, inspect fresh track state before retrying.
 
 ## Which surface to use
+
+Owner Console dashboard for this app:
+[Currency Converter Honest Fern](https://play.google.com/console/developers/6219086036817053258/app/4973875544480645622/app-dashboard).
+Use the authenticated Chrome session for visual review and Console-only
+decisions; the command line cannot replace those owner flows.
 
 | Work | Preferred surface | Notes |
 | --- | --- | --- |
@@ -56,9 +78,9 @@ Credentials stay outside Git. Set `GOOGLE_APPLICATION_CREDENTIALS` to the
 existing app-scoped service-account JSON path in the invoking shell. Never
 pass or print key contents.
 
-The CLI needs `google-auth` and `google-api-python-client`. Install them in a
-dedicated local virtual environment from `requirements.txt`; avoid changing
-the app's Flutter dependencies.
+The CLI needs the packages in `requirements.txt`. The wrapper installs them in
+a dedicated local virtual environment; it does not change the app's Flutter
+dependencies.
 
 See [`SKILL.md`](SKILL.md) for the operating workflow and stop conditions.
 See [`TOOLING.md`](TOOLING.md) for the reviewed external automation options and

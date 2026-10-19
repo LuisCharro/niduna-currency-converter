@@ -29,11 +29,15 @@ Closed testing upload is not a Production release.
 
 The machine-readable app map resolves Closed Alpha to the Publisher API track
 `alpha` (Console track ID `4700576461420899940`). The new
-`stores/google-play/scripts/google_play.py upload-closed` command creates one
-edit, checks the code is unused, uploads the supplied signed AAB, updates only
-Closed Alpha, commits, and prints the AAB checksum. Always run `status` in a
-fresh edit after an upload; do not retry an ambiguous upload until the live
-track has been checked.
+`.devtools/google_play.sh` wrapper provides a repeatable local environment and
+`plan-closed` preflight. `upload-closed` creates one edit, checks all listed
+bundles and releases, uploads the supplied signed AAB, compares the API's
+SHA-256 with the local file, validates the edit, updates only Closed Alpha and
+commits. It uses `ERROR_IF_IN_REVIEW` so a pending review cannot be cancelled
+implicitly. Always run `status` in a fresh edit after an upload; do not retry
+an ambiguous upload until the live track has been checked. The commit can
+still place changes into Play's review/publishing process; check Console before
+telling testers an update is available.
 
 Historical 2026-09-30 release details follow.
 
@@ -55,7 +59,11 @@ Actual Console track IDs: Internal `4701596695392061996`; Closed Alpha
 track identifier; do not blindly assign the literal `closed` (it previously
 returned 404). Record API identity separately if it differs from the Console ID.
 
-## Tester invitations and monitoring — current next step
+## Tester invitations and monitoring
+
+The following Console cohort and invitation details were last checked on
+2026-09-30. Recheck the dashboard, tester lists, countries and invite status
+before relying on them; the local closed-track API does not expose those facts.
 
 - Console → Test and release → Testing → Closed testing → Alpha → Testers.
 - Selected: `Testers for Closed Test` (20); unselected: `Internal test email list`
@@ -70,8 +78,9 @@ returned 404). Record API identity separately if it differs from the Console ID.
 - **Internal acceptance/exit:**
   https://play.google.com/apps/internaltest/4701596695392061996
   It stays stable across Internal builds and is not the Closed invitation.
-- Luis plans emailing the cohort on 2026-10-01; invitations are not yet recorded
-  as sent. Play does not email invitations when a list is populated.
+- On 2026-09-30, emailing the cohort on 2026-10-01 was planned; sending was
+  not recorded then. Recheck actual invitation status rather than relying on
+  that old plan. Play does not email invitations when a list is populated.
 
 Each person opens the Closed web URL with their authorized Google account,
 accepts testing, then follows the Play installation link. Internal is optional;
@@ -122,16 +131,16 @@ Sources checked 2026-09-30:
 ## Local credentials boundary
 
 The service account is app-scoped in Play Console. The ignored
-`AGENTS.local.md` records the account email and the local key path. The key is
-currently outside the repository at:
-
-`/Users/luis/.config/honestfern/play-publisher.json`
+`AGENTS.local.md` records the account email and local key path. Keep that
+machine-specific path out of versioned documentation.
 
 Required properties:
 
 - file mode `600`;
 - never commit, copy into the repo, print, or paste the JSON into a prompt;
-- use `GOOGLE_APPLICATION_CREDENTIALS` only in the invoking shell;
+- use `GOOGLE_APPLICATION_CREDENTIALS` only in the invoking shell; the
+  `.devtools/google_play.sh` wrapper checks that it is set but never reads or
+  prints the key contents;
 - do not create a second key for a routine release.
 
 The service account is intentionally scoped to this app. Do not grant account-
@@ -141,12 +150,16 @@ added, grant that package the minimum app-level permissions separately.
 ## Safe API workflow
 
 Use the Android Publisher Publishing API with the `androidpublisher` scope.
-The release operation is an edit transaction:
+The release operation is an edit transaction. The local workflow first runs
+`plan-closed`, which checks the candidate and current track state using a
+temporary read edit. After explicit authorization, `upload-closed` repeats the
+checks inside the write edit:
 
 1. Create an edit for the package.
 2. Upload the signed AAB to that edit.
 3. Update exactly one track with the new `versionCode`.
-4. Commit the edit.
+4. Validate the edit and commit with `changesInReviewBehavior=ERROR_IF_IN_REVIEW`
+   so an existing review is not silently cancelled.
 5. Create a fresh empty edit to verify the committed track, then delete the
    verification edit.
 
@@ -157,7 +170,7 @@ version: 1.0.0+8
 ```
 
 For a real follow-up fix, keep `versionName` `1.0.0` and increment only the
-build number (`1.0.0+7`, then `+8`, etc.). Play orders Android releases by
+build number (`1.0.0+8`, then `+9`, etc.). Play orders Android releases by
 `versionCode`; reusing a code is rejected. Promote the exact tested AAB between
 tracks instead of rebuilding it.
 
@@ -167,7 +180,7 @@ code 7. This was superseded by the Closed Alpha upload recorded above.
 Committing or pushing a branch does not upload or publish a Play release; a
 signed AAB and explicit release authorization are still required.
 
-An API upload should use the signed artifact produced by:
+This is an internal diagnostic build command only:
 
 ```bash
 ADMOB_USE_TEST_ADS=true \
@@ -176,13 +189,16 @@ APP_DEV_MODE=false \
 ./scripts/build_appbundle.sh
 ```
 
-The `ADMOB_USE_TEST_ADS=true` setting above is appropriate for the current
-internal diagnostic build. A production release must use the approved real
-AdMob IDs through the existing environment-based configuration and must pass
-the consent/privacy gates first.
+Do not upload that test-ad build to Closed testing or Production. For any
+tester or Production candidate, use `.devtools/prepare_play_candidate.sh` with
+`release_safe`, `APP_DEV_MODE=false`, approved real AdMob IDs and
+`ADMOB_USE_TEST_ADS=false`. Production publication still requires its separate
+owner approval and consent/privacy gates.
 
-Do not send a review, change store presence, alter tester lists, or promote to
-Production without explicit release approval.
+An authorized upload includes committing the Closed track edit, which may
+enter Play's review/publishing process. Store presence, tester lists,
+declarations, separate review-management actions and Production promotion
+remain separate owner operations and need their own explicit authorization.
 
 ## API failure history and recovery
 

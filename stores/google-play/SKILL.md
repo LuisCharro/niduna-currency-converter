@@ -24,7 +24,9 @@ mean a release exists or is public. Confirm the track state and dashboard.
 ## Safe workflow
 
 1. Review branch, diff, version code, signing setup, app checks and device QA.
-2. Read Play track state with `python3 stores/google-play/scripts/google_play.py status`.
+2. Set up the local Python environment once with
+   `./.devtools/google_play.sh setup`; use that wrapper for Play CLI commands.
+   Read Play track state with `./.devtools/google_play.sh status`.
    Inspect the returned API `track` values; a Console track label or numeric
    Console track ID is not necessarily the API track key. In particular, do
    not assume the API key `closed`; resolve the Closed Alpha track from a fresh
@@ -34,14 +36,19 @@ mean a release exists or is public. Confirm the track state and dashboard.
    Review its local APK/AAB, screenshots and checksums before upload. This
    helper never changes Play Console state. It checks emulator free space
    before running the longer verification and build steps.
-4. Before any upload, obtain Luis's explicit instruction naming the artifact
+4. Run `./.devtools/google_play.sh plan-closed --aab <candidate.aab>
+   --version-code <code>`. Review its live target, candidate path, size,
+   checksum, version and unused-code result. This creates and deletes a
+   temporary read edit; it does not upload or change a track.
+5. Before any upload, obtain Luis's explicit instruction naming the artifact
    and target track. API credentials alone are not release approval. For an
-   authorized Closed Alpha upload, use `upload-closed`; the command requires
-   the exact AAB, version code and release name and cannot target Production.
-5. After an authorized upload, verify the committed track in a fresh API read
+   authorized Closed Alpha upload, use `upload-closed`; it cannot target
+   Internal or Production.
+6. After an authorized upload, verify the committed track in a fresh API read
    and compare package, version code, status and artifact checksum with the
-   approved candidate.
-6. Production promotion/publication and website launch are separate owner gates.
+   approved candidate. Check Console for any review/publishing state before
+   telling testers that an update is available.
+7. Production promotion/publication and website launch are separate owner gates.
 
 ## API and Console lessons from earlier releases
 
@@ -74,13 +81,16 @@ mean a release exists or is public. Confirm the track state and dashboard.
   no-charge Billing. Follow the app runbook for account, cohort and country
   checks.
 
-`status` and `verify-access` create a temporary empty API edit to read the
-app-scoped resource and delete it in a `finally` path. `upload-closed` makes a
-single authorized AAB upload and track update transaction, resolving the
-Closed Alpha API track from a fresh track list and rejecting version codes
-already present on any track. It does not change tester lists, listings,
-declarations or review state. Stop if cleanup fails or the API returns
-ambiguous state; inspect fresh track state before retrying.
+`status`, `verify-access` and `plan-closed` create temporary API edits to read
+app-scoped state and delete those edits afterwards. `upload-closed` makes one
+authorized AAB upload and Closed Alpha track update transaction. It confirms
+the configured API track in a live track list, checks all listed bundles and
+track releases for code reuse, validates the edit, compares the API-reported
+bundle hash to the local AAB, and errors rather than cancelling changes
+already in review. It does not change tester lists, listings or declarations;
+the edit commit may still enter Play's review/publishing process. Stop if
+cleanup fails or the API returns ambiguous state;
+inspect fresh track state before retrying.
 
 ## Credentials and scope
 

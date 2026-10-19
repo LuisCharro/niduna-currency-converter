@@ -190,6 +190,21 @@ The Play Publisher credentials are machine-local; see `AGENTS.local.md` for
 the configured key path. Never put the JSON key, OAuth tokens, or generated
 credentials in this repository.
 
+Set up the isolated API client once and run it through the wrapper from any
+working directory:
+
+```bash
+./.devtools/google_play.sh setup
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/app-scoped-key.json
+./.devtools/google_play.sh status
+```
+
+Use `plan-closed --aab <path> --version-code <code>` to inspect a candidate
+without changing tracks. After explicit authorization, `upload-closed` repeats
+the checks and uploads only to the configured Closed Alpha track. Chrome stays
+the owner surface for listing assets, tester cohorts, declarations and review
+tasks.
+
 The current Play listing locale is `en-GB`. Use that locale when replacing
 the default listing icon or phone screenshots. Uploading assets to another
 locale can create a new draft listing and may cause the edit commit to fail.

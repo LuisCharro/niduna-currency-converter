@@ -11,7 +11,7 @@
     },
     "closed": {
       "consoleLabel": "Closed testing - Alpha",
-      "apiKey": null,
+      "apiKey": "alpha",
       "resolveFromApi": true
     },
     "production": {

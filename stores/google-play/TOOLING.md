@@ -7,13 +7,19 @@ change.
 
 ## 2026-10-19 update
 
-The local `google_play.py` adapter now has an `upload-closed` operation for a
-reviewed AAB. It is limited to the configured Closed Alpha API track, checks
-the version code against `pubspec.yaml` and current Play tracks, uses one edit
-transaction, and reports transfer progress and the AAB SHA-256. A fresh API
-read after the first use confirmed `1.0.0 (8)` on Alpha. This kept the upload
-workflow dependency-light and within the existing app-scoped service account;
-Fastlane, `gpd` and GitHub Actions remain unevaluated for actual uploads.
+The local `google_play.py` adapter now has a read-only `plan-closed` and a
+guarded `upload-closed` operation for a reviewed AAB. The preflight checks the
+candidate and current track; the upload rechecks all listed bundles and track
+releases in its edit, validates the local and Play SHA-256 values, and uses
+`ERROR_IF_IN_REVIEW` to avoid cancelling a pending review. It remains limited
+to configured Closed Alpha and the existing app-scoped service account. A
+successful edit commit may still enter Google's review/publishing process;
+the Console remains the source for whether testers can install the update.
+
+The first upload completed as `1.0.0 (8)` on Alpha. The official API reference
+also recommends a two-minute request timeout for bundle upload; the client is
+now configured with a three-minute timeout and resumable 8 MiB chunks. Fastlane,
+`gpd` and GitHub Actions remain unevaluated for actual uploads.
 
 Candidate preparation also now checks emulator `/data` space before running
 tests and builds. The first attempt had to switch to an emulator with more free
@@ -65,12 +71,16 @@ The official Android Publisher API groups changes in an edit transaction.
 Google documents that Console changes made while an edit is open discard that
 edit and take effect instead. Avoid simultaneous Console edits and API edits;
 commit or delete the API edit before using the Console, and verify the final
-state with a fresh API read.
+state with a fresh API read. Bundle uploads return a version code and SHA-256;
+compare that hash against the local artifact before committing.
 
 ## Upstream references
 
 - [Google Android Publisher API](https://developers.google.com/android-publisher/index)
 - [Google API edit transactions and Console interaction](https://developers.google.com/android-publisher/edits)
+- [Bundle upload and its recommended request timeout](https://developers.google.com/android-publisher/api-ref/rest/v3/edits/bundles/upload)
+- [Bundle list and API-reported SHA-256](https://developers.google.com/android-publisher/api-ref/rest/v3/edits/bundles)
+- [Commit behavior when other changes are in review](https://developers.google.com/android-publisher/api-ref/rest/v3/edits/commit)
 - [Fastlane Supply documentation](https://github.com/fastlane/fastlane/blob/master/fastlane/lib/fastlane/actions/docs/upload_to_play_store.md)
 - [gpd CLI and its agent skill pack](https://github.com/dl-alexandre/Google-Play-Developer-CLI)
 - [r0adkll GitHub Action](https://github.com/r0adkll/upload-google-play)
