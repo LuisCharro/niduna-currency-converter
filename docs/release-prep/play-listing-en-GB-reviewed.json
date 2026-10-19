@@ -1,5 +1,5 @@
 {
-  "status": "saved-in-console-submission-requested-awaiting-confirmation",
+  "status": "submitted-for-review",
   "packageName": "com.honestfern.currency_converter",
   "reason": "Actual fiat route uses Frankfurter blended rates, not a fixed ECB-only feed. Remove the inaccurate attribution and automatic daily refresh implication.",
   "listing": {
@@ -9,5 +9,5 @@
     "shortDescription": "Convert 45 currencies. Charts, favorites, offline. No account needed."
   },
   "consoleSavedDate": "2026-10-20",
-  "reviewStatus": "Quick checks pending; submission requested via Console, not yet confirmed in Submission activity."
+  "reviewStatus": "Console confirms Changes in review and 2 changes sent for review on 2026-10-20; approval/publication not confirmed."
 }

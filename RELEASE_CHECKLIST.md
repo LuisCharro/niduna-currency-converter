@@ -1,5 +1,31 @@
 # Release Checklist — Path to Google Play Store
 
+## Support ticket and metadata submission confirmed — 2026-10-20
+
+- Luis approved sending the English reviewer-access question. Submitted through
+  Console Help → Create support ticket → Google Play policies → App → policy
+  question, scoped to Currency Converter Honest Fern. Console confirmed
+  **Ticket submitted**, status **Pending**, **Case ID pending**. Replies go by
+  email; the UI estimates two working days, sometimes longer. Do not create a
+  duplicate ticket because an ID is not yet assigned.
+- Console initially generated an AI recommendation suggesting promo codes,
+  bypass/demo access. This is **not a human support determination**. Requested
+  a support specialist to clarify native Play Billing test purchases and how
+  single-use codes would satisfy reusable review access. No bypass, credential,
+  promo code or app change was implemented. Wait for the actual support reply.
+- The two metadata changes were still unsubmitted after the original quick
+  checks. Rechecked the exact batch after checks finished, then submitted the
+  en-GB description and Data safety only. Console now explicitly says
+  **Changes in review** and **2 changes sent for review**. It shows another
+  quick-check pass in the accepted submission flow. Do not submit again or
+  cancel review; approval/public visibility is not yet confirmed.
+- Production was not promoted or published. Build 10, website, prices and
+  country settings were not changed. Reviewer access and Production country
+  selection remain open. The earlier unconfirmed/unsent notes below are history.
+- Evidence (ignored): `.tmp/play-support-20261020/submitted.txt`,
+  `submitted.png`, `approved-request.txt`, `automated-suggestion.txt`;
+  `.tmp/play-final-corrections-20261020/submission-confirmed.txt` / `.png`.
+
 ## Console corrections — 2026-10-20
 
 - Luis asked to finish the remaining Console configuration and preserve a
