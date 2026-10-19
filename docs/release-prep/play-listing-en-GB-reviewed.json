@@ -1,0 +1,11 @@
+{
+  "status": "prepared-not-submitted",
+  "packageName": "com.honestfern.currency_converter",
+  "reason": "Actual fiat route uses Frankfurter blended rates, not a fixed ECB-only feed. Remove the inaccurate attribution and automatic daily refresh implication.",
+  "listing": {
+    "language": "en-GB",
+    "title": "Currency Converter Honest Fern",
+    "fullDescription": "A quiet currency converter for Android. Convert between 34 fiat currencies and 11 cryptocurrencies, see historical charts, and pin your most-used pairs. No account, login, or first-party analytics.\n\nCONVERT\nType an amount, choose a base currency, and see the rest at a glance. Reference exchange rates and crypto prices are fetched online. The app shows the source date.\n\nCHARTS\nView historical rate charts for supported currency pairs. Unlock extended chart access with Charts Pro.\n\nFAVORITES\nSave your most-used pairs and return to them quickly. The free version includes a starter set; Favorites Pro unlocks more pairs.\n\nOFFLINE\nOnce rates have been loaded online, the app keeps the last known rates and chart data on your device. The status shows when data is cached or stale.\n\nDARK MODE\nUse a calm light or dark theme.\n\nPRIVACY\nNo Honest Fern account, login, cloud sync, or first-party analytics. Favorites, settings, and cached rates stay on your device. The free version uses Google AdMob for banner and opt-in rewarded ads. One-time purchases can remove ads or unlock premium features. See the privacy policy for Google advertising data practices.\n\nSUPPORTED DATA\n34 fiat currencies and 11 cryptocurrencies, including USD, EUR, GBP, JPY, CHF, Bitcoin, Ethereum, Solana, XRP, and Cardano.",
+    "shortDescription": "Convert 45 currencies. Charts, favorites, offline. No account needed."
+  }
+}

@@ -23,8 +23,12 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-10-19)
+## Current state (reviewed 2026-10-20)
 
+- Final read-only Console review found Data safety purpose errors and a paid-feature
+  reviewer-access declaration mismatch. Production countries are unselected; listing
+  correction is prepared only. Read `docs/release-prep/play-console-final-review-2026-10-20.md`
+  before submission; do not equate no Console policy issues with accurate declarations.
 - `main` is canonical; inspect HEAD/working tree before acting.
 - `1.0.0+10` is available to selected Closed Alpha testers (Console checked).
   Luis installed from the Closed link and reports all requested phone checks

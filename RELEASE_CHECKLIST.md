@@ -1,5 +1,18 @@
 # Release Checklist — Path to Google Play Store
 
+## Final Console review — 2026-10-20
+
+Read-only API/Chrome audit completed; see
+[`play-console-final-review-2026-10-20.md`](docs/release-prep/play-console-final-review-2026-10-20.md).
+Build 10 remains available in Closed and Production remains empty. All six
+current gallery images match the reviewed manifest. No external changes were
+saved/submitted during this audit. Before Production: correct Data safety
+purposes, resolve reliable free access to paid features for Google reviewers
+(current Sign-in details incorrectly says no restrictions), submit the prepared
+listing wording correction, and select countries. ES/CH is recommended for
+initial launch, awaiting owner decision. Keep existing source/privacy adequacy
+questions open; Console’s no-issues status does not close them.
+
 ## Real-device acceptance — 2026-10-19, Closed build 10
 
 - Console was subsequently checked: Closed Alpha `1.0.0 (10)` is **Available
