@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read the Play one-time catalog or plan prices offline. Never writes to Play."""
+"""Read, plan, or explicitly apply approved Google Play one-time product prices."""
 from __future__ import annotations
 
 import argparse
@@ -19,22 +19,26 @@ from google_play import (build_service, emit_result, load_config, play_operation
 def read_catalog() -> dict:
     package = load_config()['packageName']
     service = build_service()
-    products = []
     with play_operation_lock(package):
-        token = None
-        seen_tokens = set()
-        while True:
-            arguments = {'packageName': package, 'pageSize': 100}
-            if token:
-                arguments['pageToken'] = token
-            response = service.monetization().onetimeproducts().list(**arguments).execute()
-            products.extend(response.get('oneTimeProducts', []))
-            token = response.get('nextPageToken')
-            if not token:
-                break
-            if token in seen_tokens:
-                raise ValueError('Repeated catalog pagination token; read aborted.')
-            seen_tokens.add(token)
+        return read_catalog_unlocked(service, package)
+
+
+def read_catalog_unlocked(service, package: str) -> dict:
+    """Caller must hold the package lock when used in a write workflow."""
+    products, seen_tokens = [], set()
+    token = None
+    while True:
+        arguments = {'packageName': package, 'pageSize': 100}
+        if token:
+            arguments['pageToken'] = token
+        response = service.monetization().onetimeproducts().list(**arguments).execute()
+        products.extend(response.get('oneTimeProducts', []))
+        token = response.get('nextPageToken')
+        if not token:
+            break
+        if token in seen_tokens:
+            raise ValueError('Repeated catalog pagination token; read aborted.')
+        seen_tokens.add(token)
     return {'schemaVersion': 1, 'packageName': package,
             'observedAt': datetime.now(timezone.utc).isoformat(),
             'api': 'monetization.onetimeproducts', 'oneTimeProducts': products}
@@ -115,6 +119,7 @@ def make_plan(catalog: dict, policy: dict, snapshot_hash: str) -> dict:
         if configured - present:
             raise ValueError('A currency override matches no live region.')
     return {'schemaVersion': 1, 'packageName': package, 'policyStatus': policy['status'],
+            'policySha256': hashlib.sha256(json.dumps(policy, sort_keys=True).encode()).hexdigest(),
             'generatedAt': datetime.now(timezone.utc).isoformat(),
             'catalogObservedAt': catalog.get('observedAt'), 'snapshotSha256': snapshot_hash,
             'summary': {'priceRows': len(rows), 'changedPriceRows': sum(r['changed'] for r in rows),
@@ -123,7 +128,7 @@ def make_plan(catalog: dict, policy: dict, snapshot_hash: str) -> dict:
             'limitations': ['Offline proposal, not a Google validation or update payload.',
                             'No price-range or tax validation; review final checkout by region.',
                             'No availability, future-region, offer, tax or entitlement changes.',
-                            'A later writer needs fresh catalog, approved diff and post-write verification.'],
+                            'Applying requires fresh catalog, approved policy/plan and post-write verification.'],
             'rows': rows}
 
 
@@ -137,7 +142,22 @@ def main() -> int:
     plan.add_argument('--policy', type=Path, required=True)
     plan.add_argument('--output', type=Path, required=True)
     plan.add_argument('--csv-output', type=Path)
+    apply = sub.add_parser('apply', help='Write an approved plan after fresh-state checks; no automatic retries.')
+    apply.add_argument('--catalog', type=Path, required=True)
+    apply.add_argument('--policy', type=Path, required=True)
+    apply.add_argument('--plan', type=Path, required=True)
+    apply.add_argument('--receipt-dir', type=Path, required=True)
+    apply.add_argument('--confirm-package', required=True)
     args = parser.parse_args()
+    if args.command == 'apply':
+        from pricing_apply import apply_prices
+        try:
+            result = apply_prices(args)
+            print(json.dumps(result, indent=2))
+            return 0
+        except Exception as error:
+            print(f'Pricing apply stopped: {error}. Inspect receipt directory and live catalog; do not retry blindly.', file=sys.stderr)
+            return 1
     if args.output.exists() or (getattr(args, 'csv_output', None) and args.csv_output.exists()):
         parser.error('Output exists. Use new receipt paths; never overwrite snapshots/plans.')
     if not args.output.parent.is_dir() or (getattr(args, 'csv_output', None) and not args.csv_output.parent.is_dir()):
