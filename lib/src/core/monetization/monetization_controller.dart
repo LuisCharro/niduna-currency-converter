@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/temporary_unlock.dart';
 import 'monetization_entitlements.dart';
+import 'product_price_catalog.dart';
 import 'purchase_service.dart';
 import 'purchase_service_stub.dart';
 import 'rewarded_ad_service.dart';
@@ -199,4 +200,14 @@ class MonetizationController extends ChangeNotifier {
   /// Asks the store to re-deliver past purchases; restored products come
   /// back through [applyLifetimeEntitlement].
   Future<void> restorePurchases() => _purchaseService.restore();
+
+  Future<Map<ProductType, String>> fetchLocalizedPrices() async {
+    final service = _purchaseService;
+    if (service is! ProductPriceCatalog) return const {};
+    try {
+      return await (service as ProductPriceCatalog).fetchLocalizedPrices();
+    } catch (_) {
+      return const {};
+    }
+  }
 }

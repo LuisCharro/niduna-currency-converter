@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
 
+import 'product_price_catalog.dart';
 import 'purchase_service.dart';
 
 /// Real Google Play Billing implementation of [PurchaseService].
@@ -10,7 +11,7 @@ import 'purchase_service.dart';
 /// restore results arrive asynchronously on the platform purchase stream;
 /// entitlement persistence stays in [MonetizationController], which receives
 /// granted products through [onEntitlement].
-class PlayPurchaseService implements PurchaseService {
+class PlayPurchaseService implements PurchaseService, ProductPriceCatalog {
   PlayPurchaseService({void Function(ProductType product)? onEntitlement})
     : _onEntitlement = onEntitlement {
     _subscription = InAppPurchase.instance.purchaseStream.listen(
@@ -44,13 +45,44 @@ class PlayPurchaseService implements PurchaseService {
     _pendingByProductId[productId] = completer;
 
     final started = await store.buyNonConsumable(
-      purchaseParam: PurchaseParam(productDetails: response.productDetails.first),
+      purchaseParam: PurchaseParam(
+        productDetails: response.productDetails.first,
+      ),
     );
     if (!started) {
       _pendingByProductId.remove(productId);
       return false;
     }
     return completer.future;
+  }
+
+  @override
+  Future<Map<ProductType, String>> fetchLocalizedPrices() async {
+    try {
+      final store = InAppPurchase.instance;
+      if (!await store.isAvailable()) return const {};
+
+      final response = await store.queryProductDetails(
+        productIds.values.toSet(),
+      );
+      if (response.error != null) return const {};
+
+      final priceById = <String, String>{};
+      for (final details in response.productDetails) {
+        if (!productIds.values.contains(details.id)) continue;
+        final price = details.price.trim();
+        if (price.isNotEmpty) priceById[details.id] = price;
+      }
+
+      final localizedPrices = <ProductType, String>{};
+      for (final entry in productIds.entries) {
+        final price = priceById[entry.value];
+        if (price != null) localizedPrices[entry.key] = price;
+      }
+      return localizedPrices;
+    } catch (_) {
+      return const {};
+    }
   }
 
   @override

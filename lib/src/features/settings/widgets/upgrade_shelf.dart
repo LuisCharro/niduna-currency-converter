@@ -6,6 +6,8 @@ import '../../../core/theme/app_theme.dart';
 import '../../../../l10n/app_localizations_safe.dart';
 import '../../../shared/widgets/settings_tile.dart';
 import '../settings_controller.dart';
+import 'store_prices_builder.dart';
+import 'upgrade_product_copy.dart';
 
 /// Divider-integrated premium group (D2-SET-3).
 class UpgradeShelf extends StatelessWidget {
@@ -15,100 +17,90 @@ class UpgradeShelf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loc = l10n(context);
-    final m = controller.monetization;
+    final monetization = controller.monetization;
     final hasPremium =
-        m.hasActiveSubscription ||
-        m.hasChartsProLifetime ||
-        m.hasRemoveAdsLifetime ||
-        m.hasFavoritesProLifetime;
+        monetization.hasActiveSubscription ||
+        monetization.hasChartsProLifetime ||
+        monetization.hasRemoveAdsLifetime ||
+        monetization.hasFavoritesProLifetime;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(2, 0, 2, AppTheme.space2),
-          child: Text(
-            hasPremium ? loc.paidUnlocksStay : loc.oneTimePurchaseNote,
-            style: AppTheme.supportingTextStyle(context),
+    return StorePricesBuilder(
+      controller: monetization,
+      builder: (context, prices) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(2, 0, 2, AppTheme.space2),
+            child: Text(
+              hasPremium
+                  ? l10n(context).paidUnlocksStay
+                  : l10n(context).oneTimePurchaseNote,
+              style: AppTheme.supportingTextStyle(context),
+            ),
           ),
-        ),
-        const SizedBox(height: AppTheme.space3),
-        if (!m.hasRemoveAdsLifetime)
-          SettingsTile(
-            title: loc.labelRemoveAds,
-            subtitle: _removeAdsSubtitle(context),
-            trailing: _BuyChip(label: loc.btnBuy),
+          const SizedBox(height: AppTheme.space3),
+          _productTile(
+            context,
+            prices,
+            product: ProductType.removeAds,
+            title: l10n(context).labelRemoveAds,
+            owned: monetization.hasRemoveAdsLifetime,
             onTap: () =>
                 controller.purchaseProduct(context, ProductType.removeAds),
-          )
-        else
-          SettingsTile(
-            title: loc.labelRemoveAds,
-            subtitle: loc.ownedOnDevice,
-            trailing: _OwnedBadge(label: loc.ownedOnDevice),
           ),
-        if (!m.hasChartsProLifetime)
-          SettingsTile(
-            title: loc.chartsProTitle,
-            subtitle: _chartsProSubtitle(context),
-            trailing: _BuyChip(label: loc.btnBuy),
+          _productTile(
+            context,
+            prices,
+            product: ProductType.chartsPro,
+            title: l10n(context).chartsProTitle,
+            owned: monetization.hasChartsProLifetime,
             onTap: () =>
                 controller.purchaseProduct(context, ProductType.chartsPro),
-          )
-        else
-          SettingsTile(
-            title: loc.chartsProTitle,
-            subtitle: loc.ownedOnDevice,
-            trailing: _OwnedBadge(label: loc.ownedOnDevice),
           ),
-        if (!m.hasFavoritesProLifetime)
-          SettingsTile(
-            title: loc.favoritesProTitle,
-            subtitle: _favoritesProSubtitle(context),
-            trailing: _BuyChip(label: loc.btnBuy),
+          _productTile(
+            context,
+            prices,
+            product: ProductType.favoritesPro,
+            title: l10n(context).favoritesProTitle,
+            owned: monetization.hasFavoritesProLifetime,
             onTap: () =>
                 controller.purchaseProduct(context, ProductType.favoritesPro),
-          )
-        else
-          SettingsTile(
-            title: loc.favoritesProTitle,
-            subtitle: loc.ownedOnDevice,
-            trailing: _OwnedBadge(label: loc.ownedOnDevice),
-            showDivider: false,
+            showDivider: !monetization.hasFavoritesProLifetime,
           ),
-      ],
+        ],
+      ),
     );
   }
 
-  String _removeAdsSubtitle(BuildContext context) {
-    return switch (Localizations.localeOf(context).languageCode) {
-      'de' => '1.99 CHF · dauerhaft auf diesem Gerät',
-      'es' => '1.99 CHF · para siempre en este dispositivo',
-      'fr' => '1.99 CHF · à vie sur cet appareil',
-      'it' => '1.99 CHF · per sempre su questo dispositivo',
-      _ => '1.99 CHF · lifetime on this device',
-    };
-  }
+  Widget _productTile(
+    BuildContext context,
+    Map<ProductType, String> prices, {
+    required ProductType product,
+    required String title,
+    required bool owned,
+    required VoidCallback onTap,
+    bool showDivider = true,
+  }) {
+    if (owned) {
+      return SettingsTile(
+        title: title,
+        subtitle: l10n(context).ownedOnDevice,
+        trailing: _OwnedBadge(label: l10n(context).ownedOnDevice),
+        showDivider: showDivider,
+      );
+    }
 
-  String _chartsProSubtitle(BuildContext context) {
-    return switch (Localizations.localeOf(context).languageCode) {
-      'de' => '2.99 CHF · alle Paare dauerhaft freischalten',
-      'es' => '2.99 CHF · desbloquea todos los pares para siempre',
-      'fr' => '2.99 CHF · débloque toutes les paires à vie',
-      'it' => '2.99 CHF · sblocca tutte le coppie per sempre',
-      _ => '2.99 CHF · unlock all pairs forever',
-    };
-  }
-
-  String _favoritesProSubtitle(BuildContext context) {
-    return switch (Localizations.localeOf(context).languageCode) {
-      'de' => '0.99 CHF · bis zu 16 Paare speichern',
-      'es' => '0.99 CHF · guarda hasta 16 pares',
-      'fr' => '0.99 CHF · sauvegarder jusqu\'à 16 paires',
-      'it' => '0.99 CHF · salva fino a 16 coppie',
-      _ => '0.99 CHF · save up to 16 pairs forever',
-    };
+    final description = upgradeProductDescription(context, product);
+    final price = prices[product];
+    return SettingsTile(
+      title: title,
+      subtitle: price == null || price.trim().isEmpty
+          ? description
+          : '$price · $description',
+      trailing: _BuyChip(label: l10n(context).btnBuy),
+      onTap: onTap,
+      showDivider: showDivider,
+    );
   }
 }
 
@@ -118,22 +110,20 @@ class _BuyChip extends StatelessWidget {
   final String label;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: AppColors.of(context).primary,
-        borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    decoration: BoxDecoration(
+      color: AppColors.of(context).primary,
+      borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+    ),
+    child: Text(
+      label,
+      style: AppTheme.caption.copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w800,
       ),
-      child: Text(
-        label,
-        style: AppTheme.caption.copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-    );
-  }
+    ),
+  );
 }
 
 class _OwnedBadge extends StatelessWidget {
@@ -142,20 +132,18 @@ class _OwnedBadge extends StatelessWidget {
   final String label;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: AppColors.of(context).trendUp.withValues(alpha: .14),
-        borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    decoration: BoxDecoration(
+      color: AppColors.of(context).trendUp.withValues(alpha: .14),
+      borderRadius: BorderRadius.circular(AppTheme.pillRadius),
+    ),
+    child: Text(
+      label,
+      style: AppTheme.caption.copyWith(
+        color: AppColors.of(context).trendUp,
+        fontWeight: FontWeight.w800,
       ),
-      child: Text(
-        label,
-        style: AppTheme.caption.copyWith(
-          color: AppColors.of(context).trendUp,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-    );
-  }
+    ),
+  );
 }
