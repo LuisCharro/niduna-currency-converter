@@ -12,12 +12,15 @@ android_port="${ANDROID_PORT:-5556}"
 android_serial="${ANDROID_SERIAL:-emulator-${android_port}}"
 output_root="${SCREEN_OUTPUT_DIR:-${app_repo}/.tmp/screens/android/site-paid}"
 target_path="${CAPTURE_TARGET_PATH:-integration_test/screenshot_gallery_test.dart}"
-provider_profile="${PROVIDER_PROFILE:-dev_coinpaprika}"
-app_dev_mode="${APP_DEV_MODE:-true}"
+provider_profile="${PROVIDER_PROFILE:-release_safe}"
+app_dev_mode="${APP_DEV_MODE:-false}"
 start_emulator="${START_EMULATOR:-1}"
 boot_timeout_seconds="${BOOT_TIMEOUT_SECONDS:-180}"
 
 capture_script="${app_repo}/.devtools/capture_android_screens.sh"
+site_python="${SITE_PYTHON_BIN:-${app_repo}/.tmp/google-play-venv/bin/python}"
+existing_capture="${SITE_SCREENSHOT_SOURCE_DIR:-}"
+
 emulator_log="${EMULATOR_LOG_PATH:-${app_repo}/.tmp/emulator-${android_avd}.log}"
 
 find_adb() {
@@ -154,32 +157,24 @@ capture_mode() {
     "${capture_script}"
 }
 
-copy_asset() {
-  local source_path="$1"
-  local destination_path="$2"
-  if [[ ! -f "${source_path}" ]]; then
-    echo "Expected capture was not generated: ${source_path}" >&2
-    exit 1
-  fi
-  cp "${source_path}" "${destination_path}"
-  echo "Updated ${destination_path}"
-}
-
 sync_site_assets() {
-  local site_assets="${site_repo}/assets"
-  if [[ ! -d "${site_assets}" ]]; then
-    echo "Site assets directory not found: ${site_assets}" >&2
-    exit 1
-  fi
-
-  copy_asset "${output_root}/light/01-convert.png" "${site_assets}/screenshot-convert.png"
-  copy_asset "${output_root}/dark/01-convert.png" "${site_assets}/screenshot-convert-dark.png"
-  copy_asset "${output_root}/dark/02-chart-btc.png" "${site_assets}/screenshot-chart.png"
-  copy_asset "${output_root}/light/03-favorites.png" "${site_assets}/screenshot-favorites.png"
-  copy_asset "${output_root}/dark/03-favorites.png" "${site_assets}/screenshot-favorites-dark.png"
+  "${site_python}" "${site_repo}/scripts/sync-app-screenshots.py" --source "${existing_capture:-${output_root}}"
 }
 
 main() {
+  if [[ ! -x "${site_python}" ]]; then
+    echo "Screenshot Python environment missing; run ./.devtools/google_play.sh setup or set SITE_PYTHON_BIN." >&2
+    exit 1
+  fi
+  "${site_python}" -c 'from PIL import Image' || {
+    echo "Pillow missing; run ./.devtools/google_play.sh setup." >&2
+    exit 1
+  }
+  if [[ -n "${existing_capture}" ]]; then
+    sync_site_assets
+    echo "Reused reviewed captures; PNG/WebP files and HTML cache keys updated locally."
+    return
+  fi
   if [[ ! -x "${capture_script}" ]]; then
     echo "Android capture driver is not executable: ${capture_script}" >&2
     exit 1

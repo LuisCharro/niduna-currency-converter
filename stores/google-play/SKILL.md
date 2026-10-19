@@ -131,3 +131,15 @@ reliably complete. Verify every saved or submitted state in the Console.
   identify the process and timestamp. Do not assume an app ANR or auto-dismiss
   it. Screenshot tests seed premium state; restore a normal release install
   on a disposable QA emulator before handing it back.
+
+## Website screenshots after UI changes
+
+The public website has its own repository at `../../niduna-site` relative to
+this app repo. Follow its `docs/screenshot-refresh-and-deploy.md`. Reuse the
+reviewed original 1080×2400 gallery with
+`SITE_SCREENSHOT_SOURCE_DIR=<capture-root> ./.devtools/capture_site_screenshots.sh`.
+This updates five site PNGs, eight responsive WebP copies and HTML cache keys;
+Play's padded 1350×2400 images are not the website source. The script prepares
+local files only. The website is deployed separately via its existing VPS SSH
+script after a reviewed commit/push and deployment authorization; no Nginx
+restart is needed. Keep Coming Soon until Production is public.

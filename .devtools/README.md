@@ -232,31 +232,26 @@ old selected assets.
 
 ## Honest Fern site screenshot capture
 
-To regenerate the large fully unlocked paid-layout screenshots used by
-`niduna-site` and copy
-the stable five assets into that repository in one step:
+Reuse a visually reviewed original gallery (no emulator/build needed):
 
 ```bash
-./.devtools/capture_site_screenshots.sh
+SITE_SCREENSHOT_SOURCE_DIR=.tmp/<capture-root> ./.devtools/capture_site_screenshots.sh
 ```
 
-The helper reuses or starts the `Pixel7_EN` AVD on `emulator-5556`, verifies the
-1080×2400 screen size, captures both light and dark modes, and updates only the
-five `niduna-site/assets/screenshot-*.png` files consumed by the Currency
-Converter page. It uses the store-style gallery so the site previews contain
-neither ads nor upgrade prompts. It leaves the emulator running for inspection.
+The root contains `light/` and `dark/` gallery files. The helper calls the site's
+`scripts/sync-app-screenshots.py` to copy five PNGs, regenerate eight responsive
+WebP files and update HTML/JSON-LD cache keys. A standard-library `--check`
+verifies the site manifest and references. It uses Pillow from the Google Play
+venv; run `google_play.sh setup` once, or set `SITE_PYTHON_BIN`.
 
-Useful overrides:
+Omit `SITE_SCREENSHOT_SOURCE_DIR` for a fresh capture. Use the intended
+`ANDROID_SERIAL`; defaults are `release_safe` and `APP_DEV_MODE=false`, and the
+gallery seeds paid entitlements. Site export uses original 1080×2400 captures,
+not Play's padded 1350×2400 copies. This helper does not deploy the website.
 
-- `ANDROID_AVD`, `ANDROID_PORT`, `ANDROID_SERIAL`
-- `SITE_REPO_PATH`
-- `SCREEN_OUTPUT_DIR`
-- `BOOT_TIMEOUT_SECONDS`
-- `START_EMULATOR=0` when the target must already be running
+Follow `../../niduna-site/docs/screenshot-refresh-and-deploy.md` from this
+app repo for the separate reviewed SSH deployment and public hash checks.
 
-The generated working files remain under `.tmp/screens/android/site-paid/` and
-are intentionally gitignored. Review the five site assets visually before
-committing the site repository.
 
 ## iOS minimal smoke test
 
