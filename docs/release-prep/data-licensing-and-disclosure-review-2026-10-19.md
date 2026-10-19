@@ -267,3 +267,13 @@ Android app with ads and one-time IAP, and what source notices/attribution are
 required? Ask Frankfurter only for any remaining blended downstream-credit
 clarification; its commercial/caching FAQ already answers the basic usage point.
 Do not send requests without Luis explicitly authorizing the recipient/message.
+
+## Follow-up 2026-10-20 — source credits wording, build 11 source
+
+After comparing with Currency (which serves rates from its own server and so
+names no supplier), Luis approved keeping the second-level Sources page but
+dropping the provenance claim. `rateSourcesIntro` in all five locales is now
+"Fiat rates: Frankfurter. Crypto rates: exchange-api." (localized). Local
+source is `1.0.0+11`; no AAB was built or uploaded. Build 10 remains the
+accepted Closed artifact; code 11 needs its own acceptance before it replaces
+it. The controller description stays brand-first by Luis's decision.

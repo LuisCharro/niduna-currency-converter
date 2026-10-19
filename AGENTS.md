@@ -85,7 +85,8 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+10`, available in Closed Alpha and manually accepted by Luis.
+- Current `pubspec.yaml`: `1.0.0+11` (local, 2026-10-20: Sources-page copy only; not built or uploaded).
+  `1.0.0+10` is available in Closed Alpha and manually accepted by Luis.
   Internal remains 7; Production promotion is separate.
 - Code 10 is already used. Any changed binary needs a new unused higher code.
 - Keep the candidate's version name `1.0.0`; code 8 contains the Convert

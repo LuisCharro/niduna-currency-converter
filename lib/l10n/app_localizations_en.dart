@@ -539,7 +539,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rateSourcesIntro =>
-      'Frankfurter provides fiat rates from central-bank and other official sources. exchange-api provides crypto data.';
+      'Fiat rates: Frankfurter. Crypto rates: exchange-api.';
 
   @override
   String get chartDataHelpTitle => 'About chart data';

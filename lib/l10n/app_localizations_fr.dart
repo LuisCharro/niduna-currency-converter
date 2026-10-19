@@ -550,7 +550,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get rateSourcesIntro =>
-      'Frankfurter fournit les taux fiat de banques centrales et d’autres sources officielles. exchange-api fournit les données crypto.';
+      'Taux fiat : Frankfurter. Taux crypto : exchange-api.';
 
   @override
   String get chartDataHelpTitle => 'À propos des données du graphique';

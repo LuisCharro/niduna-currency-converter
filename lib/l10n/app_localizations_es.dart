@@ -546,7 +546,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get rateSourcesIntro =>
-      'Frankfurter proporciona los tipos fiat de bancos centrales y otras fuentes oficiales. exchange-api proporciona los datos cripto.';
+      'Tipos fiat: Frankfurter. Tipos cripto: exchange-api.';
 
   @override
   String get chartDataHelpTitle => 'Datos del gráfico';

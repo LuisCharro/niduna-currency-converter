@@ -546,7 +546,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get rateSourcesIntro =>
-      'Frankfurter liefert Fiat-Kurse von Zentralbanken und anderen offiziellen Quellen. exchange-api liefert Kryptodaten.';
+      'Fiat-Kurse: Frankfurter. Kryptokurse: exchange-api.';
 
   @override
   String get chartDataHelpTitle => 'Über die Chartdaten';

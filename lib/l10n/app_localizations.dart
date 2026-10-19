@@ -1079,7 +1079,7 @@ abstract class AppLocalizations {
   /// Concise provider credits without claiming ECB-only data
   ///
   /// In en, this message translates to:
-  /// **'Frankfurter provides fiat rates from central-bank and other official sources. exchange-api provides crypto data.'**
+  /// **'Fiat rates: Frankfurter. Crypto rates: exchange-api.'**
   String get rateSourcesIntro;
 
   /// Chart data help title and accessible button label
