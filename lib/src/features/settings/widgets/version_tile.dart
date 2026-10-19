@@ -21,10 +21,8 @@ class VersionTile extends StatefulWidget {
 class _VersionTileState extends State<VersionTile> {
   static const int _requiredTaps = 7;
   static const Duration _tapWindow = Duration(seconds: 4);
-  static const Duration _holdDuration = Duration(seconds: 10);
 
   Timer? _tapResetTimer;
-  Timer? _holdTimer;
   int _tapCount = 0;
   String _appVersion = '--';
 
@@ -37,7 +35,6 @@ class _VersionTileState extends State<VersionTile> {
   @override
   void dispose() {
     _tapResetTimer?.cancel();
-    _holdTimer?.cancel();
     super.dispose();
   }
 
@@ -50,6 +47,8 @@ class _VersionTileState extends State<VersionTile> {
   }
 
   void _handleTap() {
+    if (!widget.controller.preferences.devToolsAvailable) return;
+
     _tapResetTimer?.cancel();
     _tapCount += 1;
     if (_tapCount >= _requiredTaps) {
@@ -66,36 +65,19 @@ class _VersionTileState extends State<VersionTile> {
     }
   }
 
-  void _startHoldUnlock() {
-    _holdTimer?.cancel();
-    _holdTimer = Timer(_holdDuration, () {
-      if (!mounted) return;
-      _holdTimer = null;
-      _tapCount = 0;
-      widget.controller.toggleDevMode(context);
-    });
-  }
-
-  void _cancelHoldUnlock() {
-    _holdTimer?.cancel();
-    _holdTimer = null;
-  }
-
   @override
   Widget build(BuildContext context) {
     final loc = l10n(context);
-    final devModeEnabled = widget.controller.preferences.devMode;
-    return GestureDetector(
-      onTap: _handleTap,
-      onLongPressStart: (_) => _startHoldUnlock(),
-      onLongPressEnd: (_) => _cancelHoldUnlock(),
-      child: SettingsTile(
-        title: loc.labelVersion,
-        trailing: Text(
-          '$_appVersion${devModeEnabled ? ' · DEV' : ''}',
-          style: AppTheme.caption.copyWith(color: AppColors.of(context).muted),
-        ),
+    final preferences = widget.controller.preferences;
+    final versionTile = SettingsTile(
+      title: loc.labelVersion,
+      trailing: Text(
+        '$_appVersion${preferences.devMode ? ' · DEV' : ''}',
+        style: AppTheme.caption.copyWith(color: AppColors.of(context).muted),
       ),
     );
+
+    if (!preferences.devToolsAvailable) return versionTile;
+    return GestureDetector(onTap: _handleTap, child: versionTile);
   }
 }
