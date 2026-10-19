@@ -30,7 +30,8 @@ void main() {
     expect(find.text(r'$ 0.862660'), findsNothing);
     expect(find.text('Checked Sep 11'), findsOneWidget);
     expect(find.textContaining('Daily data'), findsNothing);
-    expect(tester.getRect(find.text('Checked Sep 11')).right, 340);
+    // The label is a TextButton (chart data help) with 4px side padding.
+    expect(tester.getRect(find.text('Checked Sep 11')).right, 336);
     expect(find.byIcon(Icons.swap_vert_rounded), findsNothing);
   });
 

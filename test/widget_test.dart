@@ -253,11 +253,11 @@ void main() {
 
     expect(find.text('Daily exchange rates'), findsOneWidget);
     expect(
-      find.textContaining('not live or intraday market prices'),
+      find.textContaining('Indicative daily rates, not live prices.'),
       findsOneWidget,
     );
     expect(
-      find.textContaining('publish new data at different times'),
+      find.textContaining('may lag on weekends and public holidays'),
       findsOneWidget,
     );
     expect(find.textContaining('future Premium subscription'), findsNothing);
@@ -738,15 +738,15 @@ void main() {
   ) async {
     await tester.pumpWidget(const MaterialApp(home: DataDetailsPage()));
     expect(
-      find.text(
-        'Fiat rates come from Frankfurter using public central-bank data.',
-      ),
+      find.textContaining('Indicative daily rates, not live quotes.'),
       findsOneWidget,
     );
     expect(
-      find.text('Crypto prices come from an open public dataset.'),
+      find.textContaining('External services provide rate updates'),
       findsOneWidget,
     );
+    // Provider credits live on the second-level Sources page.
+    expect(find.textContaining('Frankfurter'), findsNothing);
     // No developer/build vocabulary on the user-facing page.
     expect(find.textContaining('Dev Sandbox'), findsNothing);
     expect(find.textContaining('provider chain'), findsNothing);
@@ -801,13 +801,15 @@ void main() {
     );
 
     expect(
-      find.text('1.99 CHF · para siempre en este dispositivo'),
+      find.text('Para siempre en este dispositivo'),
       findsOneWidget,
     );
     expect(
-      find.text('2.99 CHF · desbloquea todos los pares para siempre'),
+      find.text('Desbloquea todos los pares para siempre'),
       findsOneWidget,
     );
+    // Prices come from Google Play at runtime; none is hardcoded.
+    expect(find.textContaining('CHF'), findsNothing);
     expect(find.textContaining('lifetime on this device'), findsNothing);
     expect(find.textContaining('unlock all pairs forever'), findsNothing);
   });
