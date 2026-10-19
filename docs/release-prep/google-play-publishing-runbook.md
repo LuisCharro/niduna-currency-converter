@@ -17,6 +17,17 @@ document owns only Currency Converter facts and commands.
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
 
+## Local preview after code 9 — 2026-10-19
+
+`pubspec.yaml` is `1.0.0+10` for Luis's approved layered help changes. It has
+not been uploaded; there is no approved code-10 Play AAB. The test-ad preview
+APK and the isolated rendering harness in `.tmp/privacy-layered-preview-20261019/`
+are not upload candidates. Code 9 remains the current Closed build; Luis
+reports installing the latest version, and Console/Chrome confirmed the new
+listing gallery live. Keep Production separate. Before any new upload, build
+an exact signed real-ad AAB, run live unused-code preflight and review the whole
+pending Console change batch. The historical code-9 artifact below is unchanged.
+
 ## Latest submission — 2026-10-19, code 9
 
 `1.0.0 (9)` was uploaded and committed to Closed Alpha (`alpha`) with Luis's
@@ -251,7 +262,7 @@ checks inside the write edit:
 The current version source of truth is `pubspec.yaml`:
 
 ```text
-version: 1.0.0+9
+version: 1.0.0+10
 ```
 
 For a real follow-up fix, keep `versionName` `1.0.0` and increment only the

@@ -199,7 +199,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get dataSourcesSubtitle =>
-      'Fonti, calendario di aggiornamento e cosa viene salvato';
+      'Un riepilogo e le tue scelte sulla privacy';
 
   @override
   String get versionTapHint =>
@@ -296,7 +296,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get dataPrivacyLine =>
-      'Preferenze, preferiti e tassi salvati restano su questo dispositivo. Le richieste dei tassi vanno ai provider; quelle degli annunci a Google quando gli annunci sono attivi.';
+      'Preferiti e impostazioni restano su questo dispositivo. Servizi esterni forniscono i tassi e Google mostra annunci quando sono attivi.';
 
   @override
   String get updatesTitle => 'Aggiornamenti';
@@ -537,4 +537,18 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get chartAdInstructions =>
       'Segui le istruzioni dell’annuncio per ottenere il premio';
+
+  @override
+  String get dataSummaryRates =>
+      'Tassi giornalieri indicativi, non quotazioni in tempo reale. Con Aggiorna all’apertura attivo, l’app controlla i dati alla prima apertura di ogni giorno. Puoi anche aggiornare manualmente. I tassi salvati funzionano offline.';
+
+  @override
+  String get rateSourcesTitle => 'Fonti dei dati';
+
+  @override
+  String get rateSourcesIntro =>
+      'Frankfurter fornisce tassi fiat da banche centrali e altre fonti ufficiali. exchange-api fornisce i dati crypto.';
+
+  @override
+  String get chartDataHelpTitle => 'Informazioni sui dati del grafico';
 }

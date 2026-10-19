@@ -196,8 +196,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chartsProTitle => 'Charts Pro';
 
   @override
-  String get dataSourcesSubtitle =>
-      'Sources, update schedule and what\'s stored';
+  String get dataSourcesSubtitle => 'A short overview and your privacy choices';
 
   @override
   String get versionTapHint => 'Tap 7 times to unlock developer options';
@@ -293,7 +292,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataPrivacyLine =>
-      'Your preferences, favorites and saved rates stay on this device. Rate requests go to providers; ad requests go to Google when ads are enabled.';
+      'Your favorites and settings stay on this device. External services provide rate updates and Google serves ads when enabled.';
 
   @override
   String get updatesTitle => 'Updates';
@@ -530,4 +529,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get chartAdInstructions =>
       'Follow the ad’s instructions to earn the reward';
+
+  @override
+  String get dataSummaryRates =>
+      'Indicative daily rates, not live quotes. With Refresh on open enabled, the app checks once per day when opened. You can also refresh manually. Saved rates work offline.';
+
+  @override
+  String get rateSourcesTitle => 'Rate sources';
+
+  @override
+  String get rateSourcesIntro =>
+      'Frankfurter provides fiat rates from central-bank and other official sources. exchange-api provides crypto data.';
+
+  @override
+  String get chartDataHelpTitle => 'About chart data';
 }

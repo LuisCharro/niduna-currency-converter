@@ -198,8 +198,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get chartsProTitle => 'Charts Pro';
 
   @override
-  String get dataSourcesSubtitle =>
-      'Sources, calendrier de mise à jour et données stockées';
+  String get dataSourcesSubtitle => 'Un résumé et tes choix de confidentialité';
 
   @override
   String get versionTapHint =>
@@ -299,7 +298,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dataPrivacyLine =>
-      'Vos préférences, favoris et taux enregistrés restent sur cet appareil. Les demandes de taux vont aux fournisseurs ; celles des annonces à Google si les annonces sont activées.';
+      'Tes favoris et réglages restent sur cet appareil. Des services externes fournissent les taux et Google affiche des annonces lorsqu’elles sont activées.';
 
   @override
   String get updatesTitle => 'Mises à jour';
@@ -541,4 +540,18 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get chartAdInstructions =>
       'Suivez les instructions de la publicité pour obtenir la récompense';
+
+  @override
+  String get dataSummaryRates =>
+      'Taux journaliers indicatifs, pas des cours en temps réel. Si Actualiser à l’ouverture est activé, l’app vérifie les données à la première ouverture du jour. Tu peux aussi actualiser manuellement. Les taux enregistrés fonctionnent hors ligne.';
+
+  @override
+  String get rateSourcesTitle => 'Sources des données';
+
+  @override
+  String get rateSourcesIntro =>
+      'Frankfurter fournit les taux fiat de banques centrales et d’autres sources officielles. exchange-api fournit les données crypto.';
+
+  @override
+  String get chartDataHelpTitle => 'À propos des données du graphique';
 }

@@ -467,7 +467,7 @@ abstract class AppLocalizations {
   /// Data sources subtitle
   ///
   /// In en, this message translates to:
-  /// **'Sources, update schedule and what\'s stored'**
+  /// **'A short overview and your privacy choices'**
   String get dataSourcesSubtitle;
 
   /// Developer mode unlock hint
@@ -653,7 +653,7 @@ abstract class AppLocalizations {
   /// Privacy intro line
   ///
   /// In en, this message translates to:
-  /// **'Your preferences, favorites and saved rates stay on this device. Rate requests go to providers; ad requests go to Google when ads are enabled.'**
+  /// **'Your favorites and settings stay on this device. External services provide rate updates and Google serves ads when enabled.'**
   String get dataPrivacyLine;
 
   /// Updates section title
@@ -1063,6 +1063,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Follow the ad’s instructions to earn the reward'**
   String get chartAdInstructions;
+
+  /// Short data help summary: cadence, refresh and offline use
+  ///
+  /// In en, this message translates to:
+  /// **'Indicative daily rates, not live quotes. With Refresh on open enabled, the app checks once per day when opened. You can also refresh manually. Saved rates work offline.'**
+  String get dataSummaryRates;
+
+  /// Title of the second-level rate-source credits page
+  ///
+  /// In en, this message translates to:
+  /// **'Rate sources'**
+  String get rateSourcesTitle;
+
+  /// Concise provider credits without claiming ECB-only data
+  ///
+  /// In en, this message translates to:
+  /// **'Frankfurter provides fiat rates from central-bank and other official sources. exchange-api provides crypto data.'**
+  String get rateSourcesIntro;
+
+  /// Chart data help title and accessible button label
+  ///
+  /// In en, this message translates to:
+  /// **'About chart data'**
+  String get chartDataHelpTitle;
 }
 
 class _AppLocalizationsDelegate

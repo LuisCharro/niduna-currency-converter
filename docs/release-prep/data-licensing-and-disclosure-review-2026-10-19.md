@@ -210,3 +210,60 @@ renaming the brand. The adequacy of the existing policy identification is
 still a targeted legal question; the competitor's presentation is not proof
 that a required disclosure can be omitted. Do not repeat the legal-name intake
 as an ordinary branding prerequisite.
+
+## Concise layered help — second approved editorial pass
+
+Luis approved the shorter presentation and asked for another official-source
+check without contacting providers. No messages were sent.
+
+### Implementation and scope
+
+- Local source is now `1.0.0+10`; code 9 remains the Play-distributed binary.
+  The short Data & privacy page keeps cadence/offline and qualified external
+  services wording, and links to an in-app Sources page, the policy and UMP
+  privacy options when required. Direct policy/UMP controls in Settings remain.
+- Source credits remain accessible offline in the app (Frankfurter and
+  exchange-api by fawazahmed0); their project links open externally. No rates
+  provider, SDK, permission, request payload or consent gate was changed.
+- Chart history limits and mixed-chart weekend behavior moved to chart help,
+  opened by tapping the Checked/date button in the chart header. Daily-rate
+  accuracy/bank-fee qualification remains in the existing Convert info sheet.
+- Five languages were updated. Website policies remove redundant summaries,
+  duplicate controls and hypothetical future products. Source/recipient links,
+  ad categories/purposes/choices, purchase handling, local deletion limits,
+  retention/overseas information, controller/contact and rights are retained.
+- Brand-first identification remains as previously directed. The earlier
+  controller/transfer adequacy questions are not solved by shortening copy.
+- Local test-ad preview APKs are for review, not Play artifacts. Preparing code
+  10 does not upload it, promote to Production or deploy the website.
+
+### Official-source check repeated on 2026-10-19
+
+1. [Frankfurter FAQ](https://frankfurter.dev/#faq) expressly permits commercial
+   use of blended rates and encourages local daily caching. The actual app
+   route is the default `/v2/rates` without a provider filter. Advertising is
+   an ordinary commercial use inference; no ad-specific prohibition was found.
+2. [Frankfurter terms](https://frankfurter.dev/license/) separate MIT software
+   from third-party data and say provider terms apply. Blended figures are
+   Frankfurter's calculations, not an official bank's own rate. We found no
+   explicit blanket requirement to display Frankfurter attribution on the
+   normal converter screen; this does not prove no downstream notice applies.
+3. [ECB copyright conditions](https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html)
+   permit free use of information obtained directly from its site subject to
+   accurate reproduction/source credit; sold documents and modified information
+   have additional conditions. Do not describe these terms as unrestricted or
+   equate our blended route to an ECB-only feed. Retain source links rather than
+   deleting credits based on a competitor's interface.
+4. [exchange-api CC0](https://github.com/fawazahmed0/exchange-api/blob/main/LICENSE)
+   covers commercial/advertising uses of rights the affirmer can waive, but
+   explicitly does not clear others' rights. The current public generator still
+   reads `cryptoLink` from env or non-public `links.ini`:
+   [currscript.js](https://github.com/fawazahmed0/exchange-api/blob/main/currscript.js).
+   Upstream crypto identity and redistribution authorization remain unverified.
+
+If Luis contacts exchange-api, the useful questions are: what source supplies
+crypto observations, may those observations be cached and redistributed in an
+Android app with ads and one-time IAP, and what source notices/attribution are
+required? Ask Frankfurter only for any remaining blended downstream-credit
+clarification; its commercial/caching FAQ already answers the basic usage point.
+Do not send requests without Luis explicitly authorizing the recipient/message.

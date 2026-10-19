@@ -25,17 +25,23 @@ skills without changing this repo again.
 
 ## Current state (reviewed 2026-10-19)
 
+- Latest local source: `1.0.0+10`, concise layered privacy/source help, not
+  uploaded. Code 9 is already installed by Luis from Closed; the new gallery
+  was verified live. Production remains empty at the latest read. See the
+  checklist's build-10 section; older in-review snapshots below are historical.
+
+
 - `main` is canonical; recheck HEAD and working tree before acting.
-- Latest submission: `1.0.0+9` is committed to Closed Alpha and Console shows
-  **in review**. Code 8 became available before this submission. Internal is 7;
-  Production is empty. The newest checklist/runbook sections supersede the
-  code-8 snapshots below. Code-9 Play installation/owner acceptance is pending.
+- Code 9 is the current Closed submission and Luis reports installing it;
+  its refreshed gallery was verified live. Internal is 7; Production is empty
+  at the latest read. The checklist separates device installation from full
+  monetisation/consent acceptance.
 - Start with `RELEASE_CHECKLIST.md` **Release checkpoint — 2026-10-19**.
   Older dated checkpoints describe history, not current open tasks.
-- Version `1.0.0+9` has been uploaded to Closed Alpha (`alpha`). The API
-  reports `completed`, but Console Publishing overview shows **in review**.
-  The last published Closed release is code 8 (2026-10-19). Internal remains
-  code 7. Production access is granted; Production has no release.
+- Version `1.0.0+9` was uploaded to Closed Alpha (`alpha`) and then published.
+  The API reports `completed`; Console/Chrome confirmed publication and Luis
+  reports installing it. Internal remains code 7. Production access is granted;
+  Production has no release at the latest read.
 - For exact artifact hashes, current screenshots, opt-in links, permissions
   and recovery, read `docs/release-prep/google-play-publishing-runbook.md` and
   `stores/google-play/SKILL.md`. In this workspace also read
@@ -79,8 +85,8 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+9`, uploaded to Closed Alpha and in review
-  as of 2026-10-19. Internal is 7; the previously published Closed release is 8.
+- Current `pubspec.yaml`: `1.0.0+10`, local preview only. Code 9 is the
+  Play-distributed Closed build as of 2026-10-19; Internal is 7.
 - Code 9 is already used. Any changed binary needs a new unused higher code.
 - Keep the candidate's version name `1.0.0`; code 8 contains the Convert
   persistence, currency picker, portrait and swipe-action improvements.

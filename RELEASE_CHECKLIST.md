@@ -1,6 +1,37 @@
 # Release Checklist — Path to Google Play Store
 
-## Latest Closed candidate — 2026-10-19, build 9
+## Local layered-help preview — 2026-10-19, build 10
+
+- Luis approved concise, layered Data & privacy help and website policies.
+  `pubspec.yaml` is now `1.0.0+10`; code 10 is a local candidate, not uploaded.
+  Code 9 remains the Play-distributed Closed build. Luis reports installing
+  the latest build; Console and Chrome storefront checks confirmed the new
+  phone screenshots live. Production has no release at the latest API read.
+- Data & privacy is two brief paragraphs and accessible Sources/policy/UMP
+  links. Sources stay available in the app without network; project links open
+  externally. The original direct policy and UMP Settings controls remain.
+- History limits and mixed-chart weekend notes moved to chart-header help.
+  No provider selection, SDK, permission, purchase or consent behavior changed.
+- Five locales regenerated; Flutter analysis clean and normal release APK
+  compiled with test ads for local preview. Evidence is under ignored
+  `.tmp/privacy-layered-preview-20261019/`. No automated tests were run in this
+  editorial/UI pass; exact Play acceptance will be needed for any new upload.
+- Spanish Data & privacy was rendered using an isolated local entrypoint and
+  visually checked (`app-data-summary-es.png`). Afterwards the normal app APK
+  was restored on Medium_Phone; no app data was erased. This emulator already
+  used the Android debug certificate, so separate device-preview copies were
+  signed with that same local debug key. They are not Play upload artifacts.
+  The canonical normal preview APK retains the ordinary release upload signing.
+  The isolated renderer does not initialize UMP; the screenshot does not prove
+  live consent behavior. Source review confirms the original UMP access stays.
+- Website draft removes repetitive paragraphs and future hypothetical products
+  while retaining the documented privacy facts and source/terms links.
+  No website deployment, Play upload or Production promotion occurred.
+- Provider terms were rechecked in the disclosure review: Frankfurter blended
+  commercial use/cache have explicit support; direct ECB reuse is conditional;
+  exchange-api's upstream crypto provenance remains unverified. No mail sent.
+
+## Previously submitted Closed candidate — 2026-10-19, build 9
 
 - Luis authorized preparing and submitting the latest app as the intended final
   candidate to **Closed Alpha**, not Production. Version is `1.0.0+9`.

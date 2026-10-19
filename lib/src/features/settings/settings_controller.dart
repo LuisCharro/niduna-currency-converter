@@ -44,7 +44,7 @@ class SettingsController extends ChangeNotifier {
     Navigator.of(context).push(
       buildSettingsDetailRoute<void>(
         theme: theme,
-        builder: (_) => const DataDetailsPage(),
+        builder: (_) => DataDetailsPage(links: _links, adConsent: adConsent),
       ),
     );
   }

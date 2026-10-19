@@ -198,8 +198,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chartsProTitle => 'Charts Pro';
 
   @override
-  String get dataSourcesSubtitle =>
-      'Fuentes, calendario de actualización y qué se guarda';
+  String get dataSourcesSubtitle => 'Un resumen y tus opciones de privacidad';
 
   @override
   String get versionTapHint =>
@@ -296,7 +295,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get dataPrivacyLine =>
-      'Tus preferencias, favoritos y tipos guardados se quedan en este dispositivo. Las solicitudes de tipos van a proveedores; las de anuncios, a Google si los anuncios están activados.';
+      'Tus favoritos y ajustes se quedan en este dispositivo. Servicios externos proporcionan los tipos y Google muestra anuncios cuando están activados.';
 
   @override
   String get updatesTitle => 'Actualizaciones';
@@ -537,4 +536,18 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get chartAdInstructions =>
       'Sigue las instrucciones del anuncio para obtener la recompensa';
+
+  @override
+  String get dataSummaryRates =>
+      'Tipos diarios orientativos, no cotizaciones en tiempo real. Con Actualizar al abrir, la app comprueba nuevos datos al abrirla por primera vez cada día. También puedes actualizar manualmente. Los tipos guardados funcionan sin conexión.';
+
+  @override
+  String get rateSourcesTitle => 'Fuentes de datos';
+
+  @override
+  String get rateSourcesIntro =>
+      'Frankfurter proporciona los tipos fiat de bancos centrales y otras fuentes oficiales. exchange-api proporciona los datos cripto.';
+
+  @override
+  String get chartDataHelpTitle => 'Datos del gráfico';
 }

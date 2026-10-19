@@ -5,6 +5,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/screen_title.dart';
 import 'chart_value_formatter.dart';
+import 'chart_data_help_button.dart';
 
 /// Compact chart masthead (D2-CHT-1).
 class ChartHeader extends StatelessWidget {
@@ -46,12 +47,9 @@ class ChartHeader extends StatelessWidget {
               if (freshnessText != null) ...<Widget>[
                 const SizedBox(width: AppTheme.space2),
                 Expanded(
-                  child: Text(
-                    freshnessText,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.right,
-                    style: AppTheme.supportingTextStyle(context),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: ChartDataHelpButton(label: freshnessText),
                   ),
                 ),
               ],
@@ -84,9 +82,7 @@ class ChartHeader extends StatelessWidget {
                     ),
                     child: Text(
                       '$arrow ${changePercent!.abs().toStringAsFixed(2)}%',
-                      style: AppTheme.metricDelta.copyWith(
-                        color: trendColor,
-                      ),
+                      style: AppTheme.metricDelta.copyWith(color: trendColor),
                     ),
                   ),
               ],

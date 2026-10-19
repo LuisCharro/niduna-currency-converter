@@ -370,3 +370,13 @@ tiles plus 60 pixels per action; button padding and rounding match across tabs.
 - DON'T wrap charts or lists in card containers — full-bleed content only
 - DON'T mix Fraunces into body text or captions — headings only
 - DON'T add branding chrome (logos, taglines) to content screens
+
+### Data and privacy help — 2026-10-19
+
+Keep Settings help brief: two paragraphs for daily/offline behavior and local
+preferences versus external services. Place provider credits on a second-level
+Sources page; keep privacy-policy and UMP controls readily accessible. Do not
+repeat source schedules/history limits throughout Settings. Chart history help
+belongs to the chart header's accessible Checked/date button. Reuse Settings
+row typography, the paper background and existing navigation transitions; keep
+links readable and help scrollable at large text scales.

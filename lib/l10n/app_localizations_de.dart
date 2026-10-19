@@ -198,7 +198,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dataSourcesSubtitle =>
-      'Quellen, Aktualisierungsplan und gespeicherte Daten';
+      'Ein Überblick und deine Datenschutzoptionen';
 
   @override
   String get versionTapHint =>
@@ -296,7 +296,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dataPrivacyLine =>
-      'Deine Einstellungen, Favoriten und gespeicherten Kurse bleiben auf diesem Gerät. Kursanfragen gehen an Anbieter; Anzeigenanfragen bei aktivierter Werbung an Google.';
+      'Deine Favoriten und Einstellungen bleiben auf diesem Gerät. Externe Dienste liefern Kurse; Google stellt Werbung bereit, wenn sie aktiviert ist.';
 
   @override
   String get updatesTitle => 'Aktualisierungen';
@@ -536,4 +536,18 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get chartAdInstructions =>
       'Folge den Anweisungen der Werbung, um die Belohnung zu erhalten';
+
+  @override
+  String get dataSummaryRates =>
+      'Ungefähre Tageskurse, keine Live-Kurse. Bei aktiviertem Aktualisieren beim Öffnen prüft die App beim ersten Öffnen des Tages auf neue Daten. Du kannst auch manuell aktualisieren. Gespeicherte Kurse funktionieren offline.';
+
+  @override
+  String get rateSourcesTitle => 'Kursquellen';
+
+  @override
+  String get rateSourcesIntro =>
+      'Frankfurter liefert Fiat-Kurse von Zentralbanken und anderen offiziellen Quellen. exchange-api liefert Kryptodaten.';
+
+  @override
+  String get chartDataHelpTitle => 'Über die Chartdaten';
 }

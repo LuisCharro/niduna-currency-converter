@@ -19,6 +19,20 @@ class SettingsLinks {
     await launchUrl(_privacyPolicyUri, mode: LaunchMode.externalApplication);
   }
 
+  Future<void> openFiatSource() async {
+    await launchUrl(
+      Uri.parse('https://frankfurter.dev/'),
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  Future<void> openCryptoSource() async {
+    await launchUrl(
+      Uri.parse('https://github.com/fawazahmed0/exchange-api'),
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
   Future<void> sendFeedback(BuildContext context, String appVersion) async {
     final loc = l10n(context);
     final uri = Uri(
