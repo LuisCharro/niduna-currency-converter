@@ -138,6 +138,18 @@ def api_error_hint(status: int | None) -> str:
     )
 
 
+def safe_api_error_message(error: Exception) -> str:
+    content = getattr(error, "content", b"")
+    try:
+        if isinstance(content, bytes):
+            content = content.decode("utf-8", errors="replace")
+        body = json.loads(content).get("error", {})
+        message = " ".join(str(body.get("message", "")).split())
+    except (TypeError, ValueError, AttributeError):
+        return ""
+    return message[:400]
+
+
 def validate_candidate(
     config: dict[str, Any], artifact: Path, version_code: str
 ) -> dict[str, Any]:
@@ -395,9 +407,11 @@ def main() -> int:
             return 1
         status = getattr(getattr(error, "resp", None), "status", None)
         api_status = f", HTTP {status}" if status else ""
+        api_message = safe_api_error_message(error)
+        detail = f" Google: {api_message}" if api_message else ""
         print(
             f"Google Play {args.command} failed ({type(error).__name__}{api_status}). "
-            f"{api_error_hint(status)}",
+            f"{api_error_hint(status)}{detail}",
             file=sys.stderr,
         )
         return 1
