@@ -13,6 +13,13 @@ if [[ "${1:-}" == "screenshots" ]]; then
   shift
 fi
 
+if [[ "${1:-}" == "pricing" ]]; then
+  cli="${repo_root}/stores/google-play/scripts/pricing.py"
+  shift
+  # The catalog command checks auth itself; plan is fully offline.
+  local_command=true
+fi
+
 # Argument help is local and dependency-free; it must work before setup/auth.
 for argument in "$@"; do
   if [[ "${argument}" == "--help" || "${argument}" == "-h" ]]; then

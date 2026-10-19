@@ -1,0 +1,523 @@
+productId,purchaseOptionId,regionCode,currencyCode,current,proposed,changePercent,changed,availability,priceValidation,reason
+charts_pro_lifetime,charts-pro-lifetime,AE,AED,13.99,13.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,AG,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,AL,USD,4.43,4.43,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,AM,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,AO,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,AR,ARS,5516.55,5516.55,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,AT,EUR,3.79,2.99,-21.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,AU,AUD,5.49,5.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,AW,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,AZ,AZN,6.27,6.27,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BA,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BD,BDT,500,500,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BE,EUR,3.79,2.99,-21.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,BF,EUR,3.17,3.17,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BG,EUR,3.79,2.99,-21.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,BH,USD,4.09,4.09,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BJ,EUR,3.17,3.17,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BM,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BO,BOB,46.99,46.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BR,BRL,18.99,18.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BS,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BW,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BY,USD,4.43,4.43,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,BZ,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CA,CAD,4.99,4.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CD,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CF,EUR,3.17,3.17,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CG,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CH,CHF,3,2.99,-0.33,True,AVAILABLE,not checked against Google ranges/tax/currency precision,currency override
+charts_pro_lifetime,charts-pro-lifetime,CI,XOF,2500,2500,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CL,CLP,4100,4100,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CM,XAF,2500,2500,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CO,COP,11500,11500,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CR,CRC,1700,1700,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CV,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,CY,EUR,3.79,2.99,-21.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,CZ,CZK,94.99,94.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,DE,EUR,3.79,2.99,-21.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,DJ,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,DK,DKK,30,30,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,DM,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,DO,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,DZ,DZD,500,500,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,EC,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,EE,EUR,3.89,2.99,-23.14,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,EG,EGP,219.99,219.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,ER,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,ES,EUR,3.79,2.99,-21.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,ET,ETB,584.79,584.79,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,FI,EUR,3.99,2.99,-25.06,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,FJ,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,FM,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,FR,EUR,3.79,2.99,-21.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,GA,EUR,3.17,3.17,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,GB,GBP,3.29,3.29,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,GD,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,GE,GEL,9,9,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,GH,GHS,50,50,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,GI,GBP,2.69,2.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,GM,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,GN,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,GR,EUR,3.89,2.99,-23.14,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,GT,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,GW,EUR,3.17,3.17,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,HK,HKD,28,28,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,HN,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,HR,EUR,3.99,2.99,-25.06,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,HT,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,HU,HUF,1490,1490,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,ID,IDR,65000,65000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,IE,EUR,3.89,2.99,-23.14,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,IL,ILS,11,11,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,IN,INR,410,410,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,IQ,IQD,4850,4850,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,IS,EUR,3.93,3.93,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,IT,EUR,3.89,2.99,-23.14,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,JM,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,JO,JOD,2.6,2.6,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,JP,JPY,620,620,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,KE,KES,600,600,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,KG,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,KH,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,KM,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,KN,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,KR,KRW,5500,5500,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,KW,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,KY,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,KZ,KZT,1990,1990,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,LA,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,LB,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,LC,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,LI,CHF,3.2,2.99,-6.56,True,AVAILABLE,not checked against Google ranges/tax/currency precision,currency override
+charts_pro_lifetime,charts-pro-lifetime,LK,LKR,1200,1200,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,LR,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,LT,EUR,3.79,2.99,-21.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,LU,EUR,3.69,2.99,-18.97,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,LV,EUR,3.79,2.99,-21.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,LY,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MA,MAD,40.99,40.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MC,EUR,3.79,3.79,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MD,USD,4.43,4.43,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MK,USD,4.35,4.35,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,ML,EUR,3.17,3.17,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MM,MMK,8000,8000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MN,MNT,13300,13300,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MO,MOP,29.88,29.88,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MT,EUR,3.74,2.99,-20.05,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,MU,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MV,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MX,MXN,75,75,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MY,MYR,15.99,15.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,MZ,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,NA,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,NE,EUR,3.17,3.17,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,NG,NGN,5270,5270,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,NI,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,NL,EUR,3.79,2.99,-21.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,NO,NOK,42,42,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,NP,USD,4.17,4.17,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,NZ,NZD,7.49,7.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,OM,USD,3.89,3.89,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,PA,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,PE,PEN,11.99,11.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,PG,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,PH,PHP,259,259,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,PK,PKR,1000,1000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,PL,PLN,16.99,16.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,PT,EUR,3.89,2.99,-23.14,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,PY,PYG,20000,20000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,QA,QAR,13,13,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,RO,RON,19.99,19.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,RS,RSD,449,449,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,RU,RUB,319,319,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,RW,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SA,SAR,15.99,15.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SB,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SC,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SE,SEK,44,44,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SG,SGD,4.99,4.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SI,EUR,3.89,2.99,-23.14,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,SK,EUR,3.89,2.99,-23.14,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,SL,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SM,EUR,3.19,3.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SN,XOF,2500,2500,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SO,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SR,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,SV,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TC,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TD,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TG,EUR,3.17,3.17,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TH,THB,125,125,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TJ,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TM,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TN,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TO,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TR,TRY,214.99,214.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TT,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TW,TWD,120,120,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,TZ,TZS,9500,9500,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,UA,UAH,199.99,199.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,UG,USD,4.35,4.35,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,US,USD,3.69,2.99,-18.97,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,UY,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,UZ,UZS,49560,49560,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,VA,EUR,3.19,3.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,VE,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,VG,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,VN,VND,96000,96000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,VU,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,WS,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,YE,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,ZA,ZAR,67.99,67.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,ZM,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+charts_pro_lifetime,charts-pro-lifetime,ZW,USD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,AE,AED,4.69,4.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,AG,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,AL,USD,1.46,1.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,AM,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,AO,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,AR,ARS,1823.9,1823.9,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,AT,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,AU,AUD,1.89,1.89,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,AW,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,AZ,AZN,2.07,2.07,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BA,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BD,BDT,190,190,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BE,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,BF,EUR,1.05,1.05,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BG,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,BH,USD,1.29,1.29,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BJ,EUR,1.05,1.05,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BM,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BO,BOB,14.99,14.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BR,BRL,5.99,5.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BS,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BW,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BY,USD,1.46,1.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,BZ,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CA,CAD,1.69,1.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CD,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CF,EUR,1.05,1.05,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CG,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CH,CHF,1,0.99,-1.00,True,AVAILABLE,not checked against Google ranges/tax/currency precision,currency override
+favorites_pro_lifetime,favorites-pro-lifetime,CI,XOF,800,800,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CL,CLP,1300,1300,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CM,XAF,800,800,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CO,COP,4000,4000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CR,CRC,550,550,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CV,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,CY,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,CZ,CZK,30.99,30.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,DE,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,DJ,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,DK,DKK,10,10,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,DM,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,DO,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,DZ,DZD,150,150,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,EC,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,EE,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,EG,EGP,70.99,70.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,ER,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,ES,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,ET,ETB,193.35,193.35,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,FI,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,FJ,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,FM,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,FR,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,GA,EUR,1.05,1.05,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,GB,GBP,1.09,1.09,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,GD,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,GE,GEL,4,4,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,GH,GHS,15,15,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,GI,GBP,0.89,0.89,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,GM,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,GN,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,GR,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,GT,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,GW,EUR,1.05,1.05,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,HK,HKD,9.9,9.9,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,HN,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,HR,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,HT,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,HU,HUF,489,489,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,ID,IDR,21000,21000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,IE,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,IL,ILS,3.7,3.7,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,IN,INR,140,140,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,IQ,IQD,1600,1600,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,IS,EUR,1.3,1.3,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,IT,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,JM,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,JO,JOD,0.85,0.85,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,JP,JPY,210,210,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,KE,KES,200,200,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,KG,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,KH,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,KM,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,KN,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,KR,KRW,1800,1800,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,KW,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,KY,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,KZ,KZT,690,690,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,LA,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,LB,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,LC,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,LI,CHF,1.1,0.99,-10.00,True,AVAILABLE,not checked against Google ranges/tax/currency precision,currency override
+favorites_pro_lifetime,favorites-pro-lifetime,LK,LKR,400,400,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,LR,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,LT,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,LU,EUR,1.19,0.99,-16.81,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,LV,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,LY,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MA,MAD,13.99,13.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MC,EUR,1.29,1.29,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MD,USD,1.46,1.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MK,USD,1.44,1.44,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,ML,EUR,1.05,1.05,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MM,MMK,3000,3000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MN,MNT,4390,4390,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MO,MOP,9.88,9.88,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MT,EUR,1.24,0.99,-20.16,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,MU,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MV,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MX,MXN,24,24,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MY,MYR,5.49,5.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,MZ,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,NA,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,NE,EUR,1.05,1.05,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,NG,NGN,1750,1750,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,NI,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,NL,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,NO,NOK,14,14,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,NP,USD,1.38,1.38,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,NZ,NZD,2.39,2.39,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,OM,USD,1.29,1.29,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,PA,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,PE,PEN,4.09,4.09,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,PG,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,PH,PHP,86,86,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,PK,PKR,340,340,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,PL,PLN,5.59,5.59,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,PT,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,PY,PYG,5000,5000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,QA,QAR,4.5,4.5,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,RO,RON,6.49,6.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,RS,RSD,149,149,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,RU,RUB,109,109,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,RW,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SA,SAR,5.29,5.29,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SB,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SC,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SE,SEK,15,15,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SG,SGD,1.49,1.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SI,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,SK,EUR,1.29,0.99,-23.26,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,SL,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SM,EUR,1.09,1.09,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SN,XOF,800,800,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SO,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SR,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,SV,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TC,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TD,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TG,EUR,1.05,1.05,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TH,THB,43,43,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TJ,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TM,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TN,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TO,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TR,TRY,70.99,70.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TT,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TW,TWD,40,40,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,TZ,TZS,3200,3200,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,UA,UAH,64.99,64.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,UG,USD,1.44,1.44,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,US,USD,1.19,0.99,-16.81,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,UY,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,UZ,UZS,16440,16440,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,VA,EUR,1.09,1.09,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,VE,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,VG,USD,1.19,1.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,VN,VND,32000,32000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,VU,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,WS,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,YE,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,ZA,ZAR,22.99,22.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,ZM,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+favorites_pro_lifetime,favorites-pro-lifetime,ZW,USD,1.22,1.22,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,AE,AED,9.49,9.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,AG,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,AL,USD,2.95,2.95,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,AM,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,AO,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,AR,ARS,3677.7,3677.7,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,AT,EUR,2.49,1.99,-20.08,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,AU,AUD,3.69,3.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,AW,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,AZ,AZN,4.18,4.18,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BA,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BD,BDT,350,350,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BE,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,BF,EUR,2.11,2.11,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BG,EUR,2.49,1.99,-20.08,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,BH,USD,2.69,2.69,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BJ,EUR,2.11,2.11,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BM,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BO,BOB,30.99,30.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BR,BRL,12.99,12.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BS,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BW,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BY,USD,2.95,2.95,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,BZ,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CA,CAD,3.39,3.39,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CD,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CF,EUR,2.11,2.11,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CG,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CH,CHF,2,1.99,-0.50,True,AVAILABLE,not checked against Google ranges/tax/currency precision,currency override
+remove_ads_lifetime,remove-ads-lifetime,CI,XOF,1600,1600,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CL,CLP,2700,2700,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CM,XAF,1700,1700,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CO,COP,7500,7500,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CR,CRC,1100,1100,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CV,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,CY,EUR,2.49,1.99,-20.08,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,CZ,CZK,59.99,59.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,DE,EUR,2.49,1.99,-20.08,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,DJ,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,DK,DKK,20,20,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,DM,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,DO,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,DZ,DZD,325,325,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,EC,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,EE,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,EG,EGP,139.99,139.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,ER,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,ES,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,ET,ETB,389.86,389.86,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,FI,EUR,2.69,1.99,-26.02,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,FJ,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,FM,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,FR,EUR,2.49,1.99,-20.08,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,GA,EUR,2.11,2.11,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,GB,GBP,2.19,2.19,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,GD,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,GE,GEL,8,8,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,GH,GHS,35,35,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,GI,GBP,1.79,1.79,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,GM,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,GN,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,GR,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,GT,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,GW,EUR,2.11,2.11,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,HK,HKD,19.9,19.9,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,HN,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,HR,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,HT,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,HU,HUF,990,990,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,ID,IDR,43000,43000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,IE,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,IL,ILS,7.4,7.4,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,IN,INR,280,280,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,IQ,IQD,3200,3200,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,IS,EUR,2.62,2.62,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,IT,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,JM,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,JO,JOD,1.75,1.75,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,JP,JPY,410,410,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,KE,KES,400,400,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,KG,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,KH,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,KM,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,KN,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,KR,KRW,3600,3600,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,KW,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,KY,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,KZ,KZT,1290,1290,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,LA,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,LB,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,LC,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,LI,CHF,2.1,1.99,-5.24,True,AVAILABLE,not checked against Google ranges/tax/currency precision,currency override
+remove_ads_lifetime,remove-ads-lifetime,LK,LKR,800,800,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,LR,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,LT,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,LU,EUR,2.49,1.99,-20.08,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,LV,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,LY,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MA,MAD,27.99,27.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MC,EUR,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MD,USD,2.95,2.95,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MK,USD,2.9,2.9,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,ML,EUR,2.11,2.11,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MM,MMK,5000,5000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MN,MNT,8820,8820,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MO,MOP,19.88,19.88,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MT,EUR,2.49,1.99,-20.08,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,MU,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MV,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MX,MXN,48,48,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MY,MYR,10.99,10.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,MZ,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,NA,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,NE,EUR,2.11,2.11,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,NG,NGN,3510,3510,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,NI,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,NL,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,NO,NOK,28,28,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,NP,USD,2.78,2.78,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,NZ,NZD,4.79,4.79,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,OM,USD,2.59,2.59,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,PA,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,PE,PEN,7.99,7.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,PG,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,PH,PHP,170,170,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,PK,PKR,690,690,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,PL,PLN,10.99,10.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,PT,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,PY,PYG,10000,10000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,QA,QAR,9,9,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,RO,RON,12.99,12.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,RS,RSD,299,299,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,RU,RUB,209,209,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,RW,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SA,SAR,10.99,10.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SB,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SC,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SE,SEK,29,29,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SG,SGD,3.48,3.48,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SI,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,SK,EUR,2.59,1.99,-23.17,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,SL,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SM,EUR,2.09,2.09,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SN,XOF,1600,1600,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SO,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SR,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,SV,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TC,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TD,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TG,EUR,2.11,2.11,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TH,THB,87,87,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TJ,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TM,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TN,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TO,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TR,TRY,144.99,144.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TT,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TW,TWD,81,81,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,TZ,TZS,6500,6500,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,UA,UAH,129.99,129.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,UG,USD,2.9,2.9,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,US,USD,2.49,1.99,-20.08,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,UY,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,UZ,UZS,33120,33120,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,VA,EUR,2.09,2.09,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,VE,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,VG,USD,2.49,2.49,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,VN,VND,64000,64000,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,VU,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,WS,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,YE,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,ZA,ZAR,44.99,44.99,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,ZM,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy
+remove_ads_lifetime,remove-ads-lifetime,ZW,USD,2.46,2.46,0.00,False,AVAILABLE,not checked against Google ranges/tax/currency precision,retain current; pending local strategy

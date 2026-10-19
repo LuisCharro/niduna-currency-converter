@@ -55,6 +55,11 @@ document owns only Currency Converter facts and commands.
 
 ### Store price operations
 
+The current live catalog, proposed launch tiers and read/plan commands are
+owned by [`stores/google-play/pricing/README.md`](../../stores/google-play/pricing/README.md).
+The 2026-10-19 proposal is not approved or applied; it does not alter code 10.
+
+
 Settings uses `ProductDetails.price` from the existing Play Billing products,
 with no fixed CHF fallback. Changing country prices in Console does not require
 a new binary solely to update displayed amounts; reopen/resume Settings after

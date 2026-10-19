@@ -1,0 +1,146 @@
+# Estrategia de precios — Currency Converter
+
+Fecha: 2026-10-19. **Propuesta, pendiente de aprobación de Luis.** No se han
+modificado precios en Google Play. Compras únicas de por vida, sin suscripciones.
+
+## Qué hay realmente en Play
+
+Lectura autenticada con `monetization.onetimeproducts.list`: tres productos,
+una opción de compra `ACTIVE` por producto, `legacyCompatible: true` y 174
+regiones configuradas en cada uno. Hay 65 monedas diferentes. Tener precio
+configurado no significa que la app esté distribuida en todos esos países;
+la disponibilidad de la app se gestiona aparte.
+
+| Producto | Suiza CHF | España EUR | EE. UU. USD | Propuesta en esas tres monedas |
+| --- | ---: | ---: | ---: | ---: |
+| Quitar anuncios | 2,00 | 2,59 | 2,49 | 1,99 |
+| Charts Pro | 3,00 | 3,79 | 3,69 | 2,99 |
+| Favorites Pro | 1,00 | 1,29 | 1,19 | 0,99 |
+
+Son importes del catálogo, no ingresos netos del desarrollador. El tratamiento
+fiscal y el total de checkout dependen del mercado y de Play. No confundir
+precio configurado, impuestos y comisión. Hay diferencias incluso dentro de
+EUR: quitar anuncios figura a 2,49 en Alemania/Francia y 2,59 en España.
+
+## Propuesta de lanzamiento
+
+Mantener tres niveles sencillos: Favorites 0,99; quitar anuncios 1,99;
+Charts 2,99. Aplicarlos a Suiza/Liechtenstein, 21 mercados EUR seleccionados y Estados Unidos.
+El precio es una decisión de producto, no una equivalencia exacta de divisas.
+No hace falta que EUR, USD y CHF produzcan el mismo ingreso neto.
+
+Los finales ,99 son una hipótesis comercial convencional, no una garantía de
+mayor conversión. Los precios actuales de 1/2/3 CHF tampoco son incorrectos;
+esta propuesta elige coherencia entre los mercados prioritarios. No hay aún
+resultados de ventas que demuestren un precio óptimo para esta app.
+
+**Impacto:** Suiza baja entre 0,33 % y 1 %. España baja aproximadamente
+21–23 % y EE. UU. 17–20 %. No es un cambio meramente cosmético. Como alternativa
+más conservadora de ingresos podrían usarse 2,49/3,79/1,29 EUR y mantenerse los USD
+actuales, pero la propuesta principal prioriza un lanzamiento asequible.
+
+Alcance exacto del JSON propuesto:
+
+- CHF: Suiza y Liechtenstein (2 regiones).
+- EUR: AT, BE, BG, CY, DE, EE, ES, FI, FR, GR, HR, IE, IT, LT, LU, LV, MT,
+  NL, PT, SI, SK (21 regiones explícitas). Las otras 12 regiones del catálogo
+  que cobran en EUR, algunas como moneda alternativa, conservan su precio.
+- USD: solo `US`. Hay **75 regiones** configuradas en USD; no son todas EE. UU.
+- Resultado: **72 precios modificados en 24 regiones**. Las otras 450 filas
+  de precio (150 regiones por producto) mantienen su valor actual.
+- No cambiar disponibilidad, países de distribución, IDs, compras anteriores,
+  impuestos, ofertas ni `newRegionsConfig`. Estos precios de futuras regiones
+  quedan como están y necesitan una decisión propia antes de ampliaciones.
+
+## Resto del mundo
+
+No cambiar las 174 regiones a mano ni aplicar ,99 a todas las monedas.
+Para el primer lanzamiento propongo conservar el resto de precios de Play.
+Ya incluyen patrones locales derivados de la configuración anterior.
+Después priorizar mercados con uso real y revisar poder adquisitivo, precio
+local habitual y rendimiento; no usar solo cambio de moneda o idioma del móvil.
+
+Para una revisión global futura:
+
+1. Obtener catálogo y conversión de referencia actualizados.
+2. Fijar una base de referencia **sin impuestos** para `convertRegionPrices`;
+   no introducir allí 1,99 CHF como si fuese automáticamente el precio final
+   suizo. Conservar categoría fiscal real y revisar la salida.
+3. Elegir niveles por mercado/moneda. Monedas como JPY requieren importes
+   enteros; otras pueden usar finales distintos de ,99.
+4. Validar mínimos/máximos admitidos por Google, costes, impuestos y coherencia
+   entre productos. Evitar inventar un modelo de poder adquisitivo sin datos.
+5. Generar comparación completa, aprobarla y aplicar solo las filas decididas.
+
+No programar una actualización diaria por tipo de cambio. Mantener estabilidad
+y revisar manualmente tras el lanzamiento o ante cambios materiales. Un botón
+«actualizar tipos de cambio» puede sobrescribir decisiones regionales: exportar
+y comparar antes de usarlo.
+
+## Ficheros y herramientas
+
+- `launch-policy.proposed.json`: importes y alcance propuestos, legibles por script.
+- `launch-plan-reviewed-2026-10-19.csv`: comparación completa de las 522 filas, con país,
+  moneda, precio actual/propuesto, variación porcentual y disponibilidad.
+- Snapshot completo y plan JSON ignorados en `.tmp/play-pricing/20261019/`.
+  Son evidencia fechada; hay que releer Play antes de una futura modificación.
+
+```bash
+# Lectura real; no crea un edit ni modifica catálogo o releases.
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/existing-key.json \
+  ./.devtools/google_play.sh pricing catalog --output .tmp/catalog-new.json
+
+# Comparación offline; no necesita credenciales.
+./.devtools/google_play.sh pricing plan \
+  --catalog .tmp/catalog-new.json \
+  --policy stores/google-play/pricing/launch-policy.proposed.json \
+  --output .tmp/pricing-plan-new.json --csv-output .tmp/pricing-plan-new.csv
+```
+
+Los destinos deben ser nuevos y sus carpetas existir. Los comandos reutilizan
+el entorno Python existente, no añaden dependencias y no tienen comando apply.
+El plan detecta cambios en IDs/opciones/estado y usa Decimal para los importes.
+No valida precios contra Google ni constituye un payload de actualización.
+La lectura y el plan se ejecutaron con el catálogo real; no se añadió ni ejecutó
+una suite automática. No se tocaron app, web ni AAB 10.
+
+## Aplicación posterior por API
+
+La API moderna ya permite cambiar estos productos. No hace falta automatizar
+clics ni migrar/recrear IDs: el catálogo actual ya expone las opciones modernas.
+Antes de escribir:
+
+1. Aprobar el JSON y el CSV exactos; guardar snapshot original completo.
+2. Releer y abortar si precios/opciones/configuración cambiaron desde el plan.
+3. Confirmar la máscara admitida para actualización de la lista de opciones;
+   no asumir que una ruta dentro de arrays repetidos es válida. Conservar
+   opciones, regiones no afectadas, compatibilidad legacy y configuración futura.
+4. Usar patch/batchUpdate con máscara explícita, `regionsVersion` vigente y
+   creación desactivada (`allowMissing=false`). No usar PUT legacy de reemplazo
+   ni activar/desactivar productos. No tratar catálogo como un release edit.
+5. Guardar respuesta por producto, releer y comparar precios y campos conservados.
+   Una operación parcial requiere reconciliar el estado; no repetirla a ciegas.
+6. Verificar Console y checkout con la cuenta de licence testing. La propagación
+   no es instantánea y no prometemos un plazo numérico.
+
+La escritura y sus permisos aún no se han comprobado. Una lectura correcta no
+prueba permiso para cambiar precios. La herramienta de escritura se añadirá
+cuando esté aprobado el alcance concreto. Su rollback sería otra modificación
+explícita a partir del snapshot; no una garantía de reversión atómica global.
+
+La versión 10 consulta `ProductDetails.price`; cambiar precios de catálogo no
+requiere recompilarla. Conservar el mismo AAB para la candidatura pública.
+
+## Fuentes oficiales para no volver a buscarlas
+
+Consultadas el 2026-10-19:
+
+- [Precios, divisas y patrones locales](https://support.google.com/googleplay/android-developer/answer/6334373?hl=en).
+- [Modelo de productos de compra única](https://support.google.com/googleplay/android-developer/answer/16430488?hl=en).
+- [Catálogo y opciones regionales](https://developers.google.com/android-publisher/api-ref/rest/v3/monetization.onetimeproducts).
+- [Patch y máscara/versionado de regiones](https://developers.google.com/android-publisher/api-ref/rest/v3/monetization.onetimeproducts/patch).
+- [Actualización por lotes](https://developers.google.com/android-publisher/api-ref/rest/v3/monetization.onetimeproducts/batchUpdate).
+- [Conversión regional de referencia](https://developers.google.com/android-publisher/api-ref/rest/v3/monetization/convertRegionPrices).
+- [Catálogo desde Billing](https://developer.android.com/google/play/billing/integrate).
+
+- [BCE: Bulgaria y los 21 miembros de la zona euro en 2026](https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.pr260101~c830245e42.es.html).

@@ -159,3 +159,21 @@ restart is needed. Keep Coming Soon until Production is public.
 - HTTP 503 can be transient. After a failed command, inspect fresh track state
   and unused-code preflight before deciding to retry the same AAB. Do not add
   automatic whole-release retries or assume API `completed` means installable.
+
+## Regional one-time product prices
+
+- Read `pricing/README.md` and the policy status before pricing work. Launch
+  values are proposals until Luis approves the exact amounts/region scope.
+- Use `pricing catalog` for a fresh authenticated catalog snapshot and
+  `pricing plan` for an offline JSON/CSV comparison. These are read-only and
+  do not create a release edit. Reuse the existing package lock/credentials.
+- Inspect `purchaseOptionId`, state, legacy compatibility, regional prices and
+  availability, regionsVersion and future-region defaults. Do not infer that
+  a configured product country is an enabled distribution country.
+- Currency is not market: this catalog has many countries priced in USD/EUR
+  as fallback currencies. Prefer explicit region selection for priority markets.
+- The current tool has no apply command. A future writer needs approved diff,
+  fresh-state comparison, validated update mask/version, preservation of all
+  unrelated fields and post-write readback. Catalogue write permission is not
+  proven by successful reads. Do not recreate legacy SKUs or widen permissions.
+- Preserve the accepted AAB: localized prices come from Play Billing at runtime.

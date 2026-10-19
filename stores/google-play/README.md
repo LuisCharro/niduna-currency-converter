@@ -54,6 +54,19 @@ inside its write transaction. After an upload, run `status` in a fresh API edit
 and confirm track, release name, code and status. If commit outcome is
 ambiguous, inspect fresh track state before retrying.
 
+## Regional pricing
+
+See [pricing strategy and live comparison](pricing/README.md) before changing
+one-time-product prices. `pricing catalog` reads the modern catalog directly;
+`pricing plan` compares a saved catalog with the proposed policy offline and
+exports JSON/CSV. Neither command writes prices or modifies release tracks.
+Current proposals are not approved or applied. Keep pricing authorization
+separate from an AAB upload; no app rebuild is needed solely for catalog prices.
+
+```bash
+./.devtools/google_play.sh pricing --help
+```
+
 ## Which surface to use
 
 Owner Console dashboard for this app:

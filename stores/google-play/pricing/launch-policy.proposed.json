@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "status": "proposed-not-approved",
+  "packageName": "com.honestfern.currency_converter",
+  "strategy": "Launch anchors: CHF regions, 21 explicitly selected EUR markets, US only; retain other regions including USD/EUR fallback markets.",
+  "products": {
+    "remove_ads_lifetime": {
+      "purchaseOptionId": "remove-ads-lifetime",
+      "currencyOverrides": {
+        "CHF": "1.99"
+      },
+      "regionOverrides": {
+        "US": {
+          "currencyCode": "USD",
+          "amount": "1.99"
+        },
+        "AT": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "BE": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "BG": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "CY": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "DE": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "EE": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "ES": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "FI": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "FR": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "GR": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "HR": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "IE": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "IT": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "LT": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "LU": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "LV": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "MT": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "NL": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "PT": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "SI": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        },
+        "SK": {
+          "currencyCode": "EUR",
+          "amount": "1.99"
+        }
+      }
+    },
+    "charts_pro_lifetime": {
+      "purchaseOptionId": "charts-pro-lifetime",
+      "currencyOverrides": {
+        "CHF": "2.99"
+      },
+      "regionOverrides": {
+        "US": {
+          "currencyCode": "USD",
+          "amount": "2.99"
+        },
+        "AT": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "BE": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "BG": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "CY": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "DE": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "EE": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "ES": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "FI": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "FR": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "GR": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "HR": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "IE": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "IT": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "LT": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "LU": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "LV": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "MT": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "NL": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "PT": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "SI": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        },
+        "SK": {
+          "currencyCode": "EUR",
+          "amount": "2.99"
+        }
+      }
+    },
+    "favorites_pro_lifetime": {
+      "purchaseOptionId": "favorites-pro-lifetime",
+      "currencyOverrides": {
+        "CHF": "0.99"
+      },
+      "regionOverrides": {
+        "US": {
+          "currencyCode": "USD",
+          "amount": "0.99"
+        },
+        "AT": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "BE": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "BG": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "CY": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "DE": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "EE": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "ES": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "FI": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "FR": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "GR": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "HR": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "IE": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "IT": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "LT": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "LU": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "LV": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "MT": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "NL": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "PT": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "SI": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        },
+        "SK": {
+          "currencyCode": "EUR",
+          "amount": "0.99"
+        }
+      }
+    }
+  }
+}
