@@ -2,6 +2,11 @@
 
 ## Release checkpoint — 2026-10-19
 
+- Final data/disclosure recheck:
+  `docs/release-prep/data-licensing-and-disclosure-review-2026-10-19.md`.
+  Commercial-use evidence is recorded with its limits; do not treat old
+  provider “safe/clean” labels as an unconditional legal clearance.
+
 - Version `1.0.0+8` is uploaded to Closed testing → Alpha. The API reports
   release `1.0.0 (8)` with status `completed`; fresh status read confirms
   Internal remains at `1.0.0 (7)` and Production is empty.
@@ -618,12 +623,19 @@ with `jarsigner -verify` or `apksigner`.
 
 ## Already Done ✅ (no action needed)
 
-### Provider Licensing — Clean for Publication
+### Provider licensing — current evidence and limits (2026-10-19)
+
+Read `docs/release-prep/data-licensing-and-disclosure-review-2026-10-19.md`
+before a public readiness claim. Current software/data terms are separate;
+CC0 does not clear unknown upstream third-party rights. Privacy copy also needs
+qualified local-storage language and concrete controller/SDK disclosures.
+The old blanket “clean” label is superseded by the dated review.
+
 
 | Provider | Role in release builds | License | Commercial OK? |
 |----------|----------------------|---------|---------------|
-| **Frankfurter** | Fiat latest + fiat historical charts | Unlicense (public domain) | **YES** |
-| **fawazahmed0** | Crypto latest + crypto historical charts | **CC0-1.0** (public domain) | **YES** |
+| **Frankfurter** | Blended fiat latest/history | MIT software; underlying data terms separate | Official FAQ permits blended commercial use/cache; see review |
+| **fawazahmed0** | Crypto latest/history | Published CC0-1.0 | Commercial reuse under waived rights; upstream provenance unresolved |
 | CoinPaprika | Dev/emulator builds only | Proprietary (commercial forbidden) | **NO — not shipped** |
 
 Release build profile (`release_safe`) uses only Frankfurter + fawazahmed0.
@@ -821,7 +833,7 @@ cross-provider conversion cannot be fresher than its oldest component.
 | Type | Collected? | Detail |
 |------|-----------|--------|
 | Personal name, email, phone | **NO** | No accounts, no login |
-| Location | **NO** | Not requested |
+| Location | No GPS permission; SDK processing differs | AdMob may derive approximate location from IP; account for this in declarations |
 | Device ID / advertising ID | **BY US: NO — but YES via the AdMob SDK once real ads are live (B4)** | No analytics SDK of our own; the Data Safety form counts SDK collection, so declare AdMob (see C8 note + § Third-party SDKs below). Corrected 2026-07-16 — do NOT answer "no" from this row. |
 | Financial info | **NO** | Display-only; no transactions, no wallet |
 | Health / fitness | **NO** | N/A |

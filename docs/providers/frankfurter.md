@@ -1,8 +1,8 @@
 # Frankfurter — Fiat Exchange Rate Provider
 
 > **Status:** PRIMARY provider for all fiat data in all build profiles.
-> **License:** Unlicense (public domain) — commercial use explicitly allowed.
-> **Play Store safe:** YES
+> **License rechecked 2026-10-19:** software MIT; data reuse is a separate issue.
+> **Release routing:** enabled. See the dated data/disclosure review for scope and limits.
 
 ---
 
@@ -14,18 +14,21 @@ blends providers by default, so the latest rate date is not necessarily the ECB
 publication date.
 
 - **Website:** https://frankfurter.dev
-- **GitHub:** https://github.com/hakenes/frankfurter
-- **Data origin:** ECB daily reference rates + 55 central banks
+- **GitHub:** https://github.com/lineofflight/frankfurter
+- **Data origin:** blended central-bank/official sources; coverage changes over time
 
-## License
+## License — rechecked 2026-10-19
 
-| Aspect | Detail |
-|--------|--------|
-| **License type** | Unlicense (public domain equivalent) |
-| **Commercial use?** | **Yes — explicitly.** FAQ states: *"Is the API free for commercial use? Yes, absolutely."* |
-| **Attribution required?** | No |
-| **API key required?** | No |
-| **Monthly cost** | $0 |
+Current [official terms](https://frankfurter.dev/license/) distinguish MIT
+software from underlying provider data. The [FAQ](https://frankfurter.dev/#faq)
+expressly permits commercial use of blended rates and local caching. This
+app calls the default blended v2 route without an individual-provider filter.
+Do not infer universal public-domain/no-attribution rights from a software
+license. Individual provider terms remain relevant, especially if switching
+to a provider-specific endpoint.
+
+See [dated data/disclosure review](../release-prep/data-licensing-and-disclosure-review-2026-10-19.md)
+for exact scope, current evidence and unresolved provenance questions.
 
 ## Data Offered
 
@@ -136,5 +139,7 @@ Self-hosting via Docker (`lineofflight/frankfurter`) is available if needed at 1
 | App name/header | **None** |
 | Request body | **None** (GET only) |
 
-Frankfurter is open-source with no known tracking or user profiling.
-Server logs are standard access logs only.
+The current official FAQ says the public API does not retain personal data,
+IP addresses or request URLs and uses aggregate Cloudflare traffic statistics.
+Network delivery and retained logs are different concepts. Do not claim that
+standard per-request logs exist without checking the current operator policy.

@@ -74,8 +74,14 @@ See `DEFINITIONS.md` → Phase Roadmap for full details.
 
 | Source | Use | Auth |
 |--------|-----|------|
-| Frankfurter v2 (`api.frankfurter.dev`) | Fiat rates | No API key |
+| Frankfurter v2 (`api.frankfurter.dev`) | Blended fiat latest/history | No API key |
+| fawazahmed0 / exchange-api | Release crypto latest/history via jsDelivr/Cloudflare | No API key |
 | Local cache | Fiat rates, chart data, favorites, settings | SharedPreferences |
+
+Current licensing evidence, disclosure recommendations and unresolved upstream
+provenance are recorded in
+[`2026-10-19 data/disclosure review`](docs/release-prep/data-licensing-and-disclosure-review-2026-10-19.md).
+Provider profile names are not a legal certification.
 
 ## Quick start
 

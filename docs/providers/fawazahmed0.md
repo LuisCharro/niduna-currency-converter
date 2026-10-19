@@ -2,7 +2,7 @@
 
 > **Status:** PRIMARY crypto provider in `release_safe` builds.
 > **License:** CC0-1.0 (Creative Commons Zero — public domain).
-> **Play Store safe:** YES
+> **Release routing:** enabled. CC0 evidence and upstream provenance limits rechecked 2026-10-19.
 
 ---
 
@@ -26,7 +26,13 @@ JSON files on CDN. It provides daily snapshots for 200+ currencies including BTC
 | **API key required?** | No |
 | **Monthly cost** | $0 |
 
-CC0 is the most permissive license possible. The data is effectively in the public domain.
+The repository publishes CC0, which permits commercial reuse under the
+rights waived. CC0 does not remove other parties' rights. The public generator
+loads upstream source URLs from environment variables or an unversioned file;
+this review could not verify the crypto source's redistribution authorization.
+This is an unresolved provenance point, not a finding of infringement.
+See the [dated review](../release-prep/data-licensing-and-disclosure-review-2026-10-19.md)
+and [CC0 terms](https://creativecommons.org/publicdomain/zero/1.0/).
 
 ## Data Offered
 
@@ -111,7 +117,7 @@ Implausible prices are rejected and the fallback URL is tried, then an error is 
 | Concurrent requests | Up to 10 (app-enforced batch size) |
 | SSL/TLS | Yes (HTTPS via jsdelivr / Cloudflare) |
 
-This is the key advantage over CoinPaprika or CoinGecko: **zero rate limit risk** because it's serving static files from a major CDN.
+This is the key advantage over CoinPaprika or CoinGecko: no published per-client API quota; CDN abuse controls, outages or policy changes can still affect availability.
 
 ## Known Issues
 
@@ -158,4 +164,7 @@ Release builds (`scripts/build_apk.sh`, `scripts/build_appbundle.sh`) default to
 | App name/header | **None** |
 | Request body | **None** (GET only) |
 
-CDNs log IPs for caching and abuse prevention. No user profiling.
+jsDelivr's [privacy policy](https://www.jsdelivr.com/terms/privacy-policy)
+describes possible network/usage metadata processing for delivery, security
+and statistics. Check its current retention/transfer terms rather than claiming
+zero processing or assuming all CDN operators have identical logging policies.
