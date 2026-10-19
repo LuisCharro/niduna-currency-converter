@@ -6,6 +6,19 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
 venv_dir="${GOOGLE_PLAY_VENV_DIR:-${repo_root}/.tmp/google-play-venv}"
 cli="${repo_root}/stores/google-play/scripts/google_play.py"
+local_command=false
+if [[ "${1:-}" == "screenshots" ]]; then
+  cli="${repo_root}/stores/google-play/scripts/prepare_screenshots.py"
+  local_command=true
+  shift
+fi
+
+# Argument help is local and dependency-free; it must work before setup/auth.
+for argument in "$@"; do
+  if [[ "${argument}" == "--help" || "${argument}" == "-h" ]]; then
+    exec python3 "${cli}" "$@"
+  fi
+done
 
 if [[ "${1:-}" == "setup" ]]; then
   command -v python3 >/dev/null 2>&1 || {
@@ -22,6 +35,10 @@ fi
 if [[ ! -x "${venv_dir}/bin/python" ]]; then
   echo "google_play: local environment is missing; run ./.devtools/google_play.sh setup" >&2
   exit 1
+fi
+
+if [[ "${local_command}" == "true" ]]; then
+  exec "${venv_dir}/bin/python" "${cli}" "$@"
 fi
 
 if [[ -z "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]]; then

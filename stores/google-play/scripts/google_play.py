@@ -4,10 +4,13 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
+import fcntl
 import hashlib
 import json
 import os
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +21,25 @@ SCOPE = "https://www.googleapis.com/auth/androidpublisher"
 
 def load_config() -> dict[str, Any]:
     return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+
+
+@contextmanager
+def play_operation_lock(package_name: str):
+    """Serialize edits across local checkouts; a new API edit invalidates the old one."""
+    lock_name = f"honestfern-play-{os.getuid()}-{package_name}.lock"
+    descriptor = os.open(Path(tempfile.gettempdir()) / lock_name, os.O_CREAT | os.O_RDWR, 0o600)
+    with os.fdopen(descriptor, "w") as lock_file:
+        try:
+            fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as error:
+            raise RuntimeError(
+                "Another local Play command is using this app. Wait for it to finish; "
+                "status/preflight must not run alongside uploads."
+            ) from error
+        try:
+            yield
+        finally:
+            fcntl.flock(lock_file, fcntl.LOCK_UN)
 
 
 def build_service() -> Any:
@@ -176,7 +198,7 @@ def validate_candidate(
         expected_name = f"{version_name} ({version_code})"
 
     return {
-        "artifact": artifact.resolve(),
+        "artifact": str(artifact.resolve()),
         "versionCode": version_code,
         "releaseName": expected_name or version_code,
         "sizeBytes": artifact.stat().st_size,
@@ -324,6 +346,14 @@ def upload_closed_aab(
                 changesInReviewBehavior="ERROR_IF_IN_REVIEW",
             ).execute()
         except Exception as commit_error:
+            status = getattr(getattr(commit_error, "resp", None), "status", None)
+            if status is not None and 400 <= status < 500:
+                # A definite rejection needs its original Google message, not an
+                # ambiguous-outcome wrapper or a second edit.
+                raise
+            # Creating a verification edit invalidates any prior edit for this
+            # account. Never try to delete the old ID afterwards.
+            edit_id = None
             try:
                 fresh_tracks = with_verification_edit(
                     service, package_name, read_tracks=True
@@ -332,7 +362,7 @@ def upload_closed_aab(
                 edit_id = None
                 raise RuntimeError(
                     "Commit response was ambiguous and a fresh track read failed. "
-                    "Inspect Play Console/status before retrying; the edit was left to expire."
+                    "Inspect Play Console/status before retrying; no automatic retry occurred."
                 ) from verification_error
             if has_completed_release(
                 fresh_tracks, api_track, version_code, release_name
@@ -344,6 +374,16 @@ def upload_closed_aab(
                     "Do not retry until the state is reviewed."
                 ) from commit_error
         edit_id = None
+        if not committed.get("verifiedAfterAmbiguousCommit"):
+            try:
+                fresh_tracks = with_verification_edit(service, package_name, read_tracks=True)
+                if not has_completed_release(fresh_tracks, api_track, version_code, release_name):
+                    raise RuntimeError("Expected release is absent from fresh track state.")
+            except Exception as verification_error:
+                raise RuntimeError(
+                    "The edit committed, but fresh verification failed. Do not re-upload; "
+                    "inspect status/Console to resolve the outcome."
+                ) from verification_error
         return {
             "track": api_track,
             "versionCode": version_code,
@@ -351,6 +391,7 @@ def upload_closed_aab(
             **candidate,
             "playSha256": uploaded["sha256"],
             "commit": committed,
+            "verifiedTrack": True,
         }
     finally:
         if edit_id is not None:
@@ -385,22 +426,23 @@ def main() -> int:
             candidate = validate_candidate(
                 config, args.aab, args.version_code
             )
-        service = build_service()
-        if args.command == "plan-closed":
-            live = inspect_closed_track(service, config, candidate["versionCode"])
-            print(json.dumps({**candidate, **live}, indent=2, default=str))
-            return 0
-        if args.command == "upload-closed":
-            result = upload_closed_aab(
-                service, config, candidate, args.release_notes,
-            )
-            tracks = []
-        else:
-            tracks = with_verification_edit(
-                service,
-                config["packageName"],
-                read_tracks=args.command == "status",
-            )
+        with play_operation_lock(config["packageName"]):
+            service = build_service()
+            if args.command == "plan-closed":
+                live = inspect_closed_track(service, config, candidate["versionCode"])
+                print(json.dumps({**candidate, **live}, indent=2, default=str))
+                return 0
+            if args.command == "upload-closed":
+                result = upload_closed_aab(
+                    service, config, candidate, args.release_notes,
+                )
+                tracks = []
+            else:
+                tracks = with_verification_edit(
+                    service,
+                    config["packageName"],
+                    read_tracks=args.command == "status",
+                )
     except Exception as error:  # API/credential exceptions can include private paths or request details
         if isinstance(error, RuntimeError):
             print(f"Google Play {args.command} failed: {error}", file=sys.stderr)
