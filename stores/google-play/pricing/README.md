@@ -66,6 +66,45 @@ Ya incluyen patrones locales derivados de la configuración anterior.
 Después priorizar mercados con uso real y revisar poder adquisitivo, precio
 local habitual y rendimiento; no usar solo cambio de moneda o idioma del móvil.
 
+### Cómo priorizar sin estudiar 174 países
+
+Decisión de alcance — 2026-10-19: los importes principales recomendados han
+recibido la conformidad de Luis; no se han aplicado todavía a Play. Para el
+resto conservar el catálogo regional existente como aproximación inicial.
+Una conversión nueva, si se prepara más adelante, debe generar un plan separado;
+no se presupone aprobada una actualización global de tipos de cambio.
+
+La app tiene 34 monedas tradicionales y 11 criptomonedas (45 en total), según
+`lib/src/core/currency/supported_currencies.dart`. No son 45 monedas nacionales.
+No dividir el precio automáticamente entre «su moneda está / no está en la app».
+Un residente puede usarla para viajar, y la moneda consultada no identifica la
+región de facturación. La cobertura es una señal de utilidad, no una regla de precio.
+
+Prioridad de revisión comercial, en este orden:
+
+1. Países donde efectivamente se distribuye la app y mercados de lanzamiento
+   deliberadamente elegidos; tener un precio configurado no prueba distribución.
+2. Idiomas de la interfaz disponibles y casos de uso de viajes/conversión.
+3. Después del lanzamiento, uso, compradores, ventas y devoluciones por mercado
+   disponibles en Play, más comentarios de soporte. No añadir tracking a la app.
+4. Cobertura de la moneda local como señal adicional. Si no está soportada,
+   aclarar el alcance al usuario; un menor precio no corrige esa limitación.
+
+Para los demás países, los precios generados por Google son una base operativa
+razonable, no una optimización demostrada de poder adquisitivo. Su conversión
+considera tipo de cambio y patrones de precio; no asumir que garantiza
+asequibilidad local. No imponer ,99 en JPY o en todas las demás monedas, ni
+aplicar descuentos arbitrarios por una clasificación general de países.
+
+Revisar un grupo pequeño cuando exista una razón concreta. No hace falta un
+estudio individual de todos los países antes del primer lanzamiento ni un
+experimento A/B sin compradores suficientes.
+
+Referencias: [conversión regional de Google](https://developers.google.com/android-publisher/api-ref/rest/v3/monetization/convertRegionPrices)
+y [experimentos de precio/poder adquisitivo](https://google.play/business/price-experiments/).
+La primera ofrece una base calculada; la segunda ayuda a aprender de resultados
+cuando hay datos suficientes. Son funciones distintas.
+
 Para una revisión global futura:
 
 1. Obtener catálogo y conversión de referencia actualizados.
