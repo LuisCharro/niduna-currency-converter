@@ -165,11 +165,11 @@ class AppLocalizationsIt extends AppLocalizations {
       'Scarica nuovi tassi all\'avvio dell\'app';
 
   @override
-  String get labelClearAllData => 'Cancella tutti i dati';
+  String get labelClearAllData => 'Cancella i dati salvati';
 
   @override
   String get labelClearAllDataSubtitle =>
-      'Tassi fiat, tassi crypto, cronologia grafici e sblocchi temporanei';
+      'Tassi, cronologia grafici e sblocchi temporanei. Preferiti e impostazioni restano.';
 
   @override
   String get labelRestorePurchases => 'Ripristina acquisti';
@@ -296,55 +296,54 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get dataPrivacyLine =>
-      'Questa app usa dati sui tassi di cambio per mostrare conversioni e grafici. I tuoi dati restano su questo dispositivo.';
+      'Preferenze, preferiti e tassi salvati restano su questo dispositivo. Le richieste dei tassi vanno ai provider; quelle degli annunci a Google quando gli annunci sono attivi.';
 
   @override
   String get updatesTitle => 'Aggiornamenti';
 
   @override
   String get updatesLine1 =>
-      'I tassi si aggiornano al massimo una volta al giorno.';
+      'Sono tassi giornalieri indicativi, non prezzi in tempo reale.';
 
   @override
   String get updatesLine2 =>
-      'Aggiorna all\'apertura controlla nuovi dati solo quando quelli salvati sono vecchi.';
+      'Con l’aggiornamento all’apertura attivo, l’app controlla i nuovi dati alla prima apertura di ogni giorno.';
 
   @override
   String get updatesLine3 =>
-      'Puoi comunque usare l\'aggiornamento manuale per richiedere l\'ultimo aggiornamento giornaliero.';
+      'Puoi aggiornare manualmente in qualsiasi momento.';
 
   @override
   String get fiatDataTitle => 'Dati fiat';
 
   @override
   String get fiatDataLine1 =>
-      'I tassi fiat provengono da Frankfurter usando dati pubblici delle banche centrali.';
+      'Tassi fiat: Frankfurter, basati su dati pubblici delle banche centrali.';
 
   @override
   String get fiatDataLine2 =>
-      'I grafici fiat possono mostrare fino a 2 anni di storico giornaliero.';
+      'I grafici fiat mostrano fino a 2 anni di storico giornaliero.';
 
   @override
-  String get fiatDataLine3 =>
-      'Se sei offline, l\'app usa i dati salvati quando disponibili.';
+  String get fiatDataLine3 => 'I tassi salvati sono disponibili offline.';
 
   @override
   String get cryptoDataTitle => 'Dati crypto';
 
   @override
-  String get clearDataTitle => 'Cancella dati';
+  String get clearDataTitle => 'Dati salvati';
 
   @override
   String get clearDataLine1 =>
-      'Cancella tutti i dati rimuove da questo dispositivo i tassi e la cronologia grafici salvati.';
+      'Cancella i tassi fiat e crypto salvati e la cronologia dei grafici.';
 
   @override
   String get clearDataLine2 =>
-      'Rimuove anche gli sblocchi temporanei dei grafici.';
+      'Cancella anche gli sblocchi temporanei dei grafici.';
 
   @override
   String get clearDataLine3 =>
-      'Non rimuove il tema né le normali impostazioni dell\'app.';
+      'Preferiti, tema e impostazioni dell’app restano.';
 
   @override
   String get favoritesProTitle => 'Favorites Pro';
@@ -434,10 +433,10 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get cryptoDataSourceLine =>
-      'I prezzi delle criptovalute provengono da un set di dati pubblico e aperto.';
+      'Tassi e grafici crypto: exchange-api di fawazahmed0.';
 
   @override
-  String get clearDataDialogTitle => 'Cancellare tutti i dati?';
+  String get clearDataDialogTitle => 'Cancellare i dati salvati?';
 
   @override
   String get snackCacheCleared => 'Cache cancellata';

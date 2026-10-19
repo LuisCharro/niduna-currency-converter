@@ -166,11 +166,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Récupérer les nouveaux taux au démarrage de l\'app';
 
   @override
-  String get labelClearAllData => 'Effacer toutes les données';
+  String get labelClearAllData => 'Effacer les données enregistrées';
 
   @override
   String get labelClearAllDataSubtitle =>
-      'Taux fiat, taux crypto, historique des graphiques et déverrouillages temporaires';
+      'Taux, historique des graphiques et déverrouillages temporaires. Favoris et réglages conservés.';
 
   @override
   String get labelRestorePurchases => 'Restaurer les achats';
@@ -299,55 +299,55 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dataPrivacyLine =>
-      'Cette app utilise des données de taux de change pour afficher les conversions et les graphiques. Vos données restent sur cet appareil.';
+      'Vos préférences, favoris et taux enregistrés restent sur cet appareil. Les demandes de taux vont aux fournisseurs ; celles des annonces à Google si les annonces sont activées.';
 
   @override
   String get updatesTitle => 'Mises à jour';
 
   @override
   String get updatesLine1 =>
-      'Les taux sont mis à jour au maximum une fois par jour.';
+      'Ce sont des taux journaliers indicatifs, pas des prix en temps réel.';
 
   @override
   String get updatesLine2 =>
-      'Actualiser à l\'ouverture ne vérifie les nouvelles données que lorsque vos données enregistrées sont anciennes.';
+      'Si l’actualisation à l’ouverture est activée, l’app vérifie les mises à jour à la première ouverture de la journée.';
 
   @override
   String get updatesLine3 =>
-      'Vous pouvez toujours utiliser l\'actualisation manuelle pour demander la dernière mise à jour quotidienne.';
+      'Vous pouvez actualiser manuellement à tout moment.';
 
   @override
   String get fiatDataTitle => 'Données fiat';
 
   @override
   String get fiatDataLine1 =>
-      'Les taux fiat proviennent de Frankfurter avec des données publiques de banques centrales.';
+      'Taux fiat : Frankfurter, avec des données publiques de banques centrales.';
 
   @override
   String get fiatDataLine2 =>
-      'Les graphiques fiat peuvent afficher jusqu\'à 2 ans d\'historique quotidien.';
+      'Les graphiques fiat affichent jusqu’à 2 ans d’historique quotidien.';
 
   @override
   String get fiatDataLine3 =>
-      'Si vous êtes hors ligne, l\'app utilise les données enregistrées lorsqu\'elles sont disponibles.';
+      'Les taux enregistrés sont disponibles hors ligne.';
 
   @override
   String get cryptoDataTitle => 'Données crypto';
 
   @override
-  String get clearDataTitle => 'Effacer les données';
+  String get clearDataTitle => 'Données enregistrées';
 
   @override
   String get clearDataLine1 =>
-      'Effacer toutes les données supprime de cet appareil les taux et l\'historique des graphiques enregistrés.';
+      'Efface les taux fiat et crypto enregistrés et l’historique des graphiques.';
 
   @override
   String get clearDataLine2 =>
-      'Cela supprime aussi les déverrouillages temporaires des graphiques.';
+      'Efface aussi les déverrouillages temporaires des graphiques.';
 
   @override
   String get clearDataLine3 =>
-      'Cela ne supprime ni le thème ni les réglages normaux de l\'app.';
+      'Les favoris, le thème et les réglages de l’app sont conservés.';
 
   @override
   String get favoritesProTitle => 'Favorites Pro';
@@ -436,10 +436,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cryptoDataSourceLine =>
-      'Les prix des cryptomonnaies proviennent d’un jeu de données public et ouvert.';
+      'Taux et graphiques crypto : exchange-api de fawazahmed0.';
 
   @override
-  String get clearDataDialogTitle => 'Effacer toutes les données ?';
+  String get clearDataDialogTitle => 'Effacer les données enregistrées ?';
 
   @override
   String get snackCacheCleared => 'Cache vidé';

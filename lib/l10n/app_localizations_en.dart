@@ -164,11 +164,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Fetch new rates when the app starts';
 
   @override
-  String get labelClearAllData => 'Clear all data';
+  String get labelClearAllData => 'Clear saved data';
 
   @override
   String get labelClearAllDataSubtitle =>
-      'Fiat rates, crypto rates, chart history and temporary unlocks';
+      'Rates, chart history and temporary unlocks. Favorites and settings stay.';
 
   @override
   String get labelRestorePurchases => 'Restore purchases';
@@ -293,53 +293,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataPrivacyLine =>
-      'This app uses exchange-rate data to show conversions and charts. Your data stays on this device.';
+      'Your preferences, favorites and saved rates stay on this device. Rate requests go to providers; ad requests go to Google when ads are enabled.';
 
   @override
   String get updatesTitle => 'Updates';
 
   @override
-  String get updatesLine1 => 'Rates update at most once per day.';
+  String get updatesLine1 =>
+      'Rates are indicative daily data, not live prices.';
 
   @override
   String get updatesLine2 =>
-      'Refresh on open only checks for new data when your saved data is old.';
+      'With Refresh on open enabled, the app checks once per day when opened.';
 
   @override
-  String get updatesLine3 =>
-      'You can still use manual refresh to request the latest daily update.';
+  String get updatesLine3 => 'You can refresh manually anytime.';
 
   @override
   String get fiatDataTitle => 'Fiat data';
 
   @override
   String get fiatDataLine1 =>
-      'Fiat rates come from Frankfurter using public central-bank data.';
+      'Fiat rates: Frankfurter, based on public central-bank data.';
 
   @override
   String get fiatDataLine2 =>
-      'Fiat charts can show up to 2 years of daily history.';
+      'Fiat charts show up to 2 years of daily history.';
 
   @override
-  String get fiatDataLine3 =>
-      'If you are offline, the app uses saved data when available.';
+  String get fiatDataLine3 => 'Saved rates are available offline.';
 
   @override
   String get cryptoDataTitle => 'Crypto data';
 
   @override
-  String get clearDataTitle => 'Clear data';
+  String get clearDataTitle => 'Saved data';
 
   @override
   String get clearDataLine1 =>
-      'Clear all data removes saved rate and chart data from this device.';
+      'Clears saved fiat and crypto rates and chart history.';
 
   @override
-  String get clearDataLine2 => 'It also removes temporary chart unlocks.';
+  String get clearDataLine2 => 'Also clears temporary chart unlocks.';
 
   @override
-  String get clearDataLine3 =>
-      'It does not remove your theme or normal app settings.';
+  String get clearDataLine3 => 'Favorites, theme and app settings stay.';
 
   @override
   String get favoritesProTitle => 'Favorites Pro';
@@ -428,10 +426,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cryptoDataSourceLine =>
-      'Crypto prices come from an open public dataset.';
+      'Crypto rates and charts use exchange-api by fawazahmed0.';
 
   @override
-  String get clearDataDialogTitle => 'Clear all data?';
+  String get clearDataDialogTitle => 'Clear saved data?';
 
   @override
   String get snackCacheCleared => 'Cache cleared';

@@ -184,3 +184,29 @@ territory, consent implementation or the applicable terms. For copy-only
 simplification, use this surface map and preserve the substantive notices.
 Record source URLs, review date, artifact/source revision and open questions;
 do not silently replace an unresolved item with “clean for publication.”
+
+## Implementation preview after Luis's approval
+
+The five app locales now qualify local data and external rate/ad requests,
+shorten daily-update help, name sources without license assertions, and remove
+API-key jargon from the crypto range limit. Main's copy differs from the
+uploaded code-8 artifact; the review APK is local/test-ad only. Versioning for
+Play follows the next unused code at release preparation.
+
+Website drafts shorten the hero/chart/FAQ text, preserve accessible sources,
+expand relevant AdMob/purchase handling and explain routine web-log retention
+from read-only server evidence. Controller identity confirmation, hosting and
+transfer specifics, actual Console declarations, and upstream crypto rights
+remain separate unfinished audit items. The copy update does not resolve them.
+
+### Brand-first strategy clarified by Luis
+
+Luis reaffirmed the existing Pegolandia-style public-brand decision documented
+in the portfolio master plan: Honest Fern on the website/app, real identity in
+platform verification and required store information. This copy task preserves
+that model. The controller-disclosure finding concerns applicable policy
+requirements, not adding a personal name/address throughout marketing or
+renaming the brand. The adequacy of the existing policy identification is
+still a targeted legal question; the competitor's presentation is not proof
+that a required disclosure can be omitted. Do not repeat the legal-name intake
+as an ordinary branding prerequisite.

@@ -57,27 +57,29 @@ String dailyRatesLabel(BuildContext context, String lastUpdatedLabel) =>
 
 String dailyRatesBody(BuildContext context) => switch (_lang(context)) {
   'es' =>
-    'La app comprueba una vez al día los últimos tipos publicados por fuentes públicas. Las fuentes publican a horas distintas, por lo que la fecha disponible puede cambiar durante el día. No son precios de mercado en tiempo real.',
+    'Tipos diarios orientativos, no precios en tiempo real. Los bancos y proveedores de pago pueden usar otros tipos o cobrar comisiones.',
   'de' =>
-    'Die App prüft einmal täglich die neuesten Kurse aus öffentlichen Quellen. Die Quellen veröffentlichen zu unterschiedlichen Zeiten, daher kann sich das verfügbare Datum im Tagesverlauf ändern. Es sind keine Echtzeit-Marktpreise.',
+    'Ungefähre Tageskurse, keine Live-Preise. Banken und Zahlungsanbieter können andere Kurse verwenden oder Gebühren berechnen.',
   'it' =>
-    "L'app controlla una volta al giorno gli ultimi tassi pubblicati da fonti pubbliche. Le fonti pubblicano in orari diversi, quindi la data disponibile può cambiare durante il giorno. Non sono prezzi di mercato in tempo reale.",
+    'Tassi giornalieri indicativi, non prezzi in tempo reale. Banche e servizi di pagamento possono applicare tassi diversi o commissioni.',
   'fr' =>
-    'L’app vérifie une fois par jour les derniers taux publiés par des sources publiques. Ces sources publient à des heures différentes, la date disponible peut donc changer au cours de la journée. Il ne s’agit pas de prix de marché en temps réel.',
+    'Taux journaliers indicatifs, pas des prix en temps réel. Les banques et prestataires de paiement peuvent appliquer d’autres taux ou des frais.',
   _ =>
-    'The app checks the latest rates from public sources once daily. Sources publish at different times, so the available rate date can change during the day. These are not live or intraday market prices.',
+    'Indicative daily rates, not live prices. Banks and payment providers may use different rates or charge fees.',
 };
 
 String providerPublicationTiming(BuildContext context) => switch (_lang(
   context,
 )) {
-  'es' => 'Las fuentes pueden publicar nuevos datos a distintas horas.',
+  'es' =>
+    'La fecha disponible puede retrasarse los fines de semana y festivos.',
   'de' =>
-    'Die Quellen können neue Daten zu unterschiedlichen Zeiten veröffentlichen.',
-  'it' => 'Le fonti possono pubblicare nuovi dati in orari diversi.',
+    'Das verfügbare Datum kann an Wochenenden und Feiertagen zurückliegen.',
+  'it' =>
+    'La data disponibile può essere indietro nei fine settimana e festivi.',
   'fr' =>
-    'Les sources peuvent publier de nouvelles données à des heures différentes.',
-  _ => 'Sources may publish new data at different times.',
+    'La date disponible peut accuser un retard les week-ends et jours fériés.',
+  _ => 'Available dates may lag on weekends and public holidays.',
 };
 
 String closeLensTooltip(BuildContext context) => switch (_lang(context)) {
@@ -183,8 +185,7 @@ String convertRowActionsHintText(BuildContext context) =>
         'Suggerimento: tieni premuta una riga per aprire la lente · scorri a sinistra per altro',
       'fr' =>
         'Astuce : maintenez une ligne pour ouvrir la loupe · balayez à gauche pour plus',
-      _ =>
-        'Tip: hold a row to open the lens · swipe left for more',
+      _ => 'Tip: hold a row to open the lens · swipe left for more',
     };
 
 String shareRatesFailedMessage(BuildContext context) =>

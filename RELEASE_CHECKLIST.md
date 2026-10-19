@@ -2,6 +2,12 @@
 
 ## Release checkpoint — 2026-10-19
 
+- **Unreleased copy preview:** main now has shorter rate/data help and qualified
+  privacy text in all five languages. These edits are not in the uploaded
+  code-8 artifact. Any APK built from this working source for emulator review
+  is a local test-ad preview, not a Play upload candidate. Assign the next
+  unused version code when preparing the eventual new binary.
+
 - Final data/disclosure recheck:
   `docs/release-prep/data-licensing-and-disclosure-review-2026-10-19.md`.
   Commercial-use evidence is recorded with its limits; do not treat old

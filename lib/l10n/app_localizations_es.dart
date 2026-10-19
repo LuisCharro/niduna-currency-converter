@@ -165,11 +165,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Obtener nuevos tipos cuando se inicia la app';
 
   @override
-  String get labelClearAllData => 'Borrar todos los datos';
+  String get labelClearAllData => 'Borrar datos guardados';
 
   @override
   String get labelClearAllDataSubtitle =>
-      'Tipos fiat, tipos cripto, historial de gráficos y desbloqueos temporales';
+      'Tipos, historial de gráficos y desbloqueos temporales. Favoritos y ajustes se conservan.';
 
   @override
   String get labelRestorePurchases => 'Restaurar compras';
@@ -296,55 +296,54 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get dataPrivacyLine =>
-      'Esta app usa datos de tipos de cambio para mostrar conversiones y gráficos. Tus datos permanecen en este dispositivo.';
+      'Tus preferencias, favoritos y tipos guardados se quedan en este dispositivo. Las solicitudes de tipos van a proveedores; las de anuncios, a Google si los anuncios están activados.';
 
   @override
   String get updatesTitle => 'Actualizaciones';
 
   @override
   String get updatesLine1 =>
-      'Los tipos se actualizan como máximo una vez al día.';
+      'Son tipos diarios orientativos, no precios en tiempo real.';
 
   @override
   String get updatesLine2 =>
-      'Actualizar al abrir solo comprueba nuevos datos cuando los guardados son antiguos.';
+      'Con Actualizar al abrir, la app comprueba nuevos datos al abrirla por primera vez cada día.';
 
   @override
-  String get updatesLine3 =>
-      'Aun así, puedes usar la actualización manual para solicitar la última actualización diaria.';
+  String get updatesLine3 => 'Puedes actualizar manualmente cuando quieras.';
 
   @override
   String get fiatDataTitle => 'Datos fiat';
 
   @override
   String get fiatDataLine1 =>
-      'Los tipos fiat proceden de Frankfurter usando datos públicos de bancos centrales.';
+      'Tipos fiat: Frankfurter, con datos públicos de bancos centrales.';
 
   @override
   String get fiatDataLine2 =>
-      'Los gráficos fiat pueden mostrar hasta 2 años de historial diario.';
+      'Los gráficos fiat muestran hasta 2 años de historial diario.';
 
   @override
   String get fiatDataLine3 =>
-      'Si estás sin conexión, la app usa los datos guardados cuando están disponibles.';
+      'Los tipos guardados están disponibles sin conexión.';
 
   @override
   String get cryptoDataTitle => 'Datos cripto';
 
   @override
-  String get clearDataTitle => 'Borrar datos';
+  String get clearDataTitle => 'Datos guardados';
 
   @override
   String get clearDataLine1 =>
-      'Borrar todos los datos elimina de este dispositivo los tipos y el historial de gráficos guardados.';
+      'Borra los tipos fiat y cripto guardados y el historial de gráficos.';
 
   @override
   String get clearDataLine2 =>
-      'También elimina los desbloqueos temporales de gráficos.';
+      'También borra los desbloqueos temporales de gráficos.';
 
   @override
   String get clearDataLine3 =>
-      'No elimina el tema ni los ajustes normales de la app.';
+      'Se conservan los favoritos, el tema y los ajustes de la app.';
 
   @override
   String get favoritesProTitle => 'Favorites Pro';
@@ -433,10 +432,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cryptoDataSourceLine =>
-      'Los precios de las criptomonedas provienen de un conjunto de datos público y abierto.';
+      'Tipos y gráficos cripto: exchange-api de fawazahmed0.';
 
   @override
-  String get clearDataDialogTitle => '¿Borrar todos los datos?';
+  String get clearDataDialogTitle => '¿Borrar los datos guardados?';
 
   @override
   String get snackCacheCleared => 'Caché borrada';

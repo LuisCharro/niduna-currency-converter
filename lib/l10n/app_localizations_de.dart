@@ -164,11 +164,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Neue Kurse beim Start der App abrufen';
 
   @override
-  String get labelClearAllData => 'Alle Daten löschen';
+  String get labelClearAllData => 'Gespeicherte Daten löschen';
 
   @override
   String get labelClearAllDataSubtitle =>
-      'Fiat-Kurse, Krypto-Kurse, Chartverlauf und temporäre Freischaltungen';
+      'Kurse, Chartverlauf und temporäre Freischaltungen. Favoriten und Einstellungen bleiben.';
 
   @override
   String get labelRestorePurchases => 'Käufe wiederherstellen';
@@ -296,55 +296,53 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dataPrivacyLine =>
-      'Diese App verwendet Wechselkursdaten, um Umrechnungen und Charts anzuzeigen. Deine Daten bleiben auf diesem Gerät.';
+      'Deine Einstellungen, Favoriten und gespeicherten Kurse bleiben auf diesem Gerät. Kursanfragen gehen an Anbieter; Anzeigenanfragen bei aktivierter Werbung an Google.';
 
   @override
   String get updatesTitle => 'Aktualisierungen';
 
   @override
   String get updatesLine1 =>
-      'Kurse werden höchstens einmal pro Tag aktualisiert.';
+      'Es sind Richtwerte für Tageskurse, keine Live-Preise.';
 
   @override
   String get updatesLine2 =>
-      'Beim Öffnen aktualisieren prüft nur dann auf neue Daten, wenn deine gespeicherten Daten alt sind.';
+      'Bei aktivierter Aktualisierung beim Öffnen prüft die App beim ersten Öffnen jedes Tages auf neue Daten.';
 
   @override
-  String get updatesLine3 =>
-      'Du kannst trotzdem die manuelle Aktualisierung verwenden, um das neueste Tagesupdate anzufordern.';
+  String get updatesLine3 => 'Du kannst jederzeit manuell aktualisieren.';
 
   @override
   String get fiatDataTitle => 'Fiat-Daten';
 
   @override
   String get fiatDataLine1 =>
-      'Fiat-Kurse stammen von Frankfurter und öffentlichen Zentralbankdaten.';
+      'Fiat-Kurse: Frankfurter, basierend auf öffentlichen Zentralbankdaten.';
 
   @override
   String get fiatDataLine2 =>
-      'Fiat-Charts können bis zu 2 Jahre tägliche Historie anzeigen.';
+      'Fiat-Charts zeigen bis zu 2 Jahre tägliche Historie.';
 
   @override
-  String get fiatDataLine3 =>
-      'Wenn du offline bist, verwendet die App gespeicherte Daten, sofern verfügbar.';
+  String get fiatDataLine3 => 'Gespeicherte Kurse sind offline verfügbar.';
 
   @override
   String get cryptoDataTitle => 'Krypto-Daten';
 
   @override
-  String get clearDataTitle => 'Daten löschen';
+  String get clearDataTitle => 'Gespeicherte Daten';
 
   @override
   String get clearDataLine1 =>
-      'Alle Daten löschen entfernt gespeicherte Kurs- und Chartdaten von diesem Gerät.';
+      'Löscht gespeicherte Fiat- und Krypto-Kurse sowie den Chartverlauf.';
 
   @override
   String get clearDataLine2 =>
-      'Dabei werden auch temporäre Chart-Freischaltungen entfernt.';
+      'Temporäre Chart-Freischaltungen werden ebenfalls gelöscht.';
 
   @override
   String get clearDataLine3 =>
-      'Dein Design und normale App-Einstellungen bleiben erhalten.';
+      'Favoriten, Theme und App-Einstellungen bleiben erhalten.';
 
   @override
   String get favoritesProTitle => 'Favorites Pro';
@@ -433,10 +431,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get cryptoDataSourceLine =>
-      'Krypto-Preise stammen aus einem offenen, öffentlichen Datensatz.';
+      'Krypto-Kurse und -Charts: exchange-api von fawazahmed0.';
 
   @override
-  String get clearDataDialogTitle => 'Alle Daten löschen?';
+  String get clearDataDialogTitle => 'Gespeicherte Daten löschen?';
 
   @override
   String get snackCacheCleared => 'Cache geleert';

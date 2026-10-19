@@ -94,16 +94,14 @@ String chartRangeLabel(BuildContext context, String key) =>
       _ => key,
     };
 
-String cryptoRangeLimitMessage(BuildContext context) => switch (_lang(
-  context,
-)) {
-  'es' => 'Los gráficos cripto admiten hasta 1A con proveedores sin clave',
-  'de' => 'Krypto-Charts unterstützen bis zu 1J mit anbieter ohne Schlüssel',
-  'it' => 'I grafici crypto supportano fino a 1A con provider senza chiave',
-  'fr' =>
-    "Les graphiques crypto prennent en charge jusqu'à 1A avec des fournisseurs sans clé",
-  _ => 'Crypto charts support up to 1Y with no-key providers',
-};
+String cryptoRangeLimitMessage(BuildContext context) =>
+    switch (_lang(context)) {
+      'es' => 'Los gráficos cripto muestran hasta 1 año de datos.',
+      'de' => 'Krypto-Charts zeigen Daten für bis zu 1 Jahr.',
+      'it' => 'I grafici crypto mostrano fino a 1 anno di dati.',
+      'fr' => 'Les graphiques crypto affichent jusqu’à 1 an de données.',
+      _ => 'Crypto charts show up to 1 year of data.',
+    };
 
 String chartErrorTitle(BuildContext context, String? message) {
   return switch (message) {

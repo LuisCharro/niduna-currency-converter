@@ -407,13 +407,13 @@ abstract class AppLocalizations {
   /// Clear data setting title
   ///
   /// In en, this message translates to:
-  /// **'Clear all data'**
+  /// **'Clear saved data'**
   String get labelClearAllData;
 
   /// Clear data setting subtitle
   ///
   /// In en, this message translates to:
-  /// **'Fiat rates, crypto rates, chart history and temporary unlocks'**
+  /// **'Rates, chart history and temporary unlocks. Favorites and settings stay.'**
   String get labelClearAllDataSubtitle;
 
   /// Restore purchases setting title
@@ -653,7 +653,7 @@ abstract class AppLocalizations {
   /// Privacy intro line
   ///
   /// In en, this message translates to:
-  /// **'This app uses exchange-rate data to show conversions and charts. Your data stays on this device.'**
+  /// **'Your preferences, favorites and saved rates stay on this device. Rate requests go to providers; ad requests go to Google when ads are enabled.'**
   String get dataPrivacyLine;
 
   /// Updates section title
@@ -665,19 +665,19 @@ abstract class AppLocalizations {
   /// Update frequency line 1
   ///
   /// In en, this message translates to:
-  /// **'Rates update at most once per day.'**
+  /// **'Rates are indicative daily data, not live prices.'**
   String get updatesLine1;
 
   /// Update frequency line 2
   ///
   /// In en, this message translates to:
-  /// **'Refresh on open only checks for new data when your saved data is old.'**
+  /// **'With Refresh on open enabled, the app checks once per day when opened.'**
   String get updatesLine2;
 
   /// Update frequency line 3
   ///
   /// In en, this message translates to:
-  /// **'You can still use manual refresh to request the latest daily update.'**
+  /// **'You can refresh manually anytime.'**
   String get updatesLine3;
 
   /// Fiat data section title
@@ -689,19 +689,19 @@ abstract class AppLocalizations {
   /// Fiat data line 1
   ///
   /// In en, this message translates to:
-  /// **'Fiat rates come from Frankfurter using public central-bank data.'**
+  /// **'Fiat rates: Frankfurter, based on public central-bank data.'**
   String get fiatDataLine1;
 
   /// Fiat data line 2
   ///
   /// In en, this message translates to:
-  /// **'Fiat charts can show up to 2 years of daily history.'**
+  /// **'Fiat charts show up to 2 years of daily history.'**
   String get fiatDataLine2;
 
   /// Fiat data line 3
   ///
   /// In en, this message translates to:
-  /// **'If you are offline, the app uses saved data when available.'**
+  /// **'Saved rates are available offline.'**
   String get fiatDataLine3;
 
   /// Crypto data section title
@@ -713,25 +713,25 @@ abstract class AppLocalizations {
   /// Clear data section title
   ///
   /// In en, this message translates to:
-  /// **'Clear data'**
+  /// **'Saved data'**
   String get clearDataTitle;
 
   /// Clear data line 1
   ///
   /// In en, this message translates to:
-  /// **'Clear all data removes saved rate and chart data from this device.'**
+  /// **'Clears saved fiat and crypto rates and chart history.'**
   String get clearDataLine1;
 
   /// Clear data line 2
   ///
   /// In en, this message translates to:
-  /// **'It also removes temporary chart unlocks.'**
+  /// **'Also clears temporary chart unlocks.'**
   String get clearDataLine2;
 
   /// Clear data line 3
   ///
   /// In en, this message translates to:
-  /// **'It does not remove your theme or normal app settings.'**
+  /// **'Favorites, theme and app settings stay.'**
   String get clearDataLine3;
 
   /// No description provided for @favoritesProTitle.
@@ -881,13 +881,13 @@ abstract class AppLocalizations {
   /// Crypto data source attribution line on the Data & privacy page
   ///
   /// In en, this message translates to:
-  /// **'Crypto prices come from an open public dataset.'**
+  /// **'Crypto rates and charts use exchange-api by fawazahmed0.'**
   String get cryptoDataSourceLine;
 
   /// Title of the clear-all-data confirmation dialog
   ///
   /// In en, this message translates to:
-  /// **'Clear all data?'**
+  /// **'Clear saved data?'**
   String get clearDataDialogTitle;
 
   /// Snackbar shown after cache is cleared
