@@ -2,7 +2,8 @@
 
 > **Status:** PRIMARY crypto provider in `release_safe` builds.
 > **License:** CC0-1.0 (Creative Commons Zero — public domain).
-> **Release routing:** enabled. CC0 evidence and upstream provenance limits rechecked 2026-10-19.
+> **Release routing:** enabled. Upstream source investigated 2026-10-20; owner decision:
+> keep it. Legal exposure low; the material risk is **data availability**.
 
 ---
 
@@ -27,10 +28,38 @@ JSON files on CDN. It provides daily snapshots for 200+ currencies including BTC
 | **Monthly cost** | $0 |
 
 The repository publishes CC0, which permits commercial reuse under the
-rights waived. CC0 does not remove other parties' rights. The public generator
-loads upstream source URLs from environment variables or an unversioned file;
-this review could not verify the crypto source's redistribution authorization.
-This is an unresolved provenance point, not a finding of infringement.
+rights waived. CC0 does not remove other parties' rights.
+
+### Upstream source and risk decision (2026-10-20)
+
+- The maintainer stated in
+  [issue #36](https://github.com/fawazahmed0/exchange-api/issues/36) (2022):
+  *"I ended up using a stable paid API (I cannot tell the name). I have kept
+  the url hidden, because the url has my api keys in it."* Earlier data was
+  scraped from Google/Bing. Requests to name the source in 2026
+  ([#147](https://github.com/fawazahmed0/exchange-api/issues/147), #36) were
+  answered only with a pointer back to that comment.
+- `currscript.js` reads `cryptoLink` from env/`links.ini` and parses
+  `data[].quote.USD.price` with a CoinMarketCap reference comment. That is
+  CoinMarketCap's API shape, so the paid API is very likely CoinMarketCap
+  (not confirmed). CMC's current terms allow commercial use integrated in the
+  key holder's own product but not redistribution "as a standalone service".
+- **Who carries that risk:** the API terms are a contract between the data
+  vendor and the key holder (the maintainer). Honest Fern never accepted them.
+  Individual prices are facts, not copyrightable works, and the app shows them
+  as part of a converter. No illegal use by Honest Fern was identified; any
+  vendor dispute would be with the maintainer. This is a practical assessment,
+  not formal legal advice.
+- **The material risk is availability:** if the vendor revokes the key or the
+  maintainer stops publishing, crypto latest/history stops updating (the
+  predecessor `currency-api` was already discontinued once in 2024; issue
+  #93 "this project keeps breaking"). Fiat via Frankfurter is unaffected.
+- **Decision (Luis, 2026-10-20): option A** — keep this provider for launch,
+  do not contact the maintainer (low chance of an answer). Do not describe the
+  data as licensed or verified. Long-term fix: a paid data subscription served
+  through Honest Fern's own VPS API once the app has revenue (see README
+  "Future backend direction").
+
 See the [dated review](../release-prep/data-licensing-and-disclosure-review-2026-10-19.md)
 and [CC0 terms](https://creativecommons.org/publicdomain/zero/1.0/).
 

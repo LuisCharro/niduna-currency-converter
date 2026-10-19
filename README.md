@@ -27,7 +27,11 @@ rates. A public Honest Fern API under `honestfern.com/currency/` then serves
 those stored results to this app and future Honest Fern apps. The mobile app
 must never contain the OXR credential and will keep its current providers as
 fallbacks. **No CoinGecko: the crypto track was closed on 2026-09-06 — crypto
-stays on fawazahmed0 (CC0, daily, direct).**
+stays on fawazahmed0 (CC0, daily, direct)** for launch. Its only material risk
+is that the dataset stops updating (2026-10-20 decision, see
+`docs/providers/fawazahmed0.md`). Once the app earns revenue, the same VPS API
+can also serve crypto from a paid, licensed subscription (key held only on the
+VPS, attribution as the vendor requires), removing that dependency.
 
 ## Core app docs
 
@@ -78,8 +82,8 @@ See `DEFINITIONS.md` → Phase Roadmap for full details.
 | fawazahmed0 / exchange-api | Release crypto latest/history via jsDelivr/Cloudflare | No API key |
 | Local cache | Fiat rates, chart data, favorites, settings | SharedPreferences |
 
-Current licensing evidence, disclosure recommendations and unresolved upstream
-provenance are recorded in
+Current licensing evidence, disclosure recommendations and the 2026-10-20
+crypto-source risk decision (availability risk only) are recorded in
 [`2026-10-19 data/disclosure review`](docs/release-prep/data-licensing-and-disclosure-review-2026-10-19.md).
 Provider profile names are not a legal certification.
 

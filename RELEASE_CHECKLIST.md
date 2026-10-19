@@ -827,7 +827,10 @@ with `jarsigner -verify` or `apksigner`.
 
 Read `docs/release-prep/data-licensing-and-disclosure-review-2026-10-19.md`
 before a public readiness claim. Current software/data terms are separate;
-CC0 does not clear unknown upstream third-party rights. Privacy copy also needs
+CC0 does not clear unknown upstream third-party rights. 2026-10-20 owner
+decision: exchange-api stays; legal exposure low (vendor terms bind the
+maintainer, not us), material risk is crypto data availability. See
+`docs/providers/fawazahmed0.md`. Privacy copy also needs
 qualified local-storage language and concrete controller/SDK disclosures.
 The old blanket “clean” label is superseded by the dated review.
 
@@ -835,7 +838,7 @@ The old blanket “clean” label is superseded by the dated review.
 | Provider | Role in release builds | License | Commercial OK? |
 |----------|----------------------|---------|---------------|
 | **Frankfurter** | Blended fiat latest/history | MIT software; underlying data terms separate | Official FAQ permits blended commercial use/cache; see review |
-| **fawazahmed0** | Crypto latest/history | Published CC0-1.0 | Commercial reuse under waived rights; upstream provenance unresolved |
+| **fawazahmed0** | Crypto latest/history | Published CC0-1.0 | Yes for our use; upstream likely CMC paid API (maintainer's contract). Risk = availability, accepted 2026-10-20 |
 | CoinPaprika | Dev/emulator builds only | Proprietary (commercial forbidden) | **NO — not shipped** |
 
 Release build profile (`release_safe`) uses only Frankfurter + fawazahmed0.

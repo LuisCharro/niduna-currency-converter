@@ -277,3 +277,22 @@ dropping the provenance claim. `rateSourcesIntro` in all five locales is now
 source is `1.0.0+11`; no AAB was built or uploaded. Build 10 remains the
 accepted Closed artifact; code 11 needs its own acceptance before it replaces
 it. The controller description stays brand-first by Luis's decision.
+
+## Crypto upstream resolved as an owner risk decision — 2026-10-20
+
+New evidence: the exchange-api maintainer stated the data comes from "a stable
+paid API (I cannot tell the name)" whose URL contains his API keys
+([#36](https://github.com/fawazahmed0/exchange-api/issues/36)); the parser
+matches CoinMarketCap's API response shape. CoinMarketCap's current pricing page
+allows commercial use integrated in the key holder's own product, not
+redistribution as a standalone service.
+
+Assessment: those vendor terms bind the maintainer, not Honest Fern; prices are
+facts shown inside a converter; no illegal use by Honest Fern was identified
+(practical assessment, not formal legal advice). The material risk is
+availability: crypto data may stop updating if the key is revoked or the
+project is abandoned. Luis chose **option A**: keep the provider, do not contact
+the maintainer, never call the data licensed/verified, and plan a paid source
+behind the Honest Fern VPS API once revenue allows. This closes item 4 of
+"Official-source check repeated on 2026-10-19" as a documented decision; the
+earlier suggested maintainer questions are no longer planned.
