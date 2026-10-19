@@ -108,7 +108,7 @@ def apply_prices(args) -> dict:
                 response = service.monetization().onetimeproducts().patch(
                     packageName=package, productId=product_id, body=body,
                     updateMask='purchaseOptions', allowMissing=False,
-                    **{'regionsVersion.version': original['regionsVersion']['version']}
+                    regionsVersion_version=original['regionsVersion']['version']
                 ).execute(num_retries=0)
                 save(directory/f'response-{product_id}.json', response)
                 actual = service.monetization().onetimeproducts().get(
@@ -127,7 +127,7 @@ def apply_prices(args) -> dict:
             save(directory/'result.json', result)
             return result
         except Exception as error:
-            detail = str(error) if isinstance(error, (ValueError, OSError, KeyError)) else safe_api_error_message(error)
+            detail = str(error) if isinstance(error, (ValueError, OSError, KeyError, TypeError)) else safe_api_error_message(error)
             save(directory/'failure.json', {'errorType': type(error).__name__, 'detail': detail,
                                            'attemptedProducts': attempted, 'automaticRetry': False})
             raise RuntimeError(f'{type(error).__name__}: {detail}; attempted products: {attempted}') from None
