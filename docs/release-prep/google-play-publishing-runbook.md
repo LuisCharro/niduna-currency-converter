@@ -17,7 +17,29 @@ document owns only Currency Converter facts and commands.
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
 
-## Current Closed submission — 2026-10-19, build 10
+## Real-device acceptance — 2026-10-19, Closed build 10
+
+- Console was subsequently checked: Closed Alpha `1.0.0 (10)` is **Available
+  to selected testers**, released 19 Oct at 14:42. The earlier in-review
+  snapshots below are historical. No Production promotion has occurred.
+- Luis initially used the Internal link and saw old fixed CHF labels. After
+  reinstalling from the Closed link he confirmed **2/3/1 CHF** in Settings and
+  the same correct Google Play checkout price. His licence-test account showed
+  the free test payment instrument. Do not count the Internal install as code-10 QA.
+- Luis reports completing all requested real-phone checks successfully: three
+  test purchases and their feature unlocks, relaunch persistence, reinstall and
+  Restore, normal conversions/favorites/Charts including landscape, offline use
+  after loading rates, and privacy links/controls. This is owner-reported manual
+  acceptance, not an automated test run or an independently captured device log.
+- Specifically, after uninstall/reinstall ads returned initially. Pressing
+  **Restore purchases** recovered all three purchases and removed the ads again.
+  Manual restoration passed; do not claim purchases auto-restored on reinstall.
+- Keep the exact signed code-10 AAB/hash below. These results require no binary
+  changes or rebuild. Final Console declarations/configuration and the open
+  source/privacy adequacy findings still need review before the separately
+  authorized Production promotion. Website S2 activation follows public availability.
+
+## Original Closed submission — 2026-10-19, build 10
 
 - Luis authorized submitting **1.0.0 (10)** to Closed Alpha (`alpha`) as the
   next public-release candidate. Upload, matching Google/local hash and fresh

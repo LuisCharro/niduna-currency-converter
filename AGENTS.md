@@ -26,9 +26,10 @@ skills without changing this repo again.
 ## Current state (reviewed 2026-10-19)
 
 - `main` is canonical; inspect HEAD/working tree before acting.
-- `1.0.0+10` was uploaded to Closed Alpha. API verification passed; Console
-  shows Changes in review / quick checks running. Do not call it installable
-  until approval and propagation. Luis's phone currently has code 9.
+- `1.0.0+10` is available to selected Closed Alpha testers (Console checked).
+  Luis installed from the Closed link and reports all requested phone checks
+  passed, including correct Settings/checkout prices and three licence-test IAPs.
+  After reinstall, manual Restore recovered every purchase; ads initially returned.
 - Source `b28e9e6` includes layered privacy help and localized Play prices.
   The master checklist's build-10 checkpoint owns hash, receipts and QA gaps.
 - Internal remains code 7; Production is empty. Production access is granted,
@@ -47,7 +48,7 @@ skills without changing this repo again.
 - Licence testing and Closed eligibility are separate. Prior Billing success
   does not make all Closed cohort purchases free.
 - Current gallery was verified live in Console/Chrome. Exact build-10 device
-  acceptance and final production monetisation/consent checks remain pending.
+  acceptance is owner-reported as passed; final production configuration remains pending.
 - Keep widgets and iOS work outside this Android release task unless a concrete
   regression requires investigation.
 
@@ -77,8 +78,8 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+10`, submitted to Closed Alpha and in review.
-  Code 9 remains the previously available Closed build; Internal is 7.
+- Current `pubspec.yaml`: `1.0.0+10`, available in Closed Alpha and manually accepted by Luis.
+  Internal remains 7; Production promotion is separate.
 - Code 10 is already used. Any changed binary needs a new unused higher code.
 - Keep the candidate's version name `1.0.0`; code 8 contains the Convert
   persistence, currency picker, portrait and swipe-action improvements.
