@@ -8,7 +8,7 @@ repo_root="$(cd "${script_dir}/.." && pwd)"
 source "${repo_root}/scripts/common.sh"
 cd "${repo_root}"
 
-android_serial="${ANDROID_SERIAL:-emulator-5554}"
+android_serial="$(resolve_android_serial)"
 output_root="${PLAY_PREP_OUTPUT_DIR:-${repo_root}/.tmp/play-candidate/$(date +%Y%m%d-%H%M%S)}"
 provider_profile="${PROVIDER_PROFILE:-release_safe}"
 expected_version_code="${EXPECTED_VERSION_CODE:-}"
@@ -38,6 +38,8 @@ if [[ -n "${expected_version_code}" ]]; then
   [[ "${actual_version_code}" == "${expected_version_code}" ]] || \
     fail "expected version code ${expected_version_code}, found ${actual_version_code} (${version_line})"
 fi
+
+[[ -n "${android_serial}" ]] || fail "no Android device found; start an emulator or set ANDROID_SERIAL"
 
 adb_bin="$(resolve_adb_bin)"
 "${adb_bin}" -s "${android_serial}" get-state >/dev/null || \

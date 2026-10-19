@@ -31,9 +31,11 @@ if [[ -z "${activity}" || "${activity}" != *"/"* ]]; then
 fi
 
 is_foreground() {
-  run_adb -s "${serial}" shell dumpsys activity activities 2>/dev/null \
-    | grep -m1 -E 'mResumedActivity|ResumedActivity' \
-    | grep -q "${package_name}"
+  # A resumed activity can still be covered by a system ANR dialog.
+  run_adb -s "${serial}" shell dumpsys window 2>/dev/null \
+    | grep 'mCurrentFocus' \
+    | grep -vE 'Application Not Responding|Application Error' \
+    | grep -Fq "${package_name}"
 }
 
 # Launch, then retry a couple of times — right after a reinstall the Play
@@ -48,3 +50,5 @@ for attempt in 1 2 3; do
 done
 
 echo "Launched ${activity} on ${serial} (not confirmed foreground)" >&2
+ANDROID_SERIAL="${serial}" bash "${script_dir}/android_diagnose.sh" >&2 || true
+exit 1

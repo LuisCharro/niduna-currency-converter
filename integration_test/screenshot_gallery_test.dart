@@ -69,6 +69,7 @@ void main() {
     await tester.tap(find.byType(LineChart));
     await tester.pumpAndSettle(const Duration(seconds: 1));
 
+    expect(find.byKey(const Key('charts_expand')), findsOneWidget);
     await binding.takeScreenshot('02-chart-btc');
 
     await tester.tap(
