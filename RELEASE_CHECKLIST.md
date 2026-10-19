@@ -26,8 +26,8 @@
   real Play device, including Settings prices, privacy links, Charts and normal
   use. Use the approved licence-test account for any Billing verification.
 - If accepted, promote **this exact AAB** to Production with separate approval;
-  no rebuild/version bump is needed. Price configuration by country remains
-  deferred. Any binary correction instead needs a new unused version code.
+  no rebuild/version bump is needed. The approved regional pricing policy has been applied and verified
+  (69 prices in 23 regions); see `stores/google-play/pricing/last-application.json`. Any binary correction instead needs a new unused version code.
 - Website policies/images are already public from site revision `12d3cb8`.
   Keep Coming Soon until Production is public, then execute the site's S2
   download-link/availability change. Data-source/controller adequacy questions

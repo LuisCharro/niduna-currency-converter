@@ -1,12 +1,16 @@
 # Estrategia de precios — Currency Converter
 
-Fecha: 2026-10-19. **Recomendación fundamentada; todavía no aplicada en Play.**
+Fecha: 2026-10-19. **Precios aplicados y verificados por API.**
 Tres compras únicas de por vida, sin suscripciones. Véase la
 [investigación de mercado, fuentes y límites](research-2026-10-19.md).
-El JSON mantiene estado `proposed-not-approved` para distinguir la propuesta
-local de una decisión de publicación ya ejecutada.
+El JSON conserva su nombre histórico `launch-policy.proposed.json`, ahora con
+estado `applied`. El recibo resumido está en `last-application.json`. El CSV
+conserva la comparación original aprobada, no representa cambios pendientes.
+Se actualizaron 69 precios en 23 regiones. Lecturas independientes verifican
+los 522 precios y todos los campos conservados. No se comprobó cada checkout
+regional ni se hizo una compra; la propagación al teléfono puede demorarse.
 
-## Catálogo observado
+## Catálogo anterior a la aplicación
 
 Lectura autenticada con `monetization.onetimeproducts.list`: tres productos,
 una opción de compra ACTIVE/legacyCompatible por producto, 174 regiones cada
@@ -23,7 +27,7 @@ Los importes no son ingreso neto. El tratamiento fiscal y total de checkout
 se verifican por mercado. Incluso dentro de EUR hay diferencias actuales:
 quitar anuncios es 2,49 en Alemania/Francia y 2,59 en España.
 
-## Recomendación tras investigar
+## Precios aprobados y aplicados
 
 | Compra única | CHF, CH y LI | EUR, mercados seleccionados | USD, solo US |
 | --- | ---: | ---: | ---: |
@@ -48,7 +52,7 @@ en EE. UU. 17–20 %. Suiza no cambia. No se presenta la rebaja como solo cosmé
 ## Alcance exacto
 
 - CHF: Suiza conserva 2/3/1 CHF; Liechtenstein se armoniza a esos importes
-  (actualmente 2,10/3,20/1,10 CHF).
+  (antes 2,10/3,20/1,10 CHF).
 - EUR: AT, BE, BG, CY, DE, EE, ES, FI, FR, GR, HR, IE, IT, LT, LU, LV, MT,
   NL, PT, SI, SK. Las otras 12 regiones que cobran en EUR mantienen precios.
 - USD: solo US; las otras 74 regiones con precio en USD mantienen sus importes.
@@ -69,7 +73,7 @@ local habitual y rendimiento; no usar solo cambio de moneda o idioma del móvil.
 ### Cómo priorizar sin estudiar 174 países
 
 Decisión de alcance — 2026-10-19: los importes principales recomendados han
-recibido la conformidad de Luis; no se han aplicado todavía a Play. Para el
+recibido la conformidad de Luis y se han aplicado a Play. Para el
 resto conservar el catálogo regional existente como aproximación inicial.
 Una conversión nueva, si se prepara más adelante, debe generar un plan separado;
 no se presupone aprobada una actualización global de tipos de cambio.
@@ -143,13 +147,14 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/existing-key.json \
 ```
 
 Los destinos deben ser nuevos y sus carpetas existir. Los comandos reutilizan
-el entorno Python existente, no añaden dependencias y no tienen comando apply.
+el entorno Python existente y no añaden dependencias. `catalog` y `plan` no
+escriben en Play; `apply` sí requiere autorización explícita de los importes.
 El plan detecta cambios en IDs/opciones/estado y usa Decimal para los importes.
 No valida precios contra Google ni constituye un payload de actualización.
-La lectura y el plan se ejecutaron con el catálogo real; no se añadió ni ejecutó
-una suite automática. No se tocaron app, web ni AAB 10.
+La lectura, el plan y la aplicación se ejecutaron con el catálogo real; no se
+añadió ni ejecutó una suite automática. No se tocaron app, web ni AAB 10.
 
-## Aplicación posterior por API
+## Aplicación por API
 
 La API moderna ya permite cambiar estos productos. No hace falta automatizar
 clics ni migrar/recrear IDs: el catálogo actual ya expone las opciones modernas.
@@ -168,10 +173,33 @@ Antes de escribir:
 6. Verificar Console y checkout con la cuenta de licence testing. La propagación
    no es instantánea y no prometemos un plazo numérico.
 
-La escritura y sus permisos aún no se han comprobado. Una lectura correcta no
-prueba permiso para cambiar precios. La herramienta de escritura se añadirá
-cuando esté aprobado el alcance concreto. Su rollback sería otra modificación
-explícita a partir del snapshot; no una garantía de reversión atómica global.
+La escritura funcionó con los permisos existentes. `pricing apply` usa la
+máscara terminal `purchaseOptions`, envía la lista completa conservada y omite
+`state` de salida. El parámetro Python es `regionsVersion_version`; la biblioteca
+lo serializa como query `regionsVersion.version`. No pasar la clave REST con
+punto directamente a la función Python: produjo un TypeError local en el primer
+intento, sin cambios en Play. Se releyó el catálogo antes del segundo intento.
+
+Para una futura política aprobada, establecer `status: approved-for-application`,
+generar un snapshot/plan nuevos y ejecutar, con autorización de Luis:
+
+```bash
+./.devtools/google_play.sh pricing apply \
+  --catalog .tmp/catalog-new.json \
+  --policy stores/google-play/pricing/launch-policy.proposed.json \
+  --plan .tmp/pricing-plan-new.json \
+  --receipt-dir .tmp/pricing-receipts-new \
+  --confirm-package com.honestfern.currency_converter
+```
+
+El directorio de recibos debe ser nuevo y su padre existir. Se validan hashes
+del snapshot/política y filas del plan; se bloquea el proceso local, se relee
+el catálogo y cada producto, y se aborta ante cambios u ofertas vinculadas.
+Las solicitudes no se reintentan automáticamente. Se guardan intentos,
+respuestas y lecturas completas antes/después; cualquier error requiere
+reconciliar el estado antes de repetir. No hay precondición remota ETag: evitar
+ediciones concurrentes desde Console/otra máquina. El rollback sería otra
+modificación explícita desde el snapshot, no una reversión atómica garantizada.
 
 La versión 10 consulta `ProductDetails.price`; cambiar precios de catálogo no
 requiere recompilarla. Conservar el mismo AAB para la candidatura pública.

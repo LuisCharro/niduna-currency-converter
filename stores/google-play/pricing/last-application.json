@@ -1,0 +1,25 @@
+{
+  "packageName": "com.honestfern.currency_converter",
+  "verified": true,
+  "summary": {
+    "priceRows": 522,
+    "changedPriceRows": 69,
+    "changedRegions": 23
+  },
+  "updatedProducts": [
+    "charts_pro_lifetime",
+    "favorites_pro_lifetime",
+    "remove_ads_lifetime"
+  ],
+  "policySha256": "0f04b89f27c9c0a6ac01d2b7186d004c82f6100753225f6a332b29049cb46784",
+  "receiptDirectory": ".tmp/play-pricing/20261019/apply/receipts-2",
+  "scope": "Prices only. No release, distribution, tax, offer or availability update.",
+  "appliedOn": "2026-10-19",
+  "toolSourceCommit": "29c236a",
+  "independentReadbackVerified": true,
+  "approvedPolicySha256": "0f04b89f27c9c0a6ac01d2b7186d004c82f6100753225f6a332b29049cb46784",
+  "beforeSnapshotSha256": "360831e3cce0d0e4cde733e47787b4e68d58886d85c97c2c287fed2d16426c79",
+  "afterSnapshotSha256": "6d5592eafe3bde0fdea9b6e74c2207b2f60a44307a6aeb92eabe4ac717ff5244",
+  "propagation": "Catalog verified; no per-country checkout or phone purchase performed.",
+  "recovery": "First attempt failed locally constructing Python request; fresh read proved no mutation. Corrected Python parameter; second attempt succeeded."
+}

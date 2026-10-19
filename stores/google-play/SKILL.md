@@ -172,8 +172,13 @@ restart is needed. Keep Coming Soon until Production is public.
   a configured product country is an enabled distribution country.
 - Currency is not market: this catalog has many countries priced in USD/EUR
   as fallback currencies. Prefer explicit region selection for priority markets.
-- The current tool has no apply command. A future writer needs approved diff,
-  fresh-state comparison, validated update mask/version, preservation of all
-  unrelated fields and post-write readback. Catalogue write permission is not
-  proven by successful reads. Do not recreate legacy SKUs or widen permissions.
+- `pricing apply` writes only an explicitly approved, hash-bound plan after
+  fresh-state comparison and offer checks. Use a new receipt directory. It
+  preserves unrelated fields, verifies each product and the entire catalog,
+  and never retries writes automatically. On failure inspect receipts/live
+  state before repeating. Do not recreate legacy SKUs or widen permissions.
+- Python client uses `regionsVersion_version`, serialized as the REST query
+  `regionsVersion.version`. The applied 2026-10-19 policy and successful receipt
+  are under `pricing/`; a policy marked `applied` cannot be applied again until
+  a newly authorized policy/plan is prepared. No new AAB is needed for pricing.
 - Preserve the accepted AAB: localized prices come from Play Billing at runtime.

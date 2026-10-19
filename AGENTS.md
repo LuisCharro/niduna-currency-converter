@@ -41,7 +41,8 @@ skills without changing this repo again.
   `../../docs/platforms/google-play-developer-api.md`.
 - Serialize all Play API commands, including reads/preflight. Do not edit
   Console during an API edit. Inspect the whole pending change batch first.
-- Settings prices come from Play; country price configuration is still deferred.
+- Settings prices come from Play; the approved 2026-10-19 regional policy was
+  applied and verified (69 prices/23 regions). See the pricing README/receipt.
   Keep real Billing injected by AppShell and consent-gated advertising.
 - Licence testing and Closed eligibility are separate. Prior Billing success
   does not make all Closed cohort purchases free.

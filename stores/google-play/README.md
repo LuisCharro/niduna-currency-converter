@@ -60,7 +60,9 @@ See [pricing strategy and live comparison](pricing/README.md) before changing
 one-time-product prices. `pricing catalog` reads the modern catalog directly;
 `pricing plan` compares a saved catalog with the proposed policy offline and
 exports JSON/CSV. Neither command writes prices or modifies release tracks.
-Current proposals are not approved or applied. Keep pricing authorization
+`pricing apply` executes an explicitly approved hash-bound plan with fresh-state
+checks, receipt journaling and full catalog readback; no automatic write retries.
+The 2026-10-19 launch policy has been applied. Keep pricing authorization
 separate from an AAB upload; no app rebuild is needed solely for catalog prices.
 
 ```bash

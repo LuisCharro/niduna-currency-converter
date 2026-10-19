@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "approved-for-application",
+  "status": "applied",
   "packageName": "com.honestfern.currency_converter",
   "strategy": "Research-backed launch recommendation: retain 1/2/3 CHF; 0.99/1.99/2.99 EUR in 21 selected markets and USD in US; retain other regions.",
   "products": {
@@ -297,5 +297,6 @@
   "approval": {
     "date": "2026-10-19",
     "scope": "Luis explicitly authorized applying this pricing policy; preserve all other regions and configuration."
-  }
+  },
+  "applicationRecord": "last-application.json"
 }

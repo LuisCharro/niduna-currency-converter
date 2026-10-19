@@ -43,8 +43,8 @@ document owns only Currency Converter facts and commands.
   real Play device, including Settings prices, privacy links, Charts and normal
   use. Use the approved licence-test account for any Billing verification.
 - If accepted, promote **this exact AAB** to Production with separate approval;
-  no rebuild/version bump is needed. Price configuration by country remains
-  deferred. Any binary correction instead needs a new unused version code.
+  no rebuild/version bump is needed. The agreed regional price policy has now been applied and verified; see
+  Store price operations below. Any binary correction instead needs a new unused version code.
 - Website policies/images are already public from site revision `12d3cb8`.
   Keep Coming Soon until Production is public, then execute the site's S2
   download-link/availability change. Data-source/controller adequacy questions
@@ -57,7 +57,9 @@ document owns only Currency Converter facts and commands.
 
 The current live catalog, proposed launch tiers and read/plan commands are
 owned by [`stores/google-play/pricing/README.md`](../../stores/google-play/pricing/README.md).
-The 2026-10-19 proposal is not approved or applied; it does not alter code 10.
+The 2026-10-19 policy was approved and applied: 69 prices in 23 regions,
+with all 522 rows and preserved fields verified by independent API readback.
+See `last-application.json` in that directory. It does not alter code 10.
 
 
 Settings uses `ProductDetails.price` from the existing Play Billing products,
