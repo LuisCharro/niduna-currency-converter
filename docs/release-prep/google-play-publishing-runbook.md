@@ -17,7 +17,40 @@ document owns only Currency Converter facts and commands.
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
 
-## Current release state — 2026-10-19
+## Latest submission — 2026-10-19, code 9
+
+`1.0.0 (9)` was uploaded and committed to Closed Alpha (`alpha`) with Luis's
+explicit authorization. A fresh API edit verified the release, and Console
+shows **in review**. Internal remains code 7; Production is empty. Code 8 had
+already become Available to selected testers before this upload. Do not report
+code 9 installable until Console confirms availability and the phone receives it.
+
+Candidate source: `ca24985`; AAB:
+`.tmp/play-candidate/20261019-build9/artifacts/app-release.aab` (54,676,836 bytes).
+Local and Google SHA-256:
+`d9c1d88199bffd892214e1cdb0ec2e9534c945179b54017717d98ad9488b39a2`.
+Real approved Android AdMob IDs, test ads false, developer mode false and
+release_safe profile. Manifest and upload signature checked; Flutter analysis
+clean and AAB build successful. No automated tests were run for this submission;
+Play-distributed acceptance remains pending on Luis's phone. The local preview
+APK from earlier copy work is not this signed Play AAB.
+
+Release notes (en-GB): “Refined rate guidance and privacy information in five
+languages. Improved Settings clarity and release polish.”
+
+Freshly checked tester URL:
+https://play.google.com/apps/testing/com.honestfern.currency_converter
+Selected Closed list: 22 entries; no selection changes. API upload verification
+logs and provenance are in the ignored candidate directory. See the master
+checklist for the exact next acceptance gate. Older code-8 review states below
+are historical.
+
+Publishing overview confirms **Changes in review**, with quick checks running
+for `1.0.0 (9)` / Start full rollout and the saved en-GB phone screenshot
+replacement in the same submission. No separate screenshot submission or
+review restart was performed. Evidence: candidate directory `play-review.png`.
+
+## Earlier release state — 2026-10-19, code 8
 
 Closed Alpha has uploaded `1.0.0 (8)` with API status `completed`; Console
 Publishing overview shows **in review**, last published 2026-09-30 (code 7).
@@ -218,7 +251,7 @@ checks inside the write edit:
 The current version source of truth is `pubspec.yaml`:
 
 ```text
-version: 1.0.0+8
+version: 1.0.0+9
 ```
 
 For a real follow-up fix, keep `versionName` `1.0.0` and increment only the
@@ -253,6 +286,20 @@ declarations, separate review-management actions and Production promotion
 remain separate owner operations and need their own explicit authorization.
 
 ## API failure history and recovery
+
+### Resumable upload raises `RedirectMissingLocation`
+
+On 2026-10-19 the code-9 upload stopped before committing a track change.
+The custom raw `httplib2.Http` interpreted Google's HTTP 308 Resume Incomplete
+as a redirect requiring a Location header. The CLI now uses
+`googleapiclient.http.build_http()` with the existing 180-second timeout;
+Google's transport excludes 308 from redirects so the upload handler can
+continue sending chunks. TLS verification and other redirects are unchanged.
+See [Google's transport implementation](https://googleapis.github.io/google-api-python-client/docs/epy/googleapiclient.http-pysrc.html#build_http).
+
+After any failed transfer, inspect fresh track state and run `plan-closed`
+before retrying. A 503 is a separate service error: do not assume the artifact
+or track committed, and never retry an already-used version code blindly.
 
 ### `changesNotSentForReview` rejected on commit
 

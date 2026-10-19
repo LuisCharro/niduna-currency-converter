@@ -1,5 +1,38 @@
 # Release Checklist — Path to Google Play Store
 
+## Latest Closed candidate — 2026-10-19, build 9
+
+- Luis authorized preparing and submitting the latest app as the intended final
+  candidate to **Closed Alpha**, not Production. Version is `1.0.0+9`.
+- Source commit: `ca24985` (includes the five-language copy/privacy changes in
+  `6990795`). Signed AAB: `.tmp/play-candidate/20261019-build9/artifacts/app-release.aab`.
+  SHA-256: `d9c1d88199bffd892214e1cdb0ec2e9534c945179b54017717d98ad9488b39a2`.
+- Built with `release_safe`, `APP_DEV_MODE=false`, real approved AdMob IDs and
+  `ADMOB_USE_TEST_ADS=false`. Bundle manifest confirms package, name and code;
+  signature verified and upload certificate matches the accepted code-8 bundle.
+- Flutter analysis: no issues. Release AAB compiled successfully. Automated
+  tests were not run in this preparation; prior QA does not establish code-9
+  Play-device acceptance. Luis will install via the existing Closed link.
+- Publisher API upload/hash comparison/commit/fresh-track verification passed.
+  Console explicitly shows **Release 1.0.0 (9) in review**. Code 8 was confirmed
+  Available to selected testers before submission. Until code 9 is approved and
+  propagated, the tester link may still serve code 8. Internal remains 7 and
+  Production is empty.
+- Publishing overview shows the code-9 rollout and refreshed en-GB phone
+  screenshots together under Changes in review (quick checks running).
+  No separate review restart was performed. Evidence: `play-review.png` in
+  the ignored candidate directory.
+- Closed tester link (freshly checked in Console):
+  https://play.google.com/apps/testing/com.honestfern.currency_converter
+  The selected Closed list currently contains 22 entries; list size is not
+  evidence of actual opt-ins. No tester selection was changed.
+- Upload tooling now uses Google's HTTP transport to handle resumable HTTP 308
+  correctly. A later transient 503 was followed by a fresh unused-code check;
+  the successful transfer used the exact same AAB. Evidence is under the ignored
+  candidate directory (`candidate.json`, `manifest.xml`, analysis/build/plan/upload logs).
+- Public release, real-device acceptance and pending website copy deployment
+  remain separate steps. The earlier code-8 checkpoint below is historical.
+
 ## Release checkpoint — 2026-10-19
 
 - **Unreleased copy preview:** main now has shorter rate/data help and qualified

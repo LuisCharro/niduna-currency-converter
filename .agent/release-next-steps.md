@@ -4,7 +4,15 @@
 > This is a bounded execution plan; `RELEASE_CHECKLIST.md` remains the master
 > checklist.
 
-## Current next steps — 2026-10-19
+## Latest next step — 2026-10-19, code 9
+
+Code 9 (`1.0.0+9`, source `ca24985`) is submitted to Closed Alpha and **in review**.
+Wait for approval, then Luis installs/updates through the existing Closed link
+and accepts the exact Play build. Code 8 was confirmed available before the
+submission. Internal is 7; Production is empty. No Production publication is
+authorized. The checklist/runbook own artifact hash, verification and recovery.
+
+## Earlier next steps — 2026-10-19, code 8
 
 1. Code 8 is uploaded to Closed Alpha and **in review** in Console. Internal
    remains 7; last published Closed is 7. Wait for approval and verify an actual

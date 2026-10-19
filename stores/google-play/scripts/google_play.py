@@ -50,8 +50,8 @@ def build_service() -> Any:
     try:
         import google.auth
         import google_auth_httplib2
-        import httplib2
         from googleapiclient.discovery import build
+        from googleapiclient.http import build_http
     except ImportError as error:
         raise RuntimeError(
             "Missing Python dependencies. Run ./.devtools/google_play.sh setup; "
@@ -59,9 +59,11 @@ def build_service() -> Any:
         ) from error
 
     credentials, _ = google.auth.default(scopes=[SCOPE])
-    authorized_http = google_auth_httplib2.AuthorizedHttp(
-        credentials, http=httplib2.Http(timeout=180)
-    )
+    # Google's transport leaves HTTP 308 to the resumable upload handler.
+    # A raw httplib2.Http treats it as a redirect and can require a missing Location.
+    transport = build_http()
+    transport.timeout = 180
+    authorized_http = google_auth_httplib2.AuthorizedHttp(credentials, http=transport)
     return build(
         "androidpublisher", "v3", http=authorized_http, cache_discovery=False
     )

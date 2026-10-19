@@ -26,11 +26,15 @@ skills without changing this repo again.
 ## Current state (reviewed 2026-10-19)
 
 - `main` is canonical; recheck HEAD and working tree before acting.
+- Latest submission: `1.0.0+9` is committed to Closed Alpha and Console shows
+  **in review**. Code 8 became available before this submission. Internal is 7;
+  Production is empty. The newest checklist/runbook sections supersede the
+  code-8 snapshots below. Code-9 Play installation/owner acceptance is pending.
 - Start with `RELEASE_CHECKLIST.md` **Release checkpoint — 2026-10-19**.
   Older dated checkpoints describe history, not current open tasks.
-- Version `1.0.0+8` has been uploaded to Closed Alpha (`alpha`). The API
+- Version `1.0.0+9` has been uploaded to Closed Alpha (`alpha`). The API
   reports `completed`, but Console Publishing overview shows **in review**.
-  The last published Closed release is code 7 (2026-09-30). Internal remains
+  The last published Closed release is code 8 (2026-10-19). Internal remains
   code 7. Production access is granted; Production has no release.
 - For exact artifact hashes, current screenshots, opt-in links, permissions
   and recovery, read `docs/release-prep/google-play-publishing-runbook.md` and
@@ -42,7 +46,7 @@ skills without changing this repo again.
   and license testing are distinct; the whole Closed cohort is not free-paid.
 - Six refreshed portrait screenshots from current main were saved to the
   en-GB listing on 2026-10-19. Check Publishing overview for their submission
-  state; never cancel the code 8 review merely to submit screenshots.
+  state; the refreshed screenshots joined the code-9 submission.
 - `./scripts/check.sh` follows source edits. Exact Play-distributed artifact
   acceptance, production ads, and Production publication remain separate gates.
 - Keep real Billing injected by AppShell and consent-gated advertising.
@@ -75,9 +79,9 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+8`, uploaded to Closed Alpha and in review
-  as of 2026-10-19. Internal and the previously published Closed release are 7.
-- Code 8 is already used. Any changed binary needs a new unused higher code.
+- Current `pubspec.yaml`: `1.0.0+9`, uploaded to Closed Alpha and in review
+  as of 2026-10-19. Internal is 7; the previously published Closed release is 8.
+- Code 9 is already used. Any changed binary needs a new unused higher code.
 - Keep the candidate's version name `1.0.0`; code 8 contains the Convert
   persistence, currency picker, portrait and swipe-action improvements.
 - Promote the tested `1.0.0` artifact to Production; do not rebuild an
