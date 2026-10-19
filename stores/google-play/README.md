@@ -114,3 +114,45 @@ The exporter validates six 1080×2400 light/dark captures, adds side margins
 without rescaling app pixels, and writes six 1350×2400 PNGs, SHA-256 manifest
 and `preview.jpg`. Upload only the six PNGs. See the runbook for native Chrome
 file-picker fallback and the canonical gallery.
+
+## Build-9 publishing lessons and improvements — 2026-10-19
+
+- Resumable transfers use Google's `build_http()` transport. Raw httplib2
+  treated HTTP 308 Resume Incomplete as a redirect and interrupted the upload.
+  A separate transient HTTP 503 was resolved only after a fresh preflight
+  confirmed that the version code was still unused; no duplicate was committed.
+- Upload progress now identifies the phase: edit creation, code check, transfer,
+  validation, commit and fresh verification. Messages go to stderr.
+- All authenticated commands emit JSON only on stdout. `verify-access` now
+  returns a JSON object (previously text); status cleanup messages go to stderr.
+- Add `--output <new-path.json>` to save the successful result atomically, without
+  overwriting an earlier receipt. An upload receipt contains the local and Play
+  SHA-256, code, release name, commit and fresh verification result. No credentials
+  or tokens are included. A receipt-save failure preserves stdout and explicitly
+  warns against repeating a successful upload. Receipts do not prove publication.
+- `setup` now selects Python 3.11+ instead of silently reusing the system Python
+  3.9. Override with `GOOGLE_PLAY_PYTHON_BIN=/absolute/path/to/python`. An obsolete
+  or broken environment is moved to a timestamped sibling before replacement;
+  no keys are moved or read. Requirements remain in the isolated environment.
+- Inspect Publishing overview **before** committing an authorized release: the
+  code-9 commit also submitted the saved en-GB phone screenshots. Updating only
+  one API track does not guarantee that all other saved changes stay unsent.
+  Review the complete pending batch and its authorization before uploading.
+
+Example (use the next unused code, not the already-uploaded code 9):
+
+```bash
+./.devtools/google_play.sh plan-closed --aab <candidate.aab> \
+  --version-code <unused-code> --output .tmp/<candidate>/plan.json
+# After authorization for the reviewed release and pending change batch:
+./.devtools/google_play.sh upload-closed --aab <candidate.aab> \
+  --version-code <unused-code> --output .tmp/<candidate>/upload.json
+./.devtools/google_play.sh status --output .tmp/<candidate>/status.json
+```
+
+Automatic whole-upload retries remain deliberately absent: inspect the live
+state after any ambiguous error. In-chunk transient retries already use the
+Google client's bounded retry handling. A future separate AAB-only preparation
+mode could avoid emulator/screenshot work for text-only releases; it is not
+implemented here. The current full candidate helper still runs the app check
+suite and captures screenshots.

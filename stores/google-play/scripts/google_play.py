@@ -138,6 +138,33 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def emit_result(result: Any, output: Path | None) -> None:
+    """Keep stdout machine-readable and optionally save an atomic receipt."""
+    serialized = json.dumps(result, indent=2, default=str) + "\n"
+    if output is not None:
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(
+                mode="w", encoding="utf-8", dir=output.parent, delete=False
+            ) as receipt:
+                temporary = Path(receipt.name)
+                receipt.write(serialized)
+            # Same-directory hard link publishes atomically without replacing
+            # another receipt, even if it appeared after the initial check.
+            os.link(temporary, output)
+        except OSError as error:
+            # A local disk error after a successful commit must not invite a re-upload.
+            print(serialized, end="")
+            raise RuntimeError(
+                "Operation succeeded but saving its receipt failed. Preserve stdout; "
+                "do not repeat an upload."
+            ) from error
+        finally:
+            if temporary is not None:
+                temporary.unlink(missing_ok=True)
+    print(serialized, end="")
+
+
 def closed_track_key(config: dict[str, Any]) -> str:
     closed_track = config["tracks"]["closed"]
     expected_track = closed_track.get("apiKey")
@@ -216,7 +243,9 @@ def inspect_closed_track(
 
     edit_id: str | None = None
     try:
+        print("Play: creating temporary preflight edit", file=sys.stderr, flush=True)
         edit_id = service.edits().insert(packageName=package_name, body={}).execute()["id"]
+        print("Play: checking track and unused version code", file=sys.stderr, flush=True)
         tracks = service.edits().tracks().list(
             packageName=package_name, editId=edit_id
         ).execute().get("tracks", [])
@@ -267,7 +296,9 @@ def upload_closed_aab(
 
     edit_id: str | None = None
     try:
+        print("Play: creating Closed upload edit", file=sys.stderr, flush=True)
         edit_id = service.edits().insert(packageName=package_name, body={}).execute()["id"]
+        print("Play: checking track and unused version code", file=sys.stderr, flush=True)
         tracks = service.edits().tracks().list(
             packageName=package_name, editId=edit_id
         ).execute().get("tracks", [])
@@ -297,6 +328,7 @@ def upload_closed_aab(
 
         from googleapiclient.http import MediaFileUpload
 
+        print("Play: transferring signed AAB", file=sys.stderr, flush=True)
         upload_request = service.edits().bundles().upload(
             packageName=package_name,
             editId=edit_id,
@@ -332,6 +364,7 @@ def upload_closed_aab(
             release["releaseNotes"] = [
                 {"language": config.get("defaultLocale", "en-GB"), "text": release_notes}
             ]
+        print("Play: updating Closed track and validating edit", file=sys.stderr, flush=True)
         service.edits().tracks().update(
             packageName=package_name,
             editId=edit_id,
@@ -342,6 +375,7 @@ def upload_closed_aab(
             packageName=package_name, editId=edit_id
         ).execute()
         try:
+            print("Play: committing release edit", file=sys.stderr, flush=True)
             committed = service.edits().commit(
                 packageName=package_name,
                 editId=edit_id,
@@ -378,6 +412,7 @@ def upload_closed_aab(
         edit_id = None
         if not committed.get("verifiedAfterAmbiguousCommit"):
             try:
+                print("Play: verifying committed track in a fresh edit", file=sys.stderr, flush=True)
                 fresh_tracks = with_verification_edit(service, package_name, read_tracks=True)
                 if not has_completed_release(fresh_tracks, api_track, version_code, release_name):
                     raise RuntimeError("Expected release is absent from fresh track state.")
@@ -408,6 +443,7 @@ def main() -> int:
     parser.add_argument("--aab", type=Path, help="Signed AAB for Closed Alpha preflight/upload.")
     parser.add_argument("--version-code", help="Expected Play version code; must match pubspec and the uploaded AAB.")
     parser.add_argument("--release-notes", help="Optional release notes in the configured default locale.")
+    parser.add_argument("--output", type=Path, help="Save a JSON receipt to a new file (never overwrites an existing receipt).")
     args = parser.parse_args()
 
     if args.command in {"plan-closed", "upload-closed"} and (
@@ -422,6 +458,10 @@ def main() -> int:
         parser.error("candidate options are only valid with plan-closed or upload-closed")
 
     try:
+        if args.output is not None:
+            if args.output.exists():
+                raise RuntimeError("Receipt path already exists; choose a new --output path.")
+            args.output.parent.mkdir(parents=True, exist_ok=True)
         config = load_config()
         candidate = None
         if args.command in {"plan-closed", "upload-closed"}:
@@ -432,7 +472,7 @@ def main() -> int:
             service = build_service()
             if args.command == "plan-closed":
                 live = inspect_closed_track(service, config, candidate["versionCode"])
-                print(json.dumps({**candidate, **live}, indent=2, default=str))
+                emit_result({**candidate, **live}, args.output)
                 return 0
             if args.command == "upload-closed":
                 result = upload_closed_aab(
@@ -460,13 +500,18 @@ def main() -> int:
         )
         return 1
 
-    if args.command == "verify-access":
-        print(f"Access verified for {config['packageName']}; temporary edit deleted.")
-    elif args.command == "upload-closed":
-        print(json.dumps(result, indent=2))
-    else:
-        print(json.dumps([summarize_track(track) for track in tracks], indent=2))
-        print("Temporary read edit deleted. No track or listing changes were made.")
+    try:
+        if args.command == "verify-access":
+            emit_result({"packageName": config["packageName"], "accessVerified": True,
+                         "temporaryEditDeleted": True}, args.output)
+        elif args.command == "upload-closed":
+            emit_result(result, args.output)
+        else:
+            emit_result([summarize_track(track) for track in tracks], args.output)
+            print("Temporary read edit deleted. No track or listing changes were made.", file=sys.stderr)
+    except RuntimeError as error:
+        print(f"Google Play: {error}", file=sys.stderr)
+        return 1
     return 0
 
 

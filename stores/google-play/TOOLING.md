@@ -84,3 +84,24 @@ compare that hash against the local artifact before committing.
 - [Fastlane Supply documentation](https://github.com/fastlane/fastlane/blob/master/fastlane/lib/fastlane/actions/docs/upload_to_play_store.md)
 - [gpd CLI and its agent skill pack](https://github.com/dl-alexandre/Google-Play-Developer-CLI)
 - [r0adkll GitHub Action](https://github.com/r0adkll/upload-google-play)
+
+## Code-9 follow-up
+
+The upload completed with source `ca24985`; no new publishing dependency was
+needed. The custom raw httplib2 transport was replaced by Google's existing
+`build_http()`, which excludes HTTP 308 from redirects for resumable uploads.
+The wrapper now requires Python 3.11+ for setup and preserves the obsolete
+local environment before migration. CLI operations support `--output` JSON
+receipts and upload-phase messages on stderr. See README for the current
+commands and the saved-listing batch behavior observed in Console.
+
+Transport source:
+[Google API Python client build_http](https://googleapis.github.io/google-api-python-client/docs/epy/googleapiclient.http-pysrc.html#build_http).
+No new Fastlane, MCP or CI integration was installed.
+
+Validation of the follow-up: shell/Python syntax checks and CLI help passed.
+The migrated Python 3.12.15 environment successfully read live track state and
+saved a JSON status receipt identical to stdout; the temporary read edit was
+deleted. No test suite, new upload or Console write was performed for these
+follow-up changes. Upload-phase logging and upload-receipt saving will receive
+their first real upload exercise on the next explicitly authorized release.

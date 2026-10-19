@@ -143,3 +143,19 @@ Play's padded 1350×2400 images are not the website source. The script prepares
 local files only. The website is deployed separately via its existing VPS SSH
 script after a reviewed commit/push and deployment authorization; no Nginx
 restart is needed. Keep Coming Soon until Production is public.
+
+## Latest build-9 lessons
+
+- Before any release edit, inspect Console Publishing overview for the **whole
+  saved change batch**, including store listings. A code-9 track commit also
+  submitted the already-saved en-GB screenshots. Confirm existing authorization
+  covers that batch; an app-scoped track update does not isolate review submission.
+- Use `--output <new-file.json>` for durable plan/upload/status receipts. Never
+  reuse an existing receipt path. A save error after a successful API operation
+  is not authorization to re-upload; retain stdout and inspect live state.
+- `setup` requires Python 3.11+ and preserves an obsolete environment before
+  replacement. Do not restore a raw httplib2 transport: Google's `build_http()`
+  handles HTTP 308 as resumable progress rather than a redirect.
+- HTTP 503 can be transient. After a failed command, inspect fresh track state
+  and unused-code preflight before deciding to retry the same AAB. Do not add
+  automatic whole-release retries or assume API `completed` means installable.

@@ -21,12 +21,29 @@ for argument in "$@"; do
 done
 
 if [[ "${1:-}" == "setup" ]]; then
-  command -v python3 >/dev/null 2>&1 || {
-    echo "google_play: python3 is required to create the local environment" >&2
+  python_bin="${GOOGLE_PLAY_PYTHON_BIN:-}"
+  if [[ -z "${python_bin}" ]]; then
+    for candidate in python3.13 python3.12 python3.14 python3.11 python3; do
+      if command -v "${candidate}" >/dev/null 2>&1 && \
+        "${candidate}" -c 'import sys; sys.exit(sys.version_info < (3, 11))'; then
+        python_bin="$(command -v "${candidate}")"
+        break
+      fi
+    done
+  fi
+  [[ -n "${python_bin}" ]] && \
+    "${python_bin}" -c 'import sys; sys.exit(sys.version_info < (3, 11))' || {
+    echo "google_play: setup requires Python 3.11+; set GOOGLE_PLAY_PYTHON_BIN" >&2
     exit 1
   }
   mkdir -p "$(dirname "${venv_dir}")"
-  python3 -m venv "${venv_dir}"
+  if [[ -e "${venv_dir}" ]] && { [[ ! -x "${venv_dir}/bin/python" ]] || \
+    ! "${venv_dir}/bin/python" -c 'import sys; sys.exit(sys.version_info < (3, 11))'; }; then
+    backup_dir="${venv_dir}.legacy-$(date +%Y%m%d-%H%M%S)-$$"
+    mv "${venv_dir}" "${backup_dir}"
+    echo "Preserved the old environment at ${backup_dir}"
+  fi
+  "${python_bin}" -m venv "${venv_dir}"
   "${venv_dir}/bin/python" -m pip install -r "${repo_root}/stores/google-play/requirements.txt"
   echo "Google Play CLI environment ready at ${venv_dir}"
   exit 0
