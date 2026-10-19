@@ -25,37 +25,28 @@ skills without changing this repo again.
 
 ## Current state (reviewed 2026-10-19)
 
-- Latest local source: `1.0.0+10`, concise layered privacy/source help, not
-  uploaded. Code 9 is already installed by Luis from Closed; the new gallery
-  was verified live. Production remains empty at the latest read. See the
-  checklist's build-10 section; older in-review snapshots below are historical.
-
-
-- `main` is canonical; recheck HEAD and working tree before acting.
-- Code 9 is the current Closed submission and Luis reports installing it;
-  its refreshed gallery was verified live. Internal is 7; Production is empty
-  at the latest read. The checklist separates device installation from full
-  monetisation/consent acceptance.
-- Start with `RELEASE_CHECKLIST.md` **Release checkpoint — 2026-10-19**.
-  Older dated checkpoints describe history, not current open tasks.
-- Version `1.0.0+9` was uploaded to Closed Alpha (`alpha`) and then published.
-  The API reports `completed`; Console/Chrome confirmed publication and Luis
-  reports installing it. Internal remains code 7. Production access is granted;
-  Production has no release at the latest read.
-- For exact artifact hashes, current screenshots, opt-in links, permissions
-  and recovery, read `docs/release-prep/google-play-publishing-runbook.md` and
-  `stores/google-play/SKILL.md`. In this workspace also read
+- `main` is canonical; inspect HEAD/working tree before acting.
+- `1.0.0+10` was uploaded to Closed Alpha. API verification passed; Console
+  shows Changes in review / quick checks running. Do not call it installable
+  until approval and propagation. Luis's phone currently has code 9.
+- Source `b28e9e6` includes layered privacy help and localized Play prices.
+  The master checklist's build-10 checkpoint owns hash, receipts and QA gaps.
+- Internal remains code 7; Production is empty. Production access is granted,
+  but publication needs separate approval and final acceptance.
+- Promote the exact accepted AAB; do not rebuild it merely to move tracks.
+- Website policies/gallery are already public (site revision `12d3cb8`);
+  keep Coming Soon until Production is publicly available.
+- Read `RELEASE_CHECKLIST.md`, the app publishing runbook and
+  `stores/google-play/SKILL.md`; workspace API policy is
   `../../docs/platforms/google-play-developer-api.md`.
-- Serialize all Play API commands, including status/preflight: creating a new
-  edit can invalidate an upload edit. Do not edit Console during an API edit.
-- Billing license-tester purchases were accepted by Luis. Track enrollment
-  and license testing are distinct; the whole Closed cohort is not free-paid.
-- Six refreshed portrait screenshots from current main were saved to the
-  en-GB listing on 2026-10-19. Check Publishing overview for their submission
-  state; the refreshed screenshots joined the code-9 submission.
-- `./scripts/check.sh` follows source edits. Exact Play-distributed artifact
-  acceptance, production ads, and Production publication remain separate gates.
-- Keep real Billing injected by AppShell and consent-gated advertising.
+- Serialize all Play API commands, including reads/preflight. Do not edit
+  Console during an API edit. Inspect the whole pending change batch first.
+- Settings prices come from Play; country price configuration is still deferred.
+  Keep real Billing injected by AppShell and consent-gated advertising.
+- Licence testing and Closed eligibility are separate. Prior Billing success
+  does not make all Closed cohort purchases free.
+- Current gallery was verified live in Console/Chrome. Exact build-10 device
+  acceptance and final production monetisation/consent checks remain pending.
 - Keep widgets and iOS work outside this Android release task unless a concrete
   regression requires investigation.
 
@@ -85,9 +76,9 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+10`, local preview only. Code 9 is the
-  Play-distributed Closed build as of 2026-10-19; Internal is 7.
-- Code 9 is already used. Any changed binary needs a new unused higher code.
+- Current `pubspec.yaml`: `1.0.0+10`, submitted to Closed Alpha and in review.
+  Code 9 remains the previously available Closed build; Internal is 7.
+- Code 10 is already used. Any changed binary needs a new unused higher code.
 - Keep the candidate's version name `1.0.0`; code 8 contains the Convert
   persistence, currency picker, portrait and swipe-action improvements.
 - Promote the tested `1.0.0` artifact to Production; do not rebuild an

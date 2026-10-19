@@ -17,7 +17,56 @@ document owns only Currency Converter facts and commands.
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
 
-## Local preview after code 9 — 2026-10-19
+## Current Closed submission — 2026-10-19, build 10
+
+- Luis authorized submitting **1.0.0 (10)** to Closed Alpha (`alpha`) as the
+  next public-release candidate. Upload, matching Google/local hash and fresh
+  track verification succeeded. Console shows **Changes in review**, with
+  quick checks running for code 10 / Start full rollout. No unrelated changes
+  were pending before upload. Production is empty; Internal remains code 7.
+- Source commit: `b28e9e67f6d50d0fa4d60c331a8c6aede3b280bf`. Signed AAB:
+  `.tmp/play-candidate/20261019-build10/artifacts/app-release.aab` (54,683,454 bytes).
+  SHA-256: `5ffcc01c221571ba55b20015fe0f3cbcfa5c27297b4db46bca3b34d66db98988`.
+  Built on clean main with release_safe, developer mode false, real approved
+  Android AdMob IDs and test ads false. Package/name/code, non-debuggable
+  manifest, AdMob app ID and expected upload certificate verified.
+- Includes the layered privacy/source help below and localized Play product
+  prices. Settings queries the three existing products on entry/resume,
+  hides stale prices while refreshing and shows descriptions alone if prices
+  cannot be fetched. Purchase, entitlement and Restore flows are unchanged.
+- Flutter analysis and signed AAB build passed. No automated tests ran for
+  this preparation. The emulator still has the earlier test-ad preview;
+  it is not evidence for this exact Play artifact or the localized price UI.
+- Luis should update through the existing Closed link after approval:
+  https://play.google.com/apps/testing/com.honestfern.currency_converter
+  Until approval/propagation it can still serve code 9. Accept build 10 on the
+  real Play device, including Settings prices, privacy links, Charts and normal
+  use. Use the approved licence-test account for any Billing verification.
+- If accepted, promote **this exact AAB** to Production with separate approval;
+  no rebuild/version bump is needed. Price configuration by country remains
+  deferred. Any binary correction instead needs a new unused version code.
+- Website policies/images are already public from site revision `12d3cb8`.
+  Keep Coming Soon until Production is public, then execute the site's S2
+  download-link/availability change. Data-source/controller adequacy questions
+  in the disclosure review remain open; this upload is not legal clearance.
+- Receipts, provenance, manifest/signature and logs are in the ignored candidate
+  directory above; `play-review.png` records the Console review state. Upload
+  succeeded on the first attempt; no manual retry or review restart was needed.
+
+### Store price operations
+
+Settings uses `ProductDetails.price` from the existing Play Billing products,
+with no fixed CHF fallback. Changing country prices in Console does not require
+a new binary solely to update displayed amounts; reopen/resume Settings after
+store propagation and check the final Play checkout price. A lookup failure
+leaves the benefit description visible. Source: [Google Billing integration](https://developer.android.com/google/play/billing/integrate).
+
+The successful code-10 transfer used the existing resumable uploader with
+8 MiB chunks and guarded edit commit. Status/preflight/upload remain serialized.
+The exact tested AAB can later be promoted between tracks: [Google release
+tracks](https://developers.google.com/android-publisher/tracks).
+
+## Historical local preview after code 9 — 2026-10-19
 
 `pubspec.yaml` is `1.0.0+10` for Luis's approved layered help changes. It has
 not been uploaded; there is no approved code-10 Play AAB. The test-ad preview
@@ -28,7 +77,7 @@ listing gallery live. Keep Production separate. Before any new upload, build
 an exact signed real-ad AAB, run live unused-code preflight and review the whole
 pending Console change batch. The historical code-9 artifact below is unchanged.
 
-## Latest submission — 2026-10-19, code 9
+## Previous submission — 2026-10-19, code 9
 
 `1.0.0 (9)` was uploaded and committed to Closed Alpha (`alpha`) with Luis's
 explicit authorization. A fresh API edit verified the release, and Console
