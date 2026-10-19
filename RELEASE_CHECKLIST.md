@@ -1,6 +1,38 @@
 # Release Checklist — Path to Google Play Store
 
-## Support ticket and metadata submission confirmed — 2026-10-20
+## Current candidate checkpoint — 2026-10-20, build 11
+
+- Current app source is `1.0.0+11`. The recorded Closed Alpha upload succeeded;
+  local and Play SHA-256 match. The saved post-upload API receipt lists Alpha
+  code 11, Internal code 7 and no Production release. API `completed` does not
+  establish approval or tester availability; check live Console before installing.
+- Candidate source: `e7caca6`. Exact signed artifact:
+  `.tmp/play-candidate/20261020-build11b/artifacts/app-release.aab`;
+  SHA-256 `c39022153281a229e0faa0bc73fd786c3393967a99f6e22a78396bc892c5a98c`.
+  Upload details are in the runbook's **Closed submission — build 11** section.
+- Build 11 simplifies the Sources page in five languages and includes updated
+  test expectations. The previous session recorded 476 passing tests and clean
+  analysis. No tests/builds were rerun for this documentation reconciliation.
+- Luis's phone acceptance applies to build 10. Build 11 still needs its own
+  Closed installation/acceptance before any Production decision. Preserve its
+  exact AAB; any further binary change requires an unused higher version code.
+- Recorded website deployment is `e181347` on 20 October, including the shorter
+  headline/provider text, updated OG image and new terms page. Its deployment
+  session recorded HTTPS and byte comparisons. Keep Coming Soon until Production
+  is public; later docs-only pushes do not deploy the website.
+- The description/Data safety submission and reviewer-access support ticket
+  below remain historical evidence, not a fresh live review-state check.
+  Recheck Publishing overview after the build-11 upload; await Google's support
+  reply about reviewer access. Do not duplicate the ticket. Production countries
+  still need an owner decision (initial ES/CH recommended).
+- Luis chose to retain exchange-api without contacting its maintainer; the
+  reasoning/evidence and future paid-provider plan are in `docs/providers/fawazahmed0.md`.
+  This reconciliation records that decision without reopening or certifying it.
+- Release tooling improvements remain plans, not implemented utilities:
+  `docs/superpowers/plans/2026-10-20-release-tooling-friction-plan.md` and the
+  sibling site's `docs/2026-10-20-release-tooling-plan.md`.
+
+## Historical support ticket and metadata submission confirmed — 2026-10-20
 
 - Luis approved sending the English reviewer-access question. Submitted through
   Console Help → Create support ticket → Google Play policies → App → policy

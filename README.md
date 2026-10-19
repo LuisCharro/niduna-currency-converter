@@ -4,6 +4,18 @@ Privacy-first Flutter currency converter for the Honest Fern portfolio.
 
 **Android MVP release** | Android first, iOS later | No account, no first-party analytics, no backend.
 
+## Current release checkpoint — 2026-10-20
+
+`1.0.0+11` is the current Closed Alpha candidate. Its recorded upload and
+Google/local artifact hashes match; check Console for approval/availability,
+then perform owner phone acceptance. Build 10's successful phone checks are
+historical. Internal remains code 7 and Production is empty in the stored read.
+See `RELEASE_CHECKLIST.md` and `docs/release-prep/google-play-publishing-runbook.md`
+for the exact artifact, receipts and remaining reviewer-access/country decisions.
+The website deployment session records revision `e181347` (including terms).
+Keep Coming Soon until Production is public. The tooling friction plan under
+`docs/superpowers/plans/` is a backlog, not implemented release automation.
+
 ## What's in the Android launch scope
 
 - 45 currencies total — 34 fiat + 11 crypto (USD, EUR, GBP, JPY, CHF, SEK, NOK, DKK, PLN, CZK, HUF, RON, CAD, AUD, MXN, BRL, ARS, CLP, COP, INR, SGD, HKD, KRW, THB, PHP, IDR, MYR, TWD, NZD, CNY, TRY, AED, ILS, ZAR + BTC, ETH, SOL, XRP, ADA, DOGE, AVAX, USDT, USDC, BNB, POL); source of truth: `lib/src/core/currency/supported_currencies.dart`
@@ -14,8 +26,8 @@ Privacy-first Flutter currency converter for the Honest Fern portfolio.
 - Offline mode (cached rates, no network required)
 - Dark mode (free in 2026 — do not charge for this)
 - Banner ads plus user-initiated rewarded ads for temporary unlocks
-- Three one-time IAPs: Remove Ads (1.99 CHF), Charts Pro (2.99 CHF),
-  Favorites Pro (0.99 CHF); no launch subscription
+- Three one-time IAPs: Remove Ads (2 CHF in Switzerland), Charts Pro (3 CHF),
+  Favorites Pro (1 CHF); localized prices come from Play Billing. No launch subscription
 
 **Not in the Android launch:** metals (XAU/XAG), push notifications,
 backend, accounts, subscriptions, or real-time/intraday rates.

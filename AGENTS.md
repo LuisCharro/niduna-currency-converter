@@ -33,17 +33,17 @@ skills without changing this repo again.
   changed. Production countries remain unselected. Read the newest checklist and
   `docs/release-prep/play-console-final-review-2026-10-20.md` before acting.
 - `main` is canonical; inspect HEAD/working tree before acting.
-- `1.0.0+10` is available to selected Closed Alpha testers (Console checked).
-  Luis installed from the Closed link and reports all requested phone checks
-  passed, including correct Settings/checkout prices and three licence-test IAPs.
-  After reinstall, manual Restore recovered every purchase; ads initially returned.
-- Source `b28e9e6` includes layered privacy help and localized Play prices.
-  The master checklist's build-10 checkpoint owns hash, receipts and QA gaps.
-- Internal remains code 7; Production is empty. Production access is granted,
-  but publication needs separate approval and final acceptance.
-- Promote the exact accepted AAB; do not rebuild it merely to move tracks.
-- Website policies/gallery are already public (site revision `12d3cb8`);
-  keep Coming Soon until Production is publicly available.
+- Current candidate is `1.0.0+11`, uploaded to Closed Alpha from source `e7caca6`.
+  Stored upload/status receipts verify matching Google/local AAB hash and Alpha
+  code 11; approval/tester availability still needs a live Console check.
+- Build 10 passed Luis's phone acceptance. That acceptance does not transfer to
+  build 11; install/accept code 11 through Closed before Production promotion.
+- Internal remains code 7 and Production is empty in the latest stored API read.
+  Production access is granted; publication needs a separate owner instruction.
+- Preserve the exact code-11 AAB/hash in the master checklist/runbook. Do not
+  rebuild merely to move tracks; changed binaries need an unused higher code.
+- Recorded website deployment is `e181347` (20 October), including terms and
+  concise product/policy text. Keep Coming Soon until Production is public.
 - Read `RELEASE_CHECKLIST.md`, the app publishing runbook and
   `stores/google-play/SKILL.md`; workspace API policy is
   `../../docs/platforms/google-play-developer-api.md`.
@@ -54,8 +54,9 @@ skills without changing this repo again.
   Keep real Billing injected by AppShell and consent-gated advertising.
 - Licence testing and Closed eligibility are separate. Prior Billing success
   does not make all Closed cohort purchases free.
-- Current gallery was verified live in Console/Chrome. Exact build-10 device
-  acceptance is owner-reported as passed; final production configuration remains pending.
+- Current gallery was verified live in Console/Chrome. Build 11 did not recapture
+  screenshots (emulator full); UI gallery is unchanged. Build-11 device acceptance
+  and final Production configuration remain pending.
 - Keep widgets and iOS work outside this Android release task unless a concrete
   regression requires investigation.
 
@@ -93,9 +94,9 @@ and chart-comparison status, see
 
 - Current `pubspec.yaml`: `1.0.0+11` (2026-10-20: Sources-page copy only), uploaded to
   Closed Alpha with Luis's approval; needs owner phone acceptance. See runbook.
-  `1.0.0+10` is available in Closed Alpha and manually accepted by Luis.
+  Build 10 was available/accepted before that upload; code 11 is now the candidate.
   Internal remains 7; Production promotion is separate.
-- Code 10 is already used. Any changed binary needs a new unused higher code.
+- Code 11 is already used. Any changed binary needs a new unused higher code.
 - Keep the candidate's version name `1.0.0`; code 8 contains the Convert
   persistence, currency picker, portrait and swipe-action improvements.
 - Promote the tested `1.0.0` artifact to Production; do not rebuild an
