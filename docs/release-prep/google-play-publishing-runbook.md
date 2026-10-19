@@ -8,7 +8,7 @@ For the reusable portfolio-wide model, read
 when this repository is checked out inside the Honest Fern monorepo. This
 document owns only Currency Converter facts and commands.
 
-**Last verified:** 2026-10-19
+**Last verified:** 2026-10-20
 
 **Package:** `com.honestfern.currency_converter`
 
@@ -16,6 +16,39 @@ document owns only Currency Converter facts and commands.
 
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
+
+## Console corrections — 2026-10-20
+
+- Luis asked to finish the remaining Console configuration and preserve a
+  durable handoff. Using the owner Console, saved exactly two changes:
+  en-GB full description and Data safety purposes. No app/web source, AAB,
+  prices, Production track, countries or security settings changed.
+- Description replaces the two ECB/daily-refresh sentences with: “Reference
+  exchange rates and crypto prices are fetched online. The app shows the
+  source date.” This correction is in **Google Play**, not another app edit.
+- Data safety now maps the four existing SDK data types to analytics,
+  advertising/marketing and fraud/security/compliance for collection/sharing.
+  Removed developer communications/account management from Device IDs; added
+  analytics to collected approximate location and advertising to diagnostics.
+  Preview verified all eight purpose groups before saving. Other answers retained.
+- Publishing overview showed exactly these two items. Clicked Submit 2 changes
+  and confirmed Send changes for review. The immediate post-action view still
+  showed quick checks and “Changes not yet submitted”; Submission activity had
+  no new entry yet. **Do not claim review started or public text changed until
+  live Console confirms it.** Recheck after quick checks; do not blindly resubmit.
+- Reviewer access is still open. Console explicitly says reviewers cannot use
+  personal accounts to make purchases. The Add details modal requires an
+  attestation of full access including paid content. Explored Yes/Add details,
+  then discarded all unsaved access changes; current saved answer remains No.
+  No credentials, unlock code, free-purchase claim or access attestation supplied.
+  Owner Billing tests passed; they do not prove Google reviewer access.
+- A support question is drafted in the audit report. Permission to send a
+  narrow clarification was requested; no support message has been sent.
+- Countries remain unselected in Production. ES/CH recommended, owner selection
+  pending. Production remains a separate explicit release instruction.
+- Detailed audit and source links:
+  `docs/release-prep/play-console-final-review-2026-10-20.md`.
+  Evidence: ignored `.tmp/play-final-corrections-20261020/`.
 
 ## Real-device acceptance — 2026-10-19, Closed build 10
 

@@ -25,10 +25,12 @@ skills without changing this repo again.
 
 ## Current state (reviewed 2026-10-20)
 
-- Final read-only Console review found Data safety purpose errors and a paid-feature
-  reviewer-access declaration mismatch. Production countries are unselected; listing
-  correction is prepared only. Read `docs/release-prep/play-console-final-review-2026-10-20.md`
-  before submission; do not equate no Console policy issues with accurate declarations.
+- Data safety purposes and en-GB listing source wording were corrected/saved in
+  Console on 20 October. Submission of exactly these two items was requested;
+  quick checks/UI have not yet confirmed a new review entry. Recheck before retrying.
+  Paid-feature reviewer access remains unresolved; its saved No answer was not
+  changed. Production countries remain unselected. Read the newest checklist and
+  `docs/release-prep/play-console-final-review-2026-10-20.md` before acting.
 - `main` is canonical; inspect HEAD/working tree before acting.
 - `1.0.0+10` is available to selected Closed Alpha testers (Console checked).
   Luis installed from the Closed link and reports all requested phone checks

@@ -1,6 +1,28 @@
 # Final Play Console review — 19–20 October 2026
 
-## Outcome and scope
+## Follow-up — Console corrections on 20 October
+
+The audit below records the original read-only inspection. Subsequently Luis
+asked to finish Console configuration. The description and Data safety purpose
+corrections were saved in Console; the preview matched the proposed matrix.
+Only those two pending items were present before requesting their submission.
+Clicked Submit 2 changes and confirmed Send changes for review, but the
+immediate UI still showed quick checks and no new Submission activity entry.
+Submission/publication is **not yet confirmed**. Recheck Console after the
+checks; do not automatically repeat an ambiguous submission.
+
+Reviewer access remains unresolved: Console now explicitly warns that reviewers
+cannot use personal accounts to purchase. Inspected the Yes/Add details form:
+username/password are optional with other instructions, but a checkbox requires
+full access including paid content. All exploratory access changes were discarded;
+no inaccurate attestation was saved. A support clarification question is prepared;
+permission to send was requested, no message sent. Country choice remains pending.
+No binary, website, prices, countries or Production change was made.
+
+Evidence: ignored `.tmp/play-final-corrections-20261020/`. The listing JSON is
+a saved Console submission candidate, not evidence of public listing approval.
+
+## Original outcome and scope
 
 Read-only review of the authenticated owner Console in Chrome, the public
 storefront, Publisher API metadata/catalog and deployed public policy files.

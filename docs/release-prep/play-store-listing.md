@@ -1,5 +1,13 @@
 # Google Play Store Listing — Currency Converter
 
+> **Current listing checkpoint — 2026-10-20:** Exact en-GB text is in
+> `play-listing-en-GB-reviewed.json`. The concise listing was read live and
+> its CONVERT source/refresh wording corrected and saved in Console today.
+> Review submission was requested but not yet confirmed after quick checks.
+> The longer copy/specification below is historical and is not the live listing.
+> Current six gallery images match `screenshots/play-gallery-manifest.json`.
+> Build 10 is the accepted Closed candidate; Internal code 7 is not that candidate.
+>
 > Product: Currency Converter (by Honest Fern)
 > Current Internal artifact: 1.0.0+4 is superseded and must not be promoted;
 > the provider-coverage fix needs a new accepted Internal candidate (expected 1.0.0+5)
@@ -125,8 +133,8 @@ IDR, MYR, TWD, NZD, TRY, AED, ILS, ZAR.
 POL.
 
 **Data sources (transparency)**
-Fiat rates: Frankfurter v2, a free public API backed by European
-Central Bank reference rates. No API key, no quota, no account.
+Fiat rates: Frankfurter v2, using its default blended reference rates.
+This is not an ECB-only feed. See the current disclosure review for terms.
 Crypto rates and charts: fawazahmed0, a community-maintained public
 dataset published under CC0. Both providers are accessed directly
 from your device. We do not proxy, log, or augment the requests.
