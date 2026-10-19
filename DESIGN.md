@@ -177,6 +177,11 @@ Single font fallback chain: `["Fraunces", "Georgia", "serif"]`
 
 **Single-column mobile layout** with generous safe area padding on warm paper canvas:
 
+- Android phones stay in portrait when the device rotates, except for the
+  explicitly opened Charts viewer described below. Platform restrictions
+  on large-screen devices may override orientation locks; phone layout is the
+  acceptance target for this release.
+
 - Standard horizontal padding: **20px** (`AppTheme.pagePadding`)
 - Section spacing: **24px** vertical between major groups
 - Row height: **52-56px** for tappable rate rows
@@ -243,27 +248,85 @@ Consistent rounding within each screen — do not mix sharp corners with rounded
 - Circular swap button between base and quote selectors
 - Shadow on selected state
 
-### Currency Selection Sheets
+### Expanded Charts viewer (Android)
 
-Convert and Charts use the same grouped-currency interaction language.
+- The phone-and-rotation-arrow icon beside the periods opens a separate landscape screen. It shares
+  the selected pair, period and data with Charts; opening/closing does not refresh.
+- Periods and a 48px collapse action stay at the top. The graph takes the full
+  width. Bottom navigation is covered; collapse or Android Back returns to portrait.
+- The bottom band places base/swap/quote controls left and a standard 320×50
+  banner right with a 16px gap. Available width and text scale determine whether
+  they fit; otherwise controls and banner use separate rows. Ads keep their real
+  dimensions, and users without ads have no empty advertising slot.
+- Pair controls remain at least 48px tall. Currency selection uses a full screen
+  picker with a compact header at short heights. Search, locks, voluntary rewarded
+  ads and purchases keep the same pair-based access policy as normal Charts.
+- Point details share the portrait card styling and all four values: date, rate,
+  percentage change and absolute change. Landscape places identity left and change
+  right, wrapping into two rows when needed, inside a bounded scrollable card. Errors and
+  waiting/purchase screens scroll when vertical space is limited.
+- Covered app banners are disposed. The visible route owns its own banner;
+  returning creates a fresh banner at the current size.
+- Native ads and store screens control their own presentation. Returning restores
+  the viewer orientation; closing the viewer restores portrait. No immersive mode.
 
-- Applies to Convert **Add currencies**, Convert **Select base currency**, and
-  the Charts base/quote pickers.
+### Saved Currencies and Base Selection
+
+Convert keeps one ordered, locally saved currency collection. The active base
+belongs to this collection; changing it changes currency roles, not membership.
+The previous base appears in the comparison rows. The amount stays unchanged.
+Reopening restores the last base (including crypto) and the saved collection.
+Existing quote selections migrate without dropping supported currencies.
+
+- The top picker is a compact **Convert from** sheet containing only saved
+  currencies, in stable collection order: flag, name, code, and a checkmark for
+  the current base. Selecting any row closes the sheet immediately.
+- **Add another currency…** opens the currency-management sheet. Adding there
+  updates the collection; selecting a base remains a separate action.
+- **Add currencies** manages the complete supported catalog. The active base
+  cannot be removed, and at least one comparison currency must remain.
+- Settings **Default currency** remains fiat-only. It supplies the initial base;
+  an explicit Settings change replaces the remembered launch base. Later Convert
+  choices become the remembered base without changing that Settings value.
+- Opening a favorite can add its base/quote to the collection when needed.
+
+### Catalog Selection Sheets
+
+Convert **Add currencies**, Settings' fiat-only picker, and Charts use the shared
+catalog interaction language. The compact Convert-from sheet is separate.
+
 - Group currencies as **Europe**, **Americas**, **Asia Pacific**, **Middle East
-  & Africa**, and **Crypto**. Each header displays its item count.
-- On every new opening, **all groups are collapsed**, including Crypto. Group
-  expansion is local to that sheet and is not persisted between openings or
-  shared between screens.
-- Search narrows the available groups and currencies but does not automatically
-  expand a result group; the person opens the matching group deliberately.
-- Convert Add currencies exposes the complete supported catalog as quote
-  currencies. Convert Select base currency exposes that same catalog for the
-  current conversion session, including Crypto.
-- Settings **Default currency** remains fiat-only: it controls the persistent
-  launch default and is deliberately separate from the temporary Convert base
-  selector.
-- Charts displays the same catalog when crypto charts are available. Pair locks
-  and 24-hour unlock affordances change availability, never catalog visibility.
+  & Africa**, and **Crypto**, with item counts.
+- On each opening, groups start collapsed. Expansion is local and not persisted.
+- Search narrows groups/currencies without automatically expanding groups.
+- Convert management offers the full supported catalog, including crypto.
+- Charts uses the full catalog when crypto charts are enabled. Pair locks and
+  24-hour unlocks affect availability, not catalog visibility.
+
+### Swipe Actions
+
+Convert and Favorites share icon-only rounded action tiles with the same sizing
+and theme colors. No tiny visible labels: translations must not truncate inside
+these controls. Keep localized screen-reader labels and long-press tooltips.
+
+Both tabs reveal actions over the same card-colored tray so the pale action
+tiles remain distinct from the page canvas. Favorites' tray fades in with the
+swipe and paints nothing when closed; ordinary rows stay on the warm canvas.
+The moving item keeps an opaque warm surface during swipes, distinct from the
+revealed tray. Action trays are 64 logical pixels tall, centered within taller
+Favorites rows. Shared reveal spacing is 64 logical pixels before the action
+tiles plus 60 pixels per action; button padding and rounding match across tabs.
+
+- Remove: outlined trash can, coral ink on coral surface, identical in both tabs.
+- Favorite: outlined/filled star in leaf green, reflecting current saved state.
+- Convert from: opposing arrows in leaf green; tooltip identifies the currency.
+- Reserve at least 48 logical pixels for each touch target; icons are 24 pixels.
+- Swiping reveals actions; it never removes an item automatically.
+- Removal shows a localized confirmation with **Undo**, restoring the item at
+  its saved position while preserving other collection edits.
+- Convert's dismissible first-use hint explains swipe actions on first reveal.
+  Its learning state is separate from the hold-to-open Conversion Lens hint.
+- Favorites has its own dismissible, locally remembered swipe-to-remove hint.
 
 ### Floating Pill Navigation
 - Rounded container (radius 28) with **paper-warm** background

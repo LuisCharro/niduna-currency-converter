@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../currency/currency_code_migration.dart';
 import '../currency/supported_currencies.dart';
 
+part 'convert_selection_preferences.dart';
+
 /// Theme preference. `system` follows the OS setting; `light`/`dark` are
 /// explicit overrides.
 enum AppThemeMode {
@@ -23,6 +25,8 @@ class AppPreferences extends ChangeNotifier {
   AppPreferences(this._prefs);
 
   final SharedPreferences _prefs;
+  int _defaultBaseRevision = 0;
+  int get defaultBaseRevision => _defaultBaseRevision;
 
   static const String _defaultBaseKey = 'pref_default_base';
   static const String _decimalPlacesKey = 'pref_decimal_places';
@@ -50,6 +54,7 @@ class AppPreferences extends ChangeNotifier {
   bool get devToolsAvailable => kDebugMode;
   bool get devMode =>
       devToolsAvailable && (_prefs.getBool(_devModeKey) ?? _defaultDevMode);
+
   /// Effective theme preference. Reads the new tri-state key when present;
   /// otherwise migrates from the legacy `pref_dark_mode` boolean:
   /// absent -> [AppThemeMode.system], `true` -> [AppThemeMode.dark],
@@ -82,6 +87,9 @@ class AppPreferences extends ChangeNotifier {
     final canonical = canonicalCurrencyCode(code);
     if (!isFiatCurrency(canonical)) return;
     await _prefs.setString(_defaultBaseKey, canonical);
+    // An explicit Settings choice replaces the remembered launch base.
+    await saveConvertSelection(canonical, [canonical, ...savedCurrencyCodes]);
+    _defaultBaseRevision++;
     notifyListeners();
   }
 

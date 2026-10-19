@@ -135,13 +135,18 @@ The release operation is an edit transaction:
 The current version source of truth is `pubspec.yaml`:
 
 ```text
-version: 1.0.0+7
+version: 1.0.0+8
 ```
 
 For a real follow-up fix, keep `versionName` `1.0.0` and increment only the
 build number (`1.0.0+7`, then `+8`, etc.). Play orders Android releases by
 `versionCode`; reusing a code is rejected. Promote the exact tested AAB between
 tracks instead of rebuilding it.
+
+As of 2026-10-14, code 8 is a local development candidate, tested as a release
+APK on the emulator. Console's latest uploaded bundle and both test tracks
+remain code 7. Committing or pushing the branch does not upload or publish a
+Play release; a signed AAB and explicit release authorization are still needed.
 
 An API upload should use the signed artifact produced by:
 

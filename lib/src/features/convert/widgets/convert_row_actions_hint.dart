@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/localization/ui_copy.dart';
+import '../../../../l10n/app_localizations_safe.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
 /// One-time, dismissible hint explaining the hidden row gestures (hold to
 /// open the Conversion Lens, swipe left for Remove/Favorite/Base).
 class ConvertRowActionsHint extends StatelessWidget {
-  const ConvertRowActionsHint({required this.onDismiss, super.key});
+  const ConvertRowActionsHint({
+    required this.onDismiss,
+    this.swipeActionsRevealed = false,
+    super.key,
+  });
+
+  final bool swipeActionsRevealed;
 
   final VoidCallback onDismiss;
 
@@ -39,7 +46,9 @@ class ConvertRowActionsHint extends StatelessWidget {
               const SizedBox(width: AppTheme.space2),
               Expanded(
                 child: Text(
-                  convertRowActionsHintText(context),
+                  swipeActionsRevealed
+                      ? l10n(context).convertSwipeActionsExplanation
+                      : convertRowActionsHintText(context),
                   style: AppTheme.caption.copyWith(
                     color: colors.muted,
                     fontWeight: FontWeight.w700,
@@ -47,15 +56,11 @@ class ConvertRowActionsHint extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: AppTheme.space2),
-              GestureDetector(
+              IconButton(
                 key: const Key('convert_row_actions_hint_dismiss'),
-                behavior: HitTestBehavior.opaque,
-                onTap: onDismiss,
-                child: Icon(
-                  Icons.close_rounded,
-                  size: 16,
-                  color: colors.subtle,
-                ),
+                tooltip: l10n(context).closeTooltip,
+                onPressed: onDismiss,
+                icon: Icon(Icons.close_rounded, size: 16, color: colors.subtle),
               ),
             ],
           ),

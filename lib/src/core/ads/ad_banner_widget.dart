@@ -4,182 +4,207 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'ad_banner_placeholder.dart';
-import 'ad_consent_manager.dart';
+import 'ad_banner_platform.dart';
 import 'ad_helper.dart';
 
 class AdBannerWidget extends StatefulWidget {
-  const AdBannerWidget({this.reserveMinHeight = true, super.key});
+  const AdBannerWidget({
+    this.reserveMinHeight = true,
+    this.fixedSize,
+    this.platform,
+    super.key,
+  });
 
-  /// When false, the widget collapses to zero height until an ad (or its
-  /// failure placeholder) actually has content, instead of always reserving
-  /// the estimated banner slot height. Useful in contexts — like a picker
-  /// sheet — where a persistent blank reserved slot reads as a layout bug.
+  /// Collapse until content exists when false (for example in a picker).
   final bool reserveMinHeight;
+
+  /// When provided, skip adaptive sizing and reserve this exact slot height.
+  final AdSize? fixedSize;
+  final AdBannerPlatform? platform;
 
   @override
   State<AdBannerWidget> createState() => _AdBannerWidgetState();
 }
 
 class _AdBannerWidgetState extends State<AdBannerWidget> {
-  static const double _minSlotHeight = 50;
-  static final Map<int, double> _slotHeightByWidth = <int, double>{};
-
-  BannerAd? _bannerAd;
-  bool _hasLoadError = false;
-  bool _isLoaded = false;
+  static final Map<int, double> _slotHeightByWidth = {};
+  late final AdBannerPlatform _platform = widget.platform ?? AdBannerPlatform();
+  BannerAd? _ad;
+  bool _visible = true;
+  bool _loaded = false;
+  bool _error = false;
+  bool _waitingConsent = false;
+  int _generation = 0;
   int? _loadedWidth;
-  int? _pendingLoadWidth;
   int? _lastWidth;
 
   @override
   void initState() {
     super.initState();
-    AdConsentManager.instance.addListener(_onConsentChanged);
+    _platform.consent.addListener(_onConsentChanged);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final visible = ModalRoute.isCurrentOf(context) ?? true;
+    if (visible != _visible) {
+      _visible = visible;
+      _invalidate();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant AdBannerWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.fixedSize != widget.fixedSize) _invalidate();
+  }
+
+  void _invalidate() {
+    _generation++;
+    _loadedWidth = null;
+    _waitingConsent = false;
+    _loaded = false;
+    _error = false;
+    final ad = _ad;
+    _ad = null;
+    if (ad != null) unawaited(ad.dispose());
   }
 
   void _onConsentChanged() {
-    final width = _lastWidth;
-    if (!mounted || width == null || !AdConsentManager.instance.canRequestAds) {
-      return;
+    if (!mounted) return;
+    if (!_platform.consent.canRequestAds) {
+      setState(_invalidate);
+    } else if (_visible && _lastWidth != null) {
+      if (_waitingConsent) {
+        _loadedWidth = null;
+        _waitingConsent = false;
+      }
+      _queueLoad(_lastWidth!);
     }
-    _loadedWidth = null;
-    _queueLoad(width);
   }
 
-  Future<void> _loadBannerAd(int width) async {
-    await AdConsentManager.instance.initialize();
-    if (!AdConsentManager.instance.canRequestAds) {
-      _loadedWidth = null;
-      return;
-    }
-    _bannerAd?.dispose();
-    _bannerAd = null;
-    _hasLoadError = false;
-    _isLoaded = false;
+  bool _valid(int generation) =>
+      mounted && _visible && generation == _generation;
 
+  void _queueLoad(int width) {
+    if (!_visible || _loadedWidth == width) return;
+    _loadedWidth = width;
+    final generation = ++_generation;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_valid(generation)) unawaited(_load(width, generation));
+    });
+  }
+
+  Future<void> _load(int width, int generation) async {
+    final previous = _ad;
+    _ad = null;
+    if (previous != null) unawaited(previous.dispose());
+    setState(() {
+      _loaded = false;
+      _error = false;
+    });
     try {
-      final size = await AdSize.getLargeAnchoredAdaptiveBannerAdSize(width);
-      if (!mounted || size == null) {
-        if (mounted) {
-          setState(() {
-            _hasLoadError = true;
-          });
-        }
+      await _platform.consent.initialize();
+      if (!_valid(generation)) return;
+      if (!_platform.consent.canRequestAds) {
+        _waitingConsent = true;
         return;
       }
-
-      _slotHeightByWidth[width] = size.height.toDouble().clamp(
-        _minSlotHeight,
-        120,
-      );
-
-      final ad = BannerAd(
-        adUnitId: AdHelper.bannerAdUnitId,
-        size: size,
-        request: const AdRequest(nonPersonalizedAds: true),
-        listener: BannerAdListener(
-          onAdLoaded: (loadedAd) {
-            if (!mounted || !identical(loadedAd, _bannerAd)) return;
-            setState(() {
-              _isLoaded = true;
-            });
+      final size = widget.fixedSize ?? await _platform.adaptiveSize(width);
+      if (!_valid(generation)) return;
+      if (size == null) {
+        setState(() => _error = true);
+        return;
+      }
+      if (widget.fixedSize == null) {
+        _slotHeightByWidth[width] = size.height.toDouble().clamp(50, 120);
+      }
+      final ad = _platform.createAd(
+        size,
+        BannerAdListener(
+          onAdLoaded: (ad) {
+            if (!_valid(generation) || !identical(_ad, ad)) return;
+            setState(() => _loaded = true);
           },
-          onAdFailedToLoad: (ad, error) {
-            debugPrint('Banner ad failed to load: $error');
-            ad.dispose();
-            if (mounted && identical(ad, _bannerAd)) {
-              setState(() {
-                _bannerAd = null;
-                _hasLoadError = true;
-                _isLoaded = false;
-              });
-            }
+          onAdFailedToLoad: (ad, _) {
+            if (!_valid(generation) || !identical(_ad, ad)) return;
+            unawaited(ad.dispose());
+            setState(() {
+              _ad = null;
+              _loaded = false;
+              _error = true;
+            });
           },
         ),
       );
-
-      _bannerAd = ad;
+      _ad = ad;
       await ad.load();
-    } catch (error) {
-      debugPrint('Banner ad skipped: $error');
-      _bannerAd?.dispose();
-      _bannerAd = null;
-      if (mounted) {
-        setState(() {
-          _hasLoadError = true;
-          _isLoaded = false;
-        });
-      }
+    } catch (_) {
+      if (!_valid(generation)) return;
+      final ad = _ad;
+      _ad = null;
+      if (ad != null) unawaited(ad.dispose());
+      setState(() {
+        _loaded = false;
+        _error = true;
+      });
     }
-  }
-
-  void _queueLoad(int width) {
-    if (_pendingLoadWidth == width || _loadedWidth == width) return;
-    _pendingLoadWidth = width;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted || _pendingLoadWidth == null) return;
-      final nextWidth = _pendingLoadWidth!;
-      _pendingLoadWidth = null;
-      if (_loadedWidth == nextWidth) return;
-      _loadedWidth = nextWidth;
-      unawaited(_loadBannerAd(nextWidth));
-    });
   }
 
   @override
   void dispose() {
-    AdConsentManager.instance.removeListener(_onConsentChanged);
-    _bannerAd?.dispose();
+    _platform.consent.removeListener(_onConsentChanged);
+    _invalidate();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_visible) return const SizedBox.shrink();
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth.floor();
         if (width > 0) {
           _lastWidth = width;
-          _queueLoad(width);
+          if (widget.fixedSize == null || width >= widget.fixedSize!.width) {
+            _queueLoad(width);
+          }
         }
-
-        final ad = _bannerAd;
-        final reservedHeight = width > 0
-            ? (_slotHeightByWidth[width] ?? _estimatedSlotHeight(width))
-            : _minSlotHeight;
-        final slotHeight = (ad?.size.height.toDouble() ?? reservedHeight)
-            .clamp(_minSlotHeight, 120)
-            .toDouble();
-        final hasVisibleContent = (_isLoaded && ad != null) ||
-            (_hasLoadError && AdHelper.showPlaceholderOnFailure);
-        final frameHeight = widget.reserveMinHeight || hasVisibleContent
-            ? (slotHeight > _minSlotHeight ? slotHeight : _minSlotHeight)
-            : 0.0;
-        Widget content = const SizedBox.shrink();
-
-        if (_isLoaded && ad != null) {
-          content = SizedBox(
-            width: ad.size.width.toDouble(),
-            height: ad.size.height.toDouble(),
-            child: AdWidget(ad: ad),
-          );
-        } else if (_hasLoadError && AdHelper.showPlaceholderOnFailure) {
-          content = AdBannerPlaceholder(maxWidth: width.toDouble());
-        }
-
+        final ad = _ad;
+        final height =
+            widget.fixedSize?.height.toDouble() ??
+            (ad?.size.height.toDouble() ??
+                    _slotHeightByWidth[width] ??
+                    _estimatedHeight(width))
+                .clamp(50, 120)
+                .toDouble();
+        final hasContent =
+            (_loaded && ad != null) ||
+            (_error && AdHelper.showPlaceholderOnFailure);
         return SizedBox(
-          height: frameHeight,
-          child: Center(child: content),
+          height: widget.reserveMinHeight || hasContent ? height : 0,
+          child: Center(
+            child: _loaded && ad != null
+                ? SizedBox(
+                    width: ad.size.width.toDouble(),
+                    height: ad.size.height.toDouble(),
+                    child: _platform.renderAd(ad),
+                  )
+                : _error && AdHelper.showPlaceholderOnFailure
+                ? AdBannerPlaceholder(maxWidth: width.toDouble())
+                : const SizedBox.shrink(),
+          ),
         );
       },
     );
   }
 
-  double _estimatedSlotHeight(int width) {
-    if (width >= 700) return 110;
-    if (width >= 520) return 100;
-    if (width >= 420) return 90;
-    if (width >= 360) return 82;
-    return 72;
-  }
+  double _estimatedHeight(int width) => switch (width) {
+    >= 700 => 110,
+    >= 520 => 100,
+    >= 420 => 90,
+    >= 360 => 82,
+    _ => 72,
+  };
 }

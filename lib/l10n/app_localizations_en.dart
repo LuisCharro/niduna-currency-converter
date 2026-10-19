@@ -487,4 +487,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favoritesFirstPairPreview => 'Your first pair shows here';
+
+  @override
+  String get convertFromTitle => 'Convert from';
+
+  @override
+  String get savedCurrenciesSubtitle => 'Choose a currency from your list';
+
+  @override
+  String get addAnotherCurrency => 'Add another currency…';
+
+  @override
+  String convertFromCurrency(String code) {
+    return 'Convert from $code';
+  }
+
+  @override
+  String get btnUndo => 'Undo';
+
+  @override
+  String get convertSwipeActionsExplanation =>
+      'Change base, save a favorite, or remove.';
+
+  @override
+  String get favoritesSwipeHint => 'Swipe left to remove a saved pair.';
+
+  @override
+  String currencyRemoved(String code) {
+    return '$code removed from your list';
+  }
+
+  @override
+  String get expandChartTooltip => 'View horizontally';
+
+  @override
+  String get collapseChartTooltip => 'Return to vertical';
+
+  @override
+  String get chartAdLoading => 'Loading ad…';
+
+  @override
+  String get chartAdUnavailable => 'Ad unavailable';
+
+  @override
+  String get chartAdInstructions =>
+      'Follow the ad’s instructions to earn the reward';
 }

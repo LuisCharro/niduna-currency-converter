@@ -985,6 +985,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your first pair shows here'**
   String get favoritesFirstPairPreview;
+
+  /// No description provided for @convertFromTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert from'**
+  String get convertFromTitle;
+
+  /// No description provided for @savedCurrenciesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a currency from your list'**
+  String get savedCurrenciesSubtitle;
+
+  /// No description provided for @addAnotherCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another currency…'**
+  String get addAnotherCurrency;
+
+  /// No description provided for @convertFromCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert from {code}'**
+  String convertFromCurrency(String code);
+
+  /// No description provided for @btnUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get btnUndo;
+
+  /// No description provided for @convertSwipeActionsExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Change base, save a favorite, or remove.'**
+  String get convertSwipeActionsExplanation;
+
+  /// No description provided for @favoritesSwipeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe left to remove a saved pair.'**
+  String get favoritesSwipeHint;
+
+  /// Confirmation after removing a saved currency
+  ///
+  /// In en, this message translates to:
+  /// **'{code} removed from your list'**
+  String currencyRemoved(String code);
+
+  /// No description provided for @expandChartTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'View horizontally'**
+  String get expandChartTooltip;
+
+  /// No description provided for @collapseChartTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to vertical'**
+  String get collapseChartTooltip;
+
+  /// No description provided for @chartAdLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading ad…'**
+  String get chartAdLoading;
+
+  /// No description provided for @chartAdUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad unavailable'**
+  String get chartAdUnavailable;
+
+  /// No description provided for @chartAdInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the ad’s instructions to earn the reward'**
+  String get chartAdInstructions;
 }
 
 class _AppLocalizationsDelegate

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/swipe_draggable_card.dart';
+import '../../../shared/widgets/swipe_action_layout.dart';
 import 'swipe_action_widgets.dart';
 
 class CurrencyRowSwipeActions extends StatefulWidget {
@@ -37,7 +38,7 @@ class CurrencyRowSwipeActions extends StatefulWidget {
 class _CurrencyRowSwipeActionsState extends State<CurrencyRowSwipeActions> {
   // Fits the 3-action rail (favorite/base/remove); Favorites' 1-action rail
   // uses its own, smaller reveal width (see FavoriteSwipeRow).
-  static const double _maxReveal = 244;
+  static const double _maxReveal = SwipeActionLayout.convertReveal;
 
   double _reveal = 0;
   bool _isOpen = false;

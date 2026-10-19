@@ -31,7 +31,6 @@ import 'package:currency_converter/src/features/settings/settings_controller.dar
 import 'package:currency_converter/src/features/settings/settings_screen.dart';
 import 'package:currency_converter/src/features/settings/widgets/data_details_page.dart';
 import 'package:currency_converter/src/shared/widgets/bottom_tab_frame.dart';
-import 'package:currency_converter/src/shared/widgets/currency_section_header.dart';
 import 'package:currency_converter/src/shared/widgets/fade_slide_switcher.dart';
 import 'package:currency_converter/src/shared/widgets/floating_pill_nav.dart';
 import 'package:currency_converter/src/shared/widgets/press_scale.dart';
@@ -143,10 +142,12 @@ void main() {
   testWidgets('Convert screen shows clean layout', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: ConvertScreen(
-          controller: controller,
-          monetization: monetization,
-          onNavigateToSettings: () {},
+        home: Scaffold(
+          body: ConvertScreen(
+            controller: controller,
+            monetization: monetization,
+            onNavigateToSettings: () {},
+          ),
         ),
       ),
     );
@@ -180,10 +181,12 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        home: ConvertScreen(
-          controller: controller,
-          monetization: monetization,
-          onNavigateToSettings: () {},
+        home: Scaffold(
+          body: ConvertScreen(
+            controller: controller,
+            monetization: monetization,
+            onNavigateToSettings: () {},
+          ),
         ),
       ),
     );
@@ -234,10 +237,12 @@ void main() {
   ) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: ConvertScreen(
-          controller: controller,
-          monetization: monetization,
-          onNavigateToSettings: () {},
+        home: Scaffold(
+          body: ConvertScreen(
+            controller: controller,
+            monetization: monetization,
+            onNavigateToSettings: () {},
+          ),
         ),
       ),
     );
@@ -268,10 +273,12 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        home: ConvertScreen(
-          controller: controller,
-          monetization: monetization,
-          onNavigateToSettings: () {},
+        home: Scaffold(
+          body: ConvertScreen(
+            controller: controller,
+            monetization: monetization,
+            onNavigateToSettings: () {},
+          ),
         ),
       ),
     );
@@ -292,15 +299,17 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Convert base picker exposes crypto as a temporary base option', (
+  testWidgets('Convert base picker offers a saved crypto currency directly', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: ConvertScreen(
-          controller: controller,
-          monetization: monetization,
-          onNavigateToSettings: () {},
+        home: Scaffold(
+          body: ConvertScreen(
+            controller: controller,
+            monetization: monetization,
+            onNavigateToSettings: () {},
+          ),
         ),
       ),
     );
@@ -309,28 +318,9 @@ void main() {
     await tester.tap(find.byKey(const Key('open_base_currency_picker')));
     await tester.pumpAndSettle();
 
-    expect(find.text('Select base currency'), findsOneWidget);
-    expect(find.text('Current base USD'), findsOneWidget);
-
-    final searchField = find.byType(TextField);
-    await tester.enterText(searchField, 'BTC');
-    await tester.pumpAndSettle();
-
-    final cryptoHeader = find.byWidgetPredicate(
-      (widget) =>
-          widget is CurrencySectionHeader &&
-          widget.group.section.label == 'Crypto',
-    );
-    expect(cryptoHeader, findsOneWidget);
-    expect(
-      tester.widget<CurrencySectionHeader>(cryptoHeader).isExpanded,
-      isFalse,
-    );
-
-    await tester.tap(cryptoHeader);
-    await tester.pumpAndSettle();
-
-    expect(find.text('Bitcoin'), findsOneWidget);
+    expect(find.text('Convert from'), findsOneWidget);
+    expect(find.byKey(const Key('saved_base_BTC')), findsOneWidget);
+    expect(find.text('Swiss Franc'), findsNothing);
   });
 
   testWidgets(
@@ -340,10 +330,12 @@ void main() {
         MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: ConvertScreen(
-            controller: controller,
-            monetization: monetization,
-            onNavigateToSettings: () {},
+          home: Scaffold(
+            body: ConvertScreen(
+              controller: controller,
+              monetization: monetization,
+              onNavigateToSettings: () {},
+            ),
           ),
         ),
       );
@@ -368,16 +360,18 @@ void main() {
   );
 
   testWidgets(
-    'Convert row swipe favorite action toggles between Favorite and Favorited',
+    'Convert row swipe favorite action toggles outlined and filled star',
     (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: ConvertScreen(
-            controller: controller,
-            monetization: monetization,
-            onNavigateToSettings: () {},
+          home: Scaffold(
+            body: ConvertScreen(
+              controller: controller,
+              monetization: monetization,
+              onNavigateToSettings: () {},
+            ),
           ),
         ),
       );
@@ -393,14 +387,14 @@ void main() {
       expect(
         find.descendant(
           of: euroFavoriteAction,
-          matching: find.text('Favorite'),
+          matching: find.byIcon(Icons.star_outline_rounded),
         ),
         findsOneWidget,
       );
       expect(
         find.descendant(
           of: euroFavoriteAction,
-          matching: find.text('Favorited'),
+          matching: find.byIcon(Icons.star_rounded),
         ),
         findsNothing,
       );
@@ -414,14 +408,14 @@ void main() {
       expect(
         find.descendant(
           of: euroFavoriteAction,
-          matching: find.text('Favorited'),
+          matching: find.byIcon(Icons.star_rounded),
         ),
         findsOneWidget,
       );
       expect(
         find.descendant(
           of: euroFavoriteAction,
-          matching: find.text('Favorite'),
+          matching: find.byIcon(Icons.star_outline_rounded),
         ),
         findsNothing,
       );
@@ -444,10 +438,12 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        home: ConvertScreen(
-          controller: cryptoController,
-          monetization: monetization,
-          onNavigateToSettings: () {},
+        home: Scaffold(
+          body: ConvertScreen(
+            controller: cryptoController,
+            monetization: monetization,
+            onNavigateToSettings: () {},
+          ),
         ),
       ),
     );
@@ -478,10 +474,12 @@ void main() {
   ) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: ConvertScreen(
-          controller: controller,
-          monetization: monetization,
-          onNavigateToSettings: () {},
+        home: Scaffold(
+          body: ConvertScreen(
+            controller: controller,
+            monetization: monetization,
+            onNavigateToSettings: () {},
+          ),
         ),
       ),
     );
@@ -517,10 +515,12 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: ConvertScreen(
-            controller: cryptoController,
-            monetization: monetization,
-            onNavigateToSettings: () {},
+          home: Scaffold(
+            body: ConvertScreen(
+              controller: cryptoController,
+              monetization: monetization,
+              onNavigateToSettings: () {},
+            ),
           ),
         ),
       );
@@ -557,10 +557,12 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: ConvertScreen(
-            controller: controller,
-            monetization: monetization,
-            onNavigateToSettings: () {},
+          home: Scaffold(
+            body: ConvertScreen(
+              controller: controller,
+              monetization: monetization,
+              onNavigateToSettings: () {},
+            ),
           ),
         ),
       );
@@ -596,10 +598,12 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        home: ConvertScreen(
-          controller: controller,
-          monetization: monetization,
-          onNavigateToSettings: () {},
+        home: Scaffold(
+          body: ConvertScreen(
+            controller: controller,
+            monetization: monetization,
+            onNavigateToSettings: () {},
+          ),
         ),
       ),
     );
@@ -813,10 +817,12 @@ void main() {
   ) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: ConvertScreen(
-          controller: controller,
-          monetization: monetization,
-          onNavigateToSettings: () {},
+        home: Scaffold(
+          body: ConvertScreen(
+            controller: controller,
+            monetization: monetization,
+            onNavigateToSettings: () {},
+          ),
         ),
       ),
     );
@@ -1000,7 +1006,7 @@ void main() {
     expect(find.text('Unlock all pairs forever'), findsOneWidget);
   });
 
-  testWidgets('chart picker keeps USD and EUR selectable for crypto pairs', (
+  testWidgets('chart picker requires pair access for EUR against crypto', (
     WidgetTester tester,
   ) async {
     tester.view.physicalSize = const Size(390, 844);
@@ -1023,7 +1029,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.pump(const Duration(seconds: 1));
 
-    // Search for EUR — must be present and not locked (free default for crypto pairs).
+    // EUR remains in the catalog; ETH/EUR requires access to that pair.
     // Searching narrows the region groups so the matched section header stays
     // on screen regardless of any highlighted/popular currencies shown above
     // the groups when the sheet first opens.
@@ -1047,7 +1053,7 @@ void main() {
     expect(eurListTile, findsOneWidget);
     expect(
       find.descendant(of: eurListTile, matching: find.text('Tap to unlock')),
-      findsNothing,
+      findsOneWidget,
     );
   });
 }

@@ -15,6 +15,7 @@ class ChartPairPill extends StatelessWidget {
     required this.onTap,
     required this.locked,
     required this.tempBadge,
+    this.dense = false,
     super.key,
   });
 
@@ -22,15 +23,40 @@ class ChartPairPill extends StatelessWidget {
   final VoidCallback onTap;
   final bool locked;
   final bool tempBadge;
+  final bool dense;
 
   @override
   Widget build(BuildContext context) {
     final currency = currencyByCode(code);
     final narrow = MediaQuery.sizeOf(context).width < 380;
     final largeText = MediaQuery.textScalerOf(context).scale(15) > 17.25;
-    final flagRadius = largeText ? 16.0 : chartPairFlagRadius;
-    final horizontalPadding = largeText ? 10.0 : AppTheme.space3;
-    final contentGap = largeText ? AppTheme.space1 : AppTheme.space2;
+    final flagRadius = dense
+        ? 10.0
+        : largeText
+        ? 16.0
+        : chartPairFlagRadius;
+    final horizontalPadding = dense
+        ? 6.0
+        : largeText
+        ? 10.0
+        : AppTheme.space3;
+    final contentGap = dense
+        ? 4.0
+        : largeText
+        ? AppTheme.space1
+        : AppTheme.space2;
+    final codeLabel = Text(
+      code,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w800,
+        letterSpacing: 0.4,
+      ),
+      maxLines: 1,
+      softWrap: false,
+      overflow: TextOverflow.ellipsis,
+    );
     return Material(
       color: AppColors.of(context).container.withValues(alpha: .72),
       borderRadius: BorderRadius.circular(AppTheme.pillRadius),
@@ -40,7 +66,7 @@ class ChartPairPill extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppTheme.pillRadius),
           child: Container(
-            constraints: const BoxConstraints(minHeight: 46),
+            constraints: const BoxConstraints(minHeight: 48),
             padding: const EdgeInsets.symmetric(
               vertical: AppTheme.space2,
             ).copyWith(left: horizontalPadding, right: horizontalPadding),
@@ -59,21 +85,13 @@ class ChartPairPill extends StatelessWidget {
                 ),
                 SizedBox(width: contentGap),
                 Expanded(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.center,
-                    child: Text(
-                      code,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.4,
-                      ),
-                      maxLines: 1,
-                      softWrap: false,
-                    ),
-                  ),
+                  child: dense
+                      ? codeLabel
+                      : FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.center,
+                          child: codeLabel,
+                        ),
                 ),
                 if (locked) ...<Widget>[
                   const SizedBox(width: 4),
@@ -91,7 +109,7 @@ class ChartPairPill extends StatelessWidget {
                     color: AppColors.of(context).subtle,
                   ),
                 ],
-                if (tempBadge) ChartTempBadge(compact: narrow),
+                if (tempBadge) ChartTempBadge(compact: dense || narrow),
               ],
             ),
           ),

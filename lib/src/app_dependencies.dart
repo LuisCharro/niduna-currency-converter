@@ -89,7 +89,7 @@ class AppDependencies {
       repository: repo,
       favoritesStore: effectiveFavoritesStore,
       preferences: preferences,
-      defaultBase: preferences.defaultBaseCurrency,
+      defaultBase: preferences.convertBaseCurrency,
       decimalPlaces: preferences.decimalPlaces,
       selectedCodes: preferences.selectedCodes,
       favoritesLimitProvider: favoritesLimitProvider,

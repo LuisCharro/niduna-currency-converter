@@ -25,6 +25,7 @@ class VisibleRatesList extends StatefulWidget {
     this.isLoading = false,
     this.decimalPlaces = 2,
     this.onLensOpened,
+    this.onSwipeOpened,
     super.key,
   });
 
@@ -43,6 +44,7 @@ class VisibleRatesList extends StatefulWidget {
   /// Called whenever the Conversion Lens is opened from a row, so callers
   /// can auto-dismiss the row-actions discoverability hint after first use.
   final VoidCallback? onLensOpened;
+  final VoidCallback? onSwipeOpened;
 
   @override
   State<VisibleRatesList> createState() => _VisibleRatesListState();
@@ -95,6 +97,7 @@ class _VisibleRatesListState extends State<VisibleRatesList> {
           code: quote.code,
           isOpen: _openCode == quote.code,
           onOpenChanged: (open) {
+            if (open) widget.onSwipeOpened?.call();
             setState(() {
               _openCode = open
                   ? quote.code

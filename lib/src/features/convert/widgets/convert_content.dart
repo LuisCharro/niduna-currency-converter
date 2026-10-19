@@ -7,6 +7,7 @@ import 'amount_panel.dart';
 import 'convert_row_actions_hint.dart';
 import 'currency_picker_sheet.dart';
 import 'rates_section_header.dart';
+import 'saved_base_currency_sheet.dart';
 import 'visible_rates_list.dart';
 
 class ConvertContent extends StatefulWidget {
@@ -46,7 +47,8 @@ class ConvertContent extends StatefulWidget {
 }
 
 class _ConvertContentState extends State<ConvertContent> {
-  late bool _hintVisible = !(widget.hintStore?.seen ?? true);
+  late bool _hintVisible = !(widget.hintStore?.swipeSeen ?? true);
+  bool _swipeActionsRevealed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +66,18 @@ class _ConvertContentState extends State<ConvertContent> {
           onShare: widget.onShare,
           onMore: widget.onMore,
           onAmountChanged: widget.onAmountChanged,
-          onBaseTap: () => _openPicker(context, selectBaseMode: true),
+          onBaseTap: () => _openSavedBasePicker(context),
           compact: compact,
         ),
         RatesSectionHeader(
           onEdit: () => _openPicker(context, selectBaseMode: false),
           compact: compact,
         ),
-        if (_hintVisible) ConvertRowActionsHint(onDismiss: _dismissHint),
+        if (_hintVisible)
+          ConvertRowActionsHint(
+            onDismiss: _dismissHint,
+            swipeActionsRevealed: _swipeActionsRevealed,
+          ),
         Expanded(
           child: VisibleRatesList(
             quotes: widget.state.quotes,
@@ -84,7 +90,12 @@ class _ConvertContentState extends State<ConvertContent> {
             onRemove: widget.onToggleCode,
             onToggleFavorite: widget.onToggleFavorite,
             maxFavoritesReached: widget.maxFavoritesReached,
-            onLensOpened: _dismissHint,
+            onLensOpened: () => widget.hintStore?.markSeen(),
+            onSwipeOpened: () {
+              if (_hintVisible && !_swipeActionsRevealed) {
+                setState(() => _swipeActionsRevealed = true);
+              }
+            },
           ),
         ),
       ],
@@ -94,7 +105,7 @@ class _ConvertContentState extends State<ConvertContent> {
   void _dismissHint() {
     if (!_hintVisible) return;
     setState(() => _hintVisible = false);
-    widget.hintStore?.markSeen();
+    widget.hintStore?.markSwipeSeen();
   }
 
   void _openPicker(BuildContext context, {required bool selectBaseMode}) {
@@ -118,5 +129,24 @@ class _ConvertContentState extends State<ConvertContent> {
         onToggleCode: widget.onToggleCode,
       ),
     );
+  }
+
+  Future<void> _openSavedBasePicker(BuildContext context) async {
+    final code = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      useSafeArea: true,
+      builder: (_) => SavedBaseCurrencySheet(
+        base: widget.state.base,
+        codes: widget.state.savedCodes,
+      ),
+    );
+    if (!context.mounted || code == null) return;
+    if (code == SavedBaseCurrencySheet.addCurrencyResult) {
+      _openPicker(context, selectBaseMode: false);
+    } else {
+      widget.onSelectBase(code);
+    }
   }
 }

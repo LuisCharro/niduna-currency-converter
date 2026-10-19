@@ -101,11 +101,16 @@ class MonetizationController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> requestRewardedChartUnlock(String base, String quote) async {
+  Future<bool> requestRewardedChartUnlock(
+    String base,
+    String quote, {
+    RewardedAdCancellation? cancellation,
+  }) async {
     if (!_entitlements.canOfferRewardedChartUnlock) return false;
 
     final success = await _adService.showRewardedAd(
       rewardType: 'chart_pair_unlock',
+      cancellation: cancellation,
     );
     if (!success) return false;
 

@@ -5,8 +5,8 @@ import 'swipe_radial_fill_painter.dart';
 
 /// The card's own surface while it sits over its actions rail: [card] draws
 /// an elevated, canvas-toned card (Convert's rows, Favorites' hero); [plain]
-/// is fully transparent with no shadow, so plain content (Favorites' rows)
-/// reads as flush with the page canvas behind it, not as a floating card.
+/// is transparent with no shadow when closed, so Favorites' rows sit flush
+/// with the page. During swipes its warm foreground masks the action tray.
 enum SwipeCardSurface { card, plain }
 
 /// Generic horizontal swipe-to-reveal card: drags left to reveal an actions
@@ -167,7 +167,9 @@ class _SwipeDraggableCardState extends State<SwipeDraggableCard>
             transform: Matrix4.translationValues(0, _isPressed ? -2 : 0, 0),
             transformAlignment: Alignment.center,
             decoration: BoxDecoration(
-              color: isPlain ? Colors.transparent : colors.bg,
+              // Plain rows stay flush when closed; their moving foreground
+              // becomes opaque during a swipe so the tray cannot bleed through.
+              color: isPlain && _reveal == 0 ? Colors.transparent : colors.bg,
               borderRadius: BorderRadius.circular(18),
               boxShadow: isPlain
                   ? null

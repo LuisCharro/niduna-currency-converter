@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
-
-import 'clamped_text_scale.dart';
+import 'swipe_action_layout.dart';
 
 /// One action tile inside a swipe-reveal actions rail (behind a
-/// [SwipeDraggableCard]): an icon badge plus a short label, fading and
+/// [SwipeDraggableCard]): an icon with an accessible label, fading and
 /// sliding in as the card reveals it.
 class SwipeActionButton extends StatelessWidget {
   const SwipeActionButton({
     required Key actionKey,
     required this.icon,
     required this.backgroundColor,
-    required this.iconBadgeColor,
     required this.color,
     required this.label,
-    required this.shortLabel,
     required this.progress,
     required this.onTap,
   }) : super(key: actionKey);
 
-  static const double actionWidth = 60;
+  static const double actionWidth = SwipeActionLayout.buttonWidth;
 
   final IconData icon;
   final Color backgroundColor;
-  final Color iconBadgeColor;
   final Color color;
   final String label;
-  final String shortLabel;
   final double progress;
   final VoidCallback onTap;
 
@@ -57,45 +52,15 @@ class SwipeActionButton extends StatelessWidget {
                         onTap: onTap,
                         borderRadius: BorderRadius.circular(14),
                         child: Container(
+                          height: 48,
                           margin: const EdgeInsets.symmetric(horizontal: 3),
                           decoration: BoxDecoration(
                             color: backgroundColor,
                             borderRadius: BorderRadius.circular(14),
                           ),
-                          child: ClampedTextScale(
-                            maxScaleFactor: 1.3,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  width: 32,
-                                  height: 32,
-                                  decoration: BoxDecoration(
-                                    color: Color.lerp(
-                                      backgroundColor,
-                                      iconBadgeColor,
-                                      0.9,
-                                    ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(icon, color: color, size: 18),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  shortLabel,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w800,
-                                    color: color,
-                                    height: 1,
-                                    letterSpacing: 0.15,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          constraints: const BoxConstraints(minHeight: 48),
+                          alignment: Alignment.center,
+                          child: Icon(icon, color: color, size: 24),
                         ),
                       ),
                     ),

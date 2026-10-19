@@ -92,41 +92,49 @@ class _IapPurchasePlayerState extends State<IapPurchasePlayer>
       opacity: _fadeAnimation,
       child: Material(
         color: Colors.black.withValues(alpha: .92),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                _buildIcon(),
-                const SizedBox(height: 20),
-                Text(
-                  _title(l10n),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    _buildIcon(),
+                    const SizedBox(height: 20),
+                    Text(
+                      _title(l10n),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _subtitle(l10n),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.white.withValues(alpha: .6),
+                      ),
+                    ),
+                    if (_phase == _IapPhase.loading) ...[
+                      const SizedBox(height: 24),
+                      AnimatedProgressBar(
+                        duration: Duration(milliseconds: 800),
+                      ),
+                    ],
+                    if (_phase == _IapPhase.processing) ...[
+                      const SizedBox(height: 24),
+                      AnimatedProgressBar(
+                        duration: Duration(milliseconds: 1200),
+                      ),
+                    ],
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  _subtitle(l10n),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.white.withValues(alpha: .6),
-                  ),
-                ),
-                if (_phase == _IapPhase.loading) ...[
-                  const SizedBox(height: 24),
-                  AnimatedProgressBar(duration: Duration(milliseconds: 800)),
-                ],
-                if (_phase == _IapPhase.processing) ...[
-                  const SizedBox(height: 24),
-                  AnimatedProgressBar(duration: Duration(milliseconds: 1200)),
-                ],
-              ],
+              ),
             ),
           ),
         ),

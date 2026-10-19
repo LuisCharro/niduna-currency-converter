@@ -13,6 +13,7 @@ class ChartTouchOverlay extends StatelessWidget {
     required this.value,
     required this.baseValue,
     required this.lineColor,
+    this.compact = false,
     super.key,
   });
 
@@ -21,6 +22,7 @@ class ChartTouchOverlay extends StatelessWidget {
   final double value;
   final double baseValue;
   final Color lineColor;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,55 @@ class ChartTouchOverlay extends StatelessWidget {
         ? '−'
         : '';
 
+    final identity = <Widget>[
+      Text(
+        DateFormat('EEE d MMM yyyy').format(date).toUpperCase(),
+        style: ChartThemeText.micro(context, color: lineColor),
+      ),
+      const SizedBox(height: 3),
+      Text(
+        '${formatChartValue(value)} $currencyCode',
+        style: ChartThemeText.frauncesValue(context),
+      ),
+    ];
+    final percent = Text(
+      '$arrow ${changePercent.abs().toStringAsFixed(2)}%',
+      style: ChartThemeText.caption(
+        context,
+        color: trendColor,
+      ).copyWith(fontSize: 12.5, fontWeight: FontWeight.w800),
+    );
+    final delta = Text(
+      '$sign${formatChartValue(absoluteChange.abs())} $currencyCode',
+      style: ChartThemeText.caption(context),
+    );
+    final content = compact
+        ? Wrap(
+            spacing: 24,
+            runSpacing: 6,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: identity,
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [percent, const SizedBox(height: 3), delta],
+              ),
+            ],
+          )
+        : Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...identity,
+              const SizedBox(height: 1),
+              Wrap(spacing: 8, children: [percent, delta]),
+            ],
+          );
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.of(context).card.withValues(alpha: .96),
@@ -56,39 +107,7 @@ class ChartTouchOverlay extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
         child: ClampedTextScale(
           maxScaleFactor: 1.3,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                DateFormat('EEE d MMM yyyy').format(date).toUpperCase(),
-                style: ChartThemeText.micro(context, color: lineColor),
-              ),
-              const SizedBox(height: 3),
-              Text(
-                '${formatChartValue(value)} $currencyCode',
-                style: ChartThemeText.frauncesValue(context),
-              ),
-              const SizedBox(height: 1),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    '$arrow ${changePercent.abs().toStringAsFixed(2)}%',
-                    style: ChartThemeText.caption(
-                      context,
-                      color: trendColor,
-                    ).copyWith(fontSize: 12.5, fontWeight: FontWeight.w800),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '$sign${formatChartValue(absoluteChange.abs())} $currencyCode',
-                    style: ChartThemeText.caption(context),
-                  ),
-                ],
-              ),
-            ],
-          ),
+          child: compact ? SingleChildScrollView(child: content) : content,
         ),
       ),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations_safe.dart';
+
 import '../../core/monetization/monetization_controller.dart';
 import '../../core/monetization/purchase_service.dart';
 import '../../shared/widgets/bottom_tab_frame.dart';
@@ -32,7 +34,11 @@ class FavoritesScreen extends StatelessWidget {
       color: Colors.transparent,
       child: CanvasBackground(
         child: ListenableBuilder(
-          listenable: Listenable.merge([favoritesStore, controller, monetization]),
+          listenable: Listenable.merge([
+            favoritesStore,
+            controller,
+            monetization,
+          ]),
           builder: (context, _) => BottomTabFrame(
             body: FavoritesTabBody(
               pairs: favoritesStore.pairs,
@@ -42,7 +48,9 @@ class FavoritesScreen extends StatelessWidget {
               canOfferBoost: monetization.canOfferRewardedFavoritesBoost,
               snapshot: controller.snapshot,
               onOpen: _openPair,
-              onRemove: controller.removeFavoritePair,
+              onRemove: (pair) => _removePair(context, pair),
+              showSwipeHint: !favoritesStore.swipeHintSeen,
+              onDismissSwipeHint: favoritesStore.markSwipeHintSeen,
               onReorder: favoritesStore.reorder,
               onAdd: () => onNavigateToConvert('', ''),
               onWatchAd: () => _showRewardedAd(context),
@@ -54,6 +62,26 @@ class FavoritesScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _removePair(BuildContext context, FavoritePair pair) {
+    final index = favoritesStore.pairs.indexOf(pair);
+    if (index < 0) return;
+    controller.removeFavoritePair(pair);
+    final loc = l10n(context);
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(
+            '${loc.msgFavoriteRemoved}: ${pair.base} → ${pair.quote}',
+          ),
+          action: SnackBarAction(
+            label: loc.btnUndo,
+            onPressed: () => favoritesStore.restore(pair, index: index),
+          ),
+        ),
+      );
   }
 
   Future<void> _openPair(FavoritePair pair) async {

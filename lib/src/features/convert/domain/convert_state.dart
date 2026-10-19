@@ -11,6 +11,7 @@ class ConvertState {
     required this.base,
     required this.amountText,
     required this.selectedCodes,
+    this.currencyCodes,
     this.message,
   });
 
@@ -31,6 +32,8 @@ class ConvertState {
   final String base;
   final String amountText;
   final List<String> selectedCodes;
+  final List<String>? currencyCodes;
+  List<String> get savedCodes => currencyCodes ?? [base, ...selectedCodes];
   final String? message;
 
   bool get hasQuotes => quotes.isNotEmpty;
@@ -44,6 +47,7 @@ class ConvertState {
     String? base,
     String? amountText,
     List<String>? selectedCodes,
+    List<String>? currencyCodes,
     String? message,
   }) {
     return ConvertState(
@@ -54,6 +58,7 @@ class ConvertState {
       base: base ?? this.base,
       amountText: amountText ?? this.amountText,
       selectedCodes: selectedCodes ?? this.selectedCodes,
+      currencyCodes: currencyCodes ?? this.currencyCodes,
       message: message,
     );
   }

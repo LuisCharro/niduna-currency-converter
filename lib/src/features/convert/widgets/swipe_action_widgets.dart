@@ -56,12 +56,10 @@ class SwipeActionsRail extends StatelessWidget {
           children: <Widget>[
             SwipeActionButton(
               actionKey: Key('remove_$code'),
-              icon: Icons.remove_circle_rounded,
-              backgroundColor: const Color(0xFFF7E3DC),
-              iconBadgeColor: const Color(0xFFEBC0B3),
+              icon: Icons.delete_outline_rounded,
+              backgroundColor: colors.coralSurface,
               color: colors.coralInk,
               label: loc.removeCurrencyLabel,
-              shortLabel: loc.btnRemove,
               progress: _motionProgress(hideProgress),
               onTap: onRemove,
             ),
@@ -70,24 +68,20 @@ class SwipeActionsRail extends StatelessWidget {
               icon: isFavorite
                   ? Icons.star_rounded
                   : Icons.star_outline_rounded,
-              backgroundColor: colors.containerHigh,
-              iconBadgeColor: colors.greenBadge,
-              color: colors.primary,
-              label: loc.toggleFavoriteLabel,
-              shortLabel: isFavorite
-                  ? loc.favoriteActionSaved
-                  : loc.favoriteActionPin,
+              backgroundColor: colors.greenBadge,
+              color: colors.greenBadgeText,
+              label: isFavorite
+                  ? loc.removeFavoriteTooltip
+                  : loc.labelAddFavorite,
               progress: _motionProgress(baseProgress),
               onTap: onFavorite,
             ),
             SwipeActionButton(
               actionKey: Key('swap_$code'),
-              icon: Icons.currency_exchange_rounded,
-              backgroundColor: const Color(0xFF2E6940),
-              iconBadgeColor: const Color(0xFF447E55),
-              color: colors.card,
-              label: loc.setAsBaseLabel,
-              shortLabel: 'Base',
+              icon: Icons.swap_horiz_rounded,
+              backgroundColor: colors.greenBadge,
+              color: colors.greenBadgeText,
+              label: loc.convertFromCurrency(code),
               progress: _motionProgress(baseProgress),
               onTap: onSwap,
             ),

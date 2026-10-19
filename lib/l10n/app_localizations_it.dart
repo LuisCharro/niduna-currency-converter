@@ -492,4 +492,50 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get favoritesFirstPairPreview => 'La tua prima coppia appare qui';
+
+  @override
+  String get convertFromTitle => 'Converti da';
+
+  @override
+  String get savedCurrenciesSubtitle => 'Scegli una valuta dal tuo elenco';
+
+  @override
+  String get addAnotherCurrency => 'Aggiungi un’altra valuta…';
+
+  @override
+  String convertFromCurrency(String code) {
+    return 'Converti da $code';
+  }
+
+  @override
+  String get btnUndo => 'Annulla';
+
+  @override
+  String get convertSwipeActionsExplanation =>
+      'Cambia valuta base, salva un preferito o rimuovi.';
+
+  @override
+  String get favoritesSwipeHint =>
+      'Scorri a sinistra per rimuovere una coppia salvata.';
+
+  @override
+  String currencyRemoved(String code) {
+    return '$code rimossa dal tuo elenco';
+  }
+
+  @override
+  String get expandChartTooltip => 'Visualizza in orizzontale';
+
+  @override
+  String get collapseChartTooltip => 'Torna in verticale';
+
+  @override
+  String get chartAdLoading => 'Caricamento annuncio…';
+
+  @override
+  String get chartAdUnavailable => 'Annuncio non disponibile';
+
+  @override
+  String get chartAdInstructions =>
+      'Segui le istruzioni dell’annuncio per ottenere il premio';
 }

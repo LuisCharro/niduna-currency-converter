@@ -46,6 +46,7 @@ class ConvertController extends ChangeNotifier {
   List<String> _selectedCodes = List<String>.from(
     AppPreferences.defaultSelectedCodes,
   );
+  List<String> _currencyCodes = [];
   LatestRatesSnapshot? _snapshot;
   int _decimalPlaces = 2;
 
@@ -62,6 +63,7 @@ class ConvertController extends ChangeNotifier {
   }
 
   bool _disposed = false;
+  int _baseRevision = 0;
 
   void configure({
     required String base,
@@ -71,13 +73,20 @@ class ConvertController extends ChangeNotifier {
     _base = base;
     _amount = amount;
     _amountText = amount.toStringAsFixed(2);
-    _selectedCodes = List<String>.from(
-      selectedCodes ?? AppPreferences.defaultSelectedCodes,
-    )..remove(base);
+    _currencyCodes = List<String>.from(
+      _preferences?.savedCurrencyCodes ??
+          <String>[
+            base,
+            ...selectedCodes ?? AppPreferences.defaultSelectedCodes,
+          ],
+    );
+    if (!_currencyCodes.contains(base)) _currencyCodes.insert(0, base);
+    _selectedCodes = _currencyCodes.where((code) => code != base).toList();
     state = ConvertState.loading().copyWith(
       base: _base,
       amountText: _amountText,
       selectedCodes: _selectedCodes,
+      currencyCodes: List.unmodifiable(_currencyCodes),
     );
   }
 
@@ -123,15 +132,14 @@ class ConvertController extends ChangeNotifier {
       await setBase(pair.base);
     }
     if (!_selectedCodes.contains(pair.quote)) {
-      _selectedCodes = <String>[
-        pair.quote,
-        ..._selectedCodes.where(
-          (code) => code != pair.base && code != pair.quote,
-        ),
-      ];
-      _preferences?.setSelectedCodes(_selectedCodes);
+      _currencyCodes.add(pair.quote);
+      _selectedCodes = _currencyCodes.where((code) => code != _base).toList();
+      await _preferences?.saveConvertSelection(_base, _currencyCodes);
       state = _snapshot == null
-          ? state.copyWith(selectedCodes: _selectedCodes)
+          ? state.copyWith(
+              selectedCodes: _selectedCodes,
+              currencyCodes: List.unmodifiable(_currencyCodes),
+            )
           : _stateFromSnapshot(_snapshot!, state.status);
       _safeNotify();
     }
@@ -168,6 +176,7 @@ class ConvertController extends ChangeNotifier {
       base: _base,
       amountText: _amountText,
       selectedCodes: List<String>.unmodifiable(_selectedCodes),
+      currencyCodes: List<String>.unmodifiable(_currencyCodes),
     );
   }
 
