@@ -98,6 +98,23 @@ document owns only Currency Converter facts and commands.
   source/privacy adequacy findings still need review before the separately
   authorized Production promotion. Website S2 activation follows public availability.
 
+## Closed submission — 2026-10-20, build 11
+
+- Luis explicitly authorized uploading **1.0.0 (11)** to Closed Alpha (`alpha`).
+  `upload-closed` succeeded on the first attempt; Play and local SHA-256 match
+  and a fresh API read shows `alpha` = `1.0.0 (11)` `completed`. API completed
+  is not availability: check Console Publishing overview/review state.
+- Change vs code 10: Sources page copy only (provider names, no provenance
+  claim) plus refreshed tests. Source `e7caca6`; tests (476) and analyze passed.
+- Signed AAB: `.tmp/play-candidate/20261020-build11b/artifacts/app-release.aab`
+  (54,682,875 bytes), SHA-256
+  `c39022153281a229e0faa0bc73fd786c3393967a99f6e22a78396bc892c5a98c`.
+  release_safe, dev mode false, production AdMob IDs, test ads false; manifest
+  code 11 non-debuggable; upload certificate identical to code 10.
+- Store screenshots were not captured (emulator /data full); listing unchanged.
+- Code 11 needs owner phone acceptance before Production promotion; code 10's
+  acceptance does not transfer. Receipts: plan/upload/status JSON in that dir.
+
 ## Original Closed submission — 2026-10-19, build 10
 
 - Luis authorized submitting **1.0.0 (10)** to Closed Alpha (`alpha`) as the

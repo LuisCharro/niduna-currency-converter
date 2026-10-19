@@ -85,7 +85,8 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+11` (local, 2026-10-20: Sources-page copy only; not built or uploaded).
+- Current `pubspec.yaml`: `1.0.0+11` (2026-10-20: Sources-page copy only), uploaded to
+  Closed Alpha with Luis's approval; needs owner phone acceptance. See runbook.
   `1.0.0+10` is available in Closed Alpha and manually accepted by Luis.
   Internal remains 7; Production promotion is separate.
 - Code 10 is already used. Any changed binary needs a new unused higher code.
