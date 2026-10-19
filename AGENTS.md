@@ -132,6 +132,10 @@ Then read only the relevant shared skill and repo-local guide for the task.
 - `store-release-check/SKILL.md` — store compliance and release
 - `icon-generation/SKILL.md` — currency-flag icon generation with mmx CLI; general mmx reference is the shared skill `mobile/minimax-cli.SKILL.md`
 
+### Store integrations (`stores/`)
+- `stores/google-play/SKILL.md` — Google Play Console/API workflow, access
+  boundaries, current CLI commands and release stop conditions
+
 ### Knowledge base (`.agent/`)
 - `ICON_GENERATION_KNOWLEDGE.md` — live findings from icon gen work: audit scores, winning prompts, per-currency tips, vision tool comparison, quota tracking
 

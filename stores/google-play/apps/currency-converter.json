@@ -1,0 +1,24 @@
+{
+  "name": "Currency Converter Honest Fern",
+  "packageName": "com.honestfern.currency_converter",
+  "consoleAppId": "4973875544480645622",
+  "developerAccountId": "6219086036817053258",
+  "defaultLocale": "en-GB",
+  "tracks": {
+    "internal": {
+      "consoleLabel": "Internal testing",
+      "apiKey": "internal"
+    },
+    "closed": {
+      "consoleLabel": "Closed testing - Alpha",
+      "apiKey": null,
+      "resolveFromApi": true
+    },
+    "production": {
+      "consoleLabel": "Production",
+      "apiKey": "production"
+    }
+  },
+  "versionSource": "pubspec.yaml",
+  "runbook": "docs/release-prep/google-play-publishing-runbook.md"
+}
