@@ -5,16 +5,32 @@ complement this repository's app-scoped workflow. Recheck upstream docs before
 adopting a tool because command flags, API coverage and project maintenance can
 change.
 
+## 2026-10-19 update
+
+The local `google_play.py` adapter now has an `upload-closed` operation for a
+reviewed AAB. It is limited to the configured Closed Alpha API track, checks
+the version code against `pubspec.yaml` and current Play tracks, uses one edit
+transaction, and reports transfer progress and the AAB SHA-256. A fresh API
+read after the first use confirmed `1.0.0 (8)` on Alpha. This kept the upload
+workflow dependency-light and within the existing app-scoped service account;
+Fastlane, `gpd` and GitHub Actions remain unevaluated for actual uploads.
+
+Candidate preparation also now checks emulator `/data` space before running
+tests and builds. The first attempt had to switch to an emulator with more free
+space, so the preflight surfaces that issue before spending time on the build.
+
 ## Recommendation for this repository
 
-Keep the current small Python CLI for read-only track status and access checks,
-and keep candidate creation in `.devtools/prepare_play_candidate.sh`. They fit
-the current workflow, preserve the existing app-scoped credential boundary and
-make no release decisions.
+Keep the small Python CLI for track status, access checks and the narrow
+Closed Alpha upload. Keep candidate creation in
+`.devtools/prepare_play_candidate.sh`. These fit the current workflow and
+preserve the existing app-scoped credential boundary. The upload command is a
+track operation and still requires Luis's explicit instruction naming the
+artifact and Closed target; it does not decide whether or when to release.
 
-If we later want a standard upload/promotion wrapper, evaluate **Fastlane
-Supply** first. It is a mature, well-documented option for AAB uploads, tracks,
-metadata and screenshots. Configure any lane explicitly to skip metadata,
+If we later want broader release, promotion or listing automation, evaluate
+**Fastlane Supply** first. It is a mature, well-documented option for AAB
+uploads, tracks, metadata and screenshots. Configure any lane explicitly to skip metadata,
 images and screenshots unless those exact changes are part of the reviewed
 release; Fastlane documents that its screenshot uploads replace the current
 listing screenshots. Its API calls use the same Play access and therefore do

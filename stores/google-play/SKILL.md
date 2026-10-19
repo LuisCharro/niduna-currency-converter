@@ -32,9 +32,12 @@ mean a release exists or is public. Confirm the track state and dashboard.
 3. Prepare the candidate on clean `main` with
    `EXPECTED_VERSION_CODE=<unused-code> ./.devtools/prepare_play_candidate.sh`.
    Review its local APK/AAB, screenshots and checksums before upload. This
-   helper never changes Play Console state.
-4. Before any upload or edit commit, obtain Luis's explicit instruction naming
-   the artifact and target track. API credentials alone are not release approval.
+   helper never changes Play Console state. It checks emulator free space
+   before running the longer verification and build steps.
+4. Before any upload, obtain Luis's explicit instruction naming the artifact
+   and target track. API credentials alone are not release approval. For an
+   authorized Closed Alpha upload, use `upload-closed`; the command requires
+   the exact AAB, version code and release name and cannot target Production.
 5. After an authorized upload, verify the committed track in a fresh API read
    and compare package, version code, status and artifact checksum with the
    approved candidate.
@@ -71,11 +74,13 @@ mean a release exists or is public. Confirm the track state and dashboard.
   no-charge Billing. Follow the app runbook for account, cohort and country
   checks.
 
-The initial CLI supports only `status` and `verify-access`. Both create a
-temporary empty API edit to read the app-scoped resource and delete it in a
-`finally` path. They must not upload artifacts, change tracks, tester lists,
-listings, declarations, or review state. Stop if cleanup fails or the API
-returns ambiguous state; inspect the Console before retrying.
+`status` and `verify-access` create a temporary empty API edit to read the
+app-scoped resource and delete it in a `finally` path. `upload-closed` makes a
+single authorized AAB upload and track update transaction, resolving the
+Closed Alpha API track from a fresh track list and rejecting version codes
+already present on any track. It does not change tester lists, listings,
+declarations or review state. Stop if cleanup fails or the API returns
+ambiguous state; inspect fresh track state before retrying.
 
 ## Credentials and scope
 

@@ -8,7 +8,7 @@ For the reusable portfolio-wide model, read
 when this repository is checked out inside the Honest Fern monorepo. This
 document owns only Currency Converter facts and commands.
 
-**Last verified:** 2026-09-30
+**Last verified:** 2026-10-19
 
 **Package:** `com.honestfern.currency_converter`
 
@@ -17,7 +17,25 @@ document owns only Currency Converter facts and commands.
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
 
-## Current release state — 2026-09-30
+## Current release state — 2026-10-19
+
+Closed Alpha serves `1.0.0 (8)` with API status `completed`; Internal remains
+`1.0.0 (7)`. A fresh Publisher API read confirmed Production is empty. The
+Closed Alpha AAB was built from source commit `e5df688` and uploaded on
+2026-10-19. SHA-256:
+`ed492e6efcf32b7c0c7fb2ec983434a9bb8911a4a29a1d80315a66c0b1c11a87`.
+The app version name remains `1.0.0`; its Android version code is `8`. This
+Closed testing upload is not a Production release.
+
+The machine-readable app map resolves Closed Alpha to the Publisher API track
+`alpha` (Console track ID `4700576461420899940`). The new
+`stores/google-play/scripts/google_play.py upload-closed` command creates one
+edit, checks the code is unused, uploads the supplied signed AAB, updates only
+Closed Alpha, commits, and prints the AAB checksum. Always run `status` in a
+fresh edit after an upload; do not retry an ambiguous upload until the live
+track has been checked.
+
+Historical 2026-09-30 release details follow.
 
 Closed Alpha and Internal serve `1.0.0 (7)`, built from `c21561d` with version
 bump `71f1d1a`. AAB SHA-256:
@@ -143,10 +161,11 @@ build number (`1.0.0+7`, then `+8`, etc.). Play orders Android releases by
 `versionCode`; reusing a code is rejected. Promote the exact tested AAB between
 tracks instead of rebuilding it.
 
-As of 2026-10-14, code 8 is a local development candidate, tested as a release
-APK on the emulator. Console's latest uploaded bundle and both test tracks
-remain code 7. Committing or pushing the branch does not upload or publish a
-Play release; a signed AAB and explicit release authorization are still needed.
+Historical checkpoint (2026-10-14): code 8 was a local development candidate,
+tested as a release APK on the emulator, while both test tracks remained at
+code 7. This was superseded by the Closed Alpha upload recorded above.
+Committing or pushing a branch does not upload or publish a Play release; a
+signed AAB and explicit release authorization are still required.
 
 An API upload should use the signed artifact produced by:
 

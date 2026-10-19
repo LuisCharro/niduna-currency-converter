@@ -1,6 +1,19 @@
 # Release Checklist — Path to Google Play Store
 
-## Development checkpoint — 2026-10-14
+## Release checkpoint — 2026-10-19
+
+- Version `1.0.0+8` is uploaded to Closed testing → Alpha. The API reports
+  release `1.0.0 (8)` with status `completed`; fresh status read confirms
+  Internal remains at `1.0.0 (7)` and Production is empty.
+- Candidate source commit: `e5df688`. AAB SHA-256:
+  `ed492e6efcf32b7c0c7fb2ec983434a9bb8911a4a29a1d80315a66c0b1c11a87`.
+- Production access was granted by Google, but no Production release has been
+  created. Continue closed-track testing and app polishing before deciding on
+  a Production candidate.
+- The 2026-10-14 development checkpoint below is historical; code 8 is no
+  longer only a local candidate.
+
+## Historical development checkpoint — 2026-10-14
 
 - Local candidate `1.0.0+8` on `codex/convert-currency-selection` preserves the
   Convert collection and last base, limits the top picker to saved currencies,

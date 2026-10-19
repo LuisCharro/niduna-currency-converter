@@ -12,12 +12,30 @@ without moving the app repository or its release checklist.
 - `scripts/google_play.py verify-access` checks service-account access using
   the same create/delete verification edit without uploading or changing a
   track.
+- `scripts/google_play.py upload-closed` uploads one signed AAB to the
+  configured Closed Alpha track in a single edit transaction. It requires an
+  explicit artifact, release name and version code, checks `pubspec.yaml`,
+  checks that the code is unused on every Play track, and prints the artifact
+  SHA-256. It cannot target Internal or Production.
 - Candidate preparation remains app-owned: `.devtools/prepare_play_candidate.sh`
   runs checks, creates local APK/AAB artifacts and store screenshots, and
   writes them under `.tmp/play-candidate/`. It does not upload anything.
-- Upload, track mutation, review submission and Production release are not
-  implemented by this first slice. Use the app publishing runbook for the
-  existing controlled release procedure.
+- Internal promotion, listing changes, review submission and Production
+  release are not implemented by this adapter. Use the app publishing runbook
+  for those controlled steps.
+
+Example, after reviewing a candidate and explicitly authorizing its upload:
+
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/app-scoped-key.json \
+  python3 stores/google-play/scripts/google_play.py upload-closed \
+  --aab .tmp/play-candidate/<candidate>/artifacts/app-release.aab \
+  --version-code 8 --release-name '1.0.0 (8)'
+```
+
+After an upload, run `status` again in a fresh API edit and confirm the
+`alpha` release code, name and status. If upload or commit reports an error,
+inspect fresh track state before retrying.
 
 ## Which surface to use
 

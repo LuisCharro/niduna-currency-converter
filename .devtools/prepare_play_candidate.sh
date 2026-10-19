@@ -14,11 +14,15 @@ provider_profile="${PROVIDER_PROFILE:-release_safe}"
 expected_version_code="${EXPECTED_VERSION_CODE:-}"
 require_main="${REQUIRE_MAIN:-1}"
 release_admob_use_test_ads="${ADMOB_USE_TEST_ADS:-false}"
+min_data_free_kib="${PLAY_PREP_MIN_DATA_FREE_KIB:-1500000}"
 
 fail() {
   echo "prepare_play_candidate: $*" >&2
   exit 1
 }
+
+[[ "${min_data_free_kib}" =~ ^[0-9]+$ ]] || \
+  fail "PLAY_PREP_MIN_DATA_FREE_KIB must be an integer"
 
 if [[ "${require_main}" == "1" ]]; then
   current_branch="$(git -C "${repo_root}" branch --show-current)"
@@ -43,6 +47,12 @@ screen_size="$("${adb_bin}" -s "${android_serial}" shell wm size | tr -d '\r')"
 [[ "${screen_size}" == *"1080x2400"* ]] || \
   fail "expected the large 1080x2400 emulator, got: ${screen_size}"
 
+data_free_kib="$("${adb_bin}" -s "${android_serial}" shell df -k /data | tr -d '\r' | awk 'NR == 2 {print $4}')"
+[[ "${data_free_kib}" =~ ^[0-9]+$ ]] || \
+  fail "could not read free /data space from ${android_serial}"
+(( data_free_kib >= min_data_free_kib )) || \
+  fail "emulator has ${data_free_kib} KiB free on /data; need at least ${min_data_free_kib} KiB (override with PLAY_PREP_MIN_DATA_FREE_KIB)"
+
 mkdir -p "${output_root}/artifacts" "${output_root}/screenshots"
 
 echo "=== Source ==="
@@ -50,6 +60,7 @@ git -C "${repo_root}" rev-parse --short HEAD
 git -C "${repo_root}" log -1 --format='%s'
 echo "=== Target ==="
 echo "${android_serial} (${screen_size})"
+echo "Free /data: ${data_free_kib} KiB"
 echo "=== Verification ==="
 (cd "${repo_root}" && ./scripts/check.sh)
 

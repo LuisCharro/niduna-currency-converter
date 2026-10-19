@@ -162,25 +162,27 @@ EXPECTED_VERSION_CODE=3 \
   ./.devtools/prepare_play_candidate.sh
 ```
 
-The wrapper checks the repository and the large `emulator-5554` target, runs
-`./scripts/check.sh`, builds release APK and AAB artifacts with
+The wrapper checks the repository, target resolution, 1080×2400 display and
+free `/data` space on the selected emulator before running expensive checks.
+It requires 1.5 GB free by default; override `PLAY_PREP_MIN_DATA_FREE_KIB` only
+when the constrained device is intentional. It then runs `./scripts/check.sh`,
+builds release APK and AAB artifacts with
 `release_safe`/`APP_DEV_MODE=false`, and runs the store screenshot gallery in
 light and dark mode. The gallery seeds paid entitlements, so its screenshots
 contain no ads or upgrade prompts; this does not change the release AAB's ad
 configuration.
 
-By default it requires the release AdMob environment variables used by
+`ANDROID_SERIAL` defaults to `emulator-5554`. It requires the release AdMob environment variables used by
 `scripts/build_appbundle.sh` and writes to a timestamped directory under
 `.tmp/play-candidate/`. Override `PLAY_PREP_OUTPUT_DIR` for a fixed location
 and `ANDROID_SERIAL` only when a different 1080×2400 target is intentionally
 selected. The wrapper never bumps the version, uploads to Play, overwrites
 `docs/release-prep/screenshots/`, or changes Play Console state.
 
-The current Internal testing release is `1.0.0+4` (`versionCode 4`), including
-the late UMP/AdMob consent fix. Promote that same tested artifact to Closed
-testing and later Production. Do not rebuild an identical binary only to
-change its version name after testing; use `1.0.0+5` or higher only for a real
-follow-up fix.
+As of 2026-10-19, Closed Alpha serves `1.0.0+8`, Internal serves `1.0.0+7`,
+and Production has no release. See `RELEASE_CHECKLIST.md` and the Google Play
+runbook for current release gates. Promote the exact tested artifact between
+tracks instead of rebuilding it.
 
 ## Google Play update workflow
 
