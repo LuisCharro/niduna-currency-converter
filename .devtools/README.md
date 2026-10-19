@@ -172,14 +172,15 @@ light and dark mode. The gallery seeds paid entitlements, so its screenshots
 contain no ads or upgrade prompts; this does not change the release AAB's ad
 configuration.
 
-`ANDROID_SERIAL` defaults to `emulator-5554`. It requires the release AdMob environment variables used by
+`ANDROID_SERIAL` defaults to a detected booted device (preferring an emulator). It requires the release AdMob environment variables used by
 `scripts/build_appbundle.sh` and writes to a timestamped directory under
 `.tmp/play-candidate/`. Override `PLAY_PREP_OUTPUT_DIR` for a fixed location
 and `ANDROID_SERIAL` only when a different 1080×2400 target is intentionally
 selected. The wrapper never bumps the version, uploads to Play, overwrites
 `docs/release-prep/screenshots/`, or changes Play Console state.
 
-As of 2026-10-19, Closed Alpha serves `1.0.0+8`, Internal serves `1.0.0+7`,
+As of 2026-10-19, Closed Alpha has uploaded `1.0.0+8` **in review**;
+API `completed` does not establish availability. Internal serves `1.0.0+7`,
 and Production has no release. See `RELEASE_CHECKLIST.md` and the Google Play
 runbook for current release gates. Promote the exact tested artifact between
 tracks instead of rebuilding it.
@@ -370,3 +371,26 @@ Use this when you need to discover or pick a target before running `android_rein
 - `.tmp/` is intended for temporary local artifacts like captured screenshots (gitignored).
 - When you need more coverage, extend your integration_test screenshot gallery or add a new focused reference-gallery test.
 - For nested menus and long sections, prefer a focused reference-gallery test over one generic capture.
+
+## Emulator launch diagnostics and repeatable store exports
+
+`android_launch.sh` checks the focused window, rejects ANR/error dialogs and
+exits nonzero if the app cannot be confirmed. Failure invokes
+`android_diagnose.sh`, which records the last ANR, event timestamps, window
+focus, CPU/memory pressure and screenshot under `.tmp/android-diagnostics/`.
+It never dismisses dialogs or clears data. A historical last-ANR record is not
+proof of a new failure; compare its timestamp and process name.
+
+`capture_store_screens.sh` seeds the app's light/dark preference directly. It
+no longer changes global Android night mode, avoiding unnecessary launcher
+configuration changes. The detected device serial is passed to both child
+captures. The Charts shot asserts that `charts_expand` is present.
+
+```bash
+ANDROID_SERIAL=<device> ./.devtools/android_diagnose.sh
+./.devtools/google_play.sh screenshots --source .tmp/<capture-root> --output .tmp/<upload-gallery>
+```
+
+The exporter preserves all app pixels and pads to 9:16. Review its contact
+sheet and manifest before replacing Play assets. See the publishing runbook
+for the 2026-10-19 Pixel Launcher ANR evidence and gallery handoff.

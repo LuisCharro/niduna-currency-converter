@@ -85,3 +85,32 @@ dependencies.
 See [`SKILL.md`](SKILL.md) for the operating workflow and stop conditions.
 See [`TOOLING.md`](TOOLING.md) for the reviewed external automation options and
 the current recommendation before adding another Play dependency.
+
+## Reliability and local gallery commands
+
+All authenticated commands acquire a nonblocking per-package lock shared by
+this OS user across checkouts. This prevents a simultaneous `status` or
+`plan-closed` from invalidating an upload's edit. It cannot protect against
+Console edits, another user or another host. Serialize those manually.
+Google's [edits documentation](https://developers.google.com/android-publisher/edits)
+explains the one-open-edit rule and invalidation behavior.
+
+`upload-closed` verifies the committed track automatically, returns JSON-safe
+artifact paths, and distinguishes definite HTTP rejections from ambiguous
+commit responses. A post-commit verification failure explicitly warns not to
+re-upload. Neither `verifiedTrack` nor API status `completed` establishes
+Google review approval or download availability; check Publishing overview.
+
+Help works before setup or credentials. Screenshot export is local and needs
+Pillow, installed by `setup` (rerun setup after requirements change):
+
+```bash
+./.devtools/google_play.sh --help
+./.devtools/google_play.sh screenshots --source .tmp/<capture-root> --output .tmp/<upload-gallery>
+.tmp/google-play-venv/bin/python -m unittest discover -s stores/google-play/tests -v
+```
+
+The exporter validates six 1080×2400 light/dark captures, adds side margins
+without rescaling app pixels, and writes six 1350×2400 PNGs, SHA-256 manifest
+and `preview.jpg`. Upload only the six PNGs. See the runbook for native Chrome
+file-picker fallback and the canonical gallery.

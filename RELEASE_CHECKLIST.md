@@ -5,6 +5,11 @@
 - Version `1.0.0+8` is uploaded to Closed testing → Alpha. The API reports
   release `1.0.0 (8)` with status `completed`; fresh status read confirms
   Internal remains at `1.0.0 (7)` and Production is empty.
+  Console Publishing overview shows code 8 **in review**; last publication was
+  2026-09-30 (code 7). API `completed` is not proof of tester availability.
+- Six current-main portrait screenshots were saved to the en-GB listing on
+  2026-10-19, with the Charts expand button visible. See the runbook for
+  their current submission state and the versioned screenshot manifest.
 - Candidate source commit: `e5df688`. AAB SHA-256:
   `ed492e6efcf32b7c0c7fb2ec983434a9bb8911a4a29a1d80315a66c0b1c11a87`.
 - Production access was granted by Google, but no Production release has been

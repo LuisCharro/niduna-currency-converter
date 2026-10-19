@@ -4,7 +4,23 @@
 > This is a bounded execution plan; `RELEASE_CHECKLIST.md` remains the master
 > checklist.
 
-## Current gates
+## Current next steps — 2026-10-19
+
+1. Code 8 is uploaded to Closed Alpha and **in review** in Console. Internal
+   remains 7; last published Closed is 7. Wait for approval and verify an actual
+   Play update before reporting availability. Do not re-upload the same code.
+2. Six new portrait screenshots are saved in the en-GB default listing under
+   Changes not yet submitted for review. Console warns that sending them now
+   cancels/restarts the code 8 review. Leave them saved until that review ends,
+   unless Luis explicitly chooses the restart.
+3. Luis confirmed successful license-tester purchases. Production access is
+   granted. Public release, exact artifact acceptance and production ad QA
+   remain separate decisions; Production currently has no release.
+4. Use the current runbook and `stores/google-play/SKILL.md`. Serialize API
+   operations; status/preflight also open edits. Changes to the binary now
+   require an unused code higher than 8.
+
+## Historical current gates — 2026-09-30
 
 `RELEASE_CHECKLIST.md` and the publishing runbook hold the dated evidence,
 artifact identity, links and private-list counts. As of 2026-09-30, Internal
@@ -19,7 +35,7 @@ no successful no-charge Billing test on that account has been verified.
 
 ## Execution order
 
-### 0. Current next steps through the public launch
+### 0. Historical next steps — 2026-09-30
 
 1. **Pending device verification:** confirm the licence-test account in the
    purchase dialog and test notice/test card before confirming. Troubleshoot

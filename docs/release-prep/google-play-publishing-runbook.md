@@ -19,7 +19,9 @@ document owns only Currency Converter facts and commands.
 
 ## Current release state — 2026-10-19
 
-Closed Alpha serves `1.0.0 (8)` with API status `completed`; Internal remains
+Closed Alpha has uploaded `1.0.0 (8)` with API status `completed`; Console
+Publishing overview shows **in review**, last published 2026-09-30 (code 7).
+Do not announce tester availability until Console confirms publication. Internal remains
 `1.0.0 (7)`. A fresh Publisher API read confirmed Production is empty. The
 Closed Alpha AAB was built from source commit `e5df688` and uploaded on
 2026-10-19. SHA-256:
@@ -34,10 +36,60 @@ The machine-readable app map resolves Closed Alpha to the Publisher API track
 bundles and releases, uploads the supplied signed AAB, compares the API's
 SHA-256 with the local file, validates the edit, updates only Closed Alpha and
 commits. It uses `ERROR_IF_IN_REVIEW` so a pending review cannot be cancelled
-implicitly. Always run `status` in a fresh edit after an upload; do not retry
+implicitly. The upload command automatically verifies the track in a fresh edit; do not retry
 an ambiguous upload until the live track has been checked. The commit can
 still place changes into Play's review/publishing process; check Console before
 telling testers an update is available.
+
+### Updated listing gallery — 2026-10-19
+
+Six fresh screenshots from current main were captured in light/dark modes:
+Convert, portrait Charts (including the landscape/expand button), Favorites.
+Both gallery integration runs passed. Canonical selected images are
+`screenshots/{convert,chart,favorites}-{light,dark}.png`; exact upload filenames,
+SHA-256 hashes and order are in `screenshots/play-gallery-manifest.json`.
+Review `screenshots/play-gallery-preview.jpg`. Exported 1350×2400 copies preserve
+all 1080×2400 source pixels with 135-pixel side margins; no landscape shot.
+
+The six replacements are **saved**, in the existing en-GB default listing.
+Publishing overview shows one unsent change: **Change Phone screenshots**.
+Console explicitly warned that submitting it now would cancel and restart the
+code 8 review. That operation was cancelled: leave the saved screenshots ready
+until the current review completes, or obtain Luis's explicit restart decision.
+Icon, feature graphic, text, and the existing AI asset declaration were preserved.
+Do not claim the refreshed images are already public.
+
+For Chrome extension uploads, direct `filechooser.setFiles` may fail when
+file-URL access is disabled. Use the native macOS file picker instead: Upload,
+Cmd+Shift+G, enter the export folder, select only the six PNGs (exclude manifest
+and preview), Open. No extension permission expansion is needed. Remove the old
+six phone selections, select new files in manifest order, Add, Save as draft,
+Next, Save. Verify Publishing overview and stop before any review restart.
+
+### Emulator Wait/Close investigation — 2026-10-19
+
+The observed ANR belonged to `com.google.android.apps.nexuslauncher`
+(**Pixel Launcher**), timestamp 08:58:36, waiting 5120ms for a focus event.
+The incident trace showed substantial CPU, memory and I/O pressure; contention
+is a plausible contributing factor, not a proven app defect. No Currency
+Converter ANR was found. The old last-ANR entry persists after recovery and
+must not be interpreted as a fresh crash.
+
+Recovered the disposable Medium_Phone Android 36 emulator by restarting the
+launcher, restored the exact normal release APK, and removed screenshot-test
+seeded app state on that QA emulator. Subsequent launch succeeded on attempt 1;
+Currency Converter held focus and no new ANR appeared in the event log. The
+normal first-run UMP consent dialog is expected and is distinct from an ANR.
+
+Capture no longer toggles global Android night mode: app preferences already
+select light/dark. Launcher checks now reject ANR/error windows, return nonzero
+on unconfirmed launch, and collect `android_diagnose.sh` evidence. Do not hide
+failures by automatically tapping Wait. Run only necessary emulators and avoid
+concurrent build/capture runs under memory pressure.
+
+Local evidence (ignored): `.tmp/play-review-20261019/{anr,final-emulator}`,
+`capture.log`, `check.log`, and `console-screenshots-saved.png`. For future
+incidents, collect fresh diagnostics and compare process names and timestamps.
 
 Historical 2026-09-30 release details follow.
 

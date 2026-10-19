@@ -112,3 +112,22 @@ reliably complete. Verify every saved or submitted state in the Console.
 - App workflow: `docs/release-prep/google-play-publishing-runbook.md`
 - Workspace API model: `../../../../docs/platforms/google-play-developer-api.md`
 - External tooling review: `TOOLING.md`
+
+## Lessons from the 2026-10-19 tooling review
+
+- Serialize **every** authenticated API command, including reads: a new edit
+  invalidates the account's previous edit. The CLI lock protects this OS user
+  and package across checkouts, not Console, another user or another host.
+- Upload verifies its committed track automatically. `verifiedTrack` and
+  `completed` do not prove publication; inspect Console Publishing overview.
+- Use `google_play.sh screenshots --source <root> --output <gallery>` for
+  validated, pixel-preserving 9:16 upload copies and a SHA-256 manifest.
+- Chrome extension file uploads may require file-URL access. Prefer the native
+  macOS picker instead of broadening the extension's permissions. Upload the
+  six PNGs only, remove old phone selections, then select replacements in order.
+- Saved listing changes can remain **ready to send for review** while a binary
+  is in review. Never cancel the binary review merely to submit screenshots.
+- For an emulator Wait/Close dialog, collect `android_diagnose.sh` first;
+  identify the process and timestamp. Do not assume an app ANR or auto-dismiss
+  it. Screenshot tests seed premium state; restore a normal release install
+  on a disposable QA emulator before handing it back.

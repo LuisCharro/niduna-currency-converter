@@ -1,0 +1,64 @@
+{
+  "locale": "en-GB",
+  "imageType": "phoneScreenshots",
+  "images": [
+    {
+      "file": "01-light-convert.png",
+      "sourceSha256": "0c10860ca2fc147621632bf3827bfc9e8882ec4b7343d2dbf2c85a6846657374",
+      "sha256": "c21fdb15f198f9695a26bc73212102df9dad0727220701d55df410a30bc58ebc",
+      "width": 1350,
+      "height": 2400,
+      "sizeBytes": 222542,
+      "repositoryFile": "convert-light.png"
+    },
+    {
+      "file": "02-light-chart-btc.png",
+      "sourceSha256": "14b0a81e6090716d8a4152349796be8b0de1628a5f1c721194daab1df3441c7d",
+      "sha256": "627515340f43931445d4e3d0d7c676773e56b1b1b0c884ee67df826ca9d9216f",
+      "width": 1350,
+      "height": 2400,
+      "sizeBytes": 165945,
+      "repositoryFile": "chart-light.png"
+    },
+    {
+      "file": "03-light-favorites.png",
+      "sourceSha256": "34185f1b0cc491ab63225a6c0b566a91c8e4cccf0b16651e5afb692d719bb91e",
+      "sha256": "cc038f146d94718e031f98d98cd8cac18108a84ea718b77a701797926a3e4791",
+      "width": 1350,
+      "height": 2400,
+      "sizeBytes": 275037,
+      "repositoryFile": "favorites-light.png"
+    },
+    {
+      "file": "04-dark-convert.png",
+      "sourceSha256": "987248e33a6d975548cee7c640cd0200b6f9521a64d69d22bb3ea1cfb4493ed0",
+      "sha256": "4465b698c1cc588fda84872aa10816ce7cafed6f52c99e8022d35ace1e437385",
+      "width": 1350,
+      "height": 2400,
+      "sizeBytes": 214742,
+      "repositoryFile": "convert-dark.png"
+    },
+    {
+      "file": "05-dark-chart-btc.png",
+      "sourceSha256": "edc721030c1cf88e0005aeff14b453a32167d3e697dada88a8a96c9c50295beb",
+      "sha256": "6df6c1d5cbbdad763a078da5fdbe8c8dbee19b11539fc7b66ff1b2590089c9b8",
+      "width": 1350,
+      "height": 2400,
+      "sizeBytes": 155857,
+      "repositoryFile": "chart-dark.png"
+    },
+    {
+      "file": "06-dark-favorites.png",
+      "sourceSha256": "7296ef38c724c4365d3ad9ce8f3d1b21acad8bf4cdd89807c1a8aa984e1ba976",
+      "sha256": "177799574551bcd154950d6fc1cf986ada6e59ad90c9007a4b0f61d7d557c5d8",
+      "width": 1350,
+      "height": 2400,
+      "sizeBytes": 268849,
+      "repositoryFile": "favorites-dark.png"
+    }
+  ],
+  "captured": "2026-10-19",
+  "appVersion": "1.0.0+8",
+  "binarySourceCommit": "e5df688",
+  "consoleState": "Saved; ready to send for review; code 8 remains in review"
+}

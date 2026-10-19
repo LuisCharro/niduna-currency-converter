@@ -23,59 +23,31 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-09-30)
+## Current state (reviewed 2026-10-19)
 
-- `main` is canonical; recheck `HEAD` and worktree state before acting.
-- Start with `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-30**.
-  It supersedes old audit completion claims and historical instructions below.
-- For the executable next phase, use `.agent/release-next-steps.md`; it records
-  the current Play/API workflow, ownership and stop conditions.
-- A provider-coverage blocker was found after the `1.0.0+4` Internal build:
-  Frankfurter v1 history omits five advertised fiat currencies, and the
-  release-safe crypto feed now uses POL rather than MATIC. The local source
-  repair and independent review are complete in commit `26faed7`; read
-  `.agent/provider-coverage-remediation-plan-2026-09-12.md` before provider,
-  chart, catalog or next-candidate work.
-- For the concrete Play Publisher/API procedure and failure recovery, read
-  `docs/release-prep/google-play-publishing-runbook.md`.
-- When this checkout is inside the Honest Fern monorepo, read the portfolio
-  baseline first: `../../docs/platforms/google-play-developer-api.md`. Keep
-  package, artifact and track facts in this repository's runbook.
-- Internal and **Closed Alpha** now serve `1.0.0 (7)` from `c21561d`
-  (version bump `71f1d1a`). Closed shows Active / Available to selected testers
-  as of 2026-09-30, with Spain/Switzerland and the 20-email list selected.
-  Review submission is complete; do not recreate the release or setup tasks.
-- Read the master checkpoint and publishing runbook for actual opt-in links,
-  track identity, list selection and Billing-account troubleshooting. Do not
-  assume email-list membership means opt-in or free purchases.
-- Next: Luis plans emailing Closed invitations on 2026-10-01. Verify Dashboard
-  actual opt-ins/eligibility dates, gather feedback and maintain at least 12
-  continuously opted-in testers for 14 days before applying for access.
-- Only the separate one-account list is selected for Licence testing. The
-  work phone still showed real payment methods after saving; test Billing
-  remains unverified on that account. The 20-email cohort is not licence-enabled.
-- Six refreshed screenshots/listing and declarations were submitted and
-  published with Closed. Production access, production-ad acceptance and the
-  public Production release/site launch remain separate gates.
-- Re-run `./scripts/check.sh` after any source edit; a passing local check does
-  not establish Play Console setup or release readiness.
-- Real Billing is injected by AppShell. Keep the real service and active Play
-  products; do not replace them with the old stub.
-- B4/B8 release configuration and device/account acceptance remain release
-  gates even though the implementation is present.
-- E5/E5b are complete in AdMob as of 2026-09-10. The recorded Android App ID,
-  Banner/Rewarded IDs, publisher ID and published EEA/UK/CH message are in the
-  release checklist. E5c (`app-ads.txt`) and the B4/B8 code integration remain
-  open; production ad requests must be consent-gated.
-- B5 privacy link is implemented. Site is live, but policy/listing/assets need
-  the corrections in the checkpoint; site work is not only post-launch.
-- The current Play candidate gallery was visually inspected in light and dark
-  modes on the large Android target; continue to verify the exact Play-
-  distributed artifact during Closed testing.
-- Historical Gradle stall is not the current blocker: diagnostic release APK
-  and AAB built successfully on 2026-09-09. Final build follows the open gates.
-- Keep existing widget implementation and iOS work out of this Android release
-  task unless a concrete Android regression requires investigation.
+- `main` is canonical; recheck HEAD and working tree before acting.
+- Start with `RELEASE_CHECKLIST.md` **Release checkpoint — 2026-10-19**.
+  Older dated checkpoints describe history, not current open tasks.
+- Version `1.0.0+8` has been uploaded to Closed Alpha (`alpha`). The API
+  reports `completed`, but Console Publishing overview shows **in review**.
+  The last published Closed release is code 7 (2026-09-30). Internal remains
+  code 7. Production access is granted; Production has no release.
+- For exact artifact hashes, current screenshots, opt-in links, permissions
+  and recovery, read `docs/release-prep/google-play-publishing-runbook.md` and
+  `stores/google-play/SKILL.md`. In this workspace also read
+  `../../docs/platforms/google-play-developer-api.md`.
+- Serialize all Play API commands, including status/preflight: creating a new
+  edit can invalidate an upload edit. Do not edit Console during an API edit.
+- Billing license-tester purchases were accepted by Luis. Track enrollment
+  and license testing are distinct; the whole Closed cohort is not free-paid.
+- Six refreshed portrait screenshots from current main were saved to the
+  en-GB listing on 2026-10-19. Check Publishing overview for their submission
+  state; never cancel the code 8 review merely to submit screenshots.
+- `./scripts/check.sh` follows source edits. Exact Play-distributed artifact
+  acceptance, production ads, and Production publication remain separate gates.
+- Keep real Billing injected by AppShell and consent-gated advertising.
+- Keep widgets and iOS work outside this Android release task unless a concrete
+  regression requires investigation.
 
 ## Product identity
 
@@ -103,10 +75,9 @@ and chart-comparison status, see
 
 ## Versioning policy (first public release)
 
-- Current `pubspec.yaml`: `1.0.0+8`, the local follow-up candidate. It has not
-  been uploaded to Play. Play Internal and Closed Alpha still contain code 7
-  (verified 2026-10-14).
-- Code 7 is the highest uploaded code. New binaries need an unused higher code.
+- Current `pubspec.yaml`: `1.0.0+8`, uploaded to Closed Alpha and in review
+  as of 2026-10-19. Internal and the previously published Closed release are 7.
+- Code 8 is already used. Any changed binary needs a new unused higher code.
 - Keep the candidate's version name `1.0.0`; code 8 contains the Convert
   persistence, currency picker, portrait and swipe-action improvements.
 - Promote the tested `1.0.0` artifact to Production; do not rebuild an
