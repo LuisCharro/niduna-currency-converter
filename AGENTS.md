@@ -59,6 +59,12 @@ skills without changing this repo again.
 - Keep widgets and iOS work outside this Android release task unless a concrete
   regression requires investigation.
 
+## Release tooling backlog
+
+Before improving release scripts, read
+`docs/superpowers/plans/2026-10-20-release-tooling-friction-plan.md`: it
+records every friction of the build-11 release with exact fixes.
+
 ## Product identity
 
 This repo is a privacy-first Flutter currency converter for the Honest Fern portfolio.
