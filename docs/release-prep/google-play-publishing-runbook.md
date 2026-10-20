@@ -1,5 +1,38 @@
 # Google Play publishing runbook
 
+## Production 11 submitted — 2026-10-20
+
+Luis authorized sending the existing version **1.0.0 (11)** for public release
+in **EU27 + Switzerland**. The exact bundle SHA-256 and release notes were
+verified against `production-release-plan.json`; the API country set matched
+all 28 approved countries with no rest-of-world targeting. No rebuild/upload.
+
+The Console Send dialog closed twice without creating a submission: Publishing
+overview still listed two unsubmitted changes and submission history had no new
+entry. No policy rejection/error was displayed. A reload confirmed that state;
+the cause of that UI behavior is unknown. A temporary API read/validation edit
+was accepted and deleted. The authorized fallback then preserved the exact
+existing Production track body, validated and committed once with
+`changesInReviewBehavior=ERROR_IF_IN_REVIEW` and no automatic write retries.
+
+After the API commit, refreshed Console confirms **Changes in review** for
+exactly Production 11 / Start full rollout and Add 28 countries/regions. Quick
+checks finished; the Console history/details confirm **Submission 7**, source
+API, **In review**, submitted Oct 20, 2026, 11:31 am (Console displayed time). **Managed publishing is off**:
+Google approval may make the app public automatically. This is submission,
+not proof of approval or public availability. Do not resubmit or cancel review.
+
+Prices for the six non-euro EU markets were applied and independently verified
+before submission. Reviewer-access declarations were not altered or falsely
+attested; Google may request corrections during review. Keep website Coming Soon
+until actual Production publication is verified, then perform website step S2.
+
+Evidence: ignored `.tmp/play-production-submission-20261020/` contains API
+validation/commit receipts, exact artifact/country reads and Console
+`in-review.txt` / `in-review.png` and `submission-7.txt` / `submission-7.png`.
+See the machine-readable release plan.
+Earlier saved/not-submitted checkpoints below are historical.
+
 ## Six EU local price update verified — 2026-10-20
 
 Luis approved the exact DK/SE/PL/CZ/HU/RO prices. The existing API script

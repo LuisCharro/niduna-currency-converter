@@ -1,5 +1,5 @@
 {
-  "status": "saved-for-review-not-submitted",
+  "status": "in-review",
   "preparedOn": "2026-10-20",
   "packageName": "com.honestfern.currency_converter",
   "targetTrack": "production",
@@ -42,15 +42,15 @@
     "SE",
     "CH"
   ],
-  "countryDecision": "Owner approved EU27 plus Switzerland, superseding ES/CH only; all 28 country rows saved to Publishing overview, not submitted/published.",
+  "countryDecision": "Owner approved EU27 plus Switzerland; exact 28-country set verified via API before submission.",
   "consoleValidation": {
     "errors": [],
     "previewStatus": "Ready to release",
-    "submissionRequested": false,
-    "quickChecks": "Running in Publishing overview at last observation"
+    "submissionRequested": true,
+    "quickChecks": "Completed; Publishing overview states changes are now in review. Submission 7 details confirm In review, source API."
   },
   "reviewerAccess": "Not changed; no full/free-access attestation. See reviewer-access-instructions.draft.md.",
-  "publication": "Not authorized or submitted. Managed publishing observed off on 2026-10-20; approval may publish automatically after a future authorized submission.",
+  "publication": "Owner authorized submission of Production 11 for EU27 plus Switzerland. Managed publishing confirmed off immediately before and after submission; Google approval may publish automatically. Not yet confirmed public.",
   "warning": "Planning record only; not an executable Publisher API payload.",
   "selectedCountries": [
     "AT",
@@ -82,10 +82,6 @@
     "SE",
     "CH"
   ],
-  "pendingChangeBatch": [
-    "Production 1.0.0 (11): Start full rollout",
-    "Countries/regions: Add 28 countries/regions (EU27 plus Switzerland)"
-  ],
   "countrySynchronization": "Open testing shares Production targeting; Console does not list Closed Alpha as affected.",
   "openReviewItems": [
     "Reviewer access to paid features is not established by the navigation draft; no false free-access attestation. Google may request corrections during Production review."
@@ -112,5 +108,14 @@
       "PM",
       "WF"
     ]
-  }
+  },
+  "submittedOn": "2026-10-20",
+  "submissionMethod": "Publisher API edit commit after two Console Send attempts left the batch unsubmitted; Console then confirmed Changes in review.",
+  "submittedChangeBatch": [
+    "Production 1.0.0 (11): Start full rollout",
+    "Countries/regions: Add 28 countries/regions (EU27 plus Switzerland)"
+  ],
+  "evidenceDirectory": ".tmp/play-production-submission-20261020/",
+  "submissionId": "7",
+  "consoleSubmittedAt": "Oct 20, 2026, 11:31 am (Console displayed time)"
 }

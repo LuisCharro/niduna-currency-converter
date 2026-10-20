@@ -105,3 +105,19 @@ saved a JSON status receipt identical to stdout; the temporary read edit was
 deleted. No test suite, new upload or Console write was performed for these
 follow-up changes. Upload-phase logging and upload-receipt saving will receive
 their first real upload exercise on the next explicitly authorized release.
+
+## Production submission fallback observed — 2026-10-20
+
+Two Console Send confirmations closed without sending the saved two-item batch.
+No visible Google rejection was shown; submission history and a reload still
+showed no new submission. Root cause is unknown; do not infer a policy block
+from this symptom or click Send repeatedly without reconciling live state.
+
+An explicitly authorized API fallback preserved the existing Production 11
+track body and 28-country targeting. It verified the accepted bundle hash,
+validated, and committed once using `ERROR_IF_IN_REVIEW` with no retries.
+Console then showed Changes in review. A commit receipt or API `completed`
+alone still does not prove review entry/publication: inspect Console.
+Evidence and details are in the app publishing runbook and ignored
+`.tmp/play-production-submission-20261020/`. No generic Production command was
+added, no upload was performed and no permissions were expanded.

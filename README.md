@@ -1,5 +1,18 @@
 # Currency Converter
 
+## Latest Production submission — 2026-10-20
+
+Production **1.0.0 (11)** and **EU27 + Switzerland** country additions were
+submitted with Luis's authorization. Refreshed Console confirms **Changes in
+review** after the API commit; **Submission 7**, source API, status In review
+(20 October, 11:31 am as displayed in Console). Quick checks finished.
+Managed publishing is **off**: approval may
+publish automatically. Public availability is not yet confirmed. Do not cancel
+or resubmit; inspect the app release plan/checklist for receipts and later status.
+Six non-euro EU markets now have the approved local prices, independently
+verified. Keep website Coming Soon until actual public availability is checked.
+Older prepared/not-submitted records below precede this submission.
+
 Privacy-first Flutter currency converter for the Honest Fern portfolio.
 
 **Android MVP release** | Android first, iOS later | No account, no first-party analytics, no backend.
