@@ -13,10 +13,36 @@
     "en-GB": "First public release of Currency Converter Honest Fern.\nConvert 45 currencies, view historical charts, save favorite pairs and use previously loaded rates offline. Optional one-time purchases remove ads or unlock additional features."
   },
   "proposedCountries": [
+    "AT",
+    "BE",
+    "BG",
+    "HR",
+    "CY",
+    "CZ",
+    "DK",
+    "EE",
+    "FI",
+    "FR",
+    "DE",
+    "GR",
+    "HU",
+    "IE",
+    "IT",
+    "LV",
+    "LT",
+    "LU",
+    "MT",
+    "NL",
+    "PL",
+    "PT",
+    "RO",
+    "SK",
+    "SI",
     "ES",
+    "SE",
     "CH"
   ],
-  "countryDecision": "Owner confirmed ES/CH only; saved to Publishing overview, not submitted/published.",
+  "countryDecision": "Owner approved EU27 plus Switzerland, superseding ES/CH only; all 28 country rows saved to Publishing overview, not submitted/published.",
   "consoleValidation": {
     "errors": [],
     "previewStatus": "Ready to release",
@@ -27,16 +53,64 @@
   "publication": "Not authorized or submitted. Managed publishing observed off on 2026-10-20; approval may publish automatically after a future authorized submission.",
   "warning": "Planning record only; not an executable Publisher API payload.",
   "selectedCountries": [
+    "AT",
+    "BE",
+    "BG",
+    "HR",
+    "CY",
+    "CZ",
+    "DK",
+    "EE",
+    "FI",
+    "FR",
+    "DE",
+    "GR",
+    "HU",
+    "IE",
+    "IT",
+    "LV",
+    "LT",
+    "LU",
+    "MT",
+    "NL",
+    "PL",
+    "PT",
+    "RO",
+    "SK",
+    "SI",
     "ES",
+    "SE",
     "CH"
   ],
   "pendingChangeBatch": [
     "Production 1.0.0 (11): Start full rollout",
-    "Countries/regions: Add Spain and Switzerland"
+    "Countries/regions: Add 28 countries/regions (EU27 plus Switzerland)"
   ],
   "countrySynchronization": "Open testing shares Production targeting; Console does not list Closed Alpha as affected.",
   "openReviewItems": [
-    "Reviewer access to paid features has not been established by the navigation draft.",
-    "Console EU geo-blocking notice: assess Google distribution guidance before submission. No expanded countries authorized."
-  ]
+    "Reviewer access to paid features is not established by the navigation draft; no false free-access attestation. Google may request corrections during Production review."
+  ],
+  "euDistributionReview": "eu-distribution-review-2026-10-20.md",
+  "consoleTerritoryGroups": {
+    "DK": [
+      "FO",
+      "GL"
+    ],
+    "FI": [
+      "AX"
+    ],
+    "FR": [
+      "GF",
+      "PF",
+      "GP",
+      "MQ",
+      "YT",
+      "NC",
+      "RE",
+      "BL",
+      "MF",
+      "PM",
+      "WF"
+    ]
+  }
 }

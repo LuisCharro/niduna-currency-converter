@@ -1,6 +1,34 @@
 # Release Checklist — Path to Google Play Store
 
-## Production countries confirmed and preparation saved — 2026-10-20
+## EU + Switzerland preparation saved — 2026-10-20
+
+This checkpoint supersedes the earlier ES/CH-only decision below. Luis explicitly
+approved preparing **all 27 EU countries plus Switzerland**. Console now saves
+exactly 28 country rows: AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, HU,
+IE, IT, LV, LT, LU, MT, NL, PL, PT, RO, SK, SI, ES, SE and CH.
+
+- Publishing overview confirms exactly **two changes not yet submitted for
+  review**: Production `1.0.0 (11)` / Start full rollout, and Add 28 countries/regions.
+- Open testing shares Production country targeting. Closed Alpha is not listed
+  as affected. No new binary, prices, listing or website deployment changed.
+- Managed publishing is **off**. A future authorized submission may make the
+  app public automatically after Google approves it. Nothing was submitted here.
+- The generic EU geo-blocking notice remains visible. EU-wide selection avoids
+  relying on an unconfirmed exception for this utility; it is not legal clearance.
+  Sources and Google territory groupings: [EU distribution review](docs/release-prep/eu-distribution-review-2026-10-20.md).
+- The track summary can say **Active**, `1.0.0 (11)` and 28 countries while the
+  batch is still unsubmitted. Use Publishing overview and actual public
+  availability to establish publication, not that summary or API `completed`.
+- Reviewer-access navigation remains a local draft; no false free-access
+  attestation was saved. Support did not pre-clear reviewer purchases. This
+  uncertainty is not a confirmed rejection or a reason to wait indefinitely
+  for another support reply; Google may request corrections during review.
+- Next: inspect the full pending batch and obtain the separate instruction to
+  submit Production. Do not create another release or change the accepted AAB.
+- Evidence: ignored `.tmp/play-production-draft-20261020/eu28-release-pending.png`
+  and `.txt`; country checkbox inspection confirmed exactly the 28 rows above.
+
+## Historical ES/CH preparation (superseded by EU + CH above) — 2026-10-20
 
 - Luis explicitly confirmed **Spain and Switzerland only**. Selected and saved
   exactly ES/CH in Production. Country change is saved for review, not yet
@@ -67,10 +95,10 @@ Details: `docs/release-prep/play-console-final-review-2026-10-20.md`.
 Guía para Luis: **configurar → promover la versión 11 → enviar a revisión →
 aprobación/publicación → activar el enlace en la web**.
 
-Luis confirmó España y Suiza y se guardó esa selección en Console, pendiente
-junto con la versión 11 de enviar a revisión. Falta resolver el acceso de
-revisores y comprobar el aviso europeo antes de publicar. Esta documentación
-no autoriza el envío a Producción.
+Luis confirmó después **UE (27 países) más Suiza** y esa selección está guardada
+junto con la versión 11, pendiente de enviar a revisión. La incertidumbre sobre
+el acceso de revisores queda documentada; Google puede pedir correcciones.
+Esta documentación no autoriza el envío a Producción.
 
 ### Qué significa el acceso a Producción ya concedido
 
@@ -81,11 +109,11 @@ en su Android físico. El artefacto exacto y su hash figuran más abajo.
 
 ### 1. Preparar el lanzamiento
 
-- [ ] Resolver el acceso gratuito de los revisores a las funciones de pago y
-  completar instrucciones exactas. Google no ofrece validación previa ni
-  confirmó compras sandbox para revisores. La revisión de Closed 11 ya terminó
-  favorablemente; no confundirla con una autorización separada de ese mecanismo.
-- [x] Confirmar con Luis **España y Suiza** y guardar su selección en Producción.
+- [ ] Revisar las instrucciones de acceso sin afirmar acceso gratuito no probado.
+  Google no confirmó compras sandbox ni ofrece validación previa. Conservar la
+  incertidumbre y atender cualquier petición de la revisión de Producción;
+  la aprobación de Closed 11 no valida por separado ese mecanismo.
+- [x] Confirmar con Luis **UE (27 países) más Suiza** y guardar su selección en Producción.
 - [ ] Comprobar en Console la ficha, fotos, Data safety, clasificación, precios,
   declaraciones e instrucciones de revisión, incluido el estado de los cambios
   de descripción/Data safety ya enviados. No volver a enviarlos a ciegas.
@@ -110,7 +138,7 @@ en su Android físico. El artefacto exacto y su hash figuran más abajo.
 ### 3. Cuando esté pública
 
 - [ ] Comprobar la ficha y la posibilidad de instalación pública sin ser tester
-  para cuentas de Google Play de España y Suiza.
+  para cuentas de Google Play de los mercados seleccionados (UE más Suiza).
 - [ ] Cambiar la web de **Coming soon** a **Disponible en Google Play** y añadir
   el botón/enlace de descarga, siguiendo el paso S2 del plan de la web y su
   flujo de despliegue separado. Verificar el resultado público.

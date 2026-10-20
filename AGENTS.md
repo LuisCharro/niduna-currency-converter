@@ -25,18 +25,20 @@ skills without changing this repo again.
 
 ## Current state (reviewed 2026-10-20)
 
-- Production 11 and owner-approved ES/CH are saved in Publishing overview as
+- Production 11 and owner-approved EU27 + Switzerland are saved in Publishing overview as
   exactly two changes NOT yet submitted. Preview shows Ready to release, no
   errors. Managed publishing off. See `docs/release-prep/production-release-plan.json`.
-  Before submission, address reviewer access and assess the displayed EU
-  geo-blocking notice. Do not expand countries or submit/publish without instruction.
+  See `docs/release-prep/eu-distribution-review-2026-10-20.md` for the reviewed EU
+  notice and grouped territories. Track-summary Active does not prove public
+  availability. Reviewer-access uncertainty is not a confirmed rejection.
+  Do not expand countries or submit/publish without instruction.
 - Refreshed Console on 20 October confirms submission 5 (description/Data safety)
   and submission 6 (Closed Alpha 11) Published. There is no public Production release.
   Support replied in case 0-9999000042207 without pre-compliance clearance or
   sandbox-purchase confirmation. The review it asked us to await is now finished.
   See the latest checklist/report; do not duplicate the ticket or resubmit.
   Paid-feature reviewer access remains unresolved; its saved No answer was not
-  changed. Production country selection is saved as ES/CH, pending review. Read the newest checklist and
+  changed. Production country selection is saved as EU27 + Switzerland, pending review. Read the newest checklist and
   `docs/release-prep/play-console-final-review-2026-10-20.md` before acting.
 - `main` is canonical; inspect HEAD/working tree before acting.
 - Current candidate is `1.0.0+11`, uploaded to Closed Alpha from source `e7caca6`.

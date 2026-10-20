@@ -1,5 +1,33 @@
 # Google Play publishing runbook
 
+## EU + Switzerland preparation saved — 2026-10-20
+
+This checkpoint supersedes the earlier ES/CH-only decision below. Luis explicitly
+approved preparing **all 27 EU countries plus Switzerland**. Console now saves
+exactly 28 country rows: AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, HU,
+IE, IT, LV, LT, LU, MT, NL, PL, PT, RO, SK, SI, ES, SE and CH.
+
+- Publishing overview confirms exactly **two changes not yet submitted for
+  review**: Production `1.0.0 (11)` / Start full rollout, and Add 28 countries/regions.
+- Open testing shares Production country targeting. Closed Alpha is not listed
+  as affected. No new binary, prices, listing or website deployment changed.
+- Managed publishing is **off**. A future authorized submission may make the
+  app public automatically after Google approves it. Nothing was submitted here.
+- The generic EU geo-blocking notice remains visible. EU-wide selection avoids
+  relying on an unconfirmed exception for this utility; it is not legal clearance.
+  Sources and Google territory groupings: [EU distribution review](eu-distribution-review-2026-10-20.md).
+- The track summary can say **Active**, `1.0.0 (11)` and 28 countries while the
+  batch is still unsubmitted. Use Publishing overview and actual public
+  availability to establish publication, not that summary or API `completed`.
+- Reviewer-access navigation remains a local draft; no false free-access
+  attestation was saved. Support did not pre-clear reviewer purchases. This
+  uncertainty is not a confirmed rejection or a reason to wait indefinitely
+  for another support reply; Google may request corrections during review.
+- Next: inspect the full pending batch and obtain the separate instruction to
+  submit Production. Do not create another release or change the accepted AAB.
+- Evidence: ignored `.tmp/play-production-draft-20261020/eu28-release-pending.png`
+  and `.txt`; country checkbox inspection confirmed exactly the 28 rows above.
+
 > App-specific operational guide for Honest Fern Currency Converter. Keep
 > secrets and machine-specific paths in `AGENTS.local.md`, never in this file.
 
@@ -17,7 +45,7 @@ document owns only Currency Converter facts and commands.
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
 
-## Production countries confirmed and preparation saved — 2026-10-20
+## Historical ES/CH preparation (superseded by EU + CH above) — 2026-10-20
 
 - Luis explicitly confirmed **Spain and Switzerland only**. Selected and saved
   exactly ES/CH in Production. Country change is saved for review, not yet
