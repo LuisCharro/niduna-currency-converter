@@ -1,5 +1,15 @@
 # Release Checklist — Path to Google Play Store
 
+## Six EU local price update verified — 2026-10-20
+
+Luis approved the exact DK/SE/PL/CZ/HU/RO prices. The existing API script
+applied 18 prices and an independent read verified all 522 rows and preserved
+fields (504 prices unchanged). See `stores/google-play/pricing/eu6-review-2026-10-20.md`
+and `eu6-application.json` in that directory. No new binary, release submission,
+website deployment or distribution change occurred. Regional checkouts and
+phone propagation were not verified. Production 11 remains prepared, not submitted
+by this operation.
+
 ## EU + Switzerland preparation saved — 2026-10-20
 
 This checkpoint supersedes the earlier ES/CH-only decision below. Luis explicitly

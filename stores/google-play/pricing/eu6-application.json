@@ -1,0 +1,23 @@
+{
+  "packageName": "com.honestfern.currency_converter",
+  "verified": true,
+  "summary": {
+    "priceRows": 522,
+    "changedPriceRows": 18,
+    "changedRegions": 6
+  },
+  "updatedProducts": [
+    "charts_pro_lifetime",
+    "favorites_pro_lifetime",
+    "remove_ads_lifetime"
+  ],
+  "policySha256": "e359a11351a8f9c6e566c775829eb3a1f6bf5714e51ae7e706eb661cf4d4d015",
+  "receiptDirectory": ".tmp/play-pricing/20261020-eu6/receipts",
+  "scope": "Prices only. No release, distribution, tax, offer or availability update.",
+  "appliedOn": "2026-10-20",
+  "toolSourceCommit": "7be0ecf",
+  "independentReadbackVerified": true,
+  "beforeSnapshotSha256": "fc230935a25a5a982d876b90003d02feb66007e3ad8ab34df8c4cbf082120fc0",
+  "afterSnapshotSha256": "917c6ad48641dee14c0596589d6e3b59dc03b7311bc53b9acc8c8afd4e49fd71",
+  "propagation": "Catalog accepted and independently verified; no per-country checkout or phone purchase performed."
+}

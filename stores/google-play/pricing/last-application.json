@@ -3,23 +3,21 @@
   "verified": true,
   "summary": {
     "priceRows": 522,
-    "changedPriceRows": 69,
-    "changedRegions": 23
+    "changedPriceRows": 18,
+    "changedRegions": 6
   },
   "updatedProducts": [
     "charts_pro_lifetime",
     "favorites_pro_lifetime",
     "remove_ads_lifetime"
   ],
-  "policySha256": "0f04b89f27c9c0a6ac01d2b7186d004c82f6100753225f6a332b29049cb46784",
-  "receiptDirectory": ".tmp/play-pricing/20261019/apply/receipts-2",
+  "policySha256": "e359a11351a8f9c6e566c775829eb3a1f6bf5714e51ae7e706eb661cf4d4d015",
+  "receiptDirectory": ".tmp/play-pricing/20261020-eu6/receipts",
   "scope": "Prices only. No release, distribution, tax, offer or availability update.",
-  "appliedOn": "2026-10-19",
-  "toolSourceCommit": "29c236a",
+  "appliedOn": "2026-10-20",
+  "toolSourceCommit": "7be0ecf",
   "independentReadbackVerified": true,
-  "approvedPolicySha256": "0f04b89f27c9c0a6ac01d2b7186d004c82f6100753225f6a332b29049cb46784",
-  "beforeSnapshotSha256": "360831e3cce0d0e4cde733e47787b4e68d58886d85c97c2c287fed2d16426c79",
-  "afterSnapshotSha256": "6d5592eafe3bde0fdea9b6e74c2207b2f60a44307a6aeb92eabe4ac717ff5244",
-  "propagation": "Catalog verified; no per-country checkout or phone purchase performed.",
-  "recovery": "First attempt failed locally constructing Python request; fresh read proved no mutation. Corrected Python parameter; second attempt succeeded."
+  "beforeSnapshotSha256": "fc230935a25a5a982d876b90003d02feb66007e3ad8ab34df8c4cbf082120fc0",
+  "afterSnapshotSha256": "917c6ad48641dee14c0596589d6e3b59dc03b7311bc53b9acc8c8afd4e49fd71",
+  "propagation": "Catalog accepted and independently verified; no per-country checkout or phone purchase performed."
 }

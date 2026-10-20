@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "proposed",
+  "status": "applied",
   "packageName": "com.honestfern.currency_converter",
   "strategy": "EU launch extension: simple local price points near the existing EUR 1.99/2.99/0.99 tier; exact regional overrides only. Retain every other price and field. Not a proven market optimum or automatic FX conversion.",
   "products": {
@@ -97,7 +97,9 @@
   },
   "research": "eu6-review-2026-10-20.md",
   "approval": {
-    "status": "pending-exact-amount-confirmation",
-    "requestedScope": "Owner requested review, repo update and API application; local publishing skill requires confirmation of the exact regional amounts."
-  }
+    "status": "approved",
+    "date": "2026-10-20",
+    "scope": "Luis explicitly confirmed applying the exact 18 proposed prices in DK, SE, PL, CZ, HU and RO via API, preserving all other prices and settings."
+  },
+  "applicationRecord": "eu6-application.json"
 }

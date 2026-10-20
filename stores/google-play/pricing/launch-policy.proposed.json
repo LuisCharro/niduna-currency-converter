@@ -298,5 +298,6 @@
     "date": "2026-10-19",
     "scope": "Luis explicitly authorized applying this pricing policy; preserve all other regions and configuration."
   },
-  "applicationRecord": "last-application.json"
+  "applicationRecord": "launch-application-2026-10-19.json",
+  "subsequentPolicy": "eu6-policy.proposed.json"
 }

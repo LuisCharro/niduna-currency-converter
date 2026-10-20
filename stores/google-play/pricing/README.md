@@ -1,19 +1,32 @@
 # Estrategia de precios — Currency Converter
 
-## Ampliación UE preparada — 2026-10-20
+## Ampliación UE aplicada — 2026-10-20
 
-La revisión de DK/SE/PL/CZ/HU/RO está preparada en
-[la propuesta de seis mercados](eu6-review-2026-10-20.md),
-`eu6-policy.proposed.json` y el CSV de diferencias. Cambiaría 18 precios,
-conservando las otras 504 filas. **Todavía no aplicada: pendiente de confirmar
-los importes exactos**, según la skill local de publicación.
-Lo que sigue documenta la política aplicada el 19 de octubre.
+Luis aprobó los 18 precios exactos de DK/SE/PL/CZ/HU/RO y se aplicaron por API.
+La lectura independiente confirma 522 filas: **18 actualizadas y 504 conservadas**,
+además de todos los demás campos del catálogo. Véanse
+[la decisión y los importes](eu6-review-2026-10-20.md),
+`eu6-policy.proposed.json` (estado `applied`), el CSV y `eu6-application.json`.
+No se ha probado el checkout de cada país; puede haber demora de propagación.
+
+La estrategia vigente combina dos políticas fechadas:
+
+- `launch-policy.proposed.json`: EUR/CHF/USD, aplicada el 19 de octubre;
+  recibo histórico `launch-application-2026-10-19.json`.
+- `eu6-policy.proposed.json`: seis mercados UE sin euro, aplicada el 20 de octubre;
+  recibo `eu6-application.json`, también reflejado en `last-application.json`.
+
+Ambas conservan su nombre histórico `proposed`; su estado es `applied`.
+Las políticas aplicadas son registros y no se deben volver a ejecutar sin una
+nueva autorización y comparación. No se requiere otra AAB ni cambia la release.
+
+## Política inicial y aplicación histórica — 2026-10-19
 
 Fecha: 2026-10-19. **Precios aplicados y verificados por API.**
 Tres compras únicas de por vida, sin suscripciones. Véase la
 [investigación de mercado, fuentes y límites](research-2026-10-19.md).
 El JSON conserva su nombre histórico `launch-policy.proposed.json`, ahora con
-estado `applied`. El recibo resumido está en `last-application.json`. El CSV
+estado `applied`. El recibo histórico está en `launch-application-2026-10-19.json`. El CSV
 conserva la comparación original aprobada, no representa cambios pendientes.
 Se actualizaron 69 precios en 23 regiones. Lecturas independientes verifican
 los 522 precios y todos los campos conservados. No se comprobó cada checkout
@@ -66,7 +79,8 @@ en EE. UU. 17–20 %. Suiza no cambia. No se presenta la rebaja como solo cosmé
   NL, PT, SI, SK. Las otras 12 regiones que cobran en EUR mantienen precios.
 - USD: solo US; las otras 74 regiones con precio en USD mantienen sus importes.
 - Resultado del plan: **69 precios cambian en 23 regiones**. Las otras 453 filas
-  (151 regiones por producto, incluida Suiza) mantienen su precio.
+  (151 regiones por producto, incluida Suiza) conservaron entonces su precio;
+  la ampliación del 20 de octubre modifica 18 de ellas.
 - Preservar disponibilidad, países de distribución, IDs, compras anteriores,
   impuestos, ofertas y `newRegionsConfig`. Los precios de futuras regiones
   necesitan una decisión propia antes de futuras ampliaciones.
@@ -74,7 +88,7 @@ en EE. UU. 17–20 %. Suiza no cambia. No se presenta la rebaja como solo cosmé
 ## Resto del mundo
 
 No cambiar las 174 regiones a mano ni aplicar ,99 a todas las monedas.
-Para el primer lanzamiento propongo conservar el resto de precios de Play.
+Para los mercados fuera de las dos políticas aplicadas, conservar el resto de precios de Play.
 Ya incluyen patrones locales derivados de la configuración anterior.
 Después priorizar mercados con uso real y revisar poder adquisitivo, precio
 local habitual y rendimiento; no usar solo cambio de moneda o idioma del móvil.
