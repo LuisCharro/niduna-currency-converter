@@ -12,7 +12,9 @@ physical Android and successful general use of build 11. Refreshed Console
 confirms Closed 11 and the description/Data safety changes Published; this is
 not a Production release. Detailed build-10 Billing checks remain historical.
 Internal remains code 7. Production now has an unsubmitted draft using the same
-code-11 library artifact; countries and final submission remain pending.
+code-11 library artifact. ES/CH is owner-confirmed and saved; release and
+countries await review submission. Reviewer access and the EU distribution
+notice remain review items; final sending/publication needs owner instruction.
 See `RELEASE_CHECKLIST.md` and `docs/release-prep/google-play-publishing-runbook.md`
 for the exact artifact, receipts and remaining reviewer-access/country decisions.
 The website deployment session records revision `e181347` (including terms).

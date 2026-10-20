@@ -1,5 +1,5 @@
 {
-  "status": "draft-saved-in-console-not-submitted",
+  "status": "saved-for-review-not-submitted",
   "preparedOn": "2026-10-20",
   "packageName": "com.honestfern.currency_converter",
   "targetTrack": "production",
@@ -16,14 +16,27 @@
     "ES",
     "CH"
   ],
-  "countryDecision": "awaiting-owner-confirmation; no countries selected/saved",
+  "countryDecision": "Owner confirmed ES/CH only; saved to Publishing overview, not submitted/published.",
   "consoleValidation": {
-    "errors": [
-      "No countries or regions have been selected for this track."
-    ],
-    "submissionRequested": false
+    "errors": [],
+    "previewStatus": "Ready to release",
+    "submissionRequested": false,
+    "quickChecks": "Running in Publishing overview at last observation"
   },
   "reviewerAccess": "Not changed; no full/free-access attestation. See reviewer-access-instructions.draft.md.",
-  "publication": "Not authorized or submitted. Managed publishing last observed off; recheck before sending.",
-  "warning": "Planning record only; not an executable Publisher API payload."
+  "publication": "Not authorized or submitted. Managed publishing observed off on 2026-10-20; approval may publish automatically after a future authorized submission.",
+  "warning": "Planning record only; not an executable Publisher API payload.",
+  "selectedCountries": [
+    "ES",
+    "CH"
+  ],
+  "pendingChangeBatch": [
+    "Production 1.0.0 (11): Start full rollout",
+    "Countries/regions: Add Spain and Switzerland"
+  ],
+  "countrySynchronization": "Open testing shares Production targeting; Console does not list Closed Alpha as affected.",
+  "openReviewItems": [
+    "Reviewer access to paid features has not been established by the navigation draft.",
+    "Console EU geo-blocking notice: assess Google distribution guidance before submission. No expanded countries authorized."
+  ]
 }

@@ -25,18 +25,18 @@ skills without changing this repo again.
 
 ## Current state (reviewed 2026-10-20)
 
-- Production now has an unsubmitted draft `1.0.0 (11)` using library artifact 11.
-  Countries are unselected; ES/CH awaits owner confirmation. Preview's one error
-  is missing countries. See `docs/release-prep/production-release-plan.json`.
-  Reviewer instructions are factual local draft only, not a free-access attestation.
-  Do not create a duplicate Production draft or submit/publish without instruction.
+- Production 11 and owner-approved ES/CH are saved in Publishing overview as
+  exactly two changes NOT yet submitted. Preview shows Ready to release, no
+  errors. Managed publishing off. See `docs/release-prep/production-release-plan.json`.
+  Before submission, address reviewer access and assess the displayed EU
+  geo-blocking notice. Do not expand countries or submit/publish without instruction.
 - Refreshed Console on 20 October confirms submission 5 (description/Data safety)
-  and submission 6 (Closed Alpha 11) Published. Production remains empty by API.
+  and submission 6 (Closed Alpha 11) Published. There is no public Production release.
   Support replied in case 0-9999000042207 without pre-compliance clearance or
   sandbox-purchase confirmation. The review it asked us to await is now finished.
   See the latest checklist/report; do not duplicate the ticket or resubmit.
   Paid-feature reviewer access remains unresolved; its saved No answer was not
-  changed. Production countries remain unselected. Read the newest checklist and
+  changed. Production country selection is saved as ES/CH, pending review. Read the newest checklist and
   `docs/release-prep/play-console-final-review-2026-10-20.md` before acting.
 - `main` is canonical; inspect HEAD/working tree before acting.
 - Current candidate is `1.0.0+11`, uploaded to Closed Alpha from source `e7caca6`.
@@ -45,7 +45,8 @@ skills without changing this repo again.
 - Luis accepted build 11 on his physical Android after uninstalling build 10
   and installing 11; everything works well by his report. No itemized repeat of
   Billing/Restore was stated; keep the explicit build-10 evidence separately.
-- Internal remains code 7 and Production is empty in the latest stored API read.
+- Internal remains code 7. The earlier empty Production API read predates the
+  prepared release now awaiting submission.
   Production access is granted; publication needs a separate owner instruction.
 - Preserve the exact code-11 AAB/hash in the master checklist/runbook. Do not
   rebuild merely to move tracks; changed binaries need an unused higher code.

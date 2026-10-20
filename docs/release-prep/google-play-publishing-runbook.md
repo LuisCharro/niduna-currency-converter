@@ -17,7 +17,35 @@ document owns only Currency Converter facts and commands.
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
 
-## Production draft prepared — 2026-10-20
+## Production countries confirmed and preparation saved — 2026-10-20
+
+- Luis explicitly confirmed **Spain and Switzerland only**. Selected and saved
+  exactly ES/CH in Production. Country change is saved for review, not yet
+  published. Console notes Open testing shares Production country targeting;
+  Closed Alpha is not listed as affected.
+- Reopened the existing code-11 release preview: **Ready to release**, with
+  the missing-country error gone and no other displayed validation errors.
+  Saved the preview to Publishing overview; no Send/Submit review action taken.
+- Publishing overview now has exactly two changes not yet submitted: Production
+  `1.0.0 (11)` / Start full rollout, and Add 2 countries: Spain, Switzerland.
+  Quick checks are running. Managed publishing remains **off**, so a later
+  authorized review submission may publish automatically after approval.
+- Console displays an informational EU geo-blocking notice. Google's linked
+  distribution guidance says unjustified EU geo-blocking should be avoided and
+  gives EU-wide access as the general example, subject to laws/exceptions.
+  The applicability of an ES-only initial EU launch to this utility has NOT
+  been resolved by the error-free preview. Review that scope before submission;
+  do not silently expand the approved country set or claim legal clearance.
+  Source: https://support.google.com/googleplay/android-developer/answer/6223646?hl=en
+  The linked Commission page returned HTTP 429 during this check.
+- Reviewer-access navigation text remains a local draft; no free-access
+  attestation or app bypass was saved. Country approval is not Production
+  publication approval. Next: resolve those review questions, inspect the
+  whole pending batch and obtain a separate instruction before sending it.
+- Evidence: ignored `.tmp/play-production-draft-20261020/ready-after-countries.txt`,
+  `countries-and-release-pending.txt` and `.png`.
+
+## Historical Production draft preparation — 2026-10-20
 
 - Saved a **draft** Production release named `1.0.0 (11)` with the existing
   Play library artifact code 11 and en-GB first-public-release notes. No new
