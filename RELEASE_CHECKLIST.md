@@ -1,5 +1,67 @@
 # Release Checklist — Path to Google Play Store
 
+## Pasos para el primer lanzamiento público — 2026-10-20
+
+Guía para Luis: **configurar → promover la versión 11 → enviar a revisión →
+aprobación/publicación → activar el enlace en la web**.
+
+Este plan supone que se resuelven los pendientes de acceso para revisores y
+configuración. España y Suiza son el escenario propuesto; esta documentación
+no confirma su selección en Console ni autoriza publicar.
+
+### Qué significa el acceso a Producción ya concedido
+
+Google nos permite solicitar un lanzamiento público. Eso no significa que
+la app ya esté publicada ni que podamos omitir la revisión del lanzamiento.
+La versión candidata es `1.0.0+11`, que Luis ha instalado desde cero y probado
+en su Android físico. El artefacto exacto y su hash figuran más abajo.
+
+### 1. Preparar el lanzamiento
+
+- [ ] Resolver el acceso gratuito de los revisores a las funciones de pago y
+  completar instrucciones exactas. Ya se envió una consulta a Google; consultar
+  su respuesta antes de dar este punto por cerrado.
+- [ ] Confirmar con Luis **España y Suiza** y seleccionarlas en Producción.
+- [ ] Comprobar en Console la ficha, fotos, Data safety, clasificación, precios,
+  declaraciones e instrucciones de revisión, incluido el estado de los cambios
+  de descripción/Data safety ya enviados. No volver a enviarlos a ciegas.
+- [ ] Preparar la promoción del **mismo AAB de la versión 11** desde Closed Alpha
+  a Producción. Mover el mismo artefacto entre tracks no requiere recompilar ni
+  incrementar la versión. Si hace falta cambiar la app, usar un nuevo código.
+
+### 2. Enviar el lanzamiento a Google
+
+- [ ] Revisar el resumen completo de cambios y la configuración de publicación.
+  **Publicación gestionada estaba desactivada en la última comprobación.**
+  Verificarlo de nuevo justo antes de enviar: la app podría hacerse pública
+  automáticamente después de aprobarse. No prometer un botón manual posterior.
+- [ ] Obtener la autorización de Luis para enviar este lanzamiento a Producción,
+  indicando versión, países y comportamiento de publicación.
+- [ ] Enviar a revisión. Google puede aprobar o solicitar correcciones. Las
+  revisiones pueden tardar unas horas, hasta siete días o excepcionalmente más;
+  no comprometer una fecha de disponibilidad.
+- [ ] Verificar aprobación y disponibilidad pública real en Console y Play Store.
+  Un estado API `completed` o una instalación de tester no bastan para probarlo.
+
+### 3. Cuando esté pública
+
+- [ ] Comprobar la ficha y la posibilidad de instalación pública sin ser tester
+  para cuentas de Google Play de España y Suiza.
+- [ ] Cambiar la web de **Coming soon** a **Disponible en Google Play** y añadir
+  el botón/enlace de descarga, siguiendo el paso S2 del plan de la web y su
+  flujo de despliegue separado. Verificar el resultado público.
+
+La distribución por países depende del **país de la cuenta de Google Play**,
+no de la ubicación física momentánea. Los precios configurados para un país
+no habilitan por sí solos la distribución de la app en ese país.
+
+### Referencias oficiales consultadas el 20 de octubre
+
+- [Publicar una app y estados de publicación](https://support.google.com/googleplay/android-developer/answer/9859751?hl=en)
+- [Preparar y lanzar una versión](https://support.google.com/googleplay/android-developer/answer/9859348?hl=en)
+- [Revisión y publicación gestionada](https://support.google.com/googleplay/android-developer/answer/9859654?hl=en)
+- [Distribución por países](https://support.google.com/googleplay/android-developer/answer/7550024?hl=en)
+
 ## Owner phone acceptance — 2026-10-20, build 11
 
 Luis reports uninstalling build 10, installing build 11 on his physical Android
