@@ -17,6 +17,19 @@ document owns only Currency Converter facts and commands.
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
 
+## Owner phone acceptance — 2026-10-20, build 11
+
+Luis reports uninstalling build 10, installing build 11 on his physical Android
+phone, and that everything works well. Record build 11 as owner-accepted for
+general use after a fresh installation. This is a direct owner report, not an
+independently captured device log or a new automated test run. No itemized
+repeat of all three purchases/Restore was stated for build 11; the explicit
+Billing/Restore evidence remains the successful build-10 test record.
+
+Preserve the exact code-11 AAB. Reviewer-access support response, current
+Console review state and Production country selection remain separate items;
+this acceptance does not authorize Production publication.
+
 ## Closed submission — 2026-10-20, build 11
 
 - Luis explicitly authorized uploading **1.0.0 (11)** to Closed Alpha (`alpha`).
@@ -31,8 +44,9 @@ document owns only Currency Converter facts and commands.
   release_safe, dev mode false, production AdMob IDs, test ads false; manifest
   code 11 non-debuggable; upload certificate identical to code 10.
 - Store screenshots were not captured (emulator /data full); listing unchanged.
-- Code 11 needs owner phone acceptance before Production promotion; code 10's
-  acceptance does not transfer. Receipts: plan/upload/status JSON in that dir.
+- Luis subsequently reports fresh build-11 installation and successful general
+  use on his physical Android; see owner acceptance above. Receipts:
+  plan/upload/status JSON in that directory. Production remains separately gated.
 
 ## Historical support ticket and metadata submission confirmed — 2026-10-20
 

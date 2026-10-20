@@ -1,5 +1,18 @@
 # Release Checklist — Path to Google Play Store
 
+## Owner phone acceptance — 2026-10-20, build 11
+
+Luis reports uninstalling build 10, installing build 11 on his physical Android
+phone, and that everything works well. Record build 11 as owner-accepted for
+general use after a fresh installation. This is a direct owner report, not an
+independently captured device log or a new automated test run. No itemized
+repeat of all three purchases/Restore was stated for build 11; the explicit
+Billing/Restore evidence remains the successful build-10 test record.
+
+Preserve the exact code-11 AAB. Reviewer-access support response, current
+Console review state and Production country selection remain separate items;
+this acceptance does not authorize Production publication.
+
 ## Current candidate checkpoint — 2026-10-20, build 11
 
 - Current app source is `1.0.0+11`. The recorded Closed Alpha upload succeeded;
@@ -13,9 +26,9 @@
 - Build 11 simplifies the Sources page in five languages and includes updated
   test expectations. The previous session recorded 476 passing tests and clean
   analysis. No tests/builds were rerun for this documentation reconciliation.
-- Luis's phone acceptance applies to build 10. Build 11 still needs its own
-  Closed installation/acceptance before any Production decision. Preserve its
-  exact AAB; any further binary change requires an unused higher version code.
+- Luis subsequently accepted build 11 after uninstalling 10 and installing 11
+  on his physical Android; see the owner acceptance checkpoint above. Preserve
+  its exact AAB; changed binaries require an unused higher version code.
 - Recorded website deployment is `e181347` on 20 October, including the shorter
   headline/provider text, updated OG image and new terms page. Its deployment
   session recorded HTTPS and byte comparisons. Keep Coming Soon until Production

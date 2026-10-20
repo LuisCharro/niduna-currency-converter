@@ -36,8 +36,9 @@ skills without changing this repo again.
 - Current candidate is `1.0.0+11`, uploaded to Closed Alpha from source `e7caca6`.
   Stored upload/status receipts verify matching Google/local AAB hash and Alpha
   code 11; approval/tester availability still needs a live Console check.
-- Build 10 passed Luis's phone acceptance. That acceptance does not transfer to
-  build 11; install/accept code 11 through Closed before Production promotion.
+- Luis accepted build 11 on his physical Android after uninstalling build 10
+  and installing 11; everything works well by his report. No itemized repeat of
+  Billing/Restore was stated; keep the explicit build-10 evidence separately.
 - Internal remains code 7 and Production is empty in the latest stored API read.
   Production access is granted; publication needs a separate owner instruction.
 - Preserve the exact code-11 AAB/hash in the master checklist/runbook. Do not
@@ -55,8 +56,8 @@ skills without changing this repo again.
 - Licence testing and Closed eligibility are separate. Prior Billing success
   does not make all Closed cohort purchases free.
 - Current gallery was verified live in Console/Chrome. Build 11 did not recapture
-  screenshots (emulator full); UI gallery is unchanged. Build-11 device acceptance
-  and final Production configuration remain pending.
+  screenshots (emulator full); UI gallery is unchanged. Build-11 general phone
+  acceptance is now owner-reported; final Production configuration remains open.
 - Keep widgets and iOS work outside this Android release task unless a concrete
   regression requires investigation.
 
@@ -93,7 +94,8 @@ and chart-comparison status, see
 ## Versioning policy (first public release)
 
 - Current `pubspec.yaml`: `1.0.0+11` (2026-10-20: Sources-page copy only), uploaded to
-  Closed Alpha with Luis's approval; needs owner phone acceptance. See runbook.
+  Closed Alpha with Luis's approval; general owner phone acceptance reported.
+  See runbook for its scope and remaining Production gates.
   Build 10 was available/accepted before that upload; code 11 is now the candidate.
   Internal remains 7; Production promotion is separate.
 - Code 11 is already used. Any changed binary needs a new unused higher code.
