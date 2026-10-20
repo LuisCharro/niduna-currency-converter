@@ -1,5 +1,26 @@
 # Release Checklist — Path to Google Play Store
 
+## Production draft prepared — 2026-10-20
+
+- Saved a **draft** Production release named `1.0.0 (11)` with the existing
+  Play library artifact code 11 and en-GB first-public-release notes. No new
+  upload/build and no review submission or rollout.
+- Draft: `tracks/4697764149398062380/releases/1/prepare`. Track remains Inactive.
+  Preview shows one blocking error: no countries/regions selected. Production
+  now has this draft; earlier API snapshots showing no releases are historical.
+- ES/CH selection is awaiting Luis's confirmation via the current question.
+  No country settings have been saved. Do not infer confirmation from waiting.
+- `docs/release-prep/production-release-plan.json` records the exact artifact,
+  notes, proposed countries and pending gates. It is not an API request body.
+- Factual reviewer-navigation wording is prepared in
+  `docs/release-prep/reviewer-access-instructions.draft.md`. It does not provide
+  free access to unowned paid features and was not saved/attested in Console.
+- After country selection, recheck the preview and the whole Publishing overview
+  batch. Final Production sending/publishing still requires a separate owner
+  instruction; with managed publishing off, approval can make the app public.
+- Evidence: ignored `.tmp/play-production-draft-20261020/`. No website deploy,
+  price change, app edit or public release occurred in this preparation.
+
 ## Latest readiness/support checkpoint — 2026-10-20
 
 Fresh API reads confirm Alpha 11, Internal 7, empty Production, the unchanged
@@ -39,7 +60,7 @@ en su Android físico. El artefacto exacto y su hash figuran más abajo.
 - [ ] Comprobar en Console la ficha, fotos, Data safety, clasificación, precios,
   declaraciones e instrucciones de revisión, incluido el estado de los cambios
   de descripción/Data safety ya enviados. No volver a enviarlos a ciegas.
-- [ ] Preparar la promoción del **mismo AAB de la versión 11** desde Closed Alpha
+- [x] Preparar el borrador con el **mismo AAB de la versión 11** desde Closed Alpha
   a Producción. Mover el mismo artefacto entre tracks no requiere recompilar ni
   incrementar la versión. Si hace falta cambiar la app, usar un nuevo código.
 

@@ -25,6 +25,11 @@ skills without changing this repo again.
 
 ## Current state (reviewed 2026-10-20)
 
+- Production now has an unsubmitted draft `1.0.0 (11)` using library artifact 11.
+  Countries are unselected; ES/CH awaits owner confirmation. Preview's one error
+  is missing countries. See `docs/release-prep/production-release-plan.json`.
+  Reviewer instructions are factual local draft only, not a free-access attestation.
+  Do not create a duplicate Production draft or submit/publish without instruction.
 - Refreshed Console on 20 October confirms submission 5 (description/Data safety)
   and submission 6 (Closed Alpha 11) Published. Production remains empty by API.
   Support replied in case 0-9999000042207 without pre-compliance clearance or

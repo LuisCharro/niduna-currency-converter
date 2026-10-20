@@ -1,0 +1,29 @@
+{
+  "status": "draft-saved-in-console-not-submitted",
+  "preparedOn": "2026-10-20",
+  "packageName": "com.honestfern.currency_converter",
+  "targetTrack": "production",
+  "releaseName": "1.0.0 (11)",
+  "versionCode": 11,
+  "sourceCommit": "e7caca6",
+  "artifactSha256": "c39022153281a229e0faa0bc73fd786c3393967a99f6e22a78396bc892c5a98c",
+  "artifactSelection": "Existing Play library artifact 11; no upload or rebuild",
+  "consoleDraftPath": "tracks/4697764149398062380/releases/1/prepare",
+  "releaseNotes": {
+    "en-GB": "First public release of Currency Converter Honest Fern.\nConvert 45 currencies, view historical charts, save favorite pairs and use previously loaded rates offline. Optional one-time purchases remove ads or unlock additional features."
+  },
+  "proposedCountries": [
+    "ES",
+    "CH"
+  ],
+  "countryDecision": "awaiting-owner-confirmation; no countries selected/saved",
+  "consoleValidation": {
+    "errors": [
+      "No countries or regions have been selected for this track."
+    ],
+    "submissionRequested": false
+  },
+  "reviewerAccess": "Not changed; no full/free-access attestation. See reviewer-access-instructions.draft.md.",
+  "publication": "Not authorized or submitted. Managed publishing last observed off; recheck before sending.",
+  "warning": "Planning record only; not an executable Publisher API payload."
+}
