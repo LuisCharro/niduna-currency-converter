@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "status": "proposed",
+  "packageName": "com.honestfern.currency_converter",
+  "strategy": "EU launch extension: simple local price points near the existing EUR 1.99/2.99/0.99 tier; exact regional overrides only. Retain every other price and field. Not a proven market optimum or automatic FX conversion.",
+  "products": {
+    "remove_ads_lifetime": {
+      "purchaseOptionId": "remove-ads-lifetime",
+      "currencyOverrides": {},
+      "regionOverrides": {
+        "DK": {
+          "currencyCode": "DKK",
+          "amount": "15"
+        },
+        "SE": {
+          "currencyCode": "SEK",
+          "amount": "25"
+        },
+        "PL": {
+          "currencyCode": "PLN",
+          "amount": "8.99"
+        },
+        "CZ": {
+          "currencyCode": "CZK",
+          "amount": "49"
+        },
+        "HU": {
+          "currencyCode": "HUF",
+          "amount": "749"
+        },
+        "RO": {
+          "currencyCode": "RON",
+          "amount": "9.99"
+        }
+      }
+    },
+    "charts_pro_lifetime": {
+      "purchaseOptionId": "charts-pro-lifetime",
+      "currencyOverrides": {},
+      "regionOverrides": {
+        "DK": {
+          "currencyCode": "DKK",
+          "amount": "25"
+        },
+        "SE": {
+          "currencyCode": "SEK",
+          "amount": "35"
+        },
+        "PL": {
+          "currencyCode": "PLN",
+          "amount": "12.99"
+        },
+        "CZ": {
+          "currencyCode": "CZK",
+          "amount": "79"
+        },
+        "HU": {
+          "currencyCode": "HUF",
+          "amount": "1090"
+        },
+        "RO": {
+          "currencyCode": "RON",
+          "amount": "14.99"
+        }
+      }
+    },
+    "favorites_pro_lifetime": {
+      "purchaseOptionId": "favorites-pro-lifetime",
+      "currencyOverrides": {},
+      "regionOverrides": {
+        "DK": {
+          "currencyCode": "DKK",
+          "amount": "8"
+        },
+        "SE": {
+          "currencyCode": "SEK",
+          "amount": "12"
+        },
+        "PL": {
+          "currencyCode": "PLN",
+          "amount": "4.49"
+        },
+        "CZ": {
+          "currencyCode": "CZK",
+          "amount": "25"
+        },
+        "HU": {
+          "currencyCode": "HUF",
+          "amount": "369"
+        },
+        "RO": {
+          "currencyCode": "RON",
+          "amount": "4.99"
+        }
+      }
+    }
+  },
+  "research": "eu6-review-2026-10-20.md",
+  "approval": {
+    "status": "pending-exact-amount-confirmation",
+    "requestedScope": "Owner requested review, repo update and API application; local publishing skill requires confirmation of the exact regional amounts."
+  }
+}

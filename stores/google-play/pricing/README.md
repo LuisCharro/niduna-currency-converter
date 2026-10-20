@@ -1,5 +1,14 @@
 # Estrategia de precios — Currency Converter
 
+## Ampliación UE preparada — 2026-10-20
+
+La revisión de DK/SE/PL/CZ/HU/RO está preparada en
+[la propuesta de seis mercados](eu6-review-2026-10-20.md),
+`eu6-policy.proposed.json` y el CSV de diferencias. Cambiaría 18 precios,
+conservando las otras 504 filas. **Todavía no aplicada: pendiente de confirmar
+los importes exactos**, según la skill local de publicación.
+Lo que sigue documenta la política aplicada el 19 de octubre.
+
 Fecha: 2026-10-19. **Precios aplicados y verificados por API.**
 Tres compras únicas de por vida, sin suscripciones. Véase la
 [investigación de mercado, fuentes y límites](research-2026-10-19.md).

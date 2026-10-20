@@ -1,0 +1,19 @@
+productId,purchaseOptionId,regionCode,currencyCode,current,proposed,changePercent,changed,availability,priceValidation,reason
+charts_pro_lifetime,charts-pro-lifetime,CZ,CZK,94.99,79,-16.83,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,DK,DKK,30,25,-16.67,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,HU,HUF,1490,1090,-26.85,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,PL,PLN,16.99,12.99,-23.54,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,RO,RON,19.99,14.99,-25.01,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+charts_pro_lifetime,charts-pro-lifetime,SE,SEK,44,35,-20.45,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,CZ,CZK,30.99,25,-19.33,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,DK,DKK,10,8,-20.00,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,HU,HUF,489,369,-24.54,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,PL,PLN,5.59,4.49,-19.68,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,RO,RON,6.49,4.99,-23.11,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+favorites_pro_lifetime,favorites-pro-lifetime,SE,SEK,15,12,-20.00,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,CZ,CZK,59.99,49,-18.32,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,DK,DKK,20,15,-25.00,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,HU,HUF,990,749,-24.34,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,PL,PLN,10.99,8.99,-18.20,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,RO,RON,12.99,9.99,-23.09,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
+remove_ads_lifetime,remove-ads-lifetime,SE,SEK,29,25,-13.79,True,AVAILABLE,not checked against Google ranges/tax/currency precision,region override
