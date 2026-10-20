@@ -25,17 +25,18 @@ skills without changing this repo again.
 
 ## Current state (reviewed 2026-10-20)
 
-- Data safety purposes and en-GB listing source wording were submitted on
-  20 October: Console confirms Changes in review / 2 changes sent. Do not resubmit.
-  Reviewer-access support ticket was submitted with owner approval; Pending,
-  Case ID pending, email reply awaited. AI suggestions are not human confirmation.
+- Refreshed Console on 20 October confirms submission 5 (description/Data safety)
+  and submission 6 (Closed Alpha 11) Published. Production remains empty by API.
+  Support replied in case 0-9999000042207 without pre-compliance clearance or
+  sandbox-purchase confirmation. The review it asked us to await is now finished.
+  See the latest checklist/report; do not duplicate the ticket or resubmit.
   Paid-feature reviewer access remains unresolved; its saved No answer was not
   changed. Production countries remain unselected. Read the newest checklist and
   `docs/release-prep/play-console-final-review-2026-10-20.md` before acting.
 - `main` is canonical; inspect HEAD/working tree before acting.
 - Current candidate is `1.0.0+11`, uploaded to Closed Alpha from source `e7caca6`.
   Stored upload/status receipts verify matching Google/local AAB hash and Alpha
-  code 11; approval/tester availability still needs a live Console check.
+  code 11; refreshed Console also confirms that Closed release Published.
 - Luis accepted build 11 on his physical Android after uninstalling build 10
   and installing 11; everything works well by his report. No itemized repeat of
   Billing/Restore was stated; keep the explicit build-10 evidence separately.

@@ -8,8 +8,9 @@ Privacy-first Flutter currency converter for the Honest Fern portfolio.
 
 `1.0.0+11` is the current Closed Alpha candidate. Its recorded upload and
 Google/local artifact hashes match. Luis reports a fresh installation on his
-physical Android and successful general use of build 11. Check live Console
-for its review state; detailed build-10 Billing checks remain historical.
+physical Android and successful general use of build 11. Refreshed Console
+confirms Closed 11 and the description/Data safety changes Published; this is
+not a Production release. Detailed build-10 Billing checks remain historical.
 Internal remains code 7 and Production is empty in the stored read.
 See `RELEASE_CHECKLIST.md` and `docs/release-prep/google-play-publishing-runbook.md`
 for the exact artifact, receipts and remaining reviewer-access/country decisions.

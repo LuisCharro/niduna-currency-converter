@@ -3,7 +3,7 @@
 > **Current listing checkpoint — 2026-10-20:** Exact en-GB text is in
 > `play-listing-en-GB-reviewed.json`. The concise listing was read live and
 > its CONVERT source/refresh wording corrected and saved in Console today.
-> Review submission confirmed on 20 October; approval/publication not yet confirmed.
+> Refreshed Console confirms submission 5 Published on 20 October (description/Data safety).
 > The longer copy/specification below is historical and is not the live listing.
 > Current six gallery images match `screenshots/play-gallery-manifest.json`.
 > Build 10 is the accepted Closed candidate; Internal code 7 is not that candidate.

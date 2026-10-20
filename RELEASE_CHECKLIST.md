@@ -1,5 +1,18 @@
 # Release Checklist — Path to Google Play Store
 
+## Latest readiness/support checkpoint — 2026-10-20
+
+Fresh API reads confirm Alpha 11, Internal 7, empty Production, the unchanged
+code-11 AAB hash and correct ES/CH prices. Refreshed Chrome Console confirms
+**Published** for submission 6 (Closed Alpha 11) and submission 5 (description
+and Data safety). These reviews have finished; Production is not public.
+Google Support replied in case **0-9999000042207**: no pre-compliance checks or
+confirmation of reviewer sandbox purchases. Its instruction to await review
+preceded the now-confirmed publication; do not keep a stale review-wait blocker.
+Next: country decision, accurate reviewer-access instructions and separately
+authorized Production submission. No new binary or duplicate support ticket.
+Details: `docs/release-prep/play-console-final-review-2026-10-20.md`.
+
 ## Pasos para el primer lanzamiento público — 2026-10-20
 
 Guía para Luis: **configurar → promover la versión 11 → enviar a revisión →
@@ -19,8 +32,9 @@ en su Android físico. El artefacto exacto y su hash figuran más abajo.
 ### 1. Preparar el lanzamiento
 
 - [ ] Resolver el acceso gratuito de los revisores a las funciones de pago y
-  completar instrucciones exactas. Ya se envió una consulta a Google; consultar
-  su respuesta antes de dar este punto por cerrado.
+  completar instrucciones exactas. Google no ofrece validación previa ni
+  confirmó compras sandbox para revisores. La revisión de Closed 11 ya terminó
+  favorablemente; no confundirla con una autorización separada de ese mecanismo.
 - [ ] Confirmar con Luis **España y Suiza** y seleccionarlas en Producción.
 - [ ] Comprobar en Console la ficha, fotos, Data safety, clasificación, precios,
   declaraciones e instrucciones de revisión, incluido el estado de los cambios
@@ -79,8 +93,9 @@ this acceptance does not authorize Production publication.
 
 - Current app source is `1.0.0+11`. The recorded Closed Alpha upload succeeded;
   local and Play SHA-256 match. The saved post-upload API receipt lists Alpha
-  code 11, Internal code 7 and no Production release. API `completed` does not
-  establish approval or tester availability; check live Console before installing.
+  code 11, Internal code 7 and no Production release. A subsequent refreshed
+  Console check confirms submission 6 / Closed code 11 Published; API completed
+  alone would not have established that result.
 - Candidate source: `e7caca6`. Exact signed artifact:
   `.tmp/play-candidate/20261020-build11b/artifacts/app-release.aab`;
   SHA-256 `c39022153281a229e0faa0bc73fd786c3393967a99f6e22a78396bc892c5a98c`.
@@ -97,8 +112,8 @@ this acceptance does not authorize Production publication.
   is public; later docs-only pushes do not deploy the website.
 - The description/Data safety submission and reviewer-access support ticket
   below remain historical evidence, not a fresh live review-state check.
-  Recheck Publishing overview after the build-11 upload; await Google's support
-  reply about reviewer access. Do not duplicate the ticket. Production countries
+  Recheck Publishing overview after the build-11 upload. Support has replied;
+  see the latest readiness checkpoint above. Do not duplicate the ticket. Production countries
   still need an owner decision (initial ES/CH recommended).
 - Luis chose to retain exchange-api without contacting its maintainer; the
   reasoning/evidence and future paid-provider plan are in `docs/providers/fawazahmed0.md`.

@@ -1,6 +1,42 @@
 # Final Play Console review — 19–20 October 2026
 
-## Support ticket and metadata submission confirmed — 2026-10-20
+## Read-only API, mailbox and refreshed Chrome check — 2026-10-20
+
+- Fresh Publisher API read confirms Alpha `1.0.0 (11)` / `completed`, Internal
+  `1.0.0 (7)` and empty Production/Beta. Temporary read edit deleted. No track,
+  listing, price, country or publication changes were made.
+- Exact local code-11 AAB is still 54,682,875 bytes; SHA-256 matches both the
+  saved upload receipt and Google's original returned hash:
+  `c39022153281a229e0faa0bc73fd786c3393967a99f6e22a78396bc892c5a98c`.
+- Fresh catalog confirms all three one-time products ACTIVE and AVAILABLE in
+  CH/ES. Remove Ads: 2.00 CHF / 1.99 EUR; Charts: 3.00 CHF / 2.99 EUR;
+  Favorites: 1.00 CHF / 0.99 EUR. Product availability does not enable app
+  distribution in those countries.
+- A Google Play Support email was located/read for case **0-9999000042207**.
+  Ryan acknowledges the no-login/three-one-time-purchase model but does not
+  answer whether reviewers can use sandbox purchases. Support does not offer
+  pre-compliance checks; it says the submission will be reviewed and any needed
+  updates communicated. It reports a review underway at the email's time and
+  asks not to submit further versions until review finishes. This is not an
+  affirmative compliance/access clearance, nor a fresh Console status signal.
+- Chrome remained accessible without unlocking the screen. After reloading
+  Console, Submission activity confirms **Published** for submission 6, Closed
+  Alpha `1.0.0 (11)` (20 October, 01:22 as displayed), and submission 5, en-GB
+  full description plus Data safety (20 October, 00:28 as displayed). The review
+  mentioned in the support email has therefore finished. These are Closed/
+  metadata publications, not a Production release or a separate reviewer-access
+  clearance. No pending-review wait is established by the latest Console read.
+- Next: retain accepted build 11, confirm countries with Luis, review accurate
+  access instructions and prepare the separate Production submission for owner
+  approval. No reason was established to change the app, duplicate the support
+  question or upload another version merely to obtain pre-compliance clearance.
+  Do not claim sandbox reviewer purchases without confirmation.
+- Local evidence: ignored `.tmp/play-readiness-20261020-ZKUmJp/tracks.json`,
+  `catalog.json`, `pricing-summary.json`, `closed-11-console.txt`,
+  `metadata-console.txt`. Mail lookup: case ID/subject above;
+  private message headers and account details are not copied into Git.
+
+## Historical support ticket and metadata submission confirmed — 2026-10-20
 
 - Luis approved sending the English reviewer-access question. Submitted through
   Console Help → Create support ticket → Google Play policies → App → policy

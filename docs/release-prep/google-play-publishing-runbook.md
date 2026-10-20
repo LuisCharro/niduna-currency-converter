@@ -17,6 +17,19 @@ document owns only Currency Converter facts and commands.
 **Developer account ID:** `6219086036817053258`
 **Default listing locale:** `en-GB`
 
+## Latest readiness/support checkpoint — 2026-10-20
+
+Fresh API reads confirm Alpha 11, Internal 7, empty Production, the unchanged
+code-11 AAB hash and correct ES/CH prices. Refreshed Chrome Console confirms
+**Published** for submission 6 (Closed Alpha 11) and submission 5 (description
+and Data safety). These reviews have finished; Production is not public.
+Google Support replied in case **0-9999000042207**: no pre-compliance checks or
+confirmation of reviewer sandbox purchases. Its instruction to await review
+preceded the now-confirmed publication; do not keep a stale review-wait blocker.
+Next: country decision, accurate reviewer-access instructions and separately
+authorized Production submission. No new binary or duplicate support ticket.
+Details: `docs/release-prep/play-console-final-review-2026-10-20.md`.
+
 ## Owner phone acceptance — 2026-10-20, build 11
 
 Luis reports uninstalling build 10, installing build 11 on his physical Android
