@@ -1,5 +1,29 @@
 # Google Play publishing runbook
 
+## Live status confirmed — 2026-10-21
+
+Production **1.0.0 (11)** / **EU27 + Switzerland** remains **In review**:
+submission **7**, sent **20 October, 11:31 am** (Console displayed time).
+Publishing overview confirms the full rollout and 28-country addition in review;
+managed publishing is **off**, so approval can publish automatically. No rejection
+was shown; public availability is not established. Closed Alpha submission 6
+and listing/content submission 5 are Published.
+
+Dashboard **4/5** is the Production workflow awaiting publication. **1/4** is
+separate, optional Open testing; do not create an Open release to complete it.
+The Dashboard's ambiguous Not yet sent for review / Production Active summary
+must not override Publishing overview and submission history confirming In review.
+The 21 October AdMob **Congratulations: Your ads are live!** email reports ad
+serving, not Play approval or app-specific AdMob readiness clearance.
+
+Await Google's decision; do not cancel, resubmit or rebuild. Verify non-tester
+public availability after approval, then handle the website S2 update separately.
+Keep Coming Soon until then. Reviewer-access uncertainty remains unresolved.
+This inspection changed no external state. Older checkpoints below are historical.
+
+See the [master checklist](../../RELEASE_CHECKLIST.md) checkpoint dated 2026-10-21 for evidence,
+Dashboard counter meanings, AdMob limits and the next-action sequence.
+
 ## Production 11 submitted — 2026-10-20
 
 Luis authorized sending the existing version **1.0.0 (11)** for public release

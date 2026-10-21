@@ -1,5 +1,68 @@
 # Release Checklist — Path to Google Play Store
 
+## Live status confirmed — 2026-10-21
+
+Read-only inspection of the authenticated Chrome Play Console confirms:
+
+- **Production access is granted.** Submission **7**, Production **1.0.0 (11)**,
+  submitted **20 October 2026, 11:31 am** (Console displayed time), remains
+  **In review**. No rejection was displayed.
+- Publishing overview shows **Changes in review** for exactly the code-11
+  full rollout and addition of **28 countries/regions (EU27 + Switzerland)**.
+  Managed publishing is **off**: approval can publish automatically.
+  Public availability has not been established.
+- Submission **6**, Closed testing / Alpha 11, and submission **5**, Store
+  Listing / App Content, are **Published**. Those are separate from Production.
+
+### What the Dashboard progress counters mean
+
+- **Create and publish a release — 4 of 5 complete:** selecting countries,
+  creating the release, previewing/confirming it and sending it for review
+  are complete. The remaining task is **Publish your app on Google Play**.
+  The current Production release is awaiting Google review; do not infer from
+  the remaining task that it must be recreated or resubmitted.
+- **Let anyone sign up to test your app on Google Play — 1 of 4 complete:**
+  this is the separate, **optional Open testing** workflow. Country selection
+  is complete; creating, confirming and submitting an Open release are not.
+  Open testing is not a missing prerequisite for this Production submission.
+  Do not create an Open release merely to complete the counter.
+- Dashboard showed **Not yet sent for review** alongside **Production Active**
+  during this inspection. Publishing overview and submission history both
+  explicitly confirmed submission 7 **In review**. Use those detailed records
+  to resolve the ambiguous Dashboard summary; neither Active nor device counts
+  establish public availability.
+
+### AdMob email and next action
+
+The **21 October** Google AdMob email, **Congratulations: Your ads are live!**,
+reports that users are seeing ads in the publisher's app(s). This is an
+advertising milestone, not Play Production approval or proof of public launch.
+Existing tester usage could explain it; that attribution was not verified.
+The email does not establish app-specific AdMob readiness approval, lifted ad
+serving limits, earnings or completion of the store-link/app-ads.txt review.
+Check AdMob directly for those states when the public listing is available.
+
+**Next:** await Google's decision; no missing action or rejection was shown
+for this submission. Do not cancel, resubmit, rebuild or change tracks merely
+because of these counters. Google documents processing of a few hours to seven
+days, sometimes longer; this is guidance, not a promised approval date.
+Address any actual review request if one arrives. After approval, verify the
+listing and installation for a non-tester in a selected market, then perform
+the separately authorized website S2 launch update. Keep Coming Soon until then.
+Paid-feature reviewer-access uncertainty remains unresolved; this status check
+is not policy clearance. No Play/AdMob settings, releases or website changed.
+
+Sources checked 2026-10-21:
+
+- [Live submission activity](https://play.google.com/console/u/0/developers/6219086036817053258/app/4973875544480645622/publishing/submission-activity)
+- [Live Publishing overview](https://play.google.com/console/u/0/developers/6219086036817053258/app/4973875544480645622/publishing)
+- [Google publishing/review guidance](https://support.google.com/googleplay/android-developer/answer/9859654?hl=en)
+- [Google testing tracks](https://support.google.com/googleplay/android-developer/answer/9845334?hl=en)
+- [AdMob app readiness](https://support.google.com/admob/answer/10564477?hl=en)
+
+Earlier dated checkpoints below are historical; this checkpoint supersedes
+older saved/not-submitted and empty-Production descriptions for current action.
+
 ## Production 11 submitted — 2026-10-20
 
 Luis authorized sending the existing version **1.0.0 (11)** for public release

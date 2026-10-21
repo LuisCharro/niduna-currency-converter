@@ -1,5 +1,14 @@
 # AGENTS.md
 
+## Latest live status — 2026-10-21
+
+Production submission **7**, **1.0.0 (11)**, remains **In review** for
+**EU27 + Switzerland**. Managed publishing is off; approval can publish
+automatically. Dashboard **4/5** awaits publication; **1/4** is optional Open
+testing, not a blocker. The AdMob ads-live email is separate from Play approval.
+Do not cancel/resubmit or create an Open release to complete the counters.
+See the current-state section and master checklist's 2026-10-21 checkpoint.
+
 ## Latest Production submission — 2026-10-20
 
 Production **1.0.0 (11)** and **EU27 + Switzerland** country additions were
@@ -36,23 +45,22 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-10-20)
+## Current state (reviewed 2026-10-21)
 
-- Production 11 and owner-approved EU27 + Switzerland are saved in Publishing overview as
-  exactly two changes NOT yet submitted. Preview shows Ready to release, no
-  errors. Managed publishing off. See `docs/release-prep/production-release-plan.json`.
-  See `docs/release-prep/eu-distribution-review-2026-10-20.md` for the reviewed EU
-  notice and grouped territories. Track-summary Active does not prove public
-  availability. Reviewer-access uncertainty is not a confirmed rejection.
-  Do not expand countries or submit/publish without instruction.
-- Refreshed Console on 20 October confirms submission 5 (description/Data safety)
-  and submission 6 (Closed Alpha 11) Published. There is no public Production release.
-  Support replied in case 0-9999000042207 without pre-compliance clearance or
-  sandbox-purchase confirmation. The review it asked us to await is now finished.
-  See the latest checklist/report; do not duplicate the ticket or resubmit.
-  Paid-feature reviewer access remains unresolved; its saved No answer was not
-  changed. Production country selection is saved as EU27 + Switzerland, pending review. Read the newest checklist and
-  `docs/release-prep/play-console-final-review-2026-10-20.md` before acting.
+- Production **1.0.0 (11)** and **EU27 + Switzerland** are **In review**,
+  submission **7**, sent 20 October at 11:31 am (Console displayed time).
+  Publishing overview confirms the full rollout and 28-country addition.
+  Managed publishing is off; approval can publish automatically. No rejection
+  was shown. Public availability is not established. Do not cancel/resubmit.
+- Dashboard Production **4/5** awaits publication. Open testing **1/4** is
+  optional and is not a Production blocker. Prefer Publishing overview and
+  submission history over ambiguous Dashboard summary labels or Active status.
+- Closed Alpha submission 6 and listing/content submission 5 are Published.
+  Paid-feature reviewer access remains unresolved; no new declaration or
+  policy clearance was established. Do not duplicate the existing support case.
+- The 21 October AdMob ads-live email concerns ad serving, not Play approval,
+  public availability or confirmed app-specific AdMob readiness clearance.
+  See `RELEASE_CHECKLIST.md` checkpoint 2026-10-21 for evidence and next actions.
 - `main` is canonical; inspect HEAD/working tree before acting.
 - Current candidate is `1.0.0+11`, uploaded to Closed Alpha from source `e7caca6`.
   Stored upload/status receipts verify matching Google/local AAB hash and Alpha
@@ -60,9 +68,9 @@ skills without changing this repo again.
 - Luis accepted build 11 on his physical Android after uninstalling build 10
   and installing 11; everything works well by his report. No itemized repeat of
   Billing/Restore was stated; keep the explicit build-10 evidence separately.
-- Internal remains code 7. The earlier empty Production API read predates the
-  prepared release now awaiting submission.
-  Production access is granted; publication needs a separate owner instruction.
+- Internal remains code 7 in the last API record; it was not reread on 21 October.
+  Empty-Production and awaiting-submission records are historical. Luis authorized
+  the existing Production submission on 20 October; await review without resubmitting.
 - Preserve the exact code-11 AAB/hash in the master checklist/runbook. Do not
   rebuild merely to move tracks; changed binaries need an unused higher code.
 - Recorded website deployment is `e181347` (20 October), including terms and
@@ -79,7 +87,7 @@ skills without changing this repo again.
   does not make all Closed cohort purchases free.
 - Current gallery was verified live in Console/Chrome. Build 11 did not recapture
   screenshots (emulator full); UI gallery is unchanged. Build-11 general phone
-  acceptance is now owner-reported; final Production configuration remains open.
+  acceptance is now owner-reported; Production review remains pending.
 - Keep widgets and iOS work outside this Android release task unless a concrete
   regression requires investigation.
 
