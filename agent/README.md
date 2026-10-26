@@ -22,9 +22,10 @@
   publishing is off, so approval may publish it automatically. The public
   version remains **1.0.0 (11)** until publication is verified. See the app
   release checklist and publishing runbook for artifact and submission receipts.
-- **AdMob:** existing app linked to Google Play on 26 October; last observed
-  status Getting ready / Review in progress, limited ad serving. app-ads.txt
-  is verified; Policy centre showed no current issues. Await review outcome.
+- **AdMob:** Google AdMob approved the linked Android app on 26 October.
+  The live Apps page shows **Ready / Ad serving enabled** with two active ad
+  units, and Policy centre shows **No current issues**. The approval lifts the
+  ad-serving review limit; it is separate from Play's Production 1.0.1 review.
 
 Older dated checkpoints below are historical evidence, not current release
 instructions. Recheck live services before a new release operation.
