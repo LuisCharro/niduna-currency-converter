@@ -111,6 +111,19 @@ void main() {
       await tester.tap(find.text('Undo'));
       await tester.pumpAndSettle();
       expect(controller.state.selectedCodes, ['EUR', 'CHF']);
+      await tester.drag(
+        find.byKey(const Key('convert_row_EUR')),
+        const Offset(-300, 0),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('remove_EUR')));
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 4));
+      expect(find.text('Undo'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+      expect(find.byType(SnackBar), findsNothing);
+      expect(controller.state.selectedCodes, ['CHF']);
     },
   );
   testWidgets(

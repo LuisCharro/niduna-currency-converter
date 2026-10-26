@@ -73,6 +73,8 @@ class FavoritesScreen extends StatelessWidget {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
+          duration: const Duration(seconds: 5),
+          persist: false,
           content: Text(
             '${loc.msgFavoriteRemoved}: ${pair.base} → ${pair.quote}',
           ),

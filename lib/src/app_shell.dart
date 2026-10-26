@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'app_dependencies.dart';
 import 'core/monetization/monetization_controller.dart';
 import 'core/preferences/app_preferences.dart';
+import 'core/review/review_prompt_controller.dart';
 import 'core/theme/app_theme.dart';
+import 'features/convert/domain/convert_state.dart';
 import 'features/convert/data/convert_row_hint_store.dart';
 import 'features/convert/data/latest_rates_repository.dart';
 import 'features/convert/convert_screen.dart';
@@ -38,6 +40,7 @@ class _AppState extends State<AppShell> {
   SettingsController? _settingsController;
   MonetizationController? _monetization;
   AppPreferences? _preferences;
+  ReviewPromptController? _reviewPrompt;
   bool _ready = false;
   int _lastDefaultBaseRevision = 0;
 
@@ -66,6 +69,7 @@ class _AppState extends State<AppShell> {
     _monetization = deps.monetization;
     _chartsController = deps.chartsController;
     _settingsController = deps.settingsController;
+    _reviewPrompt = deps.reviewPrompt;
 
     if (mounted) {
       setState(() => _ready = true);
@@ -107,6 +111,7 @@ class _AppState extends State<AppShell> {
         monetization: _monetization!,
         onNavigateToSettings: () => setState(() => _currentIndex = 3),
         hintStore: _rowHintStore,
+        onAmountCommitted: _onAmountCommitted,
       ),
       FavoritesScreen(
         favoritesStore: _favoritesStore,
@@ -166,6 +171,16 @@ class _AppState extends State<AppShell> {
       case AppThemeMode.system:
         return MediaQuery.platformBrightnessOf(context) == Brightness.dark;
     }
+  }
+
+  void _onAmountCommitted() {
+    final state = _controller?.state;
+    final hasRates =
+        state != null &&
+        state.hasQuotes &&
+        (state.status == ConvertStatus.fresh ||
+            state.status == ConvertStatus.cached);
+    unawaited(_reviewPrompt?.onConversionCompleted(hasRates: hasRates));
   }
 
   Future<void> _onClearCache() async {

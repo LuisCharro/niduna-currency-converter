@@ -154,4 +154,25 @@ void main() {
       expect(find.textContaining('support@honestfern.com'), findsWidgets);
     });
   });
+
+  group('Rate the app tile', () {
+    testWidgets('opens the Google Play listing', (tester) async {
+      final fake = _FakeUrlLauncher();
+      UrlLauncherPlatform.instance = fake;
+      await pumpSettings(tester);
+
+      await tester.dragUntilVisible(
+        find.text('Rate the app'),
+        find.byType(Scrollable),
+        const Offset(0, -300),
+      );
+      await tester.tap(find.text('Rate the app'));
+      await tester.pumpAndSettle();
+
+      expect(
+        fake.lastLaunchedUrl,
+        'https://play.google.com/store/apps/details?id=com.honestfern.currency_converter',
+      );
+    });
+  });
 }

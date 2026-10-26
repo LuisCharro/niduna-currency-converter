@@ -1,5 +1,29 @@
 # Google Play publishing runbook
 
+## 1.0.1 Closed-test candidate — 2026-10-26
+
+Luis authorized committing the reviewed changes on main and uploading
+1.0.1 (12) to existing Closed Alpha for his Android acceptance. Production
+promotion is NOT authorized; wait for his device review and next instruction.
+This candidate fixes five-second dismissal of removal notices in Convert and
+Favorites, adds a Settings store-rating link and a locally gated in-app review
+request. Review counters stay on device (3 active days, 5 days since first use,
+120-day interval, maximum 3 requests). No store-listing or tester changes.
+
+Live reads before upload: Production 1.0.0 (11), Alpha 1.0.0 (11), Internal 7;
+Publishing overview has no pending changes. Production publication on
+22 October 07:27 and public Play availability were confirmed in this session.
+AdMob was linked to the existing Play listing and is in review. The website
+launch update is live. Older review/Coming Soon checkpoints below are historical.
+
+Candidate artifacts and upload receipts belong in ignored
+`.tmp/play-candidate/20261026-build12/`. Phone validation will use the Play
+update over the existing installation, preserving settings/favorites/purchases.
+No emulator is connected; no fresh screenshot gallery is required for this
+release, and no store assets are being replaced. Run app checks and build the
+signed release AAB with the existing release-safe config and real AdMob IDs.
+
+
 ## Live status confirmed — 2026-10-21
 
 Production **1.0.0 (11)** / **EU27 + Switzerland** remains **In review**:

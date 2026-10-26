@@ -554,4 +554,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get chartDataHelpTitle => 'À propos des données du graphique';
+
+  @override
+  String get labelRateApp => 'Noter l\'app';
+
+  @override
+  String get rateAppSubtitle =>
+      'Elle vous plaît ? Une note sur Google Play aide beaucoup';
 }

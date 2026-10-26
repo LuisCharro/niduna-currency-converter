@@ -114,6 +114,19 @@ void main() {
       await tester.tap(find.text('Undo'));
       await tester.pumpAndSettle();
       expect(store.pairs.map((p) => p.quote), ['EUR', 'GBP']);
+      await tester.drag(
+        find.byKey(const Key('open_USD-GBP')),
+        const Offset(-150, 0),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('remove_USD-GBP')));
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 4));
+      expect(find.text('Undo'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+      expect(find.byType(SnackBar), findsNothing);
+      expect(store.isFavorite('USD', 'GBP'), false);
       await tester.pumpWidget(const SizedBox());
       controller.dispose();
       store.dispose();

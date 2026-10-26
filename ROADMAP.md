@@ -678,7 +678,7 @@ and real user feedback (Reddit, App Store reviews, feature comparison).
 | **Home screen widget** (Android + iOS) | VERY HIGH | Medium | #1 passive engagement driver. Users see rates without opening the app. CoinCalc lists widget as a key feature. Drives daily impressions. |
 | **Built-in calculator** (+-*/ on amount field) | HIGH | Low | Travelers adding tax/tip while converting. Reddit users specifically mention this. Minor code change, major UX improvement. |
 | **Auto-sort favorites by usage frequency** | HIGH | Low | CoinCalc users specifically praise this. Small effort, outsized impact on reducing friction for repeat use. |
-| **Rate trend arrows** on Convert rows (up/down/flat vs yesterday) | HIGH | Low | Quick glance signal. Already have cached historical data. Users trust apps that show rate movement. |
+| **Rate trend arrows** on Convert rows (up/down/flat vs yesterday) | HIGH | Low | Quick glance signal. Already have cached historical data. Users trust apps that show rate movement. Fiat done; crypto rows still lack the badge, which is feasible via fawazahmed0 daily snapshots and targeted for 1.1 (see B16 in `docs/superpowers/plans/2026-09-29-ux-review-and-polish-plan.md`). |
 
 ### Tier B — Good value, moderate effort
 

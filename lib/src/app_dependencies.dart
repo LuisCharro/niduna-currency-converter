@@ -15,6 +15,9 @@ import 'core/rates/multi_provider_rates_client.dart';
 import 'core/rates/rates_service.dart';
 import 'core/rates/clients/frankfurter_client.dart';
 import 'core/rates/cache/shared_preferences_rates_cache.dart';
+import 'core/review/review_prompt_controller.dart';
+import 'core/review/review_prompt_store.dart';
+import 'core/review/review_service.dart';
 import 'features/convert/data/convert_row_hint_store.dart';
 import 'features/convert/data/frankfurter_latest_rates_client.dart';
 import 'features/convert/data/latest_rates_cache.dart';
@@ -38,6 +41,7 @@ class AppDependencies {
     required this.monetization,
     required this.chartsController,
     required this.settingsController,
+    required this.reviewPrompt,
   });
 
   final AppPreferences preferences;
@@ -47,6 +51,7 @@ class AppDependencies {
   final MonetizationController monetization;
   final ChartsController chartsController;
   final SettingsController settingsController;
+  final ReviewPromptController reviewPrompt;
 
   /// Builds every service/controller `AppShell` needs on startup.
   ///
@@ -129,6 +134,11 @@ class AppDependencies {
       adConsent: AdConsentManager.instance,
       onClearCache: onClearCache,
     );
+    final reviewPrompt = ReviewPromptController(
+      store: ReviewPromptStore(prefs),
+      service: InAppReviewService(),
+    );
+    unawaited(reviewPrompt.recordLaunch());
 
     return AppDependencies(
       preferences: preferences,
@@ -138,6 +148,7 @@ class AppDependencies {
       monetization: monetization,
       chartsController: chartsController,
       settingsController: settingsController,
+      reviewPrompt: reviewPrompt,
     );
   }
 }

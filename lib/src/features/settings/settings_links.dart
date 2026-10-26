@@ -14,6 +14,13 @@ class SettingsLinks {
     'https://honestfern.com/currency-converter/privacy/',
   );
   static const String feedbackEmailAddress = 'support@honestfern.com';
+  static final Uri _storeListingUri = Uri.parse(
+    'https://play.google.com/store/apps/details?id=com.honestfern.currency_converter',
+  );
+
+  Future<void> openStoreListing() async {
+    await launchUrl(_storeListingUri, mode: LaunchMode.externalApplication);
+  }
 
   Future<void> openPrivacyPolicy() async {
     await launchUrl(_privacyPolicyUri, mode: LaunchMode.externalApplication);

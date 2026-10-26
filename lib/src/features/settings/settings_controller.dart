@@ -54,6 +54,8 @@ class SettingsController extends ChangeNotifier {
   Future<void> sendFeedback(BuildContext context, String appVersion) =>
       _links.sendFeedback(context, appVersion);
 
+  Future<void> rateApp() => _links.openStoreListing();
+
   Future<void> openPrivacyOptions() => adConsent.showPrivacyOptions();
 
   void requestClearCache(BuildContext context) =>

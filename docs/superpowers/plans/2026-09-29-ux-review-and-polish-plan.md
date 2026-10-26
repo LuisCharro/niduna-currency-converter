@@ -77,6 +77,7 @@ shelf looks empty in these screenshots only.
     currencies should render without decimals.
 16. **Crypto rows have no trend badge** while fiat rows do — either show it
     or align the layout so rows don't look inconsistent.
+    *Feasible, deferred to 1.1. See "B16 feasibility" below.*
 
 ## C. Store content
 
@@ -108,6 +109,38 @@ shelf looks empty in these screenshots only.
   Store directly. Listing still claims "follows your system setting" (now
   true) and "Settings links to our contact page" (now true: Send feedback).
 - D21 (`CLAUDE.md` 0.x.x version rule vs 1.0.0 on Play) still open.
+
+## B16 feasibility — 2026-10-26 (deferred to 1.1)
+
+Crypto trend badges are **feasible**; they are missing only because nothing
+fetches a previous-day crypto price.
+
+- **Why rows have no badge today:** the badge compares `rate` with
+  `previousRate` (`features/convert/models/trend.dart`). Previous rates come
+  only from `fetchPreviousRates`, which `MultiProviderLatestRatesRepository`
+  delegates to the fiat client (Frankfurter). Crypto codes never get a
+  `previousRate`, so `shouldShowTrend` hides the badge.
+- **Data is available:** the `release_safe` crypto provider is fawazahmed0,
+  which publishes dated daily snapshots
+  (`currency-api@{date}/v1/currencies/usd.min.json`). The release build
+  already uses them for crypto charts (`FawazahmedCryptoUsdHistoryClient`).
+  One extra cached request for yesterday's snapshot is enough.
+- **Implementation outline:** fetch yesterday's crypto USD prices and normalize
+  them against the fiat `previousRates` (same `RateNormalizer` path as the
+  latest rates); merge them into `snapshot.previousRates`; cache them with the
+  latest snapshot. For consistency, apply the same to Favorites trend rows
+  and the home-screen widget's `changePercent`.
+- **Caveats:**
+  - Crypto trades 7 days a week but fiat only on business days. With a fiat
+    base, a weekend crypto % mixes the real crypto move with Friday's fiat
+    rate. This is acceptable for an indicative badge.
+  - The change is day-over-day from daily snapshots, not a rolling 24h
+    change like an exchange shows, which matches how the fiat badge works.
+- **Effort:** medium-low; touches the data/cache layer (check
+  `ARCHITECTURE.md` "Planned Refactor" first, since `features/convert/data/`
+  is mid-migration).
+- **Decision:** kept out of 1.0.1 (SnackBar Undo fix + in-app review prompt)
+  to keep that release small; target 1.1.
 
 ## Suggested batches
 

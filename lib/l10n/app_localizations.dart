@@ -1087,6 +1087,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About chart data'**
   String get chartDataHelpTitle;
+
+  /// Rate the app tile title in Settings About section
+  ///
+  /// In en, this message translates to:
+  /// **'Rate the app'**
+  String get labelRateApp;
+
+  /// Rate the app tile subtitle in Settings About section
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoying it? A rating on Google Play helps a lot'**
+  String get rateAppSubtitle;
 }
 
 class _AppLocalizationsDelegate

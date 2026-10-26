@@ -19,6 +19,7 @@ class ConvertScreen extends StatelessWidget {
     required this.monetization,
     required this.onNavigateToSettings,
     this.hintStore,
+    this.onAmountCommitted,
     super.key,
   });
 
@@ -26,6 +27,9 @@ class ConvertScreen extends StatelessWidget {
   final MonetizationController monetization;
   final VoidCallback onNavigateToSettings;
   final ConvertRowHintStore? hintStore;
+
+  /// Called after the user confirms a new amount in the amount sheet.
+  final VoidCallback? onAmountCommitted;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +46,10 @@ class ConvertScreen extends StatelessWidget {
                 decimalPlaces: controller.decimalPlaces,
                 hintStore: hintStore,
                 onRefresh: controller.refresh,
-                onAmountChanged: controller.setAmountText,
+                onAmountChanged: (text) {
+                  controller.setAmountText(text);
+                  onAmountCommitted?.call();
+                },
                 onSelectBase: controller.setBase,
                 onToggleCode: (code) => _toggleCurrency(context, code),
                 onToggleFavorite: controller.tryToggleFavorite,
@@ -75,6 +82,8 @@ class ConvertScreen extends StatelessWidget {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
+          duration: const Duration(seconds: 5),
+          persist: false,
           content: Text(loc.currencyRemoved(code)),
           action: SnackBarAction(
             label: loc.btnUndo,
