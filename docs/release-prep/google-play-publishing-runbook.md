@@ -1,5 +1,34 @@
 # Google Play publishing runbook
 
+## Closed Alpha 1.0.1 (12) submitted — 2026-10-26
+
+Source commit `272e07d` is committed and pushed on main. Full checks passed:
+Flutter analysis clean, 486 tests passed. Signed release AAB uses release_safe,
+APP_DEV_MODE=false, real AdMob IDs and ADMOB_USE_TEST_ADS=false. Manifest
+confirms package com.honestfern.currency_converter, version 1.0.1, code 12;
+upload certificate matches the prior code-11 certificate.
+
+AAB SHA-256: `da906b91c1b07609577c9c5b864ff1e323985ad588b4d98f8ccec7660bc5e127`.
+Google's uploaded hash matches. Closed Alpha commit and fresh API verification
+succeeded. Console Publishing overview confirms Changes in review for exactly
+Closed testing - Alpha / 1.0.1 (12) / Start full rollout. Quick checks were
+running (up to 14 minutes displayed); tester installation is not yet confirmed.
+Production remains 1.0.0 (11); no Production update was submitted.
+
+Receipts: `.tmp/play-candidate/20261026-build12/` includes candidate.json,
+manifest.xml, signature.txt, build.log, plan.json, upload.json, upload.log and
+status-after.json. Preserve the exact AAB for promotion only after Luis's
+phone acceptance and separate Production authorization. No tester lists,
+store assets, prices or declarations were changed.
+
+Next: once Google publishes this Closed update, use the enrolled Google account
+on Android and update from Play (do not uninstall first). Check Settings shows
+1.0.1, both removal notices disappear after 5 seconds, Undo works, saved
+currencies/favorites/settings and purchased unlocks remain, and Rate the app
+opens the right listing. Automated in-app rating requests have local timing
+and Google's quota; a missing dialog is not itself a failure.
+
+
 ## 1.0.1 Closed-test candidate — 2026-10-26
 
 Luis authorized committing the reviewed changes on main and uploading
