@@ -1,6 +1,34 @@
 # AGENTS.md
 
-## Latest live status — 2026-10-21
+## Current release status — 2026-10-26
+
+- **Public Android release:** Currency Converter **1.0.0 (11)** is live on
+  Google Play in **EU27 + Switzerland**. Submission 7 was published on
+  **22 October 2026 at 07:27** (Console time); the public listing was verified
+  on 26 October. This supersedes older In review / Coming Soon checkpoints.
+- **Website:** the launch copy, availability badges and Google Play download
+  links are deployed at https://honestfern.com/ and
+  https://honestfern.com/currency-converter/. Site commit **`8773a22`** was
+  deployed on **26 October** via the existing VPS script. All five HTML
+  routes, CSS, OG image, app-ads.txt and security.txt returned HTTP 200 with
+  bytes matching the local release. Nginx and OpenClaw remained active.
+  Later documentation commits are not new website deployments.
+- **Next Android candidate:** **1.0.1 (12)** from app source **`272e07d`** was
+  submitted to **Closed Alpha** on 26 October. The last observed Console
+  state was Changes in review / quick checks running; tester availability
+  and Luis's phone acceptance are not yet confirmed. Production stays at 11.
+  Preserve the uploaded AAB; do not promote to Production without Luis's
+  separate approval after testing. The app RELEASE_CHECKLIST.md and publishing
+  runbook own the artifact hash, receipts and phone test checklist.
+- **AdMob:** existing app linked to Google Play on 26 October; last observed
+  status Getting ready / Review in progress, limited ad serving. app-ads.txt
+  is verified; Policy centre showed no current issues. Await review outcome.
+
+Older dated checkpoints below are historical evidence, not current release
+instructions. Recheck live services before a new release operation.
+
+
+## Historical: Latest live status — 2026-10-21
 
 Production submission **7**, **1.0.0 (11)**, remains **In review** for
 **EU27 + Switzerland**. Managed publishing is off; approval can publish
@@ -9,7 +37,7 @@ testing, not a blocker. The AdMob ads-live email is separate from Play approval.
 Do not cancel/resubmit or create an Open release to complete the counters.
 See the current-state section and master checklist's 2026-10-21 checkpoint.
 
-## Latest Production submission — 2026-10-20
+## Historical: Latest Production submission — 2026-10-20
 
 Production **1.0.0 (11)** and **EU27 + Switzerland** country additions were
 submitted with Luis's authorization. Refreshed Console confirms **Changes in
@@ -45,7 +73,7 @@ This repo syncs whole shared skill bundles. When the shared skills repo
 improves, rerun `./agent/sync-shared-skills.sh` to pick up new or improved
 skills without changing this repo again.
 
-## Current state (reviewed 2026-10-21)
+## Historical: Current state (reviewed 2026-10-21)
 
 - Production **1.0.0 (11)** and **EU27 + Switzerland** are **In review**,
   submission **7**, sent 20 October at 11:31 am (Console displayed time).

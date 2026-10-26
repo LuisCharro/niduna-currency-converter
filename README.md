@@ -1,6 +1,34 @@
 # Currency Converter
 
-## Latest Production submission — 2026-10-20
+## Current release status — 2026-10-26
+
+- **Public Android release:** Currency Converter **1.0.0 (11)** is live on
+  Google Play in **EU27 + Switzerland**. Submission 7 was published on
+  **22 October 2026 at 07:27** (Console time); the public listing was verified
+  on 26 October. This supersedes older In review / Coming Soon checkpoints.
+- **Website:** the launch copy, availability badges and Google Play download
+  links are deployed at https://honestfern.com/ and
+  https://honestfern.com/currency-converter/. Site commit **`8773a22`** was
+  deployed on **26 October** via the existing VPS script. All five HTML
+  routes, CSS, OG image, app-ads.txt and security.txt returned HTTP 200 with
+  bytes matching the local release. Nginx and OpenClaw remained active.
+  Later documentation commits are not new website deployments.
+- **Next Android candidate:** **1.0.1 (12)** from app source **`272e07d`** was
+  submitted to **Closed Alpha** on 26 October. The last observed Console
+  state was Changes in review / quick checks running; tester availability
+  and Luis's phone acceptance are not yet confirmed. Production stays at 11.
+  Preserve the uploaded AAB; do not promote to Production without Luis's
+  separate approval after testing. The app RELEASE_CHECKLIST.md and publishing
+  runbook own the artifact hash, receipts and phone test checklist.
+- **AdMob:** existing app linked to Google Play on 26 October; last observed
+  status Getting ready / Review in progress, limited ad serving. app-ads.txt
+  is verified; Policy centre showed no current issues. Await review outcome.
+
+Older dated checkpoints below are historical evidence, not current release
+instructions. Recheck live services before a new release operation.
+
+
+## Historical: Latest Production submission — 2026-10-20
 
 Production **1.0.0 (11)** and **EU27 + Switzerland** country additions were
 submitted with Luis's authorization. Refreshed Console confirms **Changes in
@@ -17,7 +45,7 @@ Privacy-first Flutter currency converter for the Honest Fern portfolio.
 
 **Android MVP release** | Android first, iOS later | No account, no first-party analytics, no backend.
 
-## Current release checkpoint — 2026-10-20
+## Historical: Current release checkpoint — 2026-10-20
 
 `1.0.0+11` is the current Closed Alpha candidate. Its recorded upload and
 Google/local artifact hashes match. Luis reports a fresh installation on his
@@ -208,7 +236,7 @@ flutter pub get
 | `./scripts/pub_get.sh` | fetch dependencies |
 | `./scripts/clean-deep-files.sh` | deep clean build artifacts |
 
-## Current phase (reviewed 2026-09-30)
+## Historical: Current phase (reviewed 2026-09-30)
 
 Read `RELEASE_CHECKLIST.md` **Latest operational truth — 2026-09-30** first,
 then `docs/release-prep/google-play-publishing-runbook.md`. Internal and Closed

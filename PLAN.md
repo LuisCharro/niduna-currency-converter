@@ -1,8 +1,9 @@
 # Currency Converter — Development Plan
 
-> Current release resume: `RELEASE_CHECKLIST.md` → **Resume checkpoint — 2026-09-10**.
-> Play internal code2/products already exist; Billing hardening/testing and B4/B8
-> remain. This document is product/history reference, not the next-action list.
+> Current release resume: `RELEASE_CHECKLIST.md` → **Current release status — 2026-10-26**.
+> Production 1.0.0 (11) is public; 1.0.1 (12) is submitted to Closed Alpha
+> pending Google review and owner phone acceptance. Historical plans below
+> do not override the master checklist.
 
 
 > **Based on:** DEFINITIONS.md (2026-05-22)
