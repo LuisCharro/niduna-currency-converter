@@ -26,6 +26,7 @@
   The live Apps page shows **Ready / Ad serving enabled** with two active ad
   units, and Policy centre shows **No current issues**. The approval lifts the
   ad-serving review limit; it is separate from Play's Production 1.0.1 review.
+  See `ADMOB_PENDING.md` for today's setup audit and conditional follow-up.
 
 Older dated checkpoints below are historical evidence, not current release
 instructions. Recheck live services before a new release operation.
