@@ -13,13 +13,15 @@
   routes, CSS, OG image, app-ads.txt and security.txt returned HTTP 200 with
   bytes matching the local release. Nginx and OpenClaw remained active.
   Later documentation commits are not new website deployments.
-- **Next Android candidate:** **1.0.1 (12)** from app source **`272e07d`** was
-  submitted to **Closed Alpha** on 26 October. The last observed Console
-  state was Changes in review / quick checks running; tester availability
-  and Luis's phone acceptance are not yet confirmed. Production stays at 11.
-  Preserve the uploaded AAB; do not promote to Production without Luis's
-  separate approval after testing. The app RELEASE_CHECKLIST.md and publishing
-  runbook own the artifact hash, receipts and phone test checklist.
+- **Android update in review:** **1.0.1 (12)** from app source **`272e07d`**
+  was published to Closed Alpha on 26 October; Luis installed it through Play
+  and reported that it works. The exact tested bundle was promoted to the
+  existing 28-country Production track with a 100% rollout and the en-GB note
+  “Small usability improvements and minor fixes.” Console Submission **9**
+  shows **In review**, submitted 26 October at 15:34 (Console time). Managed
+  publishing is off, so approval may publish it automatically. The public
+  version remains **1.0.0 (11)** until publication is verified. See the app
+  release checklist and publishing runbook for artifact and submission receipts.
 - **AdMob:** existing app linked to Google Play on 26 October; last observed
   status Getting ready / Review in progress, limited ad serving. app-ads.txt
   is verified; Policy centre showed no current issues. Await review outcome.

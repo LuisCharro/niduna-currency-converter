@@ -13,19 +13,48 @@
   routes, CSS, OG image, app-ads.txt and security.txt returned HTTP 200 with
   bytes matching the local release. Nginx and OpenClaw remained active.
   Later documentation commits are not new website deployments.
-- **Next Android candidate:** **1.0.1 (12)** from app source **`272e07d`** was
-  submitted to **Closed Alpha** on 26 October. The last observed Console
-  state was Changes in review / quick checks running; tester availability
-  and Luis's phone acceptance are not yet confirmed. Production stays at 11.
-  Preserve the uploaded AAB; do not promote to Production without Luis's
-  separate approval after testing. The app RELEASE_CHECKLIST.md and publishing
-  runbook own the artifact hash, receipts and phone test checklist.
+- **Android update in review:** **1.0.1 (12)** from app source **`272e07d`**
+  was published to Closed Alpha on 26 October; Luis installed it through Play
+  and reported that it works. The exact tested bundle was promoted to the
+  existing 28-country Production track with a 100% rollout and the en-GB note
+  “Small usability improvements and minor fixes.” Console Submission **9**
+  shows **In review**, submitted 26 October at 15:34 (Console time). Managed
+  publishing is off, so approval may publish it automatically. The public
+  version remains **1.0.0 (11)** until publication is verified. See the app
+  release checklist and publishing runbook for artifact and submission receipts.
 - **AdMob:** existing app linked to Google Play on 26 October; last observed
   status Getting ready / Review in progress, limited ad serving. app-ads.txt
   is verified; Policy centre showed no current issues. Await review outcome.
 
 Older dated checkpoints below are historical evidence, not current release
 instructions. Recheck live services before a new release operation.
+
+## Production 1.0.1 (12) submitted — 2026-10-26
+
+Luis confirmed installing the Play-distributed Closed Alpha 1.0.1 on his real
+Android phone and reported that it works, then explicitly authorized the
+Production submission. Play Console promoted the existing bundle code 12 to
+the 28 already-targeted countries at 100% rollout. Release notes (en-GB):
+“Small usability improvements and minor fixes.” No rebuild or second upload.
+The bundle SHA-256 remains
+`da906b91c1b07609577c9c5b864ff1e323985ad588b4d98f8ccec7660bc5e127`.
+
+The Console send dialog closed without submitting the saved one-change batch.
+A fresh reload still showed Not yet submitted, and Submission activity ended at
+8. The authorized API fallback checked the Production track body, code-12
+bundle hash and exact 28-country set, validated the edit, then committed with
+`ERROR_IF_IN_REVIEW`. Receipt:
+`.tmp/play-production-20261026-build12/api-commit.json` (commit
+`10317000013248754317`). A fresh Console read confirmed **Changes in review**
+for only Production 1.0.1 (12) / Start full rollout. Submission **9** is
+**In review**, submitted **26 October at 15:34** (Console time). Managed
+publishing is off; Google approval may publish automatically. Verify Submission
+9 reaches Published and Production latest release shows 1.0.1 (12) before
+announcing public availability or updating the website's version metadata.
+
+Play Console account **App publishing updates** emails were turned on for the
+account's sole app, to the registered Google account address. This is a
+notification preference, not proof of publication; check Submission activity.
 
 
 ## Closed Alpha 1.0.1 (12) submitted — 2026-10-26
