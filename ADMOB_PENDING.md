@@ -49,5 +49,6 @@ dashboard. Firebase linking for Ads ARPU reporting is also optional.
   app expands to US states or iOS, review those regions' messaging and the
   iOS IDFA flow separately.
 
-Google Play's pending Production 1.0.1 review is separate from AdMob's Ready
-status; track it in `RELEASE_CHECKLIST.md` and Play Console Submission 9.
+Google Play Production 1.0.1 (12) was published on 26 October at 15:55
+(Console time), as verified on 27 October. Its release is separate from
+AdMob's Ready status; see `RELEASE_CHECKLIST.md` and Play Console Submission 9.

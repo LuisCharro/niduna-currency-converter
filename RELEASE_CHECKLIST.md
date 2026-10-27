@@ -1,11 +1,12 @@
 # Release Checklist — Path to Google Play Store
 
-## Current release status — 2026-10-26
+## Current release status — 2026-10-27
 
-- **Public Android release:** Currency Converter **1.0.0 (11)** is live on
-  Google Play in **EU27 + Switzerland**. Submission 7 was published on
-  **22 October 2026 at 07:27** (Console time); the public listing was verified
-  on 26 October. This supersedes older In review / Coming Soon checkpoints.
+- **Public Android release:** Currency Converter **1.0.1 (12)** is live on
+  Google Play in **EU27 + Switzerland**. Console Submission **9** shows
+  **Published on 26 October 2026 at 15:55** (Console time), with a full
+  Production rollout. Verified in Submission activity and the Production
+  track on 27 October. The previous public release was 1.0.0 (11).
 - **Website:** the launch copy, availability badges and Google Play download
   links are deployed at https://honestfern.com/ and
   https://honestfern.com/currency-converter/. Site commit **`8773a22`** was
@@ -13,25 +14,32 @@
   routes, CSS, OG image, app-ads.txt and security.txt returned HTTP 200 with
   bytes matching the local release. Nginx and OpenClaw remained active.
   Later documentation commits are not new website deployments.
-- **Android update in review:** **1.0.1 (12)** from app source **`272e07d`**
-  was published to Closed Alpha on 26 October; Luis installed it through Play
-  and reported that it works. The exact tested bundle was promoted to the
-  existing 28-country Production track with a 100% rollout and the en-GB note
-  “Small usability improvements and minor fixes.” Console Submission **9**
-  shows **In review**, submitted 26 October at 15:34 (Console time). Managed
-  publishing is off, so approval may publish it automatically. The public
-  version remains **1.0.0 (11)** until publication is verified. See the app
-  release checklist and publishing runbook for artifact and submission receipts.
+- **Release evidence:** the published 1.0.1 (12) bundle is from app source
+  **`272e07d`** and is the same bundle Luis installed and accepted from Closed
+  Alpha. Submission 9 was sent on 26 October at 15:34 and published at 15:55
+  (Console time); the en-GB note is “Small usability improvements and minor
+  fixes.” See the release checklist and publishing runbook for the hash and
+  receipts. [Play Console recommendations plan](docs/superpowers/plans/2026-10-27-play-console-recommendations-plan.md)
+  covers the four observations on this release.
 - **AdMob:** Google AdMob approved the linked Android app on 26 October.
   The live Apps page shows **Ready / Ad serving enabled** with two active ad
   units, and Policy centre shows **No current issues**. The approval lifts the
-  ad-serving review limit; it is separate from Play's Production 1.0.1 review.
+  ad-serving review limit; it is separate from Play's Production release review.
   See `ADMOB_PENDING.md` for today's setup audit and conditional follow-up.
 
 Older dated checkpoints below are historical evidence, not current release
 instructions. Recheck live services before a new release operation.
 
-## Production 1.0.1 (12) submitted — 2026-10-26
+## Production 1.0.1 (12) published — verified 2026-10-27
+
+Submission 9 shows **Published on 26 October 2026 at 15:55** (Console time).
+Its sole change is Production 1.0.1 (12), Start full rollout. The Production
+track shows the same version active across the existing 28 countries. This
+supersedes the historical submission and Closed Alpha checkpoints below.
+The website's `softwareVersion` metadata still says 1.0.0; its update is
+tracked separately in the site repository's `PENDING.md`.
+
+## Historical: Production 1.0.1 (12) submitted — 2026-10-26
 
 Luis confirmed installing the Play-distributed Closed Alpha 1.0.1 on his real
 Android phone and reported that it works, then explicitly authorized the
@@ -59,7 +67,7 @@ account's sole app, to the registered Google account address. This is a
 notification preference, not proof of publication; check Submission activity.
 
 
-## Closed Alpha 1.0.1 (12) submitted — 2026-10-26
+## Historical: Closed Alpha 1.0.1 (12) submitted — 2026-10-26
 
 Source commit `272e07d` is committed and pushed on main. Full checks passed:
 Flutter analysis clean, 486 tests passed. Signed release AAB uses release_safe,
@@ -88,7 +96,7 @@ opens the right listing. Automated in-app rating requests have local timing
 and Google's quota; a missing dialog is not itself a failure.
 
 
-## 1.0.1 Closed-test candidate — 2026-10-26
+## Historical: 1.0.1 Closed-test candidate — 2026-10-26
 
 Luis authorized committing the reviewed changes on main and uploading
 1.0.1 (12) to existing Closed Alpha for his Android acceptance. Production

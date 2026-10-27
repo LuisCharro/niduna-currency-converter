@@ -1,11 +1,12 @@
 # AGENTS.md
 
-## Current release status — 2026-10-26
+## Current release status — 2026-10-27
 
-- **Public Android release:** Currency Converter **1.0.0 (11)** is live on
-  Google Play in **EU27 + Switzerland**. Submission 7 was published on
-  **22 October 2026 at 07:27** (Console time); the public listing was verified
-  on 26 October. This supersedes older In review / Coming Soon checkpoints.
+- **Public Android release:** Currency Converter **1.0.1 (12)** is live on
+  Google Play in **EU27 + Switzerland**. Console Submission **9** shows
+  **Published on 26 October 2026 at 15:55** (Console time), with a full
+  Production rollout. Verified in Submission activity and the Production
+  track on 27 October. The previous public release was 1.0.0 (11).
 - **Website:** the launch copy, availability badges and Google Play download
   links are deployed at https://honestfern.com/ and
   https://honestfern.com/currency-converter/. Site commit **`8773a22`** was
@@ -13,19 +14,17 @@
   routes, CSS, OG image, app-ads.txt and security.txt returned HTTP 200 with
   bytes matching the local release. Nginx and OpenClaw remained active.
   Later documentation commits are not new website deployments.
-- **Android update in review:** **1.0.1 (12)** from app source **`272e07d`**
-  was published to Closed Alpha on 26 October; Luis installed it through Play
-  and reported that it works. The exact tested bundle was promoted to the
-  existing 28-country Production track with a 100% rollout and the en-GB note
-  “Small usability improvements and minor fixes.” Console Submission **9**
-  shows **In review**, submitted 26 October at 15:34 (Console time). Managed
-  publishing is off, so approval may publish it automatically. The public
-  version remains **1.0.0 (11)** until publication is verified. See the app
-  release checklist and publishing runbook for artifact and submission receipts.
+- **Release evidence:** the published 1.0.1 (12) bundle is from app source
+  **`272e07d`** and is the same bundle Luis installed and accepted from Closed
+  Alpha. Submission 9 was sent on 26 October at 15:34 and published at 15:55
+  (Console time); the en-GB note is “Small usability improvements and minor
+  fixes.” See the release checklist and publishing runbook for the hash and
+  receipts. [Play Console recommendations plan](docs/superpowers/plans/2026-10-27-play-console-recommendations-plan.md)
+  covers the four observations on this release.
 - **AdMob:** Google AdMob approved the linked Android app on 26 October.
   The live Apps page shows **Ready / Ad serving enabled** with two active ad
   units, and Policy centre shows **No current issues**. The approval lifts the
-  ad-serving review limit; it is separate from Play's Production 1.0.1 review.
+  ad-serving review limit; it is separate from Play's Production release review.
 
 Older dated checkpoints below are historical evidence, not current release
 instructions. Recheck live services before a new release operation.
@@ -152,19 +151,16 @@ For the current truth on Favorites nav visibility, widgets, trend arrows,
 and chart-comparison status, see
 `docs/superpowers/plans/2026-06-13-local-feature-status-harmonization.md`.
 
-## Versioning policy (first public release)
+## Android versioning and release
 
-- Current `pubspec.yaml`: `1.0.0+11` (2026-10-20: Sources-page copy only), uploaded to
-  Closed Alpha with Luis's approval; general owner phone acceptance reported.
-  See runbook for its scope and remaining Production gates.
-  Build 10 was available/accepted before that upload; code 11 is now the candidate.
-  Internal remains 7; Production promotion is separate.
-- Code 11 is already used. Any changed binary needs a new unused higher code.
-- Keep the candidate's version name `1.0.0`; code 8 contains the Convert
-  persistence, currency picker, portrait and swipe-action improvements.
-- Promote the tested `1.0.0` artifact to Production; do not rebuild an
-  identical binary merely to change its version name.
-- Promoting the same artifact between tracks does not require rebuilding it.
+- Current `pubspec.yaml` and published Production release are `1.0.1+12`.
+  Submission 9 was published on 26 October 2026 at 15:55 (Console time).
+- Any changed binary needs a new, unused, higher version code; check Play's
+  bundles before choosing one. Pick the version name for the actual changes.
+- Promote the exact tested artifact between tracks; promotion does not require
+  rebuilding. A future Production submission requires its own authorization.
+- See `RELEASE_CHECKLIST.md` and the app publishing runbook for the artifact
+  hash, release evidence and current Play status.
 
 ## Read first
 
