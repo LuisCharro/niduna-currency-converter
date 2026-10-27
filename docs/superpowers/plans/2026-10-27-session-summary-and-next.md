@@ -14,7 +14,13 @@
   rollout). Luis treats this as the **first "valid" public version**.
   Source commit `272e07d`; see `RELEASE_CHECKLIST.md` for hash and receipts.
 - **AdMob** is Ready / ad serving enabled; Policy centre clean
-  (`ADMOB_PENDING.md`).
+  (`ADMOB_PENDING.md`). On 27 October the app-specific maximum ad content
+  rating was set to **General Audiences (G)** with Luis's approval. Observe
+  impressions and revenue after this change; the prior MA setting applied at
+  account level, which was not changed.
+- **Website metadata** was updated to 1.0.1 and deployed on 27 October. The
+  live app page's metadata and Play links were verified; see the site repo's
+  `PENDING.md` for the deployment receipt.
 - Two plans exist for later work:
   - [Play Console recommendations](2026-10-27-play-console-recommendations-plan.md)
     — edge-to-edge, deprecated edge-to-edge APIs, large-screen/orientation,
@@ -24,15 +30,13 @@
 
 ## Recommended order (agreed with Luis on 2026-10-27)
 
-1. **Observe 1.0.1 for 1–2 weeks — change nothing.** Read Play Console
+1. **Observe 1.0.1 for 1–2 weeks before planned app changes.** Read Play Console
    Android vitals (crashes, ANRs), ratings/reviews and the pre-launch report;
    check AdMob requests, impressions and consent rate look normal. Record
    findings in the release checklist. This is the evidence for "the app is
    mature".
-2. **Website metadata (small, site repo).** In `/Users/luis/Niduna/niduna-site`
-   update the App page `softwareVersion` 1.0.0 → 1.0.1 and the stale
-   "Android update in review" status in `PENDING.md`. Pushing that repo
-   deploys the live site (Vercel) — only with Luis's explicit OK.
+2. **Website metadata — complete.** The live app page reports 1.0.1; no
+   further metadata update is needed for this release.
 3. **Play Console recommendations plan, Step 1 first** (baseline screenshots
    on Android 15/API 35 and Android 16/API 36, phone + tablet/foldable,
    gesture + 3-button nav, light/dark). Priority inside that plan:

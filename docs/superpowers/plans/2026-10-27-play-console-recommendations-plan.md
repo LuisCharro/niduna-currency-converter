@@ -219,6 +219,5 @@ items is explicitly resolved or left with a documented blocker and next step.
   Automated warnings may persist or lag; record what Play reports and any
   remaining upstream dependency issue, rather than marking success early.
 
-The site currently contains `softwareVersion: 1.0.0`; its separate pending
-item calls for updating that metadata after publication verification. This
-plan does not authorize a site deployment.
+The live site's `softwareVersion` metadata was updated to 1.0.1 and verified
+on 27 October. This plan does not authorize a site deployment.

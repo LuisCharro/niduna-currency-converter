@@ -3,8 +3,9 @@
 ## Current answer
 
 No blocking AdMob setup was found for serving ads in the current Android app.
-This is a read-only assessment; no AdMob setting was changed. Recheck the live
-account before acting on this dated snapshot.
+The 26 October assessment was read-only. On 27 October the app-specific ad
+content rating was changed as recorded below. Recheck the live account before
+acting on this dated snapshot.
 
 ## Verified today
 
@@ -40,13 +41,14 @@ state regulations message is configured.
 
 ## Follow-up, only when relevant
 
-- [ ] **Review ad content rating:** on 2026-10-27, AdMob's account-wide
-  maximum was **Mature Audiences**, with no ads blocked by that setting. This
-  alone does not establish which ads were actually served or whether an
-  app-specific or request-level restriction applies. Review those controls
-  and whether a General Audiences (G) maximum is appropriate for the app's
-  PEGI 3 rating before changing anything. Google says ads must be appropriate
-  for the app's content rating: [content rating requirements](https://support.google.com/googleplay/android-developer/answer/9859655?hl=en).
+- [x] **Ad content rating:** on 2026-10-27, with Luis's approval, set the
+  Currency Converter app-specific maximum to **General Audiences (G)** in
+  AdMob. The app no longer matches the account-wide **Mature Audiences**
+  setting; AdMob displayed PG, T and MA as blocked. Before saving, AdMob
+  estimated a 49% impression and 56% revenue reduction for AdMob Network ads,
+  based on the past 30 days, not a forecast. Recheck actual performance over
+  time. This setting alone does not establish full policy compliance. See
+  [Google's content rating requirements](https://support.google.com/googleplay/android-developer/answer/9859655?hl=en).
 - [ ] **Focused real-device ad QA:** when next reviewing monetisation, check
   the Play-installed build on a real Android: European consent and Privacy
   options, banner after consent, an intentionally requested rewarded ad,
