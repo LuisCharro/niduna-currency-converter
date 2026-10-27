@@ -1,13 +1,14 @@
 # Play data deletion: decision and plan
 
 Date: 2026-10-27. Status: decision taken with Luis. Website policy wording and
-the email runbook (`niduna-site/docs/privacy-requests.md`) are committed and
-pushed to niduna-site main; **VPS deploy pending** (tracked in niduna-site
-`PENDING.md`). No Play Console change.
+the email runbook (`niduna-site/docs/privacy-requests.md`) are in niduna-site
+`85c39ee`, **deployed to the VPS on 2026-10-27** (another session verified
+`/currency-converter/privacy/` and `/privacy/` match local files by SHA-256).
+No Play Console change.
 
 Remaining:
 
-- [ ] Deploy niduna-site and verify the live app policy (another session).
+- [x] Deploy niduna-site and verify the live policies.
 - [ ] Read-only Play Console check (below).
 - [ ] Optional in-app line, only with the next app release.
 
@@ -34,6 +35,11 @@ Reasoning:
   in-app Privacy options (consent), buy Remove Ads, and use Google's own
   controls for data Google holds.
 
+Evidence level: based on Google's public documentation; no specific
+confirmation has been requested from Google support. The answer stays No. If
+moving to Yes is ever considered, first verify that there is a request
+mechanism we can actually offer and stand behind.
+
 Do not revisit to Yes unless something changes (a backend storing user data,
 or Google providing a publisher-side deletion path that covers this app's data).
 
@@ -45,7 +51,7 @@ mailbox serves the whole portfolio: `niduna-site/docs/privacy-requests.md`.
 
 ## Changes
 
-### Website (niduna-site) — done 2026-10-27 (pushed), deploy pending
+### Website (niduna-site) — done and deployed 2026-10-27
 
 The deletion contradiction lives in
 `currency-converter/privacy/index.html` ("Contact and rights" promises requests

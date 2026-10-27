@@ -30,8 +30,8 @@
   - [Play data deletion decision](2026-10-27-data-deletion-play-plan.md)
     — Data safety deletion answer **stays No** (we can't delete AdMob data).
     App privacy policy wording and the email runbook
-    (`niduna-site/docs/privacy-requests.md`) are pushed; **site deploy
-    pending**. Then a read-only Play Console check. Optional in-app line
+    (`niduna-site/docs/privacy-requests.md`) are **deployed** (27 Oct).
+    Remaining: a read-only Play Console check. Optional in-app line
     rides along with the next release.
 
 ## Recommended order (agreed with Luis on 2026-10-27)
