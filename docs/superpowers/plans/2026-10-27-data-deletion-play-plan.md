@@ -9,7 +9,7 @@ No Play Console change.
 Remaining:
 
 - [x] Deploy niduna-site and verify the live policies.
-- [ ] Read-only Play Console check (below).
+- [x] Read-only Play Console check (below).
 - [ ] Optional in-app line, only with the next app release.
 
 ## Decision (Luis, 2026-10-27)
@@ -80,6 +80,32 @@ pointing to the advertising-ID reset and the privacy policy. It must go into
 all ARB locales. Not worth a release on its own.
 
 ### Play Console — no change expected, one read-only check
+
+**Read-only verification: 2026-10-27 at approximately 22:53 Europe/Zurich.**
+This is the local observation time; Console did not display a timestamp for the
+check. Chrome was used for package `com.honestfern.currency_converter`.
+
+- Data safety: deletion-request mechanism **No**; account creation is not
+  supported; encryption in transit **Yes**. Save draft was disabled with no
+  changes made.
+- Approximate location, app interactions, diagnostics, and device or other IDs
+  are each marked **collected and shared**, required, and not processed
+  ephemerally. For each type, the selected purposes for both collection and
+  sharing are **Analytics**, **Advertising or marketing**, and **Fraud
+  prevention, security and compliance**. The Console category is Diagnostics;
+  no separate crash-logs type was selected.
+- Advertising ID: **Yes**, with Analytics, Advertising or marketing, and Fraud
+  prevention, security and compliance selected. Privacy policy URL exactly
+  `https://honestfern.com/currency-converter/privacy/`.
+- Dashboard said **“You have no unpublished changes”**. Publishing overview
+  showed no pending items and last published 26 October 2026; App content's
+  Need attention tab said everything was caught up.
+- The public Data safety page lists those same four types as collected and
+  shared, displays **“Data can’t be deleted”**, and links to the exact privacy
+  policy URL above. The public listing's App support link also points there.
+
+No Console answers were edited, saved, or submitted. No discrepancy was found
+against the requested checks.
 
 Nothing needs changing in Console: the deletion answer stays No, and the
 privacy-policy URL (`https://honestfern.com/currency-converter/privacy/`) does
