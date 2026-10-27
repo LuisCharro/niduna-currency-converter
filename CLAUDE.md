@@ -8,7 +8,7 @@ Privacy-first Flutter currency converter (Honest Fern portfolio). Phase 1 MVP: n
 
 **AGENTS.md is the canonical agent instruction file for this repo — read it before substantial work.** It covers skills, devtools script inventory, provider profiles, hidden dev UI, and current project state. Other key docs: `ARCHITECTURE.md` (data/cache/network layers — read before touching those), `CODE_PATTERNS.md` (reference implementations), `DEFINITIONS.md` / `ROADMAP.md` / `PLAN.md` (product scope and delivery order), `RELEASE_CHECKLIST.md` (release master order + per-step implementation notes).
 
-**Session continuity:** PLAN.md's header block ends with a dated **Resume point** link to `docs/superpowers/plans/<date>-session-summary-and-next.md` — read the latest one when picking up work. **Sibling repo:** `/Users/luis/Niduna/niduna-site` (static HTML/CSS on Vercel, auto-deploys on push to main) hosts the privacy policy, the app's marketing page, and `RELEASE_PLAN.md` for the site-side release steps; the app's store screenshots feed its `assets/`.
+**Session continuity:** PLAN.md's header block ends with a dated **Resume point** link to `docs/superpowers/plans/<date>-session-summary-and-next.md` — read the latest one when picking up work. **Sibling repo:** `/Users/luis/Niduna/niduna-site` (static HTML/CSS served from a Hostinger VPS; after pushing main, production is deployed with the VPS script in its `docs/screenshot-refresh-and-deploy.md` §3 — Vercel is only preview/rollback) hosts the privacy policy, the app's marketing page, and `RELEASE_PLAN.md` for the site-side release steps; the app's store screenshots feed its `assets/`.
 
 ## Commands
 
