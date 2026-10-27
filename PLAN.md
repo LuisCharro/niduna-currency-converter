@@ -1,9 +1,10 @@
 # Currency Converter — Development Plan
 
-> Current release resume: `RELEASE_CHECKLIST.md` → **Current release status — 2026-10-26**.
-> Production 1.0.0 (11) is public; 1.0.1 (12) is submitted to Closed Alpha
-> pending Google review and owner phone acceptance. Historical plans below
-> do not override the master checklist.
+> Current release resume: `RELEASE_CHECKLIST.md` → **Current release status — 2026-10-27**.
+> Production 1.0.1 (12) is public (published 26 October 2026). Historical
+> plans below do not override the master checklist.
+> **Resume point:** [`docs/superpowers/plans/2026-10-27-session-summary-and-next.md`](docs/superpowers/plans/2026-10-27-session-summary-and-next.md)
+> — recommended next steps and their order.
 
 
 > **Based on:** DEFINITIONS.md (2026-05-22)

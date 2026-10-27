@@ -25,6 +25,11 @@
   The live Apps page shows **Ready / Ad serving enabled** with two active ad
   units, and Policy centre shows **No current issues**. The approval lifts the
   ad-serving review limit; it is separate from Play's Production release review.
+- **Next steps:** follow the order in
+  [2026-10-27 session summary](docs/superpowers/plans/2026-10-27-session-summary-and-next.md):
+  observe 1.0.1 → site `softwareVersion` → Play Console recommendations
+  (large screens first) → device ad QA. Country expansion is deferred until
+  Luis calls the app mature.
 
 Older dated checkpoints below are historical evidence, not current release
 instructions. Recheck live services before a new release operation.

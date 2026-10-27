@@ -26,6 +26,9 @@
   units, and Policy centre shows **No current issues**. The approval lifts the
   ad-serving review limit; it is separate from Play's Production release review.
   See `ADMOB_PENDING.md` for today's setup audit and conditional follow-up.
+- **Next steps:** recommended order is in
+  [2026-10-27 session summary](docs/superpowers/plans/2026-10-27-session-summary-and-next.md).
+  Country expansion is deferred until the app is mature.
 
 Older dated checkpoints below are historical evidence, not current release
 instructions. Recheck live services before a new release operation.

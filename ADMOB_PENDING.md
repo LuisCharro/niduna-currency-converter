@@ -28,6 +28,16 @@ format, not a setup requirement. Its automatic appearance would change the
 current opt-in rewarded-ad experience; do not add it just to complete the
 dashboard. Firebase linking for Ads ARPU reporting is also optional.
 
+## Consent vs Data Safety (clarified 2026-10-27)
+
+Users in EEA/UK/CH can refuse consent at first launch or later via Settings →
+Data & privacy → Privacy options. Refusal switches AdMob to non-personalised /
+limited ads, which still send IP-derived location, device info and ad events.
+Consent changes how Google may *use* the data, not whether it leaves the
+device, so Play Data Safety keeps declaring the AdMob SDK categories. Never
+answer "no data collected". Outside Europe there is no prompt unless a US
+state regulations message is configured.
+
 ## Follow-up, only when relevant
 
 - [ ] **Focused real-device ad QA:** when next reviewing monetisation, check
