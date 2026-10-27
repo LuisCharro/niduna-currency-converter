@@ -11,6 +11,10 @@ dashboard without regressing phone usability, the chart viewer, consent, ads
 or purchases. A recommendation is an observed Play signal, not proof of a
 specific user-facing bug; establish a baseline before choosing code changes.
 
+**Ride-along (optional):** the [data deletion decision](2026-10-27-data-deletion-play-plan.md)
+suggests one extra Data & privacy line (advertising-ID reset + policy link) in
+this release, all locales. Data safety answers are not changed.
+
 ## Play Console inputs captured on 2026-10-27
 
 Source: [Production dashboard](https://play.google.com/console/u/0/developers/6219086036817053258/app/4973875544480645622/tracks/production),
