@@ -40,20 +40,33 @@ state regulations message is configured.
 
 ## Follow-up, only when relevant
 
+- [ ] **Review ad content rating:** on 2026-10-27, AdMob's account-wide
+  maximum was **Mature Audiences**, with no ads blocked by that setting. This
+  alone does not establish which ads were actually served or whether an
+  app-specific or request-level restriction applies. Review those controls
+  and whether a General Audiences (G) maximum is appropriate for the app's
+  PEGI 3 rating before changing anything. Google says ads must be appropriate
+  for the app's content rating: [content rating requirements](https://support.google.com/googleplay/android-developer/answer/9859655?hl=en).
 - [ ] **Focused real-device ad QA:** when next reviewing monetisation, check
   the Play-installed build on a real Android: European consent and Privacy
   options, banner after consent, an intentionally requested rewarded ad,
   no-ad/offline behavior, and Remove Ads entitlement. The code and automated
   tests cover these paths, but this session did not repeat that full device
   matrix after AdMob approval. Do not click your own live ads to test them.
-- [ ] **Payments/identity when AdMob prompts:** the Payments → Verification
-  page says personal-information verification *may* be required once earnings
-  reach its threshold. It did not display a current verification request. The
-  Payments information pane remained loading today, so payout-method and tax
-  status were **not verified** in this check. Earlier release records say the
-  AdMob payment profile was completed on 2026-09-10; revisit the live pane
-  when earnings grow or AdMob shows an action-required notice. Do not enter
-  identity, tax or bank details on the basis of this note alone.
+- [ ] **Payments/identity when AdMob prompts:** on 2026-10-27, AdMob Home's
+  “Steps to get paid” said identity verification becomes available after the
+  earnings minimum is reached; **Verify identity** was disabled. The page did
+  not state that minimum, and it is unknown whether the earlier Play developer
+  identity verification will be reused. After identity verification, AdMob says
+  it will mail an address PIN. Google's published CHF thresholds list address
+  verification at the equivalent of US$10, payment-method selection at CHF 10,
+  and payment at CHF 100; its general table lists a $0 identity threshold, so
+  do not assume that figure overrides this account's displayed status. See
+  [Google's payment thresholds](https://support.google.com/adsense/answer/1709871?hl=en-GB).
+  Payout-method and tax status were not verified in this check. Earlier release
+  records say the AdMob payment profile was completed on 2026-09-10. Revisit
+  when AdMob enables the action or displays a request; verify the live details
+  before entering identity, tax or bank information.
 - [ ] **After a material SDK, audience, country or ad-format change:** revisit
   UMP messaging, Play Data Safety, the privacy copy and Policy centre. If the
   app expands to US states or iOS, review those regions' messaging and the
